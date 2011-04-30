@@ -32,9 +32,7 @@ namespace Hammurabi
 			TimeSpan duration = new TimeSpan();
 			DateTime startTime = DateTime.Now;
 
-            
-            Demo();
-            
+            Demo();          
             
 			DateTime stopTime = DateTime.Now;
 			duration = stopTime - startTime;

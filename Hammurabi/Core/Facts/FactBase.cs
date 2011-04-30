@@ -28,11 +28,11 @@ namespace Hammurabi
 	public static partial class Facts
 	{
 		/// <summary>
-		/// This is the main (actually, only) global data structure.
+		/// This is the main global data structure.
 		/// It's where all the asserted facts live.
 		/// </summary>
 		private static List<Fact> FactBase = new List<Fact>();
-		
+        
 		
 		/// <summary>
 		/// A Fact object represents a fact that is stored in the knowledge
@@ -92,6 +92,14 @@ namespace Hammurabi
 			
 		}
 		
+        /// <summary>
+        /// Counts how many known facts there are. 
+        /// </summary>
+        public static int Count()
+        {
+            return FactBase.Count;
+        }
+        
 		/// <summary>
 		/// Retracts all facts in the factbase
 		/// </summary>

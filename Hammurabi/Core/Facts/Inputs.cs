@@ -98,6 +98,12 @@ namespace Hammurabi
 				}
 			}
 
+            // Add the fact to the list of unknown facts
+            if (GetUnknowns)
+            {
+                AddUnknown(e1,rel,e2);
+            }
+            
 			// If fact is not found, return an unknown Tvar
 			return (T)Auxiliary.ReturnProperTvar<T>();
 		}
@@ -114,6 +120,12 @@ namespace Hammurabi
 					return (T)f.v;
 				}
 			}
+            
+            if (GetUnknowns)
+            {
+                AddUnknown(e1,rel);
+            }
+            
 			return (T)Auxiliary.ReturnProperTvar<T>();
 		}
 		
@@ -130,6 +142,12 @@ namespace Hammurabi
 					return f.time;
 				}
 			}
+            
+            if (GetUnknowns)
+            {
+                AddUnknown(e1,rel,e2);
+            }
+            
 			return new DateTime(1,1,1);		// TODO: Make date queries nullable?
 		}
 		
@@ -146,6 +164,12 @@ namespace Hammurabi
 					return f.time;
 				}
 			}
+            
+            if (GetUnknowns)
+            {
+                AddUnknown(e1,rel);
+            }
+            
 			return new DateTime(1,1,1);	
 		}
 		

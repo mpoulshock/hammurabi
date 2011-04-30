@@ -2,15 +2,14 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" ctype="Workspace" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Hammurabi/Main/Main.cs" ctype="Workbench">
     <Files>
-      <File FileName="Hammurabi/Main/Main.cs" Line="36" Column="20" />
-      <File FileName="Hammurabi/Law/Federal law/US Code/Title 29/29 USC 2611.cs" Line="65" Column="13" />
-      <File FileName="Unit tests - Law/Federal law/US Code/Title 29/Test - 29 USC 2611.cs" Line="110" Column="4" />
-      <File FileName="Hammurabi/Law/Federal law/US Code/Title 29/29 USC 2612.cs" Line="68" Column="36" />
+      <File FileName="Hammurabi/Main/Main.cs" Line="35" Column="20" />
+      <File FileName="Hammurabi/Core/Facts/Unknown facts.cs" Line="41" Column="32" />
+      <File FileName="Hammurabi/Core/Facts/Inputs.cs" Line="150" Column="13" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
-          <Node name="Hammurabi" expanded="True">
+          <Node name="Hammurabi" expanded="True" selected="True">
             <Node name="References" expanded="True" />
             <Node name="Core" expanded="True">
               <Node name="Facts" expanded="True" />
@@ -26,9 +25,7 @@
                 </Node>
               </Node>
             </Node>
-            <Node name="Main" expanded="True">
-              <Node name="Main.cs" selected="True" />
-            </Node>
+            <Node name="Main" expanded="True" />
           </Node>
           <Node name="Unit tests - Hammurabi core" expanded="True">
             <Node name="References" expanded="True" />
@@ -51,8 +48,8 @@
           <Option id="NestedNamespaces" value="False" />
           <Option id="PublicProtectedApiOnly" value="False" />
           <Option id="PublicApiOnly" value="True" />
-          <Option id="GroupByType" value="True" />
           <Option id="GroupByAccess" value="False" />
+          <Option id="GroupByType" value="True" />
           <Node name="Hammurabi" expanded="True">
             <Node name="References" expanded="True" />
           </Node>
