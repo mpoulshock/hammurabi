@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="3.5" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{922F7838-8934-4CB3-8C65-A4AD5D61C182}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>UnittestsLaw</RootNamespace>
+    <AssemblyName>Unit tests - Law</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+    <Externalconsole>true</Externalconsole>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+    <Externalconsole>true</Externalconsole>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="nunit.framework, Version=2.4.7.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77">
+      <Package>nunit</Package>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="Federal law\US Code\Title 5\Test - 5 USC 6103.cs" />
+    <Compile Include="Federal law\US Code\Title 26\Test - 26 USC 152.cs" />
+    <Compile Include="Federal law\US Code\Title 29\Test - 29 USC 2612.cs" />
+    <Compile Include="Federal law\US Code\Title 29\Test - 29 USC 2611.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Hammurabi\Hammurabi.csproj">
+      <Project>{4397E5BA-44D6-4937-B66A-ED7CE580CE69}</Project>
+      <Name>Hammurabi</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Federal law\" />
+    <Folder Include="State law\" />
+    <Folder Include="Federal law\Code of Federal Regulations\" />
+    <Folder Include="Federal law\Federal Rules\" />
+    <Folder Include="Federal law\US Code\" />
+    <Folder Include="Federal law\US Code\Title 26\" />
+    <Folder Include="Federal law\US Code\Title 29\" />
+    <Folder Include="Federal law\US Code\Title 5\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+</Project>

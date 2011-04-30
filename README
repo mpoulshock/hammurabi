@@ -1,0 +1,9 @@
+The Hammurabi Project is an experiment in codifying U.S. law - such as the U.S. Code, the Code of Federal Regulations, state laws, etc. - into C#. 
+
+It has two basic components:
+
+  (1) A core library of functions that facilitate the representation of legal rules; and
+
+  (2) Namespaces and classes that have the same structure as U.S. and state legislation, regulations, and case law.
+
+More information can be found on the project wiki (at Github).

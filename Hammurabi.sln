@@ -1,0 +1,53 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hammurabi", "Hammurabi\Hammurabi.csproj", "{4397E5BA-44D6-4937-B66A-ED7CE580CE69}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unit tests - Hammurabi core", "Unit tests - Hammurabi core\Unit tests - Hammurabi core.csproj", "{83557818-8363-4DD4-A504-0EB567BCBA0D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unit tests - Law", "Unit tests - Law\Unit tests - Law.csproj", "{922F7838-8934-4CB3-8C65-A4AD5D61C182}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+		Default|Any CPU = Default|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4397E5BA-44D6-4937-B66A-ED7CE580CE69}.Debug|x86.ActiveCfg = Debug|x86
+		{4397E5BA-44D6-4937-B66A-ED7CE580CE69}.Debug|x86.Build.0 = Debug|x86
+		{4397E5BA-44D6-4937-B66A-ED7CE580CE69}.Release|x86.ActiveCfg = Release|x86
+		{4397E5BA-44D6-4937-B66A-ED7CE580CE69}.Release|x86.Build.0 = Release|x86
+		{83557818-8363-4DD4-A504-0EB567BCBA0D}.Debug|x86.ActiveCfg = Debug|x86
+		{83557818-8363-4DD4-A504-0EB567BCBA0D}.Debug|x86.Build.0 = Debug|x86
+		{83557818-8363-4DD4-A504-0EB567BCBA0D}.Default|Any CPU.ActiveCfg = Debug|x86
+		{83557818-8363-4DD4-A504-0EB567BCBA0D}.Default|Any CPU.Build.0 = Debug|x86
+		{83557818-8363-4DD4-A504-0EB567BCBA0D}.Release|x86.ActiveCfg = Release|x86
+		{83557818-8363-4DD4-A504-0EB567BCBA0D}.Release|x86.Build.0 = Release|x86
+		{922F7838-8934-4CB3-8C65-A4AD5D61C182}.Debug|x86.ActiveCfg = Debug|x86
+		{922F7838-8934-4CB3-8C65-A4AD5D61C182}.Debug|x86.Build.0 = Debug|x86
+		{922F7838-8934-4CB3-8C65-A4AD5D61C182}.Default|Any CPU.ActiveCfg = Debug|x86
+		{922F7838-8934-4CB3-8C65-A4AD5D61C182}.Default|Any CPU.Build.0 = Debug|x86
+		{922F7838-8934-4CB3-8C65-A4AD5D61C182}.Release|x86.ActiveCfg = Release|x86
+		{922F7838-8934-4CB3-8C65-A4AD5D61C182}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Hammurabi\Hammurabi.csproj
+		Policies = $0
+		$0.TextStylePolicy = $1
+		$1.inheritsSet = null
+		$1.scope = text/x-csharp
+		$0.CSharpFormattingPolicy = $2
+		$2.inheritsSet = Mono
+		$2.inheritsScope = text/x-csharp
+		$2.scope = text/x-csharp
+		$0.TextStylePolicy = $3
+		$3.FileWidth = 120
+		$3.inheritsSet = VisualStudio
+		$3.inheritsScope = text/plain
+		$3.scope = text/plain
+		$0.StandardHeader = $4
+		$4.Text = 
+		$4.inheritsSet = Apache2License
+	EndGlobalSection
+EndGlobal

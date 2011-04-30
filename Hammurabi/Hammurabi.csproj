@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{4397E5BA-44D6-4937-B66A-ED7CE580CE69}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Hammurabi</RootNamespace>
+    <AssemblyName>Hammurabi</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+    <Externalconsole>true</Externalconsole>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Main\Main.cs" />
+    <Compile Include="Main\AssemblyInfo.cs" />
+    <Compile Include="Core\Core functions\Math.cs" />
+    <Compile Include="Core\Core functions\Logic.cs" />
+    <Compile Include="Core\Ontology\Basic legal entities.cs" />
+    <Compile Include="Core\Ontology\Family relationships.cs" />
+    <Compile Include="Core\Ontology\Jurisdictions.cs" />
+    <Compile Include="Core\Facts\FactBase.cs" />
+    <Compile Include="Core\Facts\Set-assert.cs" />
+    <Compile Include="Core\Core functions\Set - higher-order.cs" />
+    <Compile Include="Core\Fundamental types\Tvar.cs" />
+    <Compile Include="Core\Fundamental types\Tbool.cs" />
+    <Compile Include="Core\Fundamental types\Tnum.cs" />
+    <Compile Include="Core\Fundamental types\Tstr.cs" />
+    <Compile Include="Core\Fundamental types\Tset.cs" />
+    <Compile Include="Core\Core functions\Comparison - numeric.cs" />
+    <Compile Include="Core\Core functions\Auxiliary.cs" />
+    <Compile Include="Core\Core functions\Unknown.cs" />
+    <Compile Include="Core\Core functions\Time - analysis.cs" />
+    <Compile Include="Core\Core functions\Time - dates.cs" />
+    <Compile Include="Core\Core functions\Time - temporal.cs" />
+    <Compile Include="Core\Core functions\Time - TheTime.cs" />
+    <Compile Include="Core\Core functions\Switch.cs" />
+    <Compile Include="Core\Fundamental types\Tdate.cs" />
+    <Compile Include="Core\Core functions\Comparison - dates.cs" />
+    <Compile Include="Core\Facts\Inputs - entities.cs" />
+    <Compile Include="Core\Facts\Inputs.cs" />
+    <Compile Include="Core\Core functions\Misc.cs" />
+    <Compile Include="Law\State law\Kansas\Kansas Statutes\Title 35\KSA 35-107.cs" />
+    <Compile Include="Law\Federal law\US Code\Title 5\5 USC 6103.cs" />
+    <Compile Include="Law\Federal law\US Code\Title 26\26 USC 441.cs" />
+    <Compile Include="Law\Federal law\US Code\Title 26\26 USC 152.cs" />
+    <Compile Include="Law\Federal law\US Code\Title 26\26 USC 62.cs" />
+    <Compile Include="Law\Federal law\US Code\Title 26\26 USC 61.cs" />
+    <Compile Include="Law\Federal law\US Code\Title 26\26 USC 22.cs" />
+    <Compile Include="Law\Federal law\Federal Rules\FRCP\Rule 6.cs" />
+    <Compile Include="Law\Federal law\US Code\Title 26\26 USC 6013.cs" />
+    <Compile Include="Core\Ontology\Economic relationships.cs" />
+    <Compile Include="Law\Federal law\US Code\Title 26\26 USC 151.cs" />
+    <Compile Include="Law\Federal law\US Code\Title 29\29 USC 2611.cs" />
+    <Compile Include="Law\Federal law\US Code\Title 29\29 USC 2612.cs" />
+    <Compile Include="Law\Federal law\US Code\Title 5\5 USC 6301.cs" />
+    <Compile Include="Law\Federal law\US Code\Title 26\26 USC 3306.cs" />
+    <Compile Include="Core\Core functions\Stub.cs" />
+    <Compile Include="Law\Federal law\Code of Federal Regulations\Title 29\29 CFR 1630.cs" />
+    <Compile Include="Core\Facts\Validate.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Folder Include="Law\" />
+    <Folder Include="Main\" />
+    <Folder Include="Core\" />
+    <Folder Include="Core\Core functions\" />
+    <Folder Include="Core\Ontology\" />
+    <Folder Include="Core\Core functions\" />
+    <Folder Include="Core\Facts\" />
+    <Folder Include="Core\Fundamental types\" />
+    <Folder Include="Law\State law\" />
+    <Folder Include="Law\State law\Kansas\" />
+    <Folder Include="Law\State law\Kansas\Kansas Statutes\" />
+    <Folder Include="Law\State law\Kansas\Kansas Statutes\Title 35\" />
+    <Folder Include="Law\Federal law\US Code\Title 29\" />
+    <Folder Include="Law\Federal law\Code of Federal Regulations\" />
+    <Folder Include="Law\Federal law\Code of Federal Regulations\Title 29\" />
+    <Folder Include="Law\Federal law\Code of Federal Regulations\" />
+  </ItemGroup>
+  <ProjectExtensions>
+    <MonoDevelop>
+      <Properties>
+        <Policies>
+          <StandardHeader Text="Copyright (c) 2011 The Hammurabi Project&#xA;&#xA;Permission is hereby granted, free of charge, to any person obtaining a copy&#xA;of this software and associated documentation files (the &quot;Software&quot;), to deal&#xA;in the Software without restriction, including without limitation the rights&#xA;to use, copy, modify, merge, publish, distribute, sublicense, and/or sell&#xA;copies of the Software, and to permit persons to whom the Software is&#xA;furnished to do so, subject to the following conditions:&#xA;&#xA;The above copyright notice and this permission notice shall be included in&#xA;all copies or substantial portions of the Software.&#xA;&#xA;THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR&#xA;IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&#xA;FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE&#xA;AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER&#xA;LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,&#xA;OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN&#xA;THE SOFTWARE.&#xA;&#xA;NO REPRESENTATION OR WARRANTY IS MADE THAT THIS PROGRAM ACCURATELY REFLECTS&#xA;OR EMBODIES ANY APPLICABLE LAWS, REGULATIONS, RULES OR EXECUTIVE ORDERS &#xA;(&quot;LAWS&quot;). YOU SHOULD RELY ONLY ON OFFICIAL VERSIONS OF LAWS PUBLISHED BY THE &#xA;RELEVANT GOVERNMENT AUTHORITY, AND YOU ASSUME THE RESPONSIBILITY OF &#xA;INDEPENDENTLY VERIFYING SUCH LAWS. THE USE OF THIS PROGRAM IS NOT A &#xA;SUBSTITUTE FOR THE ADVICE OF AN ATTORNEY." inheritsSet="Apache2License" />
+        </Policies>
+      </Properties>
+    </MonoDevelop>
+  </ProjectExtensions>
+</Project>
