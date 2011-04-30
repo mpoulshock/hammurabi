@@ -33,8 +33,6 @@ namespace Hammurabi
 			DateTime startTime = DateTime.Now;
 
             
-            // test
-            
             Demo();
             
             
