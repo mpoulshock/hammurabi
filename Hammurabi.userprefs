@@ -1,18 +1,21 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" ctype="Workspace" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Hammurabi/Main/Main.cs" ctype="Workbench">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Hammurabi/Core/Facts/FactBase.cs" ctype="Workbench">
     <Files>
-      <File FileName="Hammurabi/Main/Main.cs" Line="35" Column="20" />
+      <File FileName="Hammurabi/Main/Main.cs" Line="38" Column="36" />
       <File FileName="Hammurabi/Core/Facts/Unknown facts.cs" Line="41" Column="32" />
       <File FileName="Hammurabi/Core/Facts/Inputs.cs" Line="150" Column="13" />
+      <File FileName="Hammurabi/Core/Facts/FactBase.cs" Line="102" Column="9" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
-          <Node name="Hammurabi" expanded="True" selected="True">
+          <Node name="Hammurabi" expanded="True">
             <Node name="References" expanded="True" />
             <Node name="Core" expanded="True">
-              <Node name="Facts" expanded="True" />
+              <Node name="Facts" expanded="True">
+                <Node name="FactBase.cs" selected="True" />
+              </Node>
               <Node name="Fundamental types" expanded="True" />
               <Node name="Ontology" expanded="True" />
             </Node>

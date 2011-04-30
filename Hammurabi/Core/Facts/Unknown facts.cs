@@ -38,6 +38,16 @@ namespace Hammurabi
         public static bool GetUnknowns = false;
 
         /// <summary>
+        /// Turns on the mode in which unknowns are collected into the
+        /// Facts.Unknowns list.
+        /// </summary>
+        public static void UnknownModeOn()
+        {
+            Facts.GetUnknowns = true;
+            Facts.Unknowns.Clear();
+        }
+        
+        /// <summary>
         /// Add a (two-entity) factlet to UnknownFacts.
         /// </summary>
         public static void AddUnknown(LegalEntity e1, string rel, LegalEntity e2)
@@ -54,7 +64,7 @@ namespace Hammurabi
         }
         
         /// <summary>
-        /// Add a (one-entity) factlet to UnknownFacts.
+        /// Add a (one-entity) factlet to Facts.Unknowns.
         /// </summary>
         public static void AddUnknown(LegalEntity e1, string rel)
         {
@@ -62,7 +72,7 @@ namespace Hammurabi
         }
         
         /// <summary>
-        /// Indicates whether UnknownFacts contains a given factlet.
+        /// Indicates whether Facts.Unknowns contains a given factlet.
         /// </summary>
         public static bool IsUnknown(LegalEntity e1, string rel, LegalEntity e2)
         {
@@ -79,7 +89,7 @@ namespace Hammurabi
         }
         
         /// <summary>
-        /// Returns a string showing all factlets in UnknownFacts.
+        /// Returns a string showing all factlets in Facts.Unknowns.
         /// </summary>
         public static string ShowUnknowns()
         {
@@ -98,6 +108,22 @@ namespace Hammurabi
             }
             
             return result;
+        }
+        
+        /// <summary>
+        /// Returns a string showing all relationships in Facts.Unknowns.
+        /// Used to test the order in which factlets are added to that list.
+        /// </summary>
+        public static string ShowUnknownTest()
+        {
+            string result = "";
+            
+            foreach (Facts.Factlet f in Facts.Unknowns)
+            {
+                result += f.relationship + " ";
+            }
+            
+            return result.Trim();
         }
         
         /// <summary>

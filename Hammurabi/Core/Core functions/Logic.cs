@@ -38,6 +38,50 @@ namespace Hammurabi
 		/// </summary>
 		public static Tbool operator & (Tbool tb1, Tbool tb2)
 		{
+//            // Turn off "GetUnknowns" mode while analyzing short-circuits
+//            bool originalMode = Facts.GetUnknowns;
+//            Facts.GetUnknowns = false;
+//            
+//            // Short circuit 1:
+//            // If any input is eternally false, return false
+////            foreach (Tbool b in list)
+////            {
+//                if (tb1.IntervalValues.Count == 1 &&
+//                    Convert.ToBoolean(tb1.IntervalValues.Values[0]) == false)
+//                {
+//                    // Restore "GetUnknowns" mode to its original state
+//                    Facts.GetUnknowns = originalMode;
+//                    
+//                    return new Tbool(false);
+//                }
+////            }
+//            
+//            if (tb2.IntervalValues.Count == 1 &&
+//                    Convert.ToBoolean(tb2.IntervalValues.Values[0]) == false)
+//                {
+//                    // Restore "GetUnknowns" mode to its original state
+//                    Facts.GetUnknowns = originalMode;
+//                    
+//                    return new Tbool(false);
+//                }
+//            
+//            
+//            // Short circuit 2:
+//            // If any input IsUnknown, return an unknown Tbool
+//            if (AnyAreUnknown(tb1, tb2)) 
+//            {
+//                // Restore "GetUnknowns" mode to its original state
+//                Facts.GetUnknowns = originalMode;
+//                
+//                return new Tbool(); 
+//            }
+//            
+//            // Restore "GetUnknowns" mode to its original state
+//            Facts.GetUnknowns = originalMode;
+//            
+//            // Else, apply the AND function to the inputs
+////            return ApplyFcnToTimeline(x => And(x), list);
+//            
 			return And(tb1,tb2);
 		}
 		
@@ -54,27 +98,66 @@ namespace Hammurabi
 		/// <summary>
 		/// Private temporal AND function
 		/// </summary>
-		private static Tbool And(params Tbool[] list)
-		{
-			// Short circuit 1:
-			// If any input is eternally false, return false
-			foreach (Tbool b in list)
-			{
-				if (b.IntervalValues.Count == 1 &&
-				    Convert.ToBoolean(b.IntervalValues.Values[0]) == false)
-				{
-					return new Tbool(false);
-				}
-			}
-			
-			// Short circuit 2:
-			// If any input IsUnknown, return an unknown Tbool
-			if (AnyAreUnknown(list)) { return new Tbool(); }
-			
-			// Else, apply the AND function to the inputs
-			return ApplyFcnToTimeline(x => And(x), list);
-		}
+        private static Tbool And(params Tbool[] list)
+        {
+            // Short circuit 1:
+            // If any input is eternally false, return false
+            foreach (Tbool b in list)
+            {
+                if (b.IntervalValues.Count == 1 &&
+                    Convert.ToBoolean(b.IntervalValues.Values[0]) == false)
+                {
+                    return new Tbool(false);
+                }
+            }
+            
+            // Short circuit 2:
+            // If any input IsUnknown, return an unknown Tbool
+            if (AnyAreUnknown(list)) { return new Tbool(); }
+            
+            // Else, apply the AND function to the inputs
+            return ApplyFcnToTimeline(x => And(x), list);
+        }
+        
+//		private static Tbool And(params Tbool[] list)
+//		{
+//            // Turn off "GetUnknowns" mode while analyzing short-circuits
+//            bool originalMode = Facts.GetUnknowns;
+//            Facts.GetUnknowns = false;
+//            
+//			// Short circuit 1:
+//			// If any input is eternally false, return false
+//			foreach (Tbool b in list)
+//			{
+//				if (b.IntervalValues.Count == 1 &&
+//				    Convert.ToBoolean(b.IntervalValues.Values[0]) == false)
+//				{
+//                    // Restore "GetUnknowns" mode to its original state
+//                    Facts.GetUnknowns = originalMode;
+//                    
+//					return new Tbool(false);
+//				}
+//			}
+//			
+//			// Short circuit 2:
+//			// If any input IsUnknown, return an unknown Tbool
+//			if (AnyAreUnknown(list)) 
+//            {
+//                // Restore "GetUnknowns" mode to its original state
+//                Facts.GetUnknowns = originalMode;
+//                
+//                return new Tbool(); 
+//            }
+//			
+//            // Restore "GetUnknowns" mode to its original state
+//            Facts.GetUnknowns = originalMode;
+//            
+//			// Else, apply the AND function to the inputs
+//			return ApplyFcnToTimeline(x => And(x), list);
+//		}
 		
+
+        
 		/// <summary>
 		/// Private non-temporal AND function
 		/// </summary>
