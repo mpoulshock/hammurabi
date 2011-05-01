@@ -25,9 +25,41 @@ namespace Hammurabi
 	public static partial class Facts
 	{
 		//*********************************************************************
-		// Inputs - these should be used in the law-related code
+		// Symmetrical inputs
 		//*********************************************************************
 		
+        /// <summary>
+        /// Returns a symmetrical input boolean fact.  
+        /// For example, A is married to B if B is married to A.
+        /// </summary>
+        /// <remarks>
+        /// See unit tests for the truth table, which ensures that the existence
+        /// of one false causes a false to be returned.
+        /// </remarks>
+        public static Tbool Sym(LegalEntity subj, string rel, LegalEntity directObj)
+        {
+            Tbool A = Facts.InputTbool(subj, rel, directObj);
+            Tbool B = Facts.InputTbool(directObj, rel, subj);
+            
+            return (A & ( B | B.IsUnknown)) | (B & ( A | A.IsUnknown));
+        }
+        
+        /// <summary>
+        /// Returns a symmetrical input string fact.
+        /// </summary>
+        public static Tbool Sym(LegalEntity subj, string rel, LegalEntity directObj, string val)
+        {
+            Tbool A = Facts.InputTstr(subj, rel, directObj) == val;
+            Tbool B = Facts.InputTstr(directObj, rel, subj) == val;
+            
+            return (A & ( B | B.IsUnknown)) | (B & ( A | A.IsUnknown));
+        }
+        
+        
+        //*********************************************************************
+        // Non-symmetrical inputs
+        //*********************************************************************
+        
 		/// <summary>
 		/// Input(sbj-rel-obj) => Tbool
 		/// </summary>
@@ -52,9 +84,14 @@ namespace Hammurabi
 			return (Tstr)QueryTvar<Tstr>(subj, rel, directObj);
 		}
 		
-		// TODO: Implement DateTime inputs
-		
-		
+		/// <summary>
+        /// Input(sbj-rel-obj) => DateTime
+        /// </summary>
+        public static DateTime InputDate(LegalEntity subj, string rel, LegalEntity directObj)           
+        {   
+            return QueryDateTime(subj, rel, directObj);
+        }
+		        
 		/// <summary>
 		/// Input (sbj-rel) => Tbool
 		/// </summary>
@@ -64,7 +101,7 @@ namespace Hammurabi
 		}
 		
 		/// <summary>
-		/// Input (sbj-rel-obj) => Tnum
+		/// Input (sbj-rel) => Tnum
 		/// </summary>
 		public static Tnum InputTnum(LegalEntity subj, string rel)		
 		{	
@@ -72,13 +109,29 @@ namespace Hammurabi
 		}
 		
 		/// <summary>
-		/// Input (sbj-rel-obj) => Tstr
+		/// Input (sbj-rel) => Tstr
 		/// </summary>
 		public static Tstr InputTstr(LegalEntity subj, string rel)		
 		{	
 			return (Tstr)QueryTvar<Tstr>(subj, rel);
 		}
 
+        /// <summary>
+        /// Input(sbj-rel) => DateTime
+        /// </summary>
+        public static DateTime InputDate(LegalEntity subj, string rel)           
+        {   
+            return QueryDateTime(subj, rel);
+        }
+        
+        /// <summary>
+        /// Input(sbj-rel) => Person
+        /// </summary>
+        public static Person InputPerson(LegalEntity subj, string rel)           
+        {   
+            return QueryPerson(subj, rel);
+        }
+        
 		
 		//*********************************************************************
 		// Queries 
@@ -148,7 +201,7 @@ namespace Hammurabi
                 AddUnknown(e1,rel,e2);
             }
             
-			return new DateTime(1,1,1);		// TODO: Make date queries nullable?
+            return new DateTime(1900,1,1);		// TODO: Make date queries nullable?
 		}
 		
 		/// <summary>
@@ -170,9 +223,30 @@ namespace Hammurabi
                 AddUnknown(e1,rel);
             }
             
-			return new DateTime(1,1,1);	
+			return new DateTime(1900,1,1);	
 		}
 		
+        /// <summary>
+        /// Query that returns a person
+        /// EXPERIMENTAL
+        /// </summary> 
+        private static Person QueryPerson(LegalEntity e1, string rel)
+        {
+            foreach (Fact f in FactBase)
+            {
+                if (f.subject == e1 && f.relationship == rel)
+                {
+                    return (Person)f.directObject;
+                }
+            }
+            
+            if (GetUnknowns)
+            {
+                AddUnknown(e1,rel);
+            }
+            
+            return null;
+        }
 		
 		
 	}

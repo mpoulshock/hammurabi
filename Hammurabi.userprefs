@@ -1,21 +1,18 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" ctype="Workspace" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Hammurabi/Core/Facts/FactBase.cs" ctype="Workbench">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Hammurabi/Core/Facts/Inputs.cs" ctype="Workbench">
     <Files>
-      <File FileName="Hammurabi/Main/Main.cs" Line="38" Column="36" />
-      <File FileName="Hammurabi/Core/Facts/Unknown facts.cs" Line="41" Column="32" />
-      <File FileName="Hammurabi/Core/Facts/Inputs.cs" Line="150" Column="13" />
-      <File FileName="Hammurabi/Core/Facts/FactBase.cs" Line="102" Column="9" />
+      <File FileName="Hammurabi/Core/Facts/Inputs.cs" Line="149" Column="26" />
+      <File FileName="Hammurabi/Law/Federal law/US Code/Title 29/29 USC 2611.cs" Line="147" Column="13" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
-          <Node name="Hammurabi" expanded="True">
+          <Node name="Hammurabi" expanded="True" selected="True">
             <Node name="References" expanded="True" />
             <Node name="Core" expanded="True">
-              <Node name="Facts" expanded="True">
-                <Node name="FactBase.cs" selected="True" />
-              </Node>
+              <Node name="Core functions" expanded="True" />
+              <Node name="Facts" expanded="True" />
               <Node name="Fundamental types" expanded="True" />
               <Node name="Ontology" expanded="True" />
             </Node>
@@ -51,8 +48,8 @@
           <Option id="NestedNamespaces" value="False" />
           <Option id="PublicProtectedApiOnly" value="False" />
           <Option id="PublicApiOnly" value="True" />
-          <Option id="GroupByAccess" value="False" />
           <Option id="GroupByType" value="True" />
+          <Option id="GroupByAccess" value="False" />
           <Node name="Hammurabi" expanded="True">
             <Node name="References" expanded="True" />
           </Node>
@@ -62,7 +59,25 @@
         <State />
       </Pad>
       <Pad Id="MonoDevelop.NUnit.TestPad">
-        <State expanded="True" selected="True" />
+        <State expanded="True">
+          <Node name="Unit tests - Hammurabi core" expanded="True">
+            <Node name="Hammurabi" expanded="True">
+              <Node name="UnitTests" expanded="True">
+                <Node name="CoreFcns" expanded="True">
+                  <Node name="UnknownFacts" expanded="True" />
+                </Node>
+              </Node>
+            </Node>
+          </Node>
+          <Node name="Unit tests - Law" expanded="True">
+            <Node name="Hammurabi" expanded="True">
+              <Node name="UnitTests" expanded="True">
+                <Node name="USC_Tit29_Sec2611" expanded="True" selected="True" />
+                <Node name="USC_Tit29_Sec2612" expanded="True" />
+              </Node>
+            </Node>
+          </Node>
+        </State>
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>

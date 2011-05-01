@@ -27,22 +27,41 @@ namespace Hammurabi
 	/// </summary>
 	public class Fam
 	{
+        /// <summary>
+        /// Returns a string indicating the familial relationship between
+        /// two people.
+        /// </summary>
+        public static Tstr Relationship(Person p1, Person p2)
+        {
+            return Facts.InputTstr(p1, "FamilyRelationship", p2);
+        }
+        
 		/// <summary>
 		/// Returns whether two people are married.
 		/// </summary>
+//		public static Tbool AreMarried(Person p1, Person p2)
+//		{
+//			return Facts.Sym(p1, "IsMarriedTo", p2);
+//		}
 		public static Tbool AreMarried(Person p1, Person p2)
-		{
-			return Facts.InputTbool(p1, "IsMarriedTo", p2) |
-			       Facts.InputTbool(p2, "IsMarriedTo", p1);
-		}
-		
+        {
+            if (Facts.GetUnknowns == true)
+            {
+                return Facts.Sym(p1, "FamilyRelationship", p2, "Spouse");
+            }
+            else
+            {
+                return Facts.Sym(p1, "IsMarriedTo", p2) |
+                       Facts.Sym(p1, "FamilyRelationship", p2, "Spouse");
+            }
+        }
+        
 		/// <summary>
 		/// Returns whether two people are legally separated.
 		/// </summary>
 		public static Tbool AreSeparated(Person p1, Person p2)
 		{
-			return Facts.InputTbool(p1, "IsSeparatedFrom", p2) |
-			       Facts.InputTbool(p2, "IsSeparatedFrom", p1);
+			return Facts.Sym(p1, "IsSeparatedFrom", p2);
 		}
 		
 		/// <summary>
@@ -50,8 +69,7 @@ namespace Hammurabi
 		/// </summary>
 		public static Tbool AreDivorced(Person p1, Person p2)
 		{
-			return Facts.InputTbool(p1, "IsDivorcedFrom", p2) |
-			       Facts.InputTbool(p2, "IsDivorcedFrom", p1);	
+			return Facts.Sym(p1, "IsDivorcedFrom", p2);	
 		}
 		
 		/// <summary>
@@ -103,8 +121,7 @@ namespace Hammurabi
 		/// </summary>
 		public static Tbool AreSiblings(Person p1, Person p2)
 		{
-			return Facts.InputTbool(p1, "IsSiblingOf", p2) |
-			       Facts.InputTbool(p2, "IsSiblingOf", p1);
+			return Facts.Sym(p1, "IsSiblingOf", p2);
 			
 			// or, share a parent
 		}
@@ -114,8 +131,7 @@ namespace Hammurabi
 		/// </summary>
 		public static Tbool AreHalfSiblings(Person p1, Person p2)
 		{
-			return Facts.InputTbool(p1, "IsHalfSiblingOf", p2) |
-			       Facts.InputTbool(p2, "IsHalfSiblingOf", p1);
+			return Facts.Sym(p1, "IsHalfSiblingOf", p2);
 			
 			// or, share one parent
 		}
@@ -125,8 +141,7 @@ namespace Hammurabi
 		/// </summary>
 		public static Tbool AreStepSiblings(Person p1, Person p2)
 		{
-			return Facts.InputTbool(p1, "IsStepSiblingOf", p2) |
-			       Facts.InputTbool(p2, "IsStepSiblingOf", p1);
+			return Facts.Sym(p1, "IsStepSiblingOf", p2);
 		}
 		
 		/// <summary>

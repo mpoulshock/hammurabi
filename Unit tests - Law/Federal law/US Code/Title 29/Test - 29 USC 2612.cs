@@ -102,8 +102,68 @@ namespace Hammurabi.UnitTests
             Assert.AreEqual(false, result);
         }
         
+        [Test]
+        public void Simple5 ()
+        {
+            Person e = new Person("the employee");
+            Corp c = new Corp("the employer");
+
+            Facts.Clear();
+            Facts.Assert(c, "NumberOfEmployees", 2000);
+            Facts.Assert(e, "IsEmployedBy", c);
+            Facts.Assert(e, "HoursWorkedInLast12Months",c, 1500);
+            Facts.Assert(e, "IsEmployeeUnder5USC6301", false);
+            Facts.Assert(e, "LessThan50EmployeesWithin75MilesOfWorksite", c, false);
+            Facts.Assert(e, "PositionAt", c, "Unknown");
+            Facts.Assert(e, "ReasonForRequestingFMLALeaveFrom",c, "To adopt a child");          
+
+            DateTime theDate = new DateTime(2011,4,15);
+            bool? result = USC.Tit29.Sec2612.IsEntitledToRegLeaveFrom(e,c).AsOf(theDate).ToBool;
+            Assert.AreEqual(true, result);
+        }
         
+        [Test]
+        public void Test_2612aC1_1()
+        {
+            Person e = new Person("the employee");
+            Corp c = new Corp("the employer");
+
+            Facts.Clear();
+            Facts.Assert(c, "NumberOfEmployees", 2000);
+            Facts.Assert(e, "IsEmployedBy", c);
+            Facts.Assert(e, "HoursWorkedInLast12Months",c, 1500);
+            Facts.Assert(e, "IsEmployeeUnder5USC6301", false);
+            Facts.Assert(e, "LessThan50EmployeesWithin75MilesOfWorksite", c, false);
+            Facts.Assert(e, "PositionAt", c, "Unknown");
+            Facts.Assert(e, "ReasonForRequestingFMLALeaveFrom",c, "To care for family member with a health condition");          
+
+            Tbool result = USC.Tit29.Sec2612.IsEntitledToRegLeaveFrom(e,c);
+            Assert.AreEqual("1/1/0001 12:00:00 AM False ", result.TestOutput);
+        }
         
+        [Test]
+        public void Test_2612aC1_2()
+        {
+            Person e = new Person("the employee");
+            Corp c = new Corp("the employer");
+            Person f = new Person("the family member");
+
+            Facts.Clear();
+            Facts.Assert(c, "NumberOfEmployees", 2000);
+            Facts.Assert(e, "IsEmployedBy", c);
+            Facts.Assert(e, "HoursWorkedInLast12Months",c, 1500);
+            Facts.Assert(e, "IsEmployeeUnder5USC6301", false);
+            Facts.Assert(e, "LessThan50EmployeesWithin75MilesOfWorksite", c, false);
+            Facts.Assert(e, "PositionAt", c, "Unknown");
+            Facts.Assert(e, "ReasonForRequestingFMLALeaveFrom",c, "To care for family member with a health condition");
+            Facts.Assert(e, "NeedsLeaveToProvideCareFor", f);
+            Facts.Assert(e, "IsMarriedTo", f);
+            Facts.Assert(f, "HasSeriousHealthCondition");
+
+            DateTime theDate = new DateTime(2011,4,15);
+            Tbool result = USC.Tit29.Sec2612.IsEntitledToRegLeaveFrom(e,c).AsOf(theDate);
+            Assert.AreEqual("1/1/0001 12:00:00 AM True ", result.TestOutput);
+        }
         
     }
 }

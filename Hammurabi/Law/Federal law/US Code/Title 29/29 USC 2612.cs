@@ -92,13 +92,13 @@ namespace USC.Tit29
         /// </summary>
         private static Tbool a1C(Person e, Corp c)
         {
-            return new Tbool(false);
+            // Find out who the person needs to provide care for
+            Person fam = Facts.InputPerson(e, "NeedsLeaveToProvideCareFor");            
+            if (fam == null) { return new Tbool(false); }
             
-//            Person fam = (Person)Facts.AllXThat(e,"NeedsLeaveToProvideCareFor").ToPerson;  // assumes only one
-//            
-//            return ReasonForLeave(e,c) == "To care for family member with a health condition" &
-//                   (Fam.AreMarried(e,fam) | Sec2611.IsChildOf(fam,e) | Sec2611.IsParentOf(fam,e)) &
-//                   Sec2611.HasSeriousHealthCondition(fam);
+            return ReasonForLeave(e,c) == "To care for family member with a health condition" &
+                   (Fam.AreMarried(e,fam) | Sec2611.IsChildOf(fam,e) | Sec2611.IsParentOf(fam,e)) &
+                   Sec2611.HasSeriousHealthCondition(fam);
         }
         
         /// <summary>

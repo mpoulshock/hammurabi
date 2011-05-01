@@ -114,7 +114,7 @@ namespace USC.Tit29
         /// </summary>
         public static Tbool HasSeriousHealthCondition(Person p)
         {
-            return Stub();
+            return Facts.InputTbool(p, "HasSeriousHealthCondition");
         }
         
         /// <summary>
@@ -142,9 +142,9 @@ namespace USC.Tit29
         
         private static DateTime DateLeaveBegins(Person p, Corp c)
         {
-            return new DateTime(2012,1,1); // placeholder
+//            return new DateTime(2012,1,1); // placeholder
           
-//            return Facts.InputDate(p,"DateFMLALeaveBegins",c);
+            return Facts.InputDate(p,"DateFMLALeaveBegins",c);
         }
         
         /// <summary>
