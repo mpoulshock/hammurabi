@@ -41,7 +41,7 @@ namespace Hammurabi
             Tbool A = Facts.InputTbool(subj, rel, directObj);
             Tbool B = Facts.InputTbool(directObj, rel, subj);
             
-            return (A & ( B | B.IsUnknown)) | (B & ( A | A.IsUnknown));
+            return Either(A,B);
         }
         
         /// <summary>
@@ -52,9 +52,22 @@ namespace Hammurabi
             Tbool A = Facts.InputTstr(subj, rel, directObj) == val;
             Tbool B = Facts.InputTstr(directObj, rel, subj) == val;
             
-            return (A & ( B | B.IsUnknown)) | (B & ( A | A.IsUnknown));
+            return Either(A,B);
         }
         
+        /// <summary>
+        /// Returns either of the two inputs Tbools.
+        /// </summary>
+        /// <remarks>
+        /// This function is needed because if either A or B is false, the
+        /// funtion should return false.  If, instead, A | B were used to
+        /// analyze input facts, and if A were false and B were uknown, the 
+        /// function would erroneously return unknown.
+        /// </remarks>
+        public static Tbool Either(Tbool A, Tbool B)
+        {
+            return (A & ( B | B.IsUnknown)) | (B & ( A | A.IsUnknown));
+        }
         
         //*********************************************************************
         // Non-symmetrical inputs

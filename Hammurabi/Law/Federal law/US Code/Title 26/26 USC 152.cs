@@ -67,7 +67,7 @@ namespace USC.Tit26
                                  Fam.IsGrandparentOf(tp,d) |
                                  Fam.IsGreatGrandparentOf(tp,d) |
                                  Fam.AreSiblings(tp,d) |
-                                 Fam.AreStepSiblings(tp,d); // or descendant of sib or step-sib
+                                 Fam.AreStepsiblings(tp,d); // or descendant of sib or step-sib
 
             // c3 - age test
             Tbool under19 = (d.Age < 19).AlwaysPer(taxYear);
@@ -99,7 +99,7 @@ namespace USC.Tit26
                                  Fam.IsGrandparentOf(tp,d) |
                                  Fam.IsGreatGrandparentOf(tp,d) |
                                  Fam.AreSiblings(tp,d) |            // B
-                                 Fam.AreStepSiblings(tp,d) |
+                                 Fam.AreStepsiblings(tp,d) |
                                  Fam.IsParentOf(d,tp) |             // C
                                  Fam.IsGrandparentOf(d,tp) |
                                  Fam.IsGreatGrandparentOf(d,tp) |

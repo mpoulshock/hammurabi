@@ -1,20 +1,25 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" ctype="Workspace" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Hammurabi/Core/Facts/Inputs.cs" ctype="Workbench">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Hammurabi/Core/Ontology/Family relationships.cs" ctype="Workbench">
     <Files>
-      <File FileName="Hammurabi/Core/Facts/Inputs.cs" Line="149" Column="26" />
-      <File FileName="Hammurabi/Law/Federal law/US Code/Title 29/29 USC 2611.cs" Line="147" Column="13" />
+      <File FileName="Hammurabi/Law/Federal law/US Code/Title 29/29 USC 2611.cs" Line="114" Column="23" />
+      <File FileName="Hammurabi/Law/Federal law/US Code/Title 29/29 USC 2612.cs" Line="100" Column="29" />
+      <File FileName="Unit tests - Law/Federal law/US Code/Title 29/Test - 29 USC 2612.cs" Line="140" Column="1" />
+      <File FileName="Hammurabi/Core/Ontology/Family relationships.cs" Line="53" Column="14" />
+      <File FileName="Hammurabi/Core/Facts/Inputs.cs" Line="58" Column="9" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
-          <Node name="Hammurabi" expanded="True" selected="True">
+          <Node name="Hammurabi" expanded="True">
             <Node name="References" expanded="True" />
             <Node name="Core" expanded="True">
               <Node name="Core functions" expanded="True" />
               <Node name="Facts" expanded="True" />
               <Node name="Fundamental types" expanded="True" />
-              <Node name="Ontology" expanded="True" />
+              <Node name="Ontology" expanded="True">
+                <Node name="Family relationships.cs" selected="True" />
+              </Node>
             </Node>
             <Node name="Law" expanded="True">
               <Node name="Federal law" expanded="True">
@@ -64,7 +69,7 @@
             <Node name="Hammurabi" expanded="True">
               <Node name="UnitTests" expanded="True">
                 <Node name="CoreFcns" expanded="True">
-                  <Node name="UnknownFacts" expanded="True" />
+                  <Node name="SymmetricalFacts" expanded="True" selected="True" />
                 </Node>
               </Node>
             </Node>
@@ -72,7 +77,7 @@
           <Node name="Unit tests - Law" expanded="True">
             <Node name="Hammurabi" expanded="True">
               <Node name="UnitTests" expanded="True">
-                <Node name="USC_Tit29_Sec2611" expanded="True" selected="True" />
+                <Node name="USC_Tit29_Sec2611" expanded="True" />
                 <Node name="USC_Tit29_Sec2612" expanded="True" />
               </Node>
             </Node>

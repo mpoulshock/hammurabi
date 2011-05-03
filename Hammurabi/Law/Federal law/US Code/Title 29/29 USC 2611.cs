@@ -103,7 +103,7 @@ namespace USC.Tit29
             return Fam.IsBiologicalParentOf(p1,p2) |
                    Fam.IsAdoptiveParentOf(p1,p2) |      // assumed
                    Fam.IsFosterParentOf(p1,p2) |        // assumed
-                   Fam.IsStepParentOf(p1,p2) |          // assumed
+                   Fam.IsStepparentOf(p1,p2) |          // assumed
                    Fam.IsLegalGuardianOf(p1,p2) |       // assumed
                    ActsInLocoParentisOf(p1,p2);
         }
@@ -130,7 +130,7 @@ namespace USC.Tit29
             return (Fam.IsBiologicalParentOf(p2,p1) |
                     Fam.IsAdoptiveParentOf(p2,p1) |
                     Fam.IsFosterParentOf(p2,p1) |
-                    Fam.IsStepParentOf(p2,p1) |
+                    Fam.IsStepparentOf(p2,p1) |
                     Fam.IsLegalGuardianOf(p2,p1) |
                     ActsInLocoParentisOf(p2,p1))
                    &
