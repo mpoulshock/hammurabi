@@ -62,13 +62,15 @@ namespace USC.Tit29
             Tnum HoursInLast12Months = Facts.InputTnum(p,"HoursWorkedInLast12Months",c);        // needs work
             Tbool prongAii = HoursInLast12Months > 1250;  // as defined in 29 USC 207
 
-            Tbool prongB = !Tit5.Sec6301.IsEmployee(p) &
-                           IfThen(Facts.InputTbool(p,"LessThan50EmployeesWithin75MilesOfWorksite",c),
+            Tbool prongB = !Tit5.Sec6301.IsEmployee(p) &&
+                           (!Facts.InputTbool(p,"LessThan50EmployeesWithin75MilesOfWorksite",c) ||
                                   Facts.InputTbool(p,"LessThan50EmployeesAtWorksite",c));
+//                           IfThen(Facts.InputTbool(p,"LessThan50EmployeesWithin75MilesOfWorksite",c),
+//                                  Facts.InputTbool(p,"LessThan50EmployeesAtWorksite",c));
             
             Tbool prongD = StubIf(Econ.PositionAt(p,c) == "Airline flight crew");  // otherwise return true
 
-            return prongAi & prongAii & prongB & prongD;
+            return prongAi && prongAii && prongB && prongD;
         }
         
         /// <summary>
@@ -91,7 +93,7 @@ namespace USC.Tit29
             Tnum weeks = (c.NumberOfEmployees > 50).AlwaysPer(calWeek).CountPer(TheTime.TheYear);
             Tbool meetsThreshold = (weeks > 20).CountPastNIntervals(TheTime.TheYear, 2) >= 1;
 
-            return meetsThreshold  | c.IsPublicAgency;
+            return meetsThreshold  || c.IsPublicAgency;
         }
         
         /// <summary>

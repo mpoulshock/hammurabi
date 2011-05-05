@@ -65,9 +65,9 @@ namespace USC.Tit29
         /// </summary>
         public static Tbool IsEntitledToRegLeaveFrom(Person e, Corp c)
         {
-            return Sec2611.IsCoveredEmployer(c) &
-                   Sec2611.IsEligibleEmployee(e,c) &
-                   (a1A(e,c) | a1B(e,c) | a1C(e,c) | a1D(e,c) | a1E(e,c));
+            return Sec2611.IsCoveredEmployer(c) &&
+                   Sec2611.IsEligibleEmployee(e,c) &&
+                   (a1A(e,c) || a1B(e,c) || a1C(e,c) || a1D(e,c) || a1E(e,c));
         }
 
         /// <summary>
@@ -84,7 +84,7 @@ namespace USC.Tit29
         private static Tbool a1B(Person e, Corp c)
         {
             Tstr reason = ReasonForLeave(e,c);
-            return reason == "To adopt a child" | reason == "To become a foster parent";
+            return reason == "To adopt a child" || reason == "To become a foster parent";
         }
         
         /// <summary>
@@ -96,8 +96,8 @@ namespace USC.Tit29
             Person fam = Facts.InputPerson(e, "NeedsLeaveToProvideCareFor");            
             if (fam == null) { return new Tbool(false); }
             
-            return ReasonForLeave(e,c) == "To care for family member with a health condition" &
-                   (Fam.AreMarried(e,fam) | Sec2611.IsChildOf(fam,e) | Sec2611.IsParentOf(fam,e)) &
+            return ReasonForLeave(e,c) == "To care for family member with a health condition" &&
+                   (Fam.AreMarried(e,fam) || Sec2611.IsChildOf(fam,e) || Sec2611.IsParentOf(fam,e)) &&
                    Sec2611.HasSeriousHealthCondition(fam);
         }
         

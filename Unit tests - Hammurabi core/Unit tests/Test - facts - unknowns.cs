@@ -152,7 +152,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Facts.Unknowns.Clear();
             Facts.Assert(p1, "B", p2, false);
             Tbool theRule = A() && B() && C();
-            Assert.AreEqual("", Facts.ShowUnknownTest());   // currently returns "A" - not "looking ahead" to see the F        
+            Assert.AreEqual("", Facts.ShowUnknownTest());   // currently returns "A" - not "looking ahead" to see the False
         }
         
         [Test]
@@ -163,7 +163,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Facts.Unknowns.Clear();
             Facts.Assert(p1, "C", p2, false);
             Tbool theRule = A() && B() && C();
-            Assert.AreEqual("", Facts.ShowUnknownTest());   // currently returns "A B" - not "looking ahead" to see the F          
+            Assert.AreEqual("", Facts.ShowUnknownTest());   // currently returns "A B" - not "looking ahead" to see the False
         }
         
         // IfThen()
@@ -231,7 +231,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Facts.Unknowns.Clear();
             Facts.Assert(p1, "B", p2);
             Tbool theRule = A() && !B();
-            Assert.AreEqual("", Facts.ShowUnknownTest());    // currently returns "A" - not AND short-circuiting      
+            Assert.AreEqual("", Facts.ShowUnknownTest());    // currently returns "A" - not "looking ahead" to see the False
         }
         
         // Nested And() and Or()
