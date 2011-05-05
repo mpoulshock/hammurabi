@@ -58,6 +58,7 @@
     <Compile Include="Unit tests\Test - math - basic.cs" />
     <Compile Include="Unit tests\Test - facts - unknowns.cs" />
     <Compile Include="Unit tests\Test - facts - symmetrical.cs" />
+    <Compile Include="Unit tests\Test - short-circuit evaluation.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Hammurabi\Hammurabi.csproj">

@@ -324,19 +324,43 @@ namespace Hammurabi
 		/// <summary>
 		/// Overloaded boolean operator: True.
 		/// </summary>
-		public static bool operator true (Tbool tb1)
-		{
-			return false;
-		}
-		
+		public static bool operator true (Tbool tb)
+        {
+            return tb.IsTrue;
+        }
+        
+        /// <summary>
+        /// Returns true only if the Tbool is eternally true; otherwise false. 
+        /// </summary>
+        public bool IsTrue
+        {
+            get
+            {
+                return this.IntervalValues.Count == 1 && 
+                       Convert.ToBoolean(this.IntervalValues.Values[0]) == true;
+            }
+        }
+        
 		/// <summary>
 		/// Overloaded boolean operator: False.
 		/// </summary>
-		public static bool operator false (Tbool tb1)
-		{
-			return true;
-		}
+        public static bool operator false (Tbool tb)
+        {
+            return tb.IsFalse;
+        }
 		
+        /// <summary>
+        /// Returns true only if the Tbool is eternally false; otherwise true. 
+        /// </summary>
+        public bool IsFalse
+        {
+            get
+            {
+                return this.IntervalValues.Count == 1 && 
+                       Convert.ToBoolean(this.IntervalValues.Values[0]) == false;
+            }
+        }
+        
 		/// <summary>
 		/// Overloaded boolean operator: Equal.
 		/// </summary>

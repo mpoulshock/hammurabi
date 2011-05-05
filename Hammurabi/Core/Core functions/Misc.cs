@@ -36,7 +36,7 @@ namespace Hammurabi
         /// </summary>
         public static Tbool IfThen(Tbool tb1, Tbool tb2)
         {       
-            return !tb1 |tb2;
+            return !tb1 || tb2;
         }
         
 		// ********************************************************************

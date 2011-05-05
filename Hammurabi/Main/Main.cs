@@ -32,14 +32,16 @@ namespace Hammurabi
 			TimeSpan duration = new TimeSpan();
 			DateTime startTime = DateTime.Now;
 
+            
             Demo();          
+            
             
 			DateTime stopTime = DateTime.Now;
 			duration = stopTime - startTime;
 			Console.WriteLine("Execution time: " + duration);
 		}
-
-				
+    
+        
 		/// <summary>
 		/// Stupid, legally incomplete demo to illustrate the basic concept
 		/// </summary>

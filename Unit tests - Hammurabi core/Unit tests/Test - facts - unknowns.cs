@@ -140,7 +140,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Facts.Clear();
             Facts.Unknowns.Clear();
             Facts.Assert(p1, "A", p2, false);
-            Tbool theRule = A() & B() & C();
+            Tbool theRule = A() && B() && C();
             Assert.AreEqual("", Facts.ShowUnknownTest());   // currently returns "B C" - not AND short-circuiting        
         }
         
@@ -151,8 +151,8 @@ namespace Hammurabi.UnitTests.CoreFcns
             Facts.Clear();
             Facts.Unknowns.Clear();
             Facts.Assert(p1, "B", p2, false);
-            Tbool theRule = A() & B() & C();
-            Assert.AreEqual("", Facts.ShowUnknownTest());   // currently returns "A C" - not AND short-circuiting        
+            Tbool theRule = A() && B() && C();
+            Assert.AreEqual("", Facts.ShowUnknownTest());   // currently returns "A" - not "looking ahead" to see the F        
         }
         
         [Test]
@@ -162,8 +162,8 @@ namespace Hammurabi.UnitTests.CoreFcns
             Facts.Clear();
             Facts.Unknowns.Clear();
             Facts.Assert(p1, "C", p2, false);
-            Tbool theRule = A() & B() & C();
-            Assert.AreEqual("", Facts.ShowUnknownTest());   // currently returns "A B" - not AND short-circuiting        
+            Tbool theRule = A() && B() && C();
+            Assert.AreEqual("", Facts.ShowUnknownTest());   // currently returns "A B" - not "looking ahead" to see the F          
         }
         
         // IfThen()
@@ -230,7 +230,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Facts.Clear();
             Facts.Unknowns.Clear();
             Facts.Assert(p1, "B", p2);
-            Tbool theRule = A() & !B();
+            Tbool theRule = A() && !B();
             Assert.AreEqual("", Facts.ShowUnknownTest());    // currently returns "A" - not AND short-circuiting      
         }
         
