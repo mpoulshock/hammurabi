@@ -102,11 +102,11 @@ namespace USC.Tit29
         /// </summary>
         public static Tbool IsParentOf(Person p1, Person p2)
         {
-            return Fam.IsBiologicalParentOf(p1,p2) |
-                   Fam.IsAdoptiveParentOf(p1,p2) |      // assumed
-                   Fam.IsFosterParentOf(p1,p2) |        // assumed
-                   Fam.IsStepparentOf(p1,p2) |          // assumed
-                   Fam.IsLegalGuardianOf(p1,p2) |       // assumed
+            return Fam.IsBiologicalParentOf(p1,p2) ||
+                   Fam.IsAdoptiveParentOf(p1,p2) ||      // assumed
+                   Fam.IsFosterParentOf(p1,p2) ||        // assumed
+                   Fam.IsStepparentOf(p1,p2) ||          // assumed
+                   Fam.IsLegalGuardianOf(p1,p2) ||       // assumed
                    ActsInLocoParentisOf(p1,p2);
         }
         
@@ -129,23 +129,24 @@ namespace USC.Tit29
         /// </remarks>
         public static Tbool IsChildOf(Person p1, Person p2)
         {
-            return (Fam.IsBiologicalParentOf(p2,p1) |
-                    Fam.IsAdoptiveParentOf(p2,p1) |
-                    Fam.IsFosterParentOf(p2,p1) |
-                    Fam.IsStepparentOf(p2,p1) |
-                    Fam.IsLegalGuardianOf(p2,p1) |
+            return (Fam.IsBiologicalParentOf(p2,p1) ||
+                    Fam.IsAdoptiveParentOf(p2,p1) ||
+                    Fam.IsFosterParentOf(p2,p1) ||
+                    Fam.IsStepparentOf(p2,p1) ||
+                    Fam.IsLegalGuardianOf(p2,p1) ||
                     ActsInLocoParentisOf(p2,p1))
-                   &
-                   (p1.Age < 18 | 
-                     (CFR.Tit29.Part1630.IsDisabled(p1) &   // see 29 CFR 825.122 
+                   &&
+                   (p1.Age < 18 ||
+                     (CFR.Tit29.Part1630.IsDisabled(p1) &&   // see 29 CFR 825.122 
                       p1.IsIncapableOfSelfCare)
                    );
         }
         
+        /// <summary>
+        /// Indicates the date the person started or intends to start FMLA leave.
+        /// </summary>
         private static DateTime DateLeaveBegins(Person p, Corp c)
         {
-//            return new DateTime(2012,1,1); // placeholder
-          
             return Facts.InputDate(p,"DateFMLALeaveBegins",c);
         }
         
@@ -155,7 +156,7 @@ namespace USC.Tit29
         private static Tbool ActsInLocoParentisOf(Person p1, Person p2)
         {
             // See 29 CFR 825.122
-            return Fam.HasDayToDayResponsibilityFor(p1,p2) &
+            return Fam.HasDayToDayResponsibilityFor(p1,p2) &&
                    Econ.ProvidesSupportFor(p1,p2); 
         }          
                 

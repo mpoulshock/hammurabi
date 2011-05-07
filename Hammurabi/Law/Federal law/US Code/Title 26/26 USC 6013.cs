@@ -48,10 +48,8 @@ namespace USC.Tit26
 		/// </summary>
 		public static Tbool AreMFJ(Person p1, Person p2)
 		{
-			return Facts.InputTbool(p1, "FilesJointFedTaxReturnWith", p2) |
-				   Facts.InputTbool(p2, "FilesJointFedTaxReturnWith", p1) |
-				   Facts.InputTstr(p1, "FedTaxFilingStatus", p2) == "Married filing jointly" |
-				   Facts.InputTstr(p2, "FedTaxFilingStatus", p1) == "Married filing jointly";	
+			return Facts.Sym(p1, "FilesJointFedTaxReturnWith", p2) ||
+				   Facts.Sym(p1, "FedTaxFilingStatus", p2, "Married filing jointly");	
 		}
 
         /// <summary>

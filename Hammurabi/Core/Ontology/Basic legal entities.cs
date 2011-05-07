@@ -53,8 +53,6 @@ namespace Hammurabi
 	{
 		// Characteristics - non-temporal
 		public string Name;
-		public DateTime DateOfBirth;
-		public DateTime? DateOfDeath;
 		
 		/// <summary>
 		/// Constructs a person with a given name.
@@ -69,7 +67,7 @@ namespace Hammurabi
 		/// </summary>
 		public Tstr USImmStatus
 		{
-			get { return Facts.InputTstr(this,"USImmigrationStatus"); }
+			get { return Facts.InputTstr(this, "USImmigrationStatus"); }
 		}
         public Tbool IsUSResident
         {
@@ -81,7 +79,7 @@ namespace Hammurabi
         }
 		public Tstr CountryOfResidence
 		{
-			get { return Facts.InputTstr(this,"CountryOfResidence"); }
+			get { return Facts.InputTstr(this, "CountryOfResidence"); }
 		}
         public Tbool IsUSCitizen
         {
@@ -89,7 +87,7 @@ namespace Hammurabi
             { 
                 // Too many options here?
                 return this.CountryOfCitizenship == "United States" |
-                       Facts.InputTbool(this,"IsUSCitizen") |
+                       Facts.InputTbool(this, "IsUSCitizen") |
                        this.USImmStatus == "Citizen";
             }
         }
@@ -99,7 +97,7 @@ namespace Hammurabi
         }
 		public Tstr CountryOfCitizenship
 		{
-			get { return Facts.InputTstr(this,"CountryOfCitizenship"); }
+			get { return Facts.InputTstr(this, "CountryOfCitizenship"); }
 		}
         
         /// <summary>
@@ -107,20 +105,28 @@ namespace Hammurabi
         /// </summary>
 		public Tstr Gender
 		{
-			get { return Facts.InputTstr(this,"Gender"); }
+			get { return Facts.InputTstr(this, "Gender"); }
 		}
 		public Tnum Age 	// in years
 		{
 			get { return Time.IntervalsSince(DateOfBirth, DateOfBirth.AddYears(110), Time.IntervalType.Year); }
 		}
+        public DateTime DateOfBirth
+        {
+            get { return Facts.InputDate(this, "DateOfBirth"); }
+        }
+        public DateTime DateOfDeath
+        {
+            get { return Facts.InputDate(this, "DateOfDeath"); }
+        }
 		public Tbool IsDisabled
         {
             // How should this relate to 29 CFR Part 1630?
-            get { return Facts.InputTbool(this,"IsDisabled"); }
+            get { return Facts.InputTbool(this, "IsDisabled"); }
         }
         public Tbool IsIncapableOfSelfCare
         {
-            get { return Facts.InputTbool(this,"IsIncapableOfSelfCare"); }
+            get { return Facts.InputTbool(this, "IsIncapableOfSelfCare"); }
         }
         
 //		/// <summary>
@@ -173,7 +179,7 @@ namespace Hammurabi
         
         public Tnum NumberOfEmployees
         {
-            get { return Facts.InputTnum(this,"NumberOfEmployees"); }
+            get { return Facts.InputTnum(this, "NumberOfEmployees"); }
         }
         
         public Tbool IsPublicAgency

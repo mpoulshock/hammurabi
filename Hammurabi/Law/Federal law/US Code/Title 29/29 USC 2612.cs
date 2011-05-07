@@ -92,13 +92,11 @@ namespace USC.Tit29
         /// </summary>
         private static Tbool a1C(Person e, Corp c)
         {
-            // Find out who the person needs to provide care for
-            Person fam = Facts.InputPerson(e, "NeedsLeaveToProvideCareFor");            
-            if (fam == null) { return new Tbool(false); }
-            
             return ReasonForLeave(e,c) == "To care for family member with a health condition" &&
-                   (Fam.AreMarried(e,fam) || Sec2611.IsChildOf(fam,e) || Sec2611.IsParentOf(fam,e)) &&
-                   Sec2611.HasSeriousHealthCondition(fam);
+                   (Fam.AreMarried(e, SickFam(e)) || 
+                    Sec2611.IsChildOf(SickFam(e), e) || 
+                    Sec2611.IsParentOf(SickFam(e), e)) &&
+                   Sec2611.HasSeriousHealthCondition(SickFam(e));
         }
         
         /// <summary>
@@ -106,7 +104,7 @@ namespace USC.Tit29
         /// </summary>
         private static Tbool a1D(Person e, Corp c)
         {
-            return ReasonForLeave(e,c) == "Employee cannot work due to health condition" &
+            return ReasonForLeave(e,c) == "Employee cannot work due to health condition" &&
                    Sec2611.HasSeriousHealthCondition(e);
         }
         
@@ -126,10 +124,10 @@ namespace USC.Tit29
         {
             Person fam = (Person)Facts.AllXThat(e,"NeedsLeaveToProvideCareFor").ToPerson;  // assumes only one
             
-            return ReasonForLeave(e,c) == "To care for a family member in the Armed Forces" &
-                   Sec2611.IsCoveredEmployer(c) &
-                   Sec2611.IsEligibleEmployee(e,c) &
-                   (Fam.AreMarried(e,fam) | Sec2611.IsChildOf(e,fam) | Sec2611.IsParentOf(e,fam) | Fam.IsNextOfKinOf(e,fam));
+            return ReasonForLeave(e,c) == "To care for a family member in the Armed Forces" &&
+                   Sec2611.IsCoveredEmployer(c) &&
+                   Sec2611.IsEligibleEmployee(e,c) &&
+                   (Fam.AreMarried(e,fam) || Sec2611.IsChildOf(e,fam) || Sec2611.IsParentOf(e,fam) || Fam.IsNextOfKinOf(e,fam));
         }
         
         /// <summary>
@@ -138,6 +136,14 @@ namespace USC.Tit29
         public static Tstr ReasonForLeave(Person e, Corp c)
         {
             return Facts.InputTstr(e,"ReasonForRequestingFMLALeaveFrom",c);
+        }
+        
+        /// <summary>
+        /// Returns the person who the employee needs to take care of.
+        /// </summary>
+        private static Person SickFam(Person e)
+        {
+            return Facts.InputPerson(e, "NeedsLeaveToProvideCareFor");
         }
         
     }

@@ -138,7 +138,7 @@ namespace Hammurabi.UnitTests
             Facts.Assert(e, "ReasonForRequestingFMLALeaveFrom",c, "To care for family member with a health condition");          
 
             Tbool result = USC.Tit29.Sec2612.IsEntitledToRegLeaveFrom(e,c);
-            Assert.AreEqual("1/1/0001 12:00:00 AM False ", result.TestOutput);
+            Assert.AreEqual("Unknown", result.TestOutput);
         }
         
         [Test]

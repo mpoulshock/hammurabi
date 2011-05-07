@@ -330,14 +330,27 @@ namespace Hammurabi
         }
         
         /// <summary>
-        /// Returns true only if the Tbool is eternally true; otherwise false. 
+        /// Returns true only if the Tbool is true during the window of concern;
+        /// otherwise false. 
         /// </summary>
         public bool IsTrue
         {
             get
             {
-                return this.IntervalValues.Count == 1 && 
-                       Convert.ToBoolean(this.IntervalValues.Values[0]) == true;
+                if (Facts.WindowOfConcernIsDefault)
+                {
+                    return this.IntervalValues.Count == 1 && 
+                           Convert.ToBoolean(this.IntervalValues.Values[0]) == true; 
+                }
+                if (Facts.WindowOfConcernIsPoint)
+                {
+                    return Convert.ToBoolean(this.AsOf(Facts.WindowOfConcernStart));
+                }
+                
+                return Convert.ToBoolean(this.IsAlways(true, 
+                                                       Facts.WindowOfConcernStart, 
+                                                       Facts.WindowOfConcernEnd
+                                                       ).ToBool);
             }
         }
         
@@ -350,14 +363,27 @@ namespace Hammurabi
         }
 		
         /// <summary>
-        /// Returns true only if the Tbool is eternally false; otherwise true. 
+        /// Returns true only if the Tbool is false during the window of concern;
+        /// otherwise true. 
         /// </summary>
         public bool IsFalse
         {
             get
             {
-                return this.IntervalValues.Count == 1 && 
-                       Convert.ToBoolean(this.IntervalValues.Values[0]) == false;
+                if (Facts.WindowOfConcernIsDefault)
+                {
+                    return this.IntervalValues.Count == 1 && 
+                           Convert.ToBoolean(this.IntervalValues.Values[0]) == false; 
+                }
+                if (Facts.WindowOfConcernIsPoint)
+                {
+                    return Convert.ToBoolean(this.AsOf(Facts.WindowOfConcernStart));
+                }
+                
+                return Convert.ToBoolean(this.IsAlways(false, 
+                                                       Facts.WindowOfConcernStart, 
+                                                       Facts.WindowOfConcernEnd
+                                                       ).ToBool);
             }
         }
         

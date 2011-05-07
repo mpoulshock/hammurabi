@@ -191,7 +191,7 @@ namespace Hammurabi
 		
 		private static Tbool GreaterThanOrEqualTo(Tnum tn1, Tnum tn2)
 		{
-			return GreaterThan(tn1,tn2) | EqualTo(tn1,tn2);
+			return GreaterThan(tn1,tn2) || EqualTo(tn1,tn2);
 		}
 
 		/// <summary>
@@ -265,7 +265,7 @@ namespace Hammurabi
 		
 		private static Tbool LessThanOrEqualTo(Tnum tn1, Tnum tn2)
 		{
-			return LessThan(tn1,tn2) | EqualTo(tn1,tn2);
+			return LessThan(tn1,tn2) || EqualTo(tn1,tn2);
 		}
 		
 	}

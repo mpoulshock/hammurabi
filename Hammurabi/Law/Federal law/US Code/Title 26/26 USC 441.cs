@@ -85,6 +85,8 @@ namespace USC.Tit26
 		/// </summary>
 		private static Tnum MonthTaxYearBegins(Person p)
 		{
+            // TODO: Use Switch() here? (consider short-circuiting)
+            
 			Tnum month = Facts.InputTnum(p, "MonthTaxYearBegins");
 			
 			// Default the return value to January

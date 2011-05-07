@@ -83,6 +83,7 @@
     <Compile Include="Law\Federal law\Code of Federal Regulations\Title 29\29 CFR 1630.cs" />
     <Compile Include="Core\Facts\Validate.cs" />
     <Compile Include="Core\Facts\Unknown facts.cs" />
+    <Compile Include="Core\Facts\Window of concern.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

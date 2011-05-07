@@ -35,13 +35,20 @@ namespace Hammurabi
         /// <remarks>
         /// See unit tests for the truth table, which ensures that the existence
         /// of one false causes a false to be returned.
+        /// Note that the Sym() functions are also designed to add facts to the
+        /// Facts.Unknowns list in the proper order and with proper short-
+        /// circuiting.
         /// </remarks>
         public static Tbool Sym(LegalEntity subj, string rel, LegalEntity directObj)
         {
             Tbool A = Facts.InputTbool(subj, rel, directObj);
-            Tbool B = Facts.InputTbool(directObj, rel, subj);
             
-            return Either(A,B);
+            if (!A.IsUnknown)
+            {
+                return A;
+            }
+            
+            return Facts.InputTbool(directObj, rel, subj);
         }
         
         /// <summary>
@@ -50,9 +57,30 @@ namespace Hammurabi
         public static Tbool Sym(LegalEntity subj, string rel, LegalEntity directObj, string val)
         {
             Tbool A = Facts.InputTstr(subj, rel, directObj) == val;
-            Tbool B = Facts.InputTstr(directObj, rel, subj) == val;
             
-            return Either(A,B);
+            if (!A.IsUnknown)
+            {
+                return A;
+            }
+            
+            return Facts.InputTstr(directObj, rel, subj) == val;
+        }
+        
+        /// <summary>
+        /// Returns a symmetrical input string fact where the symmetrical relation
+        /// has a different name in each direction (such as grandchild-grandparent).
+        /// </summary>
+        public static Tbool Sym(LegalEntity subj, string rel, LegalEntity obj, string text, string reverseText)
+        {
+            bool fwd = Facts.HasBeenAsserted(subj, rel, obj);
+            bool bwd = Facts.HasBeenAsserted(obj, rel, subj);
+            
+            if (fwd) { return Facts.InputTstr(subj, rel, obj) == text; }
+            
+            else if (bwd) { return Facts.InputTstr(obj, rel, subj) == reverseText; }
+            
+            return Facts.Either(Facts.InputTstr(subj, rel, obj) == text, 
+                                Facts.InputTstr(obj, rel, subj) == reverseText);
         }
         
         /// <summary>
@@ -60,13 +88,20 @@ namespace Hammurabi
         /// </summary>
         /// <remarks>
         /// This function is needed because if either A or B is false, the
-        /// funtion should return false.  If, instead, A | B were used to
-        /// analyze input facts, and if A were false and B were uknown, the 
+        /// funtion should return false.  If, instead, A || B were used to
+        /// analyze input facts, and if A were false and B were unknown, the 
         /// function would erroneously return unknown.
         /// </remarks>
         public static Tbool Either(Tbool A, Tbool B)
         {
-            return (A & ( B | B.IsUnknown)) | (B & ( A | A.IsUnknown));
+            if (!A.IsUnknown)
+            {
+                return A;
+            }
+            
+            return B;
+            
+//            return (A && ( B | B.IsUnknown)) || (B && ( A | A.IsUnknown));
         }
         
         //*********************************************************************
@@ -151,7 +186,7 @@ namespace Hammurabi
 		//*********************************************************************
 		
 		/// <summary>
-		/// Query a temporal relationship (fact) of two legal entities
+		/// Query a temporal relationship (fact) of two legal entities.
 		/// </summary>
 		private static T QueryTvar<T>(LegalEntity e1, string rel, LegalEntity e2) where T : Tvar
 		{
@@ -175,7 +210,7 @@ namespace Hammurabi
 		}
 		
 		/// <summary>
-		/// Query a temporal property (fact) of a single legal entity
+		/// Query a temporal property (fact) of a single legal entity.
 		/// </summary>
 		private static T QueryTvar<T>(LegalEntity e1, string rel) where T : Tvar
 		{
@@ -240,8 +275,7 @@ namespace Hammurabi
 		}
 		
         /// <summary>
-        /// Query that returns a person
-        /// EXPERIMENTAL
+        /// Query that returns a person.
         /// </summary> 
         private static Person QueryPerson(LegalEntity e1, string rel)
         {
@@ -258,7 +292,7 @@ namespace Hammurabi
                 AddUnknown(e1,rel);
             }
             
-            return null;
+            return new Person("");
         }
 		
 		

@@ -23,11 +23,15 @@ using NUnit.Framework;
 
 namespace Hammurabi.UnitTests.CoreFcns
 {
+    #pragma warning disable 219
+    
     [TestFixture]
     public class SymmetricalFacts : H
     {
         private static Person p1 = new Person("P1");
         private static Person p2 = new Person("P2");
+        
+        // .Sym combos
         
         [Test]
         public void SymTT ()
@@ -46,7 +50,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Facts.Assert(p1, "IsMarriedTo", p2);
             Facts.Assert(p2, "IsMarriedTo", p1, false);                         // contradictory assertion
             Tbool result = Facts.Sym(p1, "IsMarriedTo", p2);
-            Assert.AreEqual("1/1/0001 12:00:00 AM ??? ", result.TestOutput);    // what is desired here? 
+            Assert.AreEqual("1/1/0001 12:00:00 AM True ", result.TestOutput);    // what is desired here? (or forbid contradictions)
         }
         
         [Test]
@@ -85,5 +89,92 @@ namespace Hammurabi.UnitTests.CoreFcns
             Assert.AreEqual("Unknown", result.TestOutput);       
         }
         
+        // .Either - correct result?
+        
+        [Test]
+        public void Either_Result_1 ()
+        {
+            Facts.Clear();
+            Facts.Assert(p1, "FamilyRelationship", p2, "Biological parent");
+            Tbool result = Fam.IsBiologicalParentOf(p1, p2);
+            Assert.AreEqual("1/1/0001 12:00:00 AM True ", result.TestOutput);       
+        }
+        
+        [Test]
+        public void Either_Result_2 ()
+        {
+            Facts.Clear();
+            Facts.Assert(p2, "FamilyRelationship", p1, "Biological child");
+            Tbool result = Fam.IsBiologicalParentOf(p1, p2);
+            Assert.AreEqual("1/1/0001 12:00:00 AM True ", result.TestOutput);       
+        }
+        
+        [Test]
+        public void Either_Result_3 ()
+        {
+            Facts.Clear();
+            Tbool result = Fam.IsBiologicalParentOf(p1, p2);
+            Assert.AreEqual("Unknown", result.TestOutput);       
+        }
+        
+        // .Either - correct identification of unknown facts?
+        
+        [Test]
+        public void Either_Unknowns_1 ()
+        {
+            // After first fact is established, the second one should not be added
+            // to the Facts.Unknowns list.
+            Facts.Reset();
+            Facts.Assert(p1, "FamilyRelationship", p2, "Biological parent");
+            Facts.GetUnknowns = true;
+            Tbool result = Fam.IsBiologicalParentOf(p1, p2);
+            Facts.GetUnknowns = false;
+            bool f = Facts.IsUnknown(p2, "FamilyRelationship", p1);
+            Assert.AreEqual(false, f);       
+        }
+        
+        [Test]
+        public void Either_Unknowns_2 ()
+        {
+            // Same as above, but input fact is false
+            Facts.Reset();
+            Facts.Assert(p1, "FamilyRelationship", p2, "Grandchild");
+            Facts.GetUnknowns = true;
+            Tbool result = Fam.IsBiologicalParentOf(p1, p2);
+            Facts.GetUnknowns = false;
+            bool f = Facts.IsUnknown(p2, "FamilyRelationship", p1);
+            Assert.AreEqual(false, f);       
+        }
+        
+        [Test]
+        public void Either_Unknowns_3 ()
+        {
+            // After reverse fact is established, the fwd-fact should not be added
+            // to the Facts.Unknowns list.
+            Facts.Reset();
+            Facts.Assert(p2, "FamilyRelationship", p1, "Biological parent");
+            Facts.GetUnknowns = true;
+            Tbool result = Fam.IsParentOf(p1, p2);
+            Facts.GetUnknowns = false;
+            bool f = Facts.IsUnknown(p1, "FamilyRelationship", p2);
+            Assert.AreEqual(false, f);       
+        }
+        
+        [Test]
+        public void Either_Unknowns_4 ()
+        {
+            // After reverse fact is established, the fwd-fact should not be added
+            // to the Facts.Unknowns list.
+            Facts.Reset();
+            Facts.Assert(p2, "FamilyRelationship", p1, "Biological parent");
+            Facts.GetUnknowns = true;
+            Tbool result = Fam.IsBiologicalParentOf(p1, p2);
+            Facts.GetUnknowns = false;
+            bool f = Facts.IsUnknown(p1, "FamilyRelationship", p2);
+            Assert.AreEqual(false, f);       
+        }
+        
     }
+    
+    #pragma warning restore 219
 }

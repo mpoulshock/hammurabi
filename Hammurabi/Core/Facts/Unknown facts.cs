@@ -41,10 +41,11 @@ namespace Hammurabi
         /// Turns on the mode in which unknowns are collected into the
         /// Facts.Unknowns list.
         /// </summary>
+        //  TODO: Delete?
         public static void UnknownModeOn()
         {
+            Facts.Reset();
             Facts.GetUnknowns = true;
-            Facts.Unknowns.Clear();
         }
         
         /// <summary>
@@ -74,6 +75,9 @@ namespace Hammurabi
         /// <summary>
         /// Indicates whether Facts.Unknowns contains a given factlet.
         /// </summary>
+        /// <remarks>
+        /// Note that this is distinct from whether a fact HasBeenAsserted.
+        /// </remarks>
         public static bool IsUnknown(LegalEntity e1, string rel, LegalEntity e2)
         {
             foreach (Factlet t in Unknowns)

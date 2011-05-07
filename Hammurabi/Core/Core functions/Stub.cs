@@ -82,7 +82,7 @@ namespace Hammurabi
         /// </remarks>
         public static Tbool TestOrStubIf(Tbool testCondition, Tbool stubCondition)
         {
-            return testCondition | (stubCondition & Stub());
+            return testCondition || (stubCondition & Stub());
         }
         
     }

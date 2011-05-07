@@ -81,6 +81,26 @@ namespace Hammurabi.UnitTests.CoreFcns
             return Facts.InputTnum(p1, "Y", p2);
         } 
         
+        // Facts.HasBeenAsserted
+        
+        [Test]
+        public void HasBeenAsserted1 ()
+        {
+            Facts.Clear();
+            Facts.Assert(p2, "FamilyRelationship", p1, "Biological child");
+            bool result = Facts.HasBeenAsserted(p2, "FamilyRelationship", p1);
+            Assert.AreEqual(true, result);         
+        }
+        
+        [Test]
+        public void HasBeenAsserted2 ()
+        {
+            Facts.Clear();
+            Facts.Assert(p2, "FamilyRelationship", p1, "Biological child");
+            bool result = Facts.HasBeenAsserted(p1, "FamilyRelationship", p2);
+            Assert.AreEqual(false, result);         
+        }
+        
         // And()
         
         [Test]
@@ -103,9 +123,8 @@ namespace Hammurabi.UnitTests.CoreFcns
         [Test]
         public void FactOrder1b ()
         {
+            Facts.Reset();
             Facts.GetUnknowns = true;
-            Facts.Clear();
-            Facts.Unknowns.Clear();
             Facts.Assert(p1, "A", p2);
             Tbool theRule = A() & B() & C();
             Assert.AreEqual("B C", Facts.ShowUnknownTest());           
@@ -114,9 +133,8 @@ namespace Hammurabi.UnitTests.CoreFcns
         [Test]
         public void FactOrder1c ()
         {
+            Facts.Reset();
             Facts.GetUnknowns = true;
-            Facts.Clear();
-            Facts.Unknowns.Clear();
             Facts.Assert(p1, "B", p2);
             Tbool theRule = A() & B() & C();
             Assert.AreEqual("A C", Facts.ShowUnknownTest());           
@@ -125,9 +143,8 @@ namespace Hammurabi.UnitTests.CoreFcns
         [Test]
         public void FactOrder1d ()
         {
+            Facts.Reset();
             Facts.GetUnknowns = true;
-            Facts.Clear();
-            Facts.Unknowns.Clear();
             Facts.Assert(p1, "C", p2);
             Tbool theRule = A() & B() & C();
             Assert.AreEqual("A B", Facts.ShowUnknownTest());           
@@ -136,9 +153,8 @@ namespace Hammurabi.UnitTests.CoreFcns
         [Test]
         public void FactOrder1e ()
         {
+            Facts.Reset();
             Facts.GetUnknowns = true;
-            Facts.Clear();
-            Facts.Unknowns.Clear();
             Facts.Assert(p1, "A", p2, false);
             Tbool theRule = A() && B() && C();
             Assert.AreEqual("", Facts.ShowUnknownTest());   // currently returns "B C" - not AND short-circuiting        
@@ -147,9 +163,8 @@ namespace Hammurabi.UnitTests.CoreFcns
         [Test]
         public void FactOrder1f ()
         {
+            Facts.Reset();
             Facts.GetUnknowns = true;
-            Facts.Clear();
-            Facts.Unknowns.Clear();
             Facts.Assert(p1, "B", p2, false);
             Tbool theRule = A() && B() && C();
             Assert.AreEqual("", Facts.ShowUnknownTest());   // currently returns "A" - not "looking ahead" to see the False
@@ -158,9 +173,8 @@ namespace Hammurabi.UnitTests.CoreFcns
         [Test]
         public void FactOrder1g ()
         {
+            Facts.Reset();
             Facts.GetUnknowns = true;
-            Facts.Clear();
-            Facts.Unknowns.Clear();
             Facts.Assert(p1, "C", p2, false);
             Tbool theRule = A() && B() && C();
             Assert.AreEqual("", Facts.ShowUnknownTest());   // currently returns "A B" - not "looking ahead" to see the False
@@ -171,9 +185,8 @@ namespace Hammurabi.UnitTests.CoreFcns
         [Test]
         public void FactOrder2a ()
         {
+            Facts.Reset();
             Facts.GetUnknowns = true;
-            Facts.Clear();
-            Facts.Unknowns.Clear();
             Tbool theRule = IfThen(A(), B());
             Assert.AreEqual("A B", Facts.ShowUnknownTest());         
         }
@@ -181,9 +194,8 @@ namespace Hammurabi.UnitTests.CoreFcns
         [Test]
         public void FactOrder2b ()
         {
+            Facts.Reset();
             Facts.GetUnknowns = true;
-            Facts.Clear();
-            Facts.Unknowns.Clear();
             Facts.Assert(p1, "A", p2, false);
             Tbool theRule = IfThen(A(), B());
             Assert.AreEqual("", Facts.ShowUnknownTest());    // currently returns "B" - not OR short-circuiting
@@ -192,9 +204,8 @@ namespace Hammurabi.UnitTests.CoreFcns
         [Test]
         public void FactOrder2c ()
         {
+            Facts.Reset();
             Facts.GetUnknowns = true;
-            Facts.Clear();
-            Facts.Unknowns.Clear();
             Facts.Assert(p1, "B", p2, false);
             Tbool theRule = IfThen(A(), B());
             Assert.AreEqual("", Facts.ShowUnknownTest());    // currently returns "A" - not OR short-circuiting
@@ -205,9 +216,8 @@ namespace Hammurabi.UnitTests.CoreFcns
         [Test]
         public void FactOrder3a ()
         {
+            Facts.Reset();
             Facts.GetUnknowns = true;
-            Facts.Clear();
-            Facts.Unknowns.Clear();
             Tbool theRule = A() & !B();
             Assert.AreEqual("A B", Facts.ShowUnknownTest());         
         }
@@ -215,9 +225,8 @@ namespace Hammurabi.UnitTests.CoreFcns
         [Test]
         public void FactOrder3b ()
         {
+            Facts.Reset();
             Facts.GetUnknowns = true;
-            Facts.Clear();
-            Facts.Unknowns.Clear();
             Facts.Assert(p1, "B", p2, false);
             Tbool theRule = A() & !B();
             Assert.AreEqual("A", Facts.ShowUnknownTest());         
@@ -226,9 +235,8 @@ namespace Hammurabi.UnitTests.CoreFcns
         [Test]
         public void FactOrder3c ()
         {
+            Facts.Reset();
             Facts.GetUnknowns = true;
-            Facts.Clear();
-            Facts.Unknowns.Clear();
             Facts.Assert(p1, "B", p2);
             Tbool theRule = A() && !B();
             Assert.AreEqual("", Facts.ShowUnknownTest());    // currently returns "A" - not "looking ahead" to see the False
@@ -239,9 +247,8 @@ namespace Hammurabi.UnitTests.CoreFcns
         [Test]
         public void FactOrder4a ()
         {
+            Facts.Reset();
             Facts.GetUnknowns = true;
-            Facts.Clear();
-            Facts.Unknowns.Clear();
             Tbool theRule = A() & (B() | C());
             Assert.AreEqual("A B C", Facts.ShowUnknownTest());      
         }
@@ -249,9 +256,8 @@ namespace Hammurabi.UnitTests.CoreFcns
         [Test]
         public void FactOrder4b ()
         {
+            Facts.Reset();
             Facts.GetUnknowns = true;
-            Facts.Clear();
-            Facts.Unknowns.Clear();
             Tbool theRule = (A() & B()) | C();
             Assert.AreEqual("A B C", Facts.ShowUnknownTest());    
         }
@@ -261,9 +267,8 @@ namespace Hammurabi.UnitTests.CoreFcns
         [Test]
         public void FactOrder5a ()
         {
+            Facts.Reset();
             Facts.GetUnknowns = true;
-            Facts.Clear();
-            Facts.Unknowns.Clear();
             Tnum theRule = Switch(A(),X(),
                                   B(),Y());
             Assert.AreEqual("A B", Facts.ShowUnknownTest());      // currently returns "A X B Y" - should not investigate Tnums unless relevant
@@ -272,9 +277,8 @@ namespace Hammurabi.UnitTests.CoreFcns
         [Test]
         public void FactOrder5b ()
         {
+            Facts.Reset();
             Facts.GetUnknowns = true;
-            Facts.Clear();
-            Facts.Unknowns.Clear();
             Facts.Assert(p1, "A", p2);
             Tnum theRule = Switch(A(),X(),
                                   B(),Y());
@@ -284,9 +288,8 @@ namespace Hammurabi.UnitTests.CoreFcns
         [Test]
         public void FactOrder5c ()
         {
+            Facts.Reset();
             Facts.GetUnknowns = true;
-            Facts.Clear();
-            Facts.Unknowns.Clear();
             Facts.Assert(p1, "A", p2, false);
             Tnum theRule = Switch(A(),X(),
                                   B(),Y());
@@ -296,9 +299,8 @@ namespace Hammurabi.UnitTests.CoreFcns
         [Test]
         public void FactOrder5d ()
         {
+            Facts.Reset();
             Facts.GetUnknowns = true;
-            Facts.Clear();
-            Facts.Unknowns.Clear();
             Facts.Assert(p1, "A", p2, false);
             Facts.Assert(p1, "B", p2);
             Tnum theRule = Switch(A(),X(),

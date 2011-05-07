@@ -56,8 +56,7 @@ namespace Hammurabi
         /// </summary>
         public static Tbool LivesWith(Person p1, Person p2)
         {
-            return Facts.InputTbool(p1, "LivesWith", p2) |
-                   Facts.InputTbool(p1, "LivesWith", p2); 
+            return Facts.Sym(p1, "LivesWith", p2); 
         }
         
         /// <summary>
@@ -65,8 +64,7 @@ namespace Hammurabi
         /// </summary>
         public static Tbool SharesHouseholdWith(Person p1, Person p2)
         {
-            return Facts.InputTbool(p1, "SharesHouseholdWith", p2) |
-                   Facts.InputTbool(p1, "SharesHouseholdWith", p2) |
+            return Facts.Sym(p1, "SharesHouseholdWith", p2) ||
                    LivesWith(p1, p2);   // tentative assumption   
         }
         
@@ -75,8 +73,7 @@ namespace Hammurabi
         /// </summary>
         public static Tbool SharesPrincipalAbodeWith(Person p1, Person p2)
         {
-            return Facts.InputTbool(p1, "SharesPrincipalAbodeWith", p2) |
-                   Facts.InputTbool(p1, "SharesPrincipalAbodeWith", p2) |
+            return Facts.Sym(p1, "SharesPrincipalAbodeWith", p2) ||
                    LivesWith(p1, p2);   // tentative assumption 
         }
         
@@ -85,8 +82,7 @@ namespace Hammurabi
         /// </summary>
         public static Tbool ProvidesSupportFor(Person p1, Person p2)
         {
-            return Facts.InputTbool(p1, "ProvidesSupportFor", p2) |
-                   Facts.InputTbool(p1, "ProvidesSupportFor", p2);  
+            return Facts.InputTbool(p1, "ProvidesSupportFor", p2);  
         }
         
 		/// <summary>

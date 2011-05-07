@@ -107,6 +107,34 @@ namespace Hammurabi
 		{
 			FactBase.Clear();
 		}
+        
+        /// <summary>
+        /// Restores factbase to its virgin state.
+        /// </summary>
+        public static void Reset()
+        {
+            FactBase.Clear();
+            Facts.Unknowns.Clear();
+            Facts.GetUnknowns = false;
+        }
+        
+        /// <summary>
+        /// Returns true if a fact (triple) has been assserted
+        /// </summary>
+        public static bool HasBeenAsserted(LegalEntity e1, string rel, LegalEntity e2)
+        {
+            // Look up fact in table of facts
+            foreach (Fact f in FactBase)
+            {
+                if (f.subject == e1 && f.relationship == rel && f.directObject == e2)
+                {
+                    return true;
+                }
+            }
+
+            // If fact is not found...
+            return false;
+        }
 
 	}
 }

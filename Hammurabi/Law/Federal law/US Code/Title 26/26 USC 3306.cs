@@ -41,7 +41,7 @@ namespace USC.Tit26
         /// </summary>
         public static Tbool IsEmployer(CorporateEntity c)
         {
-            return a1(c) | a2(c) | a3(c);
+            return a1(c) || a2(c) || a3(c);
         }
         
         /// <summary>
@@ -58,7 +58,7 @@ namespace USC.Tit26
             Tbool hasEmp = (NumberOfGeneralEmployees(c) >= 1).EverPer(TheTime.TheCalendarWeek);
             Tbool weekTest = (hasEmp.CountPer(TheTime.TheYear) >= 20).CountPastNIntervals(TheTime.TheYear,2) > 0;
             
-            return wageTest | weekTest;
+            return wageTest || weekTest;
         }
         
         /// <summary>
@@ -75,7 +75,7 @@ namespace USC.Tit26
             Tbool hasEmp = (NumberOfAgEmployees(c) >= 10).EverPer(TheTime.TheCalendarWeek);
             Tbool weekTest = (hasEmp.CountPer(TheTime.TheYear) >= 20).CountPastNIntervals(TheTime.TheYear,2) > 0;
             
-            return wageTest | weekTest;
+            return wageTest || weekTest;
         }
         
         /// <summary>

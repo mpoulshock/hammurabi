@@ -46,7 +46,7 @@ namespace USC.Tit26
         /// </summary>
         public static Tbool IsDependentOf(Person d, Person tp)
         {
-            return (IsQualifyingChildOf(d, tp) | IsQualifyingRelativeOf(d, tp)) &
+            return (IsQualifyingChildOf(d, tp) || IsQualifyingRelativeOf(d, tp)) &&
                     !CannotBeADependentOf(d, tp);
         }
 		
@@ -58,27 +58,27 @@ namespace USC.Tit26
             Tnum taxYear = Sec441.TaxYear(d);
             
             // c1 - general elements (excluding those in c2, c3, and c4)
-            Tbool genTest = Econ.SharesPrincipalAbodeWith(d,tp).ElapsedDaysPer(taxYear) > 182.5 &
-                            Econ.PercentSelfSupport(d) < 0.5 &		// per TY
+            Tbool genTest = Econ.SharesPrincipalAbodeWith(d,tp).ElapsedDaysPer(taxYear) > 182.5 &&
+                            Econ.PercentSelfSupport(d) < 0.5 &&		// per TY
                             (!Sec6013.IsMFJ(d) | Facts.InputTbool(d,"MFJOnlyForRefund"));
 			
             // c2 - relationship test
-            Tbool relationTest = Fam.IsParentOf(tp,d) |
-                                 Fam.IsGrandparentOf(tp,d) |
-                                 Fam.IsGreatGrandparentOf(tp,d) |
-                                 Fam.AreSiblings(tp,d) |
+            Tbool relationTest = Fam.IsParentOf(tp,d) ||
+                                 Fam.IsGrandparentOf(tp,d) ||
+                                 Fam.IsGreatGrandparentOf(tp,d) ||
+                                 Fam.AreSiblings(tp,d) ||
                                  Fam.AreStepsiblings(tp,d); // or descendant of sib or step-sib
 
             // c3 - age test
             Tbool under19 = (d.Age < 19).AlwaysPer(taxYear);
             Tbool under24 = (d.Age < 19).AlwaysPer(taxYear);
-            Tbool ageTest = (d.Age < tp.Age & (under19 | (Econ.IsStudent(d) & under24))) |
+            Tbool ageTest = (d.Age < tp.Age && (under19 || (Econ.IsStudent(d) & under24))) ||
                             Sec22.IsDisabledPT(d);
 	
             // c4 - when 2 or more people can claim the same qualifying child
             Tbool c4Test = StubIf(Facts.InputTbool(d, "CanBeClaimedAsQCByTwoTaxpayers"));
 			
-            return genTest & relationTest & ageTest & c4Test;
+            return genTest && relationTest && ageTest && c4Test;
         }
 		
         /// <summary>
@@ -89,33 +89,33 @@ namespace USC.Tit26
         {
             // d1 - general elements (excluding those in d2-5)
             Tset allOtherKnownPeople = Facts.AllKnownPeople() - d - tp;
-            Tbool genTest = (Sec61.GrossIncome(d) == 0 |                         // shortcut
-                             Sec61.GrossIncome(d) < Sec151.ExemptionAmount(d)) & // per TY
+            Tbool genTest = (Sec61.GrossIncome(d) == 0 ||                         // shortcut
+                             Sec61.GrossIncome(d) < Sec151.ExemptionAmount(d)) && // per TY
 //                          PercentageSupportProvided(tp,d) > 0.5 & // per TY
                             !Exists(allOtherKnownPeople, (x,y) => IsQualifyingChildOf(d, (Person)x), d, null);
             
             // d2 - relationship test
-            Tbool relationTest = Fam.IsParentOf(tp,d) |             // A
-                                 Fam.IsGrandparentOf(tp,d) |
-                                 Fam.IsGreatGrandparentOf(tp,d) |
-                                 Fam.AreSiblings(tp,d) |            // B
-                                 Fam.AreStepsiblings(tp,d) |
-                                 Fam.IsParentOf(d,tp) |             // C
-                                 Fam.IsGrandparentOf(d,tp) |
-                                 Fam.IsGreatGrandparentOf(d,tp) |
-//                               Fam.IsStepparentOf(d,tp) |         // D
-//                               Fam.IsUncleOrAuntOf(tp,d) |        // E
-//                               Fam.IsUncleOrAuntOf(d,tp) |        // F
-//                               Fam.IsParentInLawOf(tp,d) |        // G
-//                               Fam.IsParentInLawOf(d,tp) |
-//                               Fam.AreSiblingsInLaw(d,tp) |
-                                 (Econ.SharesPrincipalAbodeWith(tp,d) &
+            Tbool relationTest = Fam.IsParentOf(tp,d) ||             // A
+                                 Fam.IsGrandparentOf(tp,d) ||
+                                 Fam.IsGreatGrandparentOf(tp,d) ||
+                                 Fam.AreSiblings(tp,d) ||            // B
+                                 Fam.AreStepsiblings(tp,d) ||
+                                 Fam.IsParentOf(d,tp) ||             // C
+                                 Fam.IsGrandparentOf(d,tp) ||
+                                 Fam.IsGreatGrandparentOf(d,tp) ||
+                                 Fam.IsStepparentOf(d,tp) ||         // D
+                                 Fam.IsAuntOrUncleOf(tp,d) ||        // E
+                                 Fam.IsAuntOrUncleOf(d,tp) ||        // F
+//                               Fam.IsParentInLawOf(tp,d) ||        // G
+//                               Fam.IsParentInLawOf(d,tp) ||
+//                               Fam.AreSiblingsInLaw(d,tp) ||
+                                 (Econ.SharesPrincipalAbodeWith(tp,d) &&
                                   Econ.SharesHouseholdWith(tp,d)); 	// H - and not spouse
             
             // d4 - multiple support agreements 
             Tbool d4Test = StubIf(Facts.InputTbool(d, "AnotherTaxpayerProvidedSupportFor"));
                 
-            return genTest & relationTest & d4Test;
+            return genTest && relationTest && d4Test;
         }
 		
         /// <summary>
@@ -126,24 +126,24 @@ namespace USC.Tit26
             // b1 - taxpayer cannot be a dependent & potential dependent cannot have a dependent
             // Note: searching the fact base for possible dependents and defining this test
             // recursively leads to infinite loops and probably is a case of overengineering.
-            Tbool depTest = !CanClaimSomeoneAsDep(d) & !CanBeClaimedAsDepBySomeone(tp);
+            Tbool depTest = !CanClaimSomeoneAsDep(d) && !CanBeClaimedAsDepBySomeone(tp);
 			
             // b2 - potential dependent cannot be married filing jointly
             // See IRS Publication 501 (2010), page 10.
             Tbool jointReturnTest = IfThen(Sec6013.IsMFJ(d), Facts.InputTbool(d,"FileMFJOnlyToClaimRefund"));
 			
             // b3 - potential dependent must meet the citizenship test
-            Tbool adoptionTest    = Fam.IsAdoptiveParentOf(tp,d) &
-                                    Econ.SharesPrincipalAbodeWith(d,tp) &
-                                    Econ.SharesHouseholdWith(d,tp) &
-                                    (tp.IsUSCitizen | tp.IsUSNational);
-            Tbool citizenshipTest = d.IsUSCitizen |
-                                    d.IsUSResident |
-                                    d.IsResidentOf("Canada") |
-                                    d.IsResidentOf("Mexico") | 
+            Tbool adoptionTest    = Fam.IsAdoptiveParentOf(tp,d) &&
+                                    Econ.SharesPrincipalAbodeWith(d,tp) &&
+                                    Econ.SharesHouseholdWith(d,tp) &&
+                                    (tp.IsUSCitizen || tp.IsUSNational);
+            Tbool citizenshipTest = d.IsUSCitizen ||
+                                    d.IsUSResident ||
+                                    d.IsResidentOf("Canada") ||
+                                    d.IsResidentOf("Mexico") || 
                                     adoptionTest;
 			
-            return !depTest | !jointReturnTest | !citizenshipTest;
+            return !depTest || !jointReturnTest || !citizenshipTest;
         }
         
         /// <summary>
