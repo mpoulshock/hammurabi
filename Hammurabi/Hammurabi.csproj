@@ -84,6 +84,7 @@
     <Compile Include="Core\Facts\Validate.cs" />
     <Compile Include="Core\Facts\Unknown facts.cs" />
     <Compile Include="Core\Facts\Window of concern.cs" />
+    <Compile Include="Core\Ontology\Governmental relationships.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

@@ -145,9 +145,9 @@ namespace USC.Tit29
         /// <summary>
         /// Indicates the date the person started or intends to start FMLA leave.
         /// </summary>
-        private static DateTime DateLeaveBegins(Person p, Corp c)
+        public static DateTime DateLeaveBegins(Person p, Corp c)
         {
-            return Facts.InputDate(p,"DateFMLALeaveBegins",c);
+            return Facts.InputDate(p,"DateFamilyLeaveBegins",c);
         }
         
         /// <summary>

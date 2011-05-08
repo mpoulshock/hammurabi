@@ -24,15 +24,16 @@ namespace Hammurabi
 	/// Enumerations of jurisdictions, such as countries, states,
 	/// and provinces. 
 	/// </summary>
-	public class Jurisdiction : LegalEntity
+	public class Juris : LegalEntity
 	{
-		public enum Country
-		{
-			UnitedStates,
-			Canada,
-			Mexico,
-			Other
-		}
+        /// <summary>
+        /// Returns the (U.S.) state jurisdiction applicable to the dispute
+        /// between two legal entities.
+        /// </summary>
+        public static Tbool StateIs(LegalEntity e1, LegalEntity e2, string state)
+        {
+            return Facts.Sym(e1, "StateJurisdiction", e2, state);
+        }
 
 	}
 }

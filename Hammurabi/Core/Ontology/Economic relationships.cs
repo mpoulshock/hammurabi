@@ -23,7 +23,7 @@ namespace Hammurabi
 	/// <summary>
 	/// Represent various types of economic relationships.
 	/// </summary>
-	public class Econ
+	public class Econ : H
 	{
         /// <summary>
         /// Indicates whether a person is employed by a particular employer
@@ -32,6 +32,37 @@ namespace Hammurabi
         public static Tbool IsEmployedBy(Person p, Corp c)
         {
             return Facts.InputTbool(p, "IsEmployedBy", c);
+        }
+        
+        /// <summary>
+        /// Returns whether a person is an independent contractor at an
+        /// employer.
+        /// </summary>
+        public static Tbool IsIndependentContractor(Person p, CorporateEntity c)
+        {
+            return Facts.InputTbool(p, "IsIndependentContractor", c);
+        }
+        
+        /// <summary>
+        /// Returns the number of hours per week that a person works at a given
+        /// employer.
+        /// </summary>
+        public static Tnum HoursWorkedPerWeek(Person p, CorporateEntity c)
+        {
+            return Facts.InputTnum(p, "HoursWorkedPerWeek", c);
+        }
+        
+        /// <summary>
+        /// Determines whether a person is a full-time employee.
+        /// </summary>
+        public static Tbool IsFullTimeEmployee(Person p, CorporateEntity c)
+        {
+            Tnum hours = HoursWorkedPerWeek(p,c);
+            
+            // If 35 or more hours  => true
+            // If 30 or fewer hours => false
+            // Else                 => unknown
+            return TestOrStubIf(hours >= 35, hours < 35 && hours >= 30);
         }
         
         /// <summary>
@@ -46,9 +77,9 @@ namespace Hammurabi
 		/// <summary>
 		/// Returns whether a person is a student.
 		/// </summary>
-		public static Tbool IsStudent(Person p1)
+		public static Tbool IsStudent(Person p)
 		{
-			return Facts.InputTbool(p1, "IsStudent");
+			return Facts.InputTbool(p, "IsStudent");
 		}
 		
         /// <summary>
@@ -88,9 +119,9 @@ namespace Hammurabi
 		/// <summary>
 		/// Returns the % a person financially supports themselves.
 		/// </summary>
-		public static Tnum PercentSelfSupport(Person p1)
+		public static Tnum PercentSelfSupport(Person p)
 		{
-			return Facts.InputTnum(p1, "PercentSelfSupport");
+			return Facts.InputTnum(p, "PercentSelfSupport");
 		}
 		
 	}

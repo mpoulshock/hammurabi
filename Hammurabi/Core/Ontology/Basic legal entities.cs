@@ -107,6 +107,14 @@ namespace Hammurabi
 		{
 			get { return Facts.InputTstr(this, "Gender"); }
 		}
+        public Tbool IsFemale
+        {
+            get { return Gender == "Female"; }
+        }
+        public Tbool IsMale
+        {
+            get { return Gender == "Male"; }
+        }
 		public Tnum Age 	// in years
 		{
 			get { return Time.IntervalsSince(DateOfBirth, DateOfBirth.AddYears(110), Time.IntervalType.Year); }
@@ -118,6 +126,10 @@ namespace Hammurabi
         public DateTime DateOfDeath
         {
             get { return Facts.InputDate(this, "DateOfDeath"); }
+        }
+        public Tbool IsMarried
+        {
+            get { return Facts.InputTbool(this, "IsMarried"); }
         }
 		public Tbool IsDisabled
         {

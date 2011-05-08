@@ -62,7 +62,7 @@ namespace Hammurabi.UnitTests
             Corp c = new Corp("the employer");
 
             Facts.Clear();
-            Facts.Assert(e, "ReasonForRequestingFMLALeaveFrom",c, "Other");          
+            Facts.Assert(e, "ReasonForRequestingLeaveFrom",c, "Other");          
 
             DateTime theDate = new DateTime(2011,4,15);
             bool? result = USC.Tit29.Sec2612.IsEntitledToRegLeaveFrom(e,c).AsOf(theDate).ToBool;
@@ -95,7 +95,7 @@ namespace Hammurabi.UnitTests
             Facts.Assert(e, "IsEmployeeUnder5USC6301", false);
             Facts.Assert(e, "LessThan50EmployeesWithin75MilesOfWorksite", c, false);
             Facts.Assert(e, "PositionAt", c, "Unknown");
-            Facts.Assert(e, "ReasonForRequestingFMLALeaveFrom",c, "Other");          
+            Facts.Assert(e, "ReasonForRequestingLeaveFrom",c, "Other");          
 
             DateTime theDate = new DateTime(2011,4,15);
             bool? result = USC.Tit29.Sec2612.IsEntitledToRegLeaveFrom(e,c).AsOf(theDate).ToBool;
@@ -115,7 +115,7 @@ namespace Hammurabi.UnitTests
             Facts.Assert(e, "IsEmployeeUnder5USC6301", false);
             Facts.Assert(e, "LessThan50EmployeesWithin75MilesOfWorksite", c, false);
             Facts.Assert(e, "PositionAt", c, "Unknown");
-            Facts.Assert(e, "ReasonForRequestingFMLALeaveFrom",c, "To adopt a child");          
+            Facts.Assert(e, "ReasonForRequestingLeaveFrom",c, "To adopt a child");          
 
             DateTime theDate = new DateTime(2011,4,15);
             bool? result = USC.Tit29.Sec2612.IsEntitledToRegLeaveFrom(e,c).AsOf(theDate).ToBool;
@@ -135,7 +135,7 @@ namespace Hammurabi.UnitTests
             Facts.Assert(e, "IsEmployeeUnder5USC6301", false);
             Facts.Assert(e, "LessThan50EmployeesWithin75MilesOfWorksite", c, false);
             Facts.Assert(e, "PositionAt", c, "Unknown");
-            Facts.Assert(e, "ReasonForRequestingFMLALeaveFrom",c, "To care for family member with a health condition");          
+            Facts.Assert(e, "ReasonForRequestingLeaveFrom",c, "To care for family member with a health condition");          
 
             Tbool result = USC.Tit29.Sec2612.IsEntitledToRegLeaveFrom(e,c);
             Assert.AreEqual("Unknown", result.TestOutput);
@@ -155,7 +155,7 @@ namespace Hammurabi.UnitTests
             Facts.Assert(e, "IsEmployeeUnder5USC6301", false);
             Facts.Assert(e, "LessThan50EmployeesWithin75MilesOfWorksite", c, false);
             Facts.Assert(e, "PositionAt", c, "Unknown");
-            Facts.Assert(e, "ReasonForRequestingFMLALeaveFrom",c, "To care for family member with a health condition");
+            Facts.Assert(e, "ReasonForRequestingLeaveFrom",c, "To care for family member with a health condition");
             Facts.Assert(e, "NeedsLeaveToProvideCareFor", f);
             Facts.Assert(e, "IsMarriedTo", f);
             Facts.Assert(f, "HasSeriousHealthCondition");

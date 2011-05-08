@@ -212,6 +212,74 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tbool result = TestOrStubIf(testCondition, stubCondition);
             Assert.AreEqual("Unknown", result.TestOutput);
         }
+        
+        // IsFullTimeEmployee (which uses TestOrStubIf)
+        
+        [Test]
+        public void IsFullTimeEmployee_1()
+        {
+            Person e = new Person("e");
+            Corp c = new Corp("c");
+            Facts.Reset();
+            Facts.Assert(e, "HoursWorkedPerWeek", c, 0);
+            Tbool result = Econ.IsFullTimeEmployee(e,c);
+            Assert.AreEqual("1/1/0001 12:00:00 AM False ", result.TestOutput);
+        }
 
+        [Test]
+        public void IsFullTimeEmployee_2()
+        {
+            Person e = new Person("e");
+            Corp c = new Corp("c");
+            Facts.Reset();
+            Facts.Assert(e, "HoursWorkedPerWeek", c, 31);
+            Tbool result = Econ.IsFullTimeEmployee(e,c);
+            Assert.AreEqual("1/1/0001 12:00:00 AM False ", result.TestOutput);
+        }
+        
+        [Test]
+        public void IsFullTimeEmployee_3()
+        {
+            Person e = new Person("e");
+            Corp c = new Corp("c");
+            Facts.Reset();
+            Facts.Assert(e, "HoursWorkedPerWeek", c, 32);
+            Tbool result = Econ.IsFullTimeEmployee(e,c);
+            Assert.AreEqual("Unknown", result.TestOutput);
+        }
+        
+        [Test]
+        public void IsFullTimeEmployee_4()
+        {
+            Person e = new Person("e");
+            Corp c = new Corp("c");
+            Facts.Reset();
+            Facts.Assert(e, "HoursWorkedPerWeek", c, 35);
+            Tbool result = Econ.IsFullTimeEmployee(e,c);
+            Assert.AreEqual("Unknown", result.TestOutput);
+        }
+        
+        [Test]
+        public void IsFullTimeEmployee_5()
+        {
+            Person e = new Person("e");
+            Corp c = new Corp("c");
+            Facts.Reset();
+            Facts.Assert(e, "HoursWorkedPerWeek", c, 38);
+            Tbool result = Econ.IsFullTimeEmployee(e,c);
+            Assert.AreEqual("1/1/0001 12:00:00 AM True ", result.TestOutput);
+        }
+        
+        [Test]
+        public void IsFullTimeEmployee_6()
+        {
+            Person e = new Person("e");
+            Corp c = new Corp("c");
+            Facts.Reset();
+            Facts.Assert(e, "HoursWorkedPerWeek", c, 40);
+            Tbool result = Econ.IsFullTimeEmployee(e,c);
+            Assert.AreEqual("1/1/0001 12:00:00 AM True ", result.TestOutput);
+        }
+        
     }
 }

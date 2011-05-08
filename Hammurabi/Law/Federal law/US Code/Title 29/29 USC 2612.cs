@@ -29,7 +29,7 @@ using Hammurabi;
 
 namespace USC.Tit29
 {
-    /// <summary>
+    /// <summary> 
     /// Makes determinations related to the Family and Medical Leave Act (FMLA).
     /// </summary>
     /// <cite>29 U.S.C. 2612 (2011)</cite>   
@@ -135,7 +135,7 @@ namespace USC.Tit29
         /// </summary>
         public static Tstr ReasonForLeave(Person e, Corp c)
         {
-            return Facts.InputTstr(e,"ReasonForRequestingFMLALeaveFrom",c);
+            return Facts.InputTstr(e,"ReasonForRequestingLeaveFrom",c);
         }
         
         /// <summary>

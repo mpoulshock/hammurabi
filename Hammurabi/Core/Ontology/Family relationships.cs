@@ -39,6 +39,7 @@ namespace Hammurabi
         /// <summary>
         /// Returns whether two people are married.
         /// </summary>
+        //  TODO: Add shortcut assertions: IsMarriedTo, IsMarried
         public static Tbool AreMarried(Person p1, Person p2)
         {
             Tbool m = Facts.Sym(p1, "FamilyRelationship", p2, "Spouse");
@@ -51,6 +52,23 @@ namespace Hammurabi
             }
             
             return new Tbool();
+        }
+        
+        /// <summary>
+        /// Returns the person's spouse.
+        /// </summary>
+        public static Person SpouseOf(Person p)
+        {
+            // Assumes only one.  TODO: Generalize and temporalize.
+            Person spouse = Facts.InputPerson(p, "IsMarriedTo");
+            
+            // "Shortcut" assertion
+            if (spouse.Name != "")
+            {
+                Facts.Assert(p, "FamilyRelationship", spouse, "Spouse");
+            }
+            
+            return spouse;
         }
         
         /// <summary>
