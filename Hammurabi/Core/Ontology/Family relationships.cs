@@ -72,6 +72,14 @@ namespace Hammurabi
         }
         
         /// <summary>
+        /// Returns whether two people are domestic partners.
+        /// </summary>
+        public static Tbool IsDomesticPartnerOf(Person p1, Person p2)
+        {
+            return Facts.Sym(p1, "FamilyRelationship", p2, "Domestic partner");
+        }
+        
+        /// <summary>
         /// Returns whether two people are legally separated.
         /// </summary>
         public static Tbool AreSeparated(Person p1, Person p2)

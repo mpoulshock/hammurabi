@@ -60,6 +60,16 @@ namespace USC.Tit29
         }
         
         /// <summary>
+        /// 2612 - Indicates whether an employee (e) is eligible for 
+        /// any FMLA leave from a corporation (c).
+        /// </summary>
+        public static Tbool IsEntitledToLeaveFrom(Person e, Corp c)
+        {
+            return IsEntitledToRegLeaveFrom(e,c) ||
+                   IsEntitledToServiceLeaveFrom(e,c);
+        }
+        
+        /// <summary>
         /// 2612(a)(1) - Indicates whether an employee (e) is eligible for 
         /// "regular" (non-servicemember) FMLA leave from a corporation (c).
         /// </summary>
@@ -113,7 +123,7 @@ namespace USC.Tit29
         /// </summary>
         private static Tbool a1E(Person e, Corp c)
         {
-            return ReasonForLeave(e,c) == "Need arising due to family member serving in Armed Forces";
+            return ReasonForLeave(e,c) == "Other need arising due to family member serving in Armed Forces";
         }
         
         /// <summary>
@@ -122,12 +132,13 @@ namespace USC.Tit29
         /// </summary>
         public static Tbool IsEntitledToServiceLeaveFrom(Person e, Corp c)
         {
-            Person fam = (Person)Facts.AllXThat(e,"NeedsLeaveToProvideCareFor").ToPerson;  // assumes only one
-            
-            return ReasonForLeave(e,c) == "To care for a family member in the Armed Forces" &&
-                   Sec2611.IsCoveredEmployer(c) &&
-                   Sec2611.IsEligibleEmployee(e,c) &&
-                   (Fam.AreMarried(e,fam) || Sec2611.IsChildOf(e,fam) || Sec2611.IsParentOf(e,fam) || Fam.IsNextOfKinOf(e,fam));
+           return ReasonForLeave(e,c) == "To care for a family member in the Armed Forces" &&
+                  Sec2611.IsCoveredEmployer(c) &&
+                  Sec2611.IsEligibleEmployee(e,c) &&
+                  (Fam.AreMarried(e,SickFam(e)) || 
+                   Sec2611.IsChildOf(e,SickFam(e)) || 
+                   Sec2611.IsParentOf(e,SickFam(e)) || 
+                   Fam.IsNextOfKinOf(e,SickFam(e)));
         }
         
         /// <summary>
