@@ -75,11 +75,11 @@ namespace USC.Tit29
         /// </summary>
         public static Tbool IsEntitledToRegLeaveFrom(Person e, Corp c)
         {
-            return Sec2611.IsCoveredEmployer(c) &&
-                   Sec2611.IsEligibleEmployee(e,c) &&
+            return Sec2611.IsEligibleEmployee(e,c) &&
+                   Sec2611.IsCoveredEmployer(c) &&
                    (a1A(e,c) || a1B(e,c) || a1C(e,c) || a1D(e,c) || a1E(e,c));
         }
-
+        
         /// <summary>
         /// 2612(a)(1)(A) - Birth of child
         /// </summary>

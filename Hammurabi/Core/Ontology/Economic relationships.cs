@@ -18,6 +18,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+using System;
+
 namespace Hammurabi
 {
 	/// <summary>
@@ -31,7 +33,24 @@ namespace Hammurabi
         /// </summary>
         public static Tbool IsEmployedBy(Person p, Corp c)
         {
-            return Facts.InputTbool(p, "IsEmployedBy", c);
+            // Allows for simple temporal input (start date)
+            // Need to enhance this later...
+            
+            Tbool isEmp = Facts.InputTbool(p, "IsEmployedBy", c); 
+            
+            if (isEmp.IsTrue)
+            {
+                Tbool result = new Tbool(false);
+                DateTime start = Facts.InputDate(p, "DateStartedWorkingAt", c);
+                result.AddState(start,true);
+                return result;
+            }
+            else
+            {
+                return isEmp;
+            }
+            
+//          return Facts.InputTbool(p, "IsEmployedBy", c); 
         }
         
         /// <summary>
