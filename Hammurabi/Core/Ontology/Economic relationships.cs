@@ -124,6 +124,14 @@ namespace Hammurabi
 			return Facts.InputTnum(p, "PercentSelfSupport");
 		}
 		
+        /// <summary>
+        /// How random...
+        /// </summary>
+        public static Tbool IsAirlineFlightCrew(Person p, Corp c)
+        {
+            return Facts.InputTbool(p, "IsAirlineFlightCrew", c);
+        }
+        
 	}
 
 }

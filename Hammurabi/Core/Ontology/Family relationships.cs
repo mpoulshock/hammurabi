@@ -268,7 +268,8 @@ namespace Hammurabi
         /// </summary>
         public static Tbool IsLegalGuardianOf(Person p1, Person p2)
         {
-            return Facts.InputTbool(p1, "IsLegalGuardianOf", p2);   
+            return !IsParentOf(p2,p1) &&
+                   Facts.InputTbool(p1, "IsLegalGuardianOf", p2);   
         }
         
         /// <summary>
@@ -276,7 +277,8 @@ namespace Hammurabi
         /// </summary>
         public static Tbool ActsInLocoParentisOf(Person p1, Person p2)
         {
-            return Facts.InputTbool(p1, "ActsInLocoParentisOf", p2);   
+            return !IsParentOf(p2,p1) &&
+                   Facts.InputTbool(p1, "ActsInLocoParentisOf", p2);   
         }
         
         /// <summary>
@@ -285,7 +287,8 @@ namespace Hammurabi
         /// </summary>
         public static Tbool HasDayToDayResponsibilityFor(Person p1, Person p2)
         {
-            return Facts.InputTbool(p1, "HasDayToDayResponsibilityFor", p2);   
+            return !IsParentOf(p2,p1) &&
+                   Facts.InputTbool(p1, "HasDayToDayResponsibilityFor", p2);   
         }
         
         /// <summary>

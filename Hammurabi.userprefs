@@ -1,34 +1,16 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" ctype="Workspace" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Unit tests - Hammurabi core/Unit tests/Test - short-circuit evaluation.cs" ctype="Workbench">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Default" ctype="Workspace" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Hammurabi/Core/Core functions/Set - higher-order.cs" ctype="Workbench">
     <Files>
-      <File FileName="Unit tests - Hammurabi core/Unit tests/Test - short-circuit evaluation.cs" Line="59" Column="43" />
-      <File FileName="Hammurabi/Core/Fundamental types/Tbool.cs" Line="357" Column="48" />
-      <File FileName="Hammurabi/Main/Main.cs" Line="35" Column="34" />
-      <File FileName="Hammurabi/Core/Fundamental types/Tvar.cs" Line="53" Column="3" />
+      <File FileName="Hammurabi/Core/Ontology/Family relationships.cs" Line="75" Column="61" />
+      <File FileName="Hammurabi/Core/Ontology/Economic relationships.cs" Line="77" Column="16" />
+      <File FileName="Hammurabi/Law/Federal law/US Code/Title 29/29 USC 2611.cs" Line="153" Column="22" />
+      <File FileName="Hammurabi/Law/Federal law/US Code/Title 29/29 USC 2612.cs" Line="148" Column="10" />
+      <File FileName="Hammurabi/Core/Core functions/Set - higher-order.cs" Line="27" Column="3" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
-          <Node name="Hammurabi" expanded="True" selected="True">
-            <Node name="References" expanded="True" />
-            <Node name="Core" expanded="True">
-              <Node name="Core functions" expanded="True" />
-              <Node name="Facts" expanded="True" />
-              <Node name="Fundamental types" expanded="True" />
-              <Node name="Ontology" expanded="True" />
-            </Node>
-            <Node name="Law" expanded="True">
-              <Node name="Federal law" expanded="True">
-                <Node name="US Code" expanded="True">
-                  <Node name="Title 26" expanded="True" />
-                  <Node name="Title 29" expanded="True" />
-                  <Node name="Title 5" expanded="True" />
-                </Node>
-              </Node>
-            </Node>
-            <Node name="Main" expanded="True" />
-          </Node>
           <Node name="Unit tests - Hammurabi core" expanded="True">
             <Node name="References" expanded="True" />
             <Node name="Unit tests" expanded="True" />
@@ -50,8 +32,8 @@
           <Option id="NestedNamespaces" value="False" />
           <Option id="PublicProtectedApiOnly" value="False" />
           <Option id="PublicApiOnly" value="True" />
-          <Option id="GroupByAccess" value="False" />
           <Option id="GroupByType" value="True" />
+          <Option id="GroupByAccess" value="False" />
           <Node name="Hammurabi" expanded="True">
             <Node name="References" expanded="True" />
           </Node>
@@ -66,7 +48,7 @@
             <Node name="Hammurabi" expanded="True">
               <Node name="UnitTests" expanded="True">
                 <Node name="CoreFcns" expanded="True">
-                  <Node name="ShortCircuitEval" expanded="True" selected="True" />
+                  <Node name="Stubs" expanded="True" selected="True" />
                 </Node>
               </Node>
             </Node>

@@ -65,10 +65,8 @@ namespace USC.Tit29
             Tbool prongB = !Tit5.Sec6301.IsEmployee(p) &&
                            (!Facts.InputTbool(p,"LessThan50EmployeesWithin75MilesOfWorksite",c) ||
                                   Facts.InputTbool(p,"LessThan50EmployeesAtWorksite",c));
-//                           IfThen(Facts.InputTbool(p,"LessThan50EmployeesWithin75MilesOfWorksite",c),
-//                                  Facts.InputTbool(p,"LessThan50EmployeesAtWorksite",c));
             
-            Tbool prongD = StubIf(Econ.PositionAt(p,c) == "Airline flight crew");  // otherwise return true
+            Tbool prongD = StubIf(Econ.IsAirlineFlightCrew(p,c));  // otherwise return true 
 
             return prongAi && prongAii && prongB && prongD;
         }
@@ -153,7 +151,7 @@ namespace USC.Tit29
         /// <summary>
         /// Indicates whether one person acts in loco parentis of another.
         /// </summary>
-        private static Tbool ActsInLocoParentisOf(Person p1, Person p2)
+        public static Tbool ActsInLocoParentisOf(Person p1, Person p2)
         {
             // See 29 CFR 825.122
             return Fam.HasDayToDayResponsibilityFor(p1,p2) &&
