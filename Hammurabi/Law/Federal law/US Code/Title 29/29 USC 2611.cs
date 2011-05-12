@@ -54,9 +54,9 @@ namespace USC.Tit29
             //
             //   364 day threshold: see 29 CFR 825.110(b)(3) (12 months = 52 weeks = 364 days).
             DateTime d = DateLeaveBegins(p,c);
-            Tbool employed = Econ.IsEmployedBy(p,c);
-            Tbool TwelveMoInLast7Yrs  = employed.ElapsedDays(d.AddYears(-7),d) > 364;
-            Tbool Employed7YrsAgo     = employed.ElapsedDays(Time.DawnOf,d.AddYears(-7)) > 0;
+//            Tbool employed = Econ.IsEmployedBy(p,c);
+            Tbool TwelveMoInLast7Yrs  = Econ.IsEmployedBy(p,c).ElapsedDays(d.AddYears(-7),d) > 364;
+            Tbool Employed7YrsAgo     = Econ.IsEmployedBy(p,c).ElapsedDays(Time.DawnOf,d.AddYears(-7)) > 0;
             
             Tbool prongAi = TestOrStubIf(TwelveMoInLast7Yrs, Employed7YrsAgo);
 

@@ -58,6 +58,18 @@ namespace Hammurabi
 			}
 		}
 		
+        /// <summary>
+        /// Indicates whether a Tvar is "known" - that is, if it has at least
+        /// one time-value state. 
+        /// </summary>
+//        public Tbool IsKnown
+//        {
+//            get
+//            {
+//                return new Tbool(TimeLine.Count > 0);
+//            }
+//        }
+        
 		/// <summary>
 		/// Adds an time-value state to the TimeLine. 
 		/// </summary>

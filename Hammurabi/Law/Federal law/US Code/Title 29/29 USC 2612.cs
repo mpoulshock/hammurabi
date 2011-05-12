@@ -85,7 +85,7 @@ namespace USC.Tit29
         /// </summary>
         private static Tbool a1A(Person e, Corp c)
         {
-            return ReasonForLeave(e,c) == "To care for his or her newborn child";
+            return ReasonForLeave(e,c) == "Maternity or paternity";
         }
         
         /// <summary>
