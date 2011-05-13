@@ -54,16 +54,13 @@ namespace USC.Tit29
             //
             //   364 day threshold: see 29 CFR 825.110(b)(3) (12 months = 52 weeks = 364 days).
             DateTime d = DateLeaveBegins(p,c);
-//            Tbool employed = Econ.IsEmployedBy(p,c);
             Tbool TwelveMoInLast7Yrs  = Econ.IsEmployedBy(p,c).ElapsedDays(d.AddYears(-7),d) > 364;
             Tbool Employed7YrsAgo     = Econ.IsEmployedBy(p,c).ElapsedDays(Time.DawnOf,d.AddYears(-7)) > 0;
             
             Tbool prongAi = TestOrStubIf(TwelveMoInLast7Yrs, Employed7YrsAgo);
 
-            // 2Aii - employed for at least 1,250 hours in last 12-month period
-            Tnum HoursInLast12Months = Facts.InputTnum(p,"HoursWorkedInLast12Months",c);        // needs work
-            Tbool prongAii = HoursInLast12Months > 1250;  // as defined in 29 USC 207
-
+            Tbool prongAii = MetHourThreshold(p,c);
+            
             Tbool prongB = !Tit5.Sec6301.IsEmployee(p) &&
                            (!Facts.InputTbool(p,"LessThan50EmployeesWithin75MilesOfWorksite",c) ||
                                   Facts.InputTbool(p,"LessThan50EmployeesAtWorksite",c));
@@ -71,6 +68,23 @@ namespace USC.Tit29
             Tbool prongD = StubIf(Econ.IsAirlineFlightCrew(p,c));  // otherwise return true 
 
             return prongAi && prongAii && prongB && prongD;
+        }
+        
+        /// <summary>
+        /// Indicates whether a person has worked 1,250 hours in the 12-month period
+        /// leading up to the family leave start date.
+        /// </summary>
+        public static Tbool MetHourThreshold(Person p, Corp c)
+        {
+            DateTime start = DateLeaveBegins(p,c);
+            Tnum avgHours = Econ.HoursWorkedPerWeek(p,c);
+            Tbool last12Mo = TheTime.IsBetween(start.AddMonths(-12), start);
+            Tbool employed = last12Mo & Econ.IsEmployedBy(p,c);   // we only care about last 12 mo. of employment
+            
+            // HACK: Need to create a Tnum.SumOver(interval,start,end) function to implement this correctly...
+            Tnum hoursInLast12Months = (avgHours / 7) * employed.ElapsedDays(Time.DawnOf, start);
+        
+            return hoursInLast12Months > 1250;
         }
         
         /// <summary>

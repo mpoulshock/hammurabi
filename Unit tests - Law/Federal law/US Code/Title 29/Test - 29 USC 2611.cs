@@ -150,5 +150,103 @@ namespace Hammurabi.UnitTests
             Assert.AreEqual("1/1/0001 12:00:00 AM True ", result.TestOutput);
         }
         
+        // MetHourThreshold
+        
+        [Test]
+        public void MetHourThreshold_1 ()
+        {
+            Person e = new Person("the employee");
+            Corp c = new Corp("the employer");
+
+            Facts.Clear();
+            Facts.Assert(e, "IsEmployedBy", c);
+            Facts.Assert(e, "DateStartedWorkingAt", c, new DateTime(2011,1,1));
+            Facts.Assert(e,"DateFamilyLeaveBegins",c, new DateTime(2011,6,1));
+            Facts.Assert(e, "HoursWorkedPerWeek", c, 40);
+
+            Tbool result = USC.Tit29.Sec2611.MetHourThreshold(e,c);
+            Assert.AreEqual("1/1/0001 12:00:00 AM False ", result.TestOutput);
+        }
+        
+        [Test]
+        public void MetHourThreshold_2 ()
+        {
+            Person e = new Person("the employee");
+            Corp c = new Corp("the employer");
+
+            Facts.Clear();
+            Facts.Assert(e, "IsEmployedBy", c);
+            Facts.Assert(e, "DateStartedWorkingAt", c, new DateTime(2011,1,1));
+            Facts.Assert(e,"DateFamilyLeaveBegins",c, new DateTime(2011,6,1));
+            Facts.Assert(e, "HoursWorkedPerWeek", c, 100);   // unlikely
+
+            Tbool result = USC.Tit29.Sec2611.MetHourThreshold(e,c);
+            Assert.AreEqual("1/1/0001 12:00:00 AM True ", result.TestOutput);
+        }
+        
+        [Test]
+        public void MetHourThreshold_3 ()
+        {
+            Person e = new Person("the employee");
+            Corp c = new Corp("the employer");
+
+            Facts.Clear();
+            Facts.Assert(e, "IsEmployedBy", c);
+            Facts.Assert(e, "DateStartedWorkingAt", c, new DateTime(2011,1,1));
+            Facts.Assert(e,"DateFamilyLeaveBegins",c, new DateTime(2011,8,15));
+            Facts.Assert(e, "HoursWorkedPerWeek", c, 40);   // a close call
+
+            Tbool result = USC.Tit29.Sec2611.MetHourThreshold(e,c);
+            Assert.AreEqual("1/1/0001 12:00:00 AM True ", result.TestOutput);
+        }
+        
+        [Test]
+        public void MetHourThreshold_4 ()
+        {
+            Person e = new Person("the employee");
+            Corp c = new Corp("the employer");
+
+            Facts.Clear();
+            Facts.Assert(e, "IsEmployedBy", c);
+            Facts.Assert(e, "DateStartedWorkingAt", c, new DateTime(2011,1,1));
+            Facts.Assert(e,"DateFamilyLeaveBegins",c, new DateTime(2011,8,15));
+            Facts.Assert(e, "HoursWorkedPerWeek", c, 30);  
+            
+            Tbool result = USC.Tit29.Sec2611.MetHourThreshold(e,c);
+            Assert.AreEqual("1/1/0001 12:00:00 AM False ", result.TestOutput);
+        }
+        
+        [Test]
+        public void MetHourThreshold_5 ()
+        {
+            Person e = new Person("the employee");
+            Corp c = new Corp("the employer");
+
+            Facts.Clear();
+            Facts.Assert(e, "IsEmployedBy", c);
+            Facts.Assert(e, "DateStartedWorkingAt", c, new DateTime(2011,1,1));
+            Facts.Assert(e,"DateFamilyLeaveBegins",c, new DateTime(2011,12,31));
+            Facts.Assert(e, "HoursWorkedPerWeek", c, 24);  
+            
+            Tbool result = USC.Tit29.Sec2611.MetHourThreshold(e,c);
+            Assert.AreEqual("1/1/0001 12:00:00 AM False ", result.TestOutput);
+        }
+        
+        [Test]
+        public void MetHourThreshold_6 ()
+        {
+            Person e = new Person("the employee");
+            Corp c = new Corp("the employer");
+
+            Facts.Clear();
+            Facts.Assert(e, "IsEmployedBy", c);
+            Facts.Assert(e, "DateStartedWorkingAt", c, new DateTime(2011,1,1));
+            Facts.Assert(e,"DateFamilyLeaveBegins",c, new DateTime(2011,12,31));
+            Facts.Assert(e, "HoursWorkedPerWeek", c, 24.04);  
+            
+            Tbool result = USC.Tit29.Sec2611.MetHourThreshold(e,c);
+            Assert.AreEqual("1/1/0001 12:00:00 AM True ", result.TestOutput);
+        }
+        
     }
 }
