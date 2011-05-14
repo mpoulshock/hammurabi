@@ -29,15 +29,27 @@ namespace Hammurabi
 	{
         /// <summary>
         /// Indicates whether a person is employed by a particular employer
-        /// (corporation).
+        /// (corporation).  It is assumed that "employee" does not include 
+        /// independent contractors.
         /// </summary>
         public static Tbool IsEmployedBy(Person p, Corp c)
         {
             // Allows for simple temporal input (start date)
             // Need to enhance this later...
+            Tbool isEmp;
             
-            Tbool isEmp = Facts.InputTbool(p, "IsEmployedBy", c); 
-            
+            // If interview, ask only "nature of employment relationship"
+            if (Facts.GetUnknowns)
+            {
+                isEmp = Facts.InputTstr(p, "NatureOfEmploymentRelationship", c) == "Employee";
+            }
+            else
+            {
+                isEmp = Facts.Either(Facts.InputTstr(p, "NatureOfEmploymentRelationship", c) == "Employee",
+                                     Facts.InputTbool(p, "IsEmployedBy", c));
+            }
+
+            // Get employment start date, if necessary            
             if (isEmp.IsTrue)
             {
                 Tbool result = new Tbool(false);
@@ -49,8 +61,6 @@ namespace Hammurabi
             {
                 return isEmp;
             }
-            
-//          return Facts.InputTbool(p, "IsEmployedBy", c); 
         }
         
         /// <summary>
@@ -59,7 +69,31 @@ namespace Hammurabi
         /// </summary>
         public static Tbool IsIndependentContractor(Person p, CorporateEntity c)
         {
-            return Facts.InputTbool(p, "IsIndependentContractor", c);
+            Tbool isIC;
+            
+            // If interview, ask only "nature of employment relationship"
+            if (Facts.GetUnknowns)
+            {
+                isIC = Facts.InputTstr(p, "NatureOfEmploymentRelationship", c) == "Independent contractor";
+            }
+            else
+            {
+                isIC = Facts.Either(Facts.InputTstr(p, "NatureOfEmploymentRelationship", c) == "Independent contractor",
+                                     Facts.InputTbool(p, "IsIndependentContractor", c));
+            }
+
+            // Get employment start date, if necessary
+            if (isIC.IsTrue)
+            {
+                Tbool result = new Tbool(false);
+                DateTime start = Facts.InputDate(p, "DateStartedWorkingAt", c);
+                result.AddState(start,true);
+                return result;
+            }
+            else
+            {
+                return isIC;
+            }
         }
         
         /// <summary>

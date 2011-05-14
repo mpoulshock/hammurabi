@@ -92,7 +92,7 @@ namespace Hammurabi.UnitTests
             Facts.Assert(c, "NumberOfEmployees", 2000);
             Facts.Assert(e, "IsEmployedBy", c);
             Facts.Assert(e, "DateStartedWorkingAt", c, Time.DawnOf.AddDays(1));
-            Facts.Assert(e, "HoursWorkedInLast12Months",c, 1500);
+            Facts.Assert(e, "HoursWorkedPerWeek", c, 40);
             Facts.Assert(e, "IsEmployeeUnder5USC6301", false);
             Facts.Assert(e, "LessThan50EmployeesWithin75MilesOfWorksite", c, false);
             Facts.Assert(e, "IsAirlineFlightCrew", c, false);
@@ -113,7 +113,7 @@ namespace Hammurabi.UnitTests
             Facts.Assert(c, "NumberOfEmployees", 2000);
             Facts.Assert(e, "IsEmployedBy", c);
             Facts.Assert(e, "DateStartedWorkingAt", c, Time.DawnOf.AddDays(1));
-            Facts.Assert(e, "HoursWorkedInLast12Months",c, 1500);
+            Facts.Assert(e, "HoursWorkedPerWeek", c, 40);
             Facts.Assert(e, "IsEmployeeUnder5USC6301", false);
             Facts.Assert(e, "LessThan50EmployeesWithin75MilesOfWorksite", c, false);
             Facts.Assert(e, "IsAirlineFlightCrew", c, false);
@@ -134,7 +134,7 @@ namespace Hammurabi.UnitTests
             Facts.Assert(c, "NumberOfEmployees", 2000);
             Facts.Assert(e, "IsEmployedBy", c);
             Facts.Assert(e, "DateStartedWorkingAt", c, Time.DawnOf.AddDays(1));
-            Facts.Assert(e, "HoursWorkedInLast12Months",c, 1500);
+            Facts.Assert(e, "HoursWorkedPerWeek", c, 40);
             Facts.Assert(e, "IsEmployeeUnder5USC6301", false);
             Facts.Assert(e, "LessThan50EmployeesWithin75MilesOfWorksite", c, false);
             Facts.Assert(e, "IsAirlineFlightCrew", c, false);
@@ -155,7 +155,7 @@ namespace Hammurabi.UnitTests
             Facts.Assert(c, "NumberOfEmployees", 2000);
             Facts.Assert(e, "IsEmployedBy", c);
             Facts.Assert(e, "DateStartedWorkingAt", c, Time.DawnOf.AddDays(1));
-            Facts.Assert(e, "HoursWorkedInLast12Months",c, 1500);
+            Facts.Assert(e, "HoursWorkedPerWeek", c, 40);
             Facts.Assert(e, "IsEmployeeUnder5USC6301", false);
             Facts.Assert(e, "LessThan50EmployeesWithin75MilesOfWorksite", c, false);
             Facts.Assert(e, "IsAirlineFlightCrew", c, false);
