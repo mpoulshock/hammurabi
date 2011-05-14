@@ -59,7 +59,7 @@ namespace USC.Tit29
             
             Tbool prongAi = TestOrStubIf(TwelveMoInLast7Yrs, Employed7YrsAgo);
 
-            Tbool prongAii = MetHourThreshold(p,c);
+            Tbool prongAii = HoursInLast12Mo(p,c) >= 1250;
             
             Tbool prongB = !Tit5.Sec6301.IsEmployee(p) &&
                            (!Facts.InputTbool(p,"LessThan50EmployeesWithin75MilesOfWorksite",c) ||
@@ -74,17 +74,15 @@ namespace USC.Tit29
         /// Indicates whether a person has worked 1,250 hours in the 12-month period
         /// leading up to the family leave start date.
         /// </summary>
-        public static Tbool MetHourThreshold(Person p, Corp c)
+        public static Tnum HoursInLast12Mo(Person p, Corp c)
         {
             DateTime start = DateLeaveBegins(p,c);
             Tnum avgHours = Econ.HoursWorkedPerWeek(p,c);
             Tbool last12Mo = TheTime.IsBetween(start.AddMonths(-12), start);
-            Tbool employed = last12Mo & Econ.IsEmployedBy(p,c);   // we only care about last 12 mo. of employment
+            Tbool employed = last12Mo & Econ.IsEmployedBy(p,c);
             
             // HACK: Need to create a Tnum.SumOver(interval,start,end) function to implement this correctly...
-            Tnum hoursInLast12Months = (avgHours / 7) * employed.ElapsedDays(Time.DawnOf, start);
-        
-            return hoursInLast12Months > 1250;
+            return (avgHours / 7) * employed.ElapsedDays(Time.DawnOf, start);
         }
         
         /// <summary>
