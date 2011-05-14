@@ -285,5 +285,35 @@ namespace Hammurabi.UnitTests.CoreFcns
 			Assert.AreEqual(new DateTime(2014,12,31), dt.LastDayOfYear());	
 		}
 		
+        // .AddCalendarMonths
+        
+        [Test]
+        public void AddCalendarMonths1 ()
+        {
+            DateTime dt = new DateTime(2011,4,15);
+            Assert.AreEqual(new DateTime(2011,6,1), dt.AddCalendarMonths(1));  
+        }
+        
+        [Test]
+        public void AddCalendarMonths2 ()
+        {
+            DateTime dt = new DateTime(2011,5,1);
+            Assert.AreEqual(new DateTime(2011,6,1), dt.AddCalendarMonths(1));  
+        }
+        
+        [Test]
+        public void AddCalendarMonths3 ()
+        {
+            DateTime dt = new DateTime(2011,4,30);
+            Assert.AreEqual(new DateTime(2011,6,1), dt.AddCalendarMonths(1));  
+        }
+        
+        [Test]
+        public void AddCalendarMonths4 ()
+        {
+            DateTime dt = new DateTime(2011,4,15);
+            Assert.AreEqual(new DateTime(2011,7,1), dt.AddCalendarMonths(2));  
+        }
+        
 	}
 }

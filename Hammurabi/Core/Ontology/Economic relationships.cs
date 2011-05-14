@@ -97,6 +97,14 @@ namespace Hammurabi
         }
         
         /// <summary>
+        /// Returns the date a person started working at an employer.
+        /// </summary>
+        public static DateTime DateStartedWorkAt(Person p, CorporateEntity c)
+        {
+            return Facts.InputDate(p, "DateStartedWorkingAt", c);
+        }
+        
+        /// <summary>
         /// Returns the number of hours per week that a person works at a given
         /// employer.
         /// </summary>
@@ -125,6 +133,15 @@ namespace Hammurabi
         public static Tstr PositionAt(Person p, Corp c)
         {
             return Facts.InputTstr(p, "PositionAt", c);
+        }
+        
+        /// <summary>
+        /// Returns the length of an employee's initial probationary period (in
+        /// months) at an employer.
+        /// </summary>
+        public static Tnum LengthOfInitialProbation(Person p, CorporateEntity c)
+        {
+            return Facts.InputTnum(p, "LengthOfInitialProbationaryPeriodAtEmployerInMonths", c);
         }
         
 		/// <summary>

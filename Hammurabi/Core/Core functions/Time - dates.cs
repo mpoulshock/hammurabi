@@ -155,7 +155,28 @@ namespace Hammurabi
 				return dt;
 		}
 		
+        /// <summary>
+        /// Returns the date after n full calendar months have elapsed, starting
+        /// from a given date (this).
+        /// </summary>
+        /// <remarks>
+        /// This only works when adding, not subtracting, calendar months.
+        /// </remarks>
+        public static DateTime AddCalendarMonths(this DateTime dt, int n)
+        {
+            // Advance n months...
+            int y = dt.AddMonths(n).Year;
+            int m = dt.AddMonths(n).Month;
+            
+            // ...then get (the day after) the last day in that month
+            if (dt.Day != 1)
+                return new DateTime(y, m, DateTime.DaysInMonth(y,m)).AddDays(1);
+            // unless it's the first of the month (special case)
+            else
+                return dt.AddMonths(n);
+        }
 		
+        
 		#region Friendly reminders
 		
 		// C# methods that apply to a DateTime instance:
