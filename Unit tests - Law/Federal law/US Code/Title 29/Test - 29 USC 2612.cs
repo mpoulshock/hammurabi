@@ -37,15 +37,14 @@ namespace Hammurabi.UnitTests
     [TestFixture]
     public class USC_Tit29_Sec2612 : H
     {
+        private static Person e = new Person("the employee");
+        private static Corp c = new Corp("the employer");
+        
         // Simplest scenarios in which a person is/is not eligible for FMLA leave.
 
         [Test]
         public void Simple1 ()
         {
-            /// Instantiate some legal entities
-            Person e = new Person("the employee");
-            Corp c = new Corp("the employer");
-            
             // Assert facts about the entities (here, none)
             Facts.Clear();          
 
@@ -58,12 +57,8 @@ namespace Hammurabi.UnitTests
         [Test]
         public void Simple2 ()
         {
-            Person e = new Person("the employee");
-            Corp c = new Corp("the employer");
-
             Facts.Clear();
             Facts.Assert(e, "ReasonForRequestingLeaveFrom",c, "Other");          
-
             DateTime theDate = new DateTime(2011,4,15);
             bool? result = USC.Tit29.Sec2612.IsEntitledToRegLeaveFrom(e,c).AsOf(theDate).ToBool;
             Assert.AreEqual(false, result);
@@ -72,12 +67,8 @@ namespace Hammurabi.UnitTests
         [Test]
         public void Simple3 ()
         {
-            Person e = new Person("the employee");
-            Corp c = new Corp("the employer");
-
             Facts.Clear();
             Facts.Assert(e, "IsEmployedBy", c, false);  
-
             bool? result = USC.Tit29.Sec2612.IsEntitledToRegLeaveFrom(e,c).ToBool;
             Assert.AreEqual(false, result);
         }
@@ -85,9 +76,6 @@ namespace Hammurabi.UnitTests
         [Test]
         public void Simple4 ()
         {
-            Person e = new Person("the employee");
-            Corp c = new Corp("the employer");
-
             Facts.Clear();
             Facts.Assert(c, "NumberOfEmployees", 2000);
             Facts.Assert(e, "IsEmployedBy", c);
@@ -106,9 +94,6 @@ namespace Hammurabi.UnitTests
         [Test]
         public void Simple5 ()
         {
-            Person e = new Person("the employee");
-            Corp c = new Corp("the employer");
-
             Facts.Clear();
             Facts.Assert(c, "NumberOfEmployees", 2000);
             Facts.Assert(e, "IsEmployedBy", c);
@@ -127,9 +112,6 @@ namespace Hammurabi.UnitTests
         [Test]
         public void Test_2612aC1_1()
         {
-            Person e = new Person("the employee");
-            Corp c = new Corp("the employer");
-
             Facts.Clear();
             Facts.Assert(c, "NumberOfEmployees", 2000);
             Facts.Assert(e, "IsEmployedBy", c);
@@ -147,10 +129,7 @@ namespace Hammurabi.UnitTests
         [Test]
         public void Test_2612aC1_2()
         {
-            Person e = new Person("the employee");
-            Corp c = new Corp("the employer");
             Person f = new Person("the family member");
-
             Facts.Clear();
             Facts.Assert(c, "NumberOfEmployees", 2000);
             Facts.Assert(e, "IsEmployedBy", c);

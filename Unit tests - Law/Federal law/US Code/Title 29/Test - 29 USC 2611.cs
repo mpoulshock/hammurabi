@@ -37,12 +37,14 @@ namespace Hammurabi.UnitTests
     [TestFixture]
     public class USC_Tit29_Sec2611 : H
     {
+        private static Person e = new Person("the employee");
+        private static Corp c = new Corp("the employer");
+        
         // Covered employer
         
         [Test]
         public void Covered_Employer_1 ()
         {
-            Corp c = new Corp("the employer");
             Facts.Clear();
             Facts.Assert(c, "NumberOfEmployees", 2000);         
 
@@ -66,9 +68,7 @@ namespace Hammurabi.UnitTests
         [Test]
         public void Covered_Employer_3 ()
         {
-            Corp c = new Corp("the employer");
             Facts.Clear();          
-
             DateTime theDate = new DateTime(2011,4,15);
             Tbool result = USC.Tit29.Sec2611.IsCoveredEmployer(c).AsOf(theDate);
             Assert.AreEqual("Unknown", result.TestOutput);
@@ -77,10 +77,8 @@ namespace Hammurabi.UnitTests
         [Test]
         public void Not_Covered_Employer ()
         {
-            Corp c = new Corp("the employer");
             Facts.Clear();
             Facts.Assert(c, "NumberOfEmployees", 3);         
-
             DateTime theDate = new DateTime(2011,4,15);
             bool? result = USC.Tit29.Sec2611.IsCoveredEmployer(c).AsOf(theDate).ToBool;
             Assert.AreEqual(false, result);
@@ -91,10 +89,7 @@ namespace Hammurabi.UnitTests
         [Test]
         public void Eligible_Employee_1 ()
         {
-            Person e = new Person("the employee");
-            Corp c = new Corp("the employer");
             Facts.Clear(); 
-            
             DateTime theDate = new DateTime(2011,4,15);
             Tbool result = USC.Tit29.Sec2611.IsEligibleEmployee(e,c).AsOf(theDate);
             Assert.AreEqual("Unknown", result.TestOutput);
@@ -103,12 +98,8 @@ namespace Hammurabi.UnitTests
         [Test]
         public void Eligible_Employee_2 ()
         {
-            Person e = new Person("the employee");
-            Corp c = new Corp("the employer");
-
             Facts.Clear();
             Facts.Assert(e, "IsEmployedBy", c, false);  
-
             bool? result = USC.Tit29.Sec2611.IsEligibleEmployee(e,c).ToBool;
             Assert.AreEqual(false, result);
         }
@@ -116,9 +107,6 @@ namespace Hammurabi.UnitTests
         [Test]
         public void Eligible_Employee_3 ()
         {
-            Person e = new Person("the employee");
-            Corp c = new Corp("the employer");
-
             Facts.Reset();
             Facts.Assert(e, "IsEmployedBy", c);
             Facts.Assert(e, "DateStartedWorkingAt", c, Time.DawnOf.AddDays(1));
@@ -135,9 +123,6 @@ namespace Hammurabi.UnitTests
         [Test]
         public void Eligible_Employee_4 ()
         {
-            Person e = new Person("the employee");
-            Corp c = new Corp("the employer");
-
             Facts.Clear();
             Facts.Assert(e, "IsEmployedBy", c);
             Facts.Assert(e, "DateStartedWorkingAt", c, Time.DawnOf.AddDays(1));
@@ -155,9 +140,6 @@ namespace Hammurabi.UnitTests
         [Test]
         public void MetHourThreshold_1 ()
         {
-            Person e = new Person("the employee");
-            Corp c = new Corp("the employer");
-
             Facts.Clear();
             Facts.Assert(e, "IsEmployedBy", c);
             Facts.Assert(e, "DateStartedWorkingAt", c, new DateTime(2011,1,1));
@@ -171,9 +153,6 @@ namespace Hammurabi.UnitTests
         [Test]
         public void MetHourThreshold_2 ()
         {
-            Person e = new Person("the employee");
-            Corp c = new Corp("the employer");
-
             Facts.Clear();
             Facts.Assert(e, "IsEmployedBy", c);
             Facts.Assert(e, "DateStartedWorkingAt", c, new DateTime(2011,1,1));
@@ -187,9 +166,6 @@ namespace Hammurabi.UnitTests
         [Test]
         public void MetHourThreshold_3 ()
         {
-            Person e = new Person("the employee");
-            Corp c = new Corp("the employer");
-
             Facts.Clear();
             Facts.Assert(e, "IsEmployedBy", c);
             Facts.Assert(e, "DateStartedWorkingAt", c, new DateTime(2011,1,1));
@@ -203,9 +179,6 @@ namespace Hammurabi.UnitTests
         [Test]
         public void MetHourThreshold_4 ()
         {
-            Person e = new Person("the employee");
-            Corp c = new Corp("the employer");
-
             Facts.Clear();
             Facts.Assert(e, "IsEmployedBy", c);
             Facts.Assert(e, "DateStartedWorkingAt", c, new DateTime(2011,1,1));
@@ -219,9 +192,6 @@ namespace Hammurabi.UnitTests
         [Test]
         public void MetHourThreshold_5 ()
         {
-            Person e = new Person("the employee");
-            Corp c = new Corp("the employer");
-
             Facts.Clear();
             Facts.Assert(e, "IsEmployedBy", c);
             Facts.Assert(e, "DateStartedWorkingAt", c, new DateTime(2011,1,1));
@@ -235,9 +205,6 @@ namespace Hammurabi.UnitTests
         [Test]
         public void MetHourThreshold_6 ()
         {
-            Person e = new Person("the employee");
-            Corp c = new Corp("the employer");
-
             Facts.Clear();
             Facts.Assert(e, "IsEmployedBy", c);
             Facts.Assert(e, "DateStartedWorkingAt", c, new DateTime(2011,1,1));
