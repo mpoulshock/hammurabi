@@ -1,3 +1,4 @@
+
 // Copyright (c) 2011 The Hammurabi Project
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -851,6 +852,67 @@ namespace Hammurabi.UnitTests.CoreFcns
             Assert.AreEqual(expected, actual.TestOutput);      
         }
         
+        // Tbool.ForConsecutiveMonths
+        
+        [Test]
+        public void ForConsecutiveMonths_1 ()
+        {
+            Tbool t = new Tbool(false);
+            Tbool r = t.ForConsecutiveMonths(12);
+            Assert.AreEqual("1/1/0001 12:00:00 AM False ", r.TestOutput);      
+        }
+        
+        [Test]
+        public void ForConsecutiveMonths_2 ()
+        {
+            Tbool t = new Tbool(true);
+            Tbool r = t.ForConsecutiveMonths(12);
+            Assert.AreEqual("1/1/0001 12:00:00 AM False 1/1/0002 12:00:00 AM True ", r.TestOutput);      
+        }
+        
+        [Test]
+        public void ForConsecutiveMonths_3 ()
+        {
+            Tbool t = new Tbool(false);
+            t.AddState(new DateTime(2000,1,1),true);
+            t.AddState(new DateTime(2001,1,1),false);
+            Tbool r = t.ForConsecutiveMonths(6);
+            Assert.AreEqual("1/1/0001 12:00:00 AM False 7/1/2000 12:00:00 AM True 1/1/2001 12:00:00 AM False ", r.TestOutput);      
+        }
+        
+        [Test]
+        public void ForConsecutiveMonths_4 ()
+        {
+            Tbool t = new Tbool(false);
+            t.AddState(new DateTime(2000,1,1),true);
+            t.AddState(new DateTime(2001,1,1),false);
+            Tbool r = t.ForConsecutiveMonths(18);
+            Assert.AreEqual("1/1/0001 12:00:00 AM False ", r.TestOutput);      
+        }
+        
+        // Tbool.DateFirstTrue
+        
+        [Test]
+        public void DateFirstTrue_1 ()
+        {
+            Tbool t = new Tbool(false);
+            Assert.AreEqual(Time.EndOf, t.DateFirstTrue);      
+        }
+        
+        [Test]
+        public void DateFirstTrue_2 ()
+        {
+            Tbool t = new Tbool(true);
+            Assert.AreEqual(Time.DawnOf, t.DateFirstTrue);      
+        }
+        
+        [Test]
+        public void DateFirstTrue_3 ()
+        {
+            Tbool t = new Tbool(false);
+            t.AddState(new DateTime(2000,1,1), true);
+            Assert.AreEqual(new DateTime(2000,1,1), t.DateFirstTrue);      
+        }
         
 	}
 	

@@ -96,7 +96,7 @@ namespace Hammurabi
 		
 		
 		// ********************************************************************
-		// IsAlways / IsEver
+		// IsAlways / IsEver / DateFirst
 		// ********************************************************************
 		
 		// TODO: Make inputs ints, decimals, or something...
@@ -135,7 +135,22 @@ namespace Hammurabi
 			return IsEverTvar<Tnum>(val, start, end);
 		}
 		
-		
+        /// <summary>
+        /// Returns the DateTime when the Tnum first has a given value
+        /// </summary>
+        public DateTime DateFirst(decimal val) 
+        {
+            return DateFirst<Tnum>(val);
+        }
+        public DateTime DateFirst(int val) 
+        {
+            return DateFirst<Tnum>(val);
+        }
+        public DateTime DateFirst(double val) 
+        {
+            return DateFirst<Tnum>(val);
+        }
+        
 		// *************************************************************
 		// All-time min / max
 		// *************************************************************

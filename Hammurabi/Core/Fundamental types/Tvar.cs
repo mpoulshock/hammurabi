@@ -371,5 +371,27 @@ namespace Hammurabi
             return ElapsedTime(val, Time.DawnOf, Time.EndOf);
         }
 
+        
+        // ********************************************************************
+        // DateFirst()
+        // ********************************************************************
+        
+        /// <summary>
+        /// Returns the DateTime when a Tvar first has a given value.
+        /// </summary>
+        public DateTime DateFirst<T>(object val) where T : Tvar
+        {
+            SortedList<DateTime, object> line = this.TimeLine;
+            
+            for (int i = 0; i < line.Count; i++) 
+            {
+                if (object.Equals(line.Values[i], val))
+                {
+                    return line.Keys[i];
+                }
+            }
+
+            return Time.EndOf; // need to think about this...
+        }
 	}	
 }

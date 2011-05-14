@@ -321,6 +321,63 @@ namespace Hammurabi
             return result.Lean;
         }
         
+        /// <summary>
+        /// Returns true whenever a Tbool has been true for the previous n 
+        /// consecutive months.
+        /// </summary>
+        /// <remarks>
+        /// Returns false whenever the Tbool is false.  For example, for:
+        /// isEmployed.ForConsecutiveMonths(6), if the person is employed from
+        /// 1/1 to 12/31, this function will return true from 7/1 - 12/31.
+        /// </remarks>
+        //  TODO: Generalize to days, weeks, years, calendar weeks, etc.
+        public Tbool ForConsecutiveMonths(int numberOfMonths)
+        {
+            if (this.IsUnknown) { return new Tbool(); }
+            
+            Tbool result = new Tbool();
+            result.AddState(Time.DawnOf, false);
+            
+            SortedList<DateTime, object> t = this.TimeLine;
+            
+            for (int i = 0; i < t.Count; i++)
+            {
+                if (Convert.ToBoolean(t.Values[i]) == true)
+                {
+                    DateTime start = t.Keys[i];
+                    result.AddState(start.AddMonths(numberOfMonths), true);
+                }
+            }
+
+            // If the underlying Tbool (this) is no longer true, the result should
+            // not be true either.
+            Tbool trueForPeriod = this && result;
+            
+            return trueForPeriod.Lean;
+        }
+        
+        /// <summary>
+        /// Returns the DateTime when the Tbool is first true.
+        /// </summary>
+        public DateTime DateFirstTrue 
+        {
+            get
+            {
+                return DateFirst<Tbool>(true);
+            }
+        }
+        
+        /// <summary>
+        /// Returns the DateTime when the Tbool is first false.
+        /// </summary>
+        public DateTime DateFirstFalse 
+        {
+            get
+            {
+                return DateFirst<Tbool>(false);
+            }
+        }
+        
 		/// <summary>
 		/// Overloaded boolean operator: True.
 		/// </summary>
