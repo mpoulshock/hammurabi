@@ -254,6 +254,8 @@ namespace Hammurabi.UnitTests.CoreFcns
             Person e = new Person("e");
             Corp c = new Corp("c");
             Facts.Reset();
+            Facts.Assert(e, "IsEmployedBy", c);
+            Facts.Assert(e, "DateStartedWorkingAt", c, Time.DawnOf);
             Facts.Assert(e, "HoursWorkedPerWeek", c, 35);
             Tbool result = Econ.IsFullTimeEmployee(e,c);
             Assert.AreEqual("1/1/0001 12:00:00 AM True ", result.TestOutput);
@@ -265,6 +267,8 @@ namespace Hammurabi.UnitTests.CoreFcns
             Person e = new Person("e");
             Corp c = new Corp("c");
             Facts.Reset();
+            Facts.Assert(e, "IsEmployedBy", c);
+            Facts.Assert(e, "DateStartedWorkingAt", c, Time.DawnOf);
             Facts.Assert(e, "HoursWorkedPerWeek", c, 38);
             Tbool result = Econ.IsFullTimeEmployee(e,c);
             Assert.AreEqual("1/1/0001 12:00:00 AM True ", result.TestOutput);
@@ -276,6 +280,8 @@ namespace Hammurabi.UnitTests.CoreFcns
             Person e = new Person("e");
             Corp c = new Corp("c");
             Facts.Reset();
+            Facts.Assert(e, "IsEmployedBy", c);
+            Facts.Assert(e, "DateStartedWorkingAt", c, Time.DawnOf);
             Facts.Assert(e, "HoursWorkedPerWeek", c, 40);
             Tbool result = Econ.IsFullTimeEmployee(e,c);
             Assert.AreEqual("1/1/0001 12:00:00 AM True ", result.TestOutput);

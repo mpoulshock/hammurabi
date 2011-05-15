@@ -32,7 +32,7 @@ namespace Hammurabi
         /// (corporation).  It is assumed that "employee" does not include 
         /// independent contractors.
         /// </summary>
-        public static Tbool IsEmployedBy(Person p, Corp c)
+        public static Tbool IsEmployedBy(Person p, CorporateEntity c)
         {
             // Allows for simple temporal input (start date)
             // Need to enhance this later...
@@ -52,10 +52,15 @@ namespace Hammurabi
             // Get employment start date, if necessary            
             if (isEmp.IsTrue)
             {
-                Tbool result = new Tbool(false);
                 DateTime start = Facts.InputDate(p, "DateStartedWorkingAt", c);
-                result.AddState(start,true);
-                return result;
+                
+                if (start != Time.DawnOf)
+                {
+                    Tbool result = new Tbool(false);
+                    result.AddState(start,true);  
+                    return result;
+                }
+                else { return new Tbool(true); }
             }
             else
             {
@@ -85,10 +90,15 @@ namespace Hammurabi
             // Get employment start date, if necessary
             if (isIC.IsTrue)
             {
-                Tbool result = new Tbool(false);
                 DateTime start = Facts.InputDate(p, "DateStartedWorkingAt", c);
-                result.AddState(start,true);
-                return result;
+                
+                if (start != Time.DawnOf)
+                {
+                    Tbool result = new Tbool(false);
+                    result.AddState(start,true);  
+                    return result;
+                }
+                else { return new Tbool(true); }
             }
             else
             {
@@ -123,7 +133,7 @@ namespace Hammurabi
             // If 35 or more hours  => true
             // If 30 or fewer hours => false
             // Else                 => unknown
-            return TestOrStubIf(hours >= 35, hours < 35 && hours >= 30);
+            return IsEmployedBy(p,c) & TestOrStubIf(hours >= 35, hours < 35 && hours >= 30);
         }
         
         /// <summary>

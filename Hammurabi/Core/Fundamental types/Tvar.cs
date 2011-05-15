@@ -75,7 +75,11 @@ namespace Hammurabi
 		/// </summary>
 		public void AddState(DateTime dt, object val)
 		{
-			TimeLine.Add(dt,val);	
+            // If a state (DateTime) is added to a Tvar that already has that 
+            // state, an error occurs.  We could check for duplicates here, but
+            // this function is used extremely frequently and doing so would
+            // probably affect performance.
+			TimeLine.Add(dt,val);
 		}
 		
 		/// <summary>
