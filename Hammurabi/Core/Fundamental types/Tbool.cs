@@ -323,6 +323,24 @@ namespace Hammurabi
         
         /// <summary>
         /// Returns true whenever a Tbool has been true for the previous n 
+        /// consecutive days.
+        /// </summary>
+        public Tbool ForConsecutiveDays(int numberOfDays)
+        {
+            return ForConsecutiveIntervals(Time.IntervalType.Day, numberOfDays);
+        }
+        
+        /// <summary>
+        /// Returns true whenever a Tbool has been true for the previous n 
+        /// consecutive weeks.
+        /// </summary>
+        public Tbool ForConsecutiveWeeks(int numberOfWeeks)
+        {
+            return ForConsecutiveIntervals(Time.IntervalType.Week, numberOfWeeks);
+        }
+        
+        /// <summary>
+        /// Returns true whenever a Tbool has been true for the previous n 
         /// consecutive months.
         /// </summary>
         /// <remarks>
@@ -332,6 +350,24 @@ namespace Hammurabi
         /// </remarks>
         //  TODO: Generalize to days, weeks, years, calendar weeks, etc.
         public Tbool ForConsecutiveMonths(int numberOfMonths)
+        {
+            return ForConsecutiveIntervals(Time.IntervalType.Month, numberOfMonths);
+        }
+        
+        /// <summary>
+        /// Returns true whenever a Tbool has been true for the previous n 
+        /// consecutive years.
+        /// </summary>
+        public Tbool ForConsecutiveYears(int numberOfYears)
+        {
+            return ForConsecutiveIntervals(Time.IntervalType.Year, numberOfYears);
+        }
+        
+        /// <summary>
+        /// General function that determines whether a Tbool is true for a given number
+        /// of intervals of a specified type. 
+        /// </summary>
+        private Tbool ForConsecutiveIntervals(Time.IntervalType type, int numberOfIntervals)
         {
             if (this.IsUnknown) { return new Tbool(); }
             
@@ -345,7 +381,13 @@ namespace Hammurabi
                 if (Convert.ToBoolean(t.Values[i]) == true)
                 {
                     DateTime start = t.Keys[i];
-                    result.AddState(start.AddMonths(numberOfMonths), true);
+                    DateTime thresholdReached = start.AddInterval(type, numberOfIntervals);
+
+                    if ((i < t.Count-1 && thresholdReached <= t.Keys[i+1]) || i == t.Count-1)
+                    {
+                        
+                        result.AddState(thresholdReached, true);
+                    }
                 }
             }
 

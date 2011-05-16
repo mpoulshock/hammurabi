@@ -69,7 +69,7 @@ namespace Hammurabi
 			{
 				result.AddState(indexDate,Convert.ToString(indexNumber));
 				indexNumber++;
-				indexDate = indexDate.AddInterval(interval);
+				indexDate = indexDate.AddInterval(interval, 1);
 			}
 			
 			result.AddState(end, 0);
@@ -135,7 +135,7 @@ namespace Hammurabi
 			while (indexDate < end) 
 			{
 				result.AddState(indexDate,Convert.ToString(indexNumber));
-				indexDate = indexDate.AddInterval(interval);
+				indexDate = indexDate.AddInterval(interval, 1);
 				
 				// Reset sequence
 				indexNumber++;

@@ -159,6 +159,25 @@ namespace Hammurabi
                 directObject = obj;
             }
         }
+        
+//        /// <summary>
+//        /// Returns a list of unknown facts that are relevant to a particular goal.
+//        /// </summary>
+//        /// <remarks>
+//        /// Properly handles global variables and data structures in an attempt to
+//        /// isolate these from the user.
+//        /// </remarks>
+//        public static List<Factlet> UnknownFacts(Func<object,object,Tbool> fcn, object A, object B)
+//        {
+//            Facts.Unknowns.Clear();
+//            Facts.GetUnknowns = true;
+//            fcn(A,B).Invoke;  // ?
+//            Facts.GetUnknowns = false;
+//            List<Factlet> result = Facts.Unknowns;
+//            Facts.Unknowns.Clear();
+//            return result;
+//        }
+        
     }
 }
         

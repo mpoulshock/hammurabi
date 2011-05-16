@@ -118,24 +118,24 @@ namespace Hammurabi
 		}
 		
 		/// <summary>
-		/// Add an interval of time to a DateTime.
+		/// Add an interval of time (or some multiple thereof) to a DateTime.
 		/// </summary>
-		public static DateTime AddInterval(this DateTime dt, Time.IntervalType interval)
-		{
-			if (interval == Time.IntervalType.Day)
-				return dt.AddDays(1);
-			else if (interval == Time.IntervalType.Week)
-				return dt.AddDays(7);
-			else if (interval == Time.IntervalType.Month)
-				return dt.AddMonths(1);
-			else if (interval == Time.IntervalType.Quarter) // won't necessarily work for qtr end dates
-				return dt.AddMonths(3);
-			else if (interval == Time.IntervalType.Year)
-				return dt.AddYears(1);
-			else
-				return dt;
-		}
-		
+        public static DateTime AddInterval(this DateTime dt, Time.IntervalType interval, int numberOfIntervals)
+        {
+            if (interval == Time.IntervalType.Day)
+                return dt.AddDays(numberOfIntervals);
+            else if (interval == Time.IntervalType.Week)
+                return dt.AddDays(7 * numberOfIntervals);
+            else if (interval == Time.IntervalType.Month)
+                return dt.AddMonths(numberOfIntervals);
+            else if (interval == Time.IntervalType.Quarter) // won't necessarily work for qtr end dates
+                return dt.AddMonths(3 * numberOfIntervals);
+            else if (interval == Time.IntervalType.Year)
+                return dt.AddYears(numberOfIntervals);
+            else
+                return dt;
+        }
+        
 		/// <summary>
 		/// Subtract an interval of time from a DateTime.
 		/// </summary>

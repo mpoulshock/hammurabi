@@ -890,6 +890,17 @@ namespace Hammurabi.UnitTests.CoreFcns
             Assert.AreEqual("1/1/0001 12:00:00 AM False ", r.TestOutput);      
         }
         
+        [Test]
+        public void ForConsecutiveMonths_5 ()
+        {
+            Tbool t = new Tbool(false);
+            t.AddState(new DateTime(2000,1,1),true);
+            t.AddState(new DateTime(2001,1,1),false);
+            t.AddState(new DateTime(2001,6,1),true);
+            Tbool r = t.ForConsecutiveMonths(20);
+            Assert.AreEqual("1/1/0001 12:00:00 AM False 2/1/2003 12:00:00 AM True ", r.TestOutput);      
+        }
+        
         // Tbool.DateFirstTrue
         
         [Test]
