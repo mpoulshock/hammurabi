@@ -85,6 +85,7 @@
     <Compile Include="Core\Facts\Unknown facts.cs" />
     <Compile Include="Core\Facts\Window of concern.cs" />
     <Compile Include="Core\Ontology\Governmental relationships.cs" />
+    <Compile Include="Core\Core functions\Tbool - temporal.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
