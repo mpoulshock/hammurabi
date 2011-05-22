@@ -37,7 +37,7 @@ namespace Hammurabi
         /// </summary>
         public static Tbool Stub()
         {
-            return new Tbool();
+            return new Tbool(null);
         }
     
         /// <summary>
@@ -52,12 +52,12 @@ namespace Hammurabi
         /// </remarks>
         public static Tbool StubIf(Tbool condition)
         {
-            return IfThen(condition, new Tbool());
+            return IfThen(condition, Stub());
         }
         
         public static Tbool StubIf(bool condition)
         {
-            return IfThen(new Tbool(condition), new Tbool());
+            return IfThen(new Tbool(condition), Stub());
         }
         
         /// <summary>

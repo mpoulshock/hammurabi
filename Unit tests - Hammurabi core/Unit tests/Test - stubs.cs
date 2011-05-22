@@ -38,7 +38,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void Stub_1()
         {
             Tbool result = Stub();
-            Assert.AreEqual("Unknown", result.TestOutput);
+            Assert.AreEqual("1/1/0001 12:00:00 AM Null ", result.TestOutput);
         }
         
         // StubIf
@@ -48,7 +48,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         {
             Tbool condition = new Tbool(true);
             Tbool result = StubIf(condition);
-            Assert.AreEqual("Unknown", result.TestOutput);
+            Assert.AreEqual("1/1/0001 12:00:00 AM Null ", result.TestOutput);
         }
 
         [Test]
@@ -72,8 +72,8 @@ namespace Hammurabi.UnitTests.CoreFcns
         {
             Tbool prongA = new Tbool(true);
             Tbool prongB = StubIf(true);
-            Tbool result = prongA & prongB;
-            Assert.AreEqual("Unknown", result.TestOutput);
+            Tbool result = prongA & prongB;;
+            Assert.AreEqual("1/1/0001 12:00:00 AM Null ", result.TestOutput);
         }
         
         [Test]
@@ -109,7 +109,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tbool prongA = new Tbool(false);
             Tbool prongB = StubIf(true);
             Tbool result = prongA | prongB;
-            Assert.AreEqual("Unknown", result.TestOutput);
+            Assert.AreEqual("1/1/0001 12:00:00 AM Null ", result.TestOutput);
         }
         
         [Test]
@@ -165,7 +165,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tbool testCondition = new Tbool(false);
             Tbool stubCondition = new Tbool(true);
             Tbool result = TestOrStubIf(testCondition, stubCondition);
-            Assert.AreEqual("Unknown", result.TestOutput);
+            Assert.AreEqual("1/1/0001 12:00:00 AM Null ", result.TestOutput);
         }
         
         [Test]

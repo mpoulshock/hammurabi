@@ -41,7 +41,7 @@ namespace Hammurabi
 		/// <summary>
 		/// Constructs a Tbool that is eternally set to a specified boolean value
 		/// </summary>
-		public Tbool(bool val)
+		public Tbool(bool? val)
 		{
 			this.SetEternally(val);
 		}
@@ -136,6 +136,14 @@ namespace Hammurabi
             {
                 return DateFirst<Tbool>(false);
             }
+        }
+        
+        /// <summary>
+        /// Implicitly converts bools to Tbools.
+        /// </summary>
+        public static implicit operator Tbool(bool b) 
+        {
+            return new Tbool(b);
         }
         
 		/// <summary>

@@ -59,6 +59,17 @@ namespace Hammurabi
 		}
 		
         /// <summary>
+        /// Indicates whether a (non-unknown) value has been determined for the Tvar 
+        /// </summary>
+        public bool IsResolved
+        {
+            get
+            {
+                return !this.IsUnknown;
+            }
+        }
+        
+        /// <summary>
         /// Indicates whether a Tvar is "known" - that is, if it has at least
         /// one time-value state. 
         /// </summary>
@@ -108,9 +119,13 @@ namespace Hammurabi
 				{
 					foreach(KeyValuePair<DateTime,object> de in this.TimeLine)
 					{
-						// TODO: Create timeline output for null objects
-						
-		       	    	result += de.Key + " " + Convert.ToString(de.Value) + "\n";	
+						// Display "Null" for null values
+                        object val = de.Value;
+                        string showedVal = Convert.ToString(val);
+                        if (val == null) { showedVal = "Null"; }
+                        
+                        // Show the value as an element on the timeline
+                        result += de.Key + " " + showedVal + "\n"; 
 					}
 				}
 				return result;

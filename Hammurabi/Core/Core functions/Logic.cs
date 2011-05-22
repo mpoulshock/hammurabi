@@ -32,9 +32,17 @@ namespace Hammurabi
 		//	AND
 		// ********************************************************************
 		
+        /*
+         *  "Truth table" for AND:
+         * 
+         *     If one input is False, returns False.
+         *     Else if one input is Unknown, returns Unknown.
+         *     Else if one input is Null, returns Null.
+         *     Else, returns True.
+         */
+        
 		/// <summary>
-		/// Temporal AND function: returns true when all of the inputs
-		/// are true.
+		/// Temporal AND function.
 		/// </summary>
 		public static Tbool operator & (Tbool tb1, Tbool tb2)
 		{         
@@ -61,7 +69,7 @@ namespace Hammurabi
             foreach (Tbool b in list)
             {
                 if (b.IntervalValues.Count == 1 &&
-                    Convert.ToBoolean(b.IntervalValues.Values[0]) == false)
+                    (bool?)b.IntervalValues.Values[0] == false)
                 {
                     return new Tbool(false);
                 }
@@ -117,27 +125,39 @@ namespace Hammurabi
 		/// <summary>
 		/// Private non-temporal AND function
 		/// </summary>
-		private static bool And(List<object> list)
+		private static bool? And(List<object> list)
 		{
-			foreach (bool b in list) 
+            // Test for falses
+			foreach (bool? b in list) 
 			{
-				if (b == false)
-				{
-					return false; 
-				}
+				if (b == false) { return false; }
 			}
 	
+            // Test for nulls
+            foreach (bool? b in list) 
+            {
+                if (b == null) { return null; }
+            }
+            
 			return true;
 		}
-		
+
 		
 		// ********************************************************************
 		//	OR
 		// ********************************************************************
 
+        /*
+         *  "Truth table" for OR:
+         * 
+         *     If one input is True, returns True.
+         *     Else if one input is Unknown, returns Unknown.
+         *     Else if one input is Null, returns Null.
+         *     Else, returns False.
+         */
+        
 		/// <summary>
-		/// Temporal OR function: returns true when at least one of the inputs
-		/// is true.
+		/// Temporal OR function.
 		/// </summary>
 		public static Tbool operator | (Tbool tb1, Tbool tb2)
 		{
@@ -163,7 +183,7 @@ namespace Hammurabi
 			foreach (Tbool b in list)
 			{
 				if (b.IntervalValues.Count == 1 &&
-				    Convert.ToBoolean(b.IntervalValues.Values[0]) == true)
+				    (bool?)b.IntervalValues.Values[0] == true)
 				{
 					return new Tbool(true);
 				}
@@ -179,19 +199,23 @@ namespace Hammurabi
 		/// <summary>
 		/// Private non-temporal OR function
 		/// </summary>
-		private static bool Or(List<object> list)
+		private static bool? Or(List<object> list)
 		{
-			foreach (bool b in list) 
+            // Test for trues
+			foreach (bool? b in list) 
 			{
-				if (b == true)
-				{
-					return true; 
-				}
+				if (b == true) { return true; }
 			}
 	
+            // Test for nulls
+            foreach (bool? b in list) 
+            {
+                if (b == null) { return null; }
+            }
+            
 			return false;
 		}
-		
+
 		
 		// ********************************************************************
 		//	NOT
@@ -214,7 +238,7 @@ namespace Hammurabi
 			
 			foreach (KeyValuePair<DateTime,object> slice in input.IntervalValues)
 			{
-				bool r = !(bool)slice.Value;
+				bool? r = !(bool?)slice.Value;
 				result.AddState(slice.Key, r);
 			}
 			

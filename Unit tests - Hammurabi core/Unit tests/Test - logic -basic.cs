@@ -62,21 +62,57 @@ namespace Hammurabi.UnitTests.CoreFcns
 			Assert.AreEqual("1/1/0001 12:00:00 AM False ", t1.TestOutput);			
 		}
 		
-//		[Test]
-//		public void LogicAnd5 ()
-//		{
-//			Tbool tbt = new Tbool(true);
-//			Tbool t1 = tbt & false;
-//			Assert.AreEqual("1/1/0001 12:00:00 AM False ", t1.TestOutput);			
-//		}
-//		
-//		[Test]
-//		public void LogicAnd6 ()
-//		{
-//			Tbool tbt = new Tbool(true);
-//			Tbool t1 = false & tbt;
-//			Assert.AreEqual("1/1/0001 12:00:00 AM False ", t1.TestOutput);			
-//		}
+        [Test]
+        public void LogicAnd5 ()
+        {
+            Tbool t1 = new Tbool(true);
+            Tbool t2 = new Tbool(null);
+            Tbool r = t1 & t2;
+            Assert.AreEqual("1/1/0001 12:00:00 AM Null ", r.TestOutput);          
+        }
+        
+        [Test]
+        public void LogicAnd6 ()
+        {
+            Tbool t1 = new Tbool(false);
+            Tbool t2 = new Tbool(null);
+            Tbool r = t1 & t2;
+            Assert.AreEqual("1/1/0001 12:00:00 AM False ", r.TestOutput);          
+        }
+        
+        [Test]
+        public void LogicAnd7 ()
+        {
+            Tbool t1 = new Tbool(null);
+            Tbool t2 = new Tbool(null);
+            Tbool r = t1 & t2;
+            Assert.AreEqual("1/1/0001 12:00:00 AM Null ", r.TestOutput);          
+        }
+        
+        [Test]
+        public void LogicAnd8 ()
+        {
+            Tbool t1 = new Tbool();
+            Tbool t2 = new Tbool(null);
+            Tbool r = t1 & t2;
+            Assert.AreEqual("Unknown", r.TestOutput);          
+        }
+        
+		[Test]
+		public void LogicAnd9 ()
+		{
+			Tbool tbt = new Tbool(true);
+			Tbool t1 = tbt & false;
+			Assert.AreEqual("1/1/0001 12:00:00 AM False ", t1.TestOutput);			
+		}
+		
+		[Test]
+		public void LogicAnd10 ()
+		{
+			Tbool tbt = new Tbool(true);
+			Tbool t1 = false & tbt;
+			Assert.AreEqual("1/1/0001 12:00:00 AM False ", t1.TestOutput);			
+		}
 		
 		
 		// OR
