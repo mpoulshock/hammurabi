@@ -111,7 +111,7 @@ namespace Hammurabi
 		{
 			if (typeof(T) == new Tbool().GetType())
 			{
-				return new Tbool(Convert.ToBoolean(val));
+                return new Tbool((bool?)val);
 			}
 			if (typeof(T) == new Tnum().GetType())
 			{

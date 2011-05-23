@@ -135,6 +135,21 @@ namespace Hammurabi.UnitTests
             Assert.AreEqual("1/1/0001 12:00:00 AM True ", result.TestOutput);
         }
         
+        [Test]
+        public void Eligible_Employee_5 ()
+        {
+            Facts.Clear();
+            Facts.Assert(e, "IsEmployedBy", c);
+            Facts.Assert(e, "DateStartedWorkingAt", c, Time.DawnOf.AddDays(1));
+            Facts.Assert(e, "HoursWorkedPerWeek", c, 40);
+            Facts.Assert(e, "IsEmployeeUnder5USC6301", false);
+            Facts.Assert(e, "LessThan50EmployeesWithin75MilesOfWorksite", c, false);
+            Facts.Assert(e, "IsAirlineFlightCrew", c);     
+
+            Tbool result = USC.Tit29.Sec2611.IsEligibleEmployee(e,c);
+            Assert.AreEqual("1/1/0001 12:00:00 AM Null ", result.TestOutput);
+        }
+        
         // HoursInLast12Mo
         
         [Test]

@@ -58,21 +58,6 @@ namespace Hammurabi
 		}
 
 		/// <summary>
-		/// Converts a Tbool to a nullable boolean.
-		/// Returns null if the Tbool is unknown or if it's value changes over
-		/// time (that is, if it's not eternal).
-		/// </summary>
-		public bool? ToBool
-		{
-			get
-			{
-				if (this.IsUnknown || TimeLine.Count > 1) { return null; }
-				
-				return (Convert.ToBoolean(TimeLine.Values[0]));
-			}
-		}
-		
-		/// <summary>
 		/// Returns the value of a Tbool at a specified point in time. 
 		/// </summary>
 		public Tbool AsOf(DateTime dt)
@@ -209,6 +194,21 @@ namespace Hammurabi
                                                        Facts.WindowOfConcernStart, 
                                                        Facts.WindowOfConcernEnd
                                                        ).ToBool);
+            }
+        }
+        
+        /// <summary>
+        /// Converts a Tbool to a nullable boolean.
+        /// Returns null if the Tbool is unknown, if it's value changes over
+        /// time (that is, if it's not eternal), and when it's null.
+        /// </summary>
+        public bool? ToBool
+        {
+            get
+            {
+                if (this.IsUnknown || TimeLine.Count > 1) { return null; }
+                
+                return (bool?)TimeLine.Values[0];
             }
         }
         

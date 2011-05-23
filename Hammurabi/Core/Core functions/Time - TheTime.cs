@@ -148,7 +148,7 @@ namespace Hammurabi
 		
         /// <summary>
         /// Returns a Tnum representing the calendar week (by default, a
-        /// 6-year span centered on the start of the current year).
+        /// 10-year span centered on the start of the current year).
         /// </summary>
         /// <remarks>
         /// The default TheCalendarWeek function follows the U.S. convention
@@ -162,7 +162,7 @@ namespace Hammurabi
         {
             get
             {
-                return CalendarWeek(3);
+                return CalendarWeek(5);
             }
         }
         

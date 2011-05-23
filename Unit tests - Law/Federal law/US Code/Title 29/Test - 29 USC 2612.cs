@@ -110,6 +110,47 @@ namespace Hammurabi.UnitTests
         }
         
         [Test]
+        public void Simple6 ()
+        {
+            Facts.SetWindowOfConcern(2);
+            Facts.Clear();
+            Facts.Assert(e ,"DateFamilyLeaveBegins", c, new DateTime(2014,1,1));
+            Facts.Assert(e, "NatureOfEmploymentRelationship", c, "Employee");
+            Facts.Assert(e, "DateStartedWorkingAt", c, new DateTime(2011,1,1));
+            Facts.Assert(e, "HoursWorkedPerWeek", c, 40);
+            Facts.Assert(e, "IsEmployeeUnder5USC6301", false);
+            Facts.Assert(e, "LessThan50EmployeesWithin75MilesOfWorksite", c, false);
+            Facts.Assert(e, "IsAirlineFlightCrew", c, false);
+            Facts.Assert(c, "NumberOfEmployees", 2000);
+            Facts.Assert(e, "ReasonForRequestingLeaveFrom",c, "To adopt a child"); 
+
+//            Tbool result = USC.Tit29.Sec2612.IsEntitledToLeaveFrom(e,c); 
+//            Assert.AreEqual("1/1/0001 12:00:00 AM False 1/1/2009 12:00:00 AM True 1/1/2014 12:00:00 AM False", result.TestOutput);
+            
+            DateTime theDate = new DateTime(2014,1,1);
+            bool? result = USC.Tit29.Sec2612.IsEntitledToLeaveFrom(e,c).AsOf(theDate).ToBool;
+            Assert.AreEqual(true, result);
+        }
+        
+        [Test]
+        public void FMLA_Flight_Crew ()
+        {
+            Facts.Clear();
+            Facts.Assert(c, "NumberOfEmployees", 2000);
+            Facts.Assert(e, "IsEmployedBy", c);
+            Facts.Assert(e, "DateStartedWorkingAt", c, Time.DawnOf.AddDays(1));
+            Facts.Assert(e, "HoursWorkedPerWeek", c, 40);
+            Facts.Assert(e, "IsEmployeeUnder5USC6301", false);
+            Facts.Assert(e, "LessThan50EmployeesWithin75MilesOfWorksite", c, false);
+            Facts.Assert(e, "IsAirlineFlightCrew", c);
+            Facts.Assert(e, "ReasonForRequestingLeaveFrom",c, "To adopt a child"); 
+
+            DateTime theDate = new DateTime(2011,4,15);
+            bool? result = USC.Tit29.Sec2612.IsEntitledToRegLeaveFrom(e,c).AsOf(theDate).ToBool;
+            Assert.AreEqual(null, result);
+        }
+        
+        [Test]
         public void Test_2612aC1_1()
         {
             Facts.Clear();

@@ -111,6 +111,14 @@ namespace Hammurabi.UnitTests.CoreFcns
 			Assert.AreEqual("1/1/0001 12:00:00 AM ham ", res.TestOutput);		
 		}
 		
+        [Test]
+        public void FT_AsOf_8 ()
+        {
+            Tbool t = new Tbool(null);
+            Tbool res = t.AsOf(Time.DawnOf.AddYears(2));
+            Assert.AreEqual("1/1/0001 12:00:00 AM Null ", res.TestOutput);       
+        }
+        
 		// .IsAlways
 		
 		[Test]
@@ -382,6 +390,14 @@ namespace Hammurabi.UnitTests.CoreFcns
 			Assert.AreEqual(null, t.ToBool);		
 		}
 		
+        [Test]
+        public void FT_ToBool_5 ()
+        {
+            // If value is null, .ToBool should return null
+            Tbool t = new Tbool(null);
+            Assert.AreEqual(null, t.ToBool);        
+        }
+        
 		// .EverPerInterval
 		
 		[Test]
