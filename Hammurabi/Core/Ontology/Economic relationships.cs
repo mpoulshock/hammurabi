@@ -32,7 +32,7 @@ namespace Hammurabi
         /// (corporation).  It is assumed that "employee" does not include 
         /// independent contractors.
         /// </summary>
-        public static Tbool IsEmployedBy(Person p, CorporateEntity c)
+        new public static Tbool IsEmployedBy(Person p, CorporateEntity c)
         {
             // Allows for simple temporal input (start date)
             // Need to enhance this later...
@@ -72,7 +72,7 @@ namespace Hammurabi
         /// Returns whether a person is an independent contractor at an
         /// employer.
         /// </summary>
-        public static Tbool IsIndependentContractor(Person p, CorporateEntity c)
+        new public static Tbool IsIndependentContractor(Person p, CorporateEntity c)
         {
             Tbool isIC;
             
@@ -118,7 +118,7 @@ namespace Hammurabi
         /// Returns the number of hours per week that a person works at a given
         /// employer.
         /// </summary>
-        public static Tnum HoursWorkedPerWeek(Person p, CorporateEntity c)
+        new public static Tnum HoursWorkedPerWeek(Person p, CorporateEntity c)
         {
             return Facts.InputTnum(p, "HoursWorkedPerWeek", c);
         }
@@ -157,7 +157,7 @@ namespace Hammurabi
 		/// <summary>
 		/// Returns whether a person is a student.
 		/// </summary>
-		public static Tbool IsStudent(Person p)
+		new public static Tbool IsStudent(Person p)
 		{
 			return Facts.InputTbool(p, "IsStudent");
 		}
@@ -165,7 +165,7 @@ namespace Hammurabi
         /// <summary>
         /// Returns whether two people live together (plain language concept).
         /// </summary>
-        public static Tbool LivesWith(Person p1, Person p2)
+        new public static Tbool LivesWith(Person p1, Person p2)
         {
             return Facts.Sym(p1, "LivesWith", p2); 
         }
@@ -173,7 +173,7 @@ namespace Hammurabi
         /// <summary>
         /// Returns whether two people are members of the same household.
         /// </summary>
-        public static Tbool SharesHouseholdWith(Person p1, Person p2)
+        new public static Tbool SharesHouseholdWith(Person p1, Person p2)
         {
             return Facts.Sym(p1, "SharesHouseholdWith", p2) ||
                    LivesWith(p1, p2);   // tentative assumption   
@@ -182,7 +182,7 @@ namespace Hammurabi
         /// <summary>
         /// Returns whether two people share a principal abode.
         /// </summary>
-        public static Tbool SharesPrincipalAbodeWith(Person p1, Person p2)
+        new public static Tbool SharesPrincipalAbodeWith(Person p1, Person p2)
         {
             return Facts.Sym(p1, "SharesPrincipalAbodeWith", p2) ||
                    LivesWith(p1, p2);   // tentative assumption 
@@ -191,7 +191,7 @@ namespace Hammurabi
         /// <summary>
         /// Returns whether one person provides financial support for another.
         /// </summary>
-        public static Tbool ProvidesSupportFor(Person p1, Person p2)
+        new public static Tbool ProvidesSupportFor(Person p1, Person p2)
         {
             return Facts.InputTbool(p1, "ProvidesSupportFor", p2);  
         }
@@ -199,7 +199,7 @@ namespace Hammurabi
 		/// <summary>
 		/// Returns the % a person financially supports themselves.
 		/// </summary>
-		public static Tnum PercentSelfSupport(Person p)
+		new public static Tnum PercentSelfSupport(Person p)
 		{
 			return Facts.InputTnum(p, "PercentSelfSupport");
 		}
@@ -207,7 +207,7 @@ namespace Hammurabi
         /// <summary>
         /// How random...
         /// </summary>
-        public static Tbool IsAirlineFlightCrew(Person p, Corp c)
+        new public static Tbool IsAirlineFlightCrew(Person p, Corp c)
         {
             return Facts.InputTbool(p, "IsAirlineFlightCrew", c);
         }

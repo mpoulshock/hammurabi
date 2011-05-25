@@ -112,7 +112,7 @@ namespace USC.Tit29
         /// 2611(7) - Indicates whether one person is considered the "parent"
         /// of another under the FMLA.
         /// </summary>
-        public static Tbool IsParentOf(Person p1, Person p2)
+        new public static Tbool IsParentOf(Person p1, Person p2)
         {
             return Fam.IsBiologicalParentOf(p1,p2) ||
                    Fam.IsAdoptiveParentOf(p1,p2) ||      // assumed
@@ -165,7 +165,7 @@ namespace USC.Tit29
         /// <summary>
         /// Indicates whether one person acts in loco parentis of another.
         /// </summary>
-        public static Tbool ActsInLocoParentisOf(Person p1, Person p2)
+        new public static Tbool ActsInLocoParentisOf(Person p1, Person p2)
         {
             // See 29 CFR 825.122
             return Fam.HasDayToDayResponsibilityFor(p1,p2) &&

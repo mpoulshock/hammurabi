@@ -86,6 +86,10 @@
     <Compile Include="Core\Facts\Window of concern.cs" />
     <Compile Include="Core\Ontology\Governmental relationships.cs" />
     <Compile Include="Core\Core functions\Tbool - temporal.cs" />
+    <Compile Include="Core\Facts\Inputs - question class.cs" />
+    <Compile Include="Core\Facts\Inputs - question templates.cs" />
+    <Compile Include="Core\Facts\Inputs - lists.cs" />
+    <Compile Include="Core\Facts\Inputs - relationships.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
