@@ -46,6 +46,14 @@ namespace Hammurabi
 			this.SetEternally(val);
 		}
 		
+        /// <summary>
+        /// Implicitly converts bools to Tbools.
+        /// </summary>
+        public static implicit operator Tbool(bool b) 
+        {
+            return new Tbool(b);
+        }
+        
 		/// <summary>
 		/// Removes redundant intervals from the Tbool. 
 		/// </summary>
@@ -121,14 +129,6 @@ namespace Hammurabi
             {
                 return DateFirst<Tbool>(false);
             }
-        }
-        
-        /// <summary>
-        /// Implicitly converts bools to Tbools.
-        /// </summary>
-        public static implicit operator Tbool(bool b) 
-        {
-            return new Tbool(b);
         }
         
 		/// <summary>

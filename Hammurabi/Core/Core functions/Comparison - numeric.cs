@@ -33,30 +33,6 @@ namespace Hammurabi
 		{
 			return EqualTo(hn1,hn2);
 		}
-		public static Tbool operator == (Tnum hn1, int n)
-		{
-			return EqualTo(hn1, new Tnum(n));
-		}
-		public static Tbool operator == (int n, Tnum hn2)
-		{
-			return EqualTo(new Tnum(n),hn2);
-		}
-		public static Tbool operator == (Tnum hn1, decimal n)
-		{
-			return EqualTo(hn1, new Tnum(n));
-		}
-		public static Tbool operator == (decimal n, Tnum hn2)
-		{
-			return EqualTo(new Tnum(n),hn2);
-		}
-		public static Tbool operator == (Tnum hn1, double n)
-		{
-			return EqualTo(hn1, new Tnum(n));
-		}
-		public static Tbool operator == (double n, Tnum hn2)
-		{
-			return EqualTo(new Tnum(n),hn2);
-		}
 		
 		private static Tbool EqualTo(Tnum tn1, Tnum tn2)
 		{
@@ -80,30 +56,6 @@ namespace Hammurabi
 		{
 			return !EqualTo(hn1,hn2);
 		}
-		public static Tbool operator != (Tnum hn1, int n)
-		{
-			return !EqualTo(hn1, new Tnum(n));
-		}
-		public static Tbool operator != (int n, Tnum hn2)
-		{
-			return !EqualTo(new Tnum(n),hn2);
-		}
-		public static Tbool operator != (Tnum hn1, decimal n)
-		{
-			return !EqualTo(hn1, new Tnum(n));
-		}
-		public static Tbool operator != (decimal n, Tnum hn2)
-		{
-			return !EqualTo(new Tnum(n),hn2);
-		}
-		public static Tbool operator != (Tnum hn1, double n)
-		{
-			return !EqualTo(hn1, new Tnum(n));
-		}
-		public static Tbool operator != (double n, Tnum hn2)
-		{
-			return !EqualTo(new Tnum(n),hn2);
-		}
 		
 		private static Tbool NotEqualTo(Tnum tn1, Tnum tn2)
 		{
@@ -116,30 +68,6 @@ namespace Hammurabi
 		public static Tbool operator > (Tnum hn1, Tnum hn2)	
 		{
 			return GreaterThan(hn1,hn2);
-		}
-		public static Tbool operator > (Tnum hn1, int n)
-		{
-			return GreaterThan(hn1,new Tnum(n));
-		}
-		public static Tbool operator > (int n, Tnum hn2)
-		{
-			return GreaterThan(new Tnum(n),hn2);
-		}
-		public static Tbool operator > (Tnum hn1, decimal n)
-		{
-			return GreaterThan(hn1, new Tnum(n));
-		}
-		public static Tbool operator > (decimal n, Tnum hn2)
-		{
-			return GreaterThan(new Tnum(n),hn2);
-		}
-		public static Tbool operator > (Tnum hn1, double n)
-		{
-			return GreaterThan(hn1, new Tnum(n));
-		}
-		public static Tbool operator > (double n, Tnum hn2)
-		{
-			return GreaterThan(new Tnum(n),hn2);
 		}
 		
 		private static Tbool GreaterThan(Tnum tn1, Tnum tn2)
@@ -164,30 +92,6 @@ namespace Hammurabi
 		{
 			return GreaterThanOrEqualTo(hn1,hn2);
 		}
-		public static Tbool operator >= (Tnum hn1, int n)
-		{
-			return GreaterThanOrEqualTo(hn1, new Tnum(n));
-		}
-		public static Tbool operator >= (int n, Tnum hn2)
-		{
-			return GreaterThanOrEqualTo(new Tnum(n),hn2);
-		}
-		public static Tbool operator >= (Tnum hn1, decimal n)
-		{
-			return GreaterThanOrEqualTo(hn1, new Tnum(n));
-		}
-		public static Tbool operator >= (decimal n, Tnum hn2)
-		{
-			return GreaterThanOrEqualTo(new Tnum(n),hn2);
-		}
-		public static Tbool operator >= (Tnum hn1, double n)
-		{
-			return GreaterThanOrEqualTo(hn1, new Tnum(n));
-		}
-		public static Tbool operator >= (double n, Tnum hn2)
-		{
-			return GreaterThanOrEqualTo(new Tnum(n),hn2);
-		}
 		
 		private static Tbool GreaterThanOrEqualTo(Tnum tn1, Tnum tn2)
 		{
@@ -201,30 +105,6 @@ namespace Hammurabi
 		{
 			return LessThan(hn1,hn2);
 		}
-		public static Tbool operator < (Tnum hn1, int n)
-		{
-			return LessThan(hn1, new Tnum(n));
-		}
-		public static Tbool operator < (int n, Tnum hn2)
-		{
-			return LessThan(new Tnum(n),hn2);
-		}
-		public static Tbool operator < (Tnum hn1, decimal n)
-		{
-			return LessThan(hn1, new Tnum(n));
-		}
-		public static Tbool operator < (decimal n, Tnum hn2)
-		{
-			return LessThan(new Tnum(n),hn2);
-		}
-		public static Tbool operator < (Tnum hn1, double n)
-		{
-			return LessThan(hn1, new Tnum(n));
-		}
-		public static Tbool operator < (double n, Tnum hn2)
-		{
-			return LessThan(new Tnum(n),hn2);
-		}
 		
 		private static Tbool LessThan(Tnum tn1, Tnum tn2)
 		{
@@ -237,30 +117,6 @@ namespace Hammurabi
 		public static Tbool operator <= (Tnum hn1, Tnum hn2)	
 		{
 			return LessThanOrEqualTo(hn1,hn2);
-		}
-		public static Tbool operator <= (Tnum hn1, int n)
-		{
-			return LessThanOrEqualTo(hn1, new Tnum(n));
-		}
-		public static Tbool operator <= (int n, Tnum hn2)
-		{
-			return LessThanOrEqualTo(new Tnum(n),hn2);
-		}
-		public static Tbool operator <= (Tnum hn1, decimal n)
-		{
-			return LessThanOrEqualTo(hn1, new Tnum(n));
-		}
-		public static Tbool operator <= (decimal n, Tnum hn2)
-		{
-			return LessThanOrEqualTo(new Tnum(n),hn2);
-		}
-		public static Tbool operator <= (Tnum hn1, double n)
-		{
-			return LessThanOrEqualTo(hn1, new Tnum(n));
-		}
-		public static Tbool operator <= (double n, Tnum hn2)
-		{
-			return LessThanOrEqualTo(new Tnum(n),hn2);
 		}
 		
 		private static Tbool LessThanOrEqualTo(Tnum tn1, Tnum tn2)

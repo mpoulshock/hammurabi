@@ -39,30 +39,6 @@ namespace Hammurabi
 		{
 			return Sum(hn1,hn2);
 		}
-		public static Tnum operator + (Tnum hn1, int n)
-		{
-			return Sum(hn1, new Tnum(n));
-		}
-		public static Tnum operator + (int n, Tnum hn2)
-		{
-			return Sum(new Tnum(n),hn2);
-		}
-		public static Tnum operator + (Tnum hn1, decimal n)
-		{
-			return Sum(hn1, new Tnum(n));
-		}
-		public static Tnum operator + (decimal n, Tnum hn2)
-		{
-			return Sum(new Tnum(n),hn2);
-		}
-		public static Tnum operator + (Tnum hn1, double n)
-		{
-			return Sum(hn1, new Tnum(n));
-		}
-		public static Tnum operator + (double n, Tnum hn2)
-		{
-			return Sum(new Tnum(n),hn2);
-		}
 		
 		/// <summary>
 		/// Private temporal SUM function.
@@ -98,30 +74,6 @@ namespace Hammurabi
 		public static Tnum operator - (Tnum hn1, Tnum hn2)	
 		{
 			return Subtract(hn1,hn2);
-		}
-		public static Tnum operator - (Tnum hn1, int n)
-		{
-			return Subtract(hn1, new Tnum(n));
-		}
-		public static Tnum operator - (int n, Tnum hn2)
-		{
-			return Subtract(new Tnum(n),hn2);
-		}
-		public static Tnum operator - (Tnum hn1, decimal n)
-		{
-			return Subtract(hn1, new Tnum(n));
-		}
-		public static Tnum operator - (decimal n, Tnum hn2)
-		{
-			return Subtract(new Tnum(n),hn2);
-		}
-		public static Tnum operator - (Tnum hn1, double n)
-		{
-			return Subtract(hn1, new Tnum(n));
-		}
-		public static Tnum operator - (double n, Tnum hn2)
-		{
-			return Subtract(new Tnum(n),hn2);
 		}
 		
 		/// <summary>
@@ -160,30 +112,6 @@ namespace Hammurabi
 		public static Tnum operator * (Tnum hn1, Tnum hn2)	
 		{
 			return Prod(hn1,hn2);
-		}
-		public static Tnum operator * (Tnum hn1, int n)
-		{
-			return Prod(hn1, new Tnum(n));
-		}
-		public static Tnum operator * (int n, Tnum hn2)
-		{
-			return Prod(new Tnum(n),hn2);
-		}
-		public static Tnum operator * (Tnum hn1, decimal n)
-		{
-			return Prod(hn1, new Tnum(n));
-		}
-		public static Tnum operator * (decimal n, Tnum hn2)
-		{
-			return Prod(new Tnum(n),hn2);
-		}
-		public static Tnum operator * (Tnum hn1, double n)
-		{
-			return Prod(hn1, new Tnum(n));
-		}
-		public static Tnum operator * (double n, Tnum hn2)
-		{
-			return Prod(new Tnum(n),hn2);
 		}
 		
 		/// <summary>
@@ -241,30 +169,6 @@ namespace Hammurabi
 		{
 			return Divide(hn1,hn2);
 		}
-		public static Tnum operator / (Tnum hn1, int n)
-		{
-			return Divide(hn1, new Tnum(n));
-		}
-		public static Tnum operator / (int n, Tnum hn2)
-		{
-			return Divide(new Tnum(n),hn2);
-		}
-		public static Tnum operator / (Tnum hn1, decimal n)
-		{
-			return Divide(hn1, new Tnum(n));
-		}
-		public static Tnum operator / (decimal n, Tnum hn2)
-		{
-			return Divide(new Tnum(n),hn2);
-		}
-		public static Tnum operator / (Tnum hn1, double n)
-		{
-			return Divide(hn1, new Tnum(n));
-		}
-		public static Tnum operator / (double n, Tnum hn2)
-		{
-			return Divide(new Tnum(n),hn2);
-		}
 		
 		/// <summary>
 		/// Private temporal DIVISION function. 
@@ -297,14 +201,6 @@ namespace Hammurabi
 		public static Tnum operator % (Tnum hn1, Tnum hn2)	
 		{
 			return Modulo(hn1,hn2);
-		}
-		public static Tnum operator % (Tnum hn1, int n)
-		{
-			return Modulo(hn1, new Tnum(n));
-		}
-		public static Tnum operator % (int n, Tnum hn2)
-		{
-			return Modulo(new Tnum(n),hn2);
 		}
 		
 		/// <summary>

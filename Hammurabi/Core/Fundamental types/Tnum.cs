@@ -43,6 +43,30 @@ namespace Hammurabi
 			this.SetEternally(val);
 		}
 
+        /// <summary>
+        /// Implicitly converts ints to Tnums.
+        /// </summary>
+        public static implicit operator Tnum(int i) 
+        {
+            return new Tnum(i);
+        }
+        
+        /// <summary>
+        /// Implicitly converts decimals to Tnums.
+        /// </summary>
+        public static implicit operator Tnum(decimal d) 
+        {
+            return new Tnum(d);
+        }
+        
+        /// <summary>
+        /// Implicitly converts doubles to Tnums.
+        /// </summary>
+        public static implicit operator Tnum(double d) 
+        {
+            return new Tnum(d);
+        }
+        
 		/// <summary>
 		/// Removes redundant intervals from the Tnum timeline. 
 		/// </summary>
