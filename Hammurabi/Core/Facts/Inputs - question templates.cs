@@ -95,7 +95,7 @@ namespace Hammurabi
                 case "IsLegalGuardianOf":
                     return new Question(rel, "bool", "Is {subj} the legal guardian of {obj}?", "");
 
-                case "IsMarried":
+                case "IsMarried": // slated for deletion
                     return new Question(rel, "bool", "Is {subj} married?", "");
 
                 case "IsMarriedTo":
@@ -125,6 +125,10 @@ namespace Hammurabi
 
                 case "LessThan50EmployeesWithin75MilesOfWorksite":
                     return new Question(rel, "bool", "Does the employer have fewer than 50 employees within 75 miles of {subj}'s worksite?", "");
+
+                case "MaritalStatus":
+                    return new Question(rel, "string", "What is {subj}'s marital status?", "",
+                                new List<string>() { "Married", "In a civil union", "In a domestic partnership", "Single/unmarried", "Legally separated", "Widowed" });
 
                 case "NameOfEmployee":
                     return new Question(rel, "person", "What is the employee's name?", "");

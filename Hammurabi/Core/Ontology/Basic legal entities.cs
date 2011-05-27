@@ -129,7 +129,7 @@ namespace Hammurabi
         }
         public Tbool IsMarried
         {
-            get { return Facts.InputTbool(this, "IsMarried"); }
+            get { return Facts.InputTstr(this, "MaritalStatus") == "Married" ; }
         }
 		public Tbool IsDisabled
         {
