@@ -62,8 +62,8 @@ namespace USC.Tit29
             Tbool prongAii = HoursInLast12Mo(p,c) >= 1250;
             
             Tbool prongB = !Tit5.Sec6301.IsEmployee(p) &&
-                           (!Facts.InputTbool(p,"LessThan50EmployeesWithin75MilesOfWorksite",c) ||
-                                  Facts.InputTbool(p,"LessThan50EmployeesAtWorksite",c));
+                           (!Facts.InputTbool(p, r.LessThan50EmployeesWithin75MilesOfWorksite,c) ||
+                                  Facts.InputTbool(p, r.LessThan50EmployeesAtWorksite,c));
             
             Tbool prongD = StubIf(Econ.IsAirlineFlightCrew(p,c));  // otherwise return true 
 
@@ -112,7 +112,7 @@ namespace USC.Tit29
         /// 2611(7) - Indicates whether one person is considered the "parent"
         /// of another under the FMLA.
         /// </summary>
-        new public static Tbool IsParentOf(Person p1, Person p2)
+        public static Tbool IsParentOf(Person p1, Person p2)
         {
             return Fam.IsBiologicalParentOf(p1,p2) ||
                    Fam.IsAdoptiveParentOf(p1,p2) ||      // assumed
@@ -128,7 +128,7 @@ namespace USC.Tit29
         /// </summary>
         public static Tbool HasSeriousHealthCondition(Person p)
         {
-            return Facts.InputTbool(p, "HasSeriousHealthCondition");
+            return Facts.InputTbool(p, r.HasSeriousHealthCondition);
         }
         
         /// <summary>
@@ -159,13 +159,13 @@ namespace USC.Tit29
         /// </summary>
         public static DateTime DateLeaveBegins(Person p, Corp c)
         {
-            return Facts.InputDate(p,"DateFamilyLeaveBegins",c);
+            return Facts.InputDate(p, r.DateFamilyLeaveBegins,c);
         }
         
         /// <summary>
         /// Indicates whether one person acts in loco parentis of another.
         /// </summary>
-        new public static Tbool ActsInLocoParentisOf(Person p1, Person p2)
+        public static Tbool ActsInLocoParentisOf(Person p1, Person p2)
         {
             // See 29 CFR 825.122
             return Fam.HasDayToDayResponsibilityFor(p1,p2) &&

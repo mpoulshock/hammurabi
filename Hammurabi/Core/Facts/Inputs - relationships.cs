@@ -20,7 +20,7 @@
 
 namespace Hammurabi
 {
-    public partial class H
+    public partial class r
     {
         /*
          * The following string constants represent the text of relationships that
@@ -30,13 +30,16 @@ namespace Hammurabi
          * maintenance easier, and to take advantage of IntelliSense code completion.
          * Consolidating them also makes it easier to visually scan the relationships.
          * 
-         * Incidentally, using constant may also provide small performance boost.
+         * Incidentally, using constants may also provide a very small performance gain.
          * 
          * Because there are so many relationships that are possible, it is expected
          * that this list will become quite long.  Consequently, this has something
          * of a "Cyc" feel.
          * 
-         * TODO: Get relationships from law-related files.
+         * This list could alternatively be represented as an enumeration, although
+         * doing so would mean that all relationships would then be best represented
+         * as integers instead of strings, and that every relationship would have to
+         * be part of the enumeration.
          */
 
 
@@ -47,12 +50,13 @@ namespace Hammurabi
         public const string CountryOfResidence              = "CountryOfResidence";
         public const string DateOfBirth                     = "DateOfBirth";
         public const string Gender                          = "Gender";
+        public const string HasSeriousHealthCondition       = "HasSeriousHealthCondition";
         public const string IsDeployedToCombatZone          = "IsDeployedToCombatZone";
         public const string IsDisabled                      = "IsDisabled";
+        public const string IsEmployeeUnder5USC6301         = "IsEmployeeUnder5USC6301";
         public const string IsIncapableOfSelfCare           = "IsIncapableOfSelfCare"; 
-        public const string IsMarried                       = "IsMarried";                  // pref: MaritalStatus
         public const string IsStudent                       = "IsStudent";
-        public const string MaritalStatus                   = "MaritalStatus";  // married, single/unmarried, widowed, legally separated, divorced, domestic partnership
+        public const string MaritalStatus                   = "MaritalStatus";
         public const string PercentSelfSupport              = "PercentSelfSupport";
         public const string USImmigrationStatus             = "USImmigrationStatus";
 
@@ -71,18 +75,23 @@ namespace Hammurabi
         public const string IsNextOfKinOf                   = "IsNextOfKinOf";
         public const string IsParentOf                      = "IsParentOf";
         public const string LivesWith                       = "LivesWith";
+        public const string NeedsLeaveToProvideCareFor      = "NeedsLeaveToProvideCareFor";
         public const string ProvidesSupportFor              = "ProvidesSupportFor";
         public const string SharesHouseholdWith             = "SharesHouseholdWith";
         public const string SharesPrincipalAbodeWith        = "SharesPrincipalAbodeWith";
 
         // Relationships between two legal entities
 
+        public const string DateFamilyLeaveBegins           = "DateFamilyLeaveBegins";
         public const string DateStartedWorkingAt            = "DateStartedWorkingAt";
         public const string HoursWorkedPerWeek              = "HoursWorkedPerWeek";
         public const string IsAirlineFlightCrew             = "IsAirlineFlightCrew";
         public const string IsEmployedBy                    = "IsEmployedBy";
         public const string IsIndependentContractor         = "IsIndependentContractor";    // pref: NatureOfEmploymentRelationship
+        public const string LessThan50EmployeesAtWorksite   = "LessThan50EmployeesAtWorksite";
+        public const string LessThan50EmployeesWithin75MilesOfWorksite = "LessThan50EmployeesWithin75MilesOfWorksite";
         public const string NatureOfEmploymentRelationship  = "NatureOfEmploymentRelationship";
+        public const string ReasonForRequestingLeaveFrom    = "ReasonForRequestingLeaveFrom";
         public const string StateJurisdiction               = "StateJurisdiction";
 
     }

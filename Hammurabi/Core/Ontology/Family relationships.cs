@@ -33,7 +33,7 @@ namespace Hammurabi
         /// </summary>
         public static Tstr Relationship(Person p1, Person p2)
         {
-            return Facts.InputTstr(p1, "FamilyRelationship", p2);
+            return Facts.InputTstr(p1, r.FamilyRelationship, p2);
         }
         
         /// <summary>
@@ -42,13 +42,13 @@ namespace Hammurabi
         //  TODO: Add shortcut assertions: IsMarriedTo, IsMarried
         public static Tbool AreMarried(Person p1, Person p2)
         {
-            Tbool m = Facts.Sym(p1, "FamilyRelationship", p2, "Spouse");
+            Tbool m = Facts.Sym(p1, r.FamilyRelationship, p2, "Spouse");
             
             if (!m.IsUnknown) { return m; }
             
             else if (Facts.GetUnknowns == false)
             {
-                return Facts.Sym(p1, "IsMarriedTo", p2);
+                return Facts.Sym(p1, r.IsMarriedTo, p2);
             }
             
             return new Tbool();
@@ -60,12 +60,12 @@ namespace Hammurabi
         public static Person SpouseOf(Person p)
         {
             // Assumes only one.  TODO: Generalize and temporalize.
-            Person spouse = Facts.InputPerson(p, "IsMarriedTo");
+            Person spouse = Facts.InputPerson(p, r.IsMarriedTo);
             
             // "Shortcut" assertion
             if (spouse.Name != "")
             {
-                Facts.Assert(p, "FamilyRelationship", spouse, "Spouse");
+                Facts.Assert(p, r.FamilyRelationship, spouse, "Spouse");
             }
             
             return spouse;
@@ -76,7 +76,7 @@ namespace Hammurabi
         /// </summary>
         public static Tbool IsDomesticPartnerOf(Person p1, Person p2)
         {
-            return Facts.Sym(p1, "FamilyRelationship", p2, "Domestic partner");
+            return Facts.Sym(p1, r.FamilyRelationship, p2, "Domestic partner");
         }
         
         /// <summary>
@@ -109,7 +109,7 @@ namespace Hammurabi
             
             else if (Facts.GetUnknowns == false)
             {
-                return Facts.InputTbool(p1, "IsParentOf", p2);
+                return Facts.InputTbool(p1, r.IsParentOf, p2);
             }
             
             return new Tbool();  
@@ -120,7 +120,7 @@ namespace Hammurabi
         /// </summary>
         public static Tbool IsBiologicalParentOf(Person p1, Person p2)
         {
-            return Facts.Sym(p1, "FamilyRelationship", p2, "Biological parent", "Biological child");
+            return Facts.Sym(p1, r.FamilyRelationship, p2, "Biological parent", "Biological child");
         }
         
         /// <summary>
@@ -128,7 +128,7 @@ namespace Hammurabi
         /// </summary>
         public static Tbool IsAdoptiveParentOf(Person p1, Person p2)
         {
-            return Facts.Sym(p1, "FamilyRelationship", p2, "Adoptive parent", "Adopted child");
+            return Facts.Sym(p1, r.FamilyRelationship, p2, "Adoptive parent", "Adopted child");
         }
         
         /// <summary>
@@ -136,7 +136,7 @@ namespace Hammurabi
         /// </summary>
         public static Tbool IsFosterParentOf(Person p1, Person p2)
         {
-            return Facts.Sym(p1, "FamilyRelationship", p2, "Foster parent", "Foster child");   
+            return Facts.Sym(p1, r.FamilyRelationship, p2, "Foster parent", "Foster child");   
         }
         
         /// <summary>
@@ -144,7 +144,7 @@ namespace Hammurabi
         /// </summary>
         public static Tbool IsStepparentOf(Person p1, Person p2)
         {
-            return Facts.Sym(p1, "FamilyRelationship", p2, "Stepparent", "Stepchild");  
+            return Facts.Sym(p1, r.FamilyRelationship, p2, "Stepparent", "Stepchild");  
         }
         
         /// <summary>
@@ -152,7 +152,7 @@ namespace Hammurabi
         /// </summary>
         public static Tbool AreSiblings(Person p1, Person p2)
         {
-            return Facts.Sym(p1, "FamilyRelationship", p2, "Sibling");
+            return Facts.Sym(p1, r.FamilyRelationship, p2, "Sibling");
             
             // or, share a parent
         }
@@ -162,7 +162,7 @@ namespace Hammurabi
         /// </summary>
         public static Tbool AreHalfSiblings(Person p1, Person p2)
         {
-            return Facts.Sym(p1, "FamilyRelationship", p2, "Half sibling");
+            return Facts.Sym(p1, r.FamilyRelationship, p2, "Half sibling");
             
             // or, share one parent
         }
@@ -172,7 +172,7 @@ namespace Hammurabi
         /// </summary>
         public static Tbool AreStepsiblings(Person p1, Person p2)
         {
-            return Facts.Sym(p1, "FamilyRelationship", p2, "Stepsibling");
+            return Facts.Sym(p1, r.FamilyRelationship, p2, "Stepsibling");
         }
         
         /// <summary>
@@ -180,7 +180,7 @@ namespace Hammurabi
         /// </summary>
         public static Tbool IsGrandparentOf(Person p1, Person p2)
         {
-            return Facts.Sym(p1, "FamilyRelationship", p2, "Grandparent", "Grandchild");
+            return Facts.Sym(p1, r.FamilyRelationship, p2, "Grandparent", "Grandchild");
         }
         
         /// <summary>
@@ -188,7 +188,7 @@ namespace Hammurabi
         /// </summary>
         public static Tbool IsGreatGrandparentOf(Person p1, Person p2)
         {
-            return Facts.Sym(p1, "FamilyRelationship", p2, "Great-grandparent", "Great-grandchild");    
+            return Facts.Sym(p1, r.FamilyRelationship, p2, "Great-grandparent", "Great-grandchild");    
         }
   
         /// <summary>
@@ -196,7 +196,7 @@ namespace Hammurabi
         /// </summary>
         public static Tbool IsGreatGreatGrandparentOf(Person p1, Person p2)
         {
-            return Facts.Sym(p1, "FamilyRelationship", p2, "Great-great-grandparent", "Great-great-grandchild");   
+            return Facts.Sym(p1, r.FamilyRelationship, p2, "Great-great-grandparent", "Great-great-grandchild");   
         }
         
         /// <summary>
@@ -204,7 +204,7 @@ namespace Hammurabi
         /// </summary>
         public static Tbool IsAuntOrUncleOf(Person p1, Person p2)
         {
-            return Facts.Sym(p1, "FamilyRelationship", p2, "Aunt or uncle", "Niece or nephew");    
+            return Facts.Sym(p1, r.FamilyRelationship, p2, "Aunt or uncle", "Niece or nephew");    
         }
         
         /// <summary>
@@ -212,7 +212,7 @@ namespace Hammurabi
         /// </summary>
         public static Tbool IsGreatAuntOrUncleOf(Person p1, Person p2)
         {
-            return Facts.Sym(p1, "FamilyRelationship", p2, "Great aunt or uncle", "Grand niece or nephew");
+            return Facts.Sym(p1, r.FamilyRelationship, p2, "Great aunt or uncle", "Grand niece or nephew");
         }
         
         /// <summary>
@@ -220,7 +220,7 @@ namespace Hammurabi
         /// </summary>
         public static Tbool IsGreatGreatAuntOrUncleOf(Person p1, Person p2)
         {
-            return Facts.Sym(p1, "FamilyRelationship", p2, "Great-great aunt or uncle", "Great-grand niece or nephew");
+            return Facts.Sym(p1, r.FamilyRelationship, p2, "Great-great aunt or uncle", "Great-grand niece or nephew");
         }
         
         /// <summary>
@@ -236,7 +236,7 @@ namespace Hammurabi
         /// </summary>
         public static Tbool IsFirstCousinOf(Person p1, Person p2)
         {
-            return Facts.Sym(p1, "FamilyRelationship", p2, "First cousin");    
+            return Facts.Sym(p1, r.FamilyRelationship, p2, "First cousin");    
         }
         
         /// <summary>
@@ -244,7 +244,7 @@ namespace Hammurabi
         /// </summary>
         public static Tbool IsNonFirstCousinOf(Person p1, Person p2)
         {
-            return Facts.Sym(p1, "FamilyRelationship", p2, "Other cousin");    
+            return Facts.Sym(p1, r.FamilyRelationship, p2, "Other cousin");    
         }      
         
         /// <summary>
@@ -260,7 +260,7 @@ namespace Hammurabi
         /// </summary>
         public static Tbool HasCustodyOf(Person p1, Person p2)
         {
-            return Facts.InputTbool(p1, "HasCustodyOf", p2);    
+            return Facts.InputTbool(p1, r.HasCustodyOf, p2);    
         }
         
         /// <summary>
@@ -269,7 +269,7 @@ namespace Hammurabi
         public static Tbool IsLegalGuardianOf(Person p1, Person p2)
         {
             return !IsParentOf(p2,p1) &&
-                   Facts.InputTbool(p1, "IsLegalGuardianOf", p2);   
+                   Facts.InputTbool(p1, r.IsLegalGuardianOf, p2);   
         }
         
         /// <summary>
@@ -278,7 +278,7 @@ namespace Hammurabi
         public static Tbool ActsInLocoParentisOf(Person p1, Person p2)
         {
             return !IsParentOf(p2,p1) &&
-                   Facts.InputTbool(p1, "ActsInLocoParentisOf", p2);   
+                   Facts.InputTbool(p1, r.ActsInLocoParentisOf, p2);   
         }
         
         /// <summary>
@@ -288,7 +288,7 @@ namespace Hammurabi
         public static Tbool HasDayToDayResponsibilityFor(Person p1, Person p2)
         {
             return !IsParentOf(p2,p1) &&
-                   Facts.InputTbool(p1, "HasDayToDayResponsibilityFor", p2);   
+                   Facts.InputTbool(p1, r.HasDayToDayResponsibilityFor, p2);   
         }
         
         /// <summary>
@@ -306,7 +306,7 @@ namespace Hammurabi
         /// </summary>
         public static Tbool IsNextOfKinOf(Person p1, Person p2)
         {
-            return Facts.InputTbool(p1, "IsNextOfKinOf", p2);  
+            return Facts.InputTbool(p1, r.IsNextOfKinOf, p2);  
         }
         
     }

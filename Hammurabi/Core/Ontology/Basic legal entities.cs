@@ -67,7 +67,7 @@ namespace Hammurabi
 		/// </summary>
 		public Tstr USImmStatus
 		{
-			get { return Facts.InputTstr(this, "USImmigrationStatus"); }
+			get { return Facts.InputTstr(this, r.USImmigrationStatus); }
 		}
         public Tbool IsUSResident
         {
@@ -79,7 +79,7 @@ namespace Hammurabi
         }
 		public Tstr CountryOfResidence
 		{
-			get { return Facts.InputTstr(this, "CountryOfResidence"); }
+			get { return Facts.InputTstr(this, r.CountryOfResidence); }
 		}
         public Tbool IsUSCitizen
         {
@@ -97,7 +97,7 @@ namespace Hammurabi
         }
 		public Tstr CountryOfCitizenship
 		{
-			get { return Facts.InputTstr(this, "CountryOfCitizenship"); }
+			get { return Facts.InputTstr(this, r.CountryOfCitizenship); }
 		}
         
         /// <summary>
@@ -121,24 +121,24 @@ namespace Hammurabi
 		}
         public DateTime DateOfBirth
         {
-            get { return Facts.InputDate(this, "DateOfBirth"); }
+            get { return Facts.InputDate(this, r.DateOfBirth); }
         }
         public DateTime DateOfDeath
         {
-            get { return Facts.InputDate(this, "DateOfDeath"); }
+            get { return Facts.InputDate(this, r.DateOfBirth); }
         }
         public Tbool IsMarried
         {
-            get { return Facts.InputTstr(this, "MaritalStatus") == "Married" ; }
+            get { return Facts.InputTstr(this, r.MaritalStatus) == "Married" ; }
         }
 		public Tbool IsDisabled
         {
             // How should this relate to 29 CFR Part 1630?
-            get { return Facts.InputTbool(this, "IsDisabled"); }
+            get { return Facts.InputTbool(this, r.IsDisabled); }
         }
         public Tbool IsIncapableOfSelfCare
         {
-            get { return Facts.InputTbool(this, "IsIncapableOfSelfCare"); }
+            get { return Facts.InputTbool(this, r.IsIncapableOfSelfCare); }
         }
         
 //		/// <summary>
@@ -191,7 +191,7 @@ namespace Hammurabi
         
         public Tnum NumberOfEmployees
         {
-            get { return Facts.InputTnum(this, "NumberOfEmployees"); }
+            get { return Facts.InputTnum(this, r.NumberOfEmployees); }
         }
         
         public Tbool IsPublicAgency

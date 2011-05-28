@@ -39,7 +39,7 @@ namespace Hammurabi
         /// </summary>
         public static Tbool InActiveArmedForces(Person p)
         {
-            Tstr branch = Facts.InputTstr(p, "BranchOfArmedForces");
+            Tstr branch = Facts.InputTstr(p, r.BranchOfArmedForces);
             
             return branch == "Army" ||
                    branch == "Navy" ||
@@ -54,7 +54,7 @@ namespace Hammurabi
         /// </summary>
         public static Tbool InReserveArmedForces(Person p)
         {
-            Tstr branch = Facts.InputTstr(p, "BranchOfArmedForces");
+            Tstr branch = Facts.InputTstr(p, r.BranchOfArmedForces);
             
             return branch == "Army National Guard" ||
                    branch == "Army Reserve" ||
@@ -70,7 +70,7 @@ namespace Hammurabi
         /// </summary>
         public static Tbool IsDeployedToCombatZone(Person p)
         {
-            return Facts.InputTbool(p, "IsDeployedToCombatZone");
+            return Facts.InputTbool(p, r.IsDeployedToCombatZone);
         }
     }
 }

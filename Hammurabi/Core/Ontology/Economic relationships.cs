@@ -32,7 +32,7 @@ namespace Hammurabi
         /// (corporation).  It is assumed that "employee" does not include 
         /// independent contractors.
         /// </summary>
-        new public static Tbool IsEmployedBy(Person p, CorporateEntity c)
+        public static Tbool IsEmployedBy(Person p, CorporateEntity c)
         {
             // Allows for simple temporal input (start date)
             // Need to enhance this later...
@@ -41,18 +41,18 @@ namespace Hammurabi
             // If interview, ask only "nature of employment relationship"
             if (Facts.GetUnknowns)
             {
-                isEmp = Facts.InputTstr(p, "NatureOfEmploymentRelationship", c) == "Employee";
+                isEmp = Facts.InputTstr(p, r.NatureOfEmploymentRelationship, c) == "Employee";
             }
             else
             {
-                isEmp = Facts.Either(Facts.InputTstr(p, "NatureOfEmploymentRelationship", c) == "Employee",
-                                     Facts.InputTbool(p, "IsEmployedBy", c));
+                isEmp = Facts.Either(Facts.InputTstr(p, r.NatureOfEmploymentRelationship, c) == "Employee",
+                                     Facts.InputTbool(p, r.IsEmployedBy, c));
             }
 
             // Get employment start date, if necessary            
             if (isEmp.IsTrue)
             {
-                DateTime start = Facts.InputDate(p, "DateStartedWorkingAt", c);
+                DateTime start = Facts.InputDate(p, r.DateStartedWorkingAt, c);
                 
                 if (start != Time.DawnOf)
                 {
@@ -72,25 +72,25 @@ namespace Hammurabi
         /// Returns whether a person is an independent contractor at an
         /// employer.
         /// </summary>
-        new public static Tbool IsIndependentContractor(Person p, CorporateEntity c)
+        public static Tbool IsIndependentContractor(Person p, CorporateEntity c)
         {
             Tbool isIC;
             
             // If interview, ask only "nature of employment relationship"
             if (Facts.GetUnknowns)
             {
-                isIC = Facts.InputTstr(p, "NatureOfEmploymentRelationship", c) == "Independent contractor";
+                isIC = Facts.InputTstr(p, r.NatureOfEmploymentRelationship, c) == "Independent contractor";
             }
             else
             {
-                isIC = Facts.Either(Facts.InputTstr(p, "NatureOfEmploymentRelationship", c) == "Independent contractor",
-                                     Facts.InputTbool(p, "IsIndependentContractor", c));
+                isIC = Facts.Either(Facts.InputTstr(p, r.NatureOfEmploymentRelationship, c) == "Independent contractor",
+                                     Facts.InputTbool(p, r.IsIndependentContractor, c));
             }
 
             // Get employment start date, if necessary
             if (isIC.IsTrue)
             {
-                DateTime start = Facts.InputDate(p, "DateStartedWorkingAt", c);
+                DateTime start = Facts.InputDate(p, r.DateStartedWorkingAt, c);
                 
                 if (start != Time.DawnOf)
                 {
@@ -111,16 +111,16 @@ namespace Hammurabi
         /// </summary>
         public static DateTime DateStartedWorkAt(Person p, CorporateEntity c)
         {
-            return Facts.InputDate(p, "DateStartedWorkingAt", c);
+            return Facts.InputDate(p, r.DateStartedWorkingAt, c);
         }
         
         /// <summary>
         /// Returns the number of hours per week that a person works at a given
         /// employer.
         /// </summary>
-        new public static Tnum HoursWorkedPerWeek(Person p, CorporateEntity c)
+        public static Tnum HoursWorkedPerWeek(Person p, CorporateEntity c)
         {
-            return Facts.InputTnum(p, "HoursWorkedPerWeek", c);
+            return Facts.InputTnum(p, r.HoursWorkedPerWeek, c);
         }
         
         /// <summary>
@@ -130,19 +130,10 @@ namespace Hammurabi
         {
             Tnum hours = HoursWorkedPerWeek(p,c);
             
-            // If 35 or more hours  => true
-            // If 30 or fewer hours => false
-            // Else                 => unknown
+            // If 35 or more hours  => True
+            // If 30 or fewer hours => False
+            // Else                 => Null
             return IsEmployedBy(p,c) & TestOrStubIf(hours >= 35, hours < 35 && hours >= 30);
-        }
-        
-        /// <summary>
-        /// Returns a person's job (or job title) at a particular employer
-        /// (corporation).
-        /// </summary>
-        public static Tstr PositionAt(Person p, Corp c)
-        {
-            return Facts.InputTstr(p, "PositionAt", c);
         }
         
         /// <summary>
@@ -157,59 +148,59 @@ namespace Hammurabi
 		/// <summary>
 		/// Returns whether a person is a student.
 		/// </summary>
-		new public static Tbool IsStudent(Person p)
+		public static Tbool IsStudent(Person p)
 		{
-			return Facts.InputTbool(p, "IsStudent");
+			return Facts.InputTbool(p, r.IsStudent);
 		}
 		
         /// <summary>
         /// Returns whether two people live together (plain language concept).
         /// </summary>
-        new public static Tbool LivesWith(Person p1, Person p2)
+        public static Tbool LivesWith(Person p1, Person p2)
         {
-            return Facts.Sym(p1, "LivesWith", p2); 
+            return Facts.Sym(p1, r.LivesWith, p2); 
         }
         
         /// <summary>
         /// Returns whether two people are members of the same household.
         /// </summary>
-        new public static Tbool SharesHouseholdWith(Person p1, Person p2)
+        public static Tbool SharesHouseholdWith(Person p1, Person p2)
         {
-            return Facts.Sym(p1, "SharesHouseholdWith", p2) ||
+            return Facts.Sym(p1, r.SharesHouseholdWith, p2) ||
                    LivesWith(p1, p2);   // tentative assumption   
         }
         
         /// <summary>
         /// Returns whether two people share a principal abode.
         /// </summary>
-        new public static Tbool SharesPrincipalAbodeWith(Person p1, Person p2)
+        public static Tbool SharesPrincipalAbodeWith(Person p1, Person p2)
         {
-            return Facts.Sym(p1, "SharesPrincipalAbodeWith", p2) ||
+            return Facts.Sym(p1, r.SharesPrincipalAbodeWith, p2) ||
                    LivesWith(p1, p2);   // tentative assumption 
         }
         
         /// <summary>
         /// Returns whether one person provides financial support for another.
         /// </summary>
-        new public static Tbool ProvidesSupportFor(Person p1, Person p2)
+        public static Tbool ProvidesSupportFor(Person p1, Person p2)
         {
-            return Facts.InputTbool(p1, "ProvidesSupportFor", p2);  
+            return Facts.InputTbool(p1, r.ProvidesSupportFor, p2);  
         }
         
 		/// <summary>
 		/// Returns the % a person financially supports themselves.
 		/// </summary>
-		new public static Tnum PercentSelfSupport(Person p)
+		public static Tnum PercentSelfSupport(Person p)
 		{
-			return Facts.InputTnum(p, "PercentSelfSupport");
+			return Facts.InputTnum(p, r.PercentSelfSupport);
 		}
 		
         /// <summary>
         /// How random...
         /// </summary>
-        new public static Tbool IsAirlineFlightCrew(Person p, Corp c)
+        public static Tbool IsAirlineFlightCrew(Person p, Corp c)
         {
-            return Facts.InputTbool(p, "IsAirlineFlightCrew", c);
+            return Facts.InputTbool(p, r.IsAirlineFlightCrew, c);
         }
         
 	}

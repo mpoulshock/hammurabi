@@ -32,7 +32,7 @@ namespace Hammurabi
         /// </summary>
         public static Tbool StateIs(LegalEntity e1, LegalEntity e2, string state)
         {
-            return Facts.Sym(e1, "StateJurisdiction", e2, state);
+            return Facts.Sym(e1, r.StateJurisdiction, e2, state);
         }
 
 	}
