@@ -29,25 +29,25 @@ using Hammurabi;
 
 namespace USC.Tit26
 {
-	/// <summary>
-	/// Indicates whether a person is the "permanently and totally disabled",
-	/// as defined under Internal Revenue Code, Section 22.
-	/// </summary>
-	/// <cite>26 U.S.C. 22 (2010)</cite>	
-	/// <updated>2010-11-27</updated>	
-	/// <remarks>
-	/// The logic of this provision has not been implemented yet.  Currently,
-	/// it just returns whether a person is disabled.
-	/// </remarks> 
-	public class Sec22
-	{
-		/// <summary>
-		/// Returns whether a person is "permanently and totally disabled."
-		/// </summary>
-		public static Tbool IsDisabledPT(Person p1)
-		{
-			return Facts.InputTbool(p1, "IsPermanentlyAndTotallyDisabled");	
-		}
-		
-	}
+    /// <summary>
+    /// Indicates whether a person is the "permanently and totally disabled",
+    /// as defined under Internal Revenue Code, Section 22.
+    /// </summary>
+    /// <cite>26 U.S.C. 22 (2010)</cite>    
+    /// <updated>2010-11-27</updated>    
+    /// <remarks>
+    /// The logic of this provision has not been implemented yet.  Currently,
+    /// it just returns whether a person is disabled.
+    /// </remarks> 
+    public class Sec22
+    {
+        /// <summary>
+        /// Returns whether a person is "permanently and totally disabled."
+        /// </summary>
+        public static Tbool IsDisabledPT(Person p1)
+        {
+            return Facts.InputTbool(p1, "IsPermanentlyAndTotallyDisabled");    
+        }
+        
+    }
 }

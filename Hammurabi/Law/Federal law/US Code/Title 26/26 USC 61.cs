@@ -29,26 +29,26 @@ using Hammurabi;
 
 namespace USC.Tit26
 {
-	
-	/// <summary>
-	/// Calculates a person's "gross income,"
-	/// as defined under Internal Revenue Code, Section 61.
-	/// </summary>
-	/// <cite>26 U.S.C. 61 (2010)</cite>	
-	/// <updated>2010-11-27</updated>		
-	/// <remarks>
-	/// The logic of this provision has not been implemented yet.  Currently,
-	/// it just indicates the value of the person's gross income.
-	/// </remarks> 
-	public class Sec61
-	{
-		/// <summary>
-		/// Indicates a person's gross income.
-		/// </summary>
-		public static Tnum GrossIncome(Person p1)
-		{
-			return Facts.InputTnum(p1, "GrossIncome");	
-		}
+    
+    /// <summary>
+    /// Calculates a person's "gross income,"
+    /// as defined under Internal Revenue Code, Section 61.
+    /// </summary>
+    /// <cite>26 U.S.C. 61 (2010)</cite>    
+    /// <updated>2010-11-27</updated>        
+    /// <remarks>
+    /// The logic of this provision has not been implemented yet.  Currently,
+    /// it just indicates the value of the person's gross income.
+    /// </remarks> 
+    public class Sec61
+    {
+        /// <summary>
+        /// Indicates a person's gross income.
+        /// </summary>
+        public static Tnum GrossIncome(Person p1)
+        {
+            return Facts.InputTnum(p1, "GrossIncome");    
+        }
 
-	}
+    }
 }

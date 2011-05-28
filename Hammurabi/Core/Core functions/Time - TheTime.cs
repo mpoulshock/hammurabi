@@ -22,130 +22,130 @@ using System;
 
 namespace Hammurabi
 {
-	/// <summary>
-	/// A construct representing "the time" - as in that abstract thing we refer
-	/// to when we say something like, "The time is 5 pm." 
-	/// </summary>
-	public partial class TheTime : Time
-	{
-		/// <summary>
-		/// Returns a Tbool that's true at and after a specified DateTime, and otherwise false.
-		/// </summary>
-		public static Tbool IsAtOrAfter(DateTime dt)
-		{
-			// TODO: Implement unknowns
-			
-			Tbool result = new Tbool();
-			result.AddState(DawnOf, false);
-			result.AddState(dt, true);
-			return result;
-		}
-		
-		/// <summary>
-		/// Returns a Tbool that's true up to a specified DateTime, and false
-		/// at and after it.
-		/// </summary>
-		public static Tbool IsBefore(DateTime dt)
-		{
-			// TODO: Implement unknowns
-			
-			Tbool result = new Tbool();
-			result.AddState(DawnOf, true);
-			result.AddState(dt, false);
-			return result;
-		}
-		
-		/// <summary>
-		/// Returns a Tbool that's true during a specified time interval (including
-		/// at the start and end DateTimes), and otherwise false.
-		/// </summary>
-		public static Tbool IsBetween(DateTime start, DateTime end)
-		{
-			// TODO: Implement unknowns
-			
-			Tbool result = new Tbool();
-			if (start != DawnOf)
-			{
-				result.AddState(DawnOf, false);
-			}
-			result.AddState(start, true);
-			result.AddState(end.AddTicks(1), false);
-			return result;
-		}
-		
-		/// <summary>
-		/// Returns a Tnum representing the calendar year
-		/// (by default, a 200-year span centered on the current year)
-		/// </summary>
-		public static Tnum TheYear
-		{
-			get
-			{
-				return Year(100);
-			}
-		}
+    /// <summary>
+    /// A construct representing "the time" - as in that abstract thing we refer
+    /// to when we say something like, "The time is 5 pm." 
+    /// </summary>
+    public partial class TheTime : Time
+    {
+        /// <summary>
+        /// Returns a Tbool that's true at and after a specified DateTime, and otherwise false.
+        /// </summary>
+        public static Tbool IsAtOrAfter(DateTime dt)
+        {
+            // TODO: Implement unknowns
+            
+            Tbool result = new Tbool();
+            result.AddState(DawnOf, false);
+            result.AddState(dt, true);
+            return result;
+        }
+        
+        /// <summary>
+        /// Returns a Tbool that's true up to a specified DateTime, and false
+        /// at and after it.
+        /// </summary>
+        public static Tbool IsBefore(DateTime dt)
+        {
+            // TODO: Implement unknowns
+            
+            Tbool result = new Tbool();
+            result.AddState(DawnOf, true);
+            result.AddState(dt, false);
+            return result;
+        }
+        
+        /// <summary>
+        /// Returns a Tbool that's true during a specified time interval (including
+        /// at the start and end DateTimes), and otherwise false.
+        /// </summary>
+        public static Tbool IsBetween(DateTime start, DateTime end)
+        {
+            // TODO: Implement unknowns
+            
+            Tbool result = new Tbool();
+            if (start != DawnOf)
+            {
+                result.AddState(DawnOf, false);
+            }
+            result.AddState(start, true);
+            result.AddState(end.AddTicks(1), false);
+            return result;
+        }
+        
+        /// <summary>
+        /// Returns a Tnum representing the calendar year
+        /// (by default, a 200-year span centered on the current year)
+        /// </summary>
+        public static Tnum TheYear
+        {
+            get
+            {
+                return Year(100);
+            }
+        }
 
-		public static Tnum Year(int halfSpanInYears)
-		{
-			int currentYear = DateTime.Now.Year;
-			DateTime firstOfCurrentYear = new DateTime(currentYear,1,1);
-			
-			return IntervalsSince(firstOfCurrentYear.AddYears(halfSpanInYears * -1), 
-			                      firstOfCurrentYear.AddYears(halfSpanInYears), 
-			                      IntervalType.Year, 
-			                      currentYear-halfSpanInYears);
-		}
-		
-		/// <summary>
-		/// Returns a Tnum representing the fiscal quarter (by default, a 20-year
-		/// span centered on day 1 of the fiscal year that begins in current year)
-		/// </summary>
-		public static Tnum TheQuarter
-		{
-			// TODO: Consider making a field for Q1StartMonth and Q1StartDay (so TheQuarter
-		    // can be used when Q1 starts sometime other than Jan. 1)
-			get
-			{
-				return Quarter(1, 1, 20);
-			}
-		}
-		
-		public static Tnum Quarter(int Q1StartMonth, int Q1StartDay)
-		{
-			return Quarter(Q1StartMonth, Q1StartDay, 20);
-		}
-		
-		public static Tnum Quarter(int Q1StartMonth, int Q1StartDay, int halfSpanInYears)
-		{
-			DateTime Q1Start = new DateTime(DateTime.Now.Year, Q1StartMonth, Q1StartDay);
-			
-			return Time.Recurrence(Q1Start.AddYears(halfSpanInYears * -1),
-			                       Q1Start.AddYears(halfSpanInYears),
-			                       Time.IntervalType.Quarter,1,4);
-		}
-		
-		/// <summary>
-		/// Returns a Tnum representing the calendar month (by default, a
-		/// 10-year span centered on Jan. 1st of the current year)
-		/// </summary>
-		public static Tnum TheMonth
-		{
-			get
-			{
-				return Month(5);
-			}
-		}
-		
-		public static Tnum Month(int halfSpanInYears)
-		{
-			int currentYear = DateTime.Now.Year;
-			DateTime firstOfCurrentYear = new DateTime(currentYear,1,1);
-			
-			return Time.Recurrence(firstOfCurrentYear.AddYears(halfSpanInYears * -1),
-			                       firstOfCurrentYear.AddYears(halfSpanInYears),
-			                       Time.IntervalType.Month,1,12);
-		}
-		
+        public static Tnum Year(int halfSpanInYears)
+        {
+            int currentYear = DateTime.Now.Year;
+            DateTime firstOfCurrentYear = new DateTime(currentYear,1,1);
+            
+            return IntervalsSince(firstOfCurrentYear.AddYears(halfSpanInYears * -1), 
+                                  firstOfCurrentYear.AddYears(halfSpanInYears), 
+                                  IntervalType.Year, 
+                                  currentYear-halfSpanInYears);
+        }
+        
+        /// <summary>
+        /// Returns a Tnum representing the fiscal quarter (by default, a 20-year
+        /// span centered on day 1 of the fiscal year that begins in current year)
+        /// </summary>
+        public static Tnum TheQuarter
+        {
+            // TODO: Consider making a field for Q1StartMonth and Q1StartDay (so TheQuarter
+            // can be used when Q1 starts sometime other than Jan. 1)
+            get
+            {
+                return Quarter(1, 1, 20);
+            }
+        }
+        
+        public static Tnum Quarter(int Q1StartMonth, int Q1StartDay)
+        {
+            return Quarter(Q1StartMonth, Q1StartDay, 20);
+        }
+        
+        public static Tnum Quarter(int Q1StartMonth, int Q1StartDay, int halfSpanInYears)
+        {
+            DateTime Q1Start = new DateTime(DateTime.Now.Year, Q1StartMonth, Q1StartDay);
+            
+            return Time.Recurrence(Q1Start.AddYears(halfSpanInYears * -1),
+                                   Q1Start.AddYears(halfSpanInYears),
+                                   Time.IntervalType.Quarter,1,4);
+        }
+        
+        /// <summary>
+        /// Returns a Tnum representing the calendar month (by default, a
+        /// 10-year span centered on Jan. 1st of the current year)
+        /// </summary>
+        public static Tnum TheMonth
+        {
+            get
+            {
+                return Month(5);
+            }
+        }
+        
+        public static Tnum Month(int halfSpanInYears)
+        {
+            int currentYear = DateTime.Now.Year;
+            DateTime firstOfCurrentYear = new DateTime(currentYear,1,1);
+            
+            return Time.Recurrence(firstOfCurrentYear.AddYears(halfSpanInYears * -1),
+                                   firstOfCurrentYear.AddYears(halfSpanInYears),
+                                   Time.IntervalType.Month,1,12);
+        }
+        
         /// <summary>
         /// Returns a Tnum representing the calendar week (by default, a
         /// 10-year span centered on the start of the current year).

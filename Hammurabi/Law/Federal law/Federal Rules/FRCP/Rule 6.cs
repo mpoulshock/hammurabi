@@ -30,29 +30,29 @@ using System;
 
 namespace FedRules.FRCP
 {
-	/// <summary>
-	/// Federal Rule of Civil Procedure, Rule 6.
-	/// </summary>
-	/// <cite>Fed. R. Civ. P. 6 (2010)</cite>
-	public class Rule6
-	{	 
-		// TODO: Implement FRCP 6(a)(6)(B) and (C).
-		
-		/// <summary>
-		/// FRCP due date calculation.
-		/// </summary>
-		/// <cite>Fed. R. Civ. P. 6(a) (2010)</cite>
-		/// <updated>2010-11-11</updated>
-		/// <remarks>
-		/// Does not implement 6(a)(6)(B) and (C), which state that legal holidays include
-		/// days declared a holiday by the President or Congress and holidays in the state 
-		/// where the district court is located.
-		/// </remarks>
-		public static DateTime DueDate(int days, DateTime triggerDate)
-		{		
-		 	return triggerDate.ToMidnight().AddDays(days).CurrentOrNextBusinessDay();
-		}
+    /// <summary>
+    /// Federal Rule of Civil Procedure, Rule 6.
+    /// </summary>
+    /// <cite>Fed. R. Civ. P. 6 (2010)</cite>
+    public class Rule6
+    {     
+        // TODO: Implement FRCP 6(a)(6)(B) and (C).
+        
+        /// <summary>
+        /// FRCP due date calculation.
+        /// </summary>
+        /// <cite>Fed. R. Civ. P. 6(a) (2010)</cite>
+        /// <updated>2010-11-11</updated>
+        /// <remarks>
+        /// Does not implement 6(a)(6)(B) and (C), which state that legal holidays include
+        /// days declared a holiday by the President or Congress and holidays in the state 
+        /// where the district court is located.
+        /// </remarks>
+        public static DateTime DueDate(int days, DateTime triggerDate)
+        {        
+             return triggerDate.ToMidnight().AddDays(days).CurrentOrNextBusinessDay();
+        }
 
-	}
+    }
 }
 

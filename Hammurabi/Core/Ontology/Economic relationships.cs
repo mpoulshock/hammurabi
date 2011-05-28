@@ -22,11 +22,11 @@ using System;
 
 namespace Hammurabi
 {
-	/// <summary>
-	/// Represent various types of economic relationships.
-	/// </summary>
-	public class Econ : H
-	{
+    /// <summary>
+    /// Represent various types of economic relationships.
+    /// </summary>
+    public class Econ : H
+    {
         /// <summary>
         /// Indicates whether a person is employed by a particular employer
         /// (corporation).  It is assumed that "employee" does not include 
@@ -145,14 +145,14 @@ namespace Hammurabi
             return Facts.InputTnum(p, "LengthOfInitialProbationaryPeriodAtEmployerInMonths", c);
         }
         
-		/// <summary>
-		/// Returns whether a person is a student.
-		/// </summary>
-		public static Tbool IsStudent(Person p)
-		{
-			return Facts.InputTbool(p, r.IsStudent);
-		}
-		
+        /// <summary>
+        /// Returns whether a person is a student.
+        /// </summary>
+        public static Tbool IsStudent(Person p)
+        {
+            return Facts.InputTbool(p, r.IsStudent);
+        }
+        
         /// <summary>
         /// Returns whether two people live together (plain language concept).
         /// </summary>
@@ -187,14 +187,14 @@ namespace Hammurabi
             return Facts.InputTbool(p1, r.ProvidesSupportFor, p2);  
         }
         
-		/// <summary>
-		/// Returns the % a person financially supports themselves.
-		/// </summary>
-		public static Tnum PercentSelfSupport(Person p)
-		{
-			return Facts.InputTnum(p, r.PercentSelfSupport);
-		}
-		
+        /// <summary>
+        /// Returns the % a person financially supports themselves.
+        /// </summary>
+        public static Tnum PercentSelfSupport(Person p)
+        {
+            return Facts.InputTnum(p, r.PercentSelfSupport);
+        }
+        
         /// <summary>
         /// How random...
         /// </summary>
@@ -203,7 +203,7 @@ namespace Hammurabi
             return Facts.InputTbool(p, r.IsAirlineFlightCrew, c);
         }
         
-	}
+    }
 
 }
 

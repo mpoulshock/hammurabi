@@ -23,75 +23,75 @@ using System.Collections.Generic;
 
 namespace Hammurabi
 {
-	
-	public static class Auxiliary
-	{
+    
+    public static class Auxiliary
+    {
 
-		/// <summary>
-		/// Returns the maximum value of a list of input values
-		/// </summary>
-		public static decimal Maximum(List<object> list)
-		{
-			decimal max = Convert.ToDecimal(list[0]);
-			
-			foreach (object v in list) 
-			{
-				if (Convert.ToDecimal(v) > max)
-				{
-					max = Convert.ToDecimal(v); 
-				}
-			}
-			
-			return max;
-		}
-		
-		/// <summary>
-		/// Returns the minimum value of a list of input values
-		/// </summary>
-		public static decimal Minimum(List<object> list)
-		{
-			decimal min = Convert.ToDecimal(list[0]);
-			
-			foreach (object v in list) 
-			{
-				if (Convert.ToDecimal(v) < min)
-				{
-					min = Convert.ToDecimal(v); 
-				}
-			}
-			
-			return min;
-		}
-		
-		/// <summary>
-		/// Determines whether a legal entity is a member of a Tset
-		/// </summary>
-		public static Tbool IsMemberOfSet(LegalEntity entity, Tset theSet)
-		{
-			// TODO: Implement unknown for LegalEntities?
-			
-			if (theSet.IsUnknown) { return new Tbool(); }
-			
-			Tbool result = new Tbool();
-			
-			foreach (KeyValuePair<DateTime,object> slice in theSet.IntervalValues)
-			{
-				List<LegalEntity> entities = (List<LegalEntity>)slice.Value;
-				
-				if (entities.Contains(entity))
-				{
-					result.AddState(slice.Key, true);
-				}
-				else
-				{
-					result.AddState(slice.Key, false);
-				}
-			}
-			
-			return result.Lean;
-		}
-		
-		/// <summary>
+        /// <summary>
+        /// Returns the maximum value of a list of input values
+        /// </summary>
+        public static decimal Maximum(List<object> list)
+        {
+            decimal max = Convert.ToDecimal(list[0]);
+            
+            foreach (object v in list) 
+            {
+                if (Convert.ToDecimal(v) > max)
+                {
+                    max = Convert.ToDecimal(v); 
+                }
+            }
+            
+            return max;
+        }
+        
+        /// <summary>
+        /// Returns the minimum value of a list of input values
+        /// </summary>
+        public static decimal Minimum(List<object> list)
+        {
+            decimal min = Convert.ToDecimal(list[0]);
+            
+            foreach (object v in list) 
+            {
+                if (Convert.ToDecimal(v) < min)
+                {
+                    min = Convert.ToDecimal(v); 
+                }
+            }
+            
+            return min;
+        }
+        
+        /// <summary>
+        /// Determines whether a legal entity is a member of a Tset
+        /// </summary>
+        public static Tbool IsMemberOfSet(LegalEntity entity, Tset theSet)
+        {
+            // TODO: Implement unknown for LegalEntities?
+            
+            if (theSet.IsUnknown) { return new Tbool(); }
+            
+            Tbool result = new Tbool();
+            
+            foreach (KeyValuePair<DateTime,object> slice in theSet.IntervalValues)
+            {
+                List<LegalEntity> entities = (List<LegalEntity>)slice.Value;
+                
+                if (entities.Contains(entity))
+                {
+                    result.AddState(slice.Key, true);
+                }
+                else
+                {
+                    result.AddState(slice.Key, false);
+                }
+            }
+            
+            return result.Lean;
+        }
+        
+        /// <summary>
         /// Returns the proper type of Tvar, optionally set eternally 
         /// to a given value 
         /// </summary>
@@ -107,32 +107,32 @@ namespace Hammurabi
             return new Tbool();
         }
 
-		public static object ReturnProperTvar<T>(object val)
-		{
-			if (typeof(T) == new Tbool().GetType())
-			{
+        public static object ReturnProperTvar<T>(object val)
+        {
+            if (typeof(T) == new Tbool().GetType())
+            {
                 return new Tbool((bool?)val);
-			}
-			if (typeof(T) == new Tnum().GetType())
-			{
-				return new Tnum(val);
-			}
-			if (typeof(T) == new Tstr().GetType())
-			{
-				return new Tstr(Convert.ToString(val));
-			}
-			if (typeof(T) == new Tdate().GetType())
-			{
-				return new Tdate(Convert.ToDateTime(val));
-			}
-			if (typeof(T) == new Tset().GetType())
-			{
-				return new Tset((List<LegalEntity>)val);
-			}
-			// If all else fails return default...
-			return default(T);
-		}
-		
-	}
-	
+            }
+            if (typeof(T) == new Tnum().GetType())
+            {
+                return new Tnum(val);
+            }
+            if (typeof(T) == new Tstr().GetType())
+            {
+                return new Tstr(Convert.ToString(val));
+            }
+            if (typeof(T) == new Tdate().GetType())
+            {
+                return new Tdate(Convert.ToDateTime(val));
+            }
+            if (typeof(T) == new Tset().GetType())
+            {
+                return new Tset((List<LegalEntity>)val);
+            }
+            // If all else fails return default...
+            return default(T);
+        }
+        
+    }
+    
 }

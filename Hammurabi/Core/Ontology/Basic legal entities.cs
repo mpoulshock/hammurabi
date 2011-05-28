@@ -22,53 +22,53 @@ using System;
 
 namespace Hammurabi
 { 
-	/// <summary>
-	/// Represents legal entities, i.e. things that are recognized by the law
-	/// as having rights and/or obligations.
-	/// This class and its inherited classes form something of an ontology of
-	/// legal concepts that are passed as arguments in the law-related methods
-	/// of the project.
-	/// </summary>
-	public abstract class LegalEntity
-	{	
-		/// <summary>
-		/// Identifies each legal entity.
-		/// The input value should be unique.
-		/// </summary>
-		public string Id;	       
+    /// <summary>
+    /// Represents legal entities, i.e. things that are recognized by the law
+    /// as having rights and/or obligations.
+    /// This class and its inherited classes form something of an ontology of
+    /// legal concepts that are passed as arguments in the law-related methods
+    /// of the project.
+    /// </summary>
+    public abstract class LegalEntity
+    {    
+        /// <summary>
+        /// Identifies each legal entity.
+        /// The input value should be unique.
+        /// </summary>
+        public string Id;           
         
-		/// <summary>
-		/// Indicates when a legal entity is a member of a Tset.
-		/// </summary>
-		public Tbool IsMemberOf(Tset s)
-		{
-			return Auxiliary.IsMemberOfSet(this,s);
-		}
-	}
-	
-	/// <summary>
-	/// Represents natural persons (i.e. humans).
-	/// </summary>
-	public class Person : LegalEntity
-	{
-		// Characteristics - non-temporal
-		public string Name;
-		
-		/// <summary>
-		/// Constructs a person with a given name.
-		/// </summary>
-		public Person(string name)
-		{
-			Id = name;
-		}
-		
-		/// <summary>
-		/// Citizenship/immigration-related characteristics (temporal).
-		/// </summary>
-		public Tstr USImmStatus
-		{
-			get { return Facts.InputTstr(this, r.USImmigrationStatus); }
-		}
+        /// <summary>
+        /// Indicates when a legal entity is a member of a Tset.
+        /// </summary>
+        public Tbool IsMemberOf(Tset s)
+        {
+            return Auxiliary.IsMemberOfSet(this,s);
+        }
+    }
+    
+    /// <summary>
+    /// Represents natural persons (i.e. humans).
+    /// </summary>
+    public class Person : LegalEntity
+    {
+        // Characteristics - non-temporal
+        public string Name;
+        
+        /// <summary>
+        /// Constructs a person with a given name.
+        /// </summary>
+        public Person(string name)
+        {
+            Id = name;
+        }
+        
+        /// <summary>
+        /// Citizenship/immigration-related characteristics (temporal).
+        /// </summary>
+        public Tstr USImmStatus
+        {
+            get { return Facts.InputTstr(this, r.USImmigrationStatus); }
+        }
         public Tbool IsUSResident
         {
             get { return this.CountryOfResidence == "United States"; }
@@ -77,10 +77,10 @@ namespace Hammurabi
         {
             return this.CountryOfResidence == country;
         }
-		public Tstr CountryOfResidence
-		{
-			get { return Facts.InputTstr(this, r.CountryOfResidence); }
-		}
+        public Tstr CountryOfResidence
+        {
+            get { return Facts.InputTstr(this, r.CountryOfResidence); }
+        }
         public Tbool IsUSCitizen
         {
             get 
@@ -95,18 +95,18 @@ namespace Hammurabi
         {
             get { return this.USImmStatus == "National"; }
         }
-		public Tstr CountryOfCitizenship
-		{
-			get { return Facts.InputTstr(this, r.CountryOfCitizenship); }
-		}
+        public Tstr CountryOfCitizenship
+        {
+            get { return Facts.InputTstr(this, r.CountryOfCitizenship); }
+        }
         
         /// <summary>
         /// Various personal characteristics (temporal).
         /// </summary>
-		public Tstr Gender
-		{
-			get { return Facts.InputTstr(this, "Gender"); }
-		}
+        public Tstr Gender
+        {
+            get { return Facts.InputTstr(this, "Gender"); }
+        }
         public Tbool IsFemale
         {
             get { return Gender == "Female"; }
@@ -115,10 +115,10 @@ namespace Hammurabi
         {
             get { return Gender == "Male"; }
         }
-		public Tnum Age 	// in years
-		{
-			get { return Time.IntervalsSince(DateOfBirth, DateOfBirth.AddYears(110), Time.IntervalType.Year); }
-		}
+        public Tnum Age     // in years
+        {
+            get { return Time.IntervalsSince(DateOfBirth, DateOfBirth.AddYears(110), Time.IntervalType.Year); }
+        }
         public DateTime DateOfBirth
         {
             get { return Facts.InputDate(this, r.DateOfBirth); }
@@ -131,7 +131,7 @@ namespace Hammurabi
         {
             get { return Facts.InputTstr(this, r.MaritalStatus) == "Married" ; }
         }
-		public Tbool IsDisabled
+        public Tbool IsDisabled
         {
             // How should this relate to 29 CFR Part 1630?
             get { return Facts.InputTbool(this, r.IsDisabled); }
@@ -141,53 +141,53 @@ namespace Hammurabi
             get { return Facts.InputTbool(this, r.IsIncapableOfSelfCare); }
         }
         
-//		/// <summary>
-//		/// Returns true when the person is alive.
-//		/// </summary>
-//		public Tbool IsAlive()
-//		{
-//			Tbool result = new Tbool();
-//			result.AddState(Time.DawnOf,false);
-//			
-//			if (DateOfDeath == null)
-//			{
-//				result.AddState(DateOfBirth,true);
-//				result.AddState(DateTime.Now,null);
-//			}
-//			else
-//			{
-//				result.AddState(DateOfBirth,true);
-//				result.AddState(DateOfDeath,false);
-//			}
-//			
-//			return result;
-//		}
+//        /// <summary>
+//        /// Returns true when the person is alive.
+//        /// </summary>
+//        public Tbool IsAlive()
+//        {
+//            Tbool result = new Tbool();
+//            result.AddState(Time.DawnOf,false);
+//            
+//            if (DateOfDeath == null)
+//            {
+//                result.AddState(DateOfBirth,true);
+//                result.AddState(DateTime.Now,null);
+//            }
+//            else
+//            {
+//                result.AddState(DateOfBirth,true);
+//                result.AddState(DateOfDeath,false);
+//            }
+//            
+//            return result;
+//        }
 
-	}
-	
-	/// <summary>
-	/// Represents tangible or intangible property, i.e. something that can
-	/// be owned.
-	/// </summary>
-	public class Property : LegalEntity
-	{
-		public Tnum ValueInDollars;
-		
-		/// <summary>
-		/// Constructs a Property object with a given name.
-		/// </summary>
-		public Property(string identifier)
-		{
-			Id = identifier;
-		}
-	}
-	
-	/// <summary>
-	/// Represents a corporate entity.
-	/// </summary>
-	public class CorporateEntity : LegalEntity
-	{
-		public string Name;
+    }
+    
+    /// <summary>
+    /// Represents tangible or intangible property, i.e. something that can
+    /// be owned.
+    /// </summary>
+    public class Property : LegalEntity
+    {
+        public Tnum ValueInDollars;
+        
+        /// <summary>
+        /// Constructs a Property object with a given name.
+        /// </summary>
+        public Property(string identifier)
+        {
+            Id = identifier;
+        }
+    }
+    
+    /// <summary>
+    /// Represents a corporate entity.
+    /// </summary>
+    public class CorporateEntity : LegalEntity
+    {
+        public string Name;
         
         public Tnum NumberOfEmployees
         {
@@ -198,15 +198,15 @@ namespace Hammurabi
         {
             get { return new Tbool(Object.ReferenceEquals(this.GetType(), new Govt().GetType())); }
         }
-	}
-	
-	/// <summary>
-	/// Represents a governmental entity.
-	/// </summary>
-	public class Govt : CorporateEntity
-	{
-		public string Jurisdiction;
-		public string JurisdictionType;
+    }
+    
+    /// <summary>
+    /// Represents a governmental entity.
+    /// </summary>
+    public class Govt : CorporateEntity
+    {
+        public string Jurisdiction;
+        public string JurisdictionType;
         
         /// <summary>
         /// Constructs a government/agency object with a given name.
@@ -222,14 +222,14 @@ namespace Hammurabi
         {
         }
         
-	}
-	
-	/// <summary>
-	/// Represents a non-governmental entity (usually a private
-	/// corporation).
-	/// </summary>
-	public class Corp : CorporateEntity
-	{
+    }
+    
+    /// <summary>
+    /// Represents a non-governmental entity (usually a private
+    /// corporation).
+    /// </summary>
+    public class Corp : CorporateEntity
+    {
         /// <summary>
         /// Constructs a corporation object with a given name.
         /// </summary>
@@ -237,10 +237,10 @@ namespace Hammurabi
         {
             Id = identifier;
         }
-	}
-	
-	
-	
+    }
+    
+    
+    
 }
 
 

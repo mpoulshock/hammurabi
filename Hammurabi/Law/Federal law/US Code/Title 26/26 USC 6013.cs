@@ -29,28 +29,28 @@ using Hammurabi;
 
 namespace USC.Tit26
 {
-	
-	/// <summary>
-	/// Determines whether two married taxpayers are eligible to file a joint
-	/// return as defined under the Internal Revenue Code, Section 6013.
-	/// </summary>
-	/// <cite>26 U.S.C. 6013 (2010)</cite>	
-	/// <updated>2011-03-08</updated>		
-	/// <remarks>
-	/// The logic of this provision has not been implemented yet.  Currently,
-	/// it just indicates whether the filing status is married filing
-	/// jointly.
-	/// </remarks> 
-	public class Sec6013 : H
-	{
-		/// <summary>
-		/// Indicates whether two married taxpayers are filing a joint return.
-		/// </summary>
-		public static Tbool AreMFJ(Person p1, Person p2)
-		{
-			return Facts.Sym(p1, "FilesJointFedTaxReturnWith", p2) ||
-				   Facts.Sym(p1, "FedTaxFilingStatus", p2, "Married filing jointly");	
-		}
+    
+    /// <summary>
+    /// Determines whether two married taxpayers are eligible to file a joint
+    /// return as defined under the Internal Revenue Code, Section 6013.
+    /// </summary>
+    /// <cite>26 U.S.C. 6013 (2010)</cite>    
+    /// <updated>2011-03-08</updated>        
+    /// <remarks>
+    /// The logic of this provision has not been implemented yet.  Currently,
+    /// it just indicates whether the filing status is married filing
+    /// jointly.
+    /// </remarks> 
+    public class Sec6013 : H
+    {
+        /// <summary>
+        /// Indicates whether two married taxpayers are filing a joint return.
+        /// </summary>
+        public static Tbool AreMFJ(Person p1, Person p2)
+        {
+            return Facts.Sym(p1, "FilesJointFedTaxReturnWith", p2) ||
+                   Facts.Sym(p1, "FedTaxFilingStatus", p2, "Married filing jointly");    
+        }
 
         /// <summary>
         /// Determines whether a person is married filing jointly with *anyone*
@@ -75,6 +75,6 @@ namespace USC.Tit26
 //                   Facts.InputTbool(p2, "FileMFJOnlyToClaimRefund", p1);
 //        }
         
-		
-	}
+        
+    }
 }

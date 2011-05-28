@@ -29,26 +29,26 @@ using Hammurabi;
 
 namespace USC.Tit26
 {
-	
-	/// <summary>
-	/// Calculates a person's "adjusted gross income,"
-	/// as defined under Internal Revenue Code, Section 61.
-	/// </summary>
-	/// <cite>26 U.S.C. 62 (2010)</cite>	
-	/// <updated>2010-11-27</updated>		
-	/// <remarks>
-	/// The logic of this provision has not been implemented yet.  Currently,
-	/// it just indicates the value of the person's AGI.
-	/// </remarks> 
-	public class Sec62
-	{
-		/// <summary>
-		/// Indicates a person's gross income.
-		/// </summary>
-		public static Tnum AGI(Person p1)
-		{
-			return Facts.InputTnum(p1, "AdjustedGrossIncome");	
-		}
-		
-	}
+    
+    /// <summary>
+    /// Calculates a person's "adjusted gross income,"
+    /// as defined under Internal Revenue Code, Section 61.
+    /// </summary>
+    /// <cite>26 U.S.C. 62 (2010)</cite>    
+    /// <updated>2010-11-27</updated>        
+    /// <remarks>
+    /// The logic of this provision has not been implemented yet.  Currently,
+    /// it just indicates the value of the person's AGI.
+    /// </remarks> 
+    public class Sec62
+    {
+        /// <summary>
+        /// Indicates a person's gross income.
+        /// </summary>
+        public static Tnum AGI(Person p1)
+        {
+            return Facts.InputTnum(p1, "AdjustedGrossIncome");    
+        }
+        
+    }
 }

@@ -22,18 +22,18 @@ using System;
 
 namespace Hammurabi
 {
-	public static partial class Facts
-	{
-		//TODO: Implement data validation of some sort (e.g. consistency checking)
-		
-		/// <summary>
-		/// Asserts a temporal (Tvar) relation between two legal entities
-		/// </summary>
-		public static void Assert(LegalEntity e1, string rel, LegalEntity e2, Tvar val)
-		{			
-			Fact f = new Fact(e1, e2, rel, val);
-			FactBase.Add(f);
-		}
+    public static partial class Facts
+    {
+        //TODO: Implement data validation of some sort (e.g. consistency checking)
+        
+        /// <summary>
+        /// Asserts a temporal (Tvar) relation between two legal entities
+        /// </summary>
+        public static void Assert(LegalEntity e1, string rel, LegalEntity e2, Tvar val)
+        {            
+            Fact f = new Fact(e1, e2, rel, val);
+            FactBase.Add(f);
+        }
         public static void Assert(LegalEntity e1, string rel, LegalEntity e2, bool val)
         {           
             Fact f = new Fact(e1, e2, rel, new Tbool(val));
@@ -54,7 +54,7 @@ namespace Hammurabi
             Fact f = new Fact(e1, e2, rel, new Tnum(val));
             FactBase.Add(f);
         }
-		public static void Assert(LegalEntity e1, string rel, LegalEntity e2, int val)
+        public static void Assert(LegalEntity e1, string rel, LegalEntity e2, int val)
         {           
             Fact f = new Fact(e1, e2, rel, new Tnum(val));
             FactBase.Add(f);
@@ -65,23 +65,23 @@ namespace Hammurabi
             FactBase.Add(f);
         }
         
-		/// <summary>
-		/// Asserts a DateTime relation between two legal entities
-		/// </summary>
-		public static void Assert(LegalEntity e1, string rel, LegalEntity e2, DateTime dt)
-		{			
-			Fact f = new Fact(e1, e2, rel, dt);
-			FactBase.Add(f);
-		}
-		
-		/// <summary>
-		/// Asserts a temporal property (Tvar) of one legal entity
-		/// </summary>
-		public static void Assert(LegalEntity e1, string rel, Tvar val)
-		{			
-			Fact f = new Fact(e1, rel, val);
-			FactBase.Add(f);
-		}
+        /// <summary>
+        /// Asserts a DateTime relation between two legal entities
+        /// </summary>
+        public static void Assert(LegalEntity e1, string rel, LegalEntity e2, DateTime dt)
+        {            
+            Fact f = new Fact(e1, e2, rel, dt);
+            FactBase.Add(f);
+        }
+        
+        /// <summary>
+        /// Asserts a temporal property (Tvar) of one legal entity
+        /// </summary>
+        public static void Assert(LegalEntity e1, string rel, Tvar val)
+        {            
+            Fact f = new Fact(e1, rel, val);
+            FactBase.Add(f);
+        }
         public static void Assert(LegalEntity e1, string rel, bool val)
         {           
             Fact f = new Fact(e1, rel, new Tbool(val));
@@ -113,14 +113,14 @@ namespace Hammurabi
             FactBase.Add(f);
         }
         
-		/// <summary>
-		/// Asserts a DateTime property (Tvar) of one legal entity
-		/// </summary>
-		public static void Assert(LegalEntity e1, string rel, DateTime dt)
-		{			
-			Fact f = new Fact(e1, rel, dt);
-			FactBase.Add(f);
-		}
+        /// <summary>
+        /// Asserts a DateTime property (Tvar) of one legal entity
+        /// </summary>
+        public static void Assert(LegalEntity e1, string rel, DateTime dt)
+        {            
+            Fact f = new Fact(e1, rel, dt);
+            FactBase.Add(f);
+        }
 
-	}
+    }
 }

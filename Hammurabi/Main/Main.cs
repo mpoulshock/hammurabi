@@ -22,44 +22,44 @@ using System;
 
 namespace Hammurabi
 {
-	class MainClass : H
-	{
-		/// <summary>
-		/// Main
-		/// </summary>
-		public static void Main (string[] args)
-		{
-			TimeSpan duration = new TimeSpan();
-			DateTime startTime = DateTime.Now;
+    class MainClass : H
+    {
+        /// <summary>
+        /// Main
+        /// </summary>
+        public static void Main (string[] args)
+        {
+            TimeSpan duration = new TimeSpan();
+            DateTime startTime = DateTime.Now;
 
             
             Demo();          
             
             
-			DateTime stopTime = DateTime.Now;
-			duration = stopTime - startTime;
-			Console.WriteLine("Execution time: " + duration);
-		}
+            DateTime stopTime = DateTime.Now;
+            duration = stopTime - startTime;
+            Console.WriteLine("Execution time: " + duration);
+        }
     
         
-		/// <summary>
-		/// Stupid, legally incomplete demo to illustrate the basic concept
-		/// </summary>
-		private static void Demo()
-		{		
-			// Instantiate some legal entities (people, property, institutions)
-			Person P1 = new Person("P1");
-			Person P2 = new Person("P2");
+        /// <summary>
+        /// Stupid, legally incomplete demo to illustrate the basic concept
+        /// </summary>
+        private static void Demo()
+        {        
+            // Instantiate some legal entities (people, property, institutions)
+            Person P1 = new Person("P1");
+            Person P2 = new Person("P2");
 
-			// Assert some facts about those entities
-			Facts.Assert(P1, "IsPermanentlyAndTotallyDisabled");
+            // Assert some facts about those entities
+            Facts.Assert(P1, "IsPermanentlyAndTotallyDisabled");
             Facts.Assert(P1, "IsMarriedTo", P2);
             Facts.Assert(P1, "FedTaxFilingStatus", P2, "Married filing jointly");
-			
-			// Get a legal determination (and display it)
-			Console.WriteLine(USC.Tit26.Sec152.IsDependentOf(P1,P2).Timeline);
-			Console.WriteLine(USC.Tit26.Sec152.CannotBeADependentOf(P1,P2).Timeline);
-		}
-			
-	}
+            
+            // Get a legal determination (and display it)
+            Console.WriteLine(USC.Tit26.Sec152.IsDependentOf(P1,P2).Timeline);
+            Console.WriteLine(USC.Tit26.Sec152.CannotBeADependentOf(P1,P2).Timeline);
+        }
+            
+    }
 }

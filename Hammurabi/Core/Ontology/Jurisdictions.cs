@@ -20,12 +20,12 @@
 
 namespace Hammurabi
 {
-	/// <summary>
-	/// Enumerations of jurisdictions, such as countries, states,
-	/// and provinces. 
-	/// </summary>
-	public class Juris : LegalEntity
-	{
+    /// <summary>
+    /// Enumerations of jurisdictions, such as countries, states,
+    /// and provinces. 
+    /// </summary>
+    public class Juris : LegalEntity
+    {
         /// <summary>
         /// Returns the (U.S.) state jurisdiction applicable to the dispute
         /// between two legal entities.
@@ -35,5 +35,5 @@ namespace Hammurabi
             return Facts.Sym(e1, r.StateJurisdiction, e2, state);
         }
 
-	}
+    }
 }

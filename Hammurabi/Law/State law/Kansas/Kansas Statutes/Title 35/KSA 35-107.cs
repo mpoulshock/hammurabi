@@ -29,41 +29,41 @@ using System;
 
 namespace KSA.Tit35
 {
-	/// <summary>
-	/// Determines whether a date is a Kansas legal holiday.
-	/// </summary>
-	/// <cite>K.S.A. 35-107 (2009)</cite>	
-	/// <updated>2011-03-05</updated>		
-	public static class Sec107
-	{
-		/// <summary>
-		/// Determines whether a date is a Kansas legal holiday.
-		/// </summary>
-		public static bool IsLegalHoliday(DateTime d)
-		{
-			// Kansas law does not refer to 5 U.S.C. 6103, 
-			// but the logic is the same.
-			return USC.Tit5.Sec6103.IsNewYearsDayObserved(d) || 
-				   d == USC.Tit5.Sec6103.MLKDay(d.Year) ||
-				   d == PresidentsDay(d.Year) ||
-				   d == USC.Tit5.Sec6103.MemorialDay(d.Year) ||
-				   d == USC.Tit5.Sec6103.IndependenceDayObserved(d.Year) ||
-				   d == USC.Tit5.Sec6103.LaborDay(d.Year) ||
-				   d == USC.Tit5.Sec6103.ColumbusDay(d.Year) ||
-				   d == USC.Tit5.Sec6103.VeteransDayObserved(d.Year)	||
-				   d == USC.Tit5.Sec6103.ThanksgivingDay(d.Year) ||
-				   d == USC.Tit5.Sec6103.ChristmasDayObserved(d.Year);
-		}
-		
-		/// <summary>
-		/// President's Day - third Monday in February.
-		/// </summary>
-		public static DateTime PresidentsDay(int year)
-		{
-			// Kansas law calls it "President's Day"; the U.S. Code 
-			// calls it "Washington's Birthday."
-			return USC.Tit5.Sec6103.WashingtonsBirthday(year);
-		}
+    /// <summary>
+    /// Determines whether a date is a Kansas legal holiday.
+    /// </summary>
+    /// <cite>K.S.A. 35-107 (2009)</cite>    
+    /// <updated>2011-03-05</updated>        
+    public static class Sec107
+    {
+        /// <summary>
+        /// Determines whether a date is a Kansas legal holiday.
+        /// </summary>
+        public static bool IsLegalHoliday(DateTime d)
+        {
+            // Kansas law does not refer to 5 U.S.C. 6103, 
+            // but the logic is the same.
+            return USC.Tit5.Sec6103.IsNewYearsDayObserved(d) || 
+                   d == USC.Tit5.Sec6103.MLKDay(d.Year) ||
+                   d == PresidentsDay(d.Year) ||
+                   d == USC.Tit5.Sec6103.MemorialDay(d.Year) ||
+                   d == USC.Tit5.Sec6103.IndependenceDayObserved(d.Year) ||
+                   d == USC.Tit5.Sec6103.LaborDay(d.Year) ||
+                   d == USC.Tit5.Sec6103.ColumbusDay(d.Year) ||
+                   d == USC.Tit5.Sec6103.VeteransDayObserved(d.Year)    ||
+                   d == USC.Tit5.Sec6103.ThanksgivingDay(d.Year) ||
+                   d == USC.Tit5.Sec6103.ChristmasDayObserved(d.Year);
+        }
+        
+        /// <summary>
+        /// President's Day - third Monday in February.
+        /// </summary>
+        public static DateTime PresidentsDay(int year)
+        {
+            // Kansas law calls it "President's Day"; the U.S. Code 
+            // calls it "Washington's Birthday."
+            return USC.Tit5.Sec6103.WashingtonsBirthday(year);
+        }
 
-	}
+    }
 }

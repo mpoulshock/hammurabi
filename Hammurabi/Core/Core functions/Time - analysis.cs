@@ -23,79 +23,79 @@ using System.Collections.Generic;
 
 namespace Hammurabi
 {
-	public abstract partial class H
-	{
-		
-		/// <summary>
-		/// Gets all time points and assocated values from the input Tvar objects.
-		/// </summary>
-		protected static SortedList<DateTime,List<object>> TimePointValues(params Tvar[] list)
-		{
-			SortedList<DateTime,List<object>> result = new SortedList<DateTime, List<object>>();
-			
-			// Foreach time point
-			foreach (DateTime d in TimePoints(list))
-			{
-				List<object> vals = new List<object>();
-				
-				// Make list of values at that point in time
-				foreach (Tvar h in list)
-				{
-					vals.Add(h.ObjectAsOf(d));
-				}
-				
-				result.Add(d,vals);
-			}
-			
-			return result;
-		}
+    public abstract partial class H
+    {
+        
+        /// <summary>
+        /// Gets all time points and assocated values from the input Tvar objects.
+        /// </summary>
+        protected static SortedList<DateTime,List<object>> TimePointValues(params Tvar[] list)
+        {
+            SortedList<DateTime,List<object>> result = new SortedList<DateTime, List<object>>();
+            
+            // Foreach time point
+            foreach (DateTime d in TimePoints(list))
+            {
+                List<object> vals = new List<object>();
+                
+                // Make list of values at that point in time
+                foreach (Tvar h in list)
+                {
+                    vals.Add(h.ObjectAsOf(d));
+                }
+                
+                result.Add(d,vals);
+            }
+            
+            return result;
+        }
 
-		/// <summary>
-		/// Gets all time points in a set of Tvar objects.
-		/// </summary>
-		protected static List<DateTime> TimePoints(params Tvar[] list)
-		{
-			List<Tvar> arrayToList = new List<Tvar>(list.Length);
+        /// <summary>
+        /// Gets all time points in a set of Tvar objects.
+        /// </summary>
+        protected static List<DateTime> TimePoints(params Tvar[] list)
+        {
+            List<Tvar> arrayToList = new List<Tvar>(list.Length);
             arrayToList.AddRange(list);
-			
-			return TimePoints(arrayToList);
-		}
+            
+            return TimePoints(arrayToList);
+        }
 
-		public static List<DateTime> TimePoints(List<Tvar> list)
-		{
-			List<DateTime> bps = new List<DateTime>();
-			
-			foreach (Tvar v in list)
-			{
-				foreach (DateTime d in v.TimePoints())
-				{
-					if (!bps.Contains(d))
-					{
-						bps.Add(d);
-					}
-				}
-			}
-			
-			return bps;
-		}
-		
-		/// <summary>
-		/// Apply a function to all values in a Tnum object.
-		/// </summary>
-		public static Tnum ApplyFcnToTimeline(Func<List<object>,object> fcn, params Tnum[] list)
-		{
-			// TODO: Refactor using generics (along w/ similar fcns)? 
-			
-			Tnum result = new Tnum();
-			
-			foreach(KeyValuePair<DateTime,List<object>> slice in TimePointValues(list))
-			{	
-				result.AddState(slice.Key, fcn(slice.Value));
-			}
-			
-			return result.Lean;
-		}
-		
-	}	
-	
+        public static List<DateTime> TimePoints(List<Tvar> list)
+        {
+            List<DateTime> bps = new List<DateTime>();
+            
+            foreach (Tvar v in list)
+            {
+                foreach (DateTime d in v.TimePoints())
+                {
+                    if (!bps.Contains(d))
+                    {
+                        bps.Add(d);
+                    }
+                }
+            }
+            
+            return bps;
+        }
+        
+        /// <summary>
+        /// Apply a function to all values in a Tnum object.
+        /// </summary>
+        public static Tnum ApplyFcnToTimeline(Func<List<object>,object> fcn, params Tnum[] list)
+        {
+            // TODO: Refactor using generics (along w/ similar fcns)? 
+            
+            Tnum result = new Tnum();
+            
+            foreach(KeyValuePair<DateTime,List<object>> slice in TimePointValues(list))
+            {    
+                result.AddState(slice.Key, fcn(slice.Value));
+            }
+            
+            return result.Lean;
+        }
+        
+    }    
+    
 }

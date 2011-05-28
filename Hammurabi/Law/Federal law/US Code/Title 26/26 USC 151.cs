@@ -29,27 +29,27 @@ using Hammurabi;
 
 namespace USC.Tit26
 {
-	
-	/// <summary>
-	/// Calculates a person's "exemption amount,"
-	/// as defined under Internal Revenue Code, Section 151.
-	/// </summary>
-	/// <cite>26 U.S.C. 151 (2011)</cite>	
-	/// <updated>2011-03-18</updated>		
-	/// <remarks>
-	/// The logic of this provision has not been implemented yet.  Currently,
-	/// it just returns the person's exemption amount.
-	/// </remarks> 
-	public class Sec151
-	{
-		/// <summary>
-		/// Returns a person's gross income.
-		/// </summary>
-		public static Tnum ExemptionAmount(Person p1)
-		{
-			return Facts.InputTnum(p1, "FedTaxExemptionAmount");	
-		}
+    
+    /// <summary>
+    /// Calculates a person's "exemption amount,"
+    /// as defined under Internal Revenue Code, Section 151.
+    /// </summary>
+    /// <cite>26 U.S.C. 151 (2011)</cite>    
+    /// <updated>2011-03-18</updated>        
+    /// <remarks>
+    /// The logic of this provision has not been implemented yet.  Currently,
+    /// it just returns the person's exemption amount.
+    /// </remarks> 
+    public class Sec151
+    {
+        /// <summary>
+        /// Returns a person's gross income.
+        /// </summary>
+        public static Tnum ExemptionAmount(Person p1)
+        {
+            return Facts.InputTnum(p1, "FedTaxExemptionAmount");    
+        }
 
-		
-	}
+        
+    }
 }

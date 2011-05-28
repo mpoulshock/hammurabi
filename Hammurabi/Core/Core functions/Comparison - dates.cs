@@ -22,87 +22,87 @@ using System;
 using System.Collections.Generic;
 
 namespace Hammurabi
-{	
-	public partial class Tdate
-	{
+{    
+    public partial class Tdate
+    {
 
-		/// <summary>
-		/// Returns true when one Tdate is equal to another.
-		/// </summary>
-		public static Tbool operator == (Tdate td1, Tdate td2)
-		{
-			return EqualTo(td1,td2);
-		}
-		
-		/// <summary>
-		/// Returns true when one Tdate is not equal to another.
-		/// </summary>
-		public static Tbool operator != (Tdate td1, Tdate td2)
-		{
-			return !EqualTo(td1,td2);
-		}
-		
-		/// <summary>
-		/// Returns true when one Tdate is later than another.
-		/// </summary>
-		public static Tbool operator > (Tdate td1, Tdate td2)
-		{
-			return IsAfter(td1,td2);
-		}
-		
-		private static Tbool IsAfter(Tdate td1, Tdate td2)
-		{
-			if (AnyAreUnknown(td1,td2)) { return new Tbool(); }
-			
-			Tbool result = new Tbool();
-			
-			foreach(KeyValuePair<DateTime,List<object>> slice in TimePointValues(td1,td2))
-			{	
-				bool isAfter = Convert.ToDateTime(slice.Value[0]) > Convert.ToDateTime(slice.Value[1]);
-				result.AddState(slice.Key, isAfter);
-			}
-			
-			return result.Lean;
-		}
-		
-		/// <summary>
-		/// Returns true when one Tdate is the same as or later than another.
-		/// </summary>
-		public static Tbool operator >= (Tdate td1, Tdate td2)
-		{
-			return IsAtOrAfter(td1,td2);
-		}
-		
-		private static Tbool IsAtOrAfter(Tdate td1, Tdate td2)
-		{
-			return IsAfter(td1,td2) | EqualTo(td1,td2);
-		}
+        /// <summary>
+        /// Returns true when one Tdate is equal to another.
+        /// </summary>
+        public static Tbool operator == (Tdate td1, Tdate td2)
+        {
+            return EqualTo(td1,td2);
+        }
+        
+        /// <summary>
+        /// Returns true when one Tdate is not equal to another.
+        /// </summary>
+        public static Tbool operator != (Tdate td1, Tdate td2)
+        {
+            return !EqualTo(td1,td2);
+        }
+        
+        /// <summary>
+        /// Returns true when one Tdate is later than another.
+        /// </summary>
+        public static Tbool operator > (Tdate td1, Tdate td2)
+        {
+            return IsAfter(td1,td2);
+        }
+        
+        private static Tbool IsAfter(Tdate td1, Tdate td2)
+        {
+            if (AnyAreUnknown(td1,td2)) { return new Tbool(); }
+            
+            Tbool result = new Tbool();
+            
+            foreach(KeyValuePair<DateTime,List<object>> slice in TimePointValues(td1,td2))
+            {    
+                bool isAfter = Convert.ToDateTime(slice.Value[0]) > Convert.ToDateTime(slice.Value[1]);
+                result.AddState(slice.Key, isAfter);
+            }
+            
+            return result.Lean;
+        }
+        
+        /// <summary>
+        /// Returns true when one Tdate is the same as or later than another.
+        /// </summary>
+        public static Tbool operator >= (Tdate td1, Tdate td2)
+        {
+            return IsAtOrAfter(td1,td2);
+        }
+        
+        private static Tbool IsAtOrAfter(Tdate td1, Tdate td2)
+        {
+            return IsAfter(td1,td2) | EqualTo(td1,td2);
+        }
 
-		/// <summary>
-		/// Returns true when one Tdate is earlier than another.
-		/// </summary>
-		public static Tbool operator < (Tdate td1, Tdate td2)
-		{
-			return !IsAfter(td1,td2);
-		}
-		
-		private static Tbool IsBefore(Tdate td1, Tdate td2)
-		{
-			return !IsAtOrAfter(td1,td2);
-		}
-				
-		/// <summary>
-		/// Returns true when one Tdate is the same as or earlier than another.
-		/// </summary>
-		public static Tbool operator <= (Tdate td1, Tdate td2)
-		{
-			return IsAtOrBefore(td1,td2);
-		}
-		
-		private static Tbool IsAtOrBefore(Tdate td1, Tdate td2)
-		{
-			return IsBefore(td1,td2) | EqualTo(td1,td2);
-		}
-	
-	}
+        /// <summary>
+        /// Returns true when one Tdate is earlier than another.
+        /// </summary>
+        public static Tbool operator < (Tdate td1, Tdate td2)
+        {
+            return !IsAfter(td1,td2);
+        }
+        
+        private static Tbool IsBefore(Tdate td1, Tdate td2)
+        {
+            return !IsAtOrAfter(td1,td2);
+        }
+                
+        /// <summary>
+        /// Returns true when one Tdate is the same as or earlier than another.
+        /// </summary>
+        public static Tbool operator <= (Tdate td1, Tdate td2)
+        {
+            return IsAtOrBefore(td1,td2);
+        }
+        
+        private static Tbool IsAtOrBefore(Tdate td1, Tdate td2)
+        {
+            return IsBefore(td1,td2) | EqualTo(td1,td2);
+        }
+    
+    }
 }

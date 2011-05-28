@@ -23,29 +23,29 @@ using System.Collections.Generic;
 
 namespace Hammurabi
 {
-	#pragma warning disable 660, 661
-	
-	/// <summary>
-	/// An temporal object that represents boolean values along a timeline.
-	/// </summary>
-	public partial class Tbool : Tvar
-	{
-		
-		/// <summary>
-		/// Constructs an "unknown" Tbool - that is, one with no states 
-		/// </summary>
-		public Tbool()
-		{
-		}
-		
-		/// <summary>
-		/// Constructs a Tbool that is eternally set to a specified boolean value
-		/// </summary>
-		public Tbool(bool? val)
-		{
-			this.SetEternally(val);
-		}
-		
+    #pragma warning disable 660, 661
+    
+    /// <summary>
+    /// An temporal object that represents boolean values along a timeline.
+    /// </summary>
+    public partial class Tbool : Tvar
+    {
+        
+        /// <summary>
+        /// Constructs an "unknown" Tbool - that is, one with no states 
+        /// </summary>
+        public Tbool()
+        {
+        }
+        
+        /// <summary>
+        /// Constructs a Tbool that is eternally set to a specified boolean value
+        /// </summary>
+        public Tbool(bool? val)
+        {
+            this.SetEternally(val);
+        }
+        
         /// <summary>
         /// Implicitly converts bools to Tbools.
         /// </summary>
@@ -54,60 +54,60 @@ namespace Hammurabi
             return new Tbool(b);
         }
         
-		/// <summary>
-		/// Removes redundant intervals from the Tbool. 
-		/// </summary>
-		public Tbool Lean
-		{
-			get
-			{
-				return this.LeanTvar<Tbool>();
-			}
-		}
+        /// <summary>
+        /// Removes redundant intervals from the Tbool. 
+        /// </summary>
+        public Tbool Lean
+        {
+            get
+            {
+                return this.LeanTvar<Tbool>();
+            }
+        }
 
-		/// <summary>
-		/// Returns the value of a Tbool at a specified point in time. 
-		/// </summary>
-		public Tbool AsOf(DateTime dt)
-		{
-			if (this.IsUnknown) { return new Tbool(); }
-			
-			return (Tbool)this.AsOf<Tbool>(dt);
-		}
-		
-		/// <summary>
-		/// Returns true if the Tbool always has a specified boolean value. 
-		/// </summary>
-		public Tbool IsAlways(bool val)
-		{
-			return IsAlwaysTvar<Tbool>(val, Time.DawnOf, Time.EndOf);
-		}
-		
-		/// <summary>
-		/// Returns true if the Tbool always has a specified boolean value
-		/// between two given dates. 
-		/// </summary>
-		public Tbool IsAlways(bool val, DateTime start, DateTime end)
-		{
-			return IsAlwaysTvar<Tbool>(val, start, end);
-		}
-		
-		/// <summary>
-		/// Returns true if the Tbool ever has a specified boolean value. 
-		/// </summary>
-		public Tbool IsEver(bool val)
-		{
-			return IsEverTvar(val);
-		}
-		
-		/// <summary>
-		/// Returns true if the Tbool ever has a specified boolean value
-		/// between two given dates. 
-		/// </summary>
-		public Tbool IsEver(bool val, DateTime start, DateTime end)
-		{
-			return IsEverTvar<Tbool>(val, start, end);
-		}
+        /// <summary>
+        /// Returns the value of a Tbool at a specified point in time. 
+        /// </summary>
+        public Tbool AsOf(DateTime dt)
+        {
+            if (this.IsUnknown) { return new Tbool(); }
+            
+            return (Tbool)this.AsOf<Tbool>(dt);
+        }
+        
+        /// <summary>
+        /// Returns true if the Tbool always has a specified boolean value. 
+        /// </summary>
+        public Tbool IsAlways(bool val)
+        {
+            return IsAlwaysTvar<Tbool>(val, Time.DawnOf, Time.EndOf);
+        }
+        
+        /// <summary>
+        /// Returns true if the Tbool always has a specified boolean value
+        /// between two given dates. 
+        /// </summary>
+        public Tbool IsAlways(bool val, DateTime start, DateTime end)
+        {
+            return IsAlwaysTvar<Tbool>(val, start, end);
+        }
+        
+        /// <summary>
+        /// Returns true if the Tbool ever has a specified boolean value. 
+        /// </summary>
+        public Tbool IsEver(bool val)
+        {
+            return IsEverTvar(val);
+        }
+        
+        /// <summary>
+        /// Returns true if the Tbool ever has a specified boolean value
+        /// between two given dates. 
+        /// </summary>
+        public Tbool IsEver(bool val, DateTime start, DateTime end)
+        {
+            return IsEverTvar<Tbool>(val, start, end);
+        }
         
         /// <summary>
         /// Returns the DateTime when the Tbool is first true.
@@ -131,10 +131,10 @@ namespace Hammurabi
             }
         }
         
-		/// <summary>
-		/// Overloaded boolean operator: True.
-		/// </summary>
-		public static bool operator true (Tbool tb)
+        /// <summary>
+        /// Overloaded boolean operator: True.
+        /// </summary>
+        public static bool operator true (Tbool tb)
         {
             return tb.IsTrue;
         }
@@ -164,14 +164,14 @@ namespace Hammurabi
             }
         }
         
-		/// <summary>
-		/// Overloaded boolean operator: False.
-		/// </summary>
+        /// <summary>
+        /// Overloaded boolean operator: False.
+        /// </summary>
         public static bool operator false (Tbool tb)
         {
             return tb.IsFalse;
         }
-		
+        
         /// <summary>
         /// Returns true only if the Tbool is false during the window of concern;
         /// otherwise true. 
@@ -212,39 +212,39 @@ namespace Hammurabi
             }
         }
         
-		/// <summary>
-		/// Overloaded boolean operator: Equal.
-		/// </summary>
-		public static Tbool operator == (Tbool tb1, Tbool tb2)
-		{
-			return EqualTo(tb1,tb2);
-		}
-		public static Tbool operator == (Tbool tb, bool b)
-		{
-			return EqualTo(tb,new Tbool(b));
-		}
-		public static Tbool operator == (bool b, Tbool tb)
-		{
-			return EqualTo(tb,new Tbool(b));
-		}
-		
-		/// <summary>
-		/// Overloaded boolean operator: Not equal.
-		/// </summary>
-		public static Tbool operator != (Tbool tb1, Tbool tb2)
-		{
-			return !EqualTo(tb1,tb2);
-		}
-		public static Tbool operator != (Tbool tb, bool b)
-		{
-			return !EqualTo(tb,new Tbool(b));
-		}
-		public static Tbool operator != (bool b, Tbool tb)
-		{
-			return !EqualTo(tb,new Tbool(b));
-		}
+        /// <summary>
+        /// Overloaded boolean operator: Equal.
+        /// </summary>
+        public static Tbool operator == (Tbool tb1, Tbool tb2)
+        {
+            return EqualTo(tb1,tb2);
+        }
+        public static Tbool operator == (Tbool tb, bool b)
+        {
+            return EqualTo(tb,new Tbool(b));
+        }
+        public static Tbool operator == (bool b, Tbool tb)
+        {
+            return EqualTo(tb,new Tbool(b));
+        }
+        
+        /// <summary>
+        /// Overloaded boolean operator: Not equal.
+        /// </summary>
+        public static Tbool operator != (Tbool tb1, Tbool tb2)
+        {
+            return !EqualTo(tb1,tb2);
+        }
+        public static Tbool operator != (Tbool tb, bool b)
+        {
+            return !EqualTo(tb,new Tbool(b));
+        }
+        public static Tbool operator != (bool b, Tbool tb)
+        {
+            return !EqualTo(tb,new Tbool(b));
+        }
 
-	}
-	
-	#pragma warning restore 660, 661
+    }
+    
+    #pragma warning restore 660, 661
 }
