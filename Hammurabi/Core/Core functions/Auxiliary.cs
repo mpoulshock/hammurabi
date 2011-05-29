@@ -78,14 +78,7 @@ namespace Hammurabi
             {
                 List<LegalEntity> entities = (List<LegalEntity>)slice.Value;
                 
-                if (entities.Contains(entity))
-                {
-                    result.AddState(slice.Key, true);
-                }
-                else
-                {
-                    result.AddState(slice.Key, false);
-                }
+                result.AddState(slice.Key, entities.Contains(entity));
             }
             
             return result.Lean;

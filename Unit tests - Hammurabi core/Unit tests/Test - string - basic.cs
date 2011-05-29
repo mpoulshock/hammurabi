@@ -23,142 +23,142 @@ using NUnit.Framework;
 
 namespace Hammurabi.UnitTests.CoreFcns
 {
-	[TestFixture]
-	public class BasicString : H
-	{
-		[Test]
-		public void Test1 ()
-		{
-			Tstr ts1 = new Tstr("hello,");
-			Tstr ts2 = new Tstr("world");
-			Tstr ts3 = ts1 + ts2;
-			Assert.AreEqual("1/1/0001 12:00:00 AM hello,world ", ts3.TestOutput);			
-		}
-		
-		[Test]
-		public void Test2 ()
-		{
-			Tstr ts1 = new Tstr("hello,");
-			Tstr ts2 = new Tstr("world");
-			Tstr ts3 = ts1 + " " + ts2;
-			Assert.AreEqual("1/1/0001 12:00:00 AM hello, world ", ts3.TestOutput);			
-		}
-		
-		[Test]
-		public void Test3 ()
-		{
-			Tstr ts1 = new Tstr("hello,") + " world";
-			Assert.AreEqual("1/1/0001 12:00:00 AM hello, world ", ts1.TestOutput);			
-		}
-		
-		[Test]
-		public void Test4 ()
-		{
-			Tstr ts1 = new Tstr("hello,");
-			Tstr ts2 = new Tstr("world");
-			Tstr ts3 = ts1 + " " + ts2;
-			Assert.AreEqual("1/1/0001 12:00:00 AM 12 ", ts3.Length.TestOutput);			
-		}
-		
-//		[Test]
-//		public void Test5 ()
-//		{
-//			Tstr ts1 = new Tstr("hello,");
-//			Tstr ts2 = new Tstr("world");
-//			Tstr ts3 = ts1 + " " + ts2;
-//      		Assert.AreEqual("1/1/0001 12:00:00 AM False ", ts3.IsNumber.TestOutput);			
-//		}
-//		
-//		[Test]
-//		public void Test6 ()
-//		{
-//			Tstr ts1 = new Tstr("99.1");
-//      		Assert.AreEqual("1/1/0001 12:00:00 AM True ", ts1.IsNumber.TestOutput);			
-//		}
-//		
-//		[Test]
-//		public void Test7 ()
-//		{
-//			Tstr ts1 = new Tstr("-99.1");
-//      		Assert.AreEqual("1/1/0001 12:00:00 AM True ", ts1.IsNumber.TestOutput);			
-//		}
-//		
-//		[Test]
-//		public void Test8 ()
-//		{
-//			Tstr ts1 = new Tstr("$99.10");
-//      		Assert.AreEqual("1/1/0001 12:00:00 AM True ", ts1.IsNumber.TestOutput);			
-//		}
-//		
-//		[Test]
-//		public void Test9 ()
-//		{
-//			Tstr ts1 = new Tstr("-$99.10");
-//      		Assert.AreEqual("1/1/0001 12:00:00 AM True ", ts1.IsNumber.TestOutput);			
-//		}
-		
-		[Test]
-		public void Test10 ()
-		{
-			Tstr ts1 = new Tstr("hello, world");
-			Assert.AreEqual("1/1/0001 12:00:00 AM True ", ts1.Contains("hello").TestOutput);			
-		}
-		
-		[Test]
-		public void Test11 ()
-		{
-			Tstr ts1 = new Tstr("hello, world");
-			Assert.AreEqual("1/1/0001 12:00:00 AM False ", ts1.Contains("yello").TestOutput);			
-		}
-		
-		[Test]
-		public void Test12 ()
-		{
-			Tstr ts1 = new Tstr("hello, world");
-			Assert.AreEqual("1/1/0001 12:00:00 AM False ", ts1.Contains("yello").TestOutput);			
-		}
-		
-		[Test]
-		public void Test13 ()
-		{
-			Tstr ts1 = new Tstr("hello, world");
-			Assert.AreEqual("1/1/0001 12:00:00 AM True ", ts1.StartsWith("h").TestOutput);			
-		}
-		
-		[Test]
-		public void Test14 ()
-		{
-			Tstr ts1 = new Tstr("hello, world");
-			Assert.AreEqual("1/1/0001 12:00:00 AM False ", ts1.StartsWith("j").TestOutput);			
-		}
-		
-		[Test]
-		public void Test15 ()
-		{
-			Tstr ts1 = new Tstr("hello, world");
-			Assert.AreEqual("1/1/0001 12:00:00 AM True ", ts1.EndsWith("d").TestOutput);			
-		}
-		
-		[Test]
-		public void Test16 ()
-		{
-			Tstr ts1 = new Tstr("hello, world");
-			Assert.AreEqual("1/1/0001 12:00:00 AM False ", ts1.EndsWith("j").TestOutput);			
-		}
-		
-//		[Test]
-//		public void Test17 ()
-//		{
-//			Tstr ts1 = new Tstr("hello, world");
-//      		Assert.AreEqual("1/1/0001 12:00:00 AM jello, world ", ts1.Replace("hello","jello").TestOutput);			
-//		}
-//		
-//		[Test]
-//		public void Test18 ()
-//		{
-//			Tstr ts1 = new Tstr("hello, world");
-//      		Assert.AreEqual("1/1/0001 12:00:00 AM hello, world ", ts1.Replace("jello","mello").TestOutput);			
-//		}
-		
-	}
+    [TestFixture]
+    public class BasicString : H
+    {
+        [Test]
+        public void Test1 ()
+        {
+            Tstr ts1 = new Tstr("hello,");
+            Tstr ts2 = new Tstr("world");
+            Tstr ts3 = ts1 + ts2;
+            Assert.AreEqual("1/1/0001 12:00:00 AM hello,world ", ts3.TestOutput);            
+        }
+        
+        [Test]
+        public void Test2 ()
+        {
+            Tstr ts1 = new Tstr("hello,");
+            Tstr ts2 = new Tstr("world");
+            Tstr ts3 = ts1 + " " + ts2;
+            Assert.AreEqual("1/1/0001 12:00:00 AM hello, world ", ts3.TestOutput);            
+        }
+        
+        [Test]
+        public void Test3 ()
+        {
+            Tstr ts1 = new Tstr("hello,") + " world";
+            Assert.AreEqual("1/1/0001 12:00:00 AM hello, world ", ts1.TestOutput);            
+        }
+        
+        [Test]
+        public void Test4 ()
+        {
+            Tstr ts1 = new Tstr("hello,");
+            Tstr ts2 = new Tstr("world");
+            Tstr ts3 = ts1 + " " + ts2;
+            Assert.AreEqual("1/1/0001 12:00:00 AM 12 ", ts3.Length.TestOutput);            
+        }
+        
+//        [Test]
+//        public void Test5 ()
+//        {
+//            Tstr ts1 = new Tstr("hello,");
+//            Tstr ts2 = new Tstr("world");
+//            Tstr ts3 = ts1 + " " + ts2;
+//              Assert.AreEqual("1/1/0001 12:00:00 AM False ", ts3.IsNumber.TestOutput);            
+//        }
+//        
+//        [Test]
+//        public void Test6 ()
+//        {
+//            Tstr ts1 = new Tstr("99.1");
+//              Assert.AreEqual("1/1/0001 12:00:00 AM True ", ts1.IsNumber.TestOutput);            
+//        }
+//        
+//        [Test]
+//        public void Test7 ()
+//        {
+//            Tstr ts1 = new Tstr("-99.1");
+//              Assert.AreEqual("1/1/0001 12:00:00 AM True ", ts1.IsNumber.TestOutput);            
+//        }
+//        
+//        [Test]
+//        public void Test8 ()
+//        {
+//            Tstr ts1 = new Tstr("$99.10");
+//              Assert.AreEqual("1/1/0001 12:00:00 AM True ", ts1.IsNumber.TestOutput);            
+//        }
+//        
+//        [Test]
+//        public void Test9 ()
+//        {
+//            Tstr ts1 = new Tstr("-$99.10");
+//              Assert.AreEqual("1/1/0001 12:00:00 AM True ", ts1.IsNumber.TestOutput);            
+//        }
+        
+        [Test]
+        public void Test10 ()
+        {
+            Tstr ts1 = new Tstr("hello, world");
+            Assert.AreEqual("1/1/0001 12:00:00 AM True ", ts1.Contains("hello").TestOutput);            
+        }
+        
+        [Test]
+        public void Test11 ()
+        {
+            Tstr ts1 = new Tstr("hello, world");
+            Assert.AreEqual("1/1/0001 12:00:00 AM False ", ts1.Contains("yello").TestOutput);            
+        }
+        
+        [Test]
+        public void Test12 ()
+        {
+            Tstr ts1 = new Tstr("hello, world");
+            Assert.AreEqual("1/1/0001 12:00:00 AM False ", ts1.Contains("yello").TestOutput);            
+        }
+        
+        [Test]
+        public void Test13 ()
+        {
+            Tstr ts1 = new Tstr("hello, world");
+            Assert.AreEqual("1/1/0001 12:00:00 AM True ", ts1.StartsWith("h").TestOutput);            
+        }
+        
+        [Test]
+        public void Test14 ()
+        {
+            Tstr ts1 = new Tstr("hello, world");
+            Assert.AreEqual("1/1/0001 12:00:00 AM False ", ts1.StartsWith("j").TestOutput);            
+        }
+        
+        [Test]
+        public void Test15 ()
+        {
+            Tstr ts1 = new Tstr("hello, world");
+            Assert.AreEqual("1/1/0001 12:00:00 AM True ", ts1.EndsWith("d").TestOutput);            
+        }
+        
+        [Test]
+        public void Test16 ()
+        {
+            Tstr ts1 = new Tstr("hello, world");
+            Assert.AreEqual("1/1/0001 12:00:00 AM False ", ts1.EndsWith("j").TestOutput);            
+        }
+        
+//        [Test]
+//        public void Test17 ()
+//        {
+//            Tstr ts1 = new Tstr("hello, world");
+//              Assert.AreEqual("1/1/0001 12:00:00 AM jello, world ", ts1.Replace("hello","jello").TestOutput);            
+//        }
+//        
+//        [Test]
+//        public void Test18 ()
+//        {
+//            Tstr ts1 = new Tstr("hello, world");
+//              Assert.AreEqual("1/1/0001 12:00:00 AM hello, world ", ts1.Replace("jello","mello").TestOutput);            
+//        }
+        
+    }
 }

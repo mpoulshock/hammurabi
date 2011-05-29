@@ -23,75 +23,75 @@ using NUnit.Framework;
 
 namespace Hammurabi.UnitTests.CoreFcns
 {
-	[TestFixture]
-	public class StringComparison : H
-	{
-		// EQUALS
-		
-		[Test]
-		public void StringComparison1 ()
-		{
-			Tbool t = new Tstr("Hello, world!") == new Tstr("Hello, world!");
-			Assert.AreEqual("1/1/0001 12:00:00 AM True ", t.TestOutput);		
-		}
+    [TestFixture]
+    public class StringComparison : H
+    {
+        // EQUALS
+        
+        [Test]
+        public void StringComparison1 ()
+        {
+            Tbool t = new Tstr("Hello, world!") == new Tstr("Hello, world!");
+            Assert.AreEqual("1/1/0001 12:00:00 AM True ", t.TestOutput);        
+        }
 
-		[Test]
-		public void StringComparison2 ()
-		{
-			Tbool t = new Tstr("Hello, world!") == new Tstr("Jello, world!");
-			Assert.AreEqual("1/1/0001 12:00:00 AM False ", t.TestOutput);				
-		}
-		
-		[Test]
-		public void StringComparison3 ()
-		{
-			Tbool t = new Tstr("Hello, world!") == "Hello, world!";
-			Assert.AreEqual("1/1/0001 12:00:00 AM True ", t.TestOutput);				
-		}
-		
-		[Test]
-		public void StringComparison4 ()
-		{
-			Tbool t = new Tstr("Hello, world!") == "Hello, world";
-			Assert.AreEqual("1/1/0001 12:00:00 AM False ", t.TestOutput);				
-		}
-		
-		[Test]
-		public void StringComparison5 ()
-		{
-			Tbool t = new Tstr() == "Hello, world";
-			Assert.AreEqual("Unknown", t.TestOutput);				
-		}
-		
-		// NOT EQUAL
-		
-		[Test]
-		public void StringComparison11 ()
-		{
-			Tbool t = new Tstr("Hello, world!") != new Tstr("Hello, world!");
-			Assert.AreEqual("1/1/0001 12:00:00 AM False ", t.TestOutput);		
-		}
+        [Test]
+        public void StringComparison2 ()
+        {
+            Tbool t = new Tstr("Hello, world!") == new Tstr("Jello, world!");
+            Assert.AreEqual("1/1/0001 12:00:00 AM False ", t.TestOutput);                
+        }
+        
+        [Test]
+        public void StringComparison3 ()
+        {
+            Tbool t = new Tstr("Hello, world!") == "Hello, world!";
+            Assert.AreEqual("1/1/0001 12:00:00 AM True ", t.TestOutput);                
+        }
+        
+        [Test]
+        public void StringComparison4 ()
+        {
+            Tbool t = new Tstr("Hello, world!") == "Hello, world";
+            Assert.AreEqual("1/1/0001 12:00:00 AM False ", t.TestOutput);                
+        }
+        
+        [Test]
+        public void StringComparison5 ()
+        {
+            Tbool t = new Tstr() == "Hello, world";
+            Assert.AreEqual("Unknown", t.TestOutput);                
+        }
+        
+        // NOT EQUAL
+        
+        [Test]
+        public void StringComparison11 ()
+        {
+            Tbool t = new Tstr("Hello, world!") != new Tstr("Hello, world!");
+            Assert.AreEqual("1/1/0001 12:00:00 AM False ", t.TestOutput);        
+        }
 
-		[Test]
-		public void StringComparison12 ()
-		{
-			Tbool t = new Tstr("Hello, world!") != new Tstr("Jello, world!");
-			Assert.AreEqual("1/1/0001 12:00:00 AM True ", t.TestOutput);				
-		}
-		
-		[Test]
-		public void StringComparison13 ()
-		{
-			Tbool t = new Tstr("Hello, world!") != "Hello, world!";
-			Assert.AreEqual("1/1/0001 12:00:00 AM False ", t.TestOutput);				
-		}
-		
-		[Test]
-		public void StringComparison14 ()
-		{
-			Tbool t = new Tstr("Hello, world!") != "Hello, world";
-			Assert.AreEqual("1/1/0001 12:00:00 AM True ", t.TestOutput);				
-		}
-		
-	}
+        [Test]
+        public void StringComparison12 ()
+        {
+            Tbool t = new Tstr("Hello, world!") != new Tstr("Jello, world!");
+            Assert.AreEqual("1/1/0001 12:00:00 AM True ", t.TestOutput);                
+        }
+        
+        [Test]
+        public void StringComparison13 ()
+        {
+            Tbool t = new Tstr("Hello, world!") != "Hello, world!";
+            Assert.AreEqual("1/1/0001 12:00:00 AM False ", t.TestOutput);                
+        }
+        
+        [Test]
+        public void StringComparison14 ()
+        {
+            Tbool t = new Tstr("Hello, world!") != "Hello, world";
+            Assert.AreEqual("1/1/0001 12:00:00 AM True ", t.TestOutput);                
+        }
+        
+    }
 }
