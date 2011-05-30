@@ -268,7 +268,7 @@ namespace Hammurabi
         /// Returns true whenever (1) a Tbool has been true for the previous n 
         /// full, consecutive calendar weeks, and (2) it is still true.
         /// </summary>
-        public Tbool ForConsecutiveFullCalendarWeeks(int numberOfWeeks)
+        public Tbool ForConsecFullCalWeeks(int numberOfWeeks)
         {
             Tnum week = TheTime.TheCalendarWeek;
             Tnum lastN = this.AlwaysPer(week).CountPastNIntervals(week, numberOfWeeks + 1, 1);
@@ -279,7 +279,7 @@ namespace Hammurabi
         /// Returns true whenever (1) a Tbool has been true for the previous n 
         /// partial, consecutive calendar weeks, and (2) it is still true.
         /// </summary>
-        public Tbool ForConsecutivePartialCalendarWeeks(int numberOfWeeks)
+        public Tbool ForConsecPartCalWeeks(int numberOfWeeks)
         {
             Tnum week = TheTime.TheCalendarWeek;
             Tnum lastN = this.EverPer(week).CountPastNIntervals(week, numberOfWeeks + 1, 1);
@@ -290,7 +290,7 @@ namespace Hammurabi
         /// Returns true whenever (1) a Tbool has been true for the previous n 
         /// full, consecutive calendar months, and (2) it is still true.
         /// </summary>
-        public Tbool ForConsecutiveFullCalendarMonths(int numberOfMonths)
+        public Tbool ForConsecFullCalMonths(int numberOfMonths)
         {
             Tnum month = TheTime.TheMonth;
             Tnum lastN = this.AlwaysPer(month).CountPastNIntervals(month, numberOfMonths+1, 1);
@@ -301,7 +301,7 @@ namespace Hammurabi
         /// Returns true whenever (1) a Tbool has been true for the previous n 
         /// partial, consecutive calendar months, and (2) it is still true.
         /// </summary>
-        public Tbool ForConsecutivePartialCalendarMonths(int numberOfMonths)
+        public Tbool ForConsecPartCalMonths(int numberOfMonths)
         {
             Tnum month = TheTime.TheMonth;
             Tnum lastN = this.EverPer(month).CountPastNIntervals(month, numberOfMonths + 1, 1);
@@ -312,7 +312,7 @@ namespace Hammurabi
         /// Returns true whenever (1) a Tbool has been true for the previous n 
         /// full, consecutive calendar quarters, and (2) it is still true.
         /// </summary>
-        public Tbool ForConsecutiveFullCalendarQtrs(int numberOfQtrs)
+        public Tbool ForConsecFullCalQtrs(int numberOfQtrs)
         {
             Tnum qtr = TheTime.TheQuarter;
             Tnum lastN = this.AlwaysPer(qtr).CountPastNIntervals(qtr, numberOfQtrs + 1, 1);
@@ -323,7 +323,7 @@ namespace Hammurabi
         /// Returns true whenever (1) a Tbool has been true for the previous n 
         /// partial, consecutive calendar quarters, and (2) it is still true.
         /// </summary>
-        public Tbool ForConsecutivePartialCalendarQtrs(int numberOfQtrs)
+        public Tbool ForConsecPartCalQtrs(int numberOfQtrs)
         {
             Tnum qtr = TheTime.TheQuarter;
             Tnum lastN = this.EverPer(qtr).CountPastNIntervals(qtr, numberOfQtrs + 1, 1);
@@ -334,7 +334,7 @@ namespace Hammurabi
         /// Returns true whenever (1) a Tbool has been true for the previous n 
         /// full, consecutive calendar years, and (2) it is still true.
         /// </summary>
-        public Tbool ForConsecutiveFullCalendarYears(int numberOfYears)
+        public Tbool ForConsecFullCalYears(int numberOfYears)
         {
             Tnum year = TheTime.TheYear;
             Tnum lastN = this.AlwaysPer(year).CountPastNIntervals(year, numberOfYears + 1, 1);
@@ -345,7 +345,7 @@ namespace Hammurabi
         /// Returns true whenever (1) a Tbool has been true for the previous n 
         /// partial, consecutive calendar years, and (2) it is still true.
         /// </summary>
-        public Tbool ForConsecutivePartialCalendarYears(int numberOfYears)
+        public Tbool ForConsecPartCalYears(int numberOfYears)
         {
             Tnum year = TheTime.TheYear;
             Tnum lastN = this.EverPer(year).CountPastNIntervals(year, numberOfYears + 1, 1);
@@ -356,7 +356,7 @@ namespace Hammurabi
         /// Returns true whenever (1) a Tbool has been true for the previous n 
         /// consecutive days, and (2) it is still true.
         /// </summary>
-        public Tbool ForConsecutiveDays(int numberOfDays)
+        public Tbool ForConsecDays(int numberOfDays)
         {
             return ForConsecutiveIntervals(Time.IntervalType.Day, numberOfDays);
         }
@@ -365,7 +365,7 @@ namespace Hammurabi
         /// Returns true whenever (1) a Tbool has been true for the previous n 
         /// consecutive weeks, and (2) it is still true.
         /// </summary>
-        public Tbool ForConsecutiveWeeks(int numberOfWeeks)
+        public Tbool ForConsecWeeks(int numberOfWeeks)
         {
             return ForConsecutiveIntervals(Time.IntervalType.Week, numberOfWeeks);
         }
@@ -379,7 +379,7 @@ namespace Hammurabi
         /// employed from 1/1 to 12/31, this function will return true from 
         /// 7/1 - 12/31.
         /// </remarks>
-        public Tbool ForConsecutiveMonths(int numberOfMonths)
+        public Tbool ForConsecMonths(int numberOfMonths)
         {
             return ForConsecutiveIntervals(Time.IntervalType.Month, numberOfMonths);
         }
@@ -388,7 +388,7 @@ namespace Hammurabi
         /// Returns true whenever (1) a Tbool has been true for the previous n 
         /// consecutive years, and (2) it is still true.
         /// </summary>
-        public Tbool ForConsecutiveYears(int numberOfYears)
+        public Tbool ForConsecYears(int numberOfYears)
         {
             return ForConsecutiveIntervals(Time.IntervalType.Year, numberOfYears);
         }
