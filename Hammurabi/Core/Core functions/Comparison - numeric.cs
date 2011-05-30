@@ -24,14 +24,13 @@ using System.Collections.Generic;
 namespace Hammurabi
 {
     public partial class Tnum
-    {
-                
+    {       
         /// <summary>
         /// Returns true when one Tnum is equal to another
         /// </summary>
-        public static Tbool operator == (Tnum hn1, Tnum hn2)    
+        public static Tbool operator == (Tnum tn1, Tnum tn2)    
         {
-            return EqualTo(hn1,hn2);
+            return EqualTo(tn1,tn2);
         }
         
         private static Tbool EqualTo(Tnum tn1, Tnum tn2)
@@ -41,7 +40,7 @@ namespace Hammurabi
             Tbool result = new Tbool();
             
             foreach(KeyValuePair<DateTime,List<object>> slice in TimePointValues(tn1,tn2))
-            {    
+            {
                 bool areEqual = Convert.ToDecimal(slice.Value[0]) == Convert.ToDecimal(slice.Value[1]);
                 result.AddState(slice.Key, areEqual);
             }
@@ -55,11 +54,6 @@ namespace Hammurabi
         public static Tbool operator != (Tnum hn1, Tnum hn2)    
         {
             return !EqualTo(hn1,hn2);
-        }
-        
-        private static Tbool NotEqualTo(Tnum tn1, Tnum tn2)
-        {
-            return !EqualTo(tn1,tn2);
         }
         
         /// <summary>
@@ -86,43 +80,27 @@ namespace Hammurabi
         }
         
         /// <summary>
-        /// Returns true when one Tnum is greather than or equal to another
+        /// Returns true when one Tnum is greather than or equal to another.
         /// </summary>
-        public static Tbool operator >= (Tnum hn1, Tnum hn2)    
-        {
-            return GreaterThanOrEqualTo(hn1,hn2);
-        }
-        
-        private static Tbool GreaterThanOrEqualTo(Tnum tn1, Tnum tn2)
+        public static Tbool operator >= (Tnum tn1, Tnum tn2)    
         {
             return GreaterThan(tn1,tn2) || EqualTo(tn1,tn2);
         }
 
         /// <summary>
-        /// Returns true when one Tnum is less than another
+        /// Returns true when one Tnum is less than another.
         /// </summary>
-        public static Tbool operator < (Tnum hn1, Tnum hn2)    
+        public static Tbool operator < (Tnum tn1, Tnum tn2)    
         {
-            return LessThan(hn1,hn2);
-        }
-        
-        private static Tbool LessThan(Tnum tn1, Tnum tn2)
-        {
-            return !GreaterThanOrEqualTo(tn1, tn2);
+            return !GreaterThan(tn1,tn2) && !EqualTo(tn1,tn2);
         }
                 
         /// <summary>
-        /// Returns true when one Tnum is less than or equal to another
+        /// Returns true when one Tnum is less than or equal to another.
         /// </summary>
-        public static Tbool operator <= (Tnum hn1, Tnum hn2)    
+        public static Tbool operator <= (Tnum tn1, Tnum tn2)    
         {
-            return LessThanOrEqualTo(hn1,hn2);
+            return !GreaterThan(tn1,tn2);
         }
-        
-        private static Tbool LessThanOrEqualTo(Tnum tn1, Tnum tn2)
-        {
-            return LessThan(tn1,tn2) || EqualTo(tn1,tn2);
-        }
-        
     }
 }

@@ -38,6 +38,7 @@ namespace Hammurabi.UnitTests
     public class USC_Tit26_Sec152 : H
     {
         private static DateTime endOf2010 = new DateTime(2010,12,31);
+        private Person t = new Person("Taxpayer");
         
         /// <summary>
         /// Simplest scenario in which a person is a dependent (parent of a 
@@ -47,17 +48,16 @@ namespace Hammurabi.UnitTests
         public void Pub501_Simple ()
         {
             // Instantiate some people
-            Person t = new Person("Taxpayer");
             Person c = new Person("Child");
 
             // Assert facts about the people
             Facts.Clear();
-            Facts.Assert(t, "IsParentOf", c);
-            Facts.Assert(c, "LivesWith", t);
-            Facts.Assert(c, "DateOfBirth", new DateTime(2000,1,1));
+            Facts.Assert(t, r.IsParentOf, c);
+            Facts.Assert(c, r.LivesWith, t);
+            Facts.Assert(c, r.DateOfBirth, new DateTime(2000,1,1));
             Facts.Assert(c, "IsUSCitizen");
             Facts.Assert(c, "CanBeClaimedAsQCByTwoTaxpayers", false);
-            Facts.Assert(c, "PercentSelfSupport", 0);
+            Facts.Assert(c, r.PercentSelfSupport, 0);
             Facts.Assert(c, "CanClaimSomeoneAsDependent", false);
             Facts.Assert(t, "CanBeClaimedAsDependentBySomeone", false);
             Facts.Assert(c, "AnotherTaxpayerProvidedSupportFor", false);
@@ -76,20 +76,19 @@ namespace Hammurabi.UnitTests
         public void Pub501_1 ()
         {
             // Instantiate some people
-            Person t = new Person("Taxpayer");
             Person d = new Person("Daughter");
             Person s = new Person("Son-in-law");
 
             // Assert facts about the people
             Facts.Clear();
-            Facts.Assert(d, "IsMarriedTo", s);
+            Facts.Assert(d, r.IsMarriedTo, s);
             Facts.Assert(d, "FilesJointFedTaxReturnWith", s);
             Facts.Assert(d, "FileMFJOnlyToClaimRefund", false);  // ???
 
             // These facts are irrelevant but are in the fact pattern
-            Facts.Assert(t, "IsParentOf", d);
-            Facts.Assert(t, "LivesWith", d);
-            Facts.Assert(d, "DateOfBirth", new DateTime(1992,1,1));
+            Facts.Assert(t, r.IsParentOf, d);
+            Facts.Assert(t, r.LivesWith, d);
+            Facts.Assert(d, r.DateOfBirth, new DateTime(1992,1,1));
             Facts.Assert(s, "IsInArmedForces");
             Facts.Assert(d, "IsUSCitizen");
 
@@ -104,14 +103,13 @@ namespace Hammurabi.UnitTests
         [Test]
         public void Pub501_2_a ()
         {
-            Person t = new Person("Taxpayer");
             Person s = new Person("Son");
             Person d = new Person("Daughter-in-law");
 
             Facts.Clear();
-            Facts.Assert(s, "DateOfBirth", new DateTime(1992,1,1));
-            Facts.Assert(d, "DateOfBirth", new DateTime(1991,1,1));
-            Facts.Assert(s, "IsMarriedTo", d);
+            Facts.Assert(s, r.DateOfBirth, new DateTime(1992,1,1));
+            Facts.Assert(d, r.DateOfBirth, new DateTime(1991,1,1));
+            Facts.Assert(s, r.IsMarriedTo, d);
             Facts.Assert(s, "IsUSCitizen");
             Facts.Assert(d, "FilesJointFedTaxReturnWith", s);
             Facts.Assert(s, "FileMFJOnlyToClaimRefund");
@@ -128,14 +126,13 @@ namespace Hammurabi.UnitTests
         [Test]
         public void Pub501_2_b ()
         {
-            Person t = new Person("Taxpayer");
             Person s = new Person("Son");
             Person d = new Person("Daughter-in-law");
 
             Facts.Clear();
-            Facts.Assert(s, "DateOfBirth", new DateTime(1992,1,1));
-            Facts.Assert(d, "DateOfBirth", new DateTime(1991,1,1));
-            Facts.Assert(s, "IsMarriedTo", d);
+            Facts.Assert(s, r.DateOfBirth, new DateTime(1992,1,1));
+            Facts.Assert(d, r.DateOfBirth, new DateTime(1991,1,1));
+            Facts.Assert(s, r.IsMarriedTo, d);
             Facts.Assert(d, "IsUSCitizen");
             Facts.Assert(d, "FilesJointFedTaxReturnWith", s);
             Facts.Assert(d, "FileMFJOnlyToClaimRefund");
@@ -152,14 +149,13 @@ namespace Hammurabi.UnitTests
         [Test]
         public void Pub501_3 ()
         {
-            Person t = new Person("Taxpayer");
             Person s = new Person("Son");
             Person d = new Person("Daughter-in-law");
 
             Facts.Clear();
-            Facts.Assert(s, "DateOfBirth", new DateTime(1992,1,1));
-            Facts.Assert(d, "DateOfBirth", new DateTime(1991,1,1));
-            Facts.Assert(s, "IsMarriedTo", d);
+            Facts.Assert(s, r.DateOfBirth, new DateTime(1992,1,1));
+            Facts.Assert(d, r.DateOfBirth, new DateTime(1991,1,1));
+            Facts.Assert(s, r.IsMarriedTo, d);
             Facts.Assert(s, "IsUSCitizen");
             Facts.Assert(d, "FilesJointFedTaxReturnWith", s);
             Facts.Assert(s, "FileMFJOnlyToClaimRefund", false);
@@ -176,11 +172,9 @@ namespace Hammurabi.UnitTests
         [Test]
         public void Pub501_4 ()
         {
-            Person t = new Person("Taxpayer");
             Person s = new Person("Son");
-
             Facts.Clear();
-            Facts.Assert(s, "DateOfBirth", new DateTime(1991,12,10));
+            Facts.Assert(s, r.DateOfBirth, new DateTime(1991,12,10));
             Facts.Assert(s, "IsFullTimeStudent", false);
             Facts.Assert(s, "IsPermanentlyAndTotallyDisabled", false);
 
@@ -194,11 +188,9 @@ namespace Hammurabi.UnitTests
         [Test]
         public void Pub501_5 ()
         {
-            Person t = new Person("Taxpayer");
             Person s = new Person("Son");
-
             Facts.Clear();
-            Facts.Assert(s, "DateOfBirth", new DateTime(1991,12,10));
+            Facts.Assert(s, r.DateOfBirth, new DateTime(1991,12,10));
             Facts.Assert(s, "IsFullTimeStudent");
             Facts.Assert(s, "IsPermanentlyAndTotallyDisabled", false);
 
@@ -212,11 +204,9 @@ namespace Hammurabi.UnitTests
         [Test]
         public void Pub501_6 ()
         {
-            Person t = new Person("Taxpayer");
             Person s = new Person("Son");
-
             Facts.Clear();
-            Facts.Assert(s, "DateOfBirth", new DateTime(1991,12,10));
+            Facts.Assert(s, r.DateOfBirth, new DateTime(1991,12,10));
             Facts.Assert(s, "IsFullTimeStudent", false);
             Facts.Assert(s, "IsPermanentlyAndTotallyDisabled");
 
@@ -230,21 +220,20 @@ namespace Hammurabi.UnitTests
         [Test]
         public void Pub501_7 ()
         {
-            Person t = new Person("Taxpayer");
             Person s = new Person("Spouse");
             Person b = new Person("Brother");
 
             Facts.Clear();
-            Facts.Assert(t, "DateOfBirth", new DateTime(1989,1,1));
-            Facts.Assert(s, "DateOfBirth", new DateTime(1989,1,1));
-            Facts.Assert(t, "IsMarriedTo", s);
+            Facts.Assert(t, r.DateOfBirth, new DateTime(1989,1,1));
+            Facts.Assert(s, r.DateOfBirth, new DateTime(1989,1,1));
+            Facts.Assert(t, r.IsMarriedTo, s);
             Facts.Assert(b, "IsSiblingOf", t);
-            Facts.Assert(b, "DateOfBirth", new DateTime(1987,1,1));
+            Facts.Assert(b, r.DateOfBirth, new DateTime(1987,1,1));
             Facts.Assert(b, "IsFullTimeStudent");
             Facts.Assert(b, "IsMarried", false);
-            Facts.Assert(t, "LivesWith", s);
-            Facts.Assert(t, "LivesWith", b);
-            Facts.Assert(b, "IsDisabled", false);
+            Facts.Assert(t, r.LivesWith, s);
+            Facts.Assert(t, r.LivesWith, b);
+            Facts.Assert(b, r.IsDisabled, false);
             Facts.Assert(t, "AreFilingMFJ", s);
 
             bool? result = USC.Tit26.Sec152.IsDependentOf(b,t).AsOf(endOf2010).ToBool;
@@ -257,21 +246,20 @@ namespace Hammurabi.UnitTests
         [Test]
         public void Pub501_8 ()
         {
-            Person t = new Person("Taxpayer");
             Person s = new Person("Spouse");
             Person b = new Person("Brother");
 
             Facts.Clear();
-            Facts.Assert(t, "DateOfBirth", new DateTime(1989,1,1));
-            Facts.Assert(s, "DateOfBirth", new DateTime(1985,1,1));
-            Facts.Assert(t, "IsMarriedTo", s);
+            Facts.Assert(t, r.DateOfBirth, new DateTime(1989,1,1));
+            Facts.Assert(s, r.DateOfBirth, new DateTime(1985,1,1));
+            Facts.Assert(t, r.IsMarriedTo, s);
             Facts.Assert(b, "IsSiblingOf", t);
-            Facts.Assert(b, "DateOfBirth", new DateTime(1987,1,1));
+            Facts.Assert(b, r.DateOfBirth, new DateTime(1987,1,1));
             Facts.Assert(b, "IsFullTimeStudent");
             Facts.Assert(b, "IsMarried", false);
-            Facts.Assert(t, "LivesWith", s);
-            Facts.Assert(t, "LivesWith", b);
-            Facts.Assert(b, "IsDisabled", false);
+            Facts.Assert(t, r.LivesWith, s);
+            Facts.Assert(t, r.LivesWith, b);
+            Facts.Assert(b, r.IsDisabled, false);
             Facts.Assert(t, "AreFilingMFJ", s);
 
             bool? result = USC.Tit26.Sec152.IsDependentOf(b,t).AsOf(endOf2010).ToBool;

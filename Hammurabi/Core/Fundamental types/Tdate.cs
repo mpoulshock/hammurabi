@@ -48,6 +48,14 @@ namespace Hammurabi
         }
         
         /// <summary>
+        /// Implicitly converts DateTimes to Tdates.
+        /// </summary>
+        public static implicit operator Tdate(DateTime d) 
+        {
+            return new Tdate(d);
+        }
+        
+        /// <summary>
         /// Constructs a Tdate that is eternally set to a specified year, 
         /// month, and day.
         /// </summary>

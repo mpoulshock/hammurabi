@@ -49,16 +49,6 @@ namespace Hammurabi
             return And(tb1,tb2);
         }
         
-        public static Tbool operator & (Tbool tb, bool b)
-        {
-            return And(tb, new Tbool(b));
-        }
-        
-        public static Tbool operator & (bool b, Tbool tb)
-        {
-            return And(tb, new Tbool(b));
-        }
-        
         /// <summary>
         /// Private temporal AND function
         /// </summary>
@@ -82,45 +72,6 @@ namespace Hammurabi
             // Else, apply the AND function to the inputs
             return ApplyFcnToTimeline(x => And(x), list);
         }
-        
-//        private static Tbool And(params Tbool[] list)
-//        {
-//            // Turn off "GetUnknowns" mode while analyzing short-circuits
-//            bool originalMode = Facts.GetUnknowns;
-//            Facts.GetUnknowns = false;
-//            
-//            // Short circuit 1:
-//            // If any input is eternally false, return false
-//            foreach (Tbool b in list)
-//            {
-//                if (b.IntervalValues.Count == 1 &&
-//                    Convert.ToBoolean(b.IntervalValues.Values[0]) == false)
-//                {
-//                    // Restore "GetUnknowns" mode to its original state
-//                    Facts.GetUnknowns = originalMode;
-//                    
-//                    return new Tbool(false);
-//                }
-//            }
-//            
-//            // Short circuit 2:
-//            // If any input IsUnknown, return an unknown Tbool
-//            if (AnyAreUnknown(list)) 
-//            {
-//                // Restore "GetUnknowns" mode to its original state
-//                Facts.GetUnknowns = originalMode;
-//                
-//                return new Tbool(); 
-//            }
-//            
-//            // Restore "GetUnknowns" mode to its original state
-//            Facts.GetUnknowns = originalMode;
-//            
-//            // Else, apply the AND function to the inputs
-//            return ApplyFcnToTimeline(x => And(x), list);
-//        }
-        
-
         
         /// <summary>
         /// Private non-temporal AND function
@@ -162,16 +113,6 @@ namespace Hammurabi
         public static Tbool operator | (Tbool tb1, Tbool tb2)
         {
             return Or(tb1,tb2);
-        }
-        
-        public static Tbool operator | (Tbool tb, bool b)
-        {
-            return Or(tb, new Tbool(b));
-        }
-        
-        public static Tbool operator | (bool b, Tbool tb)
-        {
-            return Or(tb, new Tbool(b));
         }
         
         /// <summary>
@@ -225,18 +166,13 @@ namespace Hammurabi
         /// Temporal NOT function: returns true when the input is false and
         /// vice versa.
         /// </summary>
-        public static Tbool operator ! (Tbool tb1)
+        public static Tbool operator ! (Tbool tb)
         {
-            return Not(tb1);
-        }
-        
-        private static Tbool Not(Tbool input)
-        {
-            if (input.IsUnknown) { return new Tbool(); }
+            if (tb.IsUnknown) { return new Tbool(); }
             
             Tbool result = new Tbool();
             
-            foreach (KeyValuePair<DateTime,object> slice in input.IntervalValues)
+            foreach (KeyValuePair<DateTime,object> slice in tb.IntervalValues)
             {
                 bool? r = !(bool?)slice.Value;
                 result.AddState(slice.Key, r);
@@ -257,16 +193,6 @@ namespace Hammurabi
         public static Tbool operator ^ (Tbool tb1, Tbool tb2)
         {
             return Xor(tb1,tb2);
-        }
-        
-        public static Tbool operator ^ (Tbool tb, bool b)
-        {
-            return Xor(tb, new Tbool(b));
-        }
-        
-        public static Tbool operator ^ (bool b, Tbool tb)
-        {
-            return Xor(tb, new Tbool(b));
         }
         
         /// <summary>
@@ -320,7 +246,6 @@ namespace Hammurabi
             
             return result.Lean;
         }
-        
         
     }
     

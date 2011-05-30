@@ -306,6 +306,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tnum theRule = Switch(A(),X(),
                                   B(),Y());
             Assert.AreEqual("Y", Facts.ShowUnknownTest());      // currently hits "index out of range" error
+            Facts.GetUnknowns = true;
         }
         
     }

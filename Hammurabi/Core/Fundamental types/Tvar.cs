@@ -239,7 +239,7 @@ namespace Hammurabi
         public static Tbool EqualTo(Tvar tb1, Tvar tb2)
         {
             // Result is unknown if any input is unknown
-            if (AnyAreUnknownTvar(tb1, tb2)) { return new Tbool(); }
+            if (AnyAreUnknown(tb1, tb2)) { return new Tbool(); }
             
             Tbool result = new Tbool();
             

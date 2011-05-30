@@ -325,15 +325,13 @@ namespace Hammurabi.UnitTests.CoreFcns
         [Test]
         public void Test81 ()
         {
-            Tnum res = new Tnum(88).Abs;
-            Assert.AreEqual("1/1/0001 12:00:00 AM 88 ", res.TestOutput);        
+            Assert.AreEqual("1/1/0001 12:00:00 AM 88 ", new Tnum(88).Abs.TestOutput);        
         }
         
         [Test]
         public void Test82 ()
         {
-            Tnum res = new Tnum(-88).Abs;
-            Assert.AreEqual("1/1/0001 12:00:00 AM 88 ", res.TestOutput);        
+            Assert.AreEqual("1/1/0001 12:00:00 AM 88 ", new Tnum(-88).Abs.TestOutput);        
         }
         
         // ToUSD
@@ -341,29 +339,25 @@ namespace Hammurabi.UnitTests.CoreFcns
         [Test]
         public void Test120 ()
         {
-            Tstr res = new Tnum(88.369).ToUSD;
-            Assert.AreEqual("1/1/0001 12:00:00 AM 88.37 ", res.TestOutput);        
+            Assert.AreEqual("$88.37", new Tnum(88.369).ToUSD);        
         }
         
         [Test]
         public void Test121 ()
         {
-            Tstr res = new Tnum(88.3).ToUSD;
-            Assert.AreEqual("1/1/0001 12:00:00 AM 88.30 ", res.TestOutput);        
+            Assert.AreEqual("$88.30", new Tnum(88.3).ToUSD);        
         }
         
         [Test]
         public void Test122 ()
         {
-            Tstr res = new Tnum(88).ToUSD;
-            Assert.AreEqual("1/1/0001 12:00:00 AM 88.00 ", res.TestOutput);        
+            Assert.AreEqual("$88.00", new Tnum(88).ToUSD);        
         }
         
         [Test]
         public void Test123 ()
         {
-            Tstr res = new Tnum(44988).ToUSD;
-            Assert.AreEqual("1/1/0001 12:00:00 AM 44,988.00 ", res.TestOutput);        
+            Assert.AreEqual("$44,988.00", new Tnum(44988).ToUSD);        
         }
         
     }

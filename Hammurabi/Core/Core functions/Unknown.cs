@@ -25,33 +25,8 @@ namespace Hammurabi
         /// <summary>
         /// Returns true if any of the input Tvars are "unknown" - that is,
         /// if they have no time states.
-        /// </summary>
-        public static bool AnyAreUnknown(params Tbool[] list)
-        {
-            return AnyAreUnknownTvar(list);
-        }
-        
-        public static bool AnyAreUnknown(params Tnum[] list)
-        {
-            return AnyAreUnknownTvar(list);
-        }
-        
-        public static bool AnyAreUnknown(params Tstr[] list)
-        {
-            return AnyAreUnknownTvar(list);
-        }
-        
-        public static bool AnyAreUnknown(params Tdate[] list)
-        {
-            return AnyAreUnknownTvar(list);
-        }
-        
-        public static bool AnyAreUnknown(params Tset[] list)
-        {
-            return AnyAreUnknownTvar(list);
-        }
-        
-        public static bool AnyAreUnknownTvar(params Tvar[] list) 
+        /// </summary>       
+        protected static bool AnyAreUnknown(params Tvar[] list) 
         {
             foreach (Tvar v in list)
             {
@@ -59,7 +34,6 @@ namespace Hammurabi
             }
             
             return false;
-        }    
-        
+        }
     }
 }

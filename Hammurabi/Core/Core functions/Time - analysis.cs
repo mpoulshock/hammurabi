@@ -25,7 +25,6 @@ namespace Hammurabi
 {
     public abstract partial class H
     {
-        
         /// <summary>
         /// Gets all time points and assocated values from the input Tvar objects.
         /// </summary>
@@ -84,8 +83,6 @@ namespace Hammurabi
         /// </summary>
         public static Tnum ApplyFcnToTimeline(Func<List<object>,object> fcn, params Tnum[] list)
         {
-            // TODO: Refactor using generics (along w/ similar fcns)? 
-            
             Tnum result = new Tnum();
             
             foreach(KeyValuePair<DateTime,List<object>> slice in TimePointValues(list))
@@ -95,7 +92,5 @@ namespace Hammurabi
             
             return result.Lean;
         }
-        
     }    
-    
 }

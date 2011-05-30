@@ -46,7 +46,7 @@ namespace Hammurabi.UnitTests
         public void Covered_Employer_1 ()
         {
             Facts.Clear();
-            Facts.Assert(c, "NumberOfEmployees", 2000);         
+            Facts.Assert(c, r.NumberOfEmployees, 2000);         
 
             DateTime theDate = new DateTime(2011,4,15);
             bool? result = USC.Tit29.Sec2611.IsCoveredEmployer(c).AsOf(theDate).ToBool;
@@ -58,7 +58,7 @@ namespace Hammurabi.UnitTests
         {
             Govt c = new Govt("the government agency");
             Facts.Clear();
-            Facts.Assert(c, "NumberOfEmployees", 3);         
+            Facts.Assert(c, r.NumberOfEmployees, 3);         
 
             DateTime theDate = new DateTime(2011,4,15);
             bool? result = USC.Tit29.Sec2611.IsCoveredEmployer(c).AsOf(theDate).ToBool;
@@ -78,7 +78,7 @@ namespace Hammurabi.UnitTests
         public void Not_Covered_Employer ()
         {
             Facts.Clear();
-            Facts.Assert(c, "NumberOfEmployees", 3);         
+            Facts.Assert(c, r.NumberOfEmployees, 3);         
             DateTime theDate = new DateTime(2011,4,15);
             bool? result = USC.Tit29.Sec2611.IsCoveredEmployer(c).AsOf(theDate).ToBool;
             Assert.AreEqual(false, result);
@@ -109,9 +109,9 @@ namespace Hammurabi.UnitTests
         {
             Facts.Reset();
             Facts.Assert(e, "IsEmployedBy", c);
-            Facts.Assert(e, "DateStartedWorkingAt", c, Time.DawnOf.AddDays(1));
-            Facts.Assert(e, "HoursWorkedPerWeek", c, 1);
-            Facts.Assert(e, "IsEmployeeUnder5USC6301", false);
+            Facts.Assert(e, r.DateStartedWorkingAt, c, Time.DawnOf.AddDays(1));
+            Facts.Assert(e, r.HoursWorkedPerWeek, c, 1);
+            Facts.Assert(e, r.IsEmployeeUnder5USC6301, false);
             Facts.Assert(e, "LessThan50EmployeesWithin75MilesOfWorksite", c, false);
             Facts.Assert(e, "PositionAt", c, "Unknown");          
 
@@ -125,11 +125,11 @@ namespace Hammurabi.UnitTests
         {
             Facts.Clear();
             Facts.Assert(e, "IsEmployedBy", c);
-            Facts.Assert(e, "DateStartedWorkingAt", c, Time.DawnOf.AddDays(1));
-            Facts.Assert(e, "HoursWorkedPerWeek", c, 40);
-            Facts.Assert(e, "IsEmployeeUnder5USC6301", false);
+            Facts.Assert(e, r.DateStartedWorkingAt, c, Time.DawnOf.AddDays(1));
+            Facts.Assert(e, r.HoursWorkedPerWeek, c, 40);
+            Facts.Assert(e, r.IsEmployeeUnder5USC6301, false);
             Facts.Assert(e, "LessThan50EmployeesWithin75MilesOfWorksite", c, false);
-            Facts.Assert(e, "IsAirlineFlightCrew", c, false);     
+            Facts.Assert(e, r.IsAirlineFlightCrew, c, false);     
 
             Tbool result = USC.Tit29.Sec2611.IsEligibleEmployee(e,c);
             Assert.AreEqual("1/1/0001 12:00:00 AM True ", result.TestOutput);
@@ -140,11 +140,11 @@ namespace Hammurabi.UnitTests
         {
             Facts.Clear();
             Facts.Assert(e, "IsEmployedBy", c);
-            Facts.Assert(e, "DateStartedWorkingAt", c, Time.DawnOf.AddDays(1));
-            Facts.Assert(e, "HoursWorkedPerWeek", c, 40);
-            Facts.Assert(e, "IsEmployeeUnder5USC6301", false);
+            Facts.Assert(e, r.DateStartedWorkingAt, c, Time.DawnOf.AddDays(1));
+            Facts.Assert(e, r.HoursWorkedPerWeek, c, 40);
+            Facts.Assert(e, r.IsEmployeeUnder5USC6301, false);
             Facts.Assert(e, "LessThan50EmployeesWithin75MilesOfWorksite", c, false);
-            Facts.Assert(e, "IsAirlineFlightCrew", c);     
+            Facts.Assert(e, r.IsAirlineFlightCrew, c);     
 
             Tbool result = USC.Tit29.Sec2611.IsEligibleEmployee(e,c);
             Assert.AreEqual("1/1/0001 12:00:00 AM Null ", result.TestOutput);
@@ -157,9 +157,9 @@ namespace Hammurabi.UnitTests
         {
             Facts.Clear();
             Facts.Assert(e, "IsEmployedBy", c);
-            Facts.Assert(e, "DateStartedWorkingAt", c, new DateTime(2011,1,1));
-            Facts.Assert(e,"DateFamilyLeaveBegins",c, new DateTime(2011,6,1));
-            Facts.Assert(e, "HoursWorkedPerWeek", c, 40);
+            Facts.Assert(e, r.DateStartedWorkingAt, c, new DateTime(2011,1,1));
+            Facts.Assert(e, r.DateFamilyLeaveBegins,c, new DateTime(2011,6,1));
+            Facts.Assert(e, r.HoursWorkedPerWeek, c, 40);
 
             Tbool result = USC.Tit29.Sec2611.HoursInLast12Mo(e,c).RoundToNearest(1) == 863;
             Assert.AreEqual("1/1/0001 12:00:00 AM True ", result.TestOutput);
@@ -170,9 +170,9 @@ namespace Hammurabi.UnitTests
         {
             Facts.Clear();
             Facts.Assert(e, "IsEmployedBy", c);
-            Facts.Assert(e, "DateStartedWorkingAt", c, new DateTime(2011,1,1));
-            Facts.Assert(e,"DateFamilyLeaveBegins",c, new DateTime(2011,6,1));
-            Facts.Assert(e, "HoursWorkedPerWeek", c, 100);   // unlikely
+            Facts.Assert(e, r.DateStartedWorkingAt, c, new DateTime(2011,1,1));
+            Facts.Assert(e, r.DateFamilyLeaveBegins,c, new DateTime(2011,6,1));
+            Facts.Assert(e, r.HoursWorkedPerWeek, c, 100);   // unlikely
 
             Tbool result = USC.Tit29.Sec2611.HoursInLast12Mo(e,c).RoundToNearest(1) == 2157;
             Assert.AreEqual("1/1/0001 12:00:00 AM True ", result.TestOutput);
@@ -183,9 +183,9 @@ namespace Hammurabi.UnitTests
         {
             Facts.Clear();
             Facts.Assert(e, "IsEmployedBy", c);
-            Facts.Assert(e, "DateStartedWorkingAt", c, new DateTime(2011,1,1));
-            Facts.Assert(e,"DateFamilyLeaveBegins",c, new DateTime(2011,8,15));
-            Facts.Assert(e, "HoursWorkedPerWeek", c, 40);   // a close call
+            Facts.Assert(e, r.DateStartedWorkingAt, c, new DateTime(2011,1,1));
+            Facts.Assert(e, r.DateFamilyLeaveBegins,c, new DateTime(2011,8,15));
+            Facts.Assert(e, r.HoursWorkedPerWeek, c, 40);   // a close call
 
             Tbool result = USC.Tit29.Sec2611.HoursInLast12Mo(e,c).RoundToNearest(1) == 1291;
             Assert.AreEqual("1/1/0001 12:00:00 AM True ", result.TestOutput);
@@ -196,9 +196,9 @@ namespace Hammurabi.UnitTests
         {
             Facts.Clear();
             Facts.Assert(e, "IsEmployedBy", c);
-            Facts.Assert(e, "DateStartedWorkingAt", c, new DateTime(2011,1,1));
-            Facts.Assert(e,"DateFamilyLeaveBegins",c, new DateTime(2011,8,15));
-            Facts.Assert(e, "HoursWorkedPerWeek", c, 30);  
+            Facts.Assert(e, r.DateStartedWorkingAt, c, new DateTime(2011,1,1));
+            Facts.Assert(e, r.DateFamilyLeaveBegins,c, new DateTime(2011,8,15));
+            Facts.Assert(e, r.HoursWorkedPerWeek, c, 30);  
             
             Tbool result = USC.Tit29.Sec2611.HoursInLast12Mo(e,c).RoundToNearest(1) == 969;
             Assert.AreEqual("1/1/0001 12:00:00 AM True ", result.TestOutput);
@@ -209,9 +209,9 @@ namespace Hammurabi.UnitTests
         {
             Facts.Clear();
             Facts.Assert(e, "IsEmployedBy", c);
-            Facts.Assert(e, "DateStartedWorkingAt", c, new DateTime(2011,1,1));
-            Facts.Assert(e,"DateFamilyLeaveBegins",c, new DateTime(2011,12,31));
-            Facts.Assert(e, "HoursWorkedPerWeek", c, 24);  
+            Facts.Assert(e, r.DateStartedWorkingAt, c, new DateTime(2011,1,1));
+            Facts.Assert(e, r.DateFamilyLeaveBegins,c, new DateTime(2011,12,31));
+            Facts.Assert(e, r.HoursWorkedPerWeek, c, 24);  
             
             Tbool result = USC.Tit29.Sec2611.HoursInLast12Mo(e,c).RoundToNearest(1) == 1248;
             Assert.AreEqual("1/1/0001 12:00:00 AM True ", result.TestOutput);
@@ -222,9 +222,9 @@ namespace Hammurabi.UnitTests
         {
             Facts.Clear();
             Facts.Assert(e, "IsEmployedBy", c);
-            Facts.Assert(e, "DateStartedWorkingAt", c, new DateTime(2011,1,1));
-            Facts.Assert(e,"DateFamilyLeaveBegins",c, new DateTime(2011,12,31));
-            Facts.Assert(e, "HoursWorkedPerWeek", c, 24.04);  
+            Facts.Assert(e, r.DateStartedWorkingAt, c, new DateTime(2011,1,1));
+            Facts.Assert(e, r.DateFamilyLeaveBegins,c, new DateTime(2011,12,31));
+            Facts.Assert(e, r.HoursWorkedPerWeek, c, 24.04);  
             
            Tbool result = USC.Tit29.Sec2611.HoursInLast12Mo(e,c).RoundToNearest(1) == 1250;
             Assert.AreEqual("1/1/0001 12:00:00 AM True ", result.TestOutput);

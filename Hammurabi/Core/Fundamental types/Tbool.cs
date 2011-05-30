@@ -219,14 +219,6 @@ namespace Hammurabi
         {
             return EqualTo(tb1,tb2);
         }
-        public static Tbool operator == (Tbool tb, bool b)
-        {
-            return EqualTo(tb,new Tbool(b));
-        }
-        public static Tbool operator == (bool b, Tbool tb)
-        {
-            return EqualTo(tb,new Tbool(b));
-        }
         
         /// <summary>
         /// Overloaded boolean operator: Not equal.
@@ -234,14 +226,6 @@ namespace Hammurabi
         public static Tbool operator != (Tbool tb1, Tbool tb2)
         {
             return !EqualTo(tb1,tb2);
-        }
-        public static Tbool operator != (Tbool tb, bool b)
-        {
-            return !EqualTo(tb,new Tbool(b));
-        }
-        public static Tbool operator != (bool b, Tbool tb)
-        {
-            return !EqualTo(tb,new Tbool(b));
         }
 
     }

@@ -27,27 +27,18 @@ namespace Hammurabi
     
     public partial class Tnum
     {
-        
         // ********************************************************************
-        //    ADDITION
+        // ADDITION
         // ********************************************************************
         
         /// <summary>
         /// Adds two Tnums together.
         /// </summary>
-        public static Tnum operator + (Tnum hn1, Tnum hn2)    
+        public static Tnum operator + (Tnum tn1, Tnum tn2)    
         {
-            return Sum(hn1,hn2);
-        }
-        
-        /// <summary>
-        /// Private temporal SUM function.
-        /// </summary>
-        private static Tnum Sum(params Tnum[] list)
-        {
-            if (AnyAreUnknown(list)) { return new Tnum(); }
+            if (AnyAreUnknown(tn1,tn2)) { return new Tnum(); }
             
-            return ApplyFcnToTimeline(x => Sum(x), list);
+            return ApplyFcnToTimeline(x => Sum(x), tn1, tn2);
         }
         
         /// <summary>
@@ -65,25 +56,17 @@ namespace Hammurabi
         
         
         // ********************************************************************
-        //    SUBTRACTION
+        // SUBTRACTION
         // ********************************************************************
         
         /// <summary>
         /// Subtracts one Tnum from another.
         /// </summary>
-        public static Tnum operator - (Tnum hn1, Tnum hn2)    
+        public static Tnum operator - (Tnum tn1, Tnum tn2)    
         {
-            return Subtract(hn1,hn2);
-        }
-        
-        /// <summary>
-        /// Private temporal SUBTRACT function.
-        /// </summary>
-        private static Tnum Subtract(params Tnum[] list)
-        {
-            if (AnyAreUnknown(list)) { return new Tnum(); }
+            if (AnyAreUnknown(tn1,tn2)) { return new Tnum(); }
             
-            return ApplyFcnToTimeline(x => Subtract(x), list);
+            return ApplyFcnToTimeline(x => Subtract(x), tn1, tn2);
         }
         
         /// <summary>
@@ -103,43 +86,25 @@ namespace Hammurabi
         
         
         // ********************************************************************
-        //    MULTIPLICATION
+        // MULTIPLICATION
         // ********************************************************************
         
         /// <summary>
         /// Multiplies two Tnums together.
         /// </summary>
-        public static Tnum operator * (Tnum hn1, Tnum hn2)    
-        {
-            return Prod(hn1,hn2);
-        }
-        
-        /// <summary>
-        /// Private temporal PRODUCT function
-        /// </summary>
-        private static Tnum Prod(params Tnum[] list)
+        public static Tnum operator * (Tnum tn1, Tnum tn2)    
         {
             // Short circuit 1: If any eternal zeros, return zero
-            foreach (Tnum n in list)
+            if ((tn1.IntervalValues.Count == 1 && Convert.ToDecimal(tn1.IntervalValues.Values[0]) == 0) ||
+                (tn2.IntervalValues.Count == 1 && Convert.ToDecimal(tn2.IntervalValues.Values[0]) == 0))
             {
-                if (n.IntervalValues.Count == 1 &&
-                    Convert.ToDecimal(n.IntervalValues.Values[0]) == 0)
-                {
-                    return new Tnum(0);
-                }
+                return new Tnum(0);
             }
             
             // Short circuit 2: If any unknowns, return unknown
-            if (AnyAreUnknown(list)) { return new Tnum(); }
+            if (AnyAreUnknown(tn1, tn2)) { return new Tnum(); }
             
-            Tnum[] output = new Tnum[list.Length];
-            
-            for (int i=0; i<list.Length; i++)
-            {
-                output[i] = list[i];
-            }
-            
-            return ApplyFcnToTimeline(x => Prod(x), output);
+            return ApplyFcnToTimeline(x => Prod(x), tn1, tn2);
         }
         
         /// <summary>
@@ -159,21 +124,13 @@ namespace Hammurabi
         
         
         // ********************************************************************
-        //    DIVISION
+        // DIVISION
         // ********************************************************************
         
         /// <summary>
         /// Divides one Tnum by another. 
         /// </summary>
-        public static Tnum operator / (Tnum hn1, Tnum hn2)    
-        {
-            return Divide(hn1,hn2);
-        }
-        
-        /// <summary>
-        /// Private temporal DIVISION function. 
-        /// </summary>
-        private static Tnum Divide(Tnum tn1, Tnum tn2)
+        public static Tnum operator / (Tnum tn1, Tnum tn2)    
         {
             if (AnyAreUnknown(tn1, tn2)) { return new Tnum(); }
             
@@ -192,21 +149,13 @@ namespace Hammurabi
         
         
         // ********************************************************************
-        //    MODULO
+        // MODULO
         // ********************************************************************
         
         /// <summary>
         /// Temporal MODULO function. 
         /// </summary>
-        public static Tnum operator % (Tnum hn1, Tnum hn2)    
-        {
-            return Modulo(hn1,hn2);
-        }
-        
-        /// <summary>
-        /// Private temporal MODULO function. 
-        /// </summary>
-        private static Tnum Modulo(Tnum tn1, Tnum tn2)
+        public static Tnum operator % (Tnum tn1, Tnum tn2)    
         {
             if (AnyAreUnknown(tn1, tn2)) { return new Tnum(); }
             
@@ -223,7 +172,7 @@ namespace Hammurabi
         
         
         // ********************************************************************
-        //    ABSOLUTE VALUE
+        // ABSOLUTE VALUE
         // ********************************************************************
         
         /// <summary>
@@ -233,30 +182,22 @@ namespace Hammurabi
         {
             get
             {
-                return TheAbs(this);
+                if (this.IsUnknown) { return new Tnum(); }
+            
+                Tnum result = new Tnum();
+                
+                foreach (KeyValuePair<DateTime,object> slice in this.IntervalValues)
+                {
+                    result.AddState(slice.Key, System.Math.Abs(Convert.ToDecimal(slice.Value)));
+                }
+                
+                return result;
             }
         }
 
-        /// <summary>
-        /// Private non-temporal ABSOLUTE VALUE function
-        /// </summary>
-        private static Tnum TheAbs(Tnum input)
-        {
-            if (AnyAreUnknown(input)) { return new Tnum(); }
-            
-            Tnum result = new Tnum();
-            
-            foreach (KeyValuePair<DateTime,object> slice in input.IntervalValues)
-            {
-                result.AddState(slice.Key, System.Math.Abs(Convert.ToDecimal(slice.Value)));
-            }
-            
-            return result;
-        }
-    
         
         // ********************************************************************
-        //    ROUNDING FUNCTIONS
+        // ROUNDING FUNCTIONS
         // ********************************************************************
         
         /// <summary>
@@ -297,22 +238,13 @@ namespace Hammurabi
             if (diff > mult / 2)
             {
                 return num - diff + mult;
-            }
-            else if (diff < mult / 2)
+            }           
+            else if (diff < mult / 2 || breakTieByRoundingDown)
             {
                 return num - diff;
             }
-            else
-            {
-                if (breakTieByRoundingDown)
-                {
-                    return num - diff;
-                }
-                else
-                {
-                    return num - diff + mult;
-                }
-            }
+            
+            return num - diff + mult;
         }
         
         /// <summary>

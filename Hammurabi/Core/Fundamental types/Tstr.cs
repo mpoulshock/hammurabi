@@ -47,6 +47,14 @@ namespace Hammurabi
         }
         
         /// <summary>
+        /// Implicitly converts strings to Tstrs.
+        /// </summary>
+        public static implicit operator Tstr(string s) 
+        {
+            return new Tstr(s);
+        }
+        
+        /// <summary>
         /// Removes redundant intervals from a Tstr. 
         /// </summary>
         public Tstr Lean
@@ -81,7 +89,22 @@ namespace Hammurabi
             
             return (Tstr)this.AsOf<Tstr>(dt);
         }
-                
+
+        /// <summary>
+        /// Returns true when two Tstrs are equal. 
+        /// </summary>
+        public static Tbool operator == (Tstr ts1, Tstr ts2)
+        {
+            return EqualTo(ts1,ts2);
+        }
+        
+        /// <summary>
+        /// Returns true when two Tstrs are not equal. 
+        /// </summary>
+        public static Tbool operator != (Tstr ts1, Tstr ts2)
+        {
+            return !EqualTo(ts1,ts2);
+        }
         
         // ********************************************************************
         // IsAlways / IsEver
@@ -132,14 +155,6 @@ namespace Hammurabi
         public static Tstr operator + (Tstr hs1, Tstr hs2)    
         {
             return Concatenate(hs1,hs2);
-        }
-        public static Tstr operator + (Tstr hs1, string s)    
-        {
-            return Concatenate(hs1, new Tstr(s));
-        }
-        public static Tstr operator + (string s, Tstr hs2)    
-        {
-            return Concatenate(new Tstr(s),hs2);
         }
         
         private static Tstr Concatenate(params Tstr[] list)
@@ -259,38 +274,7 @@ namespace Hammurabi
             
             return result;    
         }        
-        
-        
-        //**********************************************************
-        // Overloaded comparison operators
-        //**********************************************************
-        
-        /// <summary>
-        /// Returns true when two Tstrs are equal. 
-        /// </summary>
-        public static Tbool operator == (Tstr ts1, Tstr ts2)
-        {
-            return EqualTo(ts1,ts2);
-        }
-        
-        public static Tbool operator == (Tstr ts1, string s)
-        {
-            return EqualTo(ts1, new Tstr(s));
-        }
-        
-        /// <summary>
-        /// Returns true when two Tstrs are not equal. 
-        /// </summary>
-        public static Tbool operator != (Tstr ts1, Tstr ts2)
-        {
-            return !EqualTo(ts1,ts2);
-        }
-        
-        public static Tbool operator != (Tstr ts1, string s)
-        {
-            return !EqualTo(ts1, new Tstr(s));
-        }
-        
+
         
         //**********************************************************************
         // Other

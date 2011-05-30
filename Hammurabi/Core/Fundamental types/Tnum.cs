@@ -19,7 +19,6 @@
 // THE SOFTWARE.
 
 using System;
-using System.Collections.Generic;
 
 namespace Hammurabi
 {
@@ -105,6 +104,19 @@ namespace Hammurabi
                 if (this.IsUnknown || TimeLine.Count > 1) { return null; }
                 
                 return (Convert.ToDecimal(TimeLine.Values[0]));
+            }
+        }
+        
+        /// <summary>
+        /// Converts an eternal Tnum to a string formatted as U.S. dollars.
+        /// </summary>
+        public string ToUSD
+        {
+            get
+            {
+                if (this.IsUnknown || TimeLine.Count > 1) { return null; }
+                
+                return String.Format("{0:C}", Convert.ToDecimal(TimeLine.Values[0]));
             }
         }
         
@@ -227,45 +239,6 @@ namespace Hammurabi
             result.SetEternally(min);
             
             return result;
-        }
-        
-        
-        // ********************************************************************
-        //    To U.S. dollars
-        // ********************************************************************    
-        
-        /// <summary>
-        /// Converts a Tnum to a Tstr formatted as U.S. dollars
-        /// </summary>
-        public Tstr ToUSD
-        {
-            get
-            {
-                return TheToUSD(this);
-            }
-        }
-
-        /// <summary>
-        /// Private non-temporal ToUSDollars function
-        /// </summary>
-        private static Tstr TheToUSD(Tnum input)
-        {
-            if (input.IsUnknown) { return new Tstr(); }
-            
-            Tstr result = new Tstr();
-            
-            foreach (KeyValuePair<DateTime,object> slice in input.IntervalValues)
-            {
-                // TODO: Displays negative values as parentheses - fix
-                
-                string r = String.Format("{0:C}" ,Convert.ToDecimal(slice.Value)).TrimStart('$');
-                
-                result.AddState(slice.Key, r);
-            }
-            
-            return result;
-        }
-
-                                                                 
+        }                                                                 
     }
 }
