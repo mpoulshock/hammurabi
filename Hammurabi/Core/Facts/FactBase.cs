@@ -33,7 +33,26 @@ namespace Hammurabi
 		/// </summary>
 		private static List<Fact> FactBase = new List<Fact>();
         
-		
+        
+//        /// <summary>
+//        /// Returns a string representation of the FactBase. 
+//        /// </summary>
+//        public static string SerializedFactBase
+//        {
+//            get
+//            {
+//                return Auxiliary.SerializeToStr<List<Fact>>(FactBase);
+//            }
+//        }
+//        
+//        /// <summary>
+//        /// Loads the FactBase from a serialized string. 
+//        /// </summary>
+//        public static void SetFactBase(string s)
+//        {
+//            FactBase = Auxiliary.DeserializeFromStr<List<Fact>>(s);
+//        }
+        
 		/// <summary>
 		/// A Fact object represents a fact that is stored in the knowledge
 		/// base.
@@ -45,7 +64,7 @@ namespace Hammurabi
 			public LegalEntity directObject;
 			public Tvar v;
 			public DateTime time;
-			
+            
 			/// <summary>
 			/// Sets a Tvar fact that relates to one legal entity  
 			/// </summary>
@@ -89,7 +108,6 @@ namespace Hammurabi
 				relationship = rel;
 				time = dt;
 			}
-			
 		}
 		
         /// <summary>

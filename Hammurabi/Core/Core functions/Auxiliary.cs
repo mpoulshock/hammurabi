@@ -20,13 +20,13 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Xml.Serialization;
 
 namespace Hammurabi
 {
-    
     public static class Auxiliary
     {
-
         /// <summary>
         /// Returns the maximum value of a list of input values
         /// </summary>
@@ -85,8 +85,7 @@ namespace Hammurabi
         }
         
         /// <summary>
-        /// Returns the proper type of Tvar, optionally set eternally 
-        /// to a given value 
+        /// Returns a Tvar object of the appropriate type.
         /// </summary>
         public static object ReturnProperTvar<T>()
         {
@@ -100,6 +99,9 @@ namespace Hammurabi
             return new Tbool();
         }
 
+        /// <summary>
+        /// Returns the proper type of Tvar, set eternally to a given value 
+        /// </summary>
         public static object ReturnProperTvar<T>(object val)
         {
             if (typeof(T) == new Tbool().GetType())
@@ -126,6 +128,26 @@ namespace Hammurabi
             return default(T);
         }
         
+//        /// <summary>
+//        /// Serialize an object to a string.
+//        /// </summary>
+//        public static string SerializeToStr<T>(T obj)
+//        {
+//              StringWriter sw = new StringWriter();
+//              XmlSerializer serializer = new XmlSerializer(typeof(T));
+//              serializer.Serialize(sw, obj);
+//              return sw.ToString();
+//        }
+//        
+//        /// <summary>
+//        /// Deserialize a string to an object.
+//        /// </summary>
+//        public static T DeserializeFromStr<T>(string s)
+//        {
+//            StringReader sr = new StringReader(s);
+//            XmlSerializer serializer = new XmlSerializer(typeof(T));
+//            return (T)serializer.Deserialize(sr); //new System.Text.UTF8Encoding(false)
+//        }
     }
     
 }
