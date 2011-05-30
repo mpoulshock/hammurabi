@@ -71,8 +71,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         [Test]
         public void Test1_1 ()
         {
-            Tset s1 = new Tset(P1,P2);
-            Assert.AreEqual("1/1/0001 12:00:00 AM P1, P2 ", s1.TestOutput);        
+            Assert.AreEqual("1/1/0001 12:00:00 AM P1, P2 ", new Tset(P1,P2).TestOutput);        
         }
         
         [Test]
@@ -88,8 +87,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         [Test]
         public void Test2 ()
         {
-            Tset s1 = new Tset(P1,P2);
-            Assert.AreEqual("1/1/0001 12:00:00 AM 2 ", s1.Count.TestOutput);        
+            Assert.AreEqual("1/1/0001 12:00:00 AM 2 ", new Tset(P1,P2).Count.TestOutput);        
         }
         
         [Test]
@@ -114,8 +112,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         [Test]
         public void Test4 ()
         {
-            Tset s1 = new Tset(P1,P2);
-            Assert.AreEqual("1/1/0001 12:00:00 AM False ", s1.IsEmpty.TestOutput);        
+            Assert.AreEqual("1/1/0001 12:00:00 AM False ", new Tset(P1,P2).IsEmpty.TestOutput);        
         }
         
         [Test]
@@ -191,15 +188,13 @@ namespace Hammurabi.UnitTests.CoreFcns
         [Test]
         public void Test20 ()
         {
-            Tset s1 = new Tset(P1,P2);
-            Assert.AreEqual("1/1/0001 12:00:00 AM True ", s1.Contains(P1).TestOutput);        
+            Assert.AreEqual("1/1/0001 12:00:00 AM True ", new Tset(P1,P2).Contains(P1).TestOutput);        
         }
         
         [Test]
         public void Test21 ()
         {
-            Tset s1 = new Tset(P1,P2);
-            Assert.AreEqual("1/1/0001 12:00:00 AM False ", s1.Contains(P3).TestOutput);        
+            Assert.AreEqual("1/1/0001 12:00:00 AM False ", new Tset(P1,P2).Contains(P3).TestOutput);        
         }
         
         [Test]
@@ -443,7 +438,5 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tbool res = s1 != s2;
             Assert.AreEqual("1/1/0001 12:00:00 AM False ", res.TestOutput);        
         }
-        
-        
     }
 }

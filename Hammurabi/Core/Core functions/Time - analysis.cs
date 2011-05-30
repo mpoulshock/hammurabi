@@ -56,7 +56,6 @@ namespace Hammurabi
         {
             List<Tvar> arrayToList = new List<Tvar>(list.Length);
             arrayToList.AddRange(list);
-            
             return TimePoints(arrayToList);
         }
 

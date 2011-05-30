@@ -150,6 +150,4 @@ namespace Hammurabi
         }       
         
     }
-}    
-    
-
+}

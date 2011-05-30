@@ -152,23 +152,18 @@ namespace Hammurabi
         /// <summary>
         /// Concatenates two or more Tstrs. 
         /// </summary>
-        public static Tstr operator + (Tstr hs1, Tstr hs2)    
+        public static Tstr operator + (Tstr ts1, Tstr ts2)    
         {
-            return Concatenate(hs1,hs2);
-        }
-        
-        private static Tstr Concatenate(params Tstr[] list)
-        {
-            if (AnyAreUnknown(list)) { return new Tstr(); }
+            if (AnyAreUnknown(ts1, ts2)) { return new Tstr(); }
             
             Tstr result = new Tstr();
             
-            foreach(KeyValuePair<DateTime,List<object>> slice in TimePointValues(list))
+            foreach(KeyValuePair<DateTime,List<object>> slice in TimePointValues(ts1, ts2))
             {    
                 result.AddState(slice.Key, Concatenate(slice.Value));
             }
             
-            return result.Lean;    
+            return result.Lean; 
         }
         
         private static string Concatenate(List<object> list)

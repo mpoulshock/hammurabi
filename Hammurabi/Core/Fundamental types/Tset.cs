@@ -56,6 +56,14 @@ namespace Hammurabi
         }
         
         /// <summary>
+        /// Implicitly converts a legal entity into a Tset
+        /// </summary>
+        public static implicit operator Tset(LegalEntity e) 
+        {
+            return new Tset(e);
+        }
+        
+        /// <summary>
         /// Adds a time interval and list of set members to the timeline. 
         /// </summary>
         public void AddState (DateTime dt, params LegalEntity[] list)
@@ -220,13 +228,10 @@ namespace Hammurabi
         /// <summary>
         /// Returns true when one Tset is a subset of another. 
         /// </summary>
-        public Tbool IsSubsetOf(Tset set2)
+        public Tbool IsSubsetOf(Tset super)
         {
-            return IsSubsetOf(this,set2);
-        }
-        
-        private static Tbool IsSubsetOf(Tset sub, Tset super)
-        {
+            Tset sub = this;
+            
             if (AnyAreUnknown(sub, super)) { return new Tbool(); }
             
             Tbool result = new Tbool();
@@ -267,22 +272,13 @@ namespace Hammurabi
         /// Returns the temporal union of two Tsets.
         /// This is equivalent to a logical OR of two sets.
         /// </summary>
-        public static Tset operator | (Tset ts1, Tset ts2)    
+        public static Tset operator | (Tset set1, Tset set2)    
         {
-            return Union(ts1,ts2);
-        }
-        public static Tset operator | (Tset ts1, LegalEntity le)    
-        {
-            return Union(ts1, new Tset(le));
-        }
-        
-        private static Tset Union(params Tset[] sets)
-        {
-            if (AnyAreUnknown(sets)) { return new Tset(); }
+            if (AnyAreUnknown(set1, set2)) { return new Tset(); }
             
             Tset result = new Tset();
             
-            foreach(KeyValuePair<DateTime,List<object>> slice in TimePointValues(sets))
+            foreach(KeyValuePair<DateTime,List<object>> slice in TimePointValues(set1, set2))
             {    
                 List<LegalEntity> intervalUnion = new List<LegalEntity>();
                 
@@ -308,16 +304,7 @@ namespace Hammurabi
         /// Returns the temporal intersection of two Tsets.
         /// This is equivalent to a logical AND of two sets.
         /// </summary>
-        public static Tset operator & (Tset ts1, Tset ts2)    
-        {
-            return Intersection(ts1,ts2);
-        }
-        public static Tset operator & (Tset ts1, LegalEntity le)    
-        {
-            return Intersection(ts1, new Tset(le));
-        }
-        
-        private static Tset Intersection(Tset set1, Tset set2)
+        public static Tset operator & (Tset set1, Tset set2)    
         {
             if (AnyAreUnknown(set1, set2)) { return new Tset(); }
             
@@ -350,16 +337,7 @@ namespace Hammurabi
         /// Tset from those of the first (Tset1 - Tset2).
         /// Example: theAdults = thePeople - theKids.
         /// </summary>
-        public static Tset operator - (Tset ts1, Tset ts2)    
-        {
-            return RelativeComplement(ts1,ts2);
-        }
-        public static Tset operator - (Tset ts1, LegalEntity le)    
-        {
-            return RelativeComplement(ts1, new Tset(le));
-        }
-        
-        private static Tset RelativeComplement(Tset set1, Tset set2)
+        public static Tset operator - (Tset set1, Tset set2)    
         {
             if (AnyAreUnknown(set1, set2)) { return new Tset(); }
             
@@ -389,32 +367,20 @@ namespace Hammurabi
         /// <summary>
         /// Returns true when two sets are equal (have the same members). 
         /// </summary>
-        public static Tbool operator == (Tset ts1, Tset ts2)    
+        public static Tbool operator == (Tset set1, Tset set2)    
         {
-            return Equals(ts1,ts2);
-        }
-        public static Tbool operator == (Tset ts1, LegalEntity le)    
-        {
-            return Equals(ts1, new Tset(le));
-        }
-        
-        private static Tbool Equals(Tset set1, Tset set2)
-        {
-            return set1.IsSubsetOf(set2) & set2.IsSubsetOf(set1);
+            return set1.IsSubsetOf(set2) && set2.IsSubsetOf(set1);
         }
         
         /// <summary>
         /// Returns true when two sets are not equal (i.e. when they do 
         /// not have the same members). 
         /// </summary>
-        public static Tbool operator != (Tset ts1, Tset ts2)    
+        public static Tbool operator != (Tset set1, Tset set2)    
         {
-            return !Equals(ts1,ts2);
+            return !set1.IsSubsetOf(set2) || !set2.IsSubsetOf(set1);
         }
-        public static Tbool operator != (Tset ts1, LegalEntity le)    
-        {
-            return !Equals(ts1, new Tset(le));
-        }
+
         
         // ********************************************************************
         // Should not be used in legal functions
@@ -443,8 +409,7 @@ namespace Hammurabi
                 return (List<LegalEntity>)TimeLine.Values[TimeLine.Count-1];
             }
             
-            List<LegalEntity> defaultResult = new List<LegalEntity>();
-            return defaultResult;
+            return new List<LegalEntity>();
         }
         
         /// <summary>
