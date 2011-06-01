@@ -105,5 +105,13 @@ namespace Hammurabi
             
             return ApplyFcnToTimeline(x => Auxiliary.Maximum(x), output);
         }
+        
+        /// <summary>
+        /// A shorter way of instantiating a DateTime.
+        /// </summary>
+        public static DateTime Date(int year, int mo, int day)
+        {
+            return new DateTime(year, mo, day);
+        }
     }
 }

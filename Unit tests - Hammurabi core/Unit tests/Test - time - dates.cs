@@ -33,8 +33,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         [Test]
         public void CurrentOrNextBusinessDay1 ()
         {
-            DateTime dt = new DateTime(2011,2,18).CurrentOrNextBusinessDay();
-            Assert.AreEqual(new DateTime(2011,2,18), dt);    
+            Assert.AreEqual(Date(2011,2,18), Date(2011,2,18).CurrentOrNextBusinessDay());    
         }
         
         [Test]
@@ -266,25 +265,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             DateTime dt = new DateTime(2014,3,15,6,6,6);
             Assert.AreEqual(new DateTime(2014,3,15), dt.ToMidnight());    
         }
-        
-        // .FirstDayOfYear
-        
-        [Test]
-        public void FirstDayOfYear1 ()
-        {
-            DateTime dt = new DateTime(2014,3,15,6,6,6);
-            Assert.AreEqual(new DateTime(2014,1,1), dt.FirstDayOfYear());    
-        }
-        
-        // .LastDayOfYear
-        
-        [Test]
-        public void LastDayOfYear1 ()
-        {
-            DateTime dt = new DateTime(2014,3,15,6,6,6);
-            Assert.AreEqual(new DateTime(2014,12,31), dt.LastDayOfYear());    
-        }
-        
+                
         // .AddCalendarMonths
         
         [Test]

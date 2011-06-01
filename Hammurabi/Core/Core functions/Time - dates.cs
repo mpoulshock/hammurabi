@@ -36,22 +36,6 @@ namespace Hammurabi
         {
             return new DateTime(dt.Year, dt.Month, dt.Day); 
         }
-        
-        /// <summary>
-        /// Returns January 1 of the year of a DateTime.
-        /// </summary>
-        public static DateTime FirstDayOfYear(this DateTime dt)
-        {
-            return new DateTime(dt.Year, 1, 1);
-        }
-        
-        /// <summary>
-        /// Returns December 31 of the year of a DateTime.
-        /// </summary>
-        public static DateTime LastDayOfYear(this DateTime dt)
-        {
-            return new DateTime(dt.Year, 12, 31);
-        }
 
         /// <summary>
         /// Determines whether a DateTime is a weekday.

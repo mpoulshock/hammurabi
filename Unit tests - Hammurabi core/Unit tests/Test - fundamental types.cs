@@ -874,7 +874,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void ForConsecutiveMonths_1 ()
         {
             Tbool t = new Tbool(false);
-            Tbool r = t.ForConsecMonths(12);
+            Tbool r = t.ConsecutiveMonths(12);
             Assert.AreEqual("1/1/0001 12:00:00 AM False ", r.TestOutput);      
         }
         
@@ -882,7 +882,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void ForConsecutiveMonths_2 ()
         {
             Tbool t = new Tbool(true);
-            Tbool r = t.ForConsecMonths(12);
+            Tbool r = t.ConsecutiveMonths(12);
             Assert.AreEqual("1/1/0001 12:00:00 AM False 1/1/0002 12:00:00 AM True ", r.TestOutput);      
         }
         
@@ -892,7 +892,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tbool t = new Tbool(false);
             t.AddState(new DateTime(2000,1,1),true);
             t.AddState(new DateTime(2001,1,1),false);
-            Tbool r = t.ForConsecMonths(6);
+            Tbool r = t.ConsecutiveMonths(6);
             Assert.AreEqual("1/1/0001 12:00:00 AM False 7/1/2000 12:00:00 AM True 1/1/2001 12:00:00 AM False ", r.TestOutput);      
         }
         
@@ -902,7 +902,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tbool t = new Tbool(false);
             t.AddState(new DateTime(2000,1,1),true);
             t.AddState(new DateTime(2001,1,1),false);
-            Tbool r = t.ForConsecMonths(18);
+            Tbool r = t.ConsecutiveMonths(18);
             Assert.AreEqual("1/1/0001 12:00:00 AM False ", r.TestOutput);      
         }
         
@@ -913,7 +913,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             t.AddState(new DateTime(2000,1,1),true);
             t.AddState(new DateTime(2001,1,1),false);
             t.AddState(new DateTime(2001,6,1),true);
-            Tbool r = t.ForConsecMonths(20);
+            Tbool r = t.ConsecutiveMonths(20);
             Assert.AreEqual("1/1/0001 12:00:00 AM False 2/1/2003 12:00:00 AM True ", r.TestOutput);      
         }
         

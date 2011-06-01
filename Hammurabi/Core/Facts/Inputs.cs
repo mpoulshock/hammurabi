@@ -100,8 +100,6 @@ namespace Hammurabi
             }
             
             return B;
-            
-//            return (A && ( B | B.IsUnknown)) || (B && ( A | A.IsUnknown));
         }
         
         //*********************************************************************

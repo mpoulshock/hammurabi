@@ -206,7 +206,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void Test35_Div_by_zero_issue ()
         {
             Tnum res = new Tnum(8) / 0;
-            Assert.AreEqual("1/1/0001 12:00:00 AM #u ", res.TestOutput);        
+            Assert.AreEqual("1/1/0001 12:00:00 AM Null ", res.TestOutput);        
         }
         
         [Test]

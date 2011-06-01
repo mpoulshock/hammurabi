@@ -42,7 +42,7 @@ namespace Hammurabi
         }
         
         /// <summary>
-        /// Private non-temporal SUM function.
+        /// Non-temporal sum function.
         /// </summary>
         public static decimal Sum(List<object> list)
         {
@@ -70,7 +70,7 @@ namespace Hammurabi
         }
         
         /// <summary>
-        /// Private non-temporal SUBTRACT function.
+        /// Non-temporal subtract function.
         /// </summary>
         private static decimal Subtract(List<object> list)
         {
@@ -108,7 +108,7 @@ namespace Hammurabi
         }
         
         /// <summary>
-        /// Private non-temporal PRODUCT function
+        /// Non-temporal multiplication function
         /// </summary>
         private static decimal Prod(List<object> list)
         {
@@ -138,13 +138,16 @@ namespace Hammurabi
         }
         
         /// <summary>
-        /// Private non-temporal DIVISION function. 
+        /// Non-temporal division function. 
         /// </summary>
-        private static decimal Divide(List<object> list)
+        private static decimal? Divide(List<object> list)
         {
-            // TODO: Handle div-by-zero errors
+            decimal denom = Convert.ToDecimal(list[1]);
             
-            return Convert.ToDecimal(list[0]) / Convert.ToDecimal(list[1]);
+            // Div-by-zero
+            if (denom == 0) { return null; }
+                
+            return Convert.ToDecimal(list[0]) / denom;
         }
         
         
@@ -153,7 +156,7 @@ namespace Hammurabi
         // ********************************************************************
         
         /// <summary>
-        /// Temporal MODULO function. 
+        /// Temporal modulo function. 
         /// </summary>
         public static Tnum operator % (Tnum tn1, Tnum tn2)    
         {
@@ -163,7 +166,7 @@ namespace Hammurabi
         }
         
         /// <summary>
-        /// Private non-temporal MODULO function. 
+        /// Non-temporal modulo function. 
         /// </summary>
         private static decimal Modulo(List<object> list)
         {
@@ -176,7 +179,7 @@ namespace Hammurabi
         // ********************************************************************
         
         /// <summary>
-        /// Temporal ABSOLUTE VALUE function
+        /// Temporal absolute value function
         /// </summary>
         public Tnum Abs
         {
@@ -201,9 +204,8 @@ namespace Hammurabi
         // ********************************************************************
         
         /// <summary>
-        /// Temporal ROUND TO NEAREST function.  Rounds a value to the nearest
-        /// multiple of a given number.  By default, it rounds up in case of
-        /// a tie.
+        /// Rounds a value to the nearest multiple of a given number.  By default, 
+        /// it rounds up in case of a tie.
         /// </summary>
         public Tnum RoundToNearest(double multiple)
         {
@@ -227,7 +229,7 @@ namespace Hammurabi
         }
         
         /// <summary>
-        /// Private non-temporal ROUND TO NEAREST function
+        /// Non-temporal round-to-nearest function
         /// </summary>
         private static decimal RoundToNearest(string theNum, double multiple, bool breakTieByRoundingDown)
         {
@@ -248,8 +250,7 @@ namespace Hammurabi
         }
         
         /// <summary>
-        /// Temporal ROUND UP function.  Rounds a value up to the next multiple
-        /// of a given number.
+        /// Rounds a value up to the next multiple of a given number.
         /// </summary>
         public Tnum RoundUp(double multiple)
         {
@@ -268,7 +269,7 @@ namespace Hammurabi
         }        
         
         /// <summary>
-        /// Private non-temporal ROUND UP function.
+        /// Non-temporal round-up function.
         /// </summary>
         private static decimal CoreRoundUp(string theNum, double multiple2)
         {
@@ -286,8 +287,7 @@ namespace Hammurabi
         }
         
         /// <summary>
-        /// Temporal ROUND DOWN function.  Rounds a value down to the next
-        /// multiple of a given number.
+        /// Rounds a value down to the next multiple of a given number.
         /// </summary>
         public Tnum RoundDown(double multiple)
         {
@@ -306,7 +306,7 @@ namespace Hammurabi
         }
         
         /// <summary>
-        /// Private non-temporal ROUND DOWN function.
+        /// Non-temporal round-down function.
         /// </summary>
         private static decimal CoreRoundDown(string theNum, double multiple2)
         {
