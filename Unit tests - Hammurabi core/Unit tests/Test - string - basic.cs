@@ -60,43 +60,6 @@ namespace Hammurabi.UnitTests.CoreFcns
             Assert.AreEqual("1/1/0001 12:00:00 AM 12 ", ts3.Length.TestOutput);            
         }
         
-//        [Test]
-//        public void Test5 ()
-//        {
-//            Tstr ts1 = new Tstr("hello,");
-//            Tstr ts2 = new Tstr("world");
-//            Tstr ts3 = ts1 + " " + ts2;
-//              Assert.AreEqual("1/1/0001 12:00:00 AM False ", ts3.IsNumber.TestOutput);            
-//        }
-//        
-//        [Test]
-//        public void Test6 ()
-//        {
-//            Tstr ts1 = new Tstr("99.1");
-//              Assert.AreEqual("1/1/0001 12:00:00 AM True ", ts1.IsNumber.TestOutput);            
-//        }
-//        
-//        [Test]
-//        public void Test7 ()
-//        {
-//            Tstr ts1 = new Tstr("-99.1");
-//              Assert.AreEqual("1/1/0001 12:00:00 AM True ", ts1.IsNumber.TestOutput);            
-//        }
-//        
-//        [Test]
-//        public void Test8 ()
-//        {
-//            Tstr ts1 = new Tstr("$99.10");
-//              Assert.AreEqual("1/1/0001 12:00:00 AM True ", ts1.IsNumber.TestOutput);            
-//        }
-//        
-//        [Test]
-//        public void Test9 ()
-//        {
-//            Tstr ts1 = new Tstr("-$99.10");
-//              Assert.AreEqual("1/1/0001 12:00:00 AM True ", ts1.IsNumber.TestOutput);            
-//        }
-        
         [Test]
         public void Test10 ()
         {
@@ -144,21 +107,6 @@ namespace Hammurabi.UnitTests.CoreFcns
         {
             Tstr ts1 = new Tstr("hello, world");
             Assert.AreEqual("1/1/0001 12:00:00 AM False ", ts1.EndsWith("j").TestOutput);            
-        }
-        
-//        [Test]
-//        public void Test17 ()
-//        {
-//            Tstr ts1 = new Tstr("hello, world");
-//              Assert.AreEqual("1/1/0001 12:00:00 AM jello, world ", ts1.Replace("hello","jello").TestOutput);            
-//        }
-//        
-//        [Test]
-//        public void Test18 ()
-//        {
-//            Tstr ts1 = new Tstr("hello, world");
-//              Assert.AreEqual("1/1/0001 12:00:00 AM hello, world ", ts1.Replace("jello","mello").TestOutput);            
-//        }
-        
+        }       
     }
 }

@@ -27,7 +27,7 @@
 
 using Hammurabi;
 using NUnit.Framework;
-using System;
+using USC.Tit5;
 
 namespace Hammurabi.UnitTests
 {
@@ -40,162 +40,141 @@ namespace Hammurabi.UnitTests
         [Test]
         public void Test1 ()
         {
-            DateTime date = new DateTime(2011,1,1);
-            bool result = USC.Tit5.Sec6103.IsLegalHoliday(date);
+            bool result = Sec6103.IsLegalHoliday(Date(2011,1,1));
             Assert.AreEqual(false, result);       
         }
         
         [Test]
         public void Test2 ()
         {
-            DateTime date = new DateTime(2010,12,31);
-            bool result = USC.Tit5.Sec6103.IsLegalHoliday(date);
+            bool result = Sec6103.IsLegalHoliday(Date(2010,12,31));
             Assert.AreEqual(true, result);       
         }
         
         [Test]
         public void Test3 ()
         {
-            DateTime date = new DateTime(2011,1,2);
-            bool result = USC.Tit5.Sec6103.IsLegalHoliday(date);
+            bool result = Sec6103.IsLegalHoliday(Date(2011,1,2));
             Assert.AreEqual(false, result);       
         }
         
         [Test]
         public void Test4 ()
         {
-            DateTime date = new DateTime(2012,1,1);
-            bool result = USC.Tit5.Sec6103.IsLegalHoliday(date);
+            bool result = Sec6103.IsLegalHoliday(Date(2012,1,1));
             Assert.AreEqual(false, result);       
         }
         
         [Test]
         public void Test5 ()
         {
-            DateTime date = new DateTime(2012,1,2);
-            bool result = USC.Tit5.Sec6103.IsLegalHoliday(date);
+            bool result = Sec6103.IsLegalHoliday(Date(2012,1,2));
             Assert.AreEqual(true, result);       
         }
         
         [Test]
         public void Test6 ()
         {
-            DateTime date = new DateTime(2013,1,1);
-            bool result = USC.Tit5.Sec6103.IsLegalHoliday(date);
+            bool result = Sec6103.IsLegalHoliday(Date(2013,1,1));
             Assert.AreEqual(true, result);       
         }
         
         [Test]
         public void Test7 ()
         {
-            DateTime date = new DateTime(2011,1,17);
-            bool result = USC.Tit5.Sec6103.IsLegalHoliday(date);
+            bool result = Sec6103.IsLegalHoliday(Date(2011,1,17));
             Assert.AreEqual(true, result);       
         }
         
         [Test]
         public void Test8 ()
         {
-            DateTime date = new DateTime(2011,2,21);
-            bool result = USC.Tit5.Sec6103.IsLegalHoliday(date);
+            bool result = Sec6103.IsLegalHoliday(Date(2011,2,21));
             Assert.AreEqual(true, result);       
         }
         
         [Test]
         public void Test9 ()
         {
-            DateTime date = new DateTime(2011,2,17);
-            bool result = USC.Tit5.Sec6103.IsLegalHoliday(date);
+            bool result = Sec6103.IsLegalHoliday(Date(2011,2,17));
             Assert.AreEqual(false, result);       
         }
         
         [Test]
         public void Test10 ()
         {
-            DateTime date = new DateTime(2011,5,30);
-            bool result = USC.Tit5.Sec6103.IsLegalHoliday(date);
+            bool result = Sec6103.IsLegalHoliday(Date(2011,5,30));
             Assert.AreEqual(true, result);       
         }
         
         [Test]
         public void Test11 ()
         {
-            DateTime date = new DateTime(2015,7,4);
-            bool result = USC.Tit5.Sec6103.IsLegalHoliday(date);
+            bool result = Sec6103.IsLegalHoliday(Date(2015,7,4));
             Assert.AreEqual(false, result);       
         }
         
         [Test]
         public void Test12 ()
         {
-            DateTime date = new DateTime(2015,7,3);
-            bool result = USC.Tit5.Sec6103.IsLegalHoliday(date);
+            bool result = Sec6103.IsLegalHoliday(Date(2015,7,3));
             Assert.AreEqual(true, result);       
         }
 
         [Test]
         public void Test13 ()
         {
-            DateTime date = new DateTime(2013,9,2);
-            bool result = USC.Tit5.Sec6103.IsLegalHoliday(date);
+            bool result = Sec6103.IsLegalHoliday(Date(2013,9,2));
             Assert.AreEqual(true, result);       
         }
         
         [Test]
         public void Test14 ()
         {
-            DateTime date = new DateTime(2013,10,14);
-            bool result = USC.Tit5.Sec6103.IsLegalHoliday(date);
+            bool result = Sec6103.IsLegalHoliday(Date(2013,10,14));
             Assert.AreEqual(true, result);       
         }
         
         [Test]
         public void Test15 ()
         {
-            DateTime date = new DateTime(2012,11,11);
-            bool result = USC.Tit5.Sec6103.IsLegalHoliday(date);
+            bool result = Sec6103.IsLegalHoliday(Date(2012,11,11));
             Assert.AreEqual(false, result);       
         }
         
         [Test]
         public void Test16 ()
         {
-            DateTime date = new DateTime(2012,11,10);
-            bool result = USC.Tit5.Sec6103.IsLegalHoliday(date);
+            bool result = Sec6103.IsLegalHoliday(Date(2012,11,10));
             Assert.AreEqual(false, result);       
         }
         
         [Test]
         public void Test17 ()
         {
-            DateTime date = new DateTime(2012,11,12);
-            bool result = USC.Tit5.Sec6103.IsLegalHoliday(date);
+            bool result = Sec6103.IsLegalHoliday(Date(2012,11,12));
             Assert.AreEqual(true, result);       
         }
         
         [Test]
         public void Test18 ()
         {
-            DateTime date = new DateTime(2012,11,22);
-            bool result = USC.Tit5.Sec6103.IsLegalHoliday(date);
+            bool result = Sec6103.IsLegalHoliday(Date(2012,11,22));
             Assert.AreEqual(true, result);       
         }
         
         [Test]
         public void Test19 ()
         {
-            DateTime date = new DateTime(2012,12,25);
-            bool result = USC.Tit5.Sec6103.IsLegalHoliday(date);
+            bool result = Sec6103.IsLegalHoliday(Date(2012,12,25));
             Assert.AreEqual(true, result);       
         }
         
         [Test]
         public void Test20 ()
         {
-            DateTime date = new DateTime(2012,12,26);
-            bool result = USC.Tit5.Sec6103.IsLegalHoliday(date);
+            bool result = Sec6103.IsLegalHoliday(Date(2012,12,26));
             Assert.AreEqual(false, result);       
         }
-        
     }
 }

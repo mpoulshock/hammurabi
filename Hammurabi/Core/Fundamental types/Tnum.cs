@@ -197,7 +197,7 @@ namespace Hammurabi
         /// Returns the all-time maximum value of the Tnum. 
         /// </summary>
         public Tnum Max()
-        {     
+        {
             if (this.IsUnknown) { return new Tnum(); }
                 
             Tnum result = new Tnum();

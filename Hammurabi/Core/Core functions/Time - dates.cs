@@ -22,7 +22,6 @@ using System;
 
 namespace Hammurabi
 {
-    
     //*************************************************************************
     // DateTime extension methods
     //*************************************************************************
@@ -339,6 +338,5 @@ namespace Hammurabi
                 return new DateTime(9999,12,31);
             }
         }
-
     }
 }

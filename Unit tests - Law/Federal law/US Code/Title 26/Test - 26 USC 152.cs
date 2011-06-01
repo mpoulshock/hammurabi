@@ -25,9 +25,10 @@
 // INDEPENDENTLY VERIFYING SUCH LAWS. THE USE OF THIS PROGRAM IS NOT A 
 // SUBSTITUTE FOR THE ADVICE OF AN ATTORNEY.
 
+using System;
 using Hammurabi;
 using NUnit.Framework;
-using System;
+using USC.Tit26;
 
 namespace Hammurabi.UnitTests
 {
@@ -37,7 +38,7 @@ namespace Hammurabi.UnitTests
     [TestFixture]
     public class USC_Tit26_Sec152 : H
     {
-        private static DateTime endOf2010 = new DateTime(2010,12,31);
+        private static DateTime endOf2010 = Date(2010,12,31);
         private Person t = new Person("Taxpayer");
         
         /// <summary>
@@ -54,7 +55,7 @@ namespace Hammurabi.UnitTests
             Facts.Clear();
             Facts.Assert(t, r.IsParentOf, c);
             Facts.Assert(c, r.LivesWith, t);
-            Facts.Assert(c, r.DateOfBirth, new DateTime(2000,1,1));
+            Facts.Assert(c, r.DateOfBirth, Date(2000,1,1));
             Facts.Assert(c, "IsUSCitizen");
             Facts.Assert(c, "CanBeClaimedAsQCByTwoTaxpayers", false);
             Facts.Assert(c, r.PercentSelfSupport, 0);
@@ -64,7 +65,7 @@ namespace Hammurabi.UnitTests
             Facts.Assert(c, "GrossIncome", 0);
 
             // Get and evaluate result
-            bool? result = USC.Tit26.Sec152.IsDependentOf(c,t).AsOf(endOf2010).ToBool;
+            bool? result = Sec152.IsDependentOf(c,t).AsOf(endOf2010).ToBool;
             Assert.AreEqual(true, result);
         }
         
@@ -88,12 +89,12 @@ namespace Hammurabi.UnitTests
             // These facts are irrelevant but are in the fact pattern
             Facts.Assert(t, r.IsParentOf, d);
             Facts.Assert(t, r.LivesWith, d);
-            Facts.Assert(d, r.DateOfBirth, new DateTime(1992,1,1));
+            Facts.Assert(d, r.DateOfBirth, Date(1992,1,1));
             Facts.Assert(s, "IsInArmedForces");
             Facts.Assert(d, "IsUSCitizen");
 
             // Get and evaluate result
-            bool? result = USC.Tit26.Sec152.IsDependentOf(d,t).ToBool;
+            bool? result = Sec152.IsDependentOf(d,t).ToBool;
             Assert.AreEqual(false, result);
         }
         
@@ -107,8 +108,8 @@ namespace Hammurabi.UnitTests
             Person d = new Person("Daughter-in-law");
 
             Facts.Clear();
-            Facts.Assert(s, r.DateOfBirth, new DateTime(1992,1,1));
-            Facts.Assert(d, r.DateOfBirth, new DateTime(1991,1,1));
+            Facts.Assert(s, r.DateOfBirth, Date(1992,1,1));
+            Facts.Assert(d, r.DateOfBirth, Date(1991,1,1));
             Facts.Assert(s, r.IsMarriedTo, d);
             Facts.Assert(s, "IsUSCitizen");
             Facts.Assert(d, "FilesJointFedTaxReturnWith", s);
@@ -116,7 +117,7 @@ namespace Hammurabi.UnitTests
             Facts.Assert(s, "CanClaimSomeoneAsDependent", false);
             Facts.Assert(t, "CanBeClaimedAsDependentBySomeone", false);
 
-            bool? result = USC.Tit26.Sec152.CannotBeADependentOf(s,t).AsOf(endOf2010).ToBool;
+            bool? result = Sec152.CannotBeADependentOf(s,t).AsOf(endOf2010).ToBool;
             Assert.AreEqual(false, result);
         }
         
@@ -130,8 +131,8 @@ namespace Hammurabi.UnitTests
             Person d = new Person("Daughter-in-law");
 
             Facts.Clear();
-            Facts.Assert(s, r.DateOfBirth, new DateTime(1992,1,1));
-            Facts.Assert(d, r.DateOfBirth, new DateTime(1991,1,1));
+            Facts.Assert(s, r.DateOfBirth, Date(1992,1,1));
+            Facts.Assert(d, r.DateOfBirth, Date(1991,1,1));
             Facts.Assert(s, r.IsMarriedTo, d);
             Facts.Assert(d, "IsUSCitizen");
             Facts.Assert(d, "FilesJointFedTaxReturnWith", s);
@@ -139,7 +140,7 @@ namespace Hammurabi.UnitTests
             Facts.Assert(d, "CanClaimSomeoneAsDependent", false);
             Facts.Assert(t, "CanBeClaimedAsDependentBySomeone", false);
 
-            bool? result = USC.Tit26.Sec152.CannotBeADependentOf(d,t).AsOf(endOf2010).ToBool;
+            bool? result = Sec152.CannotBeADependentOf(d,t).AsOf(endOf2010).ToBool;
             Assert.AreEqual(false, result);
         }
         
@@ -153,8 +154,8 @@ namespace Hammurabi.UnitTests
             Person d = new Person("Daughter-in-law");
 
             Facts.Clear();
-            Facts.Assert(s, r.DateOfBirth, new DateTime(1992,1,1));
-            Facts.Assert(d, r.DateOfBirth, new DateTime(1991,1,1));
+            Facts.Assert(s, r.DateOfBirth, Date(1992,1,1));
+            Facts.Assert(d, r.DateOfBirth, Date(1991,1,1));
             Facts.Assert(s, r.IsMarriedTo, d);
             Facts.Assert(s, "IsUSCitizen");
             Facts.Assert(d, "FilesJointFedTaxReturnWith", s);
@@ -162,7 +163,7 @@ namespace Hammurabi.UnitTests
             Facts.Assert(s, "CanClaimSomeoneAsDependent", false);
             Facts.Assert(t, "CanBeClaimedAsDependentBySomeone", false);
 
-            bool? result = USC.Tit26.Sec152.CannotBeADependentOf(s,t).AsOf(endOf2010).ToBool;
+            bool? result = Sec152.CannotBeADependentOf(s,t).AsOf(endOf2010).ToBool;
             Assert.AreEqual(true, result);
         }
 
@@ -174,11 +175,11 @@ namespace Hammurabi.UnitTests
         {
             Person s = new Person("Son");
             Facts.Clear();
-            Facts.Assert(s, r.DateOfBirth, new DateTime(1991,12,10));
+            Facts.Assert(s, r.DateOfBirth, Date(1991,12,10));
             Facts.Assert(s, "IsFullTimeStudent", false);
             Facts.Assert(s, "IsPermanentlyAndTotallyDisabled", false);
 
-            bool? result = USC.Tit26.Sec152.IsDependentOf(s,t).AsOf(endOf2010).ToBool;
+            bool? result = Sec152.IsDependentOf(s,t).AsOf(endOf2010).ToBool;
             Assert.AreEqual(false, result);
         }
 
@@ -190,11 +191,11 @@ namespace Hammurabi.UnitTests
         {
             Person s = new Person("Son");
             Facts.Clear();
-            Facts.Assert(s, r.DateOfBirth, new DateTime(1991,12,10));
+            Facts.Assert(s, r.DateOfBirth, Date(1991,12,10));
             Facts.Assert(s, "IsFullTimeStudent");
             Facts.Assert(s, "IsPermanentlyAndTotallyDisabled", false);
 
-            bool? result = USC.Tit26.Sec152.IsDependentOf(s,t).AsOf(endOf2010).ToBool;
+            bool? result = Sec152.IsDependentOf(s,t).AsOf(endOf2010).ToBool;
             Assert.AreEqual(true, result);
         }
 
@@ -206,11 +207,11 @@ namespace Hammurabi.UnitTests
         {
             Person s = new Person("Son");
             Facts.Clear();
-            Facts.Assert(s, r.DateOfBirth, new DateTime(1991,12,10));
+            Facts.Assert(s, r.DateOfBirth, Date(1991,12,10));
             Facts.Assert(s, "IsFullTimeStudent", false);
             Facts.Assert(s, "IsPermanentlyAndTotallyDisabled");
 
-            bool? result = USC.Tit26.Sec152.IsDependentOf(s,t).AsOf(endOf2010).ToBool;
+            bool? result = Sec152.IsDependentOf(s,t).AsOf(endOf2010).ToBool;
             Assert.AreEqual(true, result);
         }
 
@@ -224,11 +225,11 @@ namespace Hammurabi.UnitTests
             Person b = new Person("Brother");
 
             Facts.Clear();
-            Facts.Assert(t, r.DateOfBirth, new DateTime(1989,1,1));
-            Facts.Assert(s, r.DateOfBirth, new DateTime(1989,1,1));
+            Facts.Assert(t, r.DateOfBirth, Date(1989,1,1));
+            Facts.Assert(s, r.DateOfBirth, Date(1989,1,1));
             Facts.Assert(t, r.IsMarriedTo, s);
             Facts.Assert(b, "IsSiblingOf", t);
-            Facts.Assert(b, r.DateOfBirth, new DateTime(1987,1,1));
+            Facts.Assert(b, r.DateOfBirth, Date(1987,1,1));
             Facts.Assert(b, "IsFullTimeStudent");
             Facts.Assert(b, "IsMarried", false);
             Facts.Assert(t, r.LivesWith, s);
@@ -236,7 +237,7 @@ namespace Hammurabi.UnitTests
             Facts.Assert(b, r.IsDisabled, false);
             Facts.Assert(t, "AreFilingMFJ", s);
 
-            bool? result = USC.Tit26.Sec152.IsDependentOf(b,t).AsOf(endOf2010).ToBool;
+            bool? result = Sec152.IsDependentOf(b,t).AsOf(endOf2010).ToBool;
             Assert.AreEqual(false, result);
         }
 
@@ -250,11 +251,11 @@ namespace Hammurabi.UnitTests
             Person b = new Person("Brother");
 
             Facts.Clear();
-            Facts.Assert(t, r.DateOfBirth, new DateTime(1989,1,1));
-            Facts.Assert(s, r.DateOfBirth, new DateTime(1985,1,1));
+            Facts.Assert(t, r.DateOfBirth, Date(1989,1,1));
+            Facts.Assert(s, r.DateOfBirth, Date(1985,1,1));
             Facts.Assert(t, r.IsMarriedTo, s);
             Facts.Assert(b, "IsSiblingOf", t);
-            Facts.Assert(b, r.DateOfBirth, new DateTime(1987,1,1));
+            Facts.Assert(b, r.DateOfBirth, Date(1987,1,1));
             Facts.Assert(b, "IsFullTimeStudent");
             Facts.Assert(b, "IsMarried", false);
             Facts.Assert(t, r.LivesWith, s);
@@ -262,9 +263,8 @@ namespace Hammurabi.UnitTests
             Facts.Assert(b, r.IsDisabled, false);
             Facts.Assert(t, "AreFilingMFJ", s);
 
-            bool? result = USC.Tit26.Sec152.IsDependentOf(b,t).AsOf(endOf2010).ToBool;
+            bool? result = Sec152.IsDependentOf(b,t).AsOf(endOf2010).ToBool;
             Assert.AreEqual(true, result);
         }
-
     }
 }

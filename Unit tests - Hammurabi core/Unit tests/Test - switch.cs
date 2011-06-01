@@ -81,7 +81,6 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tnum result = Switch(tbf, new Tnum(41),
                                  tbf, new Tnum(42) );
 
-            // Should default to "null"
             Assert.AreEqual("1/1/0001 12:00:00 AM Null ", result.TestOutput);        
         }
         
@@ -104,7 +103,5 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tnum result = Switch(tbf, tbf, new Tnum(42));
             Assert.AreEqual("Unknown", result.TestOutput);        
         }
-        
-        
     }
 }

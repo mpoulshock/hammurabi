@@ -360,7 +360,5 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tbool result = td2 <= td1;
             Assert.AreEqual("Unknown", result.TestOutput);    
         }
-        
-        
     }
 }

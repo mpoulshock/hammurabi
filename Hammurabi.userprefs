@@ -1,28 +1,23 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Default" ctype="Workspace" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Hammurabi/Core/Core functions/Set - higher-order.cs" ctype="Workbench">
-    <Files>
-      <File FileName="Hammurabi/Core/Ontology/Family relationships.cs" Line="75" Column="61" />
-      <File FileName="Hammurabi/Core/Ontology/Economic relationships.cs" Line="77" Column="16" />
-      <File FileName="Hammurabi/Law/Federal law/US Code/Title 29/29 USC 2611.cs" Line="153" Column="22" />
-      <File FileName="Hammurabi/Law/Federal law/US Code/Title 29/29 USC 2612.cs" Line="148" Column="10" />
-      <File FileName="Hammurabi/Core/Core functions/Set - higher-order.cs" Line="27" Column="3" />
-    </Files>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" ctype="Workspace" />
+  <MonoDevelop.Ide.Workbench ctype="Workbench">
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
-          <Node name="Unit tests - Hammurabi core" expanded="True">
-            <Node name="References" expanded="True" />
-            <Node name="Unit tests" expanded="True" />
-          </Node>
-          <Node name="Unit tests - Law" expanded="True">
-            <Node name="Federal law" expanded="True">
-              <Node name="US Code" expanded="True">
-                <Node name="Title 26" expanded="True" />
-                <Node name="Title 29" expanded="True" />
-                <Node name="Title 5" expanded="True" />
+          <Node name="Hammurabi" expanded="True">
+            <Node name="Core" expanded="True">
+              <Node name="Core functions" expanded="True" />
+              <Node name="Facts" expanded="True">
+                <Node name="Inputs.cs" selected="True" />
               </Node>
             </Node>
+            <Node name="Law" expanded="True">
+              <Node name="Federal law" expanded="True" />
+            </Node>
+            <Node name="Main" expanded="True" />
+          </Node>
+          <Node name="Unit tests - Hammurabi core" expanded="True">
+            <Node name="Unit tests" expanded="True" />
           </Node>
         </State>
       </Pad>
@@ -32,8 +27,8 @@
           <Option id="NestedNamespaces" value="False" />
           <Option id="PublicProtectedApiOnly" value="False" />
           <Option id="PublicApiOnly" value="True" />
-          <Option id="GroupByType" value="True" />
           <Option id="GroupByAccess" value="False" />
+          <Option id="GroupByType" value="True" />
           <Node name="Hammurabi" expanded="True">
             <Node name="References" expanded="True" />
           </Node>
@@ -43,17 +38,7 @@
         <State />
       </Pad>
       <Pad Id="MonoDevelop.NUnit.TestPad">
-        <State expanded="True">
-          <Node name="Unit tests - Hammurabi core" expanded="True">
-            <Node name="Hammurabi" expanded="True">
-              <Node name="UnitTests" expanded="True">
-                <Node name="CoreFcns" expanded="True">
-                  <Node name="Stubs" expanded="True" selected="True" />
-                </Node>
-              </Node>
-            </Node>
-          </Node>
-        </State>
+        <State expanded="True" selected="True" />
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>

@@ -27,7 +27,7 @@
 
 using Hammurabi;
 using NUnit.Framework;
-using System;
+using USC.Tit29;
 
 namespace Hammurabi.UnitTests
 {
@@ -49,8 +49,7 @@ namespace Hammurabi.UnitTests
             Facts.Clear();          
 
             // Get and evaluate result
-            DateTime theDate = new DateTime(2011,4,15);
-            Tbool result = USC.Tit29.Sec2612.IsEntitledToRegLeaveFrom(e,c).AsOf(theDate);
+            Tbool result = Sec2612.IsEntitledToRegLeaveFrom(e,c).AsOf(Date(2011,4,15));
             Assert.AreEqual("Unknown", result.TestOutput);
         }
 
@@ -59,8 +58,7 @@ namespace Hammurabi.UnitTests
         {
             Facts.Clear();
             Facts.Assert(e, "ReasonForRequestingLeaveFrom",c, "Other");          
-            DateTime theDate = new DateTime(2011,4,15);
-            bool? result = USC.Tit29.Sec2612.IsEntitledToRegLeaveFrom(e,c).AsOf(theDate).ToBool;
+            bool? result = Sec2612.IsEntitledToRegLeaveFrom(e,c).AsOf(Date(2011,4,15)).ToBool;
             Assert.AreEqual(false, result);
         }
         
@@ -69,7 +67,7 @@ namespace Hammurabi.UnitTests
         {
             Facts.Clear();
             Facts.Assert(e, "IsEmployedBy", c, false);  
-            bool? result = USC.Tit29.Sec2612.IsEntitledToRegLeaveFrom(e,c).ToBool;
+            bool? result = Sec2612.IsEntitledToRegLeaveFrom(e,c).ToBool;
             Assert.AreEqual(false, result);
         }
          
@@ -85,9 +83,7 @@ namespace Hammurabi.UnitTests
             Facts.Assert(e, "LessThan50EmployeesWithin75MilesOfWorksite", c, false);
             Facts.Assert(e, "IsAirlineFlightCrew", c, false);
             Facts.Assert(e, "ReasonForRequestingLeaveFrom",c, "Other");          
-
-            DateTime theDate = new DateTime(2011,4,15);
-            bool? result = USC.Tit29.Sec2612.IsEntitledToRegLeaveFrom(e,c).AsOf(theDate).ToBool;
+            bool? result = Sec2612.IsEntitledToRegLeaveFrom(e,c).AsOf(Date(2011,4,15)).ToBool;
             Assert.AreEqual(false, result);
         }
         
@@ -103,9 +99,7 @@ namespace Hammurabi.UnitTests
             Facts.Assert(e, "LessThan50EmployeesWithin75MilesOfWorksite", c, false);
             Facts.Assert(e, "IsAirlineFlightCrew", c, false);
             Facts.Assert(e, "ReasonForRequestingLeaveFrom",c, "To adopt a child");          
-
-            DateTime theDate = new DateTime(2011,4,15);
-            bool? result = USC.Tit29.Sec2612.IsEntitledToRegLeaveFrom(e,c).AsOf(theDate).ToBool;
+            bool? result = Sec2612.IsEntitledToRegLeaveFrom(e,c).AsOf(Date(2011,4,15)).ToBool;
             Assert.AreEqual(true, result);
         }
         
@@ -114,21 +108,16 @@ namespace Hammurabi.UnitTests
         {
             Facts.SetWindowOfConcern(2);
             Facts.Clear();
-            Facts.Assert(e ,"DateFamilyLeaveBegins", c, new DateTime(2014,1,1));
+            Facts.Assert(e ,"DateFamilyLeaveBegins", c, Date(2014,1,1));
             Facts.Assert(e, "NatureOfEmploymentRelationship", c, "Employee");
-            Facts.Assert(e, "DateStartedWorkingAt", c, new DateTime(2011,1,1));
+            Facts.Assert(e, "DateStartedWorkingAt", c, Date(2011,1,1));
             Facts.Assert(e, "HoursWorkedPerWeek", c, 40);
             Facts.Assert(e, "IsEmployeeUnder5USC6301", false);
             Facts.Assert(e, "LessThan50EmployeesWithin75MilesOfWorksite", c, false);
             Facts.Assert(e, "IsAirlineFlightCrew", c, false);
             Facts.Assert(c, "NumberOfEmployees", 2000);
             Facts.Assert(e, "ReasonForRequestingLeaveFrom",c, "To adopt a child"); 
-
-//            Tbool result = USC.Tit29.Sec2612.IsEntitledToLeaveFrom(e,c); 
-//            Assert.AreEqual("1/1/0001 12:00:00 AM False 1/1/2009 12:00:00 AM True 1/1/2014 12:00:00 AM False", result.TestOutput);
-            
-            DateTime theDate = new DateTime(2014,1,1);
-            bool? result = USC.Tit29.Sec2612.IsEntitledToLeaveFrom(e,c).AsOf(theDate).ToBool;
+            bool? result = Sec2612.IsEntitledToLeaveFrom(e,c).AsOf(Date(2014,1,1)).ToBool;
             Assert.AreEqual(true, result);
         }
         
@@ -144,9 +133,7 @@ namespace Hammurabi.UnitTests
             Facts.Assert(e, "LessThan50EmployeesWithin75MilesOfWorksite", c, false);
             Facts.Assert(e, "IsAirlineFlightCrew", c);
             Facts.Assert(e, "ReasonForRequestingLeaveFrom",c, "To adopt a child"); 
-
-            DateTime theDate = new DateTime(2011,4,15);
-            bool? result = USC.Tit29.Sec2612.IsEntitledToRegLeaveFrom(e,c).AsOf(theDate).ToBool;
+            bool? result = Sec2612.IsEntitledToRegLeaveFrom(e,c).AsOf(Date(2011,4,15)).ToBool;
             Assert.AreEqual(null, result);
         }
         
@@ -162,8 +149,7 @@ namespace Hammurabi.UnitTests
             Facts.Assert(e, "LessThan50EmployeesWithin75MilesOfWorksite", c, false);
             Facts.Assert(e, "IsAirlineFlightCrew", c, false);
             Facts.Assert(e, "ReasonForRequestingLeaveFrom",c, "To care for family member with a health condition");          
-
-            Tbool result = USC.Tit29.Sec2612.IsEntitledToRegLeaveFrom(e,c);
+            Tbool result = Sec2612.IsEntitledToRegLeaveFrom(e,c);
             Assert.AreEqual("Unknown", result.TestOutput);
         }
         
@@ -183,11 +169,8 @@ namespace Hammurabi.UnitTests
             Facts.Assert(e, "NeedsLeaveToProvideCareFor", f);
             Facts.Assert(e, "IsMarriedTo", f);
             Facts.Assert(f, "HasSeriousHealthCondition");
-
-            DateTime theDate = new DateTime(2011,4,15);
-            Tbool result = USC.Tit29.Sec2612.IsEntitledToRegLeaveFrom(e,c).AsOf(theDate);
+            Tbool result = Sec2612.IsEntitledToRegLeaveFrom(e,c).AsOf(Date(2011,4,15));
             Assert.AreEqual("1/1/0001 12:00:00 AM True ", result.TestOutput);
         }
-        
     }
 }
