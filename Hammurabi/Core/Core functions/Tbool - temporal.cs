@@ -270,8 +270,7 @@ namespace Hammurabi
         /// </summary>
         public Tbool ConsecutiveFullCalWeeks(int numberOfWeeks)
         {
-            Tnum week = TheTime.TheCalendarWeek;
-            Tnum lastN = this.AlwaysPer(week).CountPastNIntervals(week, numberOfWeeks + 1, 1);
+            Tnum lastN = this.AlwaysPer(TheCalendarWeek).CountPastNIntervals(TheCalendarWeek, numberOfWeeks + 1, 1);
             return this & lastN >= numberOfWeeks;
         }
 
@@ -281,8 +280,7 @@ namespace Hammurabi
         /// </summary>
         public Tbool ConsecutivePartCalWeeks(int numberOfWeeks)
         {
-            Tnum week = TheTime.TheCalendarWeek;
-            Tnum lastN = this.EverPer(week).CountPastNIntervals(week, numberOfWeeks + 1, 1);
+            Tnum lastN = this.EverPer(TheCalendarWeek).CountPastNIntervals(TheCalendarWeek, numberOfWeeks + 1, 1);
             return this & lastN >= numberOfWeeks;
         }
 
@@ -292,8 +290,7 @@ namespace Hammurabi
         /// </summary>
         public Tbool ConsecutiveFullCalMonths(int numberOfMonths)
         {
-            Tnum month = TheTime.TheMonth;
-            Tnum lastN = this.AlwaysPer(month).CountPastNIntervals(month, numberOfMonths+1, 1);
+            Tnum lastN = this.AlwaysPer(TheMonth).CountPastNIntervals(TheMonth, numberOfMonths+1, 1);
             return this & lastN >= numberOfMonths;
         }
 
@@ -314,8 +311,7 @@ namespace Hammurabi
         /// </summary>
         public Tbool ConsecutiveFullCalQtrs(int numberOfQtrs)
         {
-            Tnum qtr = TheTime.TheQuarter;
-            Tnum lastN = this.AlwaysPer(qtr).CountPastNIntervals(qtr, numberOfQtrs + 1, 1);
+            Tnum lastN = this.AlwaysPer(TheQuarter).CountPastNIntervals(TheQuarter, numberOfQtrs + 1, 1);
             return this & lastN >= numberOfQtrs;
         }
 
@@ -336,8 +332,7 @@ namespace Hammurabi
         /// </summary>
         public Tbool ConsecutiveFullCalYears(int numberOfYears)
         {
-            Tnum year = TheTime.TheYear;
-            Tnum lastN = this.AlwaysPer(year).CountPastNIntervals(year, numberOfYears + 1, 1);
+            Tnum lastN = this.AlwaysPer(TheYear).CountPastNIntervals(TheYear, numberOfYears + 1, 1);
             return this & lastN >= numberOfYears;
         }
 

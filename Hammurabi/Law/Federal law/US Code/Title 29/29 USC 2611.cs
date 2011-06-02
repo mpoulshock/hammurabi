@@ -101,9 +101,8 @@ namespace USC.Tit29
             // The employer remains covered until it reaches a future point where it no 
             // longer has employed 50 employees for 20 (nonconsecutive) workweeks in the 
             // current and preceding calendar year.  29 CFR 825.105(f).
-            Tnum calWeek = TheTime.TheCalendarWeek;
-            Tnum weeks = (c.NumberOfEmployees > 50).AlwaysPer(calWeek).CountPer(TheTime.TheYear);
-            Tbool meetsThreshold = (weeks > 20).CountPastNIntervals(TheTime.TheYear, 2) >= 1;
+            Tnum weeks = (c.NumberOfEmployees > 50).AlwaysPer(TheCalendarWeek).CountPer(TheYear);
+            Tbool meetsThreshold = (weeks > 20).CountPastNIntervals(TheYear, 2) >= 1;
 
             return meetsThreshold  || c.IsPublicAgency;
         }

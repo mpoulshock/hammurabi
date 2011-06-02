@@ -50,13 +50,13 @@ namespace USC.Tit26
         private static Tbool a1(CorporateEntity c)
         {
             // Paid $1,500 or more in wages in any calendar quarter in current or the preceding calendar year 
-            Tbool QWages1500 = (QuarterlyGeneralWagesPaid(c) >= 1500).EverPer(TheTime.TheQuarter);
-            Tbool wageTest = QWages1500.CountPastNIntervals(TheTime.TheYear,2) > 0;
+            Tbool QWages1500 = (QuarterlyGeneralWagesPaid(c) >= 1500).EverPer(TheQuarter);
+            Tbool wageTest = QWages1500.CountPastNIntervals(TheYear,2) > 0;
             
             // Employed at least one individual...on each of some 20 days during the calendar year or 
             // during the preceding calendar year, each day being in a different calendar week
-            Tbool hasEmp = (NumberOfGeneralEmployees(c) >= 1).EverPer(TheTime.TheCalendarWeek);
-            Tbool weekTest = (hasEmp.CountPer(TheTime.TheYear) >= 20).CountPastNIntervals(TheTime.TheYear,2) > 0;
+            Tbool hasEmp = (NumberOfGeneralEmployees(c) >= 1).EverPer(TheCalendarWeek);
+            Tbool weekTest = (hasEmp.CountPer(TheYear) >= 20).CountPastNIntervals(TheYear,2) > 0;
             
             return wageTest || weekTest;
         }
@@ -67,13 +67,13 @@ namespace USC.Tit26
         private static Tbool a2(CorporateEntity c)
         {   
             // Paid $20,000 or more in wages in any calendar quarter in current or the preceding calendar year 
-            Tbool QWages20K = (QuarterlyAgWagesPaid(c) >= 20000).EverPer(TheTime.TheQuarter);
-            Tbool wageTest = QWages20K.CountPastNIntervals(TheTime.TheYear,2) > 0;
+            Tbool QWages20K = (QuarterlyAgWagesPaid(c) >= 20000).EverPer(TheQuarter);
+            Tbool wageTest = QWages20K.CountPastNIntervals(TheYear,2) > 0;
             
             // Employed at least 10 individuals...on each of some 20 days during the calendar year or 
             // during the preceding calendar year, each day being in a different calendar week
-            Tbool hasEmp = (NumberOfAgEmployees(c) >= 10).EverPer(TheTime.TheCalendarWeek);
-            Tbool weekTest = (hasEmp.CountPer(TheTime.TheYear) >= 20).CountPastNIntervals(TheTime.TheYear,2) > 0;
+            Tbool hasEmp = (NumberOfAgEmployees(c) >= 10).EverPer(TheCalendarWeek);
+            Tbool weekTest = (hasEmp.CountPer(TheYear) >= 20).CountPastNIntervals(TheYear,2) > 0;
             
             return wageTest || weekTest;
         }
@@ -84,8 +84,8 @@ namespace USC.Tit26
         private static Tbool a3(CorporateEntity c)
         {
             // Paid $1,000 or more in wages in any calendar quarter in current or the preceding calendar year 
-            Tbool QWages1K = (QuarterlyDomesticWagesPaid(c) >= 1000).EverPer(TheTime.TheQuarter);
-            Tbool wageTest = QWages1K.CountPastNIntervals(TheTime.TheYear,2) > 0;
+            Tbool QWages1K = (QuarterlyDomesticWagesPaid(c) >= 1000).EverPer(TheQuarter);
+            Tbool wageTest = QWages1K.CountPastNIntervals(TheYear,2) > 0;
             
             return wageTest;
         }
@@ -137,7 +137,5 @@ namespace USC.Tit26
         {
             return Facts.InputTnum(c,"QuarterlyDomesticWagesPaid"); 
         }
-        
-        
     }
 }

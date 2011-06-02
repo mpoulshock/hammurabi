@@ -129,13 +129,13 @@ namespace Hammurabi.UnitTests.CoreFcns
 		[Test]
 		public void TheYear2 ()
 		{
-			Tbool isAfterY2K = TheTime.TheYear > 2000; 	
+			Tbool isAfterY2K = TheYear > 2000; 	
 			Assert.AreEqual("1/1/0001 12:00:00 AM True ", isAfterY2K.AsOf(DateTime.Now).TestOutput);		
 		}
 		
 		public void TheYear3 ()
 		{
-			Tbool isAfterY2K = TheTime.TheYear > 2000; 	
+			Tbool isAfterY2K = TheYear > 2000; 	
 			Assert.AreEqual("1/1/0001 12:00:00 AM True ", isAfterY2K.AsOf(Date(1999,12,31)).TestOutput);		
 		}
 		
@@ -144,14 +144,14 @@ namespace Hammurabi.UnitTests.CoreFcns
 		[Test]
 		public void TheQuarter1 ()
 		{
-			Tbool is4thQtr = TheTime.TheQuarter == 4; 	
+			Tbool is4thQtr = TheQuarter == 4; 	
 			Assert.AreEqual("1/1/0001 12:00:00 AM True ", is4thQtr.AsOf(Date(2015,11,15)).TestOutput);		
 		}
 		
 		[Test]
 		public void TheQuarter2 ()
 		{
-			Tbool is4thQtr = TheTime.TheQuarter == 4; 	
+			Tbool is4thQtr = TheQuarter == 4; 	
 			Assert.AreEqual("1/1/0001 12:00:00 AM False ", is4thQtr.AsOf(Date(2015,3,15)).TestOutput);		
 		}
 		
@@ -159,7 +159,7 @@ namespace Hammurabi.UnitTests.CoreFcns
 		public void TheQuarter3 ()
 		{
 			// It should never be the 5th quarter
-			Tbool is5thQtr = TheTime.TheQuarter == 5; 	
+			Tbool is5thQtr = TheQuarter == 5; 	
 			Assert.AreEqual("1/1/0001 12:00:00 AM False ", is5thQtr.IsEver(true).TestOutput);		
 		}
 		
@@ -167,7 +167,7 @@ namespace Hammurabi.UnitTests.CoreFcns
 		public void TheQuarter4 ()
 		{
 			// The quarter is numbered 0 outside of the default 20 year time span
-			Tbool is0thQtr = TheTime.TheQuarter == 0; 	
+			Tbool is0thQtr = TheQuarter == 0; 	
 			Assert.AreEqual("1/1/0001 12:00:00 AM True ", is0thQtr.IsEver(true).TestOutput);		
 		}
 		
@@ -175,7 +175,7 @@ namespace Hammurabi.UnitTests.CoreFcns
 		public void TheQuarter5 ()
 		{
 			// It should be the 2nd quarter sometime
-			Tbool is2ndQtr = TheTime.TheQuarter == 2; 	
+			Tbool is2ndQtr = TheQuarter == 2; 	
 			Assert.AreEqual("1/1/0001 12:00:00 AM True ", is2ndQtr.IsEver(true).TestOutput);		
 		}
 		
@@ -184,28 +184,28 @@ namespace Hammurabi.UnitTests.CoreFcns
 		[Test]
 		public void TheMonth1 ()
 		{
-			Tbool isApril = TheTime.TheMonth == 4; 	
+			Tbool isApril = TheMonth == 4; 	
 			Assert.AreEqual("1/1/0001 12:00:00 AM False ", isApril.AsOf(Date(2015,3,15)).TestOutput);		
 		}
 		
 		[Test]
 		public void TheMonth2 ()
 		{
-			Tbool isApril = TheTime.TheMonth == 4; 	
+			Tbool isApril = TheMonth == 4; 	
 			Assert.AreEqual("1/1/0001 12:00:00 AM True ", isApril.AsOf(Date(2015,4,15)).TestOutput);		
 		}
 		
 		[Test]
 		public void TheMonth3 ()
 		{
-			Tbool isAfterJuly = TheTime.TheMonth > 7; 	
+			Tbool isAfterJuly = TheMonth > 7; 	
 			Assert.AreEqual("1/1/0001 12:00:00 AM False ", isAfterJuly.AsOf(Date(2015,4,15)).TestOutput);		
 		}
 		
 		[Test]
 		public void TheMonth4 ()
 		{
-			Tbool isAfterJuly = TheTime.TheMonth > 7; 	
+			Tbool isAfterJuly = TheMonth > 7; 	
 			Assert.AreEqual("1/1/0001 12:00:00 AM True ", isAfterJuly.AsOf(Date(2015,8,15)).TestOutput);		
 		}
 		
@@ -213,7 +213,7 @@ namespace Hammurabi.UnitTests.CoreFcns
 		public void TheMonth5 ()
 		{
 			// It should never be month 13
-			Tbool isMonth13 = TheTime.TheMonth == 13; 	
+			Tbool isMonth13 = TheMonth == 13; 	
 			Assert.AreEqual("1/1/0001 12:00:00 AM False ", isMonth13.IsEver(true).TestOutput);		
 		}
 		
@@ -221,7 +221,7 @@ namespace Hammurabi.UnitTests.CoreFcns
 		public void TheMonth6 ()
 		{
 			// The month is numbered 0 outside of the default 10 year time span
-			Tbool isMonth0 = TheTime.TheMonth == 0; 	
+			Tbool isMonth0 = TheMonth == 0; 	
 			Assert.AreEqual("1/1/0001 12:00:00 AM True ", isMonth0.IsEver(true).TestOutput);		
 		}
         
@@ -230,13 +230,13 @@ namespace Hammurabi.UnitTests.CoreFcns
 		[Test]
 		public void Max1 ()
 		{
-			Assert.AreEqual("1/1/0001 12:00:00 AM 4 ", TheTime.TheQuarter.Max().TestOutput);		
+			Assert.AreEqual("1/1/0001 12:00:00 AM 4 ", TheQuarter.Max().TestOutput);		
 		}
 		
 		[Test]
 		public void Max2 ()
 		{
-			Assert.AreEqual("1/1/0001 12:00:00 AM 12 ", TheTime.TheMonth.Max().TestOutput);		
+			Assert.AreEqual("1/1/0001 12:00:00 AM 12 ", TheMonth.Max().TestOutput);		
 		}
 		
 		// Tnum.Min
@@ -250,7 +250,7 @@ namespace Hammurabi.UnitTests.CoreFcns
 		[Test]
 		public void Min2 ()
 		{
-			Assert.AreEqual("1/1/0001 12:00:00 AM 0 ", TheTime.TheMonth.Min().TestOutput);		
+			Assert.AreEqual("1/1/0001 12:00:00 AM 0 ", TheMonth.Min().TestOutput);		
 		}
 	}
 }

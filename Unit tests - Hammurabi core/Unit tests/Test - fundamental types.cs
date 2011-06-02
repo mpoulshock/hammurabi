@@ -691,7 +691,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             t.AddState(Date(2001,1,1), false);
             t.AddState(Date(2002,1,1), true);
             t.AddState(Date(2003,1,1), false);
-            Tnum result = t.ElapsedDaysPer(TheTime.TheYear, true);
+            Tnum result = t.ElapsedDaysPer(TheYear, true);
             Assert.AreEqual("1/1/0001 12:00:00 AM 0 1/1/2000 12:00:00 AM 366 1/1/2001 12:00:00 AM 0 1/1/2002 12:00:00 AM 365 1/1/2003 12:00:00 AM 0 ", result.TestOutput);      
         }
         
@@ -702,7 +702,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             t.AddState(Time.DawnOf,false);
             t.AddState(Date(2000,6,1), true);
             t.AddState(Date(2001,1,1), false);
-            Tnum result = t.ElapsedDaysPer(TheTime.TheYear, true);
+            Tnum result = t.ElapsedDaysPer(TheYear, true);
             Assert.AreEqual("1/1/0001 12:00:00 AM 0 1/1/2000 12:00:00 AM 214 1/1/2001 12:00:00 AM 0 ", result.TestOutput);      
         }
         
@@ -710,7 +710,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void FT_ElapsedDaysPerInterval_3 ()
         {
             Tbool t = new Tbool(false);
-            Tnum result = t.ElapsedDaysPer(TheTime.TheYear, true);
+            Tnum result = t.ElapsedDaysPer(TheYear, true);
             Assert.AreEqual("1/1/0001 12:00:00 AM 0 ", result.TestOutput);      
         }
         
@@ -725,7 +725,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             t.AddState(Date(2010,2,1), true);
             t.AddState(Date(2010,3,1), true);
             t.AddState(Date(2010,4,1), false);
-            Tnum actual = t.CountPer(TheTime.TheYear);
+            Tnum actual = t.CountPer(TheYear);
             string expected = "1/1/0001 12:00:00 AM 0 1/1/2010 12:00:00 AM 3 1/1/2011 12:00:00 AM 0 ";
             Assert.AreEqual(expected, actual.TestOutput);      
         }
@@ -735,7 +735,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         {
             Tbool t = new Tbool();
             t.AddState(Time.DawnOf,false);
-            Tnum actual = t.CountPer(TheTime.TheYear);
+            Tnum actual = t.CountPer(TheYear);
             string expected = "1/1/0001 12:00:00 AM 0 ";
             Assert.AreEqual(expected, actual.TestOutput);      
         }
@@ -749,7 +749,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             t.AddState(Date(2010,2,1), false);
             t.AddState(Date(2010,3,1), true);
             t.AddState(Date(2010,4,1), false);
-            Tnum actual = t.CountPer(TheTime.TheYear);
+            Tnum actual = t.CountPer(TheYear);
             string expected = "1/1/0001 12:00:00 AM 0 1/1/2010 12:00:00 AM 2 1/1/2011 12:00:00 AM 0 ";
             Assert.AreEqual(expected, actual.TestOutput);      
         }
@@ -763,7 +763,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             t.AddState(Date(2010,12,1), true);
             t.AddState(Date(2011,1,1), true);
             t.AddState(Date(2011,2,1), false);
-            Tnum actual = t.CountPer(TheTime.TheYear);
+            Tnum actual = t.CountPer(TheYear);
             string expected = "1/1/0001 12:00:00 AM 0 1/1/2010 12:00:00 AM 2 1/1/2011 12:00:00 AM 1 1/1/2012 12:00:00 AM 0 ";
             Assert.AreEqual(expected, actual.TestOutput);      
         }
@@ -777,7 +777,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             t.AddState(Date(2010,2,1), false);
             t.AddState(Date(2010,3,1), true);
             t.AddState(Date(2010,4,1), false);
-            Tnum actual = t.CountPer(TheTime.TheYear);
+            Tnum actual = t.CountPer(TheYear);
             string expected = "1/1/0001 12:00:00 AM 0 1/1/2010 12:00:00 AM 1 1/1/2011 12:00:00 AM 0 ";
             Assert.AreEqual(expected, actual.TestOutput);      
         }
@@ -793,7 +793,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             t.AddState(Date(2010,2,1), true);
             t.AddState(Date(2010,3,1), true);
             t.AddState(Date(2010,4,1), false);
-            Tnum actual = t.RunningCountPer(TheTime.TheYear);
+            Tnum actual = t.RunningCountPer(TheYear);
             string expected = "1/1/0001 12:00:00 AM 0 2/1/2010 12:00:00 AM 1 3/1/2010 12:00:00 AM 2 4/1/2010 12:00:00 AM 3 ";
             Assert.AreEqual(expected, actual.TestOutput);      
         }
@@ -803,7 +803,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         {
             Tbool t = new Tbool();
             t.AddState(Time.DawnOf,false);
-            Tnum actual = t.RunningCountPer(TheTime.TheYear);
+            Tnum actual = t.RunningCountPer(TheYear);
             string expected = "1/1/0001 12:00:00 AM 0 ";
             Assert.AreEqual(expected, actual.TestOutput);      
         }
@@ -817,7 +817,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             t.AddState(Date(2010,2,1), false);
             t.AddState(Date(2010,3,1), true);
             t.AddState(Date(2010,4,1), false);
-            Tnum actual = t.RunningCountPer(TheTime.TheYear);
+            Tnum actual = t.RunningCountPer(TheYear);
             string expected = "1/1/0001 12:00:00 AM 0 2/1/2010 12:00:00 AM 1 4/1/2010 12:00:00 AM 2 ";
             Assert.AreEqual(expected, actual.TestOutput);      
         }
@@ -831,7 +831,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             t.AddState(Date(2010,12,1), true);
             t.AddState(Date(2011,1,1), true);
             t.AddState(Date(2011,2,1), false);
-            Tnum actual = t.RunningCountPer(TheTime.TheYear);
+            Tnum actual = t.RunningCountPer(TheYear);
             string expected = "1/1/0001 12:00:00 AM 0 12/1/2010 12:00:00 AM 1 1/1/2011 12:00:00 AM 0 2/1/2011 12:00:00 AM 1 3/1/2011 12:00:00 AM 2 1/1/2012 12:00:00 AM 0 ";
             Assert.AreEqual(expected, actual.TestOutput);      
         }

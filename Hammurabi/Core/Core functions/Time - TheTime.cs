@@ -22,6 +22,67 @@ using System;
 
 namespace Hammurabi
 {
+    public partial class H
+    {
+        /// <summary>
+        /// Returns a Tnum representing the calendar year
+        /// (by default, a 200-year span centered on the current year)
+        /// </summary>
+        public static Tnum TheYear
+        {
+            get
+            {
+                return TheTime.Year(100);
+            }
+        }
+        
+        /// <summary>
+        /// Returns a Tnum representing the fiscal quarter (by default, a 20-year
+        /// span centered on day 1 of the fiscal year that begins in current year)
+        /// </summary>
+        public static Tnum TheQuarter
+        {
+            // TODO: Consider making a field for Q1StartMonth and Q1StartDay (so TheQuarter
+            // can be used when Q1 starts sometime other than Jan. 1)
+            get
+            {
+                return TheTime.Quarter(1, 1, 20);
+            }
+        }
+        
+        /// <summary>
+        /// Returns a Tnum representing the calendar month (by default, a
+        /// 10-year span centered on Jan. 1st of the current year)
+        /// </summary>
+        public static Tnum TheMonth
+        {
+            get
+            {
+                return TheTime.Month(5);
+            }
+        }
+        
+        /// <summary>
+        /// Returns a Tnum representing the calendar week (by default, a
+        /// 10-year span centered on the start of the current year).
+        /// </summary>
+        /// <remarks>
+        /// The default TheCalendarWeek function follows the U.S. convention
+        /// of starting on the Saturday on or before Jan. 1 and ending on the
+        /// Sunday on or after Dec. 31.  
+        /// See en.wikipedia.org/wiki/Seven-day_week#Week_numbering.
+        /// Note that weeks are not numbered (because sometimes week 1 and 53 of
+        /// adjacent years overlap).  Each interval has the value 0.
+        /// </remarks>
+        public static Tnum TheCalendarWeek
+        {
+            get
+            {
+                return TheTime.CalendarWeek(5);
+            }
+        }
+    }
+    
     /// <summary>
     /// A construct representing "the time" - as in that abstract thing we refer
     /// to when we say something like, "The time is 5 pm." 
@@ -72,19 +133,11 @@ namespace Hammurabi
             result.AddState(end.AddTicks(1), false);
             return result;
         }
-        
+         
         /// <summary>
-        /// Returns a Tnum representing the calendar year
-        /// (by default, a 200-year span centered on the current year)
+        /// Returns a Tnum representing the calendar year (with some
+        /// span centered on the current year)
         /// </summary>
-        public static Tnum TheYear
-        {
-            get
-            {
-                return Year(100);
-            }
-        }
-
         public static Tnum Year(int halfSpanInYears)
         {
             int currentYear = DateTime.Now.Year;
@@ -100,16 +153,6 @@ namespace Hammurabi
         /// Returns a Tnum representing the fiscal quarter (by default, a 20-year
         /// span centered on day 1 of the fiscal year that begins in current year)
         /// </summary>
-        public static Tnum TheQuarter
-        {
-            // TODO: Consider making a field for Q1StartMonth and Q1StartDay (so TheQuarter
-            // can be used when Q1 starts sometime other than Jan. 1)
-            get
-            {
-                return Quarter(1, 1, 20);
-            }
-        }
-        
         public static Tnum Quarter(int Q1StartMonth, int Q1StartDay)
         {
             return Quarter(Q1StartMonth, Q1StartDay, 20);
@@ -128,14 +171,6 @@ namespace Hammurabi
         /// Returns a Tnum representing the calendar month (by default, a
         /// 10-year span centered on Jan. 1st of the current year)
         /// </summary>
-        public static Tnum TheMonth
-        {
-            get
-            {
-                return Month(5);
-            }
-        }
-        
         public static Tnum Month(int halfSpanInYears)
         {
             int currentYear = DateTime.Now.Year;
@@ -151,21 +186,8 @@ namespace Hammurabi
         /// 10-year span centered on the start of the current year).
         /// </summary>
         /// <remarks>
-        /// The default TheCalendarWeek function follows the U.S. convention
-        /// of starting on the Saturday on or before Jan. 1 and ending on the
-        /// Sunday on or after Dec. 31.  
-        /// See en.wikipedia.org/wiki/Seven-day_week#Week_numbering.
-        /// Note that weeks are not numbered (because sometimes week 1 and 53 of
-        /// adjacent years overlap).  Each interval has the value 0.
+        /// See remarks in the CalendarWeek method in the H class.
         /// </remarks>
-        public static Tnum TheCalendarWeek
-        {
-            get
-            {
-                return CalendarWeek(5);
-            }
-        }
-        
         public static Tnum CalendarWeek(int halfSpanInYears)
         {
             Tnum result = new Tnum();
