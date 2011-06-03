@@ -41,18 +41,18 @@ namespace Hammurabi
             // If interview, ask only "nature of employment relationship"
             if (Facts.GetUnknowns)
             {
-                isEmp = Facts.InputTstr(p, r.NatureOfEmploymentRelationship, c) == "Employee";
+                isEmp = Input.Tstr(p, r.NatureOfEmploymentRelationship, c) == "Employee";
             }
             else
             {
-                isEmp = Facts.Either(Facts.InputTstr(p, r.NatureOfEmploymentRelationship, c) == "Employee",
-                                     Facts.InputTbool(p, r.IsEmployedBy, c));
+                isEmp = Facts.Either(Input.Tstr(p, r.NatureOfEmploymentRelationship, c) == "Employee",
+                                     Input.Tbool(p, r.IsEmployedBy, c));
             }
 
             // Get employment start date, if necessary            
             if (isEmp.IsTrue)
             {
-                DateTime start = Facts.InputDate(p, r.DateStartedWorkingAt, c);
+                DateTime start = Input.Date(p, r.DateStartedWorkingAt, c);
                 
                 if (start != Time.DawnOf)
                 {
@@ -79,18 +79,18 @@ namespace Hammurabi
             // If interview, ask only "nature of employment relationship"
             if (Facts.GetUnknowns)
             {
-                isIC = Facts.InputTstr(p, r.NatureOfEmploymentRelationship, c) == "Independent contractor";
+                isIC = Input.Tstr(p, r.NatureOfEmploymentRelationship, c) == "Independent contractor";
             }
             else
             {
-                isIC = Facts.Either(Facts.InputTstr(p, r.NatureOfEmploymentRelationship, c) == "Independent contractor",
-                                     Facts.InputTbool(p, r.IsIndependentContractor, c));
+                isIC = Facts.Either(Input.Tstr(p, r.NatureOfEmploymentRelationship, c) == "Independent contractor",
+                                    Input.Tbool(p, r.IsIndependentContractor, c));
             }
 
             // Get employment start date, if necessary
             if (isIC.IsTrue)
             {
-                DateTime start = Facts.InputDate(p, r.DateStartedWorkingAt, c);
+                DateTime start = Input.Date(p, r.DateStartedWorkingAt, c);
                 
                 if (start != Time.DawnOf)
                 {
@@ -111,7 +111,7 @@ namespace Hammurabi
         /// </summary>
         public static DateTime DateStartedWorkAt(Person p, CorporateEntity c)
         {
-            return Facts.InputDate(p, r.DateStartedWorkingAt, c);
+            return Input.Date(p, r.DateStartedWorkingAt, c);
         }
         
         /// <summary>
@@ -120,7 +120,7 @@ namespace Hammurabi
         /// </summary>
         public static Tnum HoursWorkedPerWeek(Person p, CorporateEntity c)
         {
-            return Facts.InputTnum(p, r.HoursWorkedPerWeek, c);
+            return Input.Tnum(p, r.HoursWorkedPerWeek, c);
         }
         
         /// <summary>
@@ -142,7 +142,7 @@ namespace Hammurabi
         /// </summary>
         public static Tnum LengthOfInitialProbation(Person p, CorporateEntity c)
         {
-            return Facts.InputTnum(p, "LengthOfInitialProbationaryPeriodAtEmployerInMonths", c);
+            return Input.Tnum(p, "LengthOfInitialProbationaryPeriodAtEmployerInMonths", c);
         }
         
         /// <summary>
@@ -150,7 +150,7 @@ namespace Hammurabi
         /// </summary>
         public static Tbool IsStudent(Person p)
         {
-            return Facts.InputTbool(p, r.IsStudent);
+            return Input.Tbool(p, r.IsStudent);
         }
         
         /// <summary>
@@ -184,7 +184,7 @@ namespace Hammurabi
         /// </summary>
         public static Tbool ProvidesSupportFor(Person p1, Person p2)
         {
-            return Facts.InputTbool(p1, r.ProvidesSupportFor, p2);  
+            return Input.Tbool(p1, r.ProvidesSupportFor, p2);  
         }
         
         /// <summary>
@@ -192,7 +192,7 @@ namespace Hammurabi
         /// </summary>
         public static Tnum PercentSelfSupport(Person p)
         {
-            return Facts.InputTnum(p, r.PercentSelfSupport);
+            return Input.Tnum(p, r.PercentSelfSupport);
         }
         
         /// <summary>
@@ -200,7 +200,7 @@ namespace Hammurabi
         /// </summary>
         public static Tbool IsAirlineFlightCrew(Person p, Corp c)
         {
-            return Facts.InputTbool(p, r.IsAirlineFlightCrew, c);
+            return Input.Tbool(p, r.IsAirlineFlightCrew, c);
         }
         
     }

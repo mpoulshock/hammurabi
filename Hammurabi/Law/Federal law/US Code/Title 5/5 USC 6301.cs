@@ -41,7 +41,7 @@ namespace USC.Tit5
         /// </summary>
         public static Tbool IsEmployee(Person p)
         {
-            return Facts.InputTbool(p,"IsEmployeeUnder5USC6301");
+            return Input.Tbool(p,"IsEmployeeUnder5USC6301");
         }
     }
 }

@@ -45,7 +45,7 @@ namespace CFR.Tit29
         {
             // A physical or mental impairment that substantially limits one
             // or more of the major life activities of such individual
-            return Facts.InputTbool(p,"IsDisabled");
+            return Input.Tbool(p,"IsDisabled");
         }
     }
 }

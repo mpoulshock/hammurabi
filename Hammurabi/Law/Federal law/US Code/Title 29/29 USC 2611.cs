@@ -62,8 +62,8 @@ namespace USC.Tit29
             Tbool prongAii = HoursInLast12Mo(p,c) >= 1250;
             
             Tbool prongB = !Tit5.Sec6301.IsEmployee(p) &&
-                           (!Facts.InputTbool(p, r.LessThan50EmployeesWithin75MilesOfWorksite,c) ||
-                                  Facts.InputTbool(p, r.LessThan50EmployeesAtWorksite,c));
+                           (!Input.Tbool(p, r.LessThan50EmployeesWithin75MilesOfWorksite,c) ||
+                            Input.Tbool(p, r.LessThan50EmployeesAtWorksite,c));
             
             Tbool prongD = StubIf(Econ.IsAirlineFlightCrew(p,c));  // otherwise return true 
 
@@ -127,7 +127,7 @@ namespace USC.Tit29
         /// </summary>
         public static Tbool HasSeriousHealthCondition(Person p)
         {
-            return Facts.InputTbool(p, r.HasSeriousHealthCondition);
+            return Input.Tbool(p, r.HasSeriousHealthCondition);
         }
         
         /// <summary>
@@ -158,7 +158,7 @@ namespace USC.Tit29
         /// </summary>
         public static DateTime DateLeaveBegins(Person p, Corp c)
         {
-            return Facts.InputDate(p, r.DateFamilyLeaveBegins,c);
+            return Input.Date(p, r.DateFamilyLeaveBegins,c);
         }
         
         /// <summary>

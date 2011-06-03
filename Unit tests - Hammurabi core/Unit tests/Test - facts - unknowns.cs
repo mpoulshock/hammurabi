@@ -53,22 +53,22 @@ namespace Hammurabi.UnitTests.CoreFcns
         // Some functions that ask for input facts
         private static Tbool A()
         {
-            return Facts.InputTbool(p1, "A", p2);
+            return Input.Tbool(p1, "A", p2);
         }
         
         private static Tbool B()
         {
-            return Facts.InputTbool(p1, "B", p2);
+            return Input.Tbool(p1, "B", p2);
         }
         
         private static Tbool C()
         {
-            return Facts.InputTbool(p1, "C", p2);
+            return Input.Tbool(p1, "C", p2);
         }
         
         private static Tbool D()
         {
-            return Facts.InputTbool(p1, "D", p2);
+            return Input.Tbool(p1, "D", p2);
         }
         
         private static Tnum X()

@@ -22,6 +22,65 @@ using System;
 
 namespace Hammurabi
 {
+    public static class Input
+    {
+        /// <summary>
+        /// Looks for a particular Tbool input.
+        /// </summary>
+        public static Tbool Tbool(LegalEntity subj, string rel, LegalEntity directObj)    
+        {    
+            return Facts.InputTbool(subj, rel, directObj);
+        }
+        public static Tbool Tbool(LegalEntity subj, string rel)
+        {    
+            return Facts.InputTbool(subj, rel);
+        }
+        
+        /// <summary>
+        /// Looks for a particular Tnum input.
+        /// </summary>
+        public static Tnum Tnum(LegalEntity subj, string rel, LegalEntity directObj)        
+        {    
+            return Facts.InputTnum(subj, rel, directObj);
+        }
+        public static Tnum Tnum(LegalEntity subj, string rel)        
+        {    
+            return Facts.InputTnum(subj, rel);
+        }
+        
+        /// <summary>
+        /// Looks for a particular Tstr input.
+        /// </summary>
+        public static Tstr Tstr(LegalEntity subj, string rel, LegalEntity directObj)            
+        {    
+            return Facts.InputTstr(subj, rel, directObj);
+        }
+        public static Tstr Tstr(LegalEntity subj, string rel)        
+        {    
+            return Facts.InputTstr(subj, rel);
+        }
+        
+        /// <summary>
+        /// Looks for a particular DateTime input.
+        /// </summary>
+        public static DateTime Date(LegalEntity subj, string rel, LegalEntity directObj)           
+        {   
+            return Facts.InputDate(subj, rel, directObj);
+        }
+        public static DateTime Date(LegalEntity subj, string rel)           
+        {   
+            return Facts.InputDate(subj, rel);
+        }
+        
+        /// <summary>
+        /// Looks for a particular Person input.
+        /// </summary>
+        public static Person Person(LegalEntity subj, string rel)           
+        {   
+            return Facts.InputPerson(subj, rel);
+        }
+    }
+    
     public static partial class Facts
     {
         //*********************************************************************

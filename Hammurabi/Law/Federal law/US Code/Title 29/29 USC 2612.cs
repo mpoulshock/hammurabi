@@ -146,7 +146,7 @@ namespace USC.Tit29
         /// </summary>
         public static Tstr ReasonForLeave(Person e, Corp c)
         {
-            return Facts.InputTstr(e, r.ReasonForRequestingLeaveFrom,c);
+            return Input.Tstr(e, r.ReasonForRequestingLeaveFrom,c);
         }
         
         /// <summary>
@@ -154,7 +154,7 @@ namespace USC.Tit29
         /// </summary>
         private static Person SickFam(Person e)
         {
-            return Facts.InputPerson(e, r.NeedsLeaveToProvideCareFor);
+            return Input.Person(e, r.NeedsLeaveToProvideCareFor);
         }
         
     }

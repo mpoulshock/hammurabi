@@ -67,7 +67,7 @@ namespace Hammurabi
         /// </summary>
         public Tstr USImmStatus
         {
-            get { return Facts.InputTstr(this, r.USImmigrationStatus); }
+            get { return Input.Tstr(this, r.USImmigrationStatus); }
         }
         public Tbool IsUSResident
         {
@@ -79,7 +79,7 @@ namespace Hammurabi
         }
         public Tstr CountryOfResidence
         {
-            get { return Facts.InputTstr(this, r.CountryOfResidence); }
+            get { return Input.Tstr(this, r.CountryOfResidence); }
         }
         public Tbool IsUSCitizen
         {
@@ -87,7 +87,7 @@ namespace Hammurabi
             { 
                 // Too many options here?
                 return this.CountryOfCitizenship == "United States" |
-                       Facts.InputTbool(this, "IsUSCitizen") |
+                       Input.Tbool(this, "IsUSCitizen") |
                        this.USImmStatus == "Citizen";
             }
         }
@@ -97,7 +97,7 @@ namespace Hammurabi
         }
         public Tstr CountryOfCitizenship
         {
-            get { return Facts.InputTstr(this, r.CountryOfCitizenship); }
+            get { return Input.Tstr(this, r.CountryOfCitizenship); }
         }
         
         /// <summary>
@@ -105,7 +105,7 @@ namespace Hammurabi
         /// </summary>
         public Tstr Gender
         {
-            get { return Facts.InputTstr(this, "Gender"); }
+            get { return Input.Tstr(this, "Gender"); }
         }
         public Tbool IsFemale
         {
@@ -121,24 +121,24 @@ namespace Hammurabi
         }
         public DateTime DateOfBirth
         {
-            get { return Facts.InputDate(this, r.DateOfBirth); }
+            get { return Input.Date(this, r.DateOfBirth); }
         }
         public DateTime DateOfDeath
         {
-            get { return Facts.InputDate(this, r.DateOfBirth); }
+            get { return Input.Date(this, r.DateOfBirth); }
         }
         public Tbool IsMarried
         {
-            get { return Facts.InputTstr(this, r.MaritalStatus) == "Married" ; }
+            get { return Input.Tstr(this, r.MaritalStatus) == "Married" ; }
         }
         public Tbool IsDisabled
         {
             // How should this relate to 29 CFR Part 1630?
-            get { return Facts.InputTbool(this, r.IsDisabled); }
+            get { return Input.Tbool(this, r.IsDisabled); }
         }
         public Tbool IsIncapableOfSelfCare
         {
-            get { return Facts.InputTbool(this, r.IsIncapableOfSelfCare); }
+            get { return Input.Tbool(this, r.IsIncapableOfSelfCare); }
         }
         
 //        /// <summary>

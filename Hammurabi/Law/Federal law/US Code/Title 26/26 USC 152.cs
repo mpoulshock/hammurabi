@@ -60,7 +60,7 @@ namespace USC.Tit26
             // c1 - general elements (excluding those in c2, c3, and c4)
             Tbool genTest = Econ.SharesPrincipalAbodeWith(d,tp).ElapsedDaysPer(taxYear) > 182.5 &&
                             Econ.PercentSelfSupport(d) < 0.5 &&        // per TY
-                            (!Sec6013.IsMFJ(d) | Facts.InputTbool(d,"MFJOnlyForRefund"));
+                            (!Sec6013.IsMFJ(d) | Input.Tbool(d,"MFJOnlyForRefund"));
             
             // c2 - relationship test
             Tbool relationTest = Fam.IsParentOf(tp,d) ||
@@ -76,7 +76,7 @@ namespace USC.Tit26
                             Sec22.IsDisabledPT(d);
     
             // c4 - when 2 or more people can claim the same qualifying child
-            Tbool c4Test = StubIf(Facts.InputTbool(d, "CanBeClaimedAsQCByTwoTaxpayers"));
+            Tbool c4Test = StubIf(Input.Tbool(d, "CanBeClaimedAsQCByTwoTaxpayers"));
             
             return genTest && relationTest && ageTest && c4Test;
         }
@@ -113,7 +113,7 @@ namespace USC.Tit26
                                   Econ.SharesHouseholdWith(tp,d));     // H - and not spouse
             
             // d4 - multiple support agreements 
-            Tbool d4Test = StubIf(Facts.InputTbool(d, "AnotherTaxpayerProvidedSupportFor"));
+            Tbool d4Test = StubIf(Input.Tbool(d, "AnotherTaxpayerProvidedSupportFor"));
                 
             return genTest && relationTest && d4Test;
         }
@@ -130,7 +130,7 @@ namespace USC.Tit26
             
             // b2 - potential dependent cannot be married filing jointly
             // See IRS Publication 501 (2010), page 10.
-            Tbool jointReturnTest = IfThen(Sec6013.IsMFJ(d), Facts.InputTbool(d,"FileMFJOnlyToClaimRefund"));
+            Tbool jointReturnTest = IfThen(Sec6013.IsMFJ(d), Input.Tbool(d,"FileMFJOnlyToClaimRefund"));
             
             // b3 - potential dependent must meet the citizenship test
             Tbool adoptionTest    = Fam.IsAdoptiveParentOf(tp,d) &&
@@ -152,7 +152,7 @@ namespace USC.Tit26
         /// </summary>
         private static Tbool CanBeClaimedAsDepBySomeone(Person p)
         {
-            return Facts.InputTbool(p,"CanBeClaimedAsDependentBySomeone");
+            return Input.Tbool(p,"CanBeClaimedAsDependentBySomeone");
         }
         
         /// <summary>
@@ -161,7 +161,7 @@ namespace USC.Tit26
         /// </summary>
         private static Tbool CanClaimSomeoneAsDep(Person p)
         {
-            return Facts.InputTbool(p,"CanClaimSomeoneAsDependent");
+            return Input.Tbool(p,"CanClaimSomeoneAsDependent");
         }
         
     }

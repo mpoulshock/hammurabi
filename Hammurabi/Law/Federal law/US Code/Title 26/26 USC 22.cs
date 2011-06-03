@@ -46,7 +46,7 @@ namespace USC.Tit26
         /// </summary>
         public static Tbool IsDisabledPT(Person p1)
         {
-            return Facts.InputTbool(p1, "IsPermanentlyAndTotallyDisabled");    
+            return Input.Tbool(p1, "IsPermanentlyAndTotallyDisabled");    
         }
         
     }

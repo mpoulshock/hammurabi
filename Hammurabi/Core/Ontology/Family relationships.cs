@@ -33,7 +33,7 @@ namespace Hammurabi
         /// </summary>
         public static Tstr Relationship(Person p1, Person p2)
         {
-            return Facts.InputTstr(p1, r.FamilyRelationship, p2);
+            return Input.Tstr(p1, r.FamilyRelationship, p2);
         }
         
         /// <summary>
@@ -109,7 +109,7 @@ namespace Hammurabi
             
             else if (Facts.GetUnknowns == false)
             {
-                return Facts.InputTbool(p1, r.IsParentOf, p2);
+                return Input.Tbool(p1, r.IsParentOf, p2);
             }
             
             return new Tbool();  
@@ -252,7 +252,7 @@ namespace Hammurabi
         /// </summary>
         public static Tbool IsAncestorOf(Person p1, Person p2)
         {
-            return Facts.InputTbool(p1, "IsAncestorOf", p2);    
+            return Input.Tbool(p1, "IsAncestorOf", p2);    
         }
 
         /// <summary>
@@ -260,7 +260,7 @@ namespace Hammurabi
         /// </summary>
         public static Tbool HasCustodyOf(Person p1, Person p2)
         {
-            return Facts.InputTbool(p1, r.HasCustodyOf, p2);    
+            return Input.Tbool(p1, r.HasCustodyOf, p2);    
         }
         
         /// <summary>
@@ -269,7 +269,7 @@ namespace Hammurabi
         public static Tbool IsLegalGuardianOf(Person p1, Person p2)
         {
             return !IsParentOf(p2,p1) &&
-                   Facts.InputTbool(p1, r.IsLegalGuardianOf, p2);   
+                   Input.Tbool(p1, r.IsLegalGuardianOf, p2);   
         }
         
         /// <summary>
@@ -278,7 +278,7 @@ namespace Hammurabi
         public static Tbool ActsInLocoParentisOf(Person p1, Person p2)
         {
             return !IsParentOf(p2,p1) &&
-                   Facts.InputTbool(p1, r.ActsInLocoParentisOf, p2);   
+                   Input.Tbool(p1, r.ActsInLocoParentisOf, p2);   
         }
         
         /// <summary>
@@ -288,7 +288,7 @@ namespace Hammurabi
         public static Tbool HasDayToDayResponsibilityFor(Person p1, Person p2)
         {
             return !IsParentOf(p2,p1) &&
-                   Facts.InputTbool(p1, r.HasDayToDayResponsibilityFor, p2);   
+                   Input.Tbool(p1, r.HasDayToDayResponsibilityFor, p2);   
         }
         
         /// <summary>
@@ -306,7 +306,7 @@ namespace Hammurabi
         /// </summary>
         public static Tbool IsNextOfKinOf(Person p1, Person p2)
         {
-            return Facts.InputTbool(p1, r.IsNextOfKinOf, p2);  
+            return Input.Tbool(p1, r.IsNextOfKinOf, p2);  
         }
         
     }
