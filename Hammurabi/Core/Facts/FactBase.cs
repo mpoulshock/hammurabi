@@ -25,7 +25,7 @@ namespace Hammurabi
 {
 	// TODO: Review accessibility level of these methods
 	
-	public static partial class Facts
+	public partial class Facts
 	{
 		/// <summary>
 		/// This is the main global data structure.

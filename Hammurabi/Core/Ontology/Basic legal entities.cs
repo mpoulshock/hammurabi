@@ -191,7 +191,7 @@ namespace Hammurabi
         
         public Tnum NumberOfEmployees
         {
-            get { return Facts.InputTnum(this, r.NumberOfEmployees); }
+            get { return Input.Tnum(this, r.NumberOfEmployees); }
         }
         
         public Tbool IsPublicAgency

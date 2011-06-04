@@ -73,12 +73,12 @@ namespace Hammurabi.UnitTests.CoreFcns
         
         private static Tnum X()
         {
-            return Facts.InputTnum(p1, "X", p2);
+            return Input.Tnum(p1, "X", p2);
         } 
         
         private static Tnum Y()
         {
-            return Facts.InputTnum(p1, "Y", p2);
+            return Input.Tnum(p1, "Y", p2);
         } 
         
         // Facts.HasBeenAsserted

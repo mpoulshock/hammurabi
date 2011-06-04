@@ -62,7 +62,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void IsUnknown_5 ()
         {
             Facts.Clear();
-            Tnum month = Facts.InputTnum(new Person("p"), "MonthTaxYearBegins");
+            Tnum month = Input.Tnum(new Person("p"), "MonthTaxYearBegins");
             bool result = month.IsUnknown;
             Assert.AreEqual(true, result);     
         }

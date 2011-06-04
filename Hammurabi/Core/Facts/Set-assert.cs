@@ -22,7 +22,7 @@ using System;
 
 namespace Hammurabi
 {
-    public static partial class Facts
+    public partial class Facts
     {
         //TODO: Implement data validation of some sort (e.g. consistency checking)
         

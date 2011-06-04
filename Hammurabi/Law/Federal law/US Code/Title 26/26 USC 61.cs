@@ -47,8 +47,7 @@ namespace USC.Tit26
         /// </summary>
         public static Tnum GrossIncome(Person p1)
         {
-            return Facts.InputTnum(p1, "GrossIncome");    
+            return Input.Tnum(p1, "GrossIncome");    
         }
-
     }
 }

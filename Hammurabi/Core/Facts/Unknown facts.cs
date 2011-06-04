@@ -23,7 +23,7 @@ using System.Collections.Generic;
 
 namespace Hammurabi
 {
-    public static partial class Facts
+    public partial class Facts
     {
         /// <summary>
         /// List of facts that are unknown and needed to resolve a goal (method)

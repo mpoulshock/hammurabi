@@ -47,9 +47,7 @@ namespace USC.Tit26
         /// </summary>
         public static Tnum ExemptionAmount(Person p1)
         {
-            return Facts.InputTnum(p1, "FedTaxExemptionAmount");    
+            return Input.Tnum(p1, "FedTaxExemptionAmount");    
         }
-
-        
     }
 }

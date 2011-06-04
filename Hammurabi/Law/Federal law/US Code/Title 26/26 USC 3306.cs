@@ -100,7 +100,7 @@ namespace USC.Tit26
         /// </summary>
         private static Tnum NumberOfGeneralEmployees(CorporateEntity c)
         {
-            return Facts.InputTnum(c,"NumberOfGeneralEmployees");
+            return Input.Tnum(c,"NumberOfGeneralEmployees");
         }
         
         /// <summary>
@@ -108,7 +108,7 @@ namespace USC.Tit26
         /// </summary>
         private static Tnum NumberOfAgEmployees(CorporateEntity c)
         {
-            return Facts.InputTnum(c,"NumberOfAgriculturalEmployees");
+            return Input.Tnum(c,"NumberOfAgriculturalEmployees");
         }
         
         /// <summary>
@@ -117,7 +117,7 @@ namespace USC.Tit26
         /// </summary>
         private static Tnum QuarterlyGeneralWagesPaid(CorporateEntity c)
         {
-            return Facts.InputTnum(c,"QuarterlyGeneralWagesPaid"); 
+            return Input.Tnum(c,"QuarterlyGeneralWagesPaid"); 
         }
         
         /// <summary>
@@ -126,7 +126,7 @@ namespace USC.Tit26
         /// </summary>
         private static Tnum QuarterlyAgWagesPaid(CorporateEntity c)
         {
-            return Facts.InputTnum(c,"QuarterlyAgriculturalWagesPaid"); 
+            return Input.Tnum(c,"QuarterlyAgriculturalWagesPaid"); 
         }
         
         /// <summary>
@@ -135,7 +135,7 @@ namespace USC.Tit26
         /// </summary>
         private static Tnum QuarterlyDomesticWagesPaid(CorporateEntity c)
         {
-            return Facts.InputTnum(c,"QuarterlyDomesticWagesPaid"); 
+            return Input.Tnum(c,"QuarterlyDomesticWagesPaid"); 
         }
     }
 }

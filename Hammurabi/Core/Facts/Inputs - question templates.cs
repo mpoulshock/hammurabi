@@ -33,7 +33,7 @@ namespace Hammurabi
     /// <summary>
     /// Question object
     /// </summary>
-    public static partial class Facts
+    public partial class Facts
     {
         /// <summary>
         /// Returns a question template, given the text of a relationship. Something of a proto-database.

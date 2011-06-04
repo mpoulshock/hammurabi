@@ -22,18 +22,22 @@ using System;
 
 namespace Hammurabi
 {
-    public static class Input
+    public class Input : Facts
     {
+        //*********************************************************************
+        // Standard inputs
+        //*********************************************************************
+        
         /// <summary>
         /// Looks for a particular Tbool input.
         /// </summary>
         public static Tbool Tbool(LegalEntity subj, string rel, LegalEntity directObj)    
         {    
-            return Facts.InputTbool(subj, rel, directObj);
+            return (Tbool)QueryTvar<Tbool>(subj, rel, directObj);
         }
         public static Tbool Tbool(LegalEntity subj, string rel)
         {    
-            return Facts.InputTbool(subj, rel);
+            return (Tbool)QueryTvar<Tbool>(subj, rel);
         }
         
         /// <summary>
@@ -41,11 +45,11 @@ namespace Hammurabi
         /// </summary>
         public static Tnum Tnum(LegalEntity subj, string rel, LegalEntity directObj)        
         {    
-            return Facts.InputTnum(subj, rel, directObj);
+            return (Tnum)QueryTvar<Tnum>(subj, rel, directObj);
         }
         public static Tnum Tnum(LegalEntity subj, string rel)        
         {    
-            return Facts.InputTnum(subj, rel);
+            return (Tnum)QueryTvar<Tnum>(subj, rel);
         }
         
         /// <summary>
@@ -53,11 +57,11 @@ namespace Hammurabi
         /// </summary>
         public static Tstr Tstr(LegalEntity subj, string rel, LegalEntity directObj)            
         {    
-            return Facts.InputTstr(subj, rel, directObj);
+            return (Tstr)QueryTvar<Tstr>(subj, rel, directObj);
         }
         public static Tstr Tstr(LegalEntity subj, string rel)        
         {    
-            return Facts.InputTstr(subj, rel);
+            return (Tstr)QueryTvar<Tstr>(subj, rel);
         }
         
         /// <summary>
@@ -65,11 +69,11 @@ namespace Hammurabi
         /// </summary>
         public static DateTime Date(LegalEntity subj, string rel, LegalEntity directObj)           
         {   
-            return Facts.InputDate(subj, rel, directObj);
+            return QueryDateTime(subj, rel, directObj);
         }
         public static DateTime Date(LegalEntity subj, string rel)           
         {   
-            return Facts.InputDate(subj, rel);
+            return QueryDateTime(subj, rel);
         }
         
         /// <summary>
@@ -77,11 +81,11 @@ namespace Hammurabi
         /// </summary>
         public static Person Person(LegalEntity subj, string rel)           
         {   
-            return Facts.InputPerson(subj, rel);
+            return QueryPerson(subj, rel);
         }
     }
     
-    public static partial class Facts
+    public partial class Facts
     {
         //*********************************************************************
         // Symmetrical inputs
@@ -100,14 +104,14 @@ namespace Hammurabi
         /// </remarks>
         public static Tbool Sym(LegalEntity subj, string rel, LegalEntity directObj)
         {
-            Tbool A = Facts.InputTbool(subj, rel, directObj);
+            Tbool A = Input.Tbool(subj, rel, directObj);
             
             if (!A.IsUnknown)
             {
                 return A;
             }
             
-            return Facts.InputTbool(directObj, rel, subj);
+            return Input.Tbool(directObj, rel, subj);
         }
         
         /// <summary>
@@ -115,14 +119,14 @@ namespace Hammurabi
         /// </summary>
         public static Tbool Sym(LegalEntity subj, string rel, LegalEntity directObj, string val)
         {
-            Tbool A = Facts.InputTstr(subj, rel, directObj) == val;
+            Tbool A = Input.Tstr(subj, rel, directObj) == val;
             
             if (!A.IsUnknown)
             {
                 return A;
             }
             
-            return Facts.InputTstr(directObj, rel, subj) == val;
+            return Input.Tstr(directObj, rel, subj) == val;
         }
         
         /// <summary>
@@ -134,12 +138,12 @@ namespace Hammurabi
             bool fwd = Facts.HasBeenAsserted(subj, rel, obj);
             bool bwd = Facts.HasBeenAsserted(obj, rel, subj);
             
-            if (fwd) { return Facts.InputTstr(subj, rel, obj) == text; }
+            if (fwd) { return Input.Tstr(subj, rel, obj) == text; }
             
-            else if (bwd) { return Facts.InputTstr(obj, rel, subj) == reverseText; }
+            else if (bwd) { return Input.Tstr(obj, rel, subj) == reverseText; }
             
-            return Facts.Either(Facts.InputTstr(subj, rel, obj) == text, 
-                                Facts.InputTstr(obj, rel, subj) == reverseText);
+            return Facts.Either(Input.Tstr(subj, rel, obj) == text, 
+                                Input.Tstr(obj, rel, subj) == reverseText);
         }
         
         /// <summary>
@@ -161,91 +165,17 @@ namespace Hammurabi
             return B;
         }
         
-        //*********************************************************************
-        // Non-symmetrical inputs
-        //*********************************************************************
-        
-        /// <summary>
-        /// Input(sbj-rel-obj) => Tbool
-        /// </summary>
-        public static Tbool InputTbool(LegalEntity subj, string rel, LegalEntity directObj)    
-        {    
-            return (Tbool)QueryTvar<Tbool>(subj, rel, directObj);
-        }
-        
-        /// <summary>
-        /// Input(sbj-rel-obj) => Tnum
-        /// </summary>
-        public static Tnum InputTnum(LegalEntity subj, string rel, LegalEntity directObj)        
-        {    
-            return (Tnum)QueryTvar<Tnum>(subj, rel, directObj);
-        }
-        
-        /// <summary>
-        /// Input(sbj-rel-obj) => Tstr
-        /// </summary>
-        public static Tstr InputTstr(LegalEntity subj, string rel, LegalEntity directObj)            
-        {    
-            return (Tstr)QueryTvar<Tstr>(subj, rel, directObj);
-        }
-        
-        /// <summary>
-        /// Input(sbj-rel-obj) => DateTime
-        /// </summary>
-        public static DateTime InputDate(LegalEntity subj, string rel, LegalEntity directObj)           
-        {   
-            return QueryDateTime(subj, rel, directObj);
-        }
-                
-        /// <summary>
-        /// Input (sbj-rel) => Tbool
-        /// </summary>
-        public static Tbool InputTbool(LegalEntity subj, string rel)
-        {    
-            return (Tbool)QueryTvar<Tbool>(subj, rel);
-        }
-        
-        /// <summary>
-        /// Input (sbj-rel) => Tnum
-        /// </summary>
-        public static Tnum InputTnum(LegalEntity subj, string rel)        
-        {    
-            return (Tnum)QueryTvar<Tnum>(subj, rel);
-        }
-        
-        /// <summary>
-        /// Input (sbj-rel) => Tstr
-        /// </summary>
-        public static Tstr InputTstr(LegalEntity subj, string rel)        
-        {    
-            return (Tstr)QueryTvar<Tstr>(subj, rel);
-        }
-
-        /// <summary>
-        /// Input(sbj-rel) => DateTime
-        /// </summary>
-        public static DateTime InputDate(LegalEntity subj, string rel)           
-        {   
-            return QueryDateTime(subj, rel);
-        }
-        
-        /// <summary>
-        /// Input(sbj-rel) => Person
-        /// </summary>
-        public static Person InputPerson(LegalEntity subj, string rel)           
-        {   
-            return QueryPerson(subj, rel);
-        }
-        
         
         //*********************************************************************
         // Queries 
         //*********************************************************************
         
+        // TODO: Refactor these to reduce repetition
+        
         /// <summary>
         /// Query a temporal relationship (fact) of two legal entities.
         /// </summary>
-        private static T QueryTvar<T>(LegalEntity e1, string rel, LegalEntity e2) where T : Tvar
+        protected static T QueryTvar<T>(LegalEntity e1, string rel, LegalEntity e2) where T : Tvar
         {
             // Look up fact in table of facts
             foreach (Fact f in FactBase)
@@ -269,7 +199,7 @@ namespace Hammurabi
         /// <summary>
         /// Query a temporal property (fact) of a single legal entity.
         /// </summary>
-        private static T QueryTvar<T>(LegalEntity e1, string rel) where T : Tvar
+        protected static T QueryTvar<T>(LegalEntity e1, string rel) where T : Tvar
         {
             foreach (Fact f in FactBase)
             {
@@ -291,7 +221,7 @@ namespace Hammurabi
         /// Query a DateTime relationship between two legal entities.
         /// Example: the date Person1 and Person2 were married.
         /// </summary>
-        private static DateTime QueryDateTime(LegalEntity e1, string rel, LegalEntity e2)
+        protected static DateTime QueryDateTime(LegalEntity e1, string rel, LegalEntity e2)
         {
             foreach (Fact f in FactBase)
             {
@@ -313,7 +243,7 @@ namespace Hammurabi
         /// Query a DateTime property of one legal entity.
         /// Example: the date Person1 was born.
         /// </summary> 
-        private static DateTime QueryDateTime(LegalEntity e1, string rel)
+        protected static DateTime QueryDateTime(LegalEntity e1, string rel)
         {
             foreach (Fact f in FactBase)
             {
@@ -334,7 +264,7 @@ namespace Hammurabi
         /// <summary>
         /// Query that returns a person.
         /// </summary> 
-        private static Person QueryPerson(LegalEntity e1, string rel)
+        protected static Person QueryPerson(LegalEntity e1, string rel)
         {
             foreach (Fact f in FactBase)
             {
@@ -351,7 +281,5 @@ namespace Hammurabi
             
             return new Person("");
         }
-        
-        
     }
 }

@@ -23,8 +23,7 @@ using System.Collections.Generic;
 
 namespace Hammurabi
 {
-    // TODO: Derive from class H?
-    public static partial class Facts
+    public partial class Facts
     {
         
         /// <summary>

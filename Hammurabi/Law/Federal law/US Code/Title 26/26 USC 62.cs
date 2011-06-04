@@ -47,7 +47,7 @@ namespace USC.Tit26
         /// </summary>
         public static Tnum AGI(Person p1)
         {
-            return Facts.InputTnum(p1, "AdjustedGrossIncome");    
+            return Input.Tnum(p1, "AdjustedGrossIncome");    
         }
         
     }

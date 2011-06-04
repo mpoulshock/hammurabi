@@ -87,7 +87,7 @@ namespace USC.Tit26
         {
             // TODO: Use Switch() here? (consider short-circuiting)
             
-            Tnum month = Facts.InputTnum(p, "MonthTaxYearBegins");
+            Tnum month = Input.Tnum(p, "MonthTaxYearBegins");
             
             // Default the return value to January
             if (month.IsUnknown) { return new Tnum(1); }

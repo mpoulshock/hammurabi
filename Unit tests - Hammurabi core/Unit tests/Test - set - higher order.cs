@@ -83,7 +83,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         // "Pretend" functions for testing purposes
         private static Tnum AssetValue(Property asset)
         {
-            return Facts.InputTnum(asset,"ValueOf");
+            return Input.Tnum(asset,"ValueOf");
         }
         private static Tbool AssetValueLessThan4(Property asset)    
         { 

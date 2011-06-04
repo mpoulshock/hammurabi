@@ -22,7 +22,7 @@ using System;
 
 namespace Hammurabi
 {
-    public static partial class Facts
+    public partial class Facts
     {
         /*
          * The "window of concern" is the range of time that a user is interested

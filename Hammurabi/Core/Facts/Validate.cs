@@ -23,7 +23,7 @@ using System.Collections.Generic;
 
 namespace Hammurabi
 {
-    public static partial class Facts
+    public partial class Facts
     {
         /// <summary>
         /// One of the few global variables: a list of possible input errors.

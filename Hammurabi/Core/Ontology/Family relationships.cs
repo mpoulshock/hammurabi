@@ -60,7 +60,7 @@ namespace Hammurabi
         public static Person SpouseOf(Person p)
         {
             // Assumes only one.  TODO: Generalize and temporalize.
-            Person spouse = Facts.InputPerson(p, r.IsMarriedTo);
+            Person spouse = Input.Person(p, r.IsMarriedTo);
             
             // "Shortcut" assertion
             if (spouse.Name != "")
