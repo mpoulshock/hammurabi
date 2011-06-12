@@ -104,11 +104,9 @@ namespace Hammurabi
         /// </remarks>
         public static Tbool Sym(LegalEntity subj, string rel, LegalEntity directObj)
         {
-            Tbool A = Input.Tbool(subj, rel, directObj);
-            
-            if (!A.IsUnknown)
+            if (Facts.HasBeenAsserted(subj, rel, directObj))
             {
-                return A;
+                return Input.Tbool(subj, rel, directObj);
             }
             
             return Input.Tbool(directObj, rel, subj);
@@ -119,11 +117,9 @@ namespace Hammurabi
         /// </summary>
         public static Tbool Sym(LegalEntity subj, string rel, LegalEntity directObj, string val)
         {
-            Tbool A = Input.Tstr(subj, rel, directObj) == val;
-            
-            if (!A.IsUnknown)
+            if (Facts.HasBeenAsserted(subj, rel, directObj))
             {
-                return A;
+                return Input.Tstr(subj, rel, directObj) == val;
             }
             
             return Input.Tstr(directObj, rel, subj) == val;

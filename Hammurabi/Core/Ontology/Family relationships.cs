@@ -30,7 +30,7 @@ namespace Hammurabi
         /// <summary>
         /// Returns a string indicating the familial relationship between
         /// two people.
-        /// </summary>
+        /// </summary>      
         public static Tstr Relationship(Person p1, Person p2)
         {
             return Input.Tstr(p1, r.FamilyRelationship, p2);
@@ -40,6 +40,37 @@ namespace Hammurabi
         /// Returns whether two people are married.
         /// </summary>
         //  TODO: Add shortcut assertions: IsMarriedTo, IsMarried
+//        public static Tbool AreMarried(Person p1, Person p2)
+//        {
+//            if (Facts.HasBeenAsserted(p1, r.FamilyRelationship, p2))
+//            {
+//                Tbool m = Facts.Sym(p1, r.FamilyRelationship, p2, "Spouse");
+//                
+//                if (m.IsTrue)
+//                {
+//                    Facts.Assert(p1, r.MaritalStatus, "Married");
+//                    Facts.Assert(p2, r.MaritalStatus, "Married");
+//                }
+//                
+//                return m; 
+//            }
+//            
+//            else if (Facts.GetUnknowns == false)
+//            {
+//                Tbool n = Facts.Sym(p1, r.IsMarriedTo, p2);
+//                
+//                if (n.IsTrue)
+//                {
+//                    Facts.Assert(p1, r.MaritalStatus, "Married");
+//                    Facts.Assert(p2, r.MaritalStatus, "Married");
+//                }
+//                
+//                return n; 
+//            }
+//            
+//            return new Tbool();
+//        }
+        
         public static Tbool AreMarried(Person p1, Person p2)
         {
             Tbool m = Facts.Sym(p1, r.FamilyRelationship, p2, "Spouse");
@@ -66,6 +97,7 @@ namespace Hammurabi
             if (spouse.Name != "")
             {
                 Facts.Assert(p, r.FamilyRelationship, spouse, "Spouse");
+                Facts.Assert(p, r.MaritalStatus, "Married");
             }
             
             return spouse;
@@ -77,6 +109,22 @@ namespace Hammurabi
         public static Tbool IsDomesticPartnerOf(Person p1, Person p2)
         {
             return Facts.Sym(p1, r.FamilyRelationship, p2, "Domestic partner");
+        }
+        
+        /// <summary>
+        /// Returns whether two people are in a civil union.
+        /// </summary>
+        public static Tbool InCivilUnion(Person p1, Person p2)
+        {
+            return Facts.Sym(p1, r.FamilyRelationship, p2, "Partner by civil union");
+        }
+        
+        /// <summary>
+        /// Returns whether two people are ex-spouses.
+        /// </summary>
+        private static Tbool ExSpouses(Person p1, Person p2)
+        {
+            return Facts.Sym(p1, r.FamilyRelationship, p2, "Former spouse");
         }
         
         /// <summary>
@@ -268,7 +316,7 @@ namespace Hammurabi
         /// </summary>
         public static Tbool IsLegalGuardianOf(Person p1, Person p2)
         {
-            return !IsParentOf(p2,p1) &&
+            return !NotAGuardianOf(p1, p2) &&
                    Input.Tbool(p1, r.IsLegalGuardianOf, p2);   
         }
         
@@ -277,7 +325,7 @@ namespace Hammurabi
         /// </summary>
         public static Tbool ActsInLocoParentisOf(Person p1, Person p2)
         {
-            return !IsParentOf(p2,p1) &&
+            return !NotAGuardianOf(p1, p2) && 
                    Input.Tbool(p1, r.ActsInLocoParentisOf, p2);   
         }
         
@@ -287,8 +335,19 @@ namespace Hammurabi
         /// </summary>
         public static Tbool HasDayToDayResponsibilityFor(Person p1, Person p2)
         {
-            return !IsParentOf(p2,p1) &&
+            return !NotAGuardianOf(p1, p2) && 
                    Input.Tbool(p1, r.HasDayToDayResponsibilityFor, p2);   
+        }
+        
+        /// <summary>
+        /// Indicates people who can not be guardians.
+        /// </summary>
+        private static Tbool NotAGuardianOf(Person p1, Person p2)
+        {
+            return IsParentOf(p2, p1) ||
+                   InCivilUnion(p1, p2) || 
+                   IsDomesticPartnerOf(p1, p2) ||
+                   ExSpouses(p1, p2);
         }
         
         /// <summary>
@@ -307,8 +366,6 @@ namespace Hammurabi
         public static Tbool IsNextOfKinOf(Person p1, Person p2)
         {
             return Input.Tbool(p1, r.IsNextOfKinOf, p2);  
-        }
-        
+        }        
     }
 }
-

@@ -129,7 +129,8 @@ namespace Hammurabi
         }
         public Tbool IsMarried
         {
-            get { return Input.Tstr(this, r.MaritalStatus) == "Married" ; }
+            // TODO: Need a shortcut here if A-FamilyRelationship-B = "Spouse"
+            get { return Input.Tstr(this, r.MaritalStatus) == "Married"; }
         }
         public Tbool IsDisabled
         {

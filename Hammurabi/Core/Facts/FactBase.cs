@@ -137,7 +137,7 @@ namespace Hammurabi
         }
         
         /// <summary>
-        /// Returns true if a fact (triple) has been assserted
+        /// Returns true if a fact (quadruple) has been assserted
         /// </summary>
         public static bool HasBeenAsserted(LegalEntity e1, string rel, LegalEntity e2)
         {
@@ -153,6 +153,21 @@ namespace Hammurabi
             // If fact is not found...
             return false;
         }
+        
+        /// <summary>
+        /// Returns true if a fact (triple) has been assserted
+        /// </summary>
+        public static bool HasBeenAsserted(LegalEntity e1, string rel)
+        {
+            foreach (Fact f in FactBase)
+            {
+                if (f.subject == e1 && f.relationship == rel)
+                {
+                    return true;
+                }
+            }
 
+            return false;
+        }
 	}
 }

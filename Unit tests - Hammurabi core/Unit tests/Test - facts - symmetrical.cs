@@ -174,6 +174,44 @@ namespace Hammurabi.UnitTests.CoreFcns
             Assert.AreEqual(false, f);       
         }
         
+        // Some family relationship inputs
+        
+        [Test]
+        public void Fam_1 ()
+        {
+            Facts.Reset();
+            Facts.Assert(p1, "FamilyRelationship", p2, "Partner by civil union");
+            bool result = Fam.InCivilUnion(p1, p2).IsTrue;
+            Assert.AreEqual(true, result);       
+        }
+        
+        [Test]
+        public void Fam_2 ()
+        {
+            Facts.Reset();
+            Facts.Assert(p2, "FamilyRelationship", p1, "Partner by civil union");
+            bool result = Fam.InCivilUnion(p1, p2).IsTrue;
+            Assert.AreEqual(true, result);       
+        }
+        
+        [Test]
+        public void Fam_3 ()
+        {
+            Facts.Reset();
+            Facts.Assert(p1, "FamilyRelationship", p2, "Something other than civil union...");
+            bool result = Fam.InCivilUnion(p1, p2).IsTrue;
+            Assert.AreEqual(false, result);       
+        }
+        
+        [Test]
+        public void Fam_4 ()
+        {
+            Facts.Reset();
+            Facts.Assert(p2, "FamilyRelationship", p1, "Something other than civil union...");
+            bool result = Fam.InCivilUnion(p1, p2).IsTrue;
+            Assert.AreEqual(false, result);       
+        }
+        
     }
     
     #pragma warning restore 219
