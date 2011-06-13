@@ -27,82 +27,132 @@ namespace Hammurabi
 	{		
 		/*
 		  * TODO: 
-		  *  - Implement unknowns
-		  *  - Handle rule exhaustion
-		  *  - Handle malformed inputs somehow or another
+          *  - Implement unknowns
+          *  - Make generic Switch function (for Tbool, Tstr, Tdate)
 		  */ 
 
 		/// <summary>
-		/// Temporal SWITCH function.  Returns a Tnum when its associated Tbool
-		/// is true.  Used like: Switch(Tbool1,Tnum1, Tbool2,Tnum2, ...).  
-		/// Returns Tnum1 if Tbool2 is true, else Tnum2 if Tbool2 is true, etc.  
-		/// The values in the output Tnum are nullable decimals.
+		/// Returns a Tnum when its associated Tbool is true.  
 		/// </summary>
-		public static Tnum Switch(params object[] inputs)
-		{
-			// Validate inputs and convert non-temporal inputs to temporal ones
-			
-			Tvar[] temporalInputs = new Tvar[inputs.Length];
-
-			for (int arg=0; arg < inputs.Length; arg = arg + 2)
-			{
-				// If first object in the pair is not already a Tbool, make it a Tbool
-				if (!Object.ReferenceEquals(inputs[arg].GetType(), new Tbool().GetType()))
-				{
-					temporalInputs[arg] = new Tbool(Convert.ToBoolean(inputs[arg]));
-				}
-				else
-				{
-					temporalInputs[arg] = (Tbool)inputs[arg];
-				}
-				
-				// If second object in pair is not already a Tnum, make it a Tnum
-				if (!Object.ReferenceEquals(inputs[arg+1].GetType(), new Tnum().GetType()))
-				{
-					temporalInputs[arg+1] = new Tnum(Convert.ToDecimal(inputs[arg+1]));
-				}
-				else
-				{
-					temporalInputs[arg+1] = (Tnum)inputs[arg+1];
-				}
-			}
-			
-			// Apply the non-temporal switch function across the timeline
-			
-			Tnum result = new Tnum();
-			
-			foreach(KeyValuePair<DateTime,List<object>> slice in TimePointValues(temporalInputs))
-			{	
-				result.AddState(slice.Key, Switch(slice.Value));
-			}
-			
-			return result.Lean;
-		}
+        /// <remarks>
+        /// Similar in principle to a C# switch statement.
+        /// Sample usage: Switch(Tbool1,Tnum1, Tbool2,Tnum2, ...).  
+        /// Returns Tnum1 if Tbool2 is true, else Tnum2 if Tbool2 is true, etc.  
+        /// The values in the output Tnum are nullable decimals.
+        /// </remarks>
+		public static Tnum Switch(Tbool case1, Tnum value1, Tnum defaultValue)
+        {
+            return SwitchCore(case1, value1, defaultValue);
+        }
+        
+        public static Tnum Switch(Tbool case1, Tnum value1, 
+                                  Tbool case2, Tnum value2, 
+                                  Tnum defaultValue)
+        {
+            return SwitchCore(case1, value1, case2, value2, defaultValue);
+        }
+        
+        public static Tnum Switch(Tbool case1, Tnum value1, 
+                                  Tbool case2, Tnum value2, 
+                                  Tbool case3, Tnum value3, 
+                                  Tnum defaultValue)
+        {
+            return SwitchCore(case1, value1, case2, value2, case3, value3, defaultValue);
+        }
+        
+        public static Tnum Switch(Tbool case1, Tnum value1,
+                                  Tbool case2, Tnum value2,
+                                  Tbool case3, Tnum value3,
+                                  Tbool case4, Tnum value4,
+                                  Tnum defaultValue)
+        {
+            return SwitchCore(case1, value1, case2, value2, case3, value3, case4, value4, defaultValue);
+        }
+        
+        public static Tnum Switch(Tbool case1, Tnum value1,
+                                  Tbool case2, Tnum value2,
+                                  Tbool case3, Tnum value3,
+                                  Tbool case4, Tnum value4,
+                                  Tbool case5, Tnum value5,
+                                  Tnum defaultValue)
+        {
+            return SwitchCore(case1, value1, case2, value2, case3, value3, case4, value4, case5, value5, defaultValue);
+        }
+        
+        public static Tnum Switch(Tbool case1, Tnum value1,
+                                  Tbool case2, Tnum value2,
+                                  Tbool case3, Tnum value3,
+                                  Tbool case4, Tnum value4,
+                                  Tbool case5, Tnum value5,
+                                  Tbool case6, Tnum value6,
+                                  Tnum defaultValue)
+        {
+            return SwitchCore(case1, value1, case2, value2, case3, value3, case4, value4, case5, value5, 
+                              case6, value6, defaultValue);
+        }
+        
+        public static Tnum Switch(Tbool case1, Tnum value1,
+                                  Tbool case2, Tnum value2,
+                                  Tbool case3, Tnum value3,
+                                  Tbool case4, Tnum value4,
+                                  Tbool case5, Tnum value5,
+                                  Tbool case6, Tnum value6,
+                                  Tbool case7, Tnum value7,
+                                  Tnum defaultValue)
+        {
+            return SwitchCore(case1, value1, case2, value2, case3, value3, case4, value4, case5, value5, 
+                              case6, value6, case7, value7, defaultValue);
+        }
+        
+        public static Tnum Switch(Tbool case1, Tnum value1,
+                                  Tbool case2, Tnum value2,
+                                  Tbool case3, Tnum value3,
+                                  Tbool case4, Tnum value4,
+                                  Tbool case5, Tnum value5,
+                                  Tbool case6, Tnum value6,
+                                  Tbool case7, Tnum value7,
+                                  Tbool case8, Tnum value8,
+                                  Tnum defaultValue)
+        {
+            return SwitchCore(case1, value1, case2, value2, case3, value3, case4, value4, case5, value5, 
+                              case6, value6, case7, value7, case8, value8, defaultValue);
+        }
+        
+        /// <summary>
+        /// Temporal SWITCH function that takes unrestricted input parameters.
+        /// </summary>
+        private static Tnum SwitchCore(params Tvar[] inputs)
+        {
+            // This will force all inputs to be evaluated (there will be no short-circuiting)
+            if (AnyAreUnknown(inputs)) { return new Tnum(); }
+            
+            Tnum result = new Tnum();
+            
+            // Apply the non-temporal switch function across the timeline
+            foreach(KeyValuePair<DateTime,List<object>> slice in TimePointValues(inputs))
+            {   
+                result.AddState(slice.Key, SwitchCore(slice.Value));
+            }
+            
+            return result.Lean;
+        }
 
 		/// <summary>
-		/// Private non-temporal SWITCH function
+		/// Non-temporal SWITCH function.
 		/// </summary>
-		private static decimal? Switch(List<object> list)
+		private static decimal? SwitchCore(List<object> list)
 		{
 			// Iterate through pairs of inputs
-			for (int arg=0; arg < list.Count; arg = arg + 2)
+			for (int arg=0; arg < list.Count-2; arg = arg + 2)
 			{
 				if (Convert.ToBoolean(list[arg]) == true)
 				{
-					try
-					{
-						return Convert.ToDecimal(list[arg+1]);
-					}
-					catch
-					{
-						return null;
-					}
+                    return Auxiliary.ToNullaDecimal(list[arg+1]);
 				}
 			}
-			
-			return null;
-		}
-
-		
+            
+            // Else, return the default value...
+            return Auxiliary.ToNullaDecimal(list[list.Count-1]);
+		} 
 	}
 }

@@ -34,7 +34,8 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tbool tbf = new Tbool(false);
             
             Tnum result = Switch(tbf, new Tnum(41),
-                                 tbt, new Tnum(42) );
+                                 tbt, new Tnum(42),
+                                 43);
             
             Assert.AreEqual("1/1/0001 12:00:00 AM 42 ", result.TestOutput);        
         }
@@ -46,7 +47,8 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tbool tbf = new Tbool(false);
             
             Tnum result = Switch(tbt, new Tnum(41),
-                                 tbf, new Tnum(42) );
+                                 tbf, new Tnum(42),
+                                 43);
             
             Assert.AreEqual("1/1/0001 12:00:00 AM 41 ", result.TestOutput);        
         }
@@ -58,7 +60,8 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tbool tbf = new Tbool(false);
             
             Tnum result = Switch(tbf, 41,
-                                 tbt, 42 );
+                                 tbt, 42,
+                                 43);
             
             Assert.AreEqual("1/1/0001 12:00:00 AM 42 ", result.TestOutput);        
         }
@@ -67,41 +70,46 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void TSwitch4 ()
         {
             Tnum result = Switch(false, 41,
-                                 true, 42 );
+                                 true, 42,
+                                 43);
             
             Assert.AreEqual("1/1/0001 12:00:00 AM 42 ", result.TestOutput);        
         }
         
         
         [Test]
-        public void TSwitch_Exhaustion_ShouldDefaultToNull ()
+        public void TSwitch5 ()
         {
             Tbool tbf = new Tbool(false);
             
             Tnum result = Switch(tbf, new Tnum(41),
-                                 tbf, new Tnum(42) );
+                                 tbf, new Tnum(42),
+                                 43);
+
+            Assert.AreEqual("1/1/0001 12:00:00 AM 43 ", result.TestOutput);        
+        }
+        
+        [Test]
+        public void TSwitch6 ()
+        {
+            Tbool tbf = new Tbool(false);
+            
+            Tnum result = Switch(tbf, new Tnum(41),
+                                 tbf, new Tnum(42),
+                                 NullTnum);  // can't use "null" b/c it doesn't implicitly convert to Tnum(null)
 
             Assert.AreEqual("1/1/0001 12:00:00 AM Null ", result.TestOutput);        
         }
         
         [Test]
-        public void TSwitch_Malformed1 ()
+        public void TSwitch7 ()
         {
-            Tbool tbf = new Tbool(false);
+            Tnum result = Switch(false, 41,
+                                 true, NullTnum,
+                                 42);   
             
-            Tnum result = Switch(new Tnum(41), tbf,
-                                 tbf, new Tnum(42) );
-            
-            Assert.AreEqual("Unknown", result.TestOutput);        
+            Assert.AreEqual("1/1/0001 12:00:00 AM Null ", result.TestOutput);        
         }
-        
-        [Test]
-        public void TSwitch_Malformed2 ()
-        {
-            Tbool tbf = new Tbool(false);
-            
-            Tnum result = Switch(tbf, tbf, new Tnum(42));
-            Assert.AreEqual("Unknown", result.TestOutput);        
-        }
+
     }
 }

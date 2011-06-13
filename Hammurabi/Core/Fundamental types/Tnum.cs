@@ -41,7 +41,7 @@ namespace Hammurabi
         {
             this.SetEternally(val);
         }
-
+        
         /// <summary>
         /// Implicitly converts ints to Tnums.
         /// </summary>

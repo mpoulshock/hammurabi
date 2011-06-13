@@ -113,5 +113,16 @@ namespace Hammurabi
         {
             return new DateTime(year, mo, day);
         }
+        
+        /// <summary>
+        /// Returns a null Tnum to be used as a value in a Switch() function.
+        /// </summary>
+        public static Tnum NullTnum
+        {
+            get
+            {
+                return new Tnum(null);
+            }
+        }
     }
 }

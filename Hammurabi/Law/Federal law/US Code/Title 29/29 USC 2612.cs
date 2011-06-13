@@ -56,7 +56,7 @@ namespace USC.Tit29
         {
             return Switch(IsEntitledToServiceLeaveFrom(e,c), 26,
                           IsEntitledToRegLeaveFrom(e,c), 12,
-                          true, 0);
+                          0);
         }
         
         /// <summary>

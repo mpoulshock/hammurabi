@@ -128,26 +128,15 @@ namespace Hammurabi
             return default(T);
         }
         
-//        /// <summary>
-//        /// Serialize an object to a string.
-//        /// </summary>
-//        public static string SerializeToStr<T>(T obj)
-//        {
-//              StringWriter sw = new StringWriter();
-//              XmlSerializer serializer = new XmlSerializer(typeof(T));
-//              serializer.Serialize(sw, obj);
-//              return sw.ToString();
-//        }
-//        
-//        /// <summary>
-//        /// Deserialize a string to an object.
-//        /// </summary>
-//        public static T DeserializeFromStr<T>(string s)
-//        {
-//            StringReader sr = new StringReader(s);
-//            XmlSerializer serializer = new XmlSerializer(typeof(T));
-//            return (T)serializer.Deserialize(sr); //new System.Text.UTF8Encoding(false)
-//        }
+        /// <summary>
+        /// Converts an object into a nullable decimal.
+        /// </summary>
+        public static decimal? ToNullaDecimal(object obj)
+        {
+            if (obj == null)
+                return null;
+            else
+                return Convert.ToDecimal(obj);
+        }
     }
-    
 }

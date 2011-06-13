@@ -270,7 +270,8 @@ namespace Hammurabi.UnitTests.CoreFcns
             Facts.Reset();
             Facts.GetUnknowns = true;
             Tnum theRule = Switch(A(),X(),
-                                  B(),Y());
+                                  B(),Y(),
+                                  NullTnum);
             Assert.AreEqual("A B", Facts.ShowUnknownTest());      // currently returns "A X B Y" - should not investigate Tnums unless relevant
         }
         
@@ -281,8 +282,9 @@ namespace Hammurabi.UnitTests.CoreFcns
             Facts.GetUnknowns = true;
             Facts.Assert(p1, "A", p2);
             Tnum theRule = Switch(A(),X(),
-                                  B(),Y());
-            Assert.AreEqual("A X", Facts.ShowUnknownTest());      // currently hits "index out of range" error
+                                  B(),Y(),
+                                  NullTnum);
+            Assert.AreEqual("A X", Facts.ShowUnknownTest());      // currently returns "X B Y" - should not investigate Tnums unless relevant
         }
         
         [Test]
@@ -292,8 +294,9 @@ namespace Hammurabi.UnitTests.CoreFcns
             Facts.GetUnknowns = true;
             Facts.Assert(p1, "A", p2, false);
             Tnum theRule = Switch(A(),X(),
-                                  B(),Y());
-            Assert.AreEqual("B", Facts.ShowUnknownTest());      // currently hits "index out of range" error
+                                  B(),Y(),
+                                  NullTnum);
+            Assert.AreEqual("B", Facts.ShowUnknownTest());      // currently returns "X B Y" - should not investigate Tnums unless relevant
         }
         
         [Test]
@@ -304,8 +307,9 @@ namespace Hammurabi.UnitTests.CoreFcns
             Facts.Assert(p1, "A", p2, false);
             Facts.Assert(p1, "B", p2);
             Tnum theRule = Switch(A(),X(),
-                                  B(),Y());
-            Assert.AreEqual("Y", Facts.ShowUnknownTest());      // currently hits "index out of range" error
+                                  B(),Y(),
+                                  NullTnum);
+            Assert.AreEqual("Y", Facts.ShowUnknownTest());      // currently returns "X Y" - should not investigate Tnums unless relevant
             Facts.GetUnknowns = true;
         }
         
