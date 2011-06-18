@@ -29,14 +29,6 @@ namespace Hammurabi
     public static class DateTimeExtensionMethods
     {
         /// <summary>
-        /// Resets the time of a DateTime to midnight.
-        /// </summary>
-        public static DateTime ToMidnight(this DateTime dt)
-        {
-            return new DateTime(dt.Year, dt.Month, dt.Day); 
-        }
-
-        /// <summary>
         /// Determines whether a DateTime is a weekday.
         /// </summary>
         public static bool IsWeekday(this DateTime dt)
@@ -193,7 +185,7 @@ namespace Hammurabi
         {
             get
             {
-                return DateTime.Now.ToMidnight();
+                return DateTime.Now.Date;
             }
         }
         

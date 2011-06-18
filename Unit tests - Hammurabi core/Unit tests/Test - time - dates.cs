@@ -245,15 +245,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             DateTime dt = Time.Latest(Date(2014,1,30), Date(2011,3,3), Date(2013,3,3));
             Assert.AreEqual(Date(2014,1,30), dt);    
         }
-        
-        // .ToMidnight
-        
-        [Test]
-        public void ToMidnight1 ()
-        {
-            Assert.AreEqual(Date(2014,3,15), new DateTime(2014,3,15,6,6,6).ToMidnight());    
-        }
-                
+                        
         // .AddCalendarMonths
         
         [Test]

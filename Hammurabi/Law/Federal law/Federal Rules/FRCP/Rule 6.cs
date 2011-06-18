@@ -50,7 +50,7 @@ namespace FedRules.FRCP
         /// </remarks>
         public static DateTime DueDate(int days, DateTime triggerDate)
         {        
-             return triggerDate.ToMidnight().AddDays(days).CurrentOrNextBusinessDay();
+             return triggerDate.Date.AddDays(days).CurrentOrNextBusinessDay();
         }
 
     }
