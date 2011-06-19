@@ -26,9 +26,8 @@ namespace Hammurabi
 	public partial class H
 	{		
 		/*
-		  * TODO: 
-          *  - Implement unknowns
-          *  - Make generic Switch function (for Tbool, Tstr, Tdate)
+		  * TODO: Implement unknowns
+          *  
 		  */ 
 
 		/// <summary>
@@ -40,93 +39,95 @@ namespace Hammurabi
         /// Returns Tnum1 if Tbool2 is true, else Tnum2 if Tbool2 is true, etc.  
         /// The values in the output Tnum are nullable decimals.
         /// </remarks>
-		public static Tnum Switch(Tbool case1, Tnum value1, Tnum defaultValue)
+        public static T Switch<T>(Tbool case1, T value1, T defaultValue) where T : Tvar
         {
-            return SwitchCore(case1, value1, defaultValue);
+            return SwitchCore<T>(case1, value1, defaultValue);
         }
         
-        public static Tnum Switch(Tbool case1, Tnum value1, 
-                                  Tbool case2, Tnum value2, 
-                                  Tnum defaultValue)
+        public static T Switch<T>(Tbool case1, T value1, 
+                                  Tbool case2, T value2, 
+                                  T defaultValue) where T : Tvar
         {
-            return SwitchCore(case1, value1, case2, value2, defaultValue);
+            return SwitchCore<T>(case1, value1, case2, value2, defaultValue);
         }
         
-        public static Tnum Switch(Tbool case1, Tnum value1, 
-                                  Tbool case2, Tnum value2, 
-                                  Tbool case3, Tnum value3, 
-                                  Tnum defaultValue)
+        public static T Switch<T>(Tbool case1, T value1, 
+                                  Tbool case2, T value2,
+                                  Tbool case3, T value3,
+                                  T defaultValue) where T : Tvar
         {
-            return SwitchCore(case1, value1, case2, value2, case3, value3, defaultValue);
+            return SwitchCore<T>(case1, value1, case2, value2, case3, value3, defaultValue);
         }
         
-        public static Tnum Switch(Tbool case1, Tnum value1,
-                                  Tbool case2, Tnum value2,
-                                  Tbool case3, Tnum value3,
-                                  Tbool case4, Tnum value4,
-                                  Tnum defaultValue)
+        
+        public static T Switch<T>(Tbool case1, T value1, 
+                                  Tbool case2, T value2,
+                                  Tbool case3, T value3,
+                                  Tbool case4, T value4,
+                                  T defaultValue) where T : Tvar
         {
-            return SwitchCore(case1, value1, case2, value2, case3, value3, case4, value4, defaultValue);
+            return SwitchCore<T>(case1, value1, case2, value2, case3, value3, case4, value4, defaultValue);
         }
         
-        public static Tnum Switch(Tbool case1, Tnum value1,
-                                  Tbool case2, Tnum value2,
-                                  Tbool case3, Tnum value3,
-                                  Tbool case4, Tnum value4,
-                                  Tbool case5, Tnum value5,
-                                  Tnum defaultValue)
+        public static T Switch<T>(Tbool case1, T value1, 
+                                  Tbool case2, T value2,
+                                  Tbool case3, T value3,
+                                  Tbool case4, T value4,
+                                  Tbool case5, T value5,
+                                  T defaultValue) where T : Tvar
         {
-            return SwitchCore(case1, value1, case2, value2, case3, value3, case4, value4, case5, value5, defaultValue);
+            return SwitchCore<T>(case1, value1, case2, value2, case3, value3, case4, value4, case5, value5, defaultValue);
         }
         
-        public static Tnum Switch(Tbool case1, Tnum value1,
-                                  Tbool case2, Tnum value2,
-                                  Tbool case3, Tnum value3,
-                                  Tbool case4, Tnum value4,
-                                  Tbool case5, Tnum value5,
-                                  Tbool case6, Tnum value6,
-                                  Tnum defaultValue)
+  
+        public static T Switch<T>(Tbool case1, T value1, 
+                                  Tbool case2, T value2,
+                                  Tbool case3, T value3,
+                                  Tbool case4, T value4,
+                                  Tbool case5, T value5,
+                                  Tbool case6, T value6,
+                                  T defaultValue) where T : Tvar
         {
-            return SwitchCore(case1, value1, case2, value2, case3, value3, case4, value4, case5, value5, 
-                              case6, value6, defaultValue);
+            return SwitchCore<T>(case1, value1, case2, value2, case3, value3, case4, value4, case5, value5, 
+                                 case6, value6, defaultValue);
         }
-        
-        public static Tnum Switch(Tbool case1, Tnum value1,
-                                  Tbool case2, Tnum value2,
-                                  Tbool case3, Tnum value3,
-                                  Tbool case4, Tnum value4,
-                                  Tbool case5, Tnum value5,
-                                  Tbool case6, Tnum value6,
-                                  Tbool case7, Tnum value7,
-                                  Tnum defaultValue)
+
+        public static T Switch<T>(Tbool case1, T value1, 
+                                  Tbool case2, T value2,
+                                  Tbool case3, T value3,
+                                  Tbool case4, T value4,
+                                  Tbool case5, T value5,
+                                  Tbool case6, T value6,
+                                  Tbool case7, T value7,
+                                  T defaultValue) where T : Tvar
         {
-            return SwitchCore(case1, value1, case2, value2, case3, value3, case4, value4, case5, value5, 
-                              case6, value6, case7, value7, defaultValue);
+            return SwitchCore<T>(case1, value1, case2, value2, case3, value3, case4, value4, case5, value5, 
+                                 case6, value6, case7, value7, defaultValue);
         }
-        
-        public static Tnum Switch(Tbool case1, Tnum value1,
-                                  Tbool case2, Tnum value2,
-                                  Tbool case3, Tnum value3,
-                                  Tbool case4, Tnum value4,
-                                  Tbool case5, Tnum value5,
-                                  Tbool case6, Tnum value6,
-                                  Tbool case7, Tnum value7,
-                                  Tbool case8, Tnum value8,
-                                  Tnum defaultValue)
+
+        public static T Switch<T>(Tbool case1, T value1, 
+                                  Tbool case2, T value2,
+                                  Tbool case3, T value3,
+                                  Tbool case4, T value4,
+                                  Tbool case5, T value5,
+                                  Tbool case6, T value6,
+                                  Tbool case7, T value7,
+                                  Tbool case8, T value8,
+                                  T defaultValue) where T : Tvar
         {
-            return SwitchCore(case1, value1, case2, value2, case3, value3, case4, value4, case5, value5, 
-                              case6, value6, case7, value7, case8, value8, defaultValue);
+            return SwitchCore<T>(case1, value1, case2, value2, case3, value3, case4, value4, case5, value5, 
+                                 case6, value6, case7, value7, case8, value8, defaultValue);
         }
         
         /// <summary>
         /// Temporal SWITCH function that takes unrestricted input parameters.
         /// </summary>
-        private static Tnum SwitchCore(params Tvar[] inputs)
+        private static T SwitchCore<T>(params Tvar[] inputs) where T : Tvar
         {
             // This will force all inputs to be evaluated (there will be no short-circuiting)
-            if (AnyAreUnknown(inputs)) { return new Tnum(); }
+            if (AnyAreUnknown(inputs)) { return (T)Auxiliary.ReturnProperTvar<T>(); }
             
-            Tnum result = new Tnum();
+            T result = (T)Auxiliary.ReturnProperTvar<T>();
             
             // Apply the non-temporal switch function across the timeline
             foreach(KeyValuePair<DateTime,List<object>> slice in TimePointValues(inputs))
@@ -134,25 +135,34 @@ namespace Hammurabi
                 result.AddState(slice.Key, SwitchCore(slice.Value));
             }
             
-            return result.Lean;
+            return result.LeanTvar<T>();
         }
-
+        
 		/// <summary>
 		/// Non-temporal SWITCH function.
 		/// </summary>
-		private static decimal? SwitchCore(List<object> list)
-		{
-			// Iterate through pairs of inputs
-			for (int arg=0; arg < list.Count-2; arg = arg + 2)
-			{
-				if (Convert.ToBoolean(list[arg]) == true)
-				{
-                    return Auxiliary.ToNullaDecimal(list[arg+1]);
-				}
-			}
+        private static object SwitchCore(List<object> list)
+        {
+            // Iterate through pairs of inputs
+            for (int arg=0; arg < list.Count-2; arg = arg + 2)
+            {
+                if (Convert.ToBoolean(list[arg]) == true)
+                {
+                    return list[arg+1];
+                }
+            }
             
             // Else, return the default value...
-            return Auxiliary.ToNullaDecimal(list[list.Count-1]);
-		} 
+            return list[list.Count-1];
+        }
+
+        
+        
+        
+        
+        
+        
+        
+        
 	}
 }

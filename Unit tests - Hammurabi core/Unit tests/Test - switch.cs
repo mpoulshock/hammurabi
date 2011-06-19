@@ -26,9 +26,10 @@ namespace Hammurabi.UnitTests.CoreFcns
     [TestFixture]
     public class TestSwitch : H
     {
-
+        // Switch<Tnum>
+        
         [Test]
-        public void TSwitch1 ()
+        public void TnumSwitch1 ()
         {
             Tbool tbt = new Tbool(true);
             Tbool tbf = new Tbool(false);
@@ -41,7 +42,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         }
         
         [Test]
-        public void TSwitch2 ()
+        public void TnumSwitch2 ()
         {
             Tbool tbt = new Tbool(true);
             Tbool tbf = new Tbool(false);
@@ -54,31 +55,31 @@ namespace Hammurabi.UnitTests.CoreFcns
         }
         
         [Test]
-        public void TSwitch3 ()
+        public void TnumSwitch3 ()
         {
             Tbool tbt = new Tbool(true);
             Tbool tbf = new Tbool(false);
             
             Tnum result = Switch(tbf, 41,
                                  tbt, 42,
-                                 43);
+                                 new Tnum(43)); // have to use constructor to enable type inference here
             
             Assert.AreEqual("1/1/0001 12:00:00 AM 42 ", result.TestOutput);        
         }
         
         [Test]
-        public void TSwitch4 ()
+        public void TnumSwitch4 ()
         {
             Tnum result = Switch(false, 41,
                                  true, 42,
-                                 43);
+                                 new Tnum(43)); 
             
             Assert.AreEqual("1/1/0001 12:00:00 AM 42 ", result.TestOutput);        
         }
         
         
         [Test]
-        public void TSwitch5 ()
+        public void TnumSwitch5 ()
         {
             Tbool tbf = new Tbool(false);
             
@@ -90,7 +91,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         }
         
         [Test]
-        public void TSwitch6 ()
+        public void TnumSwitch6 ()
         {
             Tbool tbf = new Tbool(false);
             
@@ -102,13 +103,47 @@ namespace Hammurabi.UnitTests.CoreFcns
         }
         
         [Test]
-        public void TSwitch7 ()
+        public void TnumSwitch7 ()
         {
             Tnum result = Switch(false, 41,
                                  true, NullTnum,
                                  42);   
             
             Assert.AreEqual("1/1/0001 12:00:00 AM Null ", result.TestOutput);        
+        }
+        
+        // Switch<Tbool>
+        
+        [Test]
+        public void TboolSwitch1 ()
+        {
+            Tbool result = Switch(false, true,
+                                  true, true,
+                                  new Tbool(false));   
+            
+            Assert.AreEqual("1/1/0001 12:00:00 AM True ", result.TestOutput);        
+        }
+        
+        [Test]
+        public void TboolSwitch2 ()
+        {
+            Tbool result = Switch(false, false,
+                                  true, true,
+                                  new Tbool(null));   
+            
+            Assert.AreEqual("1/1/0001 12:00:00 AM True ", result.TestOutput);        
+        }
+        
+        // Switch<Tstr>
+        
+        [Test]
+        public void TstrSwitch1 ()
+        {
+            Tstr result = Switch(false, "41",
+                                  true, "42",
+                                  new Tstr("43"));   
+            
+            Assert.AreEqual("1/1/0001 12:00:00 AM 42 ", result.TestOutput);        
         }
 
     }
