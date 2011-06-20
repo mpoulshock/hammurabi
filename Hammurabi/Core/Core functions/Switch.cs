@@ -26,18 +26,19 @@ namespace Hammurabi
 	public partial class H
 	{		
 		/*
-		  * TODO: Implement unknowns
-          *  
+		  * TODO: 
+          *   - Implement unknowns
+          *   - Find a way to implement short-circuiting!
 		  */ 
 
 		/// <summary>
-		/// Returns a Tnum when its associated Tbool is true.  
+		/// Returns a Tvar when its associated Tbool is true.  
 		/// </summary>
         /// <remarks>
-        /// Similar in principle to a C# switch statement.
-        /// Sample usage: Switch(Tbool1,Tnum1, Tbool2,Tnum2, ...).  
-        /// Returns Tnum1 if Tbool2 is true, else Tnum2 if Tbool2 is true, etc.  
-        /// The values in the output Tnum are nullable decimals.
+        /// Similar in principle to a C# switch statement, just temporal.
+        /// 
+        /// Sample usage: Switch(Tbool1, T1, Tbool2, T2, ..., defaultT).  
+        /// Returns T1 if Tbool2 is true, else T2 if Tbool2 is true, etc., else defaultT. 
         /// </remarks>
         public static T Switch<T>(Tbool case1, T value1, T defaultValue) where T : Tvar
         {
@@ -119,6 +120,41 @@ namespace Hammurabi
                                  case6, value6, case7, value7, case8, value8, defaultValue);
         }
         
+        public static T Switch<T>(Tbool case1, T value1, 
+                                  Tbool case2, T value2,
+                                  Tbool case3, T value3,
+                                  Tbool case4, T value4,
+                                  Tbool case5, T value5,
+                                  Tbool case6, T value6,
+                                  Tbool case7, T value7,
+                                  Tbool case8, T value8,
+                                  Tbool case9, T value9,
+                                  T defaultValue) where T : Tvar
+        {
+            return SwitchCore<T>(case1, value1, case2, value2, case3, value3, case4, value4, case5, value5, 
+                                 case6, value6, case7, value7, case8, value8, case9, value9, defaultValue);
+        }
+        
+        public static T Switch<T>(Tbool case1, T value1, 
+                                  Tbool case2, T value2,
+                                  Tbool case3, T value3,
+                                  Tbool case4, T value4,
+                                  Tbool case5, T value5,
+                                  Tbool case6, T value6,
+                                  Tbool case7, T value7,
+                                  Tbool case8, T value8,
+                                  Tbool case9, T value9,
+                                  Tbool case10, T value10,
+                                  T defaultValue) where T : Tvar
+        {
+            return SwitchCore<T>(case1, value1, case2, value2, case3, value3, case4, value4, case5, value5, 
+                                 case6, value6, case7, value7, case8, value8, case9, value9, case10, value10,
+                                 defaultValue);
+        }
+        
+        // ... add more of the above as need be.
+        
+    
         /// <summary>
         /// Temporal SWITCH function that takes unrestricted input parameters.
         /// </summary>
@@ -155,14 +191,5 @@ namespace Hammurabi
             // Else, return the default value...
             return list[list.Count-1];
         }
-
-        
-        
-        
-        
-        
-        
-        
-        
 	}
 }

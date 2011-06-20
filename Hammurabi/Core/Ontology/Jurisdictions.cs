@@ -35,5 +35,17 @@ namespace Hammurabi
             return Facts.Sym(e1, r.StateJurisdiction, e2, state);
         }
 
+        /// <summary>
+        /// SKETCH: This is a specialized Switch function that would handle jurisdictional differences.
+        /// </summary>
+        public static T Switch<T>(Tstr state, T AL, T AK, T AZ, T AR, T CA, T CO) where T : Tvar
+        {
+            return H.Switch<T>(state == "Alabama", AL,
+                               state == "Alaska", AK,
+                               state == "Arizona", AZ,
+                               state == "California", CA,
+                               state == "Colorado", CO,
+                               (T)Auxiliary.ReturnProperTvar<T>());
+        }
     }
 }
