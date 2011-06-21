@@ -49,6 +49,7 @@ namespace Hammurabi
         public const string CountryOfCitizenship            = "CountryOfCitizenship";
         public const string CountryOfResidence              = "CountryOfResidence";
         public const string DateOfBirth                     = "DateOfBirth";
+        public const string DateOfDeath                     = "DateOfDeath";
         public const string Gender                          = "Gender";
         public const string HasSeriousHealthCondition       = "HasSeriousHealthCondition";
         public const string IsDeployedToCombatZone          = "IsDeployedToCombatZone";

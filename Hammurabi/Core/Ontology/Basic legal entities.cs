@@ -125,7 +125,7 @@ namespace Hammurabi
         }
         public DateTime DateOfDeath
         {
-            get { return Input.Date(this, r.DateOfBirth); }
+            get { return Input.Date(this, r.DateOfDeath); }
         }
         public Tbool IsMarried
         {
@@ -142,28 +142,31 @@ namespace Hammurabi
             get { return Input.Tbool(this, r.IsIncapableOfSelfCare); }
         }
         
-//        /// <summary>
-//        /// Returns true when the person is alive.
-//        /// </summary>
-//        public Tbool IsAlive()
-//        {
-//            Tbool result = new Tbool();
-//            result.AddState(Time.DawnOf,false);
-//            
-//            if (DateOfDeath == null)
-//            {
-//                result.AddState(DateOfBirth,true);
-//                result.AddState(DateTime.Now,null);
-//            }
-//            else
-//            {
-//                result.AddState(DateOfBirth,true);
-//                result.AddState(DateOfDeath,false);
-//            }
-//            
-//            return result;
-//        }
-
+        /// <summary>
+        /// Returns true when the person is alive.
+        /// </summary>
+        public Tbool IsAlive
+        {
+            get
+            {
+                Tbool result = new Tbool();
+                result.AddState(Time.DawnOf,false);
+                
+                // TODO: Ensure that DateOfDeath is asked when appropriate.
+                if (Facts.HasBeenAsserted(this, r.DateOfDeath))
+                {
+                    result.AddState(DateOfBirth,true);
+                    result.AddState(DateOfDeath,false);
+                }
+                else
+                {
+                    result.AddState(DateOfBirth,true);
+                    result.AddState(DateTime.Now,null);
+                }
+                
+                return result;
+            }
+        }
     }
     
     /// <summary>
