@@ -1,0 +1,50 @@
+<Combine fileversion="2.0">
+  <Policies>
+    <TextStylePolicy inheritsSet="null" scope="text/x-csharp" />
+    <CSharpFormattingPolicy inheritsSet="Mono" inheritsScope="text/x-csharp" scope="text/x-csharp" />
+    <TextStylePolicy FileWidth="120" inheritsSet="VisualStudio" inheritsScope="text/plain" scope="text/plain" />
+    <StandardHeader Text="" IncludeInNewFiles="True" />
+  </Policies>
+  <Configurations active="Debug|x86">
+    <Configuration name="Debug|x86" ctype="CombineConfiguration">
+      <Entry build="True" name="Hammurabi" configuration="Debug|x86" />
+      <Entry build="True" name="Unit tests - Hammurabi core" configuration="Debug|x86" />
+      <Entry build="True" name="Unit tests - Law" configuration="Debug|x86" />
+      <Entry build="True" name="RESTService.Host" configuration="Debug|x86" />
+      <Entry build="True" name="RESTService.Lib" configuration="Debug" />
+      <Entry build="True" name="AkkadianCompiler" configuration="Debug|x86" />
+    </Configuration>
+    <Configuration name="Release|x86" ctype="CombineConfiguration">
+      <Entry build="True" name="Hammurabi" configuration="Release|x86" />
+      <Entry build="True" name="Unit tests - Hammurabi core" configuration="Release|x86" />
+      <Entry build="True" name="Unit tests - Law" configuration="Release|x86" />
+      <Entry build="True" name="RESTService.Host" configuration="Release|x86" />
+      <Entry build="True" name="RESTService.Lib" configuration="Release" />
+      <Entry build="True" name="AkkadianCompiler" configuration="Release|x86" />
+    </Configuration>
+    <Configuration name="Default" ctype="CombineConfiguration">
+      <Entry build="True" name="Hammurabi" configuration="Default" />
+      <Entry build="True" name="Unit tests - Hammurabi core" configuration="Debug|x86" />
+      <Entry build="True" name="Unit tests - Law" configuration="Debug|x86" />
+      <Entry build="True" name="RESTService.Host" configuration="Debug|x86" />
+      <Entry build="True" name="RESTService.Lib" configuration="Debug" />
+      <Entry build="True" name="AkkadianCompiler" configuration="Debug|x86" />
+    </Configuration>
+  </Configurations>
+  <StartMode startupentry="Hammurabi" single="True">
+    <Execute type="None" entry="Hammurabi" />
+    <Execute type="None" entry="Unit tests - Hammurabi core" />
+    <Execute type="None" entry="Unit tests - Law" />
+    <Execute type="None" entry="RESTService.Host" />
+    <Execute type="None" entry="RESTService.Lib" />
+    <Execute type="None" entry="AkkadianCompiler" />
+  </StartMode>
+  <Entries>
+    <Entry filename="Hammurabi\Hammurabi.mdp" />
+    <Entry filename="Unit tests - Hammurabi core\Unit tests - Hammurabi core.mdp" />
+    <Entry filename="Unit tests - Law\Unit tests - Law.mdp" />
+    <Entry filename="RESTService.Host\RESTService.Host.mdp" />
+    <Entry filename="RESTService.Lib\RESTService.Lib.mdp" />
+    <Entry filename="AkkadianCompiler\AkkadianCompiler.csproj" />
+  </Entries>
+</Combine>

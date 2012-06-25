@@ -1,0 +1,92 @@
+# Namespace:    Hammurabi.Mil
+# Summary:      Relationships related to the Armed Services.
+# Updated:      2012-06-02
+# Author:       Michael Poulshock
+
+
+# ACTIVE DUTY / COMBAT
+
+# Deployed to a combat zone
+TboolIn IsDeployedToCombatZone(Person p) =
+	OnActiveDuty(p) &
+	TboolIn IsDeployedToCombatZone(p)
+
+# Active duty for training (reserves)
+Tbool OnActiveDutyForTraining(Person p) =
+	InReserveArmedForces(p) &
+	...
+		OnActiveDuty(p) |
+		TboolIn OnActiveDutyForTraining(p)
+	
+# On active duty
+TboolIn OnActiveDuty(Person p) =
+	InArmedForces(p) &
+	TboolIn OnActiveDuty(p)
+
+	
+# BRANCH OF ARMED FORCES
+	
+# Person serves in the Armed Forces in any capacity.
+Tbool InArmedForces(Person p) =
+	InActiveArmedForces(p) |
+	InReserveArmedForces(p)
+        
+# Person serves (actively) in the Armed Forces.
+Tbool InActiveArmedForces(Person p) =
+	branch == "Army" |
+	branch == "Navy" |
+	branch == "Air Force" |
+	branch == "Marine Corps" |
+	branch == "Coast Guard"
+	
+	Tstr branch = 
+		TstrIn BranchOfArmedForces(p)
+            
+# Person serves in reserve component of the Armed Forces (including tNational Guard).
+Tbool InReserveArmedForces(Person p) =
+	branch == "Army National Guard" |
+	branch == "Army Reserve" |
+	branch == "Air National Guard" |
+	branch == "Navy Reserve" |
+	branch == "Air Force Reserve" |
+	branch == "Marine Corps Reserve" |
+	branch == "Coast Guard Reserve"
+	
+	Tstr branch = 
+		TstrIn BranchOfArmedForces(p)
+
+
+# INJURY
+
+# Service-connected injury
+TboolIn ServiceConnectedInjury(Person p)
+
+
+# DISCHARGE
+		
+# Dishonorable discharge
+Tbool WasDishonorablyDischarged(Person p) =
+	NatureOfDischarge(p) == "Dishonorable discharge"
+	
+# Nature of discharge from armed forces
+TstrIn NatureOfDischarge(Person p)
+
+## Possible values:
+Expiration of term of service
+Reaching the maximum age limit
+High year tenure
+Disability, dependency, or hardship
+Pregnancy/parenthood
+Personality disorder
+Condition not a disability
+Physical or mental condition
+Convenience
+Unsuitability
+Misconduct 
+Resignation (available to officers only)
+Reduction in force
+Bad conduct discharge
+Dishonorable discharge
+Uncharacterized 
+##
+

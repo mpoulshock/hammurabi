@@ -1,4 +1,4 @@
-// Copyright (c) 2011 The Hammurabi Project
+// Copyright (c) 2012 Hammura.bi LLC
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,7 @@ using System.Collections.Generic;
 
 namespace Hammurabi
 {
-    public partial class Facts
+    public partial class Facts : H
     {
         /// <summary>
         /// One of the few global variables: a list of possible input errors.
@@ -41,7 +41,7 @@ namespace Hammurabi
             
             foreach(Person p in allPeople)
             {
-                if (p.DateOfBirth < new DateTime(1895,1,1)) 
+                if (DoB(p) < new DateTime(1895,1,1)) 
                 {
                     ErrorList.Add(p + "'s date of birth is too far in the past.");
                 }

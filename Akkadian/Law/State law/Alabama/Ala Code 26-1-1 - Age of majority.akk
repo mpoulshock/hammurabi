@@ -1,0 +1,35 @@
+# Citation:     Ala. Code 26-1-1 (2012)
+# Namespace:    Ala.Code.Tit26.Sec1_1
+# Summary:      Age of majority under Alabama law.
+# Updated:      2012-06-01
+# Author:       Michael Poulshock
+
+
+# Is a minor (for general purposes)
+Tbool IsMinor(Person p) =
+	!ReachedAgeOfMajority(p) 
+
+# Age of majority
+Tbool ReachedAgeOfMajority(Person p) = 
+	Age(p) >= 19 |
+	...
+		Age(p) >= 18 &		# Ala. Code 30-4-15, 30-4-16
+		Age(p) < 19 &
+		Fam.IsMarried(p)
+	
+	
+# UNIT TESTS
+
+Test: Majority1
+- Person p
+- DateOfBirth(p) = 2000-01-02
+- Ala.Code.Tit26.Sec1_1.ReachedAgeOfMajority(p).AsOf(2019-01-02).Out =?= true
+
+Test: Majority2
+- Person p
+- DateOfBirth(p) = 2000-01-02
+- IsMarried(p) = false
+- Ala.Code.Tit26.Sec1_1.ReachedAgeOfMajority(p).AsOf(2019-01-01).Out =?= false
+
+
+

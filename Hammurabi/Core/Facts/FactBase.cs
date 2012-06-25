@@ -1,4 +1,4 @@
-// Copyright (c) 2011 The Hammurabi Project
+// Copyright (c) 2012 Hammura.bi LLC
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -135,9 +135,18 @@ namespace Hammurabi
             Facts.Unknowns.Clear();
             Facts.GetUnknowns = false;
         }
-        
+
         /// <summary>
-        /// Returns true if a fact (quadruple) has been assserted
+        /// Returns true if a symmetrical fact has been assserted.
+        /// </summary>
+        public static bool HasBeenAssertedSym(LegalEntity e1, string rel, LegalEntity e2)
+        {
+            return HasBeenAsserted(e1, rel, e2) ||
+                   HasBeenAsserted(e2, rel, e1);
+        }
+
+        /// <summary>
+        /// Returns true if a fact has been assserted
         /// </summary>
         public static bool HasBeenAsserted(LegalEntity e1, string rel, LegalEntity e2)
         {
@@ -155,7 +164,7 @@ namespace Hammurabi
         }
         
         /// <summary>
-        /// Returns true if a fact (triple) has been assserted
+        /// Returns true if a fact has been assserted
         /// </summary>
         public static bool HasBeenAsserted(LegalEntity e1, string rel)
         {

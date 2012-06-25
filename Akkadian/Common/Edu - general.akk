@@ -1,0 +1,30 @@
+# Namespace:    Hammurabi.Edu
+# Summary:      Basic facts related to a person's education
+# Updated:      2012-06-01
+# Author:       Michael Poulshock
+
+
+# Enrolled in high school (or its equivalent)
+Tbool IsEnrolledInHighSchool(Person p) =
+	IsStudent(p) &
+	EnrolledIn(p) == "High school"
+
+# Graduated high school (or its equivalent)
+TboolIn GraduatedHighSchool(Person p) =
+	HighestLevelAttained(p) == "High school" |
+	HighestLevelAttained(p) == "College" |
+	HighestLevelAttained(p) == "Master's degree" |
+	HighestLevelAttained(p) == "Professional degree" |
+	HighestLevelAttained(p) == "Doctorate degree"
+
+# Highest educational degree earned
+# Options: High school, College, Master's degree, 
+# Professional degree (medicine, law, etc.), Doctorate degree
+TstrIn HighestLevelAttained(Person p)
+
+# Educational level in which currently enrolled
+TstrIn EnrolledIn(Person p)
+
+# Person is a student
+TboolIn IsStudent(Person p)
+

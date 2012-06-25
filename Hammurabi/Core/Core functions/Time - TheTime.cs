@@ -1,4 +1,4 @@
-// Copyright (c) 2011 The Hammurabi Project
+// Copyright (c) 2012 Hammura.bi LLC
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -90,15 +90,28 @@ namespace Hammurabi
     public partial class TheTime : Time
     {
         /// <summary>
-        /// Returns a Tbool that's true at and after a specified DateTime, and otherwise false.
+        /// Returns a Tbool that's true at and after a specified DateTime, 
+        /// and otherwise false.
         /// </summary>
-        public static Tbool IsAtOrAfter(DateTime dt)
+        public static Tbool IsAtOrAfter(Tdate dt)
         {
-            // TODO: Implement unknowns
-            
+            // Handle unknowns
+            if (!dt.FirstValue.IsKnown)
+            {
+                return new Tbool(dt.FirstValue);
+            }
+
+            // Create boolean
             Tbool result = new Tbool();
-            result.AddState(DawnOf, false);
-            result.AddState(dt, true);
+            if (dt == Time.DawnOf)
+            {
+                result.AddState(DawnOf, true);
+            }
+            else
+            {
+                result.AddState(DawnOf, false);
+                result.AddState(dt.ToDateTime, true);
+            }
             return result;
         }
         
@@ -106,32 +119,37 @@ namespace Hammurabi
         /// Returns a Tbool that's true up to a specified DateTime, and false
         /// at and after it.
         /// </summary>
-        public static Tbool IsBefore(DateTime dt)
+        public static Tbool IsBefore(Tdate dt)
         {
-            // TODO: Implement unknowns
-            
+            // Handle unknowns
+            if (!dt.FirstValue.IsKnown)
+            {
+                return new Tbool(dt.FirstValue);
+            }
+
+            // Create boolean
             Tbool result = new Tbool();
-            result.AddState(DawnOf, true);
-            result.AddState(dt, false);
+
+            if (dt == DawnOf)
+            {
+                result.AddState(DawnOf, false);
+            }
+            else
+            {
+                result.AddState(DawnOf, true);
+                result.AddState(dt.ToDateTime, false);
+            }
             return result;
         }
         
         /// <summary>
         /// Returns a Tbool that's true during a specified time interval (including
-        /// at the start and end DateTimes), and otherwise false.
+        /// at the "start"), and otherwise false (including at the moment represented 
+        /// by the "end").
         /// </summary>
-        public static Tbool IsBetween(DateTime start, DateTime end)
+        public static Tbool IsBetween(Tdate start, Tdate end)
         {
-            // TODO: Implement unknowns
-            
-            Tbool result = new Tbool();
-            if (start != DawnOf)
-            {
-                result.AddState(DawnOf, false);
-            }
-            result.AddState(start, true);
-            result.AddState(end.AddTicks(1), false);
-            return result;
+             return IsAtOrAfter(start) && IsBefore(end);
         }
          
         /// <summary>

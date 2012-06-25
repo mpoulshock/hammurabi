@@ -1,4 +1,4 @@
-// Copyright (c) 2011 The Hammurabi Project
+// Copyright (c) 2012 Hammura.bi LLC
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -23,32 +23,69 @@ using System.Collections.Generic;
 
 namespace Hammurabi
 {
-    public partial class H
+    /// <summary>
+    /// Provides the interface for 
+    /// </summary>
+    public partial class Tset
     {
-        
+        /// <summary>
+        /// Exists function - for various types of legal entities
+        /// </summary>
+        public Tbool Exists(Func<Person,Tbool> argumentFcn)
+        {
+            return ExistsCore(this, x => argumentFcn((Person)x));
+        }
+        public Tbool Exists(Func<Property,Tbool> argumentFcn)
+        {
+            return ExistsCore(this, x => argumentFcn((Property)x));
+        }
+
         /// <summary>
         /// Returns true when a condition holds for at least one member of
         /// a given set.
         /// </summary>
-        public static Tbool Exists(Tset theSet, Func<object,Tbool> argumentFcn)
+        private static Tbool ExistsCore(Tset theSet, Func<object,Tbool> argumentFcn)
         {
-            Tset subset = Filter(theSet, x => argumentFcn(x));
+            Tset subset = Tset.FilterCore(theSet, x => argumentFcn(x));
             return subset.Count > 0;
         }
-        public static Tbool Exists(Tset theSet, Func<object,object,Tbool> argumentFcn, object fcnArg1, object fcnArg2)
+        
+        /// <summary>
+        /// ForAll function - for various types of legal entities
+        /// </summary>
+        public Tbool ForAll(Func<Person,Tbool> argumentFcn)
         {
-            Tset subset = Filter(theSet, (x,y) => argumentFcn(x,y), fcnArg1, fcnArg2);
-            return subset.Count > 0;
+            return ForAllCore(this, x => argumentFcn((Person)x));
+        }
+        public Tbool ForAll(Func<Property,Tbool> argumentFcn)
+        {
+            return ForAllCore(this, x => argumentFcn((Property)x));
         }
         
         /// <summary>
         /// Returns true when a condition holds for all members of
         /// a given set.
         /// </summary>
-        public static Tbool ForAll(Tset theSet, Func<object,Tbool> argumentFcn)
+        private static Tbool ForAllCore(Tset theSet, Func<object,Tbool> argumentFcn)
         {
-            Tset subset = Filter(theSet, x => argumentFcn(x));
+            if (theSet.Count == 0) return false;  // Is this correct?
+            
+            Tset subset = Tset.FilterCore(theSet, x => argumentFcn(x));
             return theSet.Count == subset.Count;
+        }
+        
+        
+        /// <summary>
+        /// Filter function - for various types of legal entities
+        /// </summary>
+        public Tset Filter(Func<Person,Tbool> argumentFcn)
+        {
+            return FilterCore(this, x => argumentFcn((Person)x));
+        }
+        
+        public Tset Filter(Func<Property,Tbool> argumentFcn)
+        {
+            return FilterCore(this, x => argumentFcn((Property)x));
         }
         
         /// <summary>
@@ -56,12 +93,8 @@ namespace Hammurabi
         /// argument.  Set members that satisfy the given function are included in
         /// the subset.
         /// </summary>
-        public static Tset Filter(Tset theSet, Func<object,Tbool> argumentFcn)
+        private static Tset FilterCore(Tset theSet, Func<object,Tbool> argumentFcn)
         {
-            if (theSet.IsUnknown) { return new Tset(); }
-            
-            Tset result = new Tset();
-            
             Dictionary<object,Tvar> fcnValues = new Dictionary<object,Tvar>();
             List<Tvar> listOfTvars = new List<Tvar>();
             
@@ -69,119 +102,88 @@ namespace Hammurabi
             foreach(LegalEntity le in theSet.DistinctEntities())
             {
                 Tbool val = argumentFcn(le);
-                
-                if (val.IsUnknown) { return new Tset();    }    // TODO: Implement short-circuiting
-                
                 fcnValues.Add(le, val);
                 listOfTvars.Add(val);
             }
 
             // At each breakpoint, for each member of the set,
             // aggregate and analyze the values of the functions
+            Tset result = new Tset();
             foreach(DateTime dt in AggregatedTimePoints(theSet, listOfTvars))
             {
-                List<LegalEntity> membersOfOldSet = theSet.EntitiesAsOf(dt);
-                List<LegalEntity> membersOfNewSet = new List<LegalEntity>();
-                
-                foreach(LegalEntity le in membersOfOldSet)
+                Hval membersOfOldSet = theSet.EntitiesAsOf(dt);
+
+                // If theSet is unknown...
+                if (!membersOfOldSet.IsKnown)
                 {
-                    Tbool funcVal = (Tbool)fcnValues[le];
-                    
-                    if (Convert.ToBoolean(funcVal.AsOf(dt).ToBool) == true)
-                    {
-                        membersOfNewSet.Add(le);
-                    }
-                }
-                
-                result.AddState(dt, membersOfNewSet);    
-            }
-            
-            return result.LeanTvar<Tset>();
-        }
-        
-        /// <summary>
-        /// Returns a subset of a set, filtered by a given function with two input
-        /// arguments.  Set members that satisfy the given function are included in
-        /// the subset.
-        /// The argument representing the members of the set should be input as null. 
-        /// </summary>
-        public static Tset Filter(Tset theSet, Func<object,object,Tbool> argumentFcn, object fcnArg1, object fcnArg2)
-        {
-            if (theSet.IsUnknown) { return new Tset(); }
-            
-            Tset result = new Tset();
-            
-            Dictionary<object,Tvar> fcnValues = new Dictionary<object,Tvar>();
-            List<Tvar> listOfTvars = new List<Tvar>();
-            
-            // Get the temporal value of each distinct entity in the set
-            foreach(LegalEntity le in theSet.DistinctEntities())
-            {
-                Tbool val;
-                
-                if (fcnArg1 == null)
-                {
-                    val = argumentFcn(le,fcnArg2);
+                    result.AddState(dt, membersOfOldSet);
                 }
                 else
                 {
-                    val = argumentFcn(fcnArg1,le);
-                }
-                
-                if (val.IsUnknown) { return new Tset();    }    // TODO: Implement short-circuiting
-                
-                fcnValues.Add(le, val);
-                listOfTvars.Add(val);
-            }
-
-            // At each breakpoint, for each member of the set,
-            // aggregate and analyze the values of the functions
-            foreach(DateTime dt in AggregatedTimePoints(theSet, listOfTvars))
-            {
-                List<LegalEntity> membersOfOldSet = theSet.EntitiesAsOf(dt);
-                List<LegalEntity> membersOfNewSet = new List<LegalEntity>();
-                
-                foreach(LegalEntity le in membersOfOldSet)
-                {
-                    Tbool funcVal = (Tbool)fcnValues[le];
+                    List<LegalEntity> membersOfNewSet = new List<LegalEntity>();
+                    List<Hval> unknownValues = new List<Hval>();
                     
-                    if (Convert.ToBoolean(funcVal.AsOf(dt).ToBool) == true)
+                    foreach(LegalEntity le in (List<LegalEntity>)membersOfOldSet.Val)
                     {
-                        membersOfNewSet.Add(le);
+                        Tbool funcVal = (Tbool)fcnValues[le];
+                        Hval funcHval = funcVal.ObjectAsOf(dt);
+
+                        // If any of the entity functions are unknown...
+                        if (!funcHval.IsKnown)
+                        {
+                            unknownValues.Add(funcHval);
+                        }
+                        else if (Convert.ToBoolean(funcHval.Val))
+                        {
+                            membersOfNewSet.Add(le);
+                        }
                     }
-                }
-                
-                result.AddState(dt, membersOfNewSet);    
+
+                    // Aggregate the results for this point in time
+                    Hstate top = PrecedingState(unknownValues);
+                    if (unknownValues.Count > 0 && top != Hstate.Known) 
+                    {
+                        result.AddState(dt, top);
+                    }
+                    else
+                    {
+                        result.AddState(dt, new Hval(membersOfNewSet));   
+                    }
+                }  
             }
             
             return result.LeanTvar<Tset>();
         }
-        
+
         /// <summary>
         /// Totals the values of a given numeric property of the members of
         /// a set.
         /// </summary>
-        public static Tnum Sum(Tset theSet, Func<LegalEntity,Tnum> func)
+        public Tnum Sum(Func<Property,Tnum> func)
         {
-            return ApplyFcnToTset(theSet, x => func(x), y => Tnum.Sum(y));
+            return ApplyFcnToTset(this, x => func((Property)x), y => Tnum.Sum(y));
         }
-        
+        public Tnum Sum(Func<Person,Tnum> func)
+        {
+            return ApplyFcnToTset(this, x => func((Person)x), y => Tnum.Sum(y));
+        }
+  
         /// <summary>
         /// Returns the minimum value of a given numeric property of the 
         /// members of a set.
         /// </summary>
-        public static Tnum Min(Tset theSet, Func<LegalEntity,Tnum> func)
+        public Tnum Min(Func<LegalEntity,Tnum> func)
         {
-            return ApplyFcnToTset(theSet, x => func(x), y => Auxiliary.Minimum(y));
+            return ApplyFcnToTset(this, x => func(x), y => Auxiliary.Minimum(y));
         }
         
         /// <summary>
         /// Returns the maximum value of a given numeric property of the 
         /// members of a set.
         /// </summary>
-        public static Tnum Max(Tset theSet, Func<LegalEntity,Tnum> func)
+        public Tnum Max(Func<LegalEntity,Tnum> func)
         {
-            return ApplyFcnToTset(theSet, x => func(x), y => Auxiliary.Maximum(y));
+            return ApplyFcnToTset(this, x => func(x), y => Auxiliary.Maximum(y));
         }
         
         /// <summary>
@@ -189,14 +191,8 @@ namespace Hammurabi
         /// </summary>
         private static Tnum ApplyFcnToTset(Tset theSet, 
                                            Func<LegalEntity,Tnum> argumentFcn, 
-                                           Func<List<object>,object> aggregationFcn)
+                                           Func<List<Hval>,Hval> aggregationFcn)
         {
-            bool needToReturnUnknown = false;
-            
-            if (theSet.IsUnknown) { return new Tnum(); }
-            
-            Tnum result = new Tnum();
-            
             Dictionary<LegalEntity,Tvar> fcnValues = new Dictionary<LegalEntity,Tvar>();
             List<Tvar> listOfTvars = new List<Tvar>();
             
@@ -204,42 +200,42 @@ namespace Hammurabi
             foreach(LegalEntity le in theSet.DistinctEntities())
             {
                 Tvar val = argumentFcn(le);
-                
-                if (val.IsUnknown)
+                fcnValues.Add(le, val);
+                listOfTvars.Add(val);
+            } 
+
+            // At each breakpoint, for each member of the set,
+            // aggregate and analyze the values of the functions
+            Tnum result = new Tnum();
+            foreach(DateTime dt in AggregatedTimePoints(theSet, listOfTvars))
+            {
+                Hval membersOfSet = theSet.EntitiesAsOf(dt);
+
+                // If theSet is unknown...
+                if (!membersOfSet.IsKnown)
                 {
-                    needToReturnUnknown = true;
+                    result.AddState(dt, membersOfSet);
                 }
                 else
                 {
-                    fcnValues.Add(le, val);
-                    listOfTvars.Add(val);
+                    List<Hval> values = new List<Hval>();
+                    
+                    foreach(LegalEntity le in (List<LegalEntity>)membersOfSet.Val)
+                    {
+                        Tvar funcVal = (Tvar)fcnValues[le];    
+                        Hval funcValAt = funcVal.ObjectAsOf(dt);
+                        values.Add(funcValAt);
+                    }
+                    
+                    Hval val = aggregationFcn(values);
+                    
+                    result.AddState(dt, val);   
                 }
-            } 
-
-            if (needToReturnUnknown) { return new Tnum(); }  // TODO: Implement short-circuiting
-            
-            // At each breakpoint, for each member of the set,
-            // aggregate and analyze the values of the functions
-            foreach(DateTime dt in AggregatedTimePoints(theSet, listOfTvars))
-            {
-                List<LegalEntity> membersOfSet = theSet.EntitiesAsOf(dt);
-                List<object> values = new List<object>();
-                
-                foreach(LegalEntity le in membersOfSet)
-                {
-                    Tvar funcVal = (Tvar)fcnValues[le];    
-                    object funcValAt = funcVal.ObjectAsOf(dt);
-                    values.Add(funcValAt);
-                }
-                
-                object val = aggregationFcn(values);
-                
-                result.AddState(dt, val);    
             }
 
             return result.Lean;
         }
-        
+
         /// <summary>
         /// Private method that aggregates all time points among a Tset and one
         /// or more Tvars
@@ -260,6 +256,5 @@ namespace Hammurabi
             
             return allTimePoints;
         }
-        
     }
 }

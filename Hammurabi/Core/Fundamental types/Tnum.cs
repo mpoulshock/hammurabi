@@ -1,4 +1,4 @@
-// Copyright (c) 2011 The Hammurabi Project
+// Copyright (c) 2012 Hammura.bi LLC
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -33,13 +33,58 @@ namespace Hammurabi
         public Tnum()
         {
         }
-        
-        /// <summary>
-        /// Constructs a Tnum set eternally to a specified value.
-        /// This value can be an int, double, or decimal.
-        public Tnum(object val)
+
+        public Tnum(int n)
+        {
+            this.SetEternally(n);
+        }
+
+        public Tnum(decimal n)
+        {
+            this.SetEternally(n);
+        }
+
+        public Tnum(double n)
+        {
+            this.SetEternally(n);
+        }
+
+        public Tnum(Hstate state)
+        {
+            this.SetEternally(state);
+        }
+
+        public Tnum(Hval val)
         {
             this.SetEternally(val);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the Tnum class and loads
+        /// a list of date-value pairs.
+        /// </summary>
+        public static Tnum MakeTnum(params object[] list)
+        {
+            Tnum result = new Tnum();
+            for(int i=0; i < list.Length - 1; i+=2)  
+            {
+                try
+                {
+                    Hstate h = (Hstate)list[i+1];
+                    if (h != Hstate.Known)
+                    {
+                        result.AddState(Convert.ToDateTime(list[i]),
+                                    new Hval(null,h));
+                    }
+                }
+                catch
+                {
+                    decimal d = Convert.ToDecimal(list[i+1]);
+                    result.AddState(Convert.ToDateTime(list[i]),
+                                new Hval(d));
+                }
+            }
+            return result;
         }
         
         /// <summary>
@@ -86,9 +131,11 @@ namespace Hammurabi
         {
             get
             {
-                if (this.IsUnknown || TimeLine.Count > 1) { return null; }
-                
-                return (Convert.ToInt32(TimeLine.Values[0]));
+                if (TimeLine.Count > 1) return null;
+
+                if (!this.FirstValue.IsKnown) return null;
+
+                return (Convert.ToInt32(this.FirstValue.Val));
             }
         }
         
@@ -101,9 +148,11 @@ namespace Hammurabi
         {
             get
             {
-                if (this.IsUnknown || TimeLine.Count > 1) { return null; }
-                
-                return (Convert.ToDecimal(TimeLine.Values[0]));
+                if (TimeLine.Count > 1) { return null; }
+
+                if (!this.FirstValue.IsKnown) return null;
+
+                return (Convert.ToDecimal(this.FirstValue.Val));
             }
         }
         
@@ -114,79 +163,23 @@ namespace Hammurabi
         {
             get
             {
-                if (this.IsUnknown || TimeLine.Count > 1) { return null; }
-                
-                return String.Format("{0:C}", Convert.ToDecimal(TimeLine.Values[0]));
+                if (TimeLine.Count > 1) { return null; }
+
+                if (!this.FirstValue.IsKnown) return this.FirstValue.ToString;
+
+                return String.Format("{0:C}", Convert.ToDecimal(this.FirstValue.Val));
             }
         }
         
         /// <summary>
         /// Returns the value of the Tnum at a specified point in time.
         /// </summary>
-        public Tnum AsOf(DateTime dt)
+        public Tnum AsOf(Tdate dt)
         {
-            if (this.IsUnknown) { return new Tnum(); }
-            
-            return (Tnum)this.AsOf<Tnum>(dt);
+            return this.AsOf<Tnum>(dt);
         }
-        
-        
-        // ********************************************************************
-        // IsAlways / IsEver / DateFirst
-        // ********************************************************************
-        
-        // TODO: Make inputs ints, decimals, or something...
-        
-        /// <summary>
-        /// Returns true if the Tnum always has the specified value. 
-        /// </summary>
-        public Tbool IsAlways(object val)
-        {
-            return IsAlwaysTvar<Tnum>(val, Time.DawnOf, Time.EndOf);
-        }
-        
-        /// <summary>
-        /// Returns true if the Tnum always has the specified value between
-        /// two given dates. 
-        /// </summary>
-        public Tbool IsAlways(object val, DateTime start, DateTime end)
-        {
-            return IsAlwaysTvar<Tnum>(val, start, end);
-        }
-        
-        /// <summary>
-        /// Returns true if the Tnum ever has the specified value. 
-        /// </summary>
-        public Tbool IsEver(object val)
-        {
-            return IsEverTvar(val);
-        }
-        
-        /// <summary>
-        /// Returns true if the Tnum ever has the specified value between
-        /// two given dates. 
-        /// </summary>
-        public Tbool IsEver(object val, DateTime start, DateTime end)
-        {
-            return IsEverTvar<Tnum>(val, start, end);
-        }
-        
-        /// <summary>
-        /// Returns the DateTime when the Tnum first has a given value
-        /// </summary>
-        public DateTime DateFirst(decimal val) 
-        {
-            return DateFirst<Tnum>(val);
-        }
-        public DateTime DateFirst(int val) 
-        {
-            return DateFirst<Tnum>(val);
-        }
-        public DateTime DateFirst(double val) 
-        {
-            return DateFirst<Tnum>(val);
-        }
-        
+
+
         // *************************************************************
         // All-time min / max
         // *************************************************************
@@ -198,47 +191,52 @@ namespace Hammurabi
         /// </summary>
         public Tnum Max()
         {
-            if (this.IsUnknown) { return new Tnum(); }
-                
-            Tnum result = new Tnum();
-            
-            decimal max = Convert.ToDecimal(TimeLine.Values[0]);
-            
-            foreach(object s in TimeLine.Values)
+            // Deal with unknowns
+            Hstate state = PrecedenceForMissingTimePeriods(this);
+            if (state != Hstate.Known) 
             {
-                if (Convert.ToDecimal(s) > max)
+                return new Tnum(state);
+            }
+
+            // Determine the maximum value
+            decimal max = Convert.ToDecimal(this.FirstValue.Val);
+            foreach(Hval s in TimeLine.Values)
+            {
+                // TODO: Handle unknowns
+
+                if (Convert.ToDecimal(s.Val) > max)
                 {
-                    max = Convert.ToDecimal(s);
+                    max = Convert.ToDecimal(s.Val);
                 }
             }
-            
-            result.SetEternally(max);
-            
-            return result;
+            return new Tnum(max);
         }
-        
+
+
         /// <summary>
         /// Returns the all-time minimum value of the Tnum. 
         /// </summary>
         public Tnum Min() 
         {     
-            if (this.IsUnknown) { return new Tnum(); }
-            
-            Tnum result = new Tnum();
-            
-            decimal min = Convert.ToDecimal(TimeLine.Values[0]);
-            
-            foreach(object s in TimeLine.Values)
+            // Deal with unknowns
+            Hstate state = PrecedenceForMissingTimePeriods(this);
+            if (state != Hstate.Known) 
             {
-                if (Convert.ToDecimal(s) < min)
+                return new Tnum(state);
+            }
+
+            // Determine the maximum value
+            decimal min = Convert.ToDecimal(this.FirstValue.Val);
+            foreach(Hval s in TimeLine.Values)
+            {
+                // TODO: Handle unknowns
+
+                if (Convert.ToDecimal(s.Val) < min)
                 {
-                    min = Convert.ToDecimal(s);
+                    min = Convert.ToDecimal(s.Val);
                 }
             }
-            
-            result.SetEternally(min);
-            
-            return result;
+            return new Tnum(min);
         }                                                                 
     }
 }

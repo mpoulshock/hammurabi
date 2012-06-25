@@ -1,74 +1,8 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" ctype="Workspace" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Hammurabi/Core/Ontology/Family relationships.cs" ctype="Workbench">
-    <Files>
-      <File FileName="Hammurabi/Core/Facts/Inputs.cs" Line="127" Column="1" />
-      <File FileName="Hammurabi/Core/Ontology/Family relationships.cs" Line="78" Column="44" />
-      <File FileName="Hammurabi/Core/Ontology/Basic legal entities.cs" Line="132" Column="20" />
-      <File FileName="Hammurabi/Core/Facts/Inputs - question templates.cs" Line="115" Column="104" />
-    </Files>
-    <Pads>
-      <Pad Id="ProjectPad">
-        <State expanded="True">
-          <Node name="Hammurabi" expanded="True">
-            <Node name="Core" expanded="True">
-              <Node name="Facts" expanded="True" />
-              <Node name="Ontology" expanded="True">
-                <Node name="Family relationships.cs" selected="True" />
-              </Node>
-            </Node>
-            <Node name="Law" expanded="True">
-              <Node name="Federal law" expanded="True">
-                <Node name="Code of Federal Regulations" expanded="True">
-                  <Node name="Title 29" expanded="True" />
-                </Node>
-                <Node name="US Code" expanded="True">
-                  <Node name="Title 26" expanded="True" />
-                  <Node name="Title 29" expanded="True" />
-                  <Node name="Title 5" expanded="True" />
-                </Node>
-              </Node>
-            </Node>
-            <Node name="Main" expanded="True" />
-          </Node>
-          <Node name="Unit tests - Hammurabi core" expanded="True">
-            <Node name="Unit tests" expanded="True" />
-          </Node>
-        </State>
-      </Pad>
-      <Pad Id="ClassPad">
-        <State expanded="True" selected="True">
-          <Option id="ShowProjects" value="True" />
-          <Option id="NestedNamespaces" value="False" />
-          <Option id="PublicProtectedApiOnly" value="False" />
-          <Option id="PublicApiOnly" value="True" />
-          <Option id="GroupByAccess" value="False" />
-          <Option id="GroupByType" value="True" />
-          <Node name="Hammurabi" expanded="True">
-            <Node name="References" expanded="True" />
-          </Node>
-        </State>
-      </Pad>
-      <Pad Id="MonoDevelop.Debugger.WatchPad">
-        <State />
-      </Pad>
-      <Pad Id="MonoDevelop.NUnit.TestPad">
-        <State expanded="True" selected="True">
-          <Node name="Unit tests - Hammurabi core" expanded="True">
-            <Node name="Hammurabi" expanded="True">
-              <Node name="UnitTests" expanded="True">
-                <Node name="CoreFcns" expanded="True">
-                  <Node name="SymmetricalFacts" expanded="True" />
-                </Node>
-              </Node>
-            </Node>
-          </Node>
-        </State>
-      </Pad>
-    </Pads>
-  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
+  <MonoDevelop.Ide.Workbench />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches ctype="PinnedWatchStore" />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
 </Properties>

@@ -1,4 +1,4 @@
-// Copyright (c) 2011 The Hammurabi Project
+// Copyright (c) 2012 Hammura.bi LLC
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -28,6 +28,13 @@ namespace Hammurabi
     
     public static class DateTimeExtensionMethods
     {
+
+//        public static implicit operator DateTime(Tdate d) 
+//        {
+//            DateTime r = d.ToDateTime ?? DateTime.Now;
+//            return r;
+//        }
+        
         /// <summary>
         /// Determines whether a DateTime is a weekday.
         /// </summary>
@@ -151,6 +158,15 @@ namespace Hammurabi
                 return dt.AddMonths(n);
         }
         
+        /// <summary>
+        /// Converts a DateTime to a string in the format yyyy-mm-dd.
+        /// </summary>
+        public static string ToDateString(this DateTime dt)
+        {
+            string m = H.AddPrecedingZeros(dt.Month.ToString(),2);
+            string d = H.AddPrecedingZeros(dt.Day.ToString(),2);
+            return dt.Year + "-" + m + "-" + d;
+        }
         
         #region Friendly reminders
         

@@ -1,0 +1,11 @@
+# Citation:     26 U.S.C. 62 (2011)
+# Namespace:    USC.Tit26.Sec62
+# Summary:      "Adjusted gross income" as defined under Internal Revenue Code, Section 62.
+# Updated:      2010-11-27
+# Author:       Michael Poulshock
+
+
+# Adjusted gross income
+Tnum AGI(Person p) =
+	TnumIn AdjustedGrossIncome(p)
+	

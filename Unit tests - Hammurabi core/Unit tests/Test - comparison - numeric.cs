@@ -1,4 +1,4 @@
-// Copyright (c) 2011 The Hammurabi Project
+// Copyright (c) 2012 Hammura.bi LLC
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -92,13 +92,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tbool t = new Tnum(0.1) == new Tnum(0.10);        
             Assert.AreEqual("1/1/0001 12:00:00 AM True ", t.TestOutput);        
         }
-        
-        [Test]
-        public void Test10_a ()
-        {
-            Tbool t = new Tbool(0 > 365);      
-            Assert.AreEqual("1/1/0001 12:00:00 AM False ", t.TestOutput);        
-        }
+
         
         // NOT EQUAL
         
@@ -201,7 +195,15 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tbool t = new Tnum(-3.94) > -3.940;        
             Assert.AreEqual("1/1/0001 12:00:00 AM False ", t.TestOutput);        
         }
+
         
+        [Test]
+        public void Test30_a ()
+        {
+            Tbool t = new Tbool(0 > 365);      
+            Assert.AreEqual("1/1/0001 12:00:00 AM False ", t.TestOutput);        
+        }
+
         // LESS THAN
         
         [Test]
@@ -325,6 +327,16 @@ namespace Hammurabi.UnitTests.CoreFcns
         {
             Tbool t = new Tnum(-3.94) <= -3.940;        
             Assert.AreEqual("1/1/0001 12:00:00 AM True ", t.TestOutput);        
+        }
+        
+        // Temporal
+        
+        [Test]
+        public void TemporalComparison1 ()
+        {
+            Tnum x = new Tnum(10);
+            x.AddState(Time.DawnOf.AddYears(5), 1);
+            Assert.AreEqual("1/1/0001 12:00:00 AM False 1/1/0006 12:00:00 AM True ", (x <= 1).TestOutput );    
         }
         
     }

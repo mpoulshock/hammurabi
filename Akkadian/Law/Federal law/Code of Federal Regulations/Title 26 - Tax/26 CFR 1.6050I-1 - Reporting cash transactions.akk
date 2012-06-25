@@ -1,0 +1,123 @@
+# Citation:     26 CFR 1.6050I-1 (2011)
+# Namespace:    CFR.Tit26.Part1.Sec6050I1
+# Summary:      Returns relating to cash received in trade or business, etc.
+# Remarks:      Determines whether a recipient (r) of cash has to file IRS Form 8300 in relation to another person (p).
+# Updated:      2012-06-25
+# Author:      Michael Poulshock
+
+
+# (e)(1) - Date IRS Form 8300 is due.
+Tdate DateForm8300Due(LegalEntity r, Person p, Transaction t) =
+	set:
+	if !due.IsEverTrue() -> null
+	else due.DateFirstTrue.AddDays(15)
+	
+	Tbool due = 
+		USC.Tit26.Sec6050I.Form8300Due(r,p,t)
+		
+		
+# Does the recipient have to file IRS Form 8300 in relation to the other person,
+# given a transaction (series of transfers)?
+Tbool Form8300Due(LegalEntity r, Person p, Transaction t) =
+	USC.Tit26.Sec7701.IsPerson(r)    
+	# course of trade or business
+	# Met10KThreshold(r,p,t)
+            
+
+# (b)(1),(2) - Initial payment > $10,000
+Tbool InitialPayment(LegalEntity r, Transaction t) =
+	TheTime.IsAtOrAfter(thresholdDate)
+
+	DateTime thresholdDate = 
+		Time.EndOf
+			
+			## C#
+			decimal? total = 0;
+            foreach (Transfer transfer in t.Transfers)
+            {
+                if (transfer.Date <= t.DateOfInitialPayment(r).AddYears(1) & IsCash(transfer, t))
+                {
+                    total += transfer.Item.ValueInDollars.ToDecimal;
+                
+                    if (total >= 10000)
+                    {
+                        thresholdDate = transfer.Date;
+                        break;
+                    }
+                }
+            }
+			##
+                        
+
+# (b)(3) - Subsequent payments
+# 10K total in 12-mo period
+Tbool SubsequentPayments(Transaction t) =
+	true
+
+        
+# (c)(1) - Cash, defined
+Tbool IsCash(Transfer transfer, Transaction t) =
+	p.Type == "U.S. currency" |
+	p.Type == "Foreign currency" |
+	...
+		...
+			p.Type == "Cashier’s check" |
+			p.Type == "Bank draft" |
+			p.Type == "Traveler’s check"|
+			p.Type == "Money order" 
+		&
+		IsDRT(t) &
+		t.Purpose != "Proceeds of bank loan" &		# Nature of the transaction
+		!CertainInstallmentSales(t) &
+		!IsExemptDownPaymentPlan(transfer,t)
+		
+	Property p = 
+		transfer.Item;
+        
+		
+# (c)(1)(iii) - Designated reporting transactions
+Tbool IsDRT(Transaction t) =
+	t.Purpose == "Retail sale" &
+	...
+		t.ThingSold == "Consumer durable" |
+		USC.Tit26.Sec408.IsCollectible_m2A_D(t.ThingSold) |
+		t.ThingSold == "Travel or entertainment activity" 
+
+		
+# (c)(1)(v) - Exception for certain installment sales
+Tbool CertainInstallmentSales(Transaction t) =
+	...
+		t.Purpose == "Payment on installment sales contract" |
+		t.Purpose == "Payment on a promissory note"
+	&
+	amtPaidAsOf60Days <= t.PurchasePrice * 0.5
+				   
+	# How much has been paid after 60 days?
+	# TODO: Generalize in class temporal method?
+	Tnum amtPaidAsOf60Days = 
+		0
+		
+			## C#
+            foreach (Transfer transfer in t.Transfers)
+            {
+                if (transfer.Date <= t.DateOfSale.AddDays(60))
+                {
+                    amtPaidAsOf60Days += transfer.Item.ValueInDollars.ToDecimal;
+                }
+			}
+			##
+
+# (c)(1)(vi) - Exception for certain down payment plans
+Tbool IsExemptDownPaymentPlan(Transfer transfer, Transaction t) =
+	t.Purpose == "Down payment plan" &
+	...
+		...
+			t.ThingSold != "Travel or entertainment activity" &
+			t.DateBalanceDue <= t.DateOfSale &
+			transfer.Date < t.DateOfSale.AddDays(-60)
+		|
+		...
+			t.ThingSold == "Travel or entertainment activity" &
+			t.DateBalanceDue <= t.DateOfSale & 		# <= t.DateFirstItemFurnished
+			transfer.Date < t.DateBalanceDue.AddDays(-60)
+            

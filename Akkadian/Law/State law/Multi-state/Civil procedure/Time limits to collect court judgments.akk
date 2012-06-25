@@ -1,0 +1,76 @@
+# Namespace:    CivPro.Judgments
+# Summary:      Statutes of limitations for U.S. states.
+# Remarks:      Currently only models those related to torts.
+# Source:       Nolo's Guide to Small Claims Court (2010)
+# Updated:      2012-05-28
+# Author:       Michael Poulshock
+	
+	
+# Time limit to collect court judgments (in years)
+Tnum YearsToCollect(Tstr state, Tstr courtType) =
+	match state, courtType
+	Alabama,						-> 20		# Ala. Code 6-2-32
+	Alaska,							-> 10		# Alaska Stat. 09.10.040
+	Arizona,						-> 5		# Ariz. Rev. Stat. Ann. 12-1551
+	Arkansas, Justice of the peace	-> 5		# Ark. Code Ann. 16-19-1002
+	Arkansas,						-> 10		# Ark. Code Ann. 16-56-114	
+	California,						-> 10		# Cal. Code Civ. Proc. 683.020
+	Colorado,						-> 20		# Colo. Rev. Stat. 13-52-102
+	Connecticut, Small claims		-> 10		# Conn. Gen. Stat. Ann. 52-598
+	Connecticut,					-> 20		#  "  "
+	Delaware,						-> 10		# Del. Code Ann. tit. 10, 4711
+	District of Columbia,			-> 12		# D.C. Code Ann 15-101
+	Florida,						-> 20		# Fla. Stat. Ann. 95.11(1)
+	Georgia,						-> 7		# Ga. Code Ann. 9-12-60
+	Hawaii,							-> 10		# Haw. Rev. Stat. 657-5
+	Idaho,							-> 6		# Idaho Code 5-215
+	Illinois,						-> 7		# 735 Ill. Comp. Stat. 5/12-108
+	Indiana,						-> 10		# Ind. Code Ann. 34-11-2-11
+	Iowa,							-> 20		# Iowa Code 614.1(6)
+	Kansas,							-> 5		# Kan. Stat. Ann. 60-2403
+	Kentucky,						-> 15		# Ky. Rev. Stat. Ann. 413.090
+	Louisiana,						-> 10		# La. Civ. Code Ann. Art. 3501
+	Maine,							-> 20		# Me. Rev. Stat. Ann. tit. 14, 864
+	Maryland,						-> 12		# Md. Code Ann. 5-102(a)(3)
+	Massachusetts,					-> 20		# Mass. Gen. Laws ch. 260, 20
+	Michigan,						-> 10		# Mich. Comp. Laws 600.5809(3)
+	Minnesota,						-> 10		# Minn. Stat. Ann. 541.04
+	Mississippi,					-> 7		# Miss. Code Ann. 15-1-43
+	Missouri,						-> 10		# Mo. Rev. Stat. 511.370
+	Montana,						-> 10		# Mont. Code Ann. 27-2-201
+	Nebraska,						-> 5		# Neb. Rev. Stat. 25-1515
+	Nevada,							-> 6		# Nev. Rev. Stat. Ann. 11.190(1)(a)
+	New Hampshire,					-> 20		# N.H. Rev. Stat. Ann. 508:5
+	New Jersey,						-> 20		# N.J. Stat. Ann. 2a:14-5
+	New Mexico,						-> 14		# N.M. Stat. Ann. 37-1-2
+	New York,						-> 20		# N.Y.C.P.L.R. Law 211(b)
+	North Carolina,					-> 10		# N.C. Gen. Stat. 1-47
+	North Dakota,					-> 10		# N.C. Cent. Code 28-01-15(1)
+	Ohio,							-> 10		# Ohio Rev. Code Ann. 2325.18
+	Oklahoma,						-> 5		# Okla. Stat. Ann. tit. 12, 735
+	Oregon,							-> 10		# Or. Rev. Stat. Ann. 12.070
+	Pennsylvania,					-> 4		# 42 Pa. Cons. Stat. Ann. 5525(5)
+	Rhode Island,					-> 20		# R.I. Gen. Laws 9-1-17
+	South Carolina,					-> 10		# S.C. Code Ann. 15-3-600
+	South Dakota,					-> 20		# S.D. Codified Laws 15-2-6(1)
+	Tennessee,						-> 10		# Tenn. Code Ann. 28-3-110(2)
+	Texas,							-> 10		# Tex. Civ. Prac. & Rem. Code Ann. 34.001
+	Utah,							-> 8		# Utah Code Ann. 78B-2-311
+	Vermont,						-> 8		# Vt. Stat. Ann. tit. 12, 506
+	Virginia,						-> 20		# Va. Code Ann. 8.01-251
+	Washington,						-> 10		# Wash. Rev. Code Ann. 4.16.020(2)
+	West Virginia,					-> 10		# W. Va. Code 38-3-18
+	Wisconsin,						-> 20		# Wis. Stat. 893.40
+	Wyoming,						-> 5		# Wyo. Stat. Ann. 1-17-307
+	else Stub()
+
+
+# UNIT TESTS
+
+Test: Test1
+- CivPro.Judgments.YearsToCollect("Connecticut", "Small claims").Out =?= 10
+
+Test: Test2
+- CivPro.Judgments.YearsToCollect("Connecticut", "General").Out =?= 20
+
+	

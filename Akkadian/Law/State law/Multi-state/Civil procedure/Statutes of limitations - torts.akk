@@ -1,0 +1,71 @@
+# Namespace:    CivPro.Torts
+# Summary:      Statutes of limitations for U.S. states.
+# Remarks:      Currently only models those related to torts.
+# Updated:      2012-06-25
+# Author:       Michael Poulshock
+
+
+# Statute of limitations by state and claim type
+# (Toggled out b/c DB.CSV is currently omitted from the project.)
+# Tnum StatuteOfLimitations(Tstr state, Tstr claimType) =
+#    DB.CSV.ReadMatrixTnum(state, claimType, "Statutes of limitations")
+
+	
+# Statute of limitations for tort claims (in years)
+Tnum StatuteOfLimitationsTort(Tstr state, Tstr type) =
+	match state, 			type
+	Alabama,										-> 2		# Ala. Code 6-2-38
+	Alaska,										 	-> 2		# Alaska Stat. 09.10.070
+	Arizona,										-> 2		# Ariz. Rev. Stat. Ann. 12-542
+	Arkansas,										-> 3		# Ark. Code Ann. 16-56-105
+	California,										-> 2		# Cal. Code Civ. Proc. 335.1
+	Colorado,				Motor vehicle accident	-> 3		# Colo. Rev. Stat. 13-80-102
+	Colorado,										-> 2
+	Connecticut,									-> 2
+	Delaware,										-> 2		# Del. Code Ann. Title 10, 8107, 8119
+	District of Columbia,							-> 3
+	Florida,										-> 4
+	Georgia,										-> 2
+	Hawaii,											-> 2
+	Idaho,											-> 2
+	Illinois,										-> 2
+	Indiana,										-> 2
+	Iowa,											-> 2
+	Kansas,											-> 2
+	Kentucky,										-> 1
+	Louisiana,										-> 1
+	Maine,											-> 6
+	Maryland,										-> 3
+	Massachusetts,									-> 3
+	Michigan,										-> 3
+	Minnesota,										-> 2
+	Mississippi,									-> 3
+	Missouri,										-> 5
+	Montana,										-> 3
+	Nebraska,										-> 4
+	Nevada,											-> 2
+	New Hampshire,									-> 3
+	New Jersey,										-> 2
+	New Mexico,										-> 3
+	New York,										-> 3
+	North Carolina,									-> 3
+	North Dakota,									-> 6
+	Ohio,											-> 2
+	Oklahoma,										-> 2
+	Oregon,											-> 2
+	Pennsylvania,									-> 2
+	Rhode Island,									-> 3
+	South Carolina,									-> 3
+	South Dakota,									-> 3
+	Tennessee,										-> 1
+	Texas,											-> 2
+	Utah,											-> 2
+	Vermont,										-> 3
+	Virginia,										-> 2
+	Washington,										-> 3
+	West Virginia,									-> 2
+	Wisconsin,										-> 3
+	Wyoming,										-> 4
+	else Stub()
+	
+	

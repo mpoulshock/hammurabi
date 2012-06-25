@@ -1,4 +1,4 @@
-// Copyright (c) 2011 The Hammurabi Project
+// Copyright (c) 2012 Hammura.bi LLC
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -18,19 +18,43 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+using System.Collections.Generic;
+
 namespace Hammurabi
 {
     public partial class H
     {
         /// <summary>
-        /// Returns true if any of the input Tvars are "unknown" - that is,
-        /// if they have no time states.
+        /// Given a group of Hvals, returns Hstate that trumps the others.
         /// </summary>       
-        protected static bool AnyAreUnknown(params Tvar[] list) 
+        public static Hstate PrecedingState(List<Hval> list) 
         {
-            foreach (Tvar v in list)
+            return PrecedingState(Auxiliary.ListToArray<Hval>(list));
+        }
+        protected static Hstate PrecedingState(params Hval[] list) 
+        {
+            // Where there is a stub, there's no need to consider uncertain or unstated facts
+            if (AnyHvalsAre(Hstate.Stub, list)) return Hstate.Stub;
+
+            // Where a fact is uncertain, there's no need to query for more information
+            if (AnyHvalsAre(Hstate.Uncertain, list)) return Hstate.Uncertain;
+
+            // If one fact is known and the other unstated, the conclusion can't be reached 
+            // and is unstated
+            if (AnyHvalsAre(Hstate.Unstated, list)) return Hstate.Unstated;
+            
+            return Hstate.Known;
+        }
+
+
+        /// <summary>
+        /// Returns true if any of the input Hvals are unstated.
+        /// </summary>       
+        protected static bool AnyHvalsAre(Hstate state, params Hval[] list) 
+        {
+            foreach (Hval h in list)
             {
-                if (v.IsUnknown) { return true; }
+                if (h.State == state) return true;
             }
             
             return false;

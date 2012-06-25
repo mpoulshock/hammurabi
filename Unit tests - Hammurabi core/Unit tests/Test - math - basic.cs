@@ -1,4 +1,4 @@
-// Copyright (c) 2011 The Hammurabi Project
+// Copyright (c) 2012 Hammura.bi LLC
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -206,7 +206,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void Test35_Div_by_zero_issue ()
         {
             Tnum res = new Tnum(8) / 0;
-            Assert.AreEqual("1/1/0001 12:00:00 AM Null ", res.TestOutput);        
+            Assert.AreEqual("1/1/0001 12:00:00 AM Uncertain ", res.TestOutput);        
         }
         
         [Test]
@@ -358,6 +358,24 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void Test123 ()
         {
             Assert.AreEqual("$44,988.00", new Tnum(44988).ToUSD);        
+        }
+        
+        // Temporal
+        
+        [Test]
+        public void TemporalMath1 ()
+        {
+            Tnum x = new Tnum(10);
+            x.AddState(Time.DawnOf.AddYears(5), 1);
+            Assert.AreEqual("1/1/0001 12:00:00 AM 11 1/1/0006 12:00:00 AM 2 ", (x+1).TestOutput );    
+        }
+        
+        [Test]
+        public void TemporalMath2 ()
+        {
+            Tnum x = new Tnum(10);
+            x.AddState(Time.DawnOf.AddYears(5), 1);
+            Assert.AreEqual("1/1/0001 12:00:00 AM 9 1/1/0006 12:00:00 AM 0 ", (x-1).TestOutput );    
         }
         
     }

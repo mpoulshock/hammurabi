@@ -1,0 +1,16 @@
+# Namespace:    Hammurabi.Org
+# Summary:      Basic facts relating to organizations.
+# Updated:      2012-05-05
+# Author:       Michael Poulshock
+
+
+# Number of employees
+TnumIn NumberOfEmployees(Corp c)
+	
+# Governmental/public agency
+TboolIn IsGovtAgency(Corp c)
+
+# Type of corporate entity
+TstrIn TypeOfCorporateEntity(Corp c)
+	
+	

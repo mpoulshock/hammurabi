@@ -1,4 +1,4 @@
-// Copyright (c) 2011 The Hammurabi Project
+// Copyright (c) 2012 Hammura.bi LLC
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -18,10 +18,10 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-
 using Hammurabi;
 using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 
 namespace Hammurabi.UnitTests.CoreFcns
 {
@@ -51,24 +51,19 @@ namespace Hammurabi.UnitTests.CoreFcns
         // Set up a new test
         private static void NewTest()
         {
-            Tnum valA = new Tnum();
-            valA.AddState(Time.DawnOf,1);
+            Tnum valA = new Tnum(1);
             
-            Tnum valB = new Tnum();
-            valB.AddState(Time.DawnOf,2);
+            Tnum valB = new Tnum(2);
             
-            Tnum valC = new Tnum();
-            valC.AddState(Time.DawnOf,3);
+            Tnum valC = new Tnum(3);
             valC.AddState(new DateTime(2011,1,14), 4);
             
             Tbool ownA = new Tbool(true);
             
-            Tbool ownB = new Tbool();
-            ownB.AddState(Time.DawnOf, true);
+            Tbool ownB = new Tbool(true);
             ownB.AddState(new DateTime(2008,1,1), false);
             
-            Tbool ownC = new Tbool();
-            ownC.AddState(Time.DawnOf, false);
+            Tbool ownC = new Tbool(false);
             ownC.AddState(new DateTime(2005,1,1), true);
             
             Facts.Clear();
@@ -91,22 +86,49 @@ namespace Hammurabi.UnitTests.CoreFcns
         }
         private static Tbool AssetValueIndeterminacy(Property asset)    
         { 
-            return new Tbool();        // used to test unknowns
+            return new Tbool(Hstate.Unstated);        // used to test unknowns
+        }
+        private static Tbool Owns(Person p, Property r)
+        {
+            return Input.Tbool(p, "Owns", r);
+        }
+        private static Tbool IsParentOf(Person p1, Person p2)
+        {
+            return Input.Tbool(p1, "IsParentOf", p2);
         }
         
-        // AllXThat
+        // Filter
     
         [Test]
-        public void AllXThat1 ()
+        public void Filter1 ()
         {
             NewTest();
-            Tset theAssets      = Facts.AllXThat(M,"Owns");
+            Tset theAssets = Facts.AllKnownProperty().Filter(_ => Owns (M,_));
             Assert.AreEqual("1/1/0001 12:00:00 AM A, B 1/1/2005 12:00:00 AM A, B, C 1/1/2008 12:00:00 AM A, C ", 
                             theAssets.TestOutput);        
         }
         
         [Test]
-        public void AllXThat2 ()
+        public void Filter2 ()
+        {
+            Facts.Clear();
+            
+            Person P1 = new Person("P1");
+            Person P3 = new Person("P3");
+            Person P4 = new Person("P4");
+            
+            Facts.Assert(P1, "IsParentOf", P3);
+            Facts.Assert(P1, "IsParentOf", P4);
+            Facts.Assert(P1, "IsParentOf", P1, false);  // An absurd thing to have to assert
+            
+            Tset result = Facts.AllKnownPeople().Filter( _ => IsParentOf(P1,_));
+            
+            Assert.AreEqual("1/1/0001 12:00:00 AM P3, P4 ", 
+                            result.TestOutput);
+        }
+        
+        [Test]
+        public void Filter3 ()
         {
             Facts.Clear();
             
@@ -114,82 +136,101 @@ namespace Hammurabi.UnitTests.CoreFcns
             Person P3 = new Person("P3");
             Person P4 = new Person("P4");
 
-            Tbool tb1 = new Tbool();
-            tb1.AddState(Time.DawnOf, false);
+            Tbool tb1 = new Tbool(false);
             tb1.AddState(new DateTime(2005,12,20),true);
             
-            Tbool tb2 = new Tbool();
-            tb2.AddState(Time.DawnOf, false);
+            Tbool tb2 = new Tbool(false);
             tb2.AddState(new DateTime(2008,3,8),true);
             
             Facts.Assert(P1, "IsParentOf", P3, tb1);
             Facts.Assert(P1, "IsParentOf", P4, tb2);
+            Facts.Assert(P1, "IsParentOf", P1, false);  // An absurd thing to have to assert
+            
+            Tset result = Facts.AllKnownPeople().Filter( _ => IsParentOf(P1,_));
             
             Assert.AreEqual("1/1/0001 12:00:00 AM 12/20/2005 12:00:00 AM P3 3/8/2008 12:00:00 AM P3, P4 ", 
-                            Facts.AllXThat(P1,"IsParentOf").TestOutput);
+                            result.TestOutput);
         }
         
-        // AllXSuchThatX
-        
         [Test]
-        public void AllXSuchThatX1 ()
+        public void Filter4 ()
         {
             Facts.Clear();
             
             Person P1 = new Person("P1");
             Person P3 = new Person("P3");
             Person P4 = new Person("P4");
-
-            Tbool tb1 = new Tbool();
-            tb1.AddState(Time.DawnOf, false);
-            tb1.AddState(new DateTime(2005,12,20),true);
             
-            Tbool tb2 = new Tbool();
-            tb2.AddState(Time.DawnOf, false);
-            tb2.AddState(new DateTime(2008,3,8),true);
+            Facts.Assert(P1, "IsParentOf", P3);
+            Facts.Assert(P1, "IsParentOf", P4);
+            Facts.Assert(P4, "IsParentOf", P3, false);
+            Facts.Assert(P3, "IsParentOf", P3, false);
             
-            Facts.Assert(P1, "IsParentOf", P3, tb1);
-            Facts.Assert(P1, "IsParentOf", P4, tb2);
-            
-            Assert.AreEqual("1/1/0001 12:00:00 AM 12/20/2005 12:00:00 AM P1, P2 ", 
-                            Facts.AllXSuchThatX("IsParentOf",P1).TestOutput);
+            Tset result = Facts.AllKnownPeople().Filter( _ => IsParentOf(_,P3));
+            Assert.AreEqual("1/1/0001 12:00:00 AM P1 ", result.TestOutput);
         }
         
         [Test]
-        public void AllXSuchThatX2 ()
+        public void Filter5 ()
         {
             Facts.Clear();
             Person P1 = new Person("P1");
-            Tset result = Facts.AllXSuchThatX("IsParentOf",P1);
+            Tset result = Facts.AllKnownPeople().Filter( _ => IsParentOf(_,P1));
             Assert.AreEqual("1/1/0001 12:00:00 AM ", result.TestOutput);
         }
         
-        // AllXSymmetrical
-        
         [Test]
-        public void AllXSymmetrical1 ()
+        public void Filter6 ()
         {
-            Facts.Clear();
-            Person P1 = new Person("P1");
-            Person P2 = new Person("P2");
-            Facts.Assert(P1,"IsMarriedTo",P2);
-            Tset theSpouses = Facts.AllXSymmetrical(P1,"IsMarriedTo");    
-            Assert.AreEqual("1/1/0001 12:00:00 AM P2 ", theSpouses.TestOutput);
+            NewTest();
+            Tset theAssets = Facts.AllKnownProperty().Filter( _ => Owns (M,_));
+            Tset cheapAssets = theAssets.Filter(x => AssetValueLessThan4((Property)x));            
+            Assert.AreEqual("1/1/0001 12:00:00 AM A, B 1/1/2005 12:00:00 AM A, B, C 1/1/2008 12:00:00 AM A, C 1/14/2011 12:00:00 AM A ", 
+                            cheapAssets.TestOutput);        
         }
-        
+
         [Test]
-        public void AllXSymmetrical2 ()
+        public void Filter7_Unknown ()
         {
-            Facts.Clear();
-            Person P1 = new Person("P1");
-            Person P2 = new Person("P2");
-            Person P3 = new Person("P3");
-            Facts.Assert(P2,"IsMarriedTo",P1);
-            Facts.Assert(P1,"IsMarriedTo",P3);
-            Tset theSpouses = Facts.AllXSymmetrical(P1,"IsMarriedTo");    
-            Assert.AreEqual("1/1/0001 12:00:00 AM P2, P3 ", theSpouses.TestOutput);
+            NewTest();
+            Tbool areAnyCheapAssets = Facts.AllKnownProperty().Exists(x => AssetValueIndeterminacy(x));
+            Assert.AreEqual("1/1/0001 12:00:00 AM Unstated ", areAnyCheapAssets.TestOutput);
         }
-        
+
+        // Tset.Count
+
+        [Test]
+        public void CountUnknown1 ()
+        {
+            Person P1 = new Person("P1");
+            Tset tsv = new Tset(Hstate.Stub);
+            tsv.AddState(Date(2000,01,01),P1);
+            tsv.AddState(Date(2001,01,01),Hstate.Uncertain);
+            Assert.AreEqual("1/1/0001 12:00:00 AM Stub 1/1/2000 12:00:00 AM 1 1/1/2001 12:00:00 AM Uncertain ", tsv.Count.TestOutput);
+        }
+
+        // EntitiesAsOf
+
+        [Test]
+        public void EntitiesAsOf1 ()
+        {
+            Person P1 = new Person("P1");
+            Tset tsv = new Tset(Hstate.Stub);
+            tsv.AddState(Date(2000,01,01),P1);
+            tsv.AddState(Date(2001,01,01),Hstate.Uncertain);
+            Assert.AreEqual(Hstate.Stub, tsv.EntitiesAsOf(Date(1999,01,01)).Val);
+        }
+
+        [Test]
+        public void EntitiesAsOf2 ()
+        {
+            Person P1 = new Person("P1");
+            Tset tsv = new Tset(Hstate.Stub);
+            tsv.AddState(Date(2000,01,01),P1);
+            tsv.AddState(Date(2001,01,01),Hstate.Uncertain);
+            Assert.AreEqual(Hstate.Uncertain, tsv.EntitiesAsOf(Date(2002,02,01)).Val);
+        }
+
         // AllKnownPeople
         
         [Test]
@@ -231,14 +272,34 @@ namespace Hammurabi.UnitTests.CoreFcns
             Assert.AreEqual("1/1/0001 12:00:00 AM P1, P2, P3 ", result.TestOutput);
         }
         
+        [Test]
+        public void AllKnownPeople4 ()
+        {
+            Facts.Clear();
+            Person P1 = new Person("P1");
+            Facts.Assert(P1,"Gender", "Male");
+            Tset result = Facts.AllKnownPeople();
+            Assert.AreEqual("1/1/0001 12:00:00 AM P1 ", result.TestOutput);
+        }
+        
         // Sum
     
         [Test]
-        public void Set_Sum ()
+        public void Set_Sum1 ()
         {
             NewTest();
-            Tset theAssets      = Facts.AllXThat(M,"Owns");
-            Tnum sumOfAssets = Sum(theAssets, x => AssetValue((Property)x));
+            Tset theAssets = Facts.AllKnownProperty().Filter( _ => Owns (M,_));
+            Tnum sumOfAssets = theAssets.Sum(x => AssetValue((Property)x));
+            Assert.AreEqual("1/1/0001 12:00:00 AM 3 1/1/2005 12:00:00 AM 6 1/1/2008 12:00:00 AM 4 1/14/2011 12:00:00 AM 5 ", 
+                            sumOfAssets.TestOutput);        
+        }
+        
+        [Test]
+        public void Set_Sum2 ()
+        {
+            NewTest();
+            Tset theAssets = Facts.AllKnownProperty().Filter( _ => Owns (M,_));
+            Tnum sumOfAssets = theAssets.Sum(x => AssetValue((Property)x));
             Assert.AreEqual("1/1/0001 12:00:00 AM 3 1/1/2005 12:00:00 AM 6 1/1/2008 12:00:00 AM 4 1/14/2011 12:00:00 AM 5 ", 
                             sumOfAssets.TestOutput);        
         }
@@ -247,30 +308,22 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void Set_Sum_Unknown_1 ()
         {
             NewTest();
-            Tset theAssets      = new Tset();
-            Tnum sumOfAssets = Sum(theAssets, x => AssetValue((Property)x));
-            Assert.AreEqual("Unknown", sumOfAssets.TestOutput);        
+            Tset theAssets = new Tset(Hstate.Unstated);
+            Tnum sumOfAssets = theAssets.Sum(x => AssetValue((Property)x));
+            Assert.AreEqual("1/1/0001 12:00:00 AM Unstated ", sumOfAssets.TestOutput);        
         }
         
         [Test]
         public void Set_Sum_Unknown_2 ()
         {
             NewTest();
-            Tset theAssets      = Facts.AllXThat(M,"Owns");
-            Tnum sumOfAssets = Sum(theAssets, x => { return new Tnum();} );
-            Assert.AreEqual("Unknown", sumOfAssets.TestOutput);    
+            Tset theAssets = Facts.AllKnownProperty().Filter( _ => Owns (M,_));
+            Tnum sumOfAssets = theAssets.Sum(x => NullFcn(x) );
+            Assert.AreEqual("1/1/0001 12:00:00 AM Stub ", sumOfAssets.TestOutput);    
         }
-        
-        // Filter
-    
-        [Test]
-        public void Test3 ()
+        private static Tnum NullFcn(Property p)
         {
-            NewTest();
-            Tset theAssets      = Facts.AllXThat(M,"Owns");
-            Tset cheapAssets = Filter(theAssets, x => AssetValueLessThan4((Property)x));            
-            Assert.AreEqual("1/1/0001 12:00:00 AM A, B 1/1/2005 12:00:00 AM A, B, C 1/1/2008 12:00:00 AM A, C 1/14/2011 12:00:00 AM A ", 
-                            cheapAssets.TestOutput);        
+            return new Tnum(Hstate.Stub);
         }
         
         // Exists
@@ -279,8 +332,8 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void Exists_1 ()
         {
             NewTest();
-            Tset theAssets = Facts.AllXThat(M,"Owns");
-            Tbool areAnyCheapAssets = Exists(theAssets, x => AssetValueLessThan4((Property)x));
+            Tset theAssets = Facts.AllKnownProperty().Filter( _ => Owns (M,_));
+            Tbool areAnyCheapAssets = theAssets.Exists(x => AssetValueLessThan4(x));
             Assert.AreEqual("1/1/0001 12:00:00 AM True ", areAnyCheapAssets.TestOutput);        
         }
         
@@ -288,31 +341,152 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void Exists_2_Unknown ()
         {
             NewTest();
-            Tset theAssets = new Tset();
-            Tbool areAnyCheapAssets = Exists(theAssets, x => AssetValueLessThan4((Property)x));
-            Assert.AreEqual("Unknown", areAnyCheapAssets.TestOutput);        
+            Tset theAssets = new Tset(Hstate.Unstated);
+            Tbool areAnyCheapAssets = theAssets.Exists(x => AssetValueLessThan4(x));
+            Assert.AreEqual("1/1/0001 12:00:00 AM Unstated ", areAnyCheapAssets.TestOutput);        
         }
         
         [Test]
         public void Exists_3_Unknown ()
         {
             NewTest();
-            Tset theAssets = Facts.AllXThat(M,"Owns");
-            Tbool areAnyCheapAssets = Exists(theAssets, x => AssetValueIndeterminacy((Property)x));
-            Assert.AreEqual("Unknown", areAnyCheapAssets.TestOutput);
+            Tset theAssets = Facts.AllKnownProperty().Filter( _ => Owns (M,_));
+            Tbool areAnyCheapAssets = theAssets.Exists(x => AssetValueIndeterminacy(x));
+            Assert.AreEqual("1/1/0001 12:00:00 AM Unstated ", areAnyCheapAssets.TestOutput);
         }
         
         // ForAll
     
         [Test]
-        public void Test5 ()
+        public void ForAll1 ()
         {
             NewTest();
-            Tset theAssets = Facts.AllXThat(M,"Owns");
-            Tbool allAssetsAreCheap = ForAll(theAssets, x => AssetValueLessThan4((Property)x));
+            Tset theAssets = Facts.AllKnownProperty().Filter( _ => Owns (M,_));
+            Tbool allAssetsAreCheap = theAssets.ForAll( x => AssetValueLessThan4((Property)x));
             Assert.AreEqual("1/1/0001 12:00:00 AM True 1/14/2011 12:00:00 AM False ", allAssetsAreCheap.TestOutput);        
         }
+  
+        // Functions compiled from Akkadian to C#
+        
+        [Test]
+        public void Compiled1a ()
+        {
+            Facts.Clear();
+            Tbool result = AllAreMale();
+            Assert.AreEqual("1/1/0001 12:00:00 AM False ", result.TestOutput);        
+        }
+        
+        [Test]
+        public void Compiled1b ()
+        {
+            Facts.Clear();
+            Person p = new Person("p");
+            Facts.Assert(p,"Gender","Male");
+            Tbool result = AllAreMale();
+            Assert.AreEqual("1/1/0001 12:00:00 AM True ", result.TestOutput);        
+        }
+        
+        [Test]
+        public void Compiled1c ()
+        {
+            Facts.Clear();
+            Person p1 = new Person("p1");
+            Person p2 = new Person("p2");
+            Facts.Assert(p1,"Gender","Male");
+            Facts.Assert(p2,"Gender","Male");
+            Tbool result = AllAreMale();
+            Assert.AreEqual("1/1/0001 12:00:00 AM True ", result.TestOutput);        
+        }
+        
+        [Test]
+        public void Compiled1d ()
+        {
+            Facts.Clear();
+            Person p1 = new Person("p1");
+            Person p2 = new Person("p2");
+            Facts.Assert(p1,"Gender","Male");
+            Facts.Assert(p2,"Gender","Female");
+            Tbool result = AllAreMale();
+            Assert.AreEqual("1/1/0001 12:00:00 AM False ", result.TestOutput);        
+        }
+        
+        private static Tbool AllAreMale()
+        {
+            return Facts.AllKnownPeople().ForAll( _ => IsMale(_));
+        }
+        
+        // ForAll using a filter method with two parameters
+        
+        [Test]
+        public void Compiled2a ()
+        {
+            Facts.Clear();
+            Corp c = new Corp();
+            Tbool result = SomeoneWorksAt(c);
+            Assert.AreEqual("1/1/0001 12:00:00 AM False ", result.TestOutput);        
+        }
+        
+        [Test]
+        public void Compiled2b ()
+        {
+            Facts.Clear();
+            Corp c = new Corp();
+            Person p = new Person();
+            Tbool result = SomeoneWorksAt(c);
+            Assert.AreEqual("1/1/0001 12:00:00 AM False ", result.TestOutput);        
+        }
+        
+        [Test]
+        public void Compiled2c ()
+        {
+            Facts.Clear();
+            Corp c = new Corp();
+            Person p = new Person();
+            Facts.Assert(p, "EmploymentRelationship", c, "Employee");
+            Tbool result = SomeoneWorksAt(c);
+            Assert.AreEqual("1/1/0001 12:00:00 AM True ", result.TestOutput);        
+        }
+        
+        [Test]
+        public void Compiled2d ()
+        {
+            Facts.Clear();
+            Corp c = new Corp();
+            Person p = new Person();
+            Facts.Assert(p, "EmploymentRelationship", c, "Intern");
+            Tbool result = SomeoneWorksAt(c);
+            Assert.AreEqual("1/1/0001 12:00:00 AM False ", result.TestOutput);        
+        }
 
+        [Test]
+        public void Compiled2g ()
+        {
+            Facts.Clear();
+            Person p = new Person("p");
+            Corp c = new Corp("c");
+            Corp c2 = new Corp("c2");
+            Facts.Assert(p, "EmploymentRelationship", c2, "Employee");
+            Tbool result = Econ.IsEmployedBy(p,c2);
+            Assert.AreEqual("1/1/0001 12:00:00 AM True ", result.TestOutput);        
+        }
+        
+        [Test]
+        public void Compiled2h ()
+        {
+            Facts.Clear();
+            Person p = new Person("p");
+            Corp c = new Corp("c");
+            Corp c2 = new Corp("c2");
+            Facts.Assert(p, "EmploymentRelationship", c2, "Employee");
+            Facts.Assert(p, "EmploymentRelationship", c, "Intern");
+            Tbool result = SomeoneWorksAt(c);  
+            Assert.AreEqual("1/1/0001 12:00:00 AM False ", result.TestOutput);        
+        }
+        
+        private static Tbool SomeoneWorksAt(Corp c)
+        {
+            return Facts.AllKnownPeople().Exists( _ => Econ.IsEmployedBy(_,c));
+        }
         
     }
 }

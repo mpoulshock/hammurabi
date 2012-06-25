@@ -1,4 +1,4 @@
-// Copyright (c) 2011 The Hammurabi Project
+// Copyright (c) 2012 Hammura.bi LLC
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -30,7 +30,7 @@ namespace Hammurabi
     /// Example: a family that is composed of different members at various
     /// points in time.
     /// </summary>
-    public class Tset : Tvar
+    public partial class Tset : Tvar
     {
         /// <summary>
         /// Constructs an unknown Tset (one with no states). 
@@ -38,7 +38,17 @@ namespace Hammurabi
         public Tset()
         {
         }
-        
+
+        public Tset(Hstate state)
+        {
+            this.SetEternally(state);
+        }
+
+        public Tset(Hval val)
+        {
+            this.SetEternally(val);
+        }
+
         /// <summary>
         /// Constructs a Tset consisting eternally of a list of members. 
         /// </summary>
@@ -52,7 +62,18 @@ namespace Hammurabi
         /// </summary>
         public Tset(List<LegalEntity> list)
         {
-            this.SetEternally(list);
+            this.SetEternally(new Hval(list));
+        }
+  
+        /// <summary>
+        /// Constructs a Tset from an existing Tset. 
+        /// </summary>
+        public Tset(Tset s)
+        {
+            for (int i=0; i<s.TimeLine.Count; i++)
+            {
+                this.AddState(s.TimeLine.Keys[i], s.TimeLine.Values[i]);
+            }
         }
         
         /// <summary>
@@ -72,8 +93,8 @@ namespace Hammurabi
             
             foreach (LegalEntity le in list)
                 entities.Add(le);
-            
-            TimeLine.Add(dt,entities);    
+
+            TimeLine.Add(dt, new Hval(entities));    
         }
         
         /// <summary>
@@ -81,7 +102,7 @@ namespace Hammurabi
         /// </summary>
         public void SetEternally(LegalEntity val)
         {
-            TimeLine.Add(Time.DawnOf,val);    
+            TimeLine.Add(Time.DawnOf, new Hval(val));    
         }
         
         /// <summary>
@@ -99,9 +120,44 @@ namespace Hammurabi
         {
             get
             {
-                return this.LeanTvar<Tset>();
+                Tset n = this;
+            
+                // Identify redundant intervals
+                List<DateTime> dupes = new List<DateTime>();
+                
+                if (TimeLine.Count > 0)
+                {
+                    for (int i=0; i < TimeLine.Count-1; i++ ) 
+                    {
+                        if (AreEquivalentSets((List<LegalEntity>)TimeLine.Values[i+1].Val,(List<LegalEntity>)TimeLine.Values[i].Val))
+                        {
+                            dupes.Add(TimeLine.Keys[i+1]);
+                        }
+                    }
+                }
+                
+                // Remove redundant intervals
+                foreach (DateTime d in dupes) TimeLine.Remove(d);
+                    
+                return n;
             }
         }
+        
+        /// <summary>
+        /// Determines whether two lists of legal entities are equivalent (ignoring order)
+        /// </summary>
+        public static bool AreEquivalentSets(List<LegalEntity> L1, List<LegalEntity> L2)
+        {
+            if (L1.Count != L2.Count) return false;
+            
+            foreach(LegalEntity i in L1)
+            {
+                if (!L2.Contains(i)) return false;
+            }
+            
+            return true;
+        }
+                                              
         
         /// <summary>
         /// Converts a Tset containing a single member into a (nullable) 
@@ -112,20 +168,18 @@ namespace Hammurabi
         {
             get
             {
-                if (this.IsUnknown || TimeLine.Count > 1) { return null; }
+                if (TimeLine.Count > 1) { return null; }
 
-                return (Person)TimeLine.Values[0];
+                return (Person)this.TimeLine.Values[0].Obj;
             }
         }
         
         /// <summary>
         /// Returns the members of the set at a specified point in time. 
         /// </summary>
-        public Tset AsOf(DateTime dt)
+        public Tset AsOf(Tdate dt)
         {
-            if (this.IsUnknown) { return new Tset(); }
-            
-            return (Tset)this.AsOf<Tset>(dt);
+            return this.AsOf<Tset>(dt);
         }
 
         /// <summary>
@@ -134,28 +188,25 @@ namespace Hammurabi
         /// </summary>
         new public string Timeline
         {
-            get
-            {
+            get 
+            {  
                 string result = "";
-                
-                if (IsUnknown)
+                foreach(KeyValuePair<DateTime,Hval> de in this.TimeLine)
                 {
-                    result = "Unknown";
-                }
-                else
-                {
-                    foreach(KeyValuePair<DateTime,object> de in TimeLine )
+                    // Show the value as an element on the timeline
+                    result += de.Key + " ";  
+
+                    if (!de.Value.IsKnown) result += de.Value.ToString;
+
+                    else
                     {
-                        result += de.Key + " ";
-                        
-                        foreach(LegalEntity le in (List<LegalEntity>)de.Value)
+                        foreach(LegalEntity le in (List<LegalEntity>)de.Value.Val)
                         {
                             result += le.Id + ", ";
                         }
                         result = result.TrimEnd(',',' ');
-                        
-                        result += "\n";    
                     }
+                    result += "\n"; 
                 }
                 return result;
             }
@@ -181,15 +232,19 @@ namespace Hammurabi
         {
             get
             {
-                if (this.IsUnknown) { return new Tnum(); }
-                
                 Tnum result = new Tnum();
                 
-                foreach(KeyValuePair<DateTime,object> de in TimeLine )
+                foreach(KeyValuePair<DateTime,Hval> de in TimeLine )
                 {
-                    List<LegalEntity> entities = (List<LegalEntity>)de.Value;
-                    
-                    result.AddState(de.Key, Convert.ToString(entities.Count));
+                    if (!de.Value.IsKnown)
+                    {
+                        result.AddState(de.Key,de.Value);
+                    }
+                    else
+                    {
+                        List<LegalEntity> entities = (List<LegalEntity>)de.Value.Val;
+                        result.AddState(de.Key, new Hval(Convert.ToDecimal(entities.Count)));
+                    }
                 }
                 
                 return result;
@@ -203,25 +258,7 @@ namespace Hammurabi
         {
             get
             {
-                if (this.IsUnknown) { return new Tbool(); }
-                
-                Tbool result = new Tbool();
-                
-                foreach(KeyValuePair<DateTime,object> de in TimeLine )
-                {
-                    bool intervalIsEmpty = true;
-                    
-                    List<LegalEntity> entities = (List<LegalEntity>)de.Value;
-                    
-                    if (entities.Count > 0)
-                    {
-                        intervalIsEmpty = false;
-                    }
-                    
-                    result.AddState(de.Key, intervalIsEmpty);
-                }
-                
-                return result;
+                return this.Count == 0;
             }
         }    
         
@@ -231,9 +268,6 @@ namespace Hammurabi
         public Tbool IsSubsetOf(Tset super)
         {
             Tset sub = this;
-            
-            if (AnyAreUnknown(sub, super)) { return new Tbool(); }
-            
             Tbool result = new Tbool();
             
             List<LegalEntity> entitiesInSub = new List<LegalEntity>();
@@ -241,20 +275,33 @@ namespace Hammurabi
                         
             foreach (DateTime d in TimePoints(sub, super))
             {
-                bool isSubset = true;
-                
-                entitiesInSub   = sub.EntitiesAsOf(d);
-                entitiesInSuper = super.EntitiesAsOf(d);
-                    
-                foreach (LegalEntity le in entitiesInSub)
+                Hval subHval = sub.EntitiesAsOf(d);
+                Hval superHval = super.EntitiesAsOf(d);
+
+                // Handle unknowns
+                Hstate top = PrecedingState(subHval.State, superHval.State);
+                if (top != Hstate.Known) 
                 {
-                    if (!entitiesInSuper.Contains(le))
-                    {
-                        isSubset = false;    
-                    }
+                    result.AddState(d, new Hval(null,top));
                 }
-                
-                result.AddState(d,isSubset);
+
+                // Determine subset
+                else
+                {
+                    bool isSubset = true;
+                    entitiesInSub   = (List<LegalEntity>)subHval.Val;
+                    entitiesInSuper = (List<LegalEntity>)superHval.Val;
+                        
+                    foreach (LegalEntity le in entitiesInSub)
+                    {
+                        if (!entitiesInSuper.Contains(le))
+                        {
+                            isSubset = false;    
+                        }
+                    }
+                    
+                    result.AddState(d,isSubset);
+                }
             }
 
             return result.Lean;
@@ -267,6 +314,7 @@ namespace Hammurabi
         {
             return Auxiliary.IsMemberOfSet(e,this);
         }
+
         
         /// <summary>
         /// Returns the temporal union of two Tsets.
@@ -274,58 +322,76 @@ namespace Hammurabi
         /// </summary>
         public static Tset operator | (Tset set1, Tset set2)    
         {
-            if (AnyAreUnknown(set1, set2)) { return new Tset(); }
-            
             Tset result = new Tset();
-            
-            foreach(KeyValuePair<DateTime,List<object>> slice in TimePointValues(set1, set2))
-            {    
-                List<LegalEntity> intervalUnion = new List<LegalEntity>();
-                
-                foreach (List<LegalEntity> entities in slice.Value)
+
+            // For each time period
+            foreach(KeyValuePair<DateTime,List<Hval>> slice in TimePointValues(set1, set2))
+            {   
+                Hstate top = PrecedingState(slice.Value);
+                if (top != Hstate.Known) 
                 {
-                    foreach (LegalEntity le in entities)
+                     result.AddState(slice.Key, new Hval(null,top));
+                }
+                else
+                {
+                    List<LegalEntity> intervalUnion = new List<LegalEntity>();
+    
+                    // For each list of entities
+                    for (int i=0; i<slice.Value.Count; i++)
                     {
-                        if (!intervalUnion.Contains(le))
+                        List<LegalEntity> entities = (List<LegalEntity>)slice.Value[i].Val;
+    
+                        foreach (LegalEntity le in entities)
                         {
-                            intervalUnion.Add(le);
+                            if (!intervalUnion.Contains(le))
+                            {
+                                intervalUnion.Add(le);
+                            }
                         }
                     }
                     
+                    result.AddState(slice.Key, new Hval(intervalUnion));
                 }
-                
-                result.AddState(slice.Key, intervalUnion);
             }
             
             return result.Lean;
         }
-        
+
+
         /// <summary>
         /// Returns the temporal intersection of two Tsets.
         /// This is equivalent to a logical AND of two sets.
         /// </summary>
         public static Tset operator & (Tset set1, Tset set2)    
         {
-            if (AnyAreUnknown(set1, set2)) { return new Tset(); }
-            
             Tset result = new Tset();
                         
             foreach (DateTime d in TimePoints(set1, set2))
             {
-                List<LegalEntity> entitiesInSet1 = set1.EntitiesAsOf(d);
-                List<LegalEntity> entitiesInSet2 = set2.EntitiesAsOf(d);            
-                List<LegalEntity> intersect = new List<LegalEntity>();
-                
-                // Members of set 1 in set 2
-                foreach (LegalEntity le in entitiesInSet1)
+                Hval set1Val = set1.EntitiesAsOf(d);
+                Hval set2Val = set2.EntitiesAsOf(d); 
+
+                Hstate top = PrecedingState(set1Val, set2Val);
+                if (top != Hstate.Known) 
                 {
-                    if (entitiesInSet2.Contains(le))
-                    {
-                        intersect.Add(le);
-                    }
+                     result.AddState(d, new Hval(null,top));
                 }
-                
-                result.AddState(d,intersect);
+                else
+                {
+                    List<LegalEntity> entitiesInSet2 = (List<LegalEntity>)set2Val.Val;            
+                    List<LegalEntity> intersect = new List<LegalEntity>();
+                    
+                    // Members of set 1 in set 2
+                    foreach (LegalEntity le in (List<LegalEntity>)set1Val.Val)
+                    {
+                        if (entitiesInSet2.Contains(le))
+                        {
+                            intersect.Add(le);
+                        }
+                    }
+                    
+                    result.AddState(d,new Hval(intersect));
+                }
             }
 
             return result.Lean;
@@ -339,26 +405,34 @@ namespace Hammurabi
         /// </summary>
         public static Tset operator - (Tset set1, Tset set2)    
         {
-            if (AnyAreUnknown(set1, set2)) { return new Tset(); }
-            
             Tset result = new Tset();
                         
             foreach (DateTime d in TimePoints(set1, set2))
             {
-                List<LegalEntity> entitiesInSet1 = set1.EntitiesAsOf(d);
-                List<LegalEntity> entitiesInSet2 = set2.EntitiesAsOf(d);            
-                List<LegalEntity> complement = new List<LegalEntity>();
-                
-                // Members of set 1 not in set 2
-                foreach (LegalEntity le in entitiesInSet1)
+                Hval set1Val = set1.EntitiesAsOf(d);
+                Hval set2Val = set2.EntitiesAsOf(d); 
+
+                Hstate top = PrecedingState(set1Val, set2Val);
+                if (top != Hstate.Known) 
                 {
-                    if (!entitiesInSet2.Contains(le))
-                    {
-                        complement.Add(le);
-                    }
+                     result.AddState(d, new Hval(null,top));
                 }
-                
-                result.AddState(d,complement);
+                else
+                {
+                    List<LegalEntity> entitiesInSet2 = (List<LegalEntity>)set2Val.Val;            
+                    List<LegalEntity> complement = new List<LegalEntity>();
+                    
+                    // Members of set 1 not in set 2
+                    foreach (LegalEntity le in (List<LegalEntity>)set1Val.Val)
+                    {
+                        if (!entitiesInSet2.Contains(le))
+                        {
+                            complement.Add(le);
+                        }
+                    }
+                    
+                    result.AddState(d,new Hval(complement));
+                }
             }
 
             return result.Lean;
@@ -389,7 +463,7 @@ namespace Hammurabi
         /// <summary>
         /// Returns a list of the members of the set at a given point in time. 
         /// </summary>
-        public List<LegalEntity> EntitiesAsOf(DateTime dt)
+        public Hval EntitiesAsOf(DateTime dt)
         {            
             for (int i = 0; i < TimeLine.Count-1; i++ ) 
             {
@@ -398,7 +472,7 @@ namespace Hammurabi
                 {
                     if (dt < TimeLine.Keys[i+1])
                     {
-                        return (List<LegalEntity>)TimeLine.Values[i];
+                        return TimeLine.Values[i];
                     }
                 }
             }
@@ -406,12 +480,12 @@ namespace Hammurabi
             // If value is on or after last point on timeline...
             if (dt >= TimeLine.Keys[TimeLine.Count-1])
             {
-                return (List<LegalEntity>)TimeLine.Values[TimeLine.Count-1];
+                return TimeLine.Values[TimeLine.Count-1];
             }
             
-            return new List<LegalEntity>();
+            return new Hval(new List<LegalEntity>());
         }
-        
+
         /// <summary>
         /// Returns a list of all legal entities that were ever members of the 
         /// set. 
@@ -420,20 +494,22 @@ namespace Hammurabi
         {
             List<LegalEntity> result = new List<LegalEntity>();
             
-            foreach(KeyValuePair<DateTime,object> de in TimeLine )
-            {            
-                foreach(LegalEntity le in (List<LegalEntity>)de.Value)
+            foreach(KeyValuePair<DateTime,Hval> de in TimeLine )
+            {
+                if (de.Value.IsKnown)
                 {
-                    if (!result.Contains(le))
+                    foreach(LegalEntity le in (List<LegalEntity>)de.Value.Val)
                     {
-                        result.Add(le);    
+                        if (!result.Contains(le))
+                        {
+                            result.Add(le);    
+                        }
                     }
                 }
             }
             
             return result;
         }
-
     }
     
     #pragma warning restore 660, 661

@@ -1,4 +1,4 @@
-// Copyright (c) 2011 The Hammurabi Project
+// Copyright (c) 2012 Hammura.bi LLC
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -46,7 +46,12 @@ namespace Hammurabi
         /// </summary>
         public Tbool EverPer(Tnum intervals)
         {
-            if (this.IsUnknown) { return new Tbool(); }
+            // If the interval Tnum is eternally unknown, return unknown
+            if (intervals.IntervalValues.Count == 1 &&
+                !intervals.FirstValue.IsKnown)
+            {
+                return new Tbool(intervals.FirstValue);
+            }
 
             Tbool result = new Tbool();
 
@@ -55,7 +60,7 @@ namespace Hammurabi
             // Check each time interval to see if condition is true
             for (int i = 0; i < tPoints.Count-1; i++) 
             {
-                bool? isEverTrue = this.IsEver(true, tPoints[i], tPoints[i+1]).ToBool;
+                Hval isEverTrue = this.IsEverTrue(tPoints[i], tPoints[i+1]).FirstValue;
                 result.AddState(tPoints[i], isEverTrue);
             }
             
@@ -72,7 +77,12 @@ namespace Hammurabi
         /// </summary>
         public Tbool AlwaysPer(Tnum intervals)
         {
-            if (this.IsUnknown) { return new Tbool(); }
+            // If the interval Tnum is eternally unknown, return unknown
+            if (intervals.IntervalValues.Count == 1 &&
+                !intervals.FirstValue.IsKnown)
+            {
+                return new Tbool(intervals.FirstValue);
+            }
 
             Tbool result = new Tbool();
 
@@ -81,38 +91,12 @@ namespace Hammurabi
             // Foreach interval in intervals
             for (int i = 0; i < tPoints.Count-1; i++) 
             {
-                bool? isAlwaysTrue = this.IsAlways(true, tPoints[i], tPoints[i+1]).ToBool;
+                Hval isAlwaysTrue = this.IsAlwaysTrue(tPoints[i], tPoints[i+1]).FirstValue;
                 result.AddState(tPoints[i], isAlwaysTrue);
             }
             
             // Doesn't use .Lean.  See explanation in EverPer() above.
             return result;
-        }
-
-        /// <summary>
-        /// Returns the total elapsed days that a Tbool is true,
-        /// for each of a given set of intervals.
-        /// </summary>
-        public Tnum ElapsedDaysPer(Tnum period)
-        {
-            return ElapsedDaysPer(period, true);
-        }
-        
-        /// <summary>
-        /// Returns the total elapsed days during which a Tbool is true. 
-        /// </summary>
-        public Tnum ElapsedDays()
-        {
-            return ElapsedDays(true, Time.DawnOf, Time.EndOf);
-        }
-        
-        /// <summary>
-        /// Returns the total elapsed days, between two given DateTimes, during
-        /// which a Tbool is true. 
-        /// </summary>
-        public Tnum ElapsedDays(DateTime start, DateTime end)
-        {
-            return ElapsedDays(true, start, end);
         }
         
         /// <summary>
@@ -128,12 +112,12 @@ namespace Hammurabi
         // TODO: Add support for counting partial subintervals
         public Tnum CountPer(Tnum intervals)
         {
-            if (this.IsUnknown || intervals.IsUnknown) { return new Tnum(); }
+            // TODO: Handle unknowns...
             
             Tnum result = new Tnum();
             
-            SortedList<DateTime, object> big = intervals.IntervalValues;
-            SortedList<DateTime, object> small = this.IntervalValues;
+            SortedList<DateTime, Hval> big = intervals.IntervalValues;
+            SortedList<DateTime, Hval> small = this.IntervalValues;
             
             for (int b = 0; b < big.Count-1; b++ ) 
             {
@@ -173,14 +157,14 @@ namespace Hammurabi
         // TODO: Fix broken test case for this function.
         public Tnum RunningCountPer(Tnum intervals)
         {
-            if (this.IsUnknown || intervals.IsUnknown) { return new Tnum(); }
+            // TODO: Implement unknowns
             
             Tnum result = new Tnum();
             result.AddState(Time.DawnOf,0);
             
             int count = 0;
             decimal? prevBig = 0;
-            SortedList<DateTime, object> sub = this.IntervalValues;
+            SortedList<DateTime, Hval> sub = this.IntervalValues;
             
             // Iterate through the sub-intervals
             for (int i = 0; i < sub.Count-1; i++ ) 
@@ -204,7 +188,90 @@ namespace Hammurabi
         
             return result.Lean;
         }
-        
+
+        /// <summary>
+        /// Returns true whenever (1) a Tbool has been true for the previous n 
+        /// full, consecutive calendar weeks, and (2) it is still true.
+        /// </summary>
+        public Tbool ConsecutiveFullCalWeeks(Tnum numberOfWeeks)
+        {
+            Tnum lastN = this.AlwaysPer(TheCalendarWeek).CountPastNIntervals(TheCalendarWeek, numberOfWeeks + 1, 1);
+            return this & lastN >= numberOfWeeks;
+        }
+
+        /// <summary>
+        /// Returns true whenever (1) a Tbool has been true for the previous n 
+        /// partial, consecutive calendar weeks, and (2) it is still true.
+        /// </summary>
+        public Tbool ConsecutivePartCalWeeks(Tnum numberOfWeeks)
+        {
+            Tnum lastN = this.EverPer(TheCalendarWeek).CountPastNIntervals(TheCalendarWeek, numberOfWeeks + 1, 1);
+            return this & lastN >= numberOfWeeks;
+        }
+
+        /// <summary>
+        /// Returns true whenever (1) a Tbool has been true for the previous n 
+        /// full, consecutive calendar months, and (2) it is still true.
+        /// </summary>
+        public Tbool ConsecutiveFullCalMonths(Tnum numberOfMonths)
+        {
+            Tnum lastN = this.AlwaysPer(TheMonth).CountPastNIntervals(TheMonth, numberOfMonths+1, 1);
+            return this & lastN >= numberOfMonths;
+        }
+
+        /// <summary>
+        /// Returns true whenever (1) a Tbool has been true for the previous n 
+        /// partial, consecutive calendar months, and (2) it is still true.
+        /// </summary>
+        public Tbool ConsecutivePartCalMonths(Tnum numberOfMonths)
+        {
+            Tnum month = TheTime.TheMonth;
+            Tnum lastN = this.EverPer(month).CountPastNIntervals(month, numberOfMonths + 1, 1);
+            return this & lastN >= numberOfMonths;
+        }
+
+        /// <summary>
+        /// Returns true whenever (1) a Tbool has been true for the previous n 
+        /// full, consecutive calendar quarters, and (2) it is still true.
+        /// </summary>
+        public Tbool ConsecutiveFullCalQtrs(Tnum numberOfQtrs)
+        {
+            Tnum lastN = this.AlwaysPer(TheQuarter).CountPastNIntervals(TheQuarter, numberOfQtrs + 1, 1);
+            return this & lastN >= numberOfQtrs;
+        }
+
+        /// <summary>
+        /// Returns true whenever (1) a Tbool has been true for the previous n 
+        /// partial, consecutive calendar quarters, and (2) it is still true.
+        /// </summary>
+        public Tbool ConsecutivePartCalQtrs(Tnum numberOfQtrs)
+        {
+            Tnum qtr = TheTime.TheQuarter;
+            Tnum lastN = this.EverPer(qtr).CountPastNIntervals(qtr, numberOfQtrs + 1, 1);
+            return this & lastN >= numberOfQtrs;
+        }
+
+        /// <summary>
+        /// Returns true whenever (1) a Tbool has been true for the previous n 
+        /// full, consecutive calendar years, and (2) it is still true.
+        /// </summary>
+        public Tbool ConsecutiveFullCalYears(Tnum numberOfYears)
+        {
+            Tnum lastN = this.AlwaysPer(TheYear).CountPastNIntervals(TheYear, numberOfYears + 1, 1);
+            return this & lastN >= numberOfYears;
+        }
+
+        /// <summary>
+        /// Returns true whenever (1) a Tbool has been true for the previous n 
+        /// partial, consecutive calendar years, and (2) it is still true.
+        /// </summary>
+        public Tbool ConsecutivePartCalYears(Tnum numberOfYears)
+        {
+            Tnum year = TheTime.TheYear;
+            Tnum lastN = this.EverPer(year).CountPastNIntervals(year, numberOfYears + 1, 1);
+            return this & lastN >= numberOfYears;
+        }
+
         /// <summary>
         /// Returns the number of intervals that the Tbool is true,
         /// going back a specified number of intervals.
@@ -214,7 +281,7 @@ namespace Hammurabi
         /// equals 2, the function would evaluate the current interval and the
         /// prior interval.
         /// </remarks>
-        public Tnum CountPastNIntervals(Tnum intervals, int rangeSpan)
+        public Tnum CountPastNIntervals(Tnum intervals, Tnum rangeSpan)
         {
             return CountPastNIntervals(intervals, rangeSpan, 0);
         }
@@ -233,32 +300,50 @@ namespace Hammurabi
         ///                                  "now"
         ///                      (the interval being analyzed)
         /// </remarks>
-        public Tnum CountPastNIntervals(Tnum intervals, int rangeStart, int rangeEnd)
+        public Tnum CountPastNIntervals(Tnum intervals, Tnum rangeStart, Tnum rangeEnd)
         {
-            if (this.IsUnknown || intervals.IsUnknown) { return new Tnum(); }
+            // TODO: Implement unknowns properly for all inputs
 
+            int rangeStartInt = Convert.ToInt32(rangeStart.FirstValue.Val);
+            int rangeEndInt = Convert.ToInt32(rangeEnd.FirstValue.Val);
             Tnum result = new Tnum();
-            SortedList<DateTime, object> t = intervals.IntervalValues;
+            SortedList<DateTime, Hval> t = intervals.IntervalValues;
 
             // Count forward from the beginning of time through each interval
             for (int b = 0; b < t.Count - 1; b++)
             {
                 int count = 0;
 
+                // Collect unknown states during the relevant time period
+                List<Hval> states = new List<Hval>();
+
                 // Look back the specified number of intervals
-                for (int n = rangeEnd; n < rangeStart; n++)
+                for (int n = rangeEndInt; n < rangeStartInt; n++)
                 {
                     int index = b - n;
-                    if (index >= rangeEnd)
+                    if (index >= rangeEndInt)
                     {
-                        if (this.AsOf(t.Keys[index]).ToBool == true)
+                        // Handle unknowns
+                        Hval baseState = this.ObjectAsOf(t.Keys[index]);
+                        if (!baseState.IsKnown)
+                        {
+                            states.Add(baseState);
+                        }
+                        else if (Convert.ToBoolean(baseState.Val))
                         {
                             count++;
                         }
                     }
                 }
 
-                result.AddState(t.Keys[b], count);
+                if (states.Count > 0)
+                {
+                    result.AddState(t.Keys[b], PrecedingState(states));
+                }
+                else
+                {
+                    result.AddState(t.Keys[b], count);
+                }
             }
 
             return result.Lean;
@@ -266,92 +351,9 @@ namespace Hammurabi
 
         /// <summary>
         /// Returns true whenever (1) a Tbool has been true for the previous n 
-        /// full, consecutive calendar weeks, and (2) it is still true.
-        /// </summary>
-        public Tbool ConsecutiveFullCalWeeks(int numberOfWeeks)
-        {
-            Tnum lastN = this.AlwaysPer(TheCalendarWeek).CountPastNIntervals(TheCalendarWeek, numberOfWeeks + 1, 1);
-            return this & lastN >= numberOfWeeks;
-        }
-
-        /// <summary>
-        /// Returns true whenever (1) a Tbool has been true for the previous n 
-        /// partial, consecutive calendar weeks, and (2) it is still true.
-        /// </summary>
-        public Tbool ConsecutivePartCalWeeks(int numberOfWeeks)
-        {
-            Tnum lastN = this.EverPer(TheCalendarWeek).CountPastNIntervals(TheCalendarWeek, numberOfWeeks + 1, 1);
-            return this & lastN >= numberOfWeeks;
-        }
-
-        /// <summary>
-        /// Returns true whenever (1) a Tbool has been true for the previous n 
-        /// full, consecutive calendar months, and (2) it is still true.
-        /// </summary>
-        public Tbool ConsecutiveFullCalMonths(int numberOfMonths)
-        {
-            Tnum lastN = this.AlwaysPer(TheMonth).CountPastNIntervals(TheMonth, numberOfMonths+1, 1);
-            return this & lastN >= numberOfMonths;
-        }
-
-        /// <summary>
-        /// Returns true whenever (1) a Tbool has been true for the previous n 
-        /// partial, consecutive calendar months, and (2) it is still true.
-        /// </summary>
-        public Tbool ConsecutivePartCalMonths(int numberOfMonths)
-        {
-            Tnum month = TheTime.TheMonth;
-            Tnum lastN = this.EverPer(month).CountPastNIntervals(month, numberOfMonths + 1, 1);
-            return this & lastN >= numberOfMonths;
-        }
-
-        /// <summary>
-        /// Returns true whenever (1) a Tbool has been true for the previous n 
-        /// full, consecutive calendar quarters, and (2) it is still true.
-        /// </summary>
-        public Tbool ConsecutiveFullCalQtrs(int numberOfQtrs)
-        {
-            Tnum lastN = this.AlwaysPer(TheQuarter).CountPastNIntervals(TheQuarter, numberOfQtrs + 1, 1);
-            return this & lastN >= numberOfQtrs;
-        }
-
-        /// <summary>
-        /// Returns true whenever (1) a Tbool has been true for the previous n 
-        /// partial, consecutive calendar quarters, and (2) it is still true.
-        /// </summary>
-        public Tbool ConsecutivePartCalQtrs(int numberOfQtrs)
-        {
-            Tnum qtr = TheTime.TheQuarter;
-            Tnum lastN = this.EverPer(qtr).CountPastNIntervals(qtr, numberOfQtrs + 1, 1);
-            return this & lastN >= numberOfQtrs;
-        }
-
-        /// <summary>
-        /// Returns true whenever (1) a Tbool has been true for the previous n 
-        /// full, consecutive calendar years, and (2) it is still true.
-        /// </summary>
-        public Tbool ConsecutiveFullCalYears(int numberOfYears)
-        {
-            Tnum lastN = this.AlwaysPer(TheYear).CountPastNIntervals(TheYear, numberOfYears + 1, 1);
-            return this & lastN >= numberOfYears;
-        }
-
-        /// <summary>
-        /// Returns true whenever (1) a Tbool has been true for the previous n 
-        /// partial, consecutive calendar years, and (2) it is still true.
-        /// </summary>
-        public Tbool ConsecutivePartCalYears(int numberOfYears)
-        {
-            Tnum year = TheTime.TheYear;
-            Tnum lastN = this.EverPer(year).CountPastNIntervals(year, numberOfYears + 1, 1);
-            return this & lastN >= numberOfYears;
-        }
-
-        /// <summary>
-        /// Returns true whenever (1) a Tbool has been true for the previous n 
         /// consecutive days, and (2) it is still true.
         /// </summary>
-        public Tbool ConsecutiveDays(int numberOfDays)
+        public Tbool ConsecutiveDays(Tnum numberOfDays)
         {
             return ForConsecutiveIntervals(Time.IntervalType.Day, numberOfDays);
         }
@@ -360,7 +362,7 @@ namespace Hammurabi
         /// Returns true whenever (1) a Tbool has been true for the previous n 
         /// consecutive weeks, and (2) it is still true.
         /// </summary>
-        public Tbool ConsecutiveWeeks(int numberOfWeeks)
+        public Tbool ConsecutiveWeeks(Tnum numberOfWeeks)
         {
             return ForConsecutiveIntervals(Time.IntervalType.Week, numberOfWeeks);
         }
@@ -374,7 +376,7 @@ namespace Hammurabi
         /// employed from 1/1 to 12/31, this function will return true from 
         /// 7/1 - 12/31.
         /// </remarks>
-        public Tbool ConsecutiveMonths(int numberOfMonths)
+        public Tbool ConsecutiveMonths(Tnum numberOfMonths)
         {
             return ForConsecutiveIntervals(Time.IntervalType.Month, numberOfMonths);
         }
@@ -383,7 +385,7 @@ namespace Hammurabi
         /// Returns true whenever (1) a Tbool has been true for the previous n 
         /// consecutive years, and (2) it is still true.
         /// </summary>
-        public Tbool ConsecutiveYears(int numberOfYears)
+        public Tbool ConsecutiveYears(Tnum numberOfYears)
         {
             return ForConsecutiveIntervals(Time.IntervalType.Year, numberOfYears);
         }
@@ -392,21 +394,43 @@ namespace Hammurabi
         /// General function that determines whether a Tbool is true for a given number
         /// of intervals of a specified type. 
         /// </summary>
-        private Tbool ForConsecutiveIntervals(Time.IntervalType type, int numberOfIntervals)
+        private Tbool ForConsecutiveIntervals(Time.IntervalType type, Tnum numberOfIntervals)
         {
-            if (this.IsUnknown) { return new Tbool(); }
-            
+            // If val is unknown and base Tvar is eternally unknown,
+            // return the typical precedence state
+            Hval intervals = numberOfIntervals.FirstValue;
+            if (!intervals.IsKnown && this.TimeLine.Count == 1)
+            {
+                if (!this.FirstValue.IsKnown)
+                {
+                    Hstate s = PrecedingState(this.FirstValue, intervals);
+                    return new Tbool(s);
+                }
+            }
+
+            // If val is unknown, return its state
+            if (!intervals.IsKnown) return new Tbool(intervals);
+
+            // Else begin counting intervals...
             Tbool result = new Tbool();
             result.AddState(Time.DawnOf, false);
             
-            SortedList<DateTime, object> t = this.TimeLine;
+            SortedList<DateTime, Hval> t = this.TimeLine;
             
             for (int i = 0; i < t.Count; i++)
             {
-                if (Convert.ToBoolean(t.Values[i]) == true)
+                // If any interval is unknown, return that value
+                // This could be refined later (some unknown intervals are irrelevant)
+                if (!t.Values[i].IsKnown)
+                {
+                    return new Tbool(t.Values[i]);
+                }
+
+                if (t.Values[i].IsTrue)
                 {
                     DateTime start = t.Keys[i];
-                    DateTime thresholdReached = start.AddInterval(type, numberOfIntervals);
+                    int noOfIntervals = Convert.ToInt32(numberOfIntervals.FirstValue.Val);
+                    DateTime thresholdReached = start.AddInterval(type, noOfIntervals);
 
                     if ((i < t.Count-1 && thresholdReached <= t.Keys[i+1]) || i == t.Count-1)
                     {

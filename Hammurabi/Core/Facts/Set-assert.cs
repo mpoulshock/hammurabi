@@ -1,4 +1,4 @@
-// Copyright (c) 2011 The Hammurabi Project
+// Copyright (c) 2012 Hammura.bi LLC
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -49,7 +49,7 @@ namespace Hammurabi
             Fact f = new Fact(e1, e2, rel, val);
             FactBase.Add(f);
         }
-        public static void Assert(LegalEntity e1, string rel, LegalEntity e2, DateTime dt)
+        public static void Assert(LegalEntity e1, string rel, LegalEntity e2, Tdate dt)
         {            
             Fact f = new Fact(e1, e2, rel, dt);
             FactBase.Add(f);
@@ -78,7 +78,7 @@ namespace Hammurabi
             Fact f = new Fact(e1, rel, val);
             FactBase.Add(f);
         }
-        public static void Assert(LegalEntity e1, string rel, DateTime dt)
+        public static void Assert(LegalEntity e1, string rel, Tdate dt)
         {            
             Fact f = new Fact(e1, rel, dt);
             FactBase.Add(f);

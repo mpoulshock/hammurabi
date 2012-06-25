@@ -1,0 +1,88 @@
+# Citation:     26 U.S.C. 3306 (2011)
+# Namespace:    USC.Tit26.Sec3306
+# Summary:      Definitions relevant to the Federal Unemployment Tax Act (FUTA).
+# Updated:      2012-06-25
+# Author:       Michael Poulshock
+
+
+# Determines whether a corporate entity is an "employer" under FUTA.
+Tbool IsEmployer(Corp c) =
+	a1(c) |
+	a2(c) |
+	a3(c)
+	
+
+# Employer - general, defined
+Tbool a1(Corp c) =
+	wageTest |
+	weekTest
+	
+	# Paid $1,500 or more in wages in any calendar quarter in current or the preceding calendar year 
+	Tbool wageTest = 
+		QWages1500.CountPastNIntervals(TheYear,2) > 0
+
+	Tbool QWages1500 = 
+		(QuarterlyGeneralWagesPaid(c) >= 1500).EverPer(TheQuarter)
+		
+	# Employed at least one individual...on each of some 20 days during the calendar year or 
+	# during the preceding calendar year, each day being in a different calendar week
+	Tbool weekTest = 
+		(hasEmp.CountPer(TheYear) >= 20).CountPastNIntervals(TheYear,2) > 0
+
+	Tbool hasEmp = 
+		(NumberOfGeneralEmployees(c) >= 1).EverPer(TheCalendarWeek)		
+
+		
+# Employer - agricultural, defined
+Tbool a2(Corp c) =
+	wageTest |
+	weekTest
+
+	# Paid $20,000 or more in wages in any calendar quarter in current or the preceding calendar year 
+	Tbool wageTest = 
+		QWages20K.CountPastNIntervals(TheYear,2) > 0
+		
+	Tbool QWages20K = 
+		(QuarterlyAgWagesPaid(c) >= 20000).EverPer(TheQuarter)
+	     
+	# Employed at least 10 individuals...on each of some 20 days during the calendar year or 
+	# during the preceding calendar year, each day being in a different calendar week
+	Tbool weekTest = 
+		(hasEmp.CountPer(TheYear) >= 20).CountPastNIntervals(TheYear,2) > 0
+		
+	Tbool hasEmp = 
+		(NumberOfAgEmployees(c) >= 10).EverPer(TheCalendarWeek)
+
+	
+# Employer - domestic, defined
+Tbool a3(Corp c) = 
+	QWages1K.CountPastNIntervals(TheYear,2) > 0
+
+	# Paid $1,000 or more in wages in any calendar quarter in current or the preceding calendar year 
+	Tbool QWages1K = 
+		(QuarterlyDomesticWagesPaid(c) >= 1000).EverPer(TheQuarter)
+
+        
+# Number of general, not agricultural or domestic, employees
+Tnum NumberOfGeneralEmployees(Corp c) =
+	TnumIn NumberOfGeneralEmployees(c)
+
+# Number of agricultural employees.
+Tnum NumberOfAgEmployees(Corp c) =
+	TnumIn NumberOfAgriculturalEmployees(c)
+        
+# Wages paid for general, not agricultural or domestic, employment.
+# This is a Tnum that varies quarterly.
+Tnum QuarterlyGeneralWagesPaid(Corp c) =
+	TnumIn QuarterlyGeneralWagesPaid(c)
+	        
+# Wages paid for agricultural employment.
+# This is a Tnum that varies quarterly.
+Tnum QuarterlyAgWagesPaid(Corp c) =
+	TnumIn QuarterlyAgriculturalWagesPaid(c)
+        
+# Wages paid for domestic employment.
+# This is a Tnum that varies quarterly.
+Tnum QuarterlyDomesticWagesPaid(Corp c) =
+	TnumIn QuarterlyDomesticWagesPaid(c)
+

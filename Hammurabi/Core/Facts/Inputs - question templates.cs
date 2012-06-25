@@ -1,4 +1,4 @@
-// Copyright (c) 2011 The Hammurabi Project
+// Copyright (c) 2012 Hammura.bi LLC
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -17,13 +17,6 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-//
-// NO REPRESENTATION OR WARRANTY IS MADE THAT THIS PROGRAM ACCURATELY REFLECTS
-// OR EMBODIES ANY APPLICABLE LAWS, REGULATIONS, RULES OR EXECUTIVE ORDERS 
-// ("LAWS"). YOU SHOULD RELY ONLY ON OFFICIAL VERSIONS OF LAWS PUBLISHED BY THE 
-// RELEVANT GOVERNMENT AUTHORITY, AND YOU ASSUME THE RESPONSIBILITY OF 
-// INDEPENDENTLY VERIFYING SUCH LAWS. THE USE OF THIS PROGRAM IS NOT A 
-// SUBSTITUTE FOR THE ADVICE OF AN ATTORNEY.
 
 using System;
 using System.Collections.Generic;
@@ -47,7 +40,10 @@ namespace Hammurabi
                                 new List<string>() { "Army", "Navy", "Air Force", "Marine Corps", "Coast Guard", "---",
                                                      "Army National Guard", "Army Reserve", "Air National Guard", "Navy Reserve", "Air Force Reserve", 
                                                      "Marine Corps Reserve", "Coast Guard Reserve", "---", "None of the above" });
-
+                
+                case "CanBeClaimedAsQCByTwoTaxpayers":
+                    return new Question(rel, "bool", "Can {subj} be claimed as a qualifying child by more than one taxpayer?", "");
+                
                 case "DateFamilyLeaveBegins":
                     return new Question(rel, "date", "When does {subj} want to go on leave?", "", DateTime.Now.AddYears(-3), DateTime.Now.AddYears(3));
 
@@ -103,7 +99,13 @@ namespace Hammurabi
 
                 case "IsNextOfKinOf":
                     return new Question(rel, "bool", "Is {subj} {obj}'s next of kin?", "");
-
+                                
+                case "IsPermanentlyAndTotallyDisabled":
+                    return new Question(rel, "bool", "Is {subj} permanently and totally disabled?", "");
+                
+                case "IsStudent":
+                    return new Question(rel, "bool", "Is {subj} a student?", "");
+                
                 case "FamilyRelationship":
                     return new Question(rel, "string", "What is {subj}'s relation to {obj}?", "",
                                 new List<string>() 
@@ -119,17 +121,29 @@ namespace Hammurabi
                                 "First cousin", "Other cousin", "-----",
                                 "Other family relation", "No family relation"
                                  });
-
+    
+                case "FedTaxFilingStatus":
+                    return new Question(rel, "string", "What is {subj}'s federal tax filing status?", "",
+                                new List<string>() 
+                                { "Single", "Married filing jointly", "Married filing separately", "Qualifying widow(er)", 
+                                "Head of household" });
+                
                 case "LessThan50EmployeesAtWorksite":
                     return new Question(rel, "bool", "Are there fewer than 50 employees at {subj}'s worksite?", "");
 
                 case "LessThan50EmployeesWithin75MilesOfWorksite":
                     return new Question(rel, "bool", "Does the employer have fewer than 50 employees within 75 miles of {subj}'s worksite?", "");
 
+                case "LivesWith":
+                    return new Question(rel, "bool", "Does {subj} live with {obj}?", "");
+                
                 case "MaritalStatus":
                     return new Question(rel, "string", "What is {subj}'s marital status?", "",
                                 new List<string>() { "Married", "In a civil union", "In a domestic partnership", "Single/unmarried", "Legally separated", "Widowed" });
-
+                
+                case "MonthTaxYearBegins":
+                    return new Question(rel, "numvar", "In what calendar month does {subj}'s federal tax year begin?", "", 1, 12);
+                
                 case "NameOfEmployee":
                     return new Question(rel, "person", "What is the employee's name?", "");
 
@@ -142,7 +156,10 @@ namespace Hammurabi
 
                 case "NumberOfEmployees":
                     return new Question(rel, "numvar", "How many employees does {subj} have?", "", 0, 5000000);
-
+    
+                case "PercentSelfSupport":
+                    return new Question(rel, "numvar", "What percentage of {subj}'s living costs does {subj} pay for (in percentage points)?", "", 0, 100);
+                
                 case "ProvidesSupportFor":
                     return new Question(rel, "bool", "Does {subj} provide financial support for {obj}?", "");
 
@@ -159,7 +176,10 @@ namespace Hammurabi
                                 "Other need arising due to family member serving in Armed Forces",
                                 "Other"
                                  });
-
+    
+                case "SharesPrincipalAbodeWith":
+                    return new Question(rel, "bool", "Does {subj} share a principal abode with {obj}?", "");
+                
                 case "StateJurisdiction":
                     return new Question(rel, "string", "Please select the applicable state.", "", Lists.States);
 

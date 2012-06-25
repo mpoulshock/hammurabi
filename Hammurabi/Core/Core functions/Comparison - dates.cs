@@ -1,4 +1,4 @@
-// Copyright (c) 2011 The Hammurabi Project
+// Copyright (c) 2012 Hammura.bi LLC
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -52,19 +52,26 @@ namespace Hammurabi
         
         private static Tbool IsAfter(Tdate td1, Tdate td2)
         {
-            if (AnyAreUnknown(td1,td2)) { return new Tbool(); }
-            
             Tbool result = new Tbool();
             
-            foreach(KeyValuePair<DateTime,List<object>> slice in TimePointValues(td1,td2))
-            {    
-                bool isAfter = Convert.ToDateTime(slice.Value[0]) > Convert.ToDateTime(slice.Value[1]);
-                result.AddState(slice.Key, isAfter);
+            foreach(KeyValuePair<DateTime,List<Hval>> slice in TimePointValues(td1,td2))
+            {
+                // Any higher-precedence states go next
+                Hstate top = PrecedingState(slice.Value);
+                if (top != Hstate.Known) 
+                {
+                    result.AddState(slice.Key, new Hval(null,top));
+                }
+                else
+                {
+                    bool isAfter = Convert.ToDateTime(slice.Value[0].Val) > Convert.ToDateTime(slice.Value[1].Val);
+                    result.AddState(slice.Key, isAfter);
+                }
             }
             
             return result.Lean;
         }
-        
+
         /// <summary>
         /// Returns true when one Tdate is the same as or later than another.
         /// </summary>
@@ -96,13 +103,7 @@ namespace Hammurabi
         /// </summary>
         public static Tbool operator <= (Tdate td1, Tdate td2)
         {
-            return IsAtOrBefore(td1,td2);
-        }
-        
-        private static Tbool IsAtOrBefore(Tdate td1, Tdate td2)
-        {
             return IsBefore(td1,td2) | EqualTo(td1,td2);
         }
-    
     }
 }

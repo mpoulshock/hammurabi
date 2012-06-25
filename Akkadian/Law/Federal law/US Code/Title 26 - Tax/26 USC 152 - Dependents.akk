@@ -1,0 +1,389 @@
+# Citation:     26 U.S.C. 152 (2011)
+# Namespace:    USC.Tit26.Sec152
+# Summary:      Determines whether one person is the "dependent" of another under IRC, Section 152.
+# Remarks:      Subsections c4, d3-5, e, and f have not been modeled.  
+# Updated:      2012-06-01
+# Author:       Michael Poulshock
+
+
+# Indicates whether one person (d) is a dependent of a taxpayer (tp)
+Tbool IsDependentOf(Person d, Person tp) =
+    ...
+        IsQualifyingChildOf(d, tp) | 
+        IsQualifyingRelativeOf(d, tp)
+    &
+    !CannotBeADependentOf(d, tp)
+
+	
+# Indicates whether one person is a "qualifying child" of another.
+Tbool IsQualifyingChildOf(Person d, Person tp) =    
+    QCGenTest(d, tp, taxYear) &
+    QCRelationTest(d, tp) &
+    QCAgeTest(d, tp, taxYear) &
+	if TboolIn CanBeClaimedAsQCByTwoTaxpayers(d) then Stub()
+
+    Tnum taxYear = Sec441.TaxYear(tp)
+
+	
+# Qualifying child - c1 - general elements (excluding those in c2, c3, and c4)
+Tbool QCGenTest(Person d, Person tp, Tnum taxYear) =
+    Econ.SharePrincipalAbode(d,tp).ElapsedDaysPer(taxYear) > 182.5 &
+    Econ.PercentSelfSupport(d) < 50 &        # per TY
+    ...
+        !Sec6013.IsMFJ(d) | 
+		Sec6013.FilesMFJOnlyToClaimRefund(d)
+    
+    
+# Qualifying child - c2 - relationship test
+Tbool QCRelationTest(Person d, Person tp) =
+    Fam.IsParentOf(tp,d) |
+    Fam.IsGrandparentOf(tp,d) |
+    Fam.IsGreatGrandparentOf(tp,d) |
+    Fam.AreSiblings(tp,d) |
+    Fam.AreStepsiblings(tp,d) 		# or descendant of sib or step-sib
+        
+		
+# Qualifying child - c3 - age test
+Tbool QCAgeTest(Person d, Person tp, Tnum taxYear) =
+    ...
+        Age(d) < Age(tp) &
+        ...
+            (Age(d) < 19).AlwaysPer(taxYear) | 
+            ...
+                Edu.IsStudent(d) &
+                (Age(d) < 24).AlwaysPer(taxYear)
+    |
+    Sec22.IsDisabledPT(d)
+
+	
+# Indicates whether one person is a "qualifying relative" of another.
+# Subsections d3 and d4 are omitted.
+Tbool IsQualifyingRelativeOf(Person d, Person tp) =
+    genTest & 
+    relationTest & 
+    d4Test
+
+    # d1 - general elements (excluding those in d2-5)
+    # gen test
+    Tbool genTest = 
+        ...
+            Sec61.GrossIncome(d) == 0 |                         # shortcut
+            Sec61.GrossIncome(d) < Sec151.ExemptionAmount(d)	# per TY
+        & 
+		# AllPeople.Exists(IsQualifyingChildOf(d,_))
+		!AllPeople.Exists(IsQualifyingChildOf(d,_))
+        # !Exists(allOtherKnownPeople, (x,y) => IsQualifyingChildOf(d, (Person)x), d, null)
+
+	Tset allOtherKnownPeople = 
+        Facts.AllKnownPeople() - d - tp
+		
+    # d2 - relationship test
+    Tbool relationTest = 
+        Fam.IsParentOf(tp,d) |             # A
+        Fam.IsGrandparentOf(tp,d) |
+        Fam.IsGreatGrandparentOf(tp,d) |
+        Fam.AreSiblings(tp,d) |            # B
+        Fam.AreStepsiblings(tp,d) |
+        Fam.IsParentOf(d,tp) |             # C
+        Fam.IsGrandparentOf(d,tp) |
+        Fam.IsGreatGrandparentOf(d,tp) |
+        Fam.IsStepparentOf(d,tp) |         # D
+        Fam.IsAuntOrUncleOf(tp,d) |        # E
+        Fam.IsAuntOrUncleOf(d,tp) |        # F
+        ...
+            Econ.SharePrincipalAbode(tp,d) &
+            Econ.ShareHousehold(tp,d)     # H - and not spouse
+            
+    # d4 - multiple support agreements 
+    Tbool d4Test = 
+		if TboolIn AnotherTaxpayerProvidedSupportFor(d) then Stub()
+
+		
+# Exceptions to whether a person can be a dependent. 152(b).
+Tbool CannotBeADependentOf(Person d, Person tp) =
+    !depTest | 
+    !jointReturnTest | 
+    !citizenshipTest
+
+    # b1 - taxpayer cannot be a dependent & potential dependent cannot have a dependent
+    # Note: searching the fact base for possible dependents and defining this test
+    # recursively leads to infinite loops and probably is a case of overengineering.
+    Tbool depTest =
+		! TboolIn CanClaimSomeoneAsDependent(d) &
+		! TboolIn CanBeClaimedAsDependentBySomeone(tp)
+            
+    # b2 - potential dependent cannot be married filing jointly
+    # See IRS Publication 501 (2010), page 10.
+    Tbool jointReturnTest = 
+        if Sec6013.IsMFJ(d) then TboolIn MFJOnlyForRefund(d)
+            
+    # b3A - citizenship status
+    Tbool citizenshipTest = 
+        IsUSCitizen(d) |
+        IsUSResident(d) |
+        IsResidentOf(d, "Canada") |
+        IsResidentOf(d, "Mexico") | 
+        adoptionTest
+
+	# b3B - potential dependent must meet the citizenship test
+    Tbool adoptionTest = 
+        Fam.IsAdoptiveParentOf(tp,d) &
+        Econ.SharePrincipalAbode(d,tp) &
+        Econ.ShareHousehold(d,tp) &
+        ...
+            IsUSCitizen(tp) | 
+            Imm.IsUSNational(tp)
+
+			
+# UNIT TESTS
+
+Test: Pub501_Simple1
+- Person c		# the child
+- Person t		# the taxpayer
+- IsParentOf(t,c) = true
+- LivesWith(c,t) = true
+- DateOfBirth(c) = 2001-01-01
+- IsUSCitizen(c) = true
+- CanBeClaimedAsQCByTwoTaxpayers(c) = false
+- PercentSelfSupport(c) = 0
+- CanClaimSomeoneAsDependent(c) = false
+- CanBeClaimedAsDependentBySomeone(t) = false
+- AnotherTaxpayerProvidedSupportFor(c) = false
+- GrossIncome(c) = 0
+- Sec152.IsDependentOf(c,t).AsOf(2010-12-31).Out =?= "Unstated"
+
+Test: Pub501_Simple2
+- Person c	
+- Person t	
+- IsParentOf(t,c) = true
+- LivesWith(c,t) = true
+- DateOfBirth(c) = 2001-01-01
+- DateOfBirth(t) = 1970-01-01
+- IsUSCitizen(c) = true
+- CanBeClaimedAsQCByTwoTaxpayers(c) = false
+- PercentSelfSupport(c) = 0
+- CanClaimSomeoneAsDependent(c) = false
+- CanBeClaimedAsDependentBySomeone(t) = false
+- AnotherTaxpayerProvidedSupportFor(c) = false
+- FedTaxFilingStatus(t) = "Single"
+- GrossIncome(c) = 0
+- Sec152.IsDependentOf(c,t).AsOf(2010-12-31).Out =?= true
+
+##
+# IRS Pub. 501 (2010), Page 10, Example 1.
+# Cannot be a dependent because fails joint return test.
+Test: Pub501_1
+- Person t		# Taxpayer
+- Person d 		# T's daughter
+- Person s		# T's son-in-law
+- FamilyRelationship(d,s) = "Spouse"
+- FilesJointFedTaxReturnWith(d,s) = true
+- FilesMFJOnlyToClaimRefund(d) = false
+- IsParentOf(t,d) = true
+- LivesWith(t,d) = true
+- DateOfBirth(d) = 1992-01-01
+- InArmedForces(s) = true
+- IsUSCitizen(d) = true
+- Sec152.IsDependentOf(d,t).AsOf(2010-12-31).Out =?= false
+
+# IRS Pub. 501 (2010), Page 10, Example 2 (son).
+Test: Pub501_2a
+- Person t		# Taxpayer
+- Person d 		# T's daughter
+- Person s		# T's son-in-law
+- FamilyRelationship(d,s) = "Spouse"
+- FilesJointFedTaxReturnWith(d,s) = true
+- FilesMFJOnlyToClaimRefund(d) = true
+- IsParentOf(t,d) = true
+- DateOfBirth(s) = 1992-01-01
+- DateOfBirth(d) = 1992-01-01
+- IsUSCitizen(s) = true
+- CanClaimSomeoneAsDependent(s) = false
+- CanBeClaimedAsDependentBySomeone(t) = false
+- Sec152.CannotBeADependentOf(d,t).AsOf(2010-12-31).Out =?= false
+
+# IRS Pub. 501 (2010), Page 10, Example 2 (daughter-in-law).
+Test: Pub501_2b
+- Person t		# Taxpayer
+- Person d 		# T's daughter-in-law
+- Person s		# T's son
+- FamilyRelationship(d,s) = "Spouse"
+- FilesJointFedTaxReturnWith(d,s) = true
+- FilesMFJOnlyToClaimRefund(d) = true
+- IsParentOf(t,d) = true
+- DateOfBirth(s) = 1992-01-01
+- DateOfBirth(d) = 1992-01-01
+- IsUSCitizen(d) = true
+- CanClaimSomeoneAsDependent(s) = false
+- CanBeClaimedAsDependentBySomeone(t) = false
+- Sec152.CannotBeADependentOf(d,t).AsOf(2010-12-31).Out =?= false
+
+# IRS Pub. 501 (2010), Page 10, Example 3.
+Test: Pub501_3
+- Person t		# Taxpayer
+- Person s 		# Son
+- Person d		# Daughter-in-law
+- DateOfBirth(s) = 1992-01-01
+- DateOfBirth(d) = 1991-01-01
+- FamilyRelationship(d,s) = "Spouse"
+- IsUSCitizen(s) = true
+- FilesJointFedTaxReturnWith(d,s) = true
+- FileMFJOnlyToClaimRefund(s) = false
+- CanClaimSomeoneAsDependent(s) = false
+- CanBeClaimedAsDependentBySomeone(t) = false
+- Sec152.CannotBeADependentOf(s,t).AsOf(2010-12-31).Out =?= true
+
+# IRS Pub. 501 (2010), Page 11, Unnumbered example.
+Test: Pub501_4
+- Person t 		# Taxpayer
+- Person s		# Son
+- DateOfBirth(s) = 1991-12-10
+- IsFullTimeStudent(s) = false
+- IsUSCitizen(s) = true
+- IsPermanentlyAndTotallyDisabled(s) = false
+- Sec152.IsDependentOf(s,t).AsOf(2010-12-31).Out =?= false
+
+# IRS Pub. 501 (2010), Page 11, Unnumbered example.
+Test: Pub501_5
+- Person t 		# Taxpayer
+- Person s		# Son
+- DateOfBirth(s) = 1991-12-10
+- IsFullTimeStudent(s) = true
+- IsUSCitizen(s) = true
+- IsPermanentlyAndTotallyDisabled(s) = false
+- Sec152.IsDependentOf(s,t).AsOf(2010-12-31).Out =?= true
+
+# IRS Pub. 501 (2010), Page 11, Unnumbered example.
+Test: Pub501_6
+- Person t 		# Taxpayer
+- Person s		# Son
+- DateOfBirth(s) = 1991-12-10
+- IsFullTimeStudent(s) = false
+- IsUSCitizen(s) = true
+- IsPermanentlyAndTotallyDisabled(s) = true
+- Sec152.IsDependentOf(s,t).AsOf(2010-12-31).Out =?= true
+
+# IRS Pub. 501 (2010), Page 11, Example 1.
+Test: Pub501_7
+- Person t		# Taxpayer
+- Person s		# T's spouse
+- Person b		# T's brother
+- DateOfBirth(t) = 1989-01-01
+- DateOfBirth(s) = 1989-01-01
+- FamilyRelationship(t,s) = "Spouse"
+- FamilyRelationship(b,t) = "Sibling"
+- DateOfBirth(b) = 1987-01-01
+- IsMarried(b) = false
+- LivesWith(t,s) = true
+- LivesWith(t,b) = true
+- IsDisabled(b) = false
+- AreFilingMFJ(t,s) = true
+- Sec152.IsDependentOf(b,t).AsOf(2010-12-31).Out =?= false
+
+# IRS Pub. 501 (2010), Page 11, Example 2.
+Test: Pub501_8
+- Person t		# Taxpayer
+- Person s		# T's spouse
+- Person b		# T's brother
+- DateOfBirth(t) = 1989-01-01
+- DateOfBirth(s) = 1985-01-01
+- FamilyRelationship(t,s) = "Spouse"
+- FamilyRelationship(b,t) = "Sibling"
+- DateOfBirth(b) = 1987-01-01
+- IsFullTimeStudent(b) = true
+- IsMarried(b) = false
+- LivesWith(t,s) = true
+- LivesWith(t,b) = true
+- IsDisabled(b) = false
+- AreFilingMFJ(t,s) = true
+- Sec152.IsDependentOf(b,t).AsOf(2010-12-31).Out =?= true
+##
+
+Test: Basic_1
+- Person tp
+- Person d
+- LivesWith(tp,d) = true
+- (Econ.SharePrincipalAbode(d,tp).ElapsedDaysPer(Sec441.TaxYear(tp)) > 182.5).AsOf(2012-01-01).Out =?= true
+
+Test: Basic_2
+- Person tp
+- Person d
+- LivesWith(tp,d) = false
+- (Econ.SharePrincipalAbode(d,tp).ElapsedDaysPer(Sec441.TaxYear(tp)) > 182.5).AsOf(2012-01-01).Out =?= false
+
+Test: QCGenTest_1
+- Person tp
+- Person d
+- LivesWith(tp,d) = false
+- Sec152.QCGenTest(d,tp,Sec441.TaxYear(tp)).AsOf(DateTime.Now).Out =?= false
+
+Test: QCGenTest_1a
+- Person tp
+- Person d
+- LivesWith(tp,d) = false
+- Econ.SharePrincipalAbode(d,tp).AsOf(2012-05-29).Out =?= false
+
+Test: ShareHousehold
+- Person a
+- Person b
+- LivesWith(a,b) = true
+- Econ.SharePrincipalAbode(a,b).Out =?= true
+
+Test: QCGenTest_2
+- Person tp
+- Person d
+- LivesWith(tp,d) = true
+- PercentSelfSupport(d) = 100
+- Sec152.QCGenTest(d,tp,Sec441.TaxYear(tp)).AsOf(DateTime.Now).Out =?= false
+
+Test: QCGenTest_3
+- Person tp
+- Person d
+- LivesWith(tp,d) = true
+- PercentSelfSupport(d) = 0
+- FedTaxFilingStatus(d) = "not Married filing jointly"
+- Sec152.QCGenTest(d,tp,Sec441.TaxYear(tp)).AsOf(DateTime.Now).Out =?= true
+
+Test: QCGenTest_4
+- Person tp
+- Person d
+- LivesWith(tp,d) = true
+- PercentSelfSupport(d) = 0
+- FedTaxFilingStatus(d) = "Married filing jointly"
+- FilesMFJOnlyToClaimRefund(d) = true
+- Sec152.QCGenTest(d,tp,Sec441.TaxYear(tp)).AsOf(DateTime.Now).Out =?= true
+
+Test: QCGenTest_5
+- Person tp
+- Person d
+- LivesWith(tp,d) = true
+- PercentSelfSupport(d) = 0
+- FedTaxFilingStatus(d) = "Married filing jointly" 
+- FilesMFJOnlyToClaimRefund(d) = false	
+- Sec152.QCGenTest(d,tp,Sec441.TaxYear(tp)).AsOf(DateTime.Now).Out =?= false
+
+Test: QCRelationship_1
+- Person tp
+- Person d
+- FamilyRelationship(tp,d) = "Biological parent"
+- Sec152.QCRelationTest(d,tp).AsOf(DateTime.Now).Out =?= true
+
+Test: QCAge_1
+- Person tp
+- Person d
+- DateOfBirth(tp) = 1975-01-01
+- DateOfBirth(d) = 2005-01-01
+- IsStudent(d) = false
+- IsPermanentlyAndTotallyDisabled(d) = false
+- Sec152.QCAgeTest(d,tp,Sec441.TaxYear(tp)).AsOf(2012-03-03).Out =?= true
+
+Test: QCAge_2
+- Person tp
+- Person d
+- DateOfBirth(tp) = 1975-01-01
+- DateOfBirth(d) = 1940-01-01
+- IsStudent(d) = false
+- IsPermanentlyAndTotallyDisabled(d) = true
+- Sec152.QCAgeTest(d,tp,Sec441.TaxYear(tp)).AsOf(2012-03-03).Out =?= true
+
+

@@ -1,4 +1,4 @@
-// Copyright (c) 2011 The Hammurabi Project
+// Copyright (c) 2012 Hammura.bi LLC
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -38,14 +38,11 @@ namespace Hammurabi
         /// value as the first (test) argument
         /// </summary>
         // TODO: Generalize BoolCount to ValCount(val, Tvar[] list)?
-        public static Tnum BoolCount (bool? test, params Tbool[] list)
+        public static Tnum BoolCount (bool test, params Tbool[] list)
         {
-            // Result is unknown if any input is unknown
-            if (AnyAreUnknown(list)) { return new Tnum(); }
-            
             Tnum result = new Tnum();
             
-            foreach(KeyValuePair<DateTime,List<object>> slice in TimePointValues(list))
+            foreach(KeyValuePair<DateTime,List<Hval>> slice in TimePointValues(list))
             {    
                 result.AddState(slice.Key, BoolCountK(test, slice.Value));
             }
@@ -56,18 +53,24 @@ namespace Hammurabi
         /// <summary>
         /// Private non-temporal BOOL COUNT function.
         /// </summary>
-        private static int BoolCountK(bool? test, List<object> list)
+        private static Hval BoolCountK(bool test, List<Hval> list)
         {
-            int count = 0;
-            foreach (object v in list)
+            Hstate top = PrecedingState(list);
+            if (top != Hstate.Known) 
             {
-                if ((bool?)v == test)
+                return new Hval(null,top);
+            }
+
+            int count = 0;
+            foreach (Hval v in list)
+            {
+                if (Convert.ToBoolean(v.Val) == test)
                 {
                     count++;
                 }
             }
             
-            return count;
+            return new Hval(count);
         }
 
         /// <summary>
@@ -76,16 +79,7 @@ namespace Hammurabi
         /// </summary>
         public static Tnum Min(params Tnum[] list)
         {
-            Tnum[] output = new Tnum[list.Length];
-            
-            for (int i=0; i<list.Length; i++)
-            {
-                Tnum newVal = list[i];
-                if (newVal.IsUnknown) { return new Tnum(); }
-                output[i] = newVal;
-            }
-            
-            return ApplyFcnToTimeline(x => Auxiliary.Minimum(x), output);
+            return ApplyFcnToTimeline(x => Auxiliary.Minimum(x), list);
         }
         
         /// <summary>
@@ -94,16 +88,7 @@ namespace Hammurabi
         /// </summary>
         public static Tnum Max(params Tnum[] list)
         {
-            Tnum[] output = new Tnum[list.Length];
-            
-            for (int i=0; i<list.Length; i++)
-            {
-                Tnum newVal = list[i];
-                if (newVal.IsUnknown) { return new Tnum(); }
-                output[i] = newVal;
-            }
-            
-            return ApplyFcnToTimeline(x => Auxiliary.Maximum(x), output);
+            return ApplyFcnToTimeline(x => Auxiliary.Maximum(x), list);
         }
         
         /// <summary>
@@ -115,14 +100,21 @@ namespace Hammurabi
         }
         
         /// <summary>
-        /// Returns a null Tnum to be used as a value in a Switch() function.
+        /// Converts a yyyy-mm-dd string into a DateTime.
         /// </summary>
-        public static Tnum NullTnum
+        public static DateTime Date(string date)
         {
-            get
-            {
-                return new Tnum(null);
-            }
+            return DateTime.Parse(date);
+        }
+
+        /// <summary>
+        /// Adds preceding zeros to a string until it reaches a given length. 
+        /// </summary>
+        public static string AddPrecedingZeros(string s, int desiredLength)
+        {
+            if (s.Length >= desiredLength) return s;
+
+            return AddPrecedingZeros("0" + s, desiredLength);
         }
     }
 }

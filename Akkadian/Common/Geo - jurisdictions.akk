@@ -1,0 +1,87 @@
+# Namespace:    Hammurabi.Geo
+# Summary:      A few random geographical facts
+# Updated:      2012-04-26 
+# Author:       Michael Poulshock
+
+
+# One of the 48 contiguous states
+Tbool Among48ContiguousStates(Tstr jur) =
+	IsUSState(jur) &
+	jur != "Alaska" &
+	jur != "Hawaii"
+
+# Is U.S. state
+Tbool IsUSState(Tstr jur) =
+	match jur
+	Alabama -> true
+	Alaska -> true
+	Arizona -> true
+	Arkansas -> true
+	California -> true
+	Colorado -> true
+	Connecticut -> true
+	Delaware -> true
+	Florida -> true
+	Georgia -> true
+	Hawaii -> true
+	Idaho -> true
+	Illinois -> true
+	Indiana -> true
+	Iowa -> true
+	Kansas -> true
+	Kentucky -> true
+	Louisiana -> true
+	Maine -> true
+	Maryland -> true
+	Massachusetts -> true
+	Michigan -> true
+	Minnesota -> true
+	Mississippi -> true
+	Missouri -> true
+	Montana -> true
+	Nebraska -> true
+	Nevada -> true
+	New Hampshire -> true
+	New Jersey -> true
+	New Mexico -> true
+	New York -> true
+	North Carolina -> true
+	North Dakota -> true
+	Ohio -> true
+	Oklahoma -> true
+	Oregon -> true
+	Pennsylvania -> true
+	Rhode Island -> true
+	South Carolina -> true
+	South Dakota -> true
+	Tennessee -> true
+	Texas -> true
+	Utah -> true
+	Vermont -> true
+	Virginia -> true
+	Washington -> true
+	West Virginia -> true
+	Wisconsin -> true
+	Wyoming -> true
+	else false
+
+# Is an unincorporated U.S. territory
+Tbool IsUSTerritory(Tstr jur) =
+	match jur
+	American Samoa -> true
+	Guam -> true
+	Northern Mariana Islands -> true
+	Puerto Rico -> true
+	U.S. Virgin Islands	-> true	
+	else false
+
+##  Other jurisdictions:
+	District of Columbia
+	Guantanamo Bay Naval Base
+	Marshall Islands
+	Micronesia
+	Palau 
+	Native American reservations...
+##	
+
+		

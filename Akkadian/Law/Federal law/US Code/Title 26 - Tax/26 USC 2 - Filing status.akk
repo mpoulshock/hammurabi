@@ -1,0 +1,13 @@
+# Citation:     26 U.S.C. 2 (2012)
+# Namespace:    USC.Tit26.Sec2
+# Summary:      Filing status definitions under the Internal Revenue Code.
+# Updated:      2012-05-29
+# Author:       Michael Poulshock
+
+
+# Federal tax filing status
+# Status is asserted individually; for MFJ, see 26 USC 6013.
+Tstr FilingStatus(Person p) =
+    TstrIn FedTaxFilingStatus(p)
+	
+	

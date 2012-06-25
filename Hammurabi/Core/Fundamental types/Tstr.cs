@@ -1,4 +1,4 @@
-// Copyright (c) 2011 The Hammurabi Project
+// Copyright (c) 2012 Hammura.bi LLC
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -45,6 +45,39 @@ namespace Hammurabi
         {
             this.SetEternally(val);
         }
+
+        public Tstr(Hval val)
+        {
+            this.SetEternally(val);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the Tstr class and loads
+        /// a list of date-value pairs.
+        /// </summary>
+        public static Tstr MakeTstr(params object[] list)
+        {
+            Tstr result = new Tstr();
+            for(int i=0; i < list.Length - 1; i+=2)  
+            {
+                try
+                {
+                    Hstate h = (Hstate)list[i+1];
+                    if (h != Hstate.Known)
+                    {
+                        result.AddState(Convert.ToDateTime(list[i]),
+                                    new Hval(null,h));
+                    }
+                }
+                catch
+                {
+                    string s = Convert.ToString(list[i+1]);
+                    result.AddState(Convert.ToDateTime(list[i]),
+                                new Hval(s));
+                }
+            }
+            return result;
+        }
         
         /// <summary>
         /// Implicitly converts strings to Tstrs.
@@ -74,20 +107,20 @@ namespace Hammurabi
         {
             get
             {
-                if (this.IsUnknown || TimeLine.Count > 1) { return null; }
+                if (TimeLine.Count > 1) return null;
+
+                if (!this.FirstValue.IsKnown) return null;
                 
-                return (Convert.ToString(TimeLine.Values[0]));
+                return (Convert.ToString(this.FirstValue.Val));
             }
         }
         
         /// <summary>
         /// Returns the value of a Tstr at a specified point in time. 
         /// </summary>
-        public Tstr AsOf(DateTime dt)
+        public Tstr AsOf(Tdate dt)
         {
-            if (this.IsUnknown) { return new Tstr(); }
-            
-            return (Tstr)this.AsOf<Tstr>(dt);
+            return this.AsOf<Tstr>(dt);
         }
 
         /// <summary>
@@ -105,195 +138,36 @@ namespace Hammurabi
         {
             return !EqualTo(ts1,ts2);
         }
-        
-        // ********************************************************************
-        // IsAlways / IsEver
-        // ********************************************************************
-        
-        /// <summary>
-        /// Returns true if the Tstr always has a specified value. 
-        /// </summary>
-        public Tbool IsAlways(string val)
-        {
-            return IsAlwaysTvar<Tstr>(val, Time.DawnOf, Time.EndOf);
-        }
-        
-        /// <summary>
-        /// Returns true if the Tstr always has a specified value between two
-        /// given dates. 
-        /// </summary>
-        public Tbool IsAlways(string val, DateTime start, DateTime end)
-        {
-            return IsAlwaysTvar<Tstr>(val, start, end);
-        }
-        
-        /// <summary>
-        /// Returns true if the Tstr ever has a specified value. 
-        /// </summary>
-        public Tbool IsEver(string val)
-        {
-            return IsEverTvar(val);
-        }
-        
-        /// <summary>
-        /// Returns true if the Tstr ever has a specified value between two
-        /// given dates. 
-        /// </summary>
-        public Tbool IsEver(string val, DateTime start, DateTime end)
-        {
-            return IsEverTvar<Tstr>(val, start, end);
-        }
-        
-        
-        //**********************************************************
-        // Concatenation
-        //**********************************************************
-        
+
         /// <summary>
         /// Concatenates two or more Tstrs. 
         /// </summary>
         public static Tstr operator + (Tstr ts1, Tstr ts2)    
         {
-            if (AnyAreUnknown(ts1, ts2)) { return new Tstr(); }
-            
             Tstr result = new Tstr();
             
-            foreach(KeyValuePair<DateTime,List<object>> slice in TimePointValues(ts1, ts2))
+            foreach(KeyValuePair<DateTime,List<Hval>> slice in TimePointValues(ts1, ts2))
             {    
-                result.AddState(slice.Key, Concatenate(slice.Value));
+                // Check for unknowns
+                Hstate top = PrecedingState(slice.Value);
+                if (top != Hstate.Known) 
+                {
+                    result.AddState(slice.Key, new Hval(null,top));
+                }
+                else
+                {
+                    // Concatenate
+                    string str = "";
+                    foreach (Hval v in slice.Value) 
+                    {
+                        str += Convert.ToString(v.Val); 
+                    }
+                    result.AddState(slice.Key, new Hval(str));
+                }
             }
             
             return result.Lean; 
         }
-        
-        private static string Concatenate(List<object> list)
-        {
-            string result = "";
-            foreach (object v in list) 
-            {
-                result += Convert.ToString(v); 
-            }
-            return result;
-        }
-        
-        
-        //**********************************************************
-        // Length
-        //**********************************************************
-        
-        /// <summary>
-        /// Returns the length (in characters) of a Tstr at various 
-        /// points in time.
-        /// </summary>
-        public Tnum Length
-        {
-            get
-            {
-                if (this.IsUnknown) { return new Tnum(); }
-                
-                Tnum result = new Tnum();
-                
-                SortedList<DateTime, object> line = this.TimeLine;
-                
-                for (int i=0; i<line.Count; i++) 
-                {
-                    string item = Convert.ToString(line.Values[i]);
-                    result.AddState(line.Keys[i], item.Length);
-                }
-                
-                return result;
-            }
-        }
-        
-        
-        //**********************************************************************
-        // Contains / StartsWith / EndsWith
-        //**********************************************************************
-
-        /// <summary>
-        /// Returns true when a Tstr contains a given string. 
-        /// </summary>
-        public Tbool Contains(string substr)
-        {
-            if (this.IsUnknown) { return new Tbool(); }
-            
-            Tbool result = new Tbool();
-            
-            SortedList<DateTime, object> line = this.TimeLine;
-            
-            for (int i=0; i< line.Count; i++) 
-            {
-                string s = Convert.ToString(line.Values[i]);                
-                result.AddState(line.Keys[i], s.Contains(substr));
-            }
-            
-            return result;
-        }
-            
-        /// <summary>
-        /// Returns true when a Tstr starts with a given string. 
-        /// </summary>
-        public Tbool StartsWith(string substr)
-        {
-            if (this.IsUnknown) { return new Tbool(); }
-            
-            Tbool result = new Tbool();
-            
-            SortedList<DateTime, object> line = this.TimeLine;
-            
-            for (int i=0; i< line.Count; i++) 
-            {
-                string s = Convert.ToString(line.Values[i]);                
-                result.AddState(line.Keys[i], s.StartsWith(substr));
-            }
-            
-            return result;    
-        }
-        
-        /// <summary>
-        /// Returns true when a Tstr ends with a given string. 
-        /// </summary>
-        public Tbool EndsWith(string substr)
-        {
-            if (this.IsUnknown) { return new Tbool(); }
-            
-            Tbool result = new Tbool();
-            
-            SortedList<DateTime, object> line = this.TimeLine;
-            
-            for (int i=0; i< line.Count; i++) 
-            {
-                string s = Convert.ToString(line.Values[i]);                
-                result.AddState(line.Keys[i], s.EndsWith(substr));
-            }
-            
-            return result;    
-        }        
-
-        
-        //**********************************************************************
-        // Other
-        //**********************************************************************    
-        
-        /// <summary>
-        /// Maps a function across the intervals of a Tstr. CONSIDER DELETING.
-        /// </summary>
-        private Tstr ApplyStrFcnToTimeline(Func<string,string,string,string> fcn, string s1, string s2)
-        {
-            Tstr result = new Tstr();
-            
-            SortedList<DateTime, object> line = this.TimeLine;
-            
-            for (int i=0; i< line.Count; i++) 
-            {
-                string val = fcn(Convert.ToString(line.Values[i]),s1,s2);
-                
-                result.AddState(line.Keys[i], val);
-            }
-            
-            return result;
-        }
-        
     }
     
     #pragma warning restore 660, 661

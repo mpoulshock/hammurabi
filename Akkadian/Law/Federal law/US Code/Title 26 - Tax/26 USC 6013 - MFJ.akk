@@ -1,0 +1,102 @@
+# Citation:     26 U.S.C. 6013 (2010)
+# Namespace:    USC.Tit26.Sec6013
+# Summary:      Joint tax returns under Internal Revenue Code, Section 6013.
+# Updated:      2012-05-29
+# Author:       Michael Poulshock
+
+
+# MARRIED FILING JOINTLY
+
+# Two married taxpayers are filing a joint return.
+Tbool AreMFJ(Person p1, Person p2) =
+	Fam.AreMarried(p1,p2) &
+	...
+		Sec2.FilingStatus(p1) == "Married filing jointly" |~
+		Sec2.FilingStatus(p2) == "Married filing jointly"
+
+# Person is married filing jointly
+Tbool IsMFJ(Person p) =
+	Sec2.FilingStatus(p) == "Married filing jointly" |~		# Person indicated MFJ
+	AllPeopleExcept(p).Exists(AreMFJ(p,_))					# Spouse indicated MFJ
+
+		
+# JOINT RETURN TO CLAIM A REFUND
+
+# Filing a joint return merely to claim a refund.
+TboolInSym FileMFJOnlyToClaimRefund(Person p1, Person p2)
+
+# Person is filing a joint return
+TboolIn FilesMFJOnlyToClaimRefund(Person p) =
+	AllPeopleExcept(p).Exists(FileMFJOnlyToClaimRefund(p,_))
+
+		
+# UNIT TESTS
+
+Test: IsMFJ_1a 
+- Person a
+- Person b
+- FamilyRelationship(a,b) = "Spouse"
+- FedTaxFilingStatus(a) = "Married filing jointly"
+- Sec6013.IsMFJ(a).Out =?= true
+
+Test: IsMFJ_1b
+- Person a
+- Person b
+- FamilyRelationship(a,b) = "Spouse"
+- FedTaxFilingStatus(a) = "Married filing jointly"
+- Sec6013.IsMFJ(b).Out =?= true
+
+Test: IsMFJ_1c 
+- Person a
+- Person b
+- FamilyRelationship(a,b) = "Spouse"
+- FedTaxFilingStatus(a) = "not Married filing jointly"
+- Sec6013.IsMFJ(a).Out =?= false
+
+Test: IsMFJ_1d
+- Person a
+- Person b
+- FamilyRelationship(a,b) = "Spouse"
+- FedTaxFilingStatus(a) = "not Married filing jointly"
+- Sec6013.IsMFJ(b).Out =?= false
+
+
+Test: IsMFJ_2a
+- Person p
+- FedTaxFilingStatus(p) = "not Married filing jointly"
+- Sec6013.IsMFJ(p).Out =?= false
+
+Test: IsMFJ_2b
+- Person p
+- FedTaxFilingStatus(p) = "Married filing jointly"
+- Sec6013.IsMFJ(p).Out =?= true
+
+Test: IsMFJ_3
+- Person p
+- FedTaxFilingStatus(p) = "Single"
+- Sec6013.IsMFJ(p).Out =?= false
+
+Test: AreMFJ_1 
+- Person a
+- Person b
+- FamilyRelationship(a,b) = "Spouse"
+- FedTaxFilingStatus(a) = "Married filing jointly"
+- Sec6013.AreMFJ(a,b).Out =?= true
+
+Test: AreMFJ_2
+- Person a
+- Person b
+- FamilyRelationship(a,b) = "Siblings"
+- FedTaxFilingStatus(a) = "Married filing jointly"
+- Sec6013.AreMFJ(a,b).Out =?= false
+
+Test: AreMFJ_3
+- Person a
+- Person b
+- FamilyRelationship(a,b) = "Spouse"
+- FedTaxFilingStatus(a) = "Head of household"
+- Sec6013.AreMFJ(a,b).Out =?= false
+
+
+
+

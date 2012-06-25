@@ -1,0 +1,50 @@
+# Namespace:    Hammurabi.H
+# Summary:      Facts about individual people relating to residence, location, and U.S. citizenship.
+# Updated:      2012-06-22
+# Author:       Michael Poulshock
+
+
+# PLACE OF RESIDENCE
+
+# U.S. resident
+TboolIn IsUSResident(Person p) =
+	Imm.CountryOfResidence(p) == "United States" |~
+	Geo.IsUSState(StateOfResidence(p))
+	
+# Resident of a state or country
+Tbool IsResidentOf(Person p, string jur) =
+	Imm.CountryOfResidence(p) == jur |
+	StateOfResidence(p) == jur
+
+# State of residence
+TstrIn StateOfResidence(Person p) 
+
+
+# U.S. CITIZENSHIP
+
+# U.S. citizen
+TboolIn IsUSCitizen(Person p) =
+	Imm.Status(p) == "U.S. citizen" |
+	Imm.IsCitizenOf(p, "United States") |
+	USC.Tit8.Gen.IsUSCitizenInferred(p)
+
+
+# BIRTH COUNTRY 
+
+# Born in U.S.
+Tbool BornInTheUSA(Person p) =
+	BirthCountry(p) == "United States"
+
+# Birth country
+TstrIn BirthCountry(Person p)
+
+
+# LOCATION
+
+# Physically present in U.S.
+Tbool PresentInUS(Person p) =
+	CountryLocation(p) == "United States"
+
+# Country where person is (currently) located
+TstrIn CountryLocation(Person p)
+

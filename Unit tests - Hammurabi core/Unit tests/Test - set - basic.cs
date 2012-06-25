@@ -1,4 +1,4 @@
-// Copyright (c) 2011 The Hammurabi Project
+// Copyright (c) 2012 Hammura.bi LLC
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -18,7 +18,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-
 using Hammurabi;
 using NUnit.Framework;
 using System;
@@ -34,6 +33,18 @@ namespace Hammurabi.UnitTests.CoreFcns
         public static Person P3 = new Person("P3");
         
         
+        // Construct a Tset from another Tset
+        
+        [Test]
+        public void Constructor1 ()
+        {
+            Tset s1 = new Tset();
+            s1.AddState(Time.DawnOf, P1);
+            s1.AddState(Time.DawnOf.AddYears(1), P1);
+            Tset s2 = new Tset(s1);
+            Assert.AreEqual("1/1/0001 12:00:00 AM P1 ", s2.Lean.TestOutput); 
+        }
+        
         // .Lean
         
         [Test]
@@ -42,7 +53,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tset s1 = new Tset();
             s1.AddState(Time.DawnOf, P1);
             s1.AddState(Time.DawnOf.AddYears(1), P1);
-            Assert.AreEqual("1/1/0001 12:00:00 AM P1 ", s1.Lean.TestOutput);        // Lean not working
+            Assert.AreEqual("1/1/0001 12:00:00 AM P1 ", s1.Lean.TestOutput);
         }
         
         // .AsOf
@@ -85,13 +96,13 @@ namespace Hammurabi.UnitTests.CoreFcns
         // .Count
         
         [Test]
-        public void Test2 ()
+        public void Count1 ()
         {
             Assert.AreEqual("1/1/0001 12:00:00 AM 2 ", new Tset(P1,P2).Count.TestOutput);        
         }
         
         [Test]
-        public void Test3_1 ()
+        public void Count2 ()
         {
             // This is how you assert an eternally empty set
             Tset s1 = new Tset();
@@ -100,29 +111,43 @@ namespace Hammurabi.UnitTests.CoreFcns
         }
         
         [Test]
-        public void Test3_2 ()
+        public void Count3 ()
         {
             Tset s1 = new Tset();
             s1.SetEternally();
             Assert.AreEqual("1/1/0001 12:00:00 AM 0 ", s1.Count.TestOutput);        
         }
-        
+
+        [Test]
+        public void Count4 ()
+        {
+            Tset s1 = new Tset(Hstate.Stub);
+            Assert.AreEqual("1/1/0001 12:00:00 AM Stub ", s1.Count.TestOutput);        
+        }
+
         // .IsEmpty
         
         [Test]
-        public void Test4 ()
+        public void IsEmpty1 ()
         {
             Assert.AreEqual("1/1/0001 12:00:00 AM False ", new Tset(P1,P2).IsEmpty.TestOutput);        
         }
         
         [Test]
-        public void Test5 ()
+        public void IsEmpty2 ()
         {
             Tset s1 = new Tset();
             s1.SetEternally();
             Assert.AreEqual("1/1/0001 12:00:00 AM True ", s1.IsEmpty.TestOutput);        
         }
-        
+
+        [Test]
+        public void IsEmpty3 ()
+        {
+            Tset s1 = new Tset(Hstate.Uncertain);
+            Assert.AreEqual("1/1/0001 12:00:00 AM Uncertain ", s1.IsEmpty.TestOutput);        
+        }
+
         // .IsSubsetOf
         
         [Test]
@@ -208,7 +233,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         // Union
         
         [Test]
-        public void Test30 ()
+        public void Union1 ()
         {
             Tset s1 = new Tset(P1,P2);
             Tset s2 = new Tset(P2,P3);
@@ -217,7 +242,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         }
         
         [Test]
-        public void Test31 ()
+        public void Union2 ()
         {
             Tset s1 = new Tset(P1);
             Tset s2 = new Tset(P2,P3);
@@ -226,7 +251,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         }
         
         [Test]
-        public void Test32 ()
+        public void Union3 ()
         {
             Tset s1 = new Tset();
             s1.SetEternally();
@@ -234,11 +259,20 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tset res = s1 | s2;
             Assert.AreEqual("1/1/0001 12:00:00 AM P2, P3 ", res.TestOutput);        
         }
-        
+
+        [Test]
+        public void Union4 ()
+        {
+            Tset s1 = new Tset(Hstate.Stub);
+            Tset s2 = new Tset(P2,P3);
+            Tset res = s1 | s2;
+            Assert.AreEqual("1/1/0001 12:00:00 AM Stub ", res.TestOutput);        
+        }
+
         // Intersection
         
         [Test]
-        public void Test40 ()
+        public void Intersection1 ()
         {
             Tset s1 = new Tset(P1,P2);
             Tset s2 = new Tset(P2,P3);
@@ -247,7 +281,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         }
         
         [Test]
-        public void Test41 ()
+        public void Intersection2 ()
         {
             Tset s1 = new Tset(P1);
             Tset s2 = new Tset(P2,P3);
@@ -256,7 +290,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         }
         
         [Test]
-        public void Test42 ()
+        public void Intersection3 ()
         {
             Tset s1 = new Tset();
             s1.SetEternally();
@@ -266,18 +300,27 @@ namespace Hammurabi.UnitTests.CoreFcns
         }
         
         [Test]
-        public void Test43 ()
+        public void Intersection4 ()
         {
             Tset s1 = new Tset(P1,P2,P3);
             Tset s2 = new Tset(P2,P3);
             Tset res = s1 & s2;
             Assert.AreEqual("1/1/0001 12:00:00 AM P2, P3 ", res.TestOutput);        
         }
-        
+
+        [Test]
+        public void Intersection5 ()
+        {
+            Tset s1 = new Tset(Hstate.Stub);
+            Tset s2 = new Tset(P2,P3);
+            Tset res = s1 & s2;
+            Assert.AreEqual("1/1/0001 12:00:00 AM Stub ", res.TestOutput);        
+        }
+
         // Relative complement
         
         [Test]
-        public void Test50 ()
+        public void Complement1 ()
         {
             Tset s1 = new Tset(P1,P2);
             Tset s2 = new Tset(P2,P3);
@@ -286,7 +329,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         }
         
         [Test]
-        public void Test51 ()
+        public void Complement2 ()
         {
             Tset s1 = new Tset(P1);
             Tset s2 = new Tset(P2,P3);
@@ -295,7 +338,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         }
         
         [Test]
-        public void Test52 ()
+        public void Complement3 ()
         {
             Tset s1 = new Tset();
             s1.SetEternally();
@@ -305,7 +348,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         }
         
         [Test]
-        public void Test53 ()
+        public void Complement4 ()
         {
             Tset s1 = new Tset(P1,P2,P3);
             Tset s2 = new Tset(P2,P3);
@@ -314,7 +357,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         }
         
         [Test]
-        public void Test54 ()
+        public void Complement5 ()
         {
             Tset s1 = new Tset();
             s1.SetEternally();
@@ -322,7 +365,16 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tset res = s2 - s1;
             Assert.AreEqual("1/1/0001 12:00:00 AM P2, P3 ", res.TestOutput);        
         }
-        
+
+        [Test]
+        public void Complement6 ()
+        {
+            Tset s1 = new Tset(Hstate.Unstated);
+            Tset s2 = new Tset(P2,P3);
+            Tset res = s2 - s1;
+            Assert.AreEqual("1/1/0001 12:00:00 AM Unstated ", res.TestOutput);        
+        }
+
         // Equality
         
         [Test]

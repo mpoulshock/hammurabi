@@ -1,4 +1,4 @@
-// Copyright (c) 2011 The Hammurabi Project
+// Copyright (c) 2012 Hammura.bi LLC
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -28,14 +28,14 @@ namespace Hammurabi
         /// <summary>
         /// Gets all time points and assocated values from the input Tvar objects.
         /// </summary>
-        protected static SortedList<DateTime,List<object>> TimePointValues(params Tvar[] list)
+        protected static SortedList<DateTime,List<Hval>> TimePointValues(params Tvar[] list)
         {
-            SortedList<DateTime,List<object>> result = new SortedList<DateTime, List<object>>();
+            SortedList<DateTime,List<Hval>> result = new SortedList<DateTime, List<Hval>>();
             
             // Foreach time point
             foreach (DateTime d in TimePoints(list))
             {
-                List<object> vals = new List<object>();
+                List<Hval> vals = new List<Hval>();
                 
                 // Make list of values at that point in time
                 foreach (Tvar h in list)
@@ -49,10 +49,11 @@ namespace Hammurabi
             return result;
         }
 
+
         /// <summary>
         /// Gets all time points in a set of Tvar objects.
         /// </summary>
-        protected static List<DateTime> TimePoints(params Tvar[] list)
+        public static List<DateTime> TimePoints(params Tvar[] list)
         {
             List<Tvar> arrayToList = new List<Tvar>(list.Length);
             arrayToList.AddRange(list);
@@ -80,11 +81,11 @@ namespace Hammurabi
         /// <summary>
         /// Apply a function to all values in a Tnum object.
         /// </summary>
-        public static Tnum ApplyFcnToTimeline(Func<List<object>,object> fcn, params Tnum[] list)
+        public static Tnum ApplyFcnToTimeline(Func<List<Hval>,Hval> fcn, params Tnum[] list)
         {
             Tnum result = new Tnum();
             
-            foreach(KeyValuePair<DateTime,List<object>> slice in TimePointValues(list))
+            foreach(KeyValuePair<DateTime,List<Hval>> slice in TimePointValues(list))
             {    
                 result.AddState(slice.Key, fcn(slice.Value));
             }

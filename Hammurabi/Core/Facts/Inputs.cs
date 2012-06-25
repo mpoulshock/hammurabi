@@ -1,4 +1,4 @@
-// Copyright (c) 2011 The Hammurabi Project
+// Copyright (c) 2012 Hammura.bi LLC
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -31,6 +31,10 @@ namespace Hammurabi
         /// <summary>
         /// Looks for a particular Tbool input.
         /// </summary>
+        public static Tbool Tbool(LegalEntity subj, string rel, LegalEntity directObj, Tbool defaultValue)    
+        {    
+            return (Tbool)QueryTvar<Tbool>(subj, rel, directObj, defaultValue); // experimental
+        }
         public static Tbool Tbool(LegalEntity subj, string rel, LegalEntity directObj)    
         {    
             return (Tbool)QueryTvar<Tbool>(subj, rel, directObj);
@@ -53,6 +57,18 @@ namespace Hammurabi
         }
         
         /// <summary>
+        /// Looks for a particular Tset input.
+        /// </summary>
+        public static Tset Tset(LegalEntity subj, string rel, LegalEntity directObj)        
+        {    
+            return (Tset)QueryTvar<Tset>(subj, rel, directObj);
+        }
+        public static Tset Tset(LegalEntity subj, string rel)        
+        {    
+            return (Tset)QueryTvar<Tset>(subj, rel);
+        }
+        
+        /// <summary>
         /// Looks for a particular Tstr input.
         /// </summary>
         public static Tstr Tstr(LegalEntity subj, string rel, LegalEntity directObj)            
@@ -65,17 +81,17 @@ namespace Hammurabi
         }
         
         /// <summary>
-        /// Looks for a particular DateTime input.
+        /// Looks for a particular Tdate input.
         /// </summary>
-        public static DateTime Date(LegalEntity subj, string rel, LegalEntity directObj)           
+        public static Tdate Tdate(LegalEntity subj, string rel, LegalEntity directObj)           
         {   
-            return QueryDateTime(subj, rel, directObj);
+            return (Tdate)QueryTvar<Tdate>(subj, rel, directObj);
         }
-        public static DateTime Date(LegalEntity subj, string rel)           
+        public static Tdate Tdate(LegalEntity subj, string rel)           
         {   
-            return QueryDateTime(subj, rel);
+            return (Tdate)QueryTvar<Tdate>(subj, rel);
         }
-        
+
         /// <summary>
         /// Looks for a particular Person input.
         /// </summary>
@@ -143,7 +159,7 @@ namespace Hammurabi
         }
         
         /// <summary>
-        /// Returns either of the two inputs Tbools.
+        /// Returns either of the two Tbools.
         /// </summary>
         /// <remarks>
         /// This function is needed because if either A or B is false, the
@@ -153,14 +169,13 @@ namespace Hammurabi
         /// </remarks>
         public static Tbool Either(Tbool A, Tbool B)
         {
-            if (!A.IsUnknown)
+            if (!A.IsEternallyUnknown)
             {
                 return A;
             }
             
             return B;
-        }
-        
+        }   
         
         //*********************************************************************
         // Queries 
@@ -173,23 +188,50 @@ namespace Hammurabi
         /// </summary>
         protected static T QueryTvar<T>(LegalEntity e1, string rel, LegalEntity e2) where T : Tvar
         {
-            // Look up fact in table of facts
-            foreach (Fact f in FactBase)
-            {
-                if (f.subject == e1 && f.relationship == rel && f.directObject == e2)
-                {
-                    return (T)f.v;
-                }
-            }
+            T defaultVal = (T)Auxiliary.ReturnProperTvar<T>(Hstate.Unstated);
+            return QueryTvar<T>(e1, rel, e2, defaultVal);
 
-            // Add the fact to the list of unknown facts
-            if (GetUnknowns)
-            {
-                AddUnknown(e1,rel,e2);
-            }
-            
-            // If fact is not found, return an unknown Tvar
-            return (T)Auxiliary.ReturnProperTvar<T>();
+//                // Look up fact in table of facts
+//                foreach (Fact f in FactBase)
+//                {
+//                    if (f.subject == e1 && f.relationship == rel && f.directObject == e2)
+//                    {
+//                        return (T)f.v;
+//                    }
+//                }
+//    
+//                // Add the fact to the list of unknown facts
+//                if (GetUnknowns)
+//                {
+//                    AddUnknown(e1,rel,e2);
+//                }
+//
+//            // If fact is not found, return an unknown Tvar
+//            return (T)Auxiliary.ReturnProperTvar<T>(Hstate.Unstated);
+        }
+        protected static T QueryTvar<T>(LegalEntity e1, string rel, LegalEntity e2, T defaultValue) where T : Tvar
+        {
+            // A relationship cannot go from an entity to itself...
+//            if (!System.Object.ReferenceEquals(e1,e2))
+//            {
+                // Look up fact in table of facts
+                foreach (Fact f in FactBase)
+                {
+                    if (f.subject == e1 && f.relationship == rel && f.directObject == e2)
+                    {
+                        return (T)f.v;
+                    }
+                }
+    
+                // Add the fact to the list of unknown facts
+                if (GetUnknowns)
+                {
+                    AddUnknown(e1,rel,e2);
+                }
+//            }
+
+            // If fact is not found, return a default value (usually "unstated")
+            return defaultValue;
         }
         
         /// <summary>
@@ -210,53 +252,9 @@ namespace Hammurabi
                 AddUnknown(e1,rel);
             }
             
-            return (T)Auxiliary.ReturnProperTvar<T>();
+            return (T)Auxiliary.ReturnProperTvar<T>(Hstate.Unstated);
         }
-        
-        /// <summary>
-        /// Query a DateTime relationship between two legal entities.
-        /// Example: the date Person1 and Person2 were married.
-        /// </summary>
-        protected static DateTime QueryDateTime(LegalEntity e1, string rel, LegalEntity e2)
-        {
-            foreach (Fact f in FactBase)
-            {
-                if (f.subject == e1 && f.relationship == rel && f.directObject == e2)
-                {
-                    return f.time;
-                }
-            }
-            
-            if (GetUnknowns)
-            {
-                AddUnknown(e1,rel,e2);
-            }
-            
-            return new DateTime(1900,1,1);        // TODO: Make date queries nullable?
-        }
-        
-        /// <summary>
-        /// Query a DateTime property of one legal entity.
-        /// Example: the date Person1 was born.
-        /// </summary> 
-        protected static DateTime QueryDateTime(LegalEntity e1, string rel)
-        {
-            foreach (Fact f in FactBase)
-            {
-                if (f.subject == e1 && f.relationship == rel)
-                {
-                    return f.time;
-                }
-            }
-            
-            if (GetUnknowns)
-            {
-                AddUnknown(e1,rel);
-            }
-            
-            return new DateTime(1900,1,1);    
-        }
-        
+
         /// <summary>
         /// Query that returns a person.
         /// </summary> 

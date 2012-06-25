@@ -1,4 +1,4 @@
-// Copyright (c) 2011 The Hammurabi Project
+// Copyright (c) 2012 Hammura.bi LLC
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -269,9 +269,9 @@ namespace Hammurabi.UnitTests.CoreFcns
         {
             Facts.Reset();
             Facts.GetUnknowns = true;
-            Tnum theRule = Switch(A(),X(),
+            Tnum theRule = Switch<Tnum>(A(),X(),
                                   B(),Y(),
-                                  NullTnum);
+                                  Hstate.Uncertain);
             Assert.AreEqual("A B", Facts.ShowUnknownTest());      // currently returns "A X B Y" - should not investigate Tnums unless relevant
         }
         
@@ -281,9 +281,9 @@ namespace Hammurabi.UnitTests.CoreFcns
             Facts.Reset();
             Facts.GetUnknowns = true;
             Facts.Assert(p1, "A", p2);
-            Tnum theRule = Switch(A(),X(),
+            Tnum theRule = Switch<Tnum>(A(),X(),
                                   B(),Y(),
-                                  NullTnum);
+                                  Hstate.Uncertain);
             Assert.AreEqual("A X", Facts.ShowUnknownTest());      // currently returns "X B Y" - should not investigate Tnums unless relevant
         }
         
@@ -293,9 +293,9 @@ namespace Hammurabi.UnitTests.CoreFcns
             Facts.Reset();
             Facts.GetUnknowns = true;
             Facts.Assert(p1, "A", p2, false);
-            Tnum theRule = Switch(A(),X(),
+            Tnum theRule = Switch<Tnum>(A(),X(),
                                   B(),Y(),
-                                  NullTnum);
+                                  Hstate.Uncertain);
             Assert.AreEqual("B", Facts.ShowUnknownTest());      // currently returns "X B Y" - should not investigate Tnums unless relevant
         }
         
@@ -306,9 +306,9 @@ namespace Hammurabi.UnitTests.CoreFcns
             Facts.GetUnknowns = true;
             Facts.Assert(p1, "A", p2, false);
             Facts.Assert(p1, "B", p2);
-            Tnum theRule = Switch(A(),X(),
+            Tnum theRule = Switch<Tnum>(A(),X(),
                                   B(),Y(),
-                                  NullTnum);
+                                  Hstate.Uncertain);
             Assert.AreEqual("Y", Facts.ShowUnknownTest());      // currently returns "X Y" - should not investigate Tnums unless relevant
             Facts.GetUnknowns = true;
         }

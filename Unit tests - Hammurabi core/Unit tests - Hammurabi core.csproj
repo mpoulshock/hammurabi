@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="3.5" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
@@ -34,8 +34,11 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="nunit.framework, Version=2.4.7.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77">
-      <Package>mono-nunit</Package>
+    <Reference Include="nunit.core">
+      <HintPath>bin\Debug\nunit.core.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework">
+      <HintPath>bin\Debug\nunit.framework.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -49,7 +52,6 @@
     <Compile Include="Unit tests\Test - time - dates.cs" />
     <Compile Include="Unit tests\Test - switch.cs" />
     <Compile Include="Unit tests\Test - temporal dates.cs" />
-    <Compile Include="Unit tests\Test - stubs.cs" />
     <Compile Include="Unit tests\Test - comparison - boolean.cs" />
     <Compile Include="Unit tests\Test - comparison - numeric.cs" />
     <Compile Include="Unit tests\Test - comparison - string.cs" />
@@ -59,6 +61,9 @@
     <Compile Include="Unit tests\Test - facts - unknowns.cs" />
     <Compile Include="Unit tests\Test - facts - symmetrical.cs" />
     <Compile Include="Unit tests\Test - short-circuit evaluation.cs" />
+    <Compile Include="Unit tests\Test - misc.cs" />
+    <Compile Include="Unit tests\Test - unresolved concepts.cs" />
+    <Compile Include="Unit tests\Test - Hval.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Hammurabi\Hammurabi.csproj">

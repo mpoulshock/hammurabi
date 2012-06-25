@@ -1,4 +1,4 @@
-// Copyright (c) 2011 The Hammurabi Project
+// Copyright (c) 2012 Hammura.bi LLC
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -37,13 +37,48 @@ namespace Hammurabi
         public Tbool()
         {
         }
-        
-        /// <summary>
-        /// Constructs a Tbool that is eternally set to a specified boolean value
-        /// </summary>
-        public Tbool(bool? val)
+
+        public Tbool(Hstate state)
         {
-            this.SetEternally(val);
+            this.SetEternally(state);
+        }
+
+        public Tbool(Hval v)
+        {
+            this.SetEternally(v);
+        }
+
+        public Tbool(bool b)
+        {
+            this.SetEternally(b);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the Tbool class and loads
+        /// a list of date-value pairs.
+        /// </summary>
+        public static Tbool MakeTbool(params object[] list)
+        {
+            Tbool result = new Tbool();
+            for(int i=0; i < list.Length - 1; i+=2)  
+            {
+                try
+                {
+                    Hstate h = (Hstate)list[i+1];
+                    if (h != Hstate.Known)
+                    {
+                        result.AddState(Convert.ToDateTime(list[i]),
+                                    new Hval(null,h));
+                    }
+                }
+                catch
+                {
+                    bool b = Convert.ToBoolean(list[i+1]);
+                    result.AddState(Convert.ToDateTime(list[i]),
+                                new Hval(b));
+                }
+            }
+            return result;
         }
         
         /// <summary>
@@ -68,69 +103,161 @@ namespace Hammurabi
         /// <summary>
         /// Returns the value of a Tbool at a specified point in time. 
         /// </summary>
-        public Tbool AsOf(DateTime dt)
+        public Tbool AsOf(Tdate dt)
         {
-            if (this.IsUnknown) { return new Tbool(); }
+            return this.AsOf<Tbool>(dt);
+        }
+
+        /// <summary>
+        /// Indicates whether the Tbool is always true.
+        /// </summary>
+        public Tbool IsAlwaysTrue()
+        {
+            // If timeline varies, it cannot always be the given value
+            if (this.TimeLine.Count > 1) return false;
+
+            // If val is unknown and base Tvar is eternally unknown,
+            // return the typical precedence state
+            if (!this.FirstValue.IsKnown)
+            {
+                return new Tbool(this.FirstValue);
+            }
+
+            // Else, test for equality
+            if (this.FirstValue.IsEqualTo(true)) return true;
+
+            return false;
+        }
+
+        /// <summary>
+        /// Determines whether this instance is always true during a specified interval.
+        /// </summary>
+        public Tbool IsAlwaysTrue(Tdate start, Tdate end)
+        {
+            Tbool equalsVal = this == true; 
+
+            Tbool isDuringInterval = TheTime.IsBetween(start, end);
             
-            return (Tbool)this.AsOf<Tbool>(dt);
+            Tbool isOverlap = equalsVal & isDuringInterval;
+
+            Tbool overlapAndIntervalAreCoterminous = isOverlap == isDuringInterval;
+
+            return !overlapAndIntervalAreCoterminous.IsEver(false);
+        }
+
+        /// <summary>
+        /// Returns true if the Tbool is ever true before a given date
+        /// </summary>
+        public Tbool IsEverTrueBefore(Tdate end)
+        {
+            return this.IsEverTrue(Time.DawnOf, end);
         }
         
         /// <summary>
-        /// Returns true if the Tbool always has a specified boolean value. 
+        /// Returns true if the Tbool is ever true after a given date
         /// </summary>
-        public Tbool IsAlways(bool val)
+        public Tbool IsEverTrueAfter(Tdate start)
         {
-            return IsAlwaysTvar<Tbool>(val, Time.DawnOf, Time.EndOf);
+            return this.IsEverTrue(start, Time.EndOf);
         }
-        
+
         /// <summary>
-        /// Returns true if the Tbool always has a specified boolean value
-        /// between two given dates. 
+        /// Determines whether this instance is ever true during a specified time period.
         /// </summary>
-        public Tbool IsAlways(bool val, DateTime start, DateTime end)
+        public Tbool IsEverTrue(Tdate start, Tdate end)
         {
-            return IsAlwaysTvar<Tbool>(val, start, end);
+            Tbool equalsVal = this == true; 
+            
+            Tbool isDuringInterval = TheTime.IsBetween(start, end);
+            
+            Tbool isOverlap = equalsVal & isDuringInterval;
+            
+            return isOverlap.IsEverTrue();
         }
         
         /// <summary>
         /// Returns true if the Tbool ever has a specified boolean value. 
         /// </summary>
-        public Tbool IsEver(bool val)
+        public Tbool IsEverTrue()
         {
-            return IsEverTvar(val);
+            return this.IsEver(true);
         }
-        
+
         /// <summary>
-        /// Returns true if the Tbool ever has a specified boolean value
-        /// between two given dates. 
+        /// Determines whether the Tvar is ever the specified boolean val.
         /// </summary>
-        public Tbool IsEver(bool val, DateTime start, DateTime end)
+        private Tbool IsEver(Hval val)
         {
-            return IsEverTvar<Tbool>(val, start, end);
+            // If val is unknown and base Tvar is eternally unknown,
+            // return the typical precedence state
+            if (!val.IsKnown && this.TimeLine.Count == 1)
+            {
+                if (!this.FirstValue.IsKnown)
+                {
+                    Hstate s = PrecedingState(this.FirstValue, val);
+                    return new Tbool(s);
+                }
+            }
+
+            // If val is unknown, return its state
+            if (!val.IsKnown) return new Tbool(val);
+           
+            // If the base Tvar is ever val, return true
+            foreach (Hval h in this.TimeLine.Values)
+            {
+                if (h.IsEqualTo(val)) return true;
+            }
+
+            // If base Tvar has a time period of unknownness, return 
+            // the state with the proper precedence
+            Hstate returnState = PrecedenceForMissingTimePeriods(this);
+            if (returnState != Hstate.Known) return new Tbool(returnState);
+
+            return false;
         }
-        
+
         /// <summary>
         /// Returns the DateTime when the Tbool is first true.
         /// </summary>
-        public DateTime DateFirstTrue 
+        public Tdate DateFirstTrue
         {
             get
             {
-                return DateFirst<Tbool>(true);
+                SortedList<DateTime, Hval> line = this.TimeLine;
+                Hval result = new Hval(null,Hstate.Stub);
+    
+                // If Tval is eternally unknown, return that value
+                if (this.IsEternallyUnknown)
+                {
+                    result = this.FirstValue;
+                }
+                else
+                {
+                    // For each time interval...
+                    for (int i = 0; i < line.Count; i++) 
+                    {
+                        // If you encounter an unknown interval, return that value
+                        // Warning: Could be problematic b/c initial intervals are likely to be unknown...
+                        if (!line.Values[i].IsKnown)
+                        {
+                            // result = line.Values[i];
+                        }
+                        // Look for the date when the Tvar has the given value
+                        else if (Convert.ToBoolean(line.Values[i].Val))
+                        {
+                            result = line.Keys[i];
+                        }
+                        else
+                        {
+                            // If Tvar never has the given value, return the default value
+                        }
+                    }
+                }
+    
+                return new Tdate(result);
             }
         }
-        
-        /// <summary>
-        /// Returns the DateTime when the Tbool is first false.
-        /// </summary>
-        public DateTime DateFirstFalse 
-        {
-            get
-            {
-                return DateFirst<Tbool>(false);
-            }
-        }
-        
+
         /// <summary>
         /// Overloaded boolean operator: True.
         /// </summary>
@@ -142,25 +269,29 @@ namespace Hammurabi
         /// <summary>
         /// Returns true only if the Tbool is true during the window of concern;
         /// otherwise false. 
+        /// Used in symmetrical facts and short-circuit evaluation.
         /// </summary>
         public bool IsTrue
         {
             get
             {
-                if (Facts.WindowOfConcernIsDefault)
-                {
-                    return this.IntervalValues.Count == 1 && 
-                           Convert.ToBoolean(this.IntervalValues.Values[0]) == true; 
-                }
-                if (Facts.WindowOfConcernIsPoint)
-                {
-                    return Convert.ToBoolean(this.AsOf(Facts.WindowOfConcernStart));
-                }
-                
-                return Convert.ToBoolean(this.IsAlways(true, 
-                                                       Facts.WindowOfConcernStart, 
-                                                       Facts.WindowOfConcernEnd
-                                                       ).ToBool);
+                return this.IntervalValues.Count == 1 && 
+                    Convert.ToBoolean(this.FirstValue.IsTrue);
+
+//                if (Facts.WindowOfConcernIsDefault)
+//                {
+//                    return this.IntervalValues.Count == 1 && 
+//                           Convert.ToBoolean(this.IntervalValues.Values[0].Val) == true; 
+//                }
+//                if (Facts.WindowOfConcernIsPoint)
+//                {
+//                    return Convert.ToBoolean(this.AsOf(Facts.WindowOfConcernStart));
+//                }
+//                
+//                return Convert.ToBoolean(this.IsAlways(true, 
+//                                                       Facts.WindowOfConcernStart, 
+//                                                       Facts.WindowOfConcernEnd
+//                                                       ).ToBool);
             }
         }
         
@@ -183,14 +314,14 @@ namespace Hammurabi
                 if (Facts.WindowOfConcernIsDefault)
                 {
                     return this.IntervalValues.Count == 1 && 
-                           Convert.ToBoolean(this.IntervalValues.Values[0]) == false; 
+                           Convert.ToBoolean(this.FirstValue.Val) == false; 
                 }
                 if (Facts.WindowOfConcernIsPoint)
                 {
                     return Convert.ToBoolean(this.AsOf(Facts.WindowOfConcernStart));
                 }
                 
-                return Convert.ToBoolean(this.IsAlways(false, 
+                return Convert.ToBoolean((!this).IsAlwaysTrue( 
                                                        Facts.WindowOfConcernStart, 
                                                        Facts.WindowOfConcernEnd
                                                        ).ToBool);
@@ -206,12 +337,14 @@ namespace Hammurabi
         {
             get
             {
-                if (this.IsUnknown || TimeLine.Count > 1) { return null; }
-                
-                return (bool?)TimeLine.Values[0];
+                if (TimeLine.Count > 1) { return null; }
+
+                if (!this.FirstValue.IsKnown) return null;
+
+                return (bool?)this.FirstValue.Val;
             }
         }
-        
+
         /// <summary>
         /// Overloaded boolean operator: Equal.
         /// </summary>

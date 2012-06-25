@@ -1,4 +1,4 @@
-// Copyright (c) 2011 The Hammurabi Project
+// Copyright (c) 2012 Hammura.bi LLC
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -46,7 +46,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         private static Tbool MethodU()
         {
             result += "U";
-            return new Tbool();
+            return new Tbool(Hstate.Unstated);
         }
         
         // Tests for correct IsTrue / IsFalse determinations
@@ -61,7 +61,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         [Test]
         public void IsDefinitelyFalse2 ()
         {
-            Tbool t = new Tbool();
+            Tbool t = new Tbool(Hstate.Unstated);
             Assert.AreEqual(false, t.IsFalse);      
         }
         
@@ -90,7 +90,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         [Test]
         public void IsDefinitelyTrue2 ()
         {
-            Tbool t = new Tbool();
+            Tbool t = new Tbool(Hstate.Unstated);
             Assert.AreEqual(false, t.IsTrue);      
         }
         
@@ -148,7 +148,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void And_TU_Result ()
         {
             Tbool t = MethodT() && MethodU();
-            Assert.AreEqual("Unknown", t.TestOutput);      
+            Assert.AreEqual("1/1/0001 12:00:00 AM Unstated ", t.TestOutput);      
         }
         
         [Test]
@@ -208,7 +208,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void And_UT_Result ()
         {
             Tbool t = MethodU() && MethodT();
-            Assert.AreEqual("Unknown", t.TestOutput);      
+            Assert.AreEqual("1/1/0001 12:00:00 AM Unstated ", t.TestOutput);      
         }
         
         [Test]
@@ -238,7 +238,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void And_UU_Result ()
         {
             Tbool t = MethodU() && MethodU();
-            Assert.AreEqual("Unknown", t.TestOutput);      
+            Assert.AreEqual("1/1/0001 12:00:00 AM Unstated ", t.TestOutput);      
         }
         
         [Test]
@@ -360,7 +360,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void Or_FU_Result ()
         {
             Tbool t = MethodF() || MethodU();
-            Assert.AreEqual("Unknown", t.TestOutput);      
+            Assert.AreEqual("1/1/0001 12:00:00 AM Unstated ", t.TestOutput);      
         }
         
         [Test]
@@ -390,7 +390,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void Or_UF_Result ()
         {
             Tbool t = MethodU() || MethodF();
-            Assert.AreEqual("Unknown", t.TestOutput);      
+            Assert.AreEqual("1/1/0001 12:00:00 AM Unstated ", t.TestOutput);      
         }
         
         [Test]
@@ -405,7 +405,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void Or_UU_Result ()
         {
             Tbool t = MethodU() || MethodU();
-            Assert.AreEqual("Unknown", t.TestOutput);      
+            Assert.AreEqual("1/1/0001 12:00:00 AM Unstated ", t.TestOutput);      
         }
         
         [Test]

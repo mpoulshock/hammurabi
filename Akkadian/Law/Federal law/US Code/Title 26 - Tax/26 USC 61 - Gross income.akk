@@ -1,0 +1,12 @@
+# Citation:     26 U.S.C. 61 (2010)
+# Namespace:    USC.Tit26.Sec61
+# Summary:      "Gross income" as defined under Internal Revenue Code, Section 61.
+# Updated:      2010-11-27
+# Author:       Michael Poulshock
+
+
+# Gross income
+Tnum GrossIncome(Person p) =
+	TnumIn GrossIncome(p)
+
+	

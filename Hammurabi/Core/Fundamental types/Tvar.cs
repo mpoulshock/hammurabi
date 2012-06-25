@@ -1,4 +1,4 @@
-// Copyright (c) 2011 The Hammurabi Project
+// Copyright (c) 2012 Hammura.bi LLC
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -22,83 +22,115 @@ using System;
 using System.Collections.Generic;
 
 namespace Hammurabi
-{
+{    
     /// <summary>
     /// The (abstract) base class of all temporal variables (Tvars).
     /// Ordinarily, the functions in this class should only be called by core
     /// functions, not law-related ones.
     /// </summary>
-    public abstract class Tvar : H 
+    public abstract partial class Tvar : H 
     {
         /// <summary>
         /// The core Tvar data structure: a timeline of dates and associated values.
         /// </summary>
-        protected SortedList<DateTime, object> TimeLine = new SortedList<DateTime, object>();
+        protected SortedList<DateTime, Hval> TimeLine = new SortedList<DateTime, Hval>();
         
         /// <summary>
         /// The accessor for TimeLine.
         /// </summary>
-        public SortedList<DateTime, object> IntervalValues
+        public SortedList<DateTime, Hval> IntervalValues
         {
             get
             {
                 return TimeLine;
             }
         }
-
+        
         /// <summary>
-        /// Indicates whether a Tvar is "unknown" - that is, if it has no
-        /// time-value states. 
+        /// Implicitly converts ints to Tvars.
         /// </summary>
-        public bool IsUnknown
+        public static implicit operator Tvar(bool b) 
         {
-            get
-            {
-                return TimeLine.Count == 0;
-            }
+            return new Tbool(b);
+        }
+        
+        /// <summary>
+        /// Implicitly converts ints to Tnums.
+        /// </summary>
+        public static implicit operator Tvar(int i) 
+        {
+            return new Tnum(i);
+        }
+        
+        /// <summary>
+        /// Implicitly converts decimals to Tvars.
+        /// </summary>
+        public static implicit operator Tvar(decimal d) 
+        {
+            return new Tnum(d);
+        }
+        
+        /// <summary>
+        /// Implicitly converts doubles to Tvars.
+        /// </summary>
+        public static implicit operator Tvar(double d) 
+        {
+           return new Tnum(d);
+        }
+        
+        /// <summary>
+        /// Implicitly converts strings to Tvars.
+        /// </summary>
+        public static implicit operator Tvar(string s) 
+        {
+            return new Tstr(s);
+        }
+        
+        /// <summary>
+        /// Implicitly converts DateTimes to Tvars.
+        /// </summary>
+        public static implicit operator Tvar(DateTime d) 
+        {
+            return new Tdate(d);
+        }
+        
+        /// <summary>
+        /// Implicitly converts a legal entity into a Tvar
+        /// </summary>
+        public static implicit operator Tvar(LegalEntity e) 
+        {
+            return new Tset(e);
         }
         
         /// <summary>
         /// Indicates whether a (non-unknown) value has been determined for the Tvar 
         /// </summary>
-        public bool IsResolved
+        public bool IsKnown
         {
             get
             {
-                return !this.IsUnknown;
+                return false;  // TODO: Deal with this (relates to facts.either)
             }
         }
-        
-        /// <summary>
-        /// Indicates whether a Tvar is "known" - that is, if it has at least
-        /// one time-value state. 
-        /// </summary>
-//        public Tbool IsKnown
-//        {
-//            get
-//            {
-//                return new Tbool(TimeLine.Count > 0);
-//            }
-//        }
-        
+
         /// <summary>
         /// Adds an time-value state to the TimeLine. 
         /// </summary>
-        public void AddState(DateTime dt, object val)
+        public void AddState(DateTime dt, Hval hval)
         {
             // If a state (DateTime) is added to a Tvar that already has that 
             // state, an error occurs.  We could check for duplicates here, but
             // this function is used extremely frequently and doing so would
             // probably affect performance.
-            TimeLine.Add(dt,val);
+            TimeLine.Add(dt, hval);
         }
-        
+
         /// <summary>
         /// Sets a Tvar to an "eternal" value (the same at all points in time). 
         /// </summary>
-        public void SetEternally(object val)
+        public void SetEternally(Hval hval)
         {
-            TimeLine.Add(Time.DawnOf,val);    
+            AddState(Time.DawnOf, hval);
         }
 
         /// <summary>
@@ -110,28 +142,15 @@ namespace Hammurabi
             get 
             {  
                 string result = "";
-                
-                if (IsUnknown)
+                foreach(KeyValuePair<DateTime,Hval> de in this.TimeLine)
                 {
-                    result = "Unknown";
-                }
-                else
-                {
-                    foreach(KeyValuePair<DateTime,object> de in this.TimeLine)
-                    {
-                        // Display "Null" for null values
-                        object val = de.Value;
-                        string showedVal = Convert.ToString(val);
-                        if (val == null) { showedVal = "Null"; }
-                        
-                        // Show the value as an element on the timeline
-                        result += de.Key + " " + showedVal + "\n"; 
-                    }
+                    // Show the value as an element on the timeline
+                    result += de.Key + " " + de.Value.ToString + "\n"; 
                 }
                 return result;
-              }
+            }
         }
-        
+
         /// <summary>
         /// Displays a timeline indicating the state of the object at various
         /// points in time.  Same as .Timeline but without line breaks.
@@ -146,34 +165,105 @@ namespace Hammurabi
         }
         
         /// <summary>
-        /// Returns the value of a Tvar at a specified point in time. 
+        /// Displays an output object.
         /// </summary>
-        public object AsOf<T>(DateTime dt) where T : Tvar
+        //  TODO: Handle temporal outputs.
+        public object Out
         {
-            SortedList<DateTime, object> line = TimeLine;
-            
-            object result = line.Values[line.Count-1];
-            
-            for (int i = 0; i < line.Count-1; i++ ) 
-            {
-                // If value is between two adjacent points on the timeline...
-                if (dt >= line.Keys[i])
+            get 
+            {  
+                if (this.TimeLine.Count == 1)
                 {
-                    if (dt < line.Keys[i+1])
+                    Hval v = this.FirstValue;
+                    if (v.IsKnown)
                     {
-                        result = line.Values[i];
+                        return v.Obj;
+                    }
+                    else
+                    {
+                        return v.ToString;
                     }
                 }
+                else
+                {
+                    return this.TestOutput;
+                }
+              }
+        }
+
+        /// <summary>
+        /// Returns the value of the Tvar at the first time interval.
+        /// </summary>
+        public Hval FirstValue
+        {
+            get
+            {
+                return this.TimeLine.Values[0];
+            }
+        }
+
+        /// <summary>
+        /// Indicates whether the Tvar has the same value at all time intervals.
+        /// </summary>
+        public bool IsEternal
+        {
+            get
+            {
+                return this.TimeLine.Count == 1;
+            }
+        }
+
+        /// <summary>
+        /// Indicates whether the Tvar is eternally unknown.
+        /// </summary>
+        public bool IsEternallyUnknown
+        {
+            get
+            {
+                return this.IsEternal &&
+                        (this.FirstValue.IsStub ||
+                         this.FirstValue.IsUncertain ||
+                         this.FirstValue.IsUnstated);
+            }
+        }
+
+        /// <summary>
+        /// Returns the value of a Tvar at a specified point in time. 
+        /// </summary>
+        /// <remarks>
+        /// If the Tdate varies over time, only the first value is used.
+        /// </remarks>
+        public T AsOf<T>(Tdate date) where T : Tvar
+        {
+            Hval result;
+
+            // If base Tvar has eternal, known value, return that.
+            // (In these cases, the Tdate is irrelevant.)
+            if (this.IsEternal && !this.IsEternallyUnknown)
+            {
+                result = this.FirstValue;
+            }
+            // If either the base Tvar or Tdate are unknown...
+            else if (!date.FirstValue.IsKnown || this.IsEternallyUnknown) 
+            {
+                Hstate top = PrecedingState(this.FirstValue, date.FirstValue);
+                result = new Hval(null,top);
+            }
+            else
+            {
+                result = this.ObjectAsOf(date.ToDateTime);
             }
 
-            return Auxiliary.ReturnProperTvar<T>(result);
+            return (T)Auxiliary.ReturnProperTvar<T>(result);
         }
-        
+
         /// <summary>
         /// Returns an object value of the Tvar at a specified point in time.
         /// </summary>
-        public object ObjectAsOf(DateTime dt)
+        public Hval ObjectAsOf(DateTime dt)
         {
+            Hval result = TimeLine.Values[TimeLine.Count-1];
+            
             for (int i = 0; i < TimeLine.Count-1; i++ ) 
             {
                 // If value is between two adjacent points on the timeline...
@@ -181,15 +271,14 @@ namespace Hammurabi
                 {
                     if (dt < TimeLine.Keys[i+1])
                     {
-                        return TimeLine.Values[i];
+                        result = TimeLine.Values[i];
                     }
                 }
             }
-            
-            // If value is on or after last point on timeline...
-            return TimeLine.Values[TimeLine.Count-1];
+
+            return result;
         }
-        
+
         /// <summary>
         /// Removes redundant intervals from the Tvar. 
         /// </summary>
@@ -204,7 +293,7 @@ namespace Hammurabi
             {
                 for (int i=0; i < TimeLine.Count-1; i++ ) 
                 {
-                    if (object.Equals(TimeLine.Values[i+1],TimeLine.Values[i]))
+                    if (object.Equals(TimeLine.Values[i+1].Val, TimeLine.Values[i].Val))
                     {
                         dupes.Add(TimeLine.Keys[i+1]);
                     }
@@ -227,190 +316,86 @@ namespace Hammurabi
         {
             return (IList<DateTime>)TimeLine.Keys;
         }
-        
-        
-        // **********************************************************
-        //    Equal / not equal
-        // **********************************************************
-        
+
         /// <summary>
         /// Returns true when two Tvar values are equal. 
         /// </summary>
         public static Tbool EqualTo(Tvar tb1, Tvar tb2)
         {
-            // Result is unknown if any input is unknown
-            if (AnyAreUnknown(tb1, tb2)) { return new Tbool(); }
-            
             Tbool result = new Tbool();
             
-            foreach(KeyValuePair<DateTime,List<object>> slice in TimePointValues(tb1,tb2))
+            foreach(KeyValuePair<DateTime,List<Hval>> slice in TimePointValues(tb1,tb2))
             {    
-                result.AddState(slice.Key, object.Equals(slice.Value[0], slice.Value[1]));
+                // Deal with unknowns
+                Hstate top = PrecedingState(slice.Value);
+                if (top != Hstate.Known) 
+                {
+                    result.AddState(slice.Key, new Hval(null,top));
+                }
+                else
+                {
+                    result.AddState(slice.Key, object.Equals(slice.Value[0].Val, slice.Value[1].Val));
+                }
             }
             
             return result.Lean;
         }
-        
-        
-        // ********************************************************************
-        // IsAlways / IsEver
-        // ********************************************************************
-        
+
         /// <summary>
-        /// Returns true if the Tvar always has a given value. 
+        /// Returns true whenever the Tvar has a value of "unstated."
         /// </summary>
-        protected Tbool IsAlwaysTvar<T>(object val, DateTime start, DateTime end) where T : Tvar
+        //  TODO: Why does this exist?
+        public Tbool IsUnstated
         {
-            if (this.IsUnknown) { return new Tbool(); }
-            
-            Tbool equalsVal = EqualTo(this, new Tnum(val)); // only works b/c Tnums take objects
-            
-            Tbool isDuringInterval = TheTime.IsBetween(start, end);
-            
-            Tbool isOverlap = equalsVal & isDuringInterval;
-            
-            Tbool overlapAndIntervalAreCoterminous = isOverlap == isDuringInterval;
-            
-            return !overlapAndIntervalAreCoterminous.IsEver(false);
-        }
-        
-        /// <summary>
-        /// Returns true if the Tvar ever has a given value. 
-        /// </summary>
-        protected Tbool IsEverTvar(object val)
-        {
-            if (this.IsUnknown) { return new Tbool(); }
-            
-            return new Tbool(TimeLine.ContainsValue(val));
-        }
-        
-        /// <summary>
-        /// Returns true if the Tvar ever has a given value between two given dates. 
-        /// </summary>
-        protected Tbool IsEverTvar<T>(object val, DateTime start, DateTime end) where T : Tvar
-        {
-            if (this.IsUnknown) { return new Tbool(); }
-            
-            Tbool equalsVal = EqualTo(this, new Tnum(val)); // only works b/c Tnums take objects
-            
-            Tbool isDuringInterval = TheTime.IsBetween(start, end);
-            
-            Tbool isOverlap = equalsVal & isDuringInterval;
-            
-            return isOverlap.IsEver(true);
-        }
-        
-        
-        // ********************************************************************
-        // Elapsed Time
-        // ********************************************************************
-        
-        /// <summary>
-        /// Returns the total elapsed days that a Tvar has a given value,
-        /// for each of a given set of intervals.
-        /// Example: meetsAnnualTest = var.ElapsedDaysPerInterval(theYear) > 183;
-        /// </summary>
-        public Tnum ElapsedDaysPer(Tnum period, object val)
-        {
-            if (this.IsUnknown || period.IsUnknown) { return new Tnum(); }
-            
-            Tnum result = new Tnum();
-            
-            int count = period.TimeLine.Count;
-            for (int i=0; i < count; i++)
+            get
             {
-                DateTime spanEnd = Time.EndOf;
-                if (i < count-1)
+                Tbool result = new Tbool();
+
+                for (int i = 0; i < TimeLine.Count; i++ ) 
                 {
-                    spanEnd = period.TimeLine.Keys[i+1];
-                }
-                
-                TimeSpan time = this.ElapsedTime(val, period.TimeLine.Keys[i], spanEnd);
-                result.AddState(period.TimeLine.Keys[i], time.TotalDays);
-            }
-            
-            return result.Lean;
-        }
-        
-        /// <summary>
-        /// Returns the total elapsed days, between two given DateTimes, during
-        /// which a Tvar has a given value.
-        /// </summary>
-        public Tnum ElapsedDays(object val, DateTime start, DateTime end)
-        {
-            if (this.IsUnknown) { return new Tnum(); }
-            
-            double days = Convert.ToDouble(ElapsedTime(val, start, end).TotalDays);
-            return new Tnum(days);
-        }
-        
-        /// <summary>
-        /// Returns the total elapsed days during which a Tvar has a given value. 
-        /// </summary>
-        public Tnum ElapsedDays(object val)
-        {
-            return ElapsedDays(val, Time.DawnOf, Time.EndOf);
-        }
-        
-        /// <summary>
-        /// Returns the total elapsed time, between two given DateTimes, during
-        /// which a Tvar has a given value.
-        /// </summary>
-        private TimeSpan ElapsedTime(object val, DateTime start, DateTime end)
-        {
-            TimeSpan result = new TimeSpan();
-            int count = this.TimeLine.Count;
-            for (int i=0; i < count; i++)
-            {
-                if (object.Equals(this.TimeLine.Values[i], val))
-                {
-                    DateTime spanStart = Time.Latest(TimeLine.Keys[i],start);
-                    DateTime spanEnd = end;
-                    if (i < count-1)
+                    if (TimeLine.Values[i].IsUnstated)
                     {
-                        spanEnd = Time.Earliest(TimeLine.Keys[i+1], end);
+                        result.AddState(TimeLine.Keys[i],true);
                     }
-        
-                    if (spanStart < spanEnd)
+                    else
                     {
-                        TimeSpan newDuration = spanEnd - spanStart;
-                        result += newDuration;
+                        result.AddState(TimeLine.Keys[i],false);
                     }
                 }
+    
+                return result.Lean;
             }
-        
-            return result;
-        }
-        
-        /// <summary>
-        /// Returns the total elapsed time during which a Tvar has a given value. 
-        /// </summary>
-        private TimeSpan ElapsedTime(object val)
-        {
-            return ElapsedTime(val, Time.DawnOf, Time.EndOf);
         }
 
-        
-        // ********************************************************************
-        // DateFirst()
-        // ********************************************************************
-        
         /// <summary>
-        /// Returns the DateTime when a Tvar first has a given value.
+        /// Hstate precedences for missing time periods.
         /// </summary>
-        public DateTime DateFirst<T>(object val) where T : Tvar
+        public static Hstate PrecedenceForMissingTimePeriods(Tvar t)
         {
-            SortedList<DateTime, object> line = this.TimeLine;
-            
-            for (int i = 0; i < line.Count; i++) 
+            // If the base Tvar is ever unstated, return Unstated
+            // b/c user could provide answer that resolves the question
+            foreach (Hval h in t.TimeLine.Values)
             {
-                if (object.Equals(line.Values[i], val))
-                {
-                    return line.Keys[i];
-                }
+                if (h.IsUnstated) return Hstate.Unstated;
             }
 
-            return Time.EndOf; // need to think about this...
+            // If the base Tvar is ever uncertain, return uncertain
+            // b/c if user changes answer, this function might 
+            // resolve the question
+            foreach (Hval h in t.TimeLine.Values)
+            {
+                if (h.IsUncertain) return Hstate.Uncertain;
+            }
+
+            // If the base Tvar is ever uncertain, return uncertain
+            // b/c if the rule logic were complete it might resolve
+            // the question.
+            foreach (Hval h in t.TimeLine.Values)
+            {
+                if (h.IsStub) return Hstate.Stub;
+            }
+
+            return Hstate.Known;
         }
     }    
 }

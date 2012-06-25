@@ -1,4 +1,4 @@
-// Copyright (c) 2011 The Hammurabi Project
+// Copyright (c) 2012 Hammura.bi LLC
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -59,8 +59,8 @@ namespace Hammurabi.UnitTests.CoreFcns
         [Test]
         public void StringComparison5 ()
         {
-            Tbool t = new Tstr() == "Hello, world";
-            Assert.AreEqual("Unknown", t.TestOutput);                
+            Tbool t = new Tstr(Hstate.Unstated) == "Hello, world";
+            Assert.AreEqual("1/1/0001 12:00:00 AM Unstated ", t.TestOutput);                
         }
         
         // NOT EQUAL

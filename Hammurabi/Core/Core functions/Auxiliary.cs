@@ -1,4 +1,4 @@
-// Copyright (c) 2011 The Hammurabi Project
+// Copyright (c) 2012 Hammura.bi LLC
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -20,8 +20,6 @@
 
 using System;
 using System.Collections.Generic;
-//using System.IO;
-//using System.Xml.Serialization;
 
 namespace Hammurabi
 {
@@ -30,37 +28,47 @@ namespace Hammurabi
         /// <summary>
         /// Returns the maximum value of a list of input values
         /// </summary>
-        public static decimal Maximum(List<object> list)
+        public static Hval Maximum(List<Hval> list)
         {
-            decimal max = Convert.ToDecimal(list[0]);
-            
-            foreach (object v in list) 
+            Hstate top = H.PrecedingState(list);
+            if (top != Hstate.Known)
             {
-                if (Convert.ToDecimal(v) > max)
+                return new Hval(null,top);
+            }
+
+            decimal max= Convert.ToDecimal(list[0].Val);
+            foreach (Hval v in list) 
+            {
+                if (Convert.ToDecimal(v.Val) > max)
                 {
-                    max = Convert.ToDecimal(v); 
+                    max = Convert.ToDecimal(v.Val); 
                 }
             }
             
-            return max;
+            return new Hval(max);
         }
-        
+
         /// <summary>
         /// Returns the minimum value of a list of input values
         /// </summary>
-        public static decimal Minimum(List<object> list)
+        public static Hval Minimum(List<Hval> list)
         {
-            decimal min = Convert.ToDecimal(list[0]);
-            
-            foreach (object v in list) 
+            Hstate top = H.PrecedingState(list);
+            if (top != Hstate.Known)
             {
-                if (Convert.ToDecimal(v) < min)
+                return new Hval(null,top);
+            }
+
+            decimal min = Convert.ToDecimal(list[0].Val);
+            foreach (Hval v in list) 
+            {
+                if (Convert.ToDecimal(v.Val) < min)
                 {
-                    min = Convert.ToDecimal(v); 
+                    min = Convert.ToDecimal(v.Val); 
                 }
             }
             
-            return min;
+            return new Hval(min);
         }
         
         /// <summary>
@@ -68,17 +76,19 @@ namespace Hammurabi
         /// </summary>
         public static Tbool IsMemberOfSet(LegalEntity entity, Tset theSet)
         {
-            // TODO: Implement unknown for LegalEntities?
-            
-            if (theSet.IsUnknown) { return new Tbool(); }
-            
             Tbool result = new Tbool();
             
-            foreach (KeyValuePair<DateTime,object> slice in theSet.IntervalValues)
+            foreach (KeyValuePair<DateTime,Hval> slice in theSet.IntervalValues)
             {
-                List<LegalEntity> entities = (List<LegalEntity>)slice.Value;
-                
-                result.AddState(slice.Key, entities.Contains(entity));
+                if (slice.Value.IsKnown)
+                {
+                    List<LegalEntity> entities = (List<LegalEntity>)slice.Value.Val;
+                    result.AddState(slice.Key, entities.Contains(entity));
+                }
+                else
+                {
+                    result.AddState(slice.Key, slice.Value);
+                }
             }
             
             return result.Lean;
@@ -106,11 +116,11 @@ namespace Hammurabi
         {
             if (typeof(T) == new Tbool().GetType())
             {
-                return new Tbool((bool?)val);
+                return new Tbool(Convert.ToBoolean(val)); 
             }
             if (typeof(T) == new Tnum().GetType())
             {
-                return new Tnum(val);
+                return new Tnum(Convert.ToDecimal(val));
             }
             if (typeof(T) == new Tstr().GetType())
             {
@@ -127,16 +137,63 @@ namespace Hammurabi
             // If all else fails return default...
             return default(T);
         }
+
+        public static object ReturnProperTvar<T>(Hval val)
+        {
+            if (typeof(T) == new Tbool().GetType())
+            {
+                return new Tbool(val); 
+            }
+            if (typeof(T) == new Tnum().GetType())
+            {
+                return new Tnum(val);
+            }
+            if (typeof(T) == new Tstr().GetType())
+            {
+                return new Tstr(val);
+            }
+            if (typeof(T) == new Tdate().GetType())
+            {
+                return new Tdate(val);
+            }
+            if (typeof(T) == new Tset().GetType())
+            {
+                return new Tset(val);
+            }
+            // If all else fails return default...
+            return default(T);
+        }
+
+        /// <summary>
+        /// Converts an object to the proper Tvar, but only if it is not already a Tvar.
+        /// </summary>
+        public static T ConvertToTvar<T>(object t) where T : Tvar
+        {
+            if (t == null) return (T)ReturnProperTvar<T>();
+            if (IsType<T>(t)) return (T)t;
+            return (T)ReturnProperTvar<T>(t);
+        }
         
         /// <summary>
-        /// Converts an object into a nullable decimal.
+        /// Determines whether a given Tvar is a specified type.
         /// </summary>
-        public static decimal? ToNullaDecimal(object obj)
+        public static bool IsType<T>(object t)
         {
-            if (obj == null)
-                return null;
-            else
-                return Convert.ToDecimal(obj);
+            if (typeof(T) == t.GetType()) return true;
+            return false;
+        }
+
+        /// <summary>
+        /// Converts a generic list into a generic array.
+        /// </summary>
+        public static T[] ListToArray<T>(List<T> list)
+        {
+            T[] result = new T[list.Count];
+            for (int i=0; i<list.Count; i++)
+            {
+                result[i] = list[i];
+            }
+            return result;
         }
     }
 }

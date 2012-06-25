@@ -1,0 +1,103 @@
+# Namespace:    Hammurabi.H
+# Summary:      Basic facts about individual people.
+# Updated:      2012-05-06
+# Author:       Michael Poulshock
+
+
+# BIRTH, LIFE, AND DEATH
+
+# Date of birth
+TdateIn DoB(Person p) =
+	TdateIn DateOfBirth(p)
+
+# Date of death
+TdateIn DateOfDeath(Person p)
+
+# Age (in years)
+Tnum Age(Person p) =
+	Time.IntervalsSince(DoB(p),
+	                    DoB(p).AddYears(110),
+						Time.IntervalType.Year)
+
+# Alive
+Tbool IsAlive(Person p) =
+	set:
+	if Facts.HasBeenAsserted(p, "DateOfDeath") -> living
+	# if death.IsKnown -> living
+	else deceased
+	
+	Tbool living =
+		temporal:
+		from Time.DawnOf -> false
+		from DoB(p) -> true
+		from DoB(p).AddYears(120) -> false
+		endtemporal
+		
+	Tbool deceased =
+		temporal:
+		from Time.DawnOf -> false
+		from DoB(p) -> true
+		from DateOfDeath(p) -> false
+		endtemporal
+		
+# Age in months (temporal)
+Tnum AgeInMonths(Person p) =
+	Time.IntervalsSince(DoB(p), DoB(p).AddYears(110), Time.IntervalType.Month)
+
+		
+# GENDER
+
+# Female
+Tbool IsFemale(Person p) =
+	Gender(p) == "Female"
+
+# Male
+Tbool IsMale(Person p) =
+	Gender(p) == "Male"
+
+# Transgendered
+Tbool IsTransgendered(Person p) =
+	Gender(p) == "Transgendered"		
+
+# Gender
+TstrIn Gender(Person p)
+
+
+# MISCELLANEOUS
+
+# Has a Social Security Number
+TboolIn HasSSN(Person p) 
+	
+# Has applied for (but not yet received) an SSN
+TboolIn AppliedForSSN(Person p) 
+
+# Blind (see 42 USC 416(i)(1)(B))
+TboolIn IsBlind(Person p)
+
+# Disabled 
+# Has a physical or mental impairment that substantially 
+# limits one or more major life activities (see 42 USC 12102)
+TboolIn IsDisabled(Person p)
+
+# Incapable of self-care
+TboolIn IsIncapableOfSelfCare(Person p) 
+
+# In prison
+TboolIn IsInPrison(Person p)
+
+# In juvenile rehab facility
+TboolIn InJuvenileFacility(Person p)
+
+# In a drug or alcohol treatment program
+TboolIn InDrugOrAlcoholTreatmentProg(Person p) 
+	
+	
+# UNIT TESTS
+
+Test: TotalSanity
+- Person p
+- DateOfBirth(p) = 1940-01-02
+- DoB(p).Out =?= 1940-01-02
+	
+	
+	

@@ -1,4 +1,4 @@
-// Copyright (c) 2011 The Hammurabi Project
+// Copyright (c) 2012 Hammura.bi LLC
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -46,15 +46,20 @@ namespace Hammurabi
         /// Returns the number of intervals since a given date (step up function)
         /// (e.g. 1 2 3 4 5 6 7 8 9 ...)
         /// </summary>
-        public static Tnum IntervalsSince(DateTime start, DateTime end, IntervalType interval)
+        public static Tnum IntervalsSince(Tdate start, Tdate end, IntervalType interval)
         {
             return IntervalsSince(start, end, interval, 0);
         }
         
-        public static Tnum IntervalsSince(DateTime start, DateTime end, IntervalType interval, int startAt)
+        public static Tnum IntervalsSince(Tdate startDate, Tdate endDate, IntervalType interval, int? startAt)
         {
-            // TODO: Implement unknowns
-            
+            // Handle unknowns
+            Hstate top = PrecedingState(startDate.FirstValue, endDate.FirstValue);
+            if (top != Hstate.Known) return new Tnum(new Hval(null,top));
+
+            DateTime start = startDate.ToDateTime;
+            DateTime end = endDate.ToDateTime;
+
             Tnum result = new Tnum();
             
             if (start != Time.DawnOf)
@@ -63,11 +68,11 @@ namespace Hammurabi
             }
             
             DateTime indexDate = start;
-            int indexNumber = startAt;
+            int? indexNumber = startAt;
     
             while (indexDate < end) 
             {
-                result.AddState(indexDate,Convert.ToString(indexNumber));
+                result.AddState(indexDate,Convert.ToDecimal(indexNumber));
                 indexNumber++;
                 indexDate = indexDate.AddInterval(interval, 1);
             }
@@ -75,19 +80,24 @@ namespace Hammurabi
             result.AddState(end, 0);
             return result;
         }
-        
+
         /// <summary>
         /// Returns the number of intervals until a date (step down function)
         /// (e.g. ... 7 6 5 4 3 2 1)
         /// </summary>
-        public static Tnum IntervalsUntil(DateTime start, DateTime end, IntervalType interval)
+        public static Tnum IntervalsUntil(Tdate start, Tdate end, IntervalType interval)
         {
             return IntervalsUntil(start, end, interval, 0);
         }
         
-        public static Tnum IntervalsUntil(DateTime start, DateTime end, IntervalType interval, int startAt)
+        public static Tnum IntervalsUntil(Tdate startDate, Tdate endDate, IntervalType interval, int startAt)
         {
-            // TODO: Implement unknowns
+            // Handle unknowns
+            Hstate top = PrecedingState(startDate.FirstValue, endDate.FirstValue);
+            if (top != Hstate.Known) return new Tnum(new Hval(null,top));
+
+            DateTime start = startDate.ToDateTime;
+            DateTime end = endDate.ToDateTime;
             
             Tnum result = new Tnum();
             
@@ -118,9 +128,14 @@ namespace Hammurabi
         /// <summary>
         /// Loops (cycles) through numbers over time (e.g. 1 2 3 4 1 2 3 4 ...)
         /// </summary>
-        public static Tnum Recurrence(DateTime start, DateTime end, IntervalType interval, int min, int max)
+        public static Tnum Recurrence(Tdate startDate, Tdate endDate, IntervalType interval, int min, int max)
         {    
-            // TODO: Implement unknowns
+            // Handle unknowns
+            Hstate top = PrecedingState(startDate.FirstValue, endDate.FirstValue);
+            if (top != Hstate.Known) return new Tnum(new Hval(null,top));
+
+            DateTime start = startDate.ToDateTime;
+            DateTime end = endDate.ToDateTime;
             
             Tnum result = new Tnum();
             

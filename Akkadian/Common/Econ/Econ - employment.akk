@@ -1,0 +1,196 @@
+# Namespace:    Hammurabi.Econ
+# Summary:      Basic economic relationships related to employment.
+# Updated:      2012-06-23
+# Author:       Michael Poulshock
+
+# NATURE OF EMPLOYMENT RELATIONSHIP
+
+# Is employed
+Tbool IsEmployed(Person p) =
+	Stub()
+	# Exists(AllCorps, IsEmployedBy(p,_))
+	
+# Indicates whether a person is employed by a particular employer (corporation).  
+# It is assumed that "employee" does not include independent contractors.
+Tbool IsEmployedBy(Person p, Corp c) =
+	TstrIn EmploymentRelationship(p,c) == "Employee" 
+
+# Person is an independent contractor at an employer
+Tbool IsIndependentContractor(Person p, Corp c) =
+	TstrIn EmploymentRelationship(p) == "Independent contractor"
+        
+# Returns the date a person started working at an employer
+TdateIn DateStartedWorkAt(Person p, Corp c)
+
+# Person is a full-time employee
+TboolIn IsFullTimeEmployee(Person p, Corp c) =
+	set:
+	if !IsEmployedBy(p,c) -> false
+	if hours >= 35 -> true
+	if hours <= 30 -> false
+	else Stub()
+	
+	Tnum hours = 
+		HoursWorkedPerWeek(p,c)
+
+# Number of hours per week that a person works at a given employer
+TnumIn HoursWorkedPerWeek(Person p, Corp c)
+	
+# Length of an employee's initial probationary period (in months)
+TnumIn InitialProbationLength(Person p, Corp c)
+
+
+# UNEMPLOYMENT COMPENSATION
+# Source: http://www.twc.state.tx.us/news/efte/ui_law_qualification_issues.html#dq-layoffs
+	
+# Disqualified from unemployment insurance
+Tbool DQFromUnemploymentInsurance(Person p, Corp c) =
+	TerminatedFrom(p,c) |
+	ResignedFrom(p,c) |
+	TboolIn RefusesSuitableWorkWithoutGoodCause(p) |
+	IsOnStrikeFrom(p,c) |
+	IsReceivingSeveranceFrom(p,c).IsEverTrue() |
+	IsReceivingWorkersComp(p)
+	
+	
+# SEPARATION FROM AN EMPLOYER
+# Source: http://www.twc.state.tx.us/news/efte/types_of_work_separations.html
+
+# Medical reasons...
+# Strike
+
+# Voluntary separation
+Tbool VoluntarilySeparatedFrom(Person p, Corp c) =
+	ResignedFrom(p,c) |
+	VoluntarilyRetiredFrom(p,c) |
+	ConstructivelyDischargedFrom(p,c) |
+	PresumptivelyResignedFrom(p,c)
+	
+# Involuntary separation
+Tbool InvoluntarilySeparatedFrom(Person p, Corp c) =
+	TerminatedFrom(p,c) |
+	ForciblyRetiredFrom(p,c) |
+	ResignedInLieuOfDischargeFrom(p,c) |
+	LaidOffFrom(p,c) |
+	TempJobEndedAt(p,c) |
+	MutuallyAgreedSeparationFrom(p,c) |
+	PresumptivelyTerminatedFrom(p,c)
+	
+# Quit/resigned from an employer
+Tbool ResignedFrom(Person p, Corp c) =
+	NatureOfSeparation(p,c) == "Resignation"
+
+# Resignation in lieu of discharge
+Tbool ResignedInLieuOfDischargeFrom(Person p, Corp c) =
+	NatureOfSeparation(p,c) == "Resignation in lieu of discharge"
+
+# Discharge or termination for misconduct or "cause" 
+Tbool TerminatedFrom(Person p, Corp c) =
+	NatureOfSeparation(p,c) == "Termination for misconduct or cause"
+	
+# Laid off
+Tbool LaidOffFrom(Person p, Corp c) =
+	NatureOfSeparation(p,c) == "Layoff, reduction in force, or downsizing"
+	
+# Retired from an employer
+Tbool RetiredFrom(Person p, Corp c) =
+	VoluntarilyRetiredFrom(p,c) |
+	ForciblyRetiredFrom(p,c)
+
+# Temporary job comes to an end
+Tbool TempJobEndedAt(Person p, Corp c) =
+	NatureOfSeparation(p,c) == "Temporary job ended"
+	
+# Voluntarily retired from an employer
+Tbool VoluntarilyRetiredFrom(Person p, Corp c) =
+	NatureOfSeparation(p,c) == "Voluntary retirement"
+
+# Forced to retire from an employer
+Tbool ForciblyRetiredFrom(Person p, Corp c) =
+	NatureOfSeparation(p,c) == "Forced retirement"
+
+# Working conditions so intolerable that a reasonable employee would feel forced to resign
+Tbool ConstructivelyDischargedFrom(Person p, Corp c) =
+	NatureOfSeparation(p,c) == "Constructive discharge"
+
+# Separated from an employer based on mutual agreement
+Tbool MutuallyAgreedSeparationFrom(Person p, Corp c) =
+	NatureOfSeparation(p,c) == "Mutual agreement"
+
+# Presumptively resigned from an employer
+Tbool PresumptivelyTerminatedFrom(Person p, Corp c) =
+	NatureOfSeparation(p,c) == "Failed to return following unpaid suspension" &
+	LengthOfSuspensionFrom(p,c) >= 4		# May vary by jurisdiction!
+	
+# Presumptively resigned from an employer
+Tbool PresumptivelyResignedFrom(Person p, Corp c) =
+	NatureOfSeparation(p,c) == "Failed to return following unpaid suspension" &
+	LengthOfSuspensionFrom(p,c) < 3		# May vary by jurisdiction!
+	
+# Length of unpaid suspension (in days)
+TnumIn LengthOfSuspensionFrom(Person p, Corp c) 
+	
+# Reason person left an employer
+TstrIn NatureOfSeparation(Person p, Corp c)
+
+	
+# OTHER	
+
+# Received severance pay or wages in lieu of notice
+TboolIn IsReceivingSeveranceFrom(Person p, Corp c)
+
+# Received severance pay or wages in lieu of notice
+TboolIn IsReceivingWorkersComp(Person p) 
+	
+# On stike from an employer
+TboolIn IsOnStrikeFrom(Person p, Corp c) 
+	
+# On strike - from any employer
+TboolIn IsOnStrike(Person p) 
+
+		
+
+# SELF-SUPPORT
+
+# Manages own financial affairs
+TboolIn ManagesOwnAffairs(Person p) =
+	PercentSelfSupport(p) > 50 |		# Assumed
+	TboolIn ManagesOwnAffairs(p)
+	
+# Percentage which a person supports themselves financially.
+# In percentage points (e.g. 50, not 0.50)
+TnumIn PercentSelfSupport(Person p)
+
+# Receives public assistance
+TboolIn ReceivesPublicAssistance(Person p)
+
+# Physically unfit for employment
+TboolIn PhysicallyUnfitForEmployment(Person p) 
+
+# Mentally unfit for employment
+TboolIn MentallyUnfitForEmployment(Person p) 
+
+
+# RANDOM OCCUPATIONS WITH LEGAL SIGNFICANCE
+
+# Airline flight crew
+TboolIn IsAirlineFlightCrew(Person p, Corp c) 
+
+TboolIn IsMigrantOrSeasonalFarmworker(Person p)
+
+
+
+# UNIT TESTS
+
+Test: TboolIn1
+- Person p
+- Corp c
+- IsFullTimeEmployee(p,c) = true
+- Econ.IsFullTimeEmployee(p,c).Out =?= true		
+
+Test: Employ
+- Person p
+- Corp c
+- EmploymentRelationship(p,c) = "None"
+- Econ.IsEmployedBy(p,c).Out =?= false	
+

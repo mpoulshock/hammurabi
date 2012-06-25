@@ -1,0 +1,114 @@
+<NotepadPlus>
+    <Project name="Hammurabi">
+        <Folder name="Common">
+            <Folder name="Econ">
+                <File name="Common\Econ\Econ - employment.akk" />
+                <File name="Common\Econ\Econ - assets.akk" />
+                <File name="Common\Econ\Econ - household.akk" />
+                <File name="Common\Econ\Econ - income.akk" />
+                <File name="Common\Econ\Econ - shelter.akk" />
+            </Folder>
+            <Folder name="Fam">
+                <File name="Common\Fam\Fam - general.akk" />
+                <File name="Common\Fam\Fam - marriage.akk" />
+                <File name="Common\Fam\Fam - parent-child.akk" />
+                <File name="Common\Fam\Fam - age of majority.akk" />
+            </Folder>
+            <Folder name="People">
+                <File name="Common\People\People - general.akk" />
+                <File name="Common\People\People - residence and citizenship.akk" />
+            </Folder>
+            <File name="Common\Edu - general.akk" />
+            <File name="Common\Geo - jurisdictions.akk" />
+            <File name="Common\Imm - status and residence.akk" />
+            <File name="Common\Mil - general.akk" />
+            <File name="Common\Org - general.akk" />
+        </Folder>
+        <Folder name="Law">
+            <Folder name="Federal law">
+                <Folder name="US Code">
+                    <Folder name="Title 5 - Fed govt">
+                        <File name="Law\Federal law\US Code\Title 5 - Fed govt\5 USC 6103 - Legal holidays.akk" />
+                        <File name="Law\Federal law\US Code\Title 5 - Fed govt\5 USC 6301 - Fed employees - leave.akk" />
+                    </Folder>
+                    <Folder name="Title 8 - Immigration">
+                        <File name="Law\Federal law\US Code\Title 8 - Immigration\Imm - general.akk" />
+                        <File name="Law\Federal law\US Code\Title 8 - Immigration\8 USC 1182 - Inadmissible aliens.akk" />
+                    </Folder>
+                    <Folder name="Title 26 - Tax">
+                        <File name="Law\Federal law\US Code\Title 26 - Tax\26 USC 2 - Filing status.akk" />
+                        <File name="Law\Federal law\US Code\Title 26 - Tax\26 USC 22 - Disability.akk" />
+                        <File name="Law\Federal law\US Code\Title 26 - Tax\26 USC 62 - AGI.akk" />
+                        <File name="Law\Federal law\US Code\Title 26 - Tax\26 USC 61 - Gross income.akk" />
+                        <File name="Law\Federal law\US Code\Title 26 - Tax\26 USC 151 - Exemption amount.akk" />
+                        <File name="Law\Federal law\US Code\Title 26 - Tax\26 USC 152 - Dependents.akk" />
+                        <File name="Law\Federal law\US Code\Title 26 - Tax\26 USC 408 - IRAs.akk" />
+                        <File name="Law\Federal law\US Code\Title 26 - Tax\26 USC 441 - Tax year.akk" />
+                        <File name="Law\Federal law\US Code\Title 26 - Tax\26 USC 3306 - FUTA.akk" />
+                        <File name="Law\Federal law\US Code\Title 26 - Tax\26 USC 6013 - MFJ.akk" />
+                        <File name="Law\Federal law\US Code\Title 26 - Tax\26 USC 6050I - Reporting cash transactions.akk" />
+                        <File name="Law\Federal law\US Code\Title 26 - Tax\26 USC 7701 - Definitions.akk" />
+                    </Folder>
+                    <Folder name="Title 29 - Labor">
+                        <File name="Law\Federal law\US Code\Title 29 - Labor\29 USC 206 - Minimum wage.akk" />
+                        <File name="Law\Federal law\US Code\Title 29 - Labor\29 USC 2611 - FMLA definitions.akk" />
+                        <File name="Law\Federal law\US Code\Title 29 - Labor\29 USC 2612 - FMLA rules.akk" />
+                    </Folder>
+                    <Folder name="Title 38 - Veterans">
+                        <File name="Law\Federal law\US Code\Title 38 - Veterans\38 USC 1501 - Periods of war.akk" />
+                    </Folder>
+                    <Folder name="Title 42 - Health and welfare">
+                        <File name="Law\Federal law\US Code\Title 42 - Health and welfare\42 USC 416 - Retirement age.akk" />
+                        <File name="Law\Federal law\US Code\Title 42 - Health and welfare\42 USC 9902 - Poverty guidelines.akk" />
+                    </Folder>
+                </Folder>
+                <Folder name="Code of Federal Regulations">
+                    <Folder name="Title 26 - Tax">
+                        <File name="Law\Federal law\Code of Federal Regulations\Title 26 - Tax\26 CFR 1.6050I-1 - Reporting cash transactions.akk" />
+                    </Folder>
+                    <Folder name="Title 29 - Labor">
+                        <File name="Law\Federal law\Code of Federal Regulations\Title 29 - Labor\29 CFR 1630 - Disability defined.akk" />
+                    </Folder>
+                    <Folder name="Title 31 - Treasury" />
+                </Folder>
+                <Folder name="Federal Rules">
+                    <Folder name="FRCP">
+                        <File name="Law\Federal law\Federal Rules\FRCP\Rule 6 - Computing time.akk" />
+                    </Folder>
+                </Folder>
+            </Folder>
+            <Folder name="State law">
+                <Folder name="Multi-state">
+                    <Folder name="Civil procedure">
+                        <File name="Law\State law\Multi-state\Civil procedure\Statutes of limitations - torts.akk" />
+                        <File name="Law\State law\Multi-state\Civil procedure\Time limits to collect court judgments.akk" />
+                    </Folder>
+                    <Folder name="Family law">
+                        <File name="Law\State law\Multi-state\Family law\Next of kin.akk" />
+                    </Folder>
+                </Folder>
+                <Folder name="Alabama">
+                    <File name="Law\State law\Alabama\Ala Code 26-1-1 - Age of majority.akk" />
+                    <File name="Law\State law\Alabama\Food Assistance Program.akk" />
+                </Folder>
+                <Folder name="Kansas">
+                    <Folder name="Kansas Statutes">
+                        <Folder name="Title 23 - Domestic relations">
+                            <File name="Law\State law\Kansas\Kansas Statutes\Title 23 - Domestic relations\KSA 23-2502 - Common law marriage.akk" />
+                        </Folder>
+                        <Folder name="Title 35 - Holidays">
+                            <File name="Law\State law\Kansas\Kansas Statutes\Title 35 - Holidays\KSA 35-107 - Legal holidays.akk" />
+                        </Folder>
+                    </Folder>
+                </Folder>
+                <Folder name="Vermont">
+                    <File name="Law\State law\Vermont\VT Stat 12-7151 - Emancipated minors.akk" />
+                </Folder>
+            </Folder>
+            <Folder name="Tabular data" />
+        </Folder>
+        <File name="License.txt" />
+        <File name="NPP workspace" />
+        <File name="NPP Akkadian syntax highlighting" />
+    </Project>
+</NotepadPlus>

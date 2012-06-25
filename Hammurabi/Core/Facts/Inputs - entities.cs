@@ -1,4 +1,4 @@
-// Copyright (c) 2011 The Hammurabi Project
+// Copyright (c) 2012 Hammura.bi LLC
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -25,131 +25,26 @@ namespace Hammurabi
 {
     public partial class Facts
     {
-        
-        /// <summary>
-        /// Queries the fact base to get all direct objects, given a 
-        /// relationship and a subject.  In other words, it returns all
-        /// of the direct objects in the knowledge base that meet given
-        /// criteria.
-        /// </summary>
-        public static Tset AllXThat(LegalEntity subj, string relationship)
-        {
-            Tset result = new Tset();
-            
-            // Identify all matching fact patterns (Tbools)
-            Dictionary<LegalEntity,Tbool> ListOfMatches = new Dictionary<LegalEntity,Tbool>();
-            foreach (Fact f in FactBase)
-            {
-                if (f.subject == subj && f.relationship == relationship)
-                {
-                    ListOfMatches.Add(f.directObject,(Tbool)f.v);
-                }
-            }
-            
-            // Identify all breakpoints in the set of matches
-            List<Tvar> listOfBooleans = new List<Tvar>();
-            foreach (KeyValuePair<LegalEntity,Tbool> pair in ListOfMatches)
-            {
-                listOfBooleans.Add(pair.Value);
-            }
-            
-            // Foreach breakpoint, identify all entities that meet the 
-            // relationship criterion at that point in time
-            foreach (DateTime d in H.TimePoints(listOfBooleans))
-            {
-                List<LegalEntity> entities = new List<LegalEntity>();
-                
-                foreach (KeyValuePair<LegalEntity,Tbool> pair in ListOfMatches)
-                {
-                    if (pair.Value.AsOf(d).ToBool == true)
-                    {
-                        entities.Add(pair.Key);
-                    }
-                }
-                
-                result.AddState(d,entities);
-            }
-
-            // If no matching entities are found in the fact table,
-            // return an empty Tset.
-            // Note: This is different from an "unknown" Tset, whose
-            // members are not known.  Here, we return a Tset that
-            // is known to have no members.  Unlike the other input
-            // functions, this assumes a "closed world" (in which 
-            // unknown facts are presumed false).
-            // Rationale: This function returns an aggregation of facts
-            // as opposed to a base-level fact.
-            if (result.IntervalValues.Count == 0)
-                result.AddState(Time.DawnOf,new List<LegalEntity>());
-            
-            return result;
-        }
-
-        /// <summary>
-        /// Queries the fact base to get all direct subjects, given a 
-        /// relationship and a direct object.  In other words, it returns all
-        /// of the subjects in the knowledge base that meet given
-        /// criteria.
-        /// </summary>
-        public static Tset AllXSuchThatX(string relationship, LegalEntity obj)
-        {
-            Tset result = new Tset();
-            
-            // Identify all matching fact patterns (Tbools)
-            Dictionary<LegalEntity,Tbool> ListOfMatches = new Dictionary<LegalEntity,Tbool>();
-            foreach (Fact f in FactBase)
-            {
-                if (f.relationship == relationship && f.directObject == obj)
-                {
-                    ListOfMatches.Add(f.subject,(Tbool)f.v);
-                }
-            }
-            
-            // Identify all breakpoints in the set of matches
-            List<Tvar> listOfBooleans = new List<Tvar>();
-            
-            foreach (KeyValuePair<LegalEntity,Tbool> pair in ListOfMatches)
-            {
-                listOfBooleans.Add(pair.Value);
-            }
-            
-            // Foreach breakpoint, identify all entities that meet the 
-            // relationship criterion at that point in time
-            foreach (DateTime d in H.TimePoints(listOfBooleans))
-            {
-                List<LegalEntity> entities = new List<LegalEntity>();
-                
-                foreach (KeyValuePair<LegalEntity,Tbool> pair in ListOfMatches)
-                {
-                    if (pair.Value.AsOf(d).ToBool == true)
-                    {
-                        entities.Add(pair.Key);
-                    }
-                }
-                
-                result.AddState(d,entities);
-            }
-
-            // If no matching entities are found in the fact table,
-            // return an empty Tset.
-            // See explanation in AllXThat() above.
-            if (result.IntervalValues.Count == 0)
-                result.AddState(Time.DawnOf,new List<LegalEntity>());
-            
-            return result;
-        }    
-        
         /// <summary>
         /// Queries the fact base to get all objects in a symmetrical
         /// relationship with a given object.
         /// For example: spousesOfBill = AllXSymmetrical(Bill,"IsMarriedTo");
         /// </summary>
-        public static Tset AllXSymmetrical(LegalEntity entity, string relationship)
+//        public static Tset AllXSymmetrical(LegalEntity entity, string relationship)
+//        {
+//            return Facts.AllXSuchThatX(relationship, entity) |
+//                   Facts.AllXThat(entity, relationship);
+//        }
+
+
+        /// <summary>
+        /// Returns a set of all known people except a given person.
+        /// </summary>
+        public static Tset EveryoneExcept(Person p)
         {
-            return Facts.AllXSuchThatX(relationship, entity) |
-                   Facts.AllXThat(entity, relationship);
+            return AllKnownPeople() - p;
         }
-        
+
         /// <summary>
         /// Queries the fact base to get all known people and returns
         /// the result in an eternal Tset.
@@ -170,9 +65,33 @@ namespace Hammurabi
                         thePeople.Add(f.directObject);
             }
             
-            result.AddState(Time.DawnOf,thePeople);
+            result.AddState(Time.DawnOf,new Hval(thePeople));
             return result;
         }
             
+        /// <summary>
+        /// Queries the fact base to get all known items of property and returns
+        /// the result in an eternal Tset.
+        /// </summary>
+        /// TODO: Refactor with AllKnownPeople
+        public static Tset AllKnownProperty()
+        {
+            Tset result = new Tset();
+            List<LegalEntity> theProp = new List<LegalEntity>();
+            
+            foreach (Fact f in FactBase)
+            {
+                if (f.subject.GetType() == new Property("").GetType())
+                    if (!theProp.Contains(f.subject))
+                        theProp.Add(f.subject);
+
+                if(f.directObject != null && f.directObject.GetType() == new Property("").GetType())
+                    if (!theProp.Contains(f.directObject))
+                        theProp.Add(f.directObject);
+            }
+            
+            result.AddState(Time.DawnOf,new Hval(theProp));
+            return result;
+        }
     }
 }

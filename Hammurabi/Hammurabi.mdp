@@ -1,0 +1,104 @@
+<Project name="Hammurabi" fileversion="2.0" DefaultNamespace="Hammurabi" language="C#" Configuration="Debug" Platform="x86" AssemblyName="Hammurabi" TargetFrameworkVersion="v3.5" targetFramework="3.5" ctype="DotNetProject">
+  <Policies>
+    <StandardHeader Text="Copyright (c) 2012 Hammura.bi LLC&#xA;&#xA;THIS PROGRAM IS CONFIDENTIAL AND PROPRIETARY TO  HAMMURA.BI LLC&#xA;AND MAY NOT BE REPRODUCED, PUBLISHED, ADAPTED, OR DISCLOSED TO &#xA;OTHERS WITHOUT WRITTEN AUTHORIZATION.&#xA;&#xA;NO REPRESENTATION OR WARRANTY IS MADE THAT THIS PROGRAM ACCURATELY REFLECTS&#xA;OR EMBODIES ANY APPLICABLE LAWS, REGULATIONS, RULES OR EXECUTIVE ORDERS &#xA;(&quot;LAWS&quot;). YOU SHOULD RELY ONLY ON OFFICIAL VERSIONS OF LAWS PUBLISHED BY THE &#xA;RELEVANT GOVERNMENT AUTHORITY, AND YOU ASSUME THE RESPONSIBILITY OF &#xA;INDEPENDENTLY VERIFYING SUCH LAWS. THE USE OF THIS PROGRAM IS NOT A &#xA;SUBSTITUTE FOR THE ADVICE OF AN ATTORNEY." IncludeInNewFiles="True" />
+  </Policies>
+  <Configurations active="Debug|x86">
+    <Configuration name="Debug|x86" Optimize="false" DefineConstants="DEBUG" WarningLevel="4" PlatformTarget="x86" ctype="DotNetProjectConfiguration">
+      <Output directory="bin\Debug" assembly="Hammurabi" />
+      <Build debugmode="True" target="Library" />
+      <Execution consolepause="True" externalconsole="True" runwithwarnings="True" runtime="MsNet" />
+      <CodeGeneration compiler="Mcs" warninglevel="4" optimize="False" unsafecodeallowed="False" generateoverflowchecks="False" definesymbols="DEBUG" generatexmldocumentation="False" ctype="CSharpCompilerParameters" />
+    </Configuration>
+    <Configuration name="Release|x86" Optimize="false" WarningLevel="4" PlatformTarget="x86" ctype="DotNetProjectConfiguration">
+      <Output directory="bin\Release" assembly="Hammurabi" />
+      <Build debugmode="False" target="Library" />
+      <Execution consolepause="True" runwithwarnings="True" runtime="MsNet" />
+      <CodeGeneration compiler="Mcs" warninglevel="4" optimize="False" unsafecodeallowed="False" generateoverflowchecks="False" generatexmldocumentation="False" ctype="CSharpCompilerParameters" />
+    </Configuration>
+  </Configurations>
+  <Contents>
+    <File subtype="Code" buildaction="Compile" name="Main\AssemblyInfo.cs" />
+    <File subtype="Code" buildaction="Compile" name="Core\Core functions\Math.cs" />
+    <File subtype="Code" buildaction="Compile" name="Core\Core functions\Logic.cs" />
+    <File subtype="Code" buildaction="Compile" name="Core\Ontology\Jurisdictions.cs" />
+    <File subtype="Code" buildaction="Compile" name="Core\Facts\FactBase.cs" />
+    <File subtype="Code" buildaction="Compile" name="Core\Facts\Set-assert.cs" />
+    <File subtype="Code" buildaction="Compile" name="Core\Core functions\Set - higher-order.cs" />
+    <File subtype="Code" buildaction="Compile" name="Core\Fundamental types\Tvar.cs" />
+    <File subtype="Code" buildaction="Compile" name="Core\Fundamental types\Tbool.cs" />
+    <File subtype="Code" buildaction="Compile" name="Core\Fundamental types\Tnum.cs" />
+    <File subtype="Code" buildaction="Compile" name="Core\Fundamental types\Tstr.cs" />
+    <File subtype="Code" buildaction="Compile" name="Core\Fundamental types\Tset.cs" />
+    <File subtype="Code" buildaction="Compile" name="Core\Core functions\Comparison - numeric.cs" />
+    <File subtype="Code" buildaction="Compile" name="Core\Core functions\Auxiliary.cs" />
+    <File subtype="Code" buildaction="Compile" name="Core\Core functions\Unknown.cs" />
+    <File subtype="Code" buildaction="Compile" name="Core\Core functions\Time - analysis.cs" />
+    <File subtype="Code" buildaction="Compile" name="Core\Core functions\Time - dates.cs" />
+    <File subtype="Code" buildaction="Compile" name="Core\Core functions\Time - temporal.cs" />
+    <File subtype="Code" buildaction="Compile" name="Core\Core functions\Time - TheTime.cs" />
+    <File subtype="Code" buildaction="Compile" name="Core\Core functions\Switch.cs" />
+    <File subtype="Code" buildaction="Compile" name="Core\Fundamental types\Tdate.cs" />
+    <File subtype="Code" buildaction="Compile" name="Core\Core functions\Comparison - dates.cs" />
+    <File subtype="Code" buildaction="Compile" name="Core\Facts\Inputs - entities.cs" />
+    <File subtype="Code" buildaction="Compile" name="Core\Facts\Inputs.cs" />
+    <File subtype="Code" buildaction="Compile" name="Core\Core functions\Misc.cs" />
+    <File subtype="Code" buildaction="Compile" name="Law\State law\Kansas\Kansas Statutes\Title 35\KSA 35-107.cs" />
+    <File subtype="Code" buildaction="Compile" name="Law\Federal law\US Code\Title 5\5 USC 6103.cs" />
+    <File subtype="Code" buildaction="Compile" name="Law\Federal law\US Code\Title 26\26 USC 441.cs" />
+    <File subtype="Code" buildaction="Compile" name="Law\Federal law\US Code\Title 26\26 USC 152.cs" />
+    <File subtype="Code" buildaction="Compile" name="Law\Federal law\US Code\Title 26\26 USC 62.cs" />
+    <File subtype="Code" buildaction="Compile" name="Law\Federal law\US Code\Title 26\26 USC 61.cs" />
+    <File subtype="Code" buildaction="Compile" name="Law\Federal law\US Code\Title 26\26 USC 22.cs" />
+    <File subtype="Code" buildaction="Compile" name="Law\Federal law\Federal Rules\FRCP\Rule 6.cs" />
+    <File subtype="Code" buildaction="Compile" name="Law\Federal law\US Code\Title 26\26 USC 6013.cs" />
+    <File subtype="Code" buildaction="Compile" name="Law\Federal law\US Code\Title 26\26 USC 151.cs" />
+    <File subtype="Code" buildaction="Compile" name="Law\Federal law\US Code\Title 29\29 USC 2611.cs" />
+    <File subtype="Code" buildaction="Compile" name="Law\Federal law\US Code\Title 29\29 USC 2612.cs" />
+    <File subtype="Code" buildaction="Compile" name="Law\Federal law\US Code\Title 5\5 USC 6301.cs" />
+    <File subtype="Code" buildaction="Compile" name="Law\Federal law\US Code\Title 26\26 USC 3306.cs" />
+    <File subtype="Code" buildaction="Compile" name="Core\Core functions\Stub.cs" />
+    <File subtype="Code" buildaction="Compile" name="Law\Federal law\Code of Federal Regulations\Title 29\29 CFR 1630.cs" />
+    <File subtype="Code" buildaction="Compile" name="Core\Facts\Validate.cs" />
+    <File subtype="Code" buildaction="Compile" name="Core\Facts\Unknown facts.cs" />
+    <File subtype="Code" buildaction="Compile" name="Core\Facts\Window of concern.cs" />
+    <File subtype="Code" buildaction="Compile" name="Core\Core functions\Tbool - temporal.cs" />
+    <File subtype="Code" buildaction="Compile" name="Core\Facts\Inputs - question class.cs" />
+    <File subtype="Code" buildaction="Compile" name="Core\Facts\Inputs - question templates.cs" />
+    <File subtype="Code" buildaction="Compile" name="Core\Facts\Inputs - lists.cs" />
+    <File subtype="Code" buildaction="Compile" name="Core\Facts\Inputs - relationships.cs" />
+    <File subtype="Directory" buildaction="Nothing" name="Law" />
+    <File subtype="Directory" buildaction="Nothing" name="Main" />
+    <File subtype="Directory" buildaction="Nothing" name="Core" />
+    <File subtype="Directory" buildaction="Nothing" name="Core\Core functions" />
+    <File subtype="Directory" buildaction="Nothing" name="Core\Ontology" />
+    <File subtype="Directory" buildaction="Nothing" name="Core\Core functions" />
+    <File subtype="Directory" buildaction="Nothing" name="Core\Facts" />
+    <File subtype="Directory" buildaction="Nothing" name="Core\Fundamental types" />
+    <File subtype="Directory" buildaction="Nothing" name="Law\State law" />
+    <File subtype="Directory" buildaction="Nothing" name="Law\State law\Kansas" />
+    <File subtype="Directory" buildaction="Nothing" name="Law\State law\Kansas\Kansas Statutes" />
+    <File subtype="Directory" buildaction="Nothing" name="Law\State law\Kansas\Kansas Statutes\Title 35" />
+    <File subtype="Directory" buildaction="Nothing" name="Law\Federal law\US Code\Title 29" />
+    <File subtype="Directory" buildaction="Nothing" name="Law\Federal law\Code of Federal Regulations" />
+    <File subtype="Directory" buildaction="Nothing" name="Law\Federal law\Code of Federal Regulations\Title 29" />
+    <File subtype="Directory" buildaction="Nothing" name="Law\Federal law\Code of Federal Regulations" />
+    <File subtype="Code" buildaction="Compile" name="Core\Ontology\Entities - legal persons.cs" />
+    <File subtype="Code" buildaction="Compile" name="Core\Ontology\Entities - property and transactions.cs" />
+    <File subtype="Code" buildaction="Compile" name="Core\Ontology\Relationships - economic.cs" />
+    <File subtype="Code" buildaction="Compile" name="Core\Ontology\Relationships - family.cs" />
+    <File subtype="Code" buildaction="Compile" name="Core\Ontology\Relationships - governmental.cs" />
+    <File subtype="Code" buildaction="Compile" name="Law\Federal law\US Code\Title 29\29 USC 206.cs" />
+    <File subtype="Code" buildaction="Compile" name="Law\Federal law\US Code\Title 26\26 USC 408.cs" />
+    <File subtype="Code" buildaction="Compile" name="Law\Federal law\US Code\Title 26\26 USC 6050I.cs" />
+    <File subtype="Code" buildaction="Compile" name="Law\Federal law\US Code\Title 26\26 USC 7701.cs" />
+    <File subtype="Directory" buildaction="Compile" name="Core\Database" />
+    <File subtype="Code" buildaction="Compile" name="Core\Database\CSV.cs" />
+    <File subtype="Code" buildaction="Compile" name="Core\Database\Read.cs" />
+    <File subtype="Code" buildaction="Compile" name="Core\Database\Write.cs" />
+  </Contents>
+  <References>
+    <ProjectReference type="Package" localcopy="True" refto="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+    <ProjectReference type="Package" localcopy="True" refto="System.Core, Version=3.5.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+    <ProjectReference specificVersion="False" type="Package" localcopy="False" refto="System.Data, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  </References>
+</Project>

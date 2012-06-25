@@ -1,0 +1,14 @@
+# Citation:     29 CFR 1630 (2012)
+# Namespace:    CFR.Tit29.Part1630
+# Summary:      Equal employment provisions of the Americans with Disabilities Act (ADA).
+# Updated:      2012-04-27
+# Author:       Michael Poulshock
+
+
+# 1630.2 - Whether a person is "disabled."
+# A physical or mental impairment that substantially limits one
+# or more of the major life activities of such individual
+Tbool IsDisabled(Person p) =
+	TboolIn IsDisabled(p)
+
+
