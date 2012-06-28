@@ -4,6 +4,7 @@
 
 
 *.exe
+!AkkadianCompiler.exe
 
 *.dll
 !nunit.core.dll
