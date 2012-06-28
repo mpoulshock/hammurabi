@@ -67,7 +67,7 @@ Tbool IsCash(Transfer transfer, Transaction t) =
 			p.Type == "Money order" 
 		&
 		IsDRT(t) &
-		t.Purpose != "Proceeds of bank loan" &		# Nature of the transaction
+		t.Purpose <> "Proceeds of bank loan" &		# Nature of the transaction
 		!CertainInstallmentSales(t) &
 		!IsExemptDownPaymentPlan(transfer,t)
 		
@@ -112,7 +112,7 @@ Tbool IsExemptDownPaymentPlan(Transfer transfer, Transaction t) =
 	t.Purpose == "Down payment plan" &
 	...
 		...
-			t.ThingSold != "Travel or entertainment activity" &
+			t.ThingSold <> "Travel or entertainment activity" &
 			t.DateBalanceDue <= t.DateOfSale &
 			transfer.Date < t.DateOfSale.AddDays(-60)
 		|

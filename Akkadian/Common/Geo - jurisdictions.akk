@@ -1,14 +1,14 @@
 # Namespace:    Hammurabi.Geo
 # Summary:      A few random geographical facts
-# Updated:      2012-04-26 
+# Updated:      2012-06-28
 # Author:       Michael Poulshock
 
 
 # One of the 48 contiguous states
 Tbool Among48ContiguousStates(Tstr jur) =
 	IsUSState(jur) &
-	jur != "Alaska" &
-	jur != "Hawaii"
+	jur <> "Alaska" &
+	jur <> "Hawaii"
 
 # Is U.S. state
 Tbool IsUSState(Tstr jur) =
