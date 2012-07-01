@@ -1,6 +1,13 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Hammurabi\Core\Fundamental types\Tvar.cs">
+    <Files>
+      <File FileName="AkkadianCompiler\Main.cs" Line="247" Column="45" />
+      <File FileName="Hammurabi\Core\Facts\Unknown facts.cs" Line="81" Column="9" />
+      <File FileName="Hammurabi\Core\Facts\Inputs.cs" Line="229" Column="27" />
+      <File FileName="Hammurabi\Core\Fundamental types\Tvar.cs" Line="359" Column="22" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>

@@ -178,5 +178,27 @@ namespace Hammurabi
 
             return false;
         }
+
+        /// <summary>
+        /// Displays a crude list of all facts that have been asserted.
+        /// To be used for diagnostic purposes only.
+        /// </summary>
+        public static string AssertedFacts()
+        {
+            string result = "";
+
+            foreach (Fact f in FactBase)
+            {
+                result += f.subject.Id + " " + f.relationship;
+
+                if (f.directObject != null)
+                    result += " " + f.directObject.Id;
+
+                result += " = " + f.v.TestOutput + "\n";
+            }
+
+            return result;
+        }
+
 	}
 }

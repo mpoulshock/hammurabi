@@ -53,6 +53,10 @@ namespace Hammurabi
                 case "DateStartedWorkingAt":
                     return new Question(rel, "date", "When did {subj} start working at {obj}?", "", new DateTime(1950, 1, 1), DateTime.Now);
 
+                case "EmploymentRelationship":
+                    return new Question(rel, "string", "What is {subj}'s employment relationship at {obj}?", "",
+                                new List<string>() { "Employee", "Independent contractor", "Other", "None" });
+                
                 case "Gender":
                     return new Question(rel, "string", "What is {subj}'s gender?", "",
                                 new List<string>() { "Female", "Male", "Transgender" });
@@ -83,7 +87,10 @@ namespace Hammurabi
                     return new Question(rel, "bool", "Does {subj} work at {obj}?", "");
 
                 case "IsEmployeeUnder5USC6301":
-                    return new Question(rel, "bool", "Is {subj} a federal employee subject to <a href='http://www.law.cornell.edu/uscode/5/usc_sec_05_00006301----000-.html' target='_blank'>5 U.S.C. § 6301</a>?", "");
+                    return new Question(rel, "bool", "Is {subj} a federal employee subject to 5 U.S.C. § 6301?", "");
+
+                case "IsGovtAgency":
+                    return new Question(rel, "bool", "Is {subj} a government agency?", "");
 
                 case "IsIncapableOfSelfCare":
                     return new Question(rel, "bool", "Is {subj} incapable of self-care?", "");

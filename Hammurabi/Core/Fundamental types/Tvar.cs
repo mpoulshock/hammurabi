@@ -368,6 +368,19 @@ namespace Hammurabi
         }
 
         /// <summary>
+        /// Indicates whether the value of a Tvar has been determined.
+        /// </summary>
+        public bool HasBeenDetermined
+        {
+            get
+            {
+                bool? everUnstated = this.IsUnstated.IsEverTrue().ToBool;
+
+                return Convert.ToBoolean(!everUnstated);
+            }
+        }
+
+        /// <summary>
         /// Hstate precedences for missing time periods.
         /// </summary>
         public static Hstate PrecedenceForMissingTimePeriods(Tvar t)
