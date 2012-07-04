@@ -69,10 +69,7 @@
     <Compile Include="Core\Facts\Unknown facts.cs" />
     <Compile Include="Core\Facts\Window of concern.cs" />
     <Compile Include="Core\Core functions\Tbool - temporal.cs" />
-    <Compile Include="Core\Facts\Inputs - question class.cs" />
-    <Compile Include="Core\Facts\Inputs - question templates.cs" />
     <Compile Include="Core\Facts\Inputs - lists.cs" />
-    <Compile Include="Core\Facts\Inputs - relationships.cs" />
     <Compile Include="Core\Fundamental types\Tline.cs" />
     <Compile Include="Core\Core functions\Time - elapsed time.cs" />
     <Compile Include="Core\Legal entities\Entities - legal persons.cs" />
@@ -128,6 +125,7 @@
     <Compile Include="Generated source\Time limits to collect court judgments.cs" />
     <Compile Include="Generated source\VT Stat 12-7151 - Emancipated minors.cs" />
     <Compile Include="Generated source\Org - general.cs" />
+    <Compile Include="Core\Engine\Engine.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -138,6 +136,7 @@
     <Folder Include="Generated source\" />
     <Folder Include="Core\Legal entities\" />
     <Folder Include="Core\Data\" />
+    <Folder Include="Core\Engine\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

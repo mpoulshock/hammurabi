@@ -113,55 +113,7 @@ namespace Hammurabi
             
             return result;
         }
-        
-        /// <summary>
-        /// Returns a string showing all factlets in Facts.Unknowns.
-        /// </summary>
-        public static string ShowUnknowns2()
-        {
-            string result = "";
-            
-            foreach (Facts.Factlet f in Facts.Unknowns)
-            {
-                result += QuestionText(f, Facts.Get(f.relationship)) + ", ";
-            }
-            
-            return result;
-        }
-        
-        /// <summary>
-        /// Returns a string showing all factlets in Facts.Unknowns.
-        /// </summary>
-        public static List<string> ListOfUnknownFacts()
-        {
-            List<string> result = new List<string>();
-            
-            foreach (Facts.Factlet f in Facts.Unknowns)
-            {
-                result.Add(QuestionText(f, Facts.Get(f.relationship)));
-            }
-            
-            return result;
-        }
-        
-        /// <summary>
-        /// Returns the text of the question that should be displayed.
-        /// </summary>
-        // TODO: Move to interview module...
-        public static string QuestionText(Facts.Factlet theF, Question theQ)
-        {
-            // Embed the name of the subject into the question
-            string qText = theQ.questionText.Replace("{subj}", theF.subject.Id);
 
-            // If there is a direct object, embed its name into the question
-            if (theF.directObject != null)
-            {
-                qText = qText.Replace("{obj}", theF.directObject.Id);
-            }
-        
-            return qText;
-        }
-        
         /// <summary>
         /// Returns a string showing all relationships in Facts.Unknowns.
         /// Used to test the order in which factlets are added to that list.
