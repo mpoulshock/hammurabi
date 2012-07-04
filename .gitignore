@@ -10,6 +10,7 @@
 !nunit.core.dll
 !nunit.framework.dll
 
+Hammurabi/test-results/
 Generated source/
 
 *.VisualState.xml
