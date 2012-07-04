@@ -23,22 +23,23 @@ using System.Collections.Generic;
 
 namespace Hammurabi
 {
-	public partial class H
-	{		
-		/// <summary>
-		/// Returns a Tvar when its associated Tbool is true.  
-		/// </summary>
+    public partial class H
+    {		
+        /// <summary>
+        /// Returns a Tvar when its associated Tbool is true.  
+        /// </summary>
         /// <remarks>
         /// Similar in principle to a C# switch statement, just temporal.
-        /// Sample usage: Switch(Tbool1, T1, Tbool2, T2, ..., defaultT).  
-        /// Returns T1 if Tbool2 is true, else T2 if Tbool2 is true, etc., else defaultT. 
+        /// Sample usage: Switch(Tbool1, Tvar1, Tbool2, Tvar2, ..., defaultTvar).  
+        /// Returns Tvar1 if Tbool2 is true, else Tvar2 if Tbool2 is true, etc., else defaultTvar. 
         /// </remarks>
-        public static T Switch<T>(params object[] arguments) where T : Tvar
+        public static T SwitchOld<T>(params object[] arguments) where T : Tvar
         {
+            // Default result
             Hval h = new Hval(null, Hstate.Null);
             T result = (T)Auxiliary.ReturnProperTvar<T>(h);
 
-            // Keep going until all intervals are defined...
+            // Keep going until all intervals of the result Tvar are defined...
             while (Util.HasUndefinedIntervals(result)) 
             {
                 // For each condition-value pair...
@@ -59,10 +60,10 @@ namespace Hammurabi
 
                     // Identify the intervals when the new condition is true.
                     // Ignore irrelevant periods when result is already determined.
-                    // During these intervals, "result" takes on the value of the pair.
+                    // During these intervals, "result" takes on the value of its conclusion.
                     Tbool newConditionIsTrueAndResultIsNull = newCondition && Util.IsNull(result);
 
-                    // If new true segments are added, accumulate the values during those intervals
+                    // If new true segments are found, accumulate the values during those intervals
                     if (newConditionIsTrueAndResultIsNull.IsEverTrue())
                     {
                         T val = (T)Auxiliary.ConvertToTvar<T>(arguments[arg+1]);
@@ -80,8 +81,59 @@ namespace Hammurabi
             return result.LeanTvar<T>();
         }
 
+        public static T Switch<T>(params Func<Tvar>[] arguments) where T : Tvar
+        {
+            // Default result
+            Hval h = new Hval(null, Hstate.Null);
+            T result = (T)Auxiliary.ReturnProperTvar<T>(h);
+
+            // Analyze each condition-value pair...and keep going
+            // until all intervals of the result Tvar are defined...
+            int len = (int)arguments.Length;
+            for (int arg=0; arg < len-1; arg+=2)
+            {
+                // Get value of the condition
+                Tbool newCondition = Auxiliary.ConvertToTvar<Tbool>(arguments[arg].Invoke());
+
+                // Identify the intervals when the new condition is neither false nor true
+                // Falsehood causes it to fall through to next condition. Truth causes the
+                // result to assume the value during that interval.
+                Tbool newConditionIsUnknown = Util.HasUnknownState(newCondition);
+
+                // Merge these 'unknown' intervals in new condition into the result.
+                result = Util.MergeTvars<T>(result,
+                                       Util.ConditionalAssignment<T>(newConditionIsUnknown, newCondition));
+
+                // Identify the intervals when the new condition is true.
+                // Ignore irrelevant periods when result is already determined.
+                // During these intervals, "result" takes on the value of its conclusion.
+                Tbool newConditionIsTrueAndResultIsNull = newCondition && Util.IsNull(result);
+
+                // If new true segments are found, accumulate the values during those intervals
+                if (newConditionIsTrueAndResultIsNull.IsEverTrue())
+                {
+                    T val = (T)Auxiliary.ConvertToTvar<T>(arguments[arg+1].Invoke());
+                    result = Util.MergeTvars<T>(result,
+                                           Util.ConditionalAssignment<T>(newConditionIsTrueAndResultIsNull, val)); 
+                }
+
+                if (!Util.HasUndefinedIntervals(result))
+                {
+                    return result.LeanTvar<T>();
+                }
+
+            }
+
+            T defaultVal = (T)Auxiliary.ConvertToTvar<T>(arguments[len-1].Invoke());
+            result = Util.MergeTvars<T>(result, defaultVal);
+
+            return result.LeanTvar<T>();
+        }
     }
 
+    /// <summary>
+    /// Class of utility functions for analyzing and manipulating Tvars.
+    /// </summary>
     public partial class Util
     {
         /// <summary>
@@ -91,7 +143,7 @@ namespace Hammurabi
         /// <remarks>
         /// Example:        tb = <--F--|--T--|--F--|--T--|--F--> 
         ///                val = <--------------4--------------> 
-        ///             result = <--n--|--4--|--n--|--4--|--n-->  where n = Hstate.Null
+        ///         CA(tb,val) = <--n--|--4--|--n--|--4--|--n-->  where n = Hstate.Null
         /// </remarks>
         public static T ConditionalAssignment<T>(Tbool tb, Tvar val) where T : Tvar
         {
@@ -118,9 +170,9 @@ namespace Hammurabi
         /// the first Tvar takes priority.
         /// </summary>
         /// <remarks>
-        /// Example:       tv1 = <--0--|--1--|--u--|--3--|--u--> 
-        ///                tv2 = <--9--|--u--|--2--|--u--|--u--> 
-        ///             result = <--0--|--1--|--2--|--3--|--u--> 
+        /// Example:       tv1 = <--0--|--1--|--n--|--3--|--n--> 
+        ///                tv2 = <--9--|--n--|--2--|--n--|--n--> 
+        ///     Merge(tv1,tv2) = <--0--|--1--|--2--|--3--|--n-->  where n = Hstate.Null
         /// </remarks>
         public static T MergeTvars<T>(T tv1, T tv2) where T : Tvar
         {
@@ -196,5 +248,5 @@ namespace Hammurabi
             }
             return false;
         }
-	}
+    }
 }

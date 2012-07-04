@@ -176,9 +176,9 @@ namespace Akkadian
         // ' match a, b '
         // ' Alabama,   9 ' 
         // -> 'a == "Alabama" && b == 9'
-        public static string RuleTableMatch(string template, string line, string word)
+        public static string RuleTableMatch(string template, string line)
         {
-            string result = "    ";
+            string result = "    ()=> ";
          
             template = template.Replace("match","");
             int arrow = line.IndexOf("->");
@@ -202,7 +202,7 @@ namespace Akkadian
                 }
             }
             
-            result += ", " + rest + ",";
+            result += ", ()=> " + rest + ",";
             return result;
         }
      

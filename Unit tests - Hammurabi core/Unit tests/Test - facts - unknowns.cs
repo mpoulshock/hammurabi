@@ -263,53 +263,65 @@ namespace Hammurabi.UnitTests.CoreFcns
         }
         
         // Switch()
-        
+
         [Test]
-        public void FactOrder5a ()
+        public void FactOrder5a_lazy ()
         {
+            Hval h = new Hval(null, Hstate.Null);
+            Tnum u = new Tnum(h);
+
             Facts.Reset();
             Facts.GetUnknowns = true;
-            Tnum theRule = Switch<Tnum>(A(),X(),
-                                  B(),Y(),
-                                  Hstate.Uncertain);
-            Assert.AreEqual("A B", Facts.ShowUnknownTest());      // currently returns "A X B Y" - should not investigate Tnums unless relevant
+            Tnum theRule = Switch<Tnum>(()=> A(), ()=> X(),
+                                  ()=> B(), ()=> Y(),
+                                  ()=> u);
+            Assert.AreEqual("A", Facts.ShowUnknownTest()); 
         }
-        
+
         [Test]
-        public void FactOrder5b ()
+        public void FactOrder5b_lazy ()
         {
+            Hval h = new Hval(null, Hstate.Null);
+            Tnum u = new Tnum(h);
+
             Facts.Reset();
             Facts.GetUnknowns = true;
             Facts.Assert(p1, "A", p2);
-            Tnum theRule = Switch<Tnum>(A(),X(),
-                                  B(),Y(),
-                                  Hstate.Uncertain);
-            Assert.AreEqual("A X", Facts.ShowUnknownTest());      // currently returns "X B Y" - should not investigate Tnums unless relevant
+            Tnum theRule = Switch<Tnum>(()=> A(), ()=> X(),
+                                  ()=> B(), ()=> Y(),
+                                  ()=> u);
+            Assert.AreEqual("X", Facts.ShowUnknownTest()); 
         }
-        
+
         [Test]
-        public void FactOrder5c ()
+        public void FactOrder5c_lazy ()
         {
+            Hval h = new Hval(null, Hstate.Null);
+            Tnum u = new Tnum(h);
+
             Facts.Reset();
             Facts.GetUnknowns = true;
             Facts.Assert(p1, "A", p2, false);
-            Tnum theRule = Switch<Tnum>(A(),X(),
-                                  B(),Y(),
-                                  Hstate.Uncertain);
-            Assert.AreEqual("B", Facts.ShowUnknownTest());      // currently returns "X B Y" - should not investigate Tnums unless relevant
+            Tnum theRule = Switch<Tnum>(()=> A(), ()=> X(),
+                                  ()=> B(), ()=> Y(),
+                                  ()=> u);
+            Assert.AreEqual("B", Facts.ShowUnknownTest());
         }
-        
+
         [Test]
-        public void FactOrder5d ()
+        public void FactOrder5d_lazy ()
         {
+            Hval h = new Hval(null, Hstate.Null);
+            Tnum u = new Tnum(h);
+
             Facts.Reset();
             Facts.GetUnknowns = true;
             Facts.Assert(p1, "A", p2, false);
             Facts.Assert(p1, "B", p2);
-            Tnum theRule = Switch<Tnum>(A(),X(),
-                                  B(),Y(),
-                                  Hstate.Uncertain);
-            Assert.AreEqual("Y", Facts.ShowUnknownTest());      // currently returns "X Y" - should not investigate Tnums unless relevant
+            Tnum theRule = Switch<Tnum>(()=> A(), ()=> X(),
+                                  ()=> B(), ()=> Y(),
+                                  ()=> u);
+            Assert.AreEqual("Y", Facts.ShowUnknownTest());  
             Facts.GetUnknowns = true;
         }
         

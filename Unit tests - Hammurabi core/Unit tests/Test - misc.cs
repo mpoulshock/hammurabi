@@ -65,37 +65,37 @@ namespace Hammurabi.UnitTests.CoreFcns
         // Recursion using Tvars - temporal
         
         
-//        [Test]
-//        public void Misc_TemporalRecursion1 ()
-//        {
-//            Assert.AreEqual("1/1/0001 12:00:00 AM 89 ", TemporalFibonacci(10).TestOutput );    
-//        }
-//        
-//        [Test]
-//        public void Misc_TemporalRecursion2 ()
-//        {
-//            Assert.AreNotEqual("1/1/0001 12:00:00 AM 89 ", TemporalFibonacci(11).TestOutput );    
-//        }
+        [Test]
+        public void Misc_TemporalRecursion1 ()
+        {
+            Assert.AreEqual("1/1/0001 12:00:00 AM 89 ", TemporalFibonacci(10).TestOutput );    
+        }
         
-//        [Test]
-//        public void Misc_TemporalRecursion3 ()
-//        {
-//            Assert.AreEqual("1/1/0001 12:00:00 AM 1 ", TemporalFibonacci(1).TestOutput );    
-//        }
+        [Test]
+        public void Misc_TemporalRecursion2 ()
+        {
+            Assert.AreNotEqual("1/1/0001 12:00:00 AM 89 ", TemporalFibonacci(11).TestOutput );    
+        }
         
-//        [Test]
-//        public void Misc_TemporalRecursion4 ()
-//        {
-//            Tnum x = new Tnum();
-//            x.AddState(Time.DawnOf, 10);
-//            x.AddState(Time.DawnOf.AddYears(5), 1);
-//            Assert.AreEqual("1/1/0001 12:00:00 AM 89 1/1/0006 12:00:00 AM 1 ", TemporalFibonacci(x).TestOutput );    
-//        }
+        [Test]
+        public void Misc_TemporalRecursion3 ()
+        {
+            Assert.AreEqual("1/1/0001 12:00:00 AM 1 ", TemporalFibonacci(1).TestOutput );    
+        }
+        
+        [Test]
+        public void Misc_TemporalRecursion4 ()
+        {
+            Tnum x = new Tnum();
+            x.AddState(Time.DawnOf, 10);
+            x.AddState(Time.DawnOf.AddYears(5), 1);
+            Assert.AreEqual("1/1/0001 12:00:00 AM 89 1/1/0006 12:00:00 AM 1 ", TemporalFibonacci(x).TestOutput );    
+        }
         
         private static Tnum TemporalFibonacci(Tnum x)
         {
-            return Switch<Tnum>(x <= 1, new Tnum(1), 
-                          TemporalFibonacci(x - 1) + TemporalFibonacci(x - 2));
+            return Switch<Tnum>(()=> x <= 1, ()=> new Tnum(1), 
+                          ()=> TemporalFibonacci(x - 1) + TemporalFibonacci(x - 2));
         }
     }
 }

@@ -32,135 +32,134 @@ namespace Hammurabi.UnitTests.CoreFcns
         // Switch<Tnum>
         
         [Test]
-        public void TnumSwitch1 ()
+        public void TnumSwitch1_lazy ()
         {
-            Tnum result = Switch<Tnum>(tbf, new Tnum(41),
-                                 tbt, new Tnum(42),
-                                 43);
+            Tnum result = Switch<Tnum>(()=> tbf, ()=> new Tnum(41),
+                                 ()=> tbt, ()=> new Tnum(42),
+                                 ()=> 43);
             
             Assert.AreEqual("1/1/0001 12:00:00 AM 42 ", result.TestOutput);        
         }
-        
+
         [Test]
-        public void TnumSwitch2 ()
+        public void TnumSwitch2_lazy ()
         {
-            Tnum result = Switch<Tnum>(tbt, new Tnum(41),
-                                 tbf, new Tnum(42),
-                                 43);
+            Tnum result = Switch<Tnum>(()=> tbt, ()=> new Tnum(41),
+                                 ()=> tbf, ()=> new Tnum(42),
+                                 ()=> 43);
             
             Assert.AreEqual("1/1/0001 12:00:00 AM 41 ", result.TestOutput);        
         }
-        
+
         [Test]
-        public void TnumSwitch3 ()
+        public void TnumSwitch3_lazy ()
         {
-            Tnum result = Switch<Tnum>(tbf, 41,
-                                 tbt, 42,
-                                 new Tnum(43));
+            Tnum result = Switch<Tnum>(()=> tbf, ()=> 41,
+                                 ()=> tbt, ()=> 42,
+                                 ()=> new Tnum(43));
             
             Assert.AreEqual("1/1/0001 12:00:00 AM 42 ", result.TestOutput);        
         }
-        
+
         [Test]
-        public void TnumSwitch4 ()
+        public void TnumSwitch4_lazy ()
         {
-            Tnum result = Switch<Tnum>(false, 41,
-                                 true, 42,
-                                 new Tnum(43)); 
+            Tnum result = Switch<Tnum>(()=> false, ()=> 41,
+                                 ()=> true, ()=> 42,
+                                 ()=> new Tnum(43)); 
             
             Assert.AreEqual("1/1/0001 12:00:00 AM 42 ", result.TestOutput);        
         }
-        
-        
+
         [Test]
-        public void TnumSwitch5 ()
+        public void TnumSwitch5_lazy ()
         {
-            Tnum result = Switch<Tnum>(tbf, new Tnum(41),
-                                 tbf, new Tnum(42),
-                                 43);
+            Tnum result = Switch<Tnum>(()=> tbf, ()=> new Tnum(41),
+                                 ()=> tbf, ()=> new Tnum(42),
+                                 ()=> 43);
 
             Assert.AreEqual("1/1/0001 12:00:00 AM 43 ", result.TestOutput);        
         }
-        
+
         [Test]
-        public void TnumSwitch6 ()
+        public void TnumSwitch6_lazy ()
         {
-            Tnum result = Switch<Tnum>(tbf, new Tnum(41),
-                                 tbf, new Tnum(42),
-                                 new Tnum(Hstate.Uncertain));  
+            Tnum result = Switch<Tnum>(()=> tbf, ()=> new Tnum(41),
+                                 ()=> tbf, ()=> new Tnum(42),
+                                 ()=> new Tnum(Hstate.Uncertain));  
 
             Assert.AreEqual("1/1/0001 12:00:00 AM Uncertain ", result.TestOutput);        
         }
 
         [Test]
-        public void TnumSwitch7 ()
+        public void TnumSwitch7_lazy ()
         {
-            Tnum result = Switch<Tnum>(false, 41,
-                                 true, new Tnum(Hstate.Uncertain),
-                                 42);   
+            Tnum result = Switch<Tnum>(()=> false, ()=> 41,
+                                 ()=> true, ()=> new Tnum(Hstate.Uncertain),
+                                 ()=> 42);   
             
             Assert.AreEqual("1/1/0001 12:00:00 AM Uncertain ", result.TestOutput);        
         }
 
         [Test]
-        public void TnumSwitch8 ()
+        public void TnumSwitch8_lazy ()
         {
-            Tnum result = Switch<Tnum>(false, 41,
-                                 new Tbool(Hstate.Uncertain), 101,
-                                 42);   
+            Tnum result = Switch<Tnum>(()=> false, ()=> 41,
+                                 ()=> new Tbool(Hstate.Uncertain), ()=> 101,
+                                 ()=> 42);   
             
             Assert.AreEqual("1/1/0001 12:00:00 AM Uncertain ", result.TestOutput);        
         }
 
         [Test]
-        public void TnumSwitch9 ()
+        public void TnumSwitch9_lazy ()
         {
-            Tnum result = Switch<Tnum>(false, 41,
-                                 new Tbool(Hstate.Uncertain), new Tnum(Hstate.Stub),
-                                 42);   
+            Tnum result = Switch<Tnum>(()=> false, ()=> 41,
+                                 ()=> new Tbool(Hstate.Uncertain), ()=> new Tnum(Hstate.Stub),
+                                 ()=> 42);   
             
             Assert.AreEqual("1/1/0001 12:00:00 AM Uncertain ", result.TestOutput);        
         }
 
         [Test]
-        public void TnumSwitch10 ()
+        public void TnumSwitch10_lazy ()
         {
             Tnum x = new Tnum(10);
             x.AddState(Time.DawnOf.AddYears(5), 1);
             
-            Tnum result = Switch<Tnum>(x <= 1, new Tnum(1),
-                                 2);   
+            Tnum result = Switch<Tnum>(()=> x <= 1, ()=> new Tnum(1),
+                                 ()=> 2);   
             
             Assert.AreEqual("1/1/0001 12:00:00 AM 2 1/1/0006 12:00:00 AM 1 ", result.TestOutput);        
         }
-        
+
         [Test]
-        public void TnumSwitch11 ()
+        public void TnumSwitch11_lazy ()
         {
             Tnum x = new Tnum(10);
             x.AddState(Time.DawnOf.AddYears(5), 1);
             
-            Tnum result = Switch<Tnum>(x >= 5, new Tnum(1),
-                                 2);   
+            Tnum result = Switch<Tnum>(()=> x >= 5, ()=> new Tnum(1),
+                                 ()=> 2);   
             
             Assert.AreEqual("1/1/0001 12:00:00 AM 1 1/1/0006 12:00:00 AM 2 ", result.TestOutput);        
         }
 
         [Test]
-        public void TnumSwitch12 ()
+        public void TnumSwitch12_lazy ()
         {
             Tbool tb = new Tbool(true);
             tb.AddState(Date(2000,1,1), false);
             
-            Tnum result = Switch<Tnum>(tb, new Tnum(41),
-                                 true, new Tnum(42),
-                                 new Tnum(43));   
+            Tnum result = Switch<Tnum>(()=> tb, ()=> new Tnum(41),
+                                 ()=> true, ()=> new Tnum(42),
+                                 ()=> new Tnum(43));   
             
             Assert.AreEqual("1/1/0001 12:00:00 AM 41 1/1/2000 12:00:00 AM 42 ", result.TestOutput);        
         }
 
         [Test]
-        public void TnumSwitch13 ()  // Tests whether irrelevant values are skipped/ignored
+        public void TnumSwitch13_lazy ()  // Tests whether irrelevant values are skipped/ignored
         {
             Tbool tb1 = new Tbool(true);
             tb1.AddState(Date(2000,1,1), false);
@@ -169,52 +168,52 @@ namespace Hammurabi.UnitTests.CoreFcns
             tb2.AddState(Date(1900,1,1),true);  // true but irrelevant b/c interval subsubmed by tb1
             tb2.AddState(Date(1912,1,1),false);
 
-            Tnum result = Switch<Tnum>(tb1, new Tnum(41),
-                                 tb2, new Tnum(42),
-                                 new Tnum(43));   
+            Tnum result = Switch<Tnum>(()=> tb1, ()=> new Tnum(41),
+                                 ()=> tb2, ()=> new Tnum(42),
+                                 ()=> new Tnum(43));   
             
             Assert.AreEqual("1/1/0001 12:00:00 AM 41 1/1/2000 12:00:00 AM 43 ", result.TestOutput);        
         }
 
         // Switch<Tbool>
-        
+
         [Test]
-        public void TboolSwitch1 ()
+        public void TboolSwitch1_lazy ()
         {
-            Tbool result = Switch<Tbool>(false, true,
-                                  true, true,
-                                  new Tbool(false));   
-            
-            Assert.AreEqual("1/1/0001 12:00:00 AM True ", result.TestOutput);        
-        }
-        
-        [Test]
-        public void TboolSwitch2 ()
-        {
-            Tbool result = Switch<Tbool>(false, false,
-                                  true, true,
-                                  new Tbool(Hstate.Uncertain));   
+            Tbool result = Switch<Tbool>(()=> false, ()=> true,
+                                  ()=> true, ()=> true, 
+                                  ()=> new Tbool(false));   
             
             Assert.AreEqual("1/1/0001 12:00:00 AM True ", result.TestOutput);        
         }
 
         [Test]
-        public void TboolSwitch3 ()
+        public void TboolSwitch2_lazy ()
         {
-            Tbool result = Switch<Tbool>(false, true,
-                                  new Tbool(true));   
+            Tbool result = Switch<Tbool>(()=> false, ()=> false,
+                                  ()=> true, ()=> true,
+                                  ()=> new Tbool(Hstate.Uncertain));   
+            
+            Assert.AreEqual("1/1/0001 12:00:00 AM True ", result.TestOutput);        
+        }
+
+        [Test]
+        public void TboolSwitch3_lazy () 
+        {
+            Tbool result = Switch<Tbool>(()=> false, ()=> true,
+                                  ()=> new Tbool(true));   
             
             Assert.AreEqual("1/1/0001 12:00:00 AM True ", result.TestOutput);        
         }
 
         // Switch<Tstr>
-        
+
         [Test]
-        public void TstrSwitch1 ()
+        public void TstrSwitch1_lazy ()
         {
-            Tstr result = Switch<Tstr>(false, "41",
-                                  true, "42",
-                                  new Tstr("43"));   
+            Tstr result = Switch<Tstr>(()=> false, ()=> "41",
+                                  ()=> true, ()=> "42",
+                                  ()=> new Tstr("43"));   
             
             Assert.AreEqual("1/1/0001 12:00:00 AM 42 ", result.TestOutput);        
         }

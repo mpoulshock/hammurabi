@@ -261,8 +261,8 @@ namespace Akkadian
     
             // Switch(condition, value, ..., default) - must come before "rule tables" (b/c rule tables look for "->"
             line = Regex.Replace(line, @"set:", "Switch<" + currentRuleType + ">(", RegexOptions.IgnoreCase);    
-            line = Regex.Replace(line, @"if (?<condition>"+word+") -> (?<value>"+word+")", "${condition}, ${value},", RegexOptions.IgnoreCase);    
-            line = Regex.Replace(line, @"else (?<default>"+word+")", "${default})", RegexOptions.IgnoreCase);  
+            line = Regex.Replace(line, @"if (?<condition>"+word+") -> (?<value>"+word+")", "()=> ${condition}, ()=> ${value},", RegexOptions.IgnoreCase);    
+            line = Regex.Replace(line, @"else (?<default>"+word+")", "()=> ${default})", RegexOptions.IgnoreCase);  
              
             // Temporal tables - must come before "rule tables"
             line = Regex.Replace(line.Replace("\t","    "), @"temporal:", currentRuleType + ".Make" + currentRuleType + "(");  
@@ -271,7 +271,7 @@ namespace Akkadian
     
             // Rule tables - must come before "dates"
             line = Regex.Replace(line, @"match "+word, "Switch<" + currentRuleType + ">(");    
-            if (line.Contains("->")) line = Util.RuleTableMatch(tableMatchLine, line, word);
+            if (line.Contains("->")) line = Util.RuleTableMatch(tableMatchLine, line);
              
             // yyyy-mm-dd -> Date(yyyy,mm,dd)
             line = Util.ConvertDate(line); 
