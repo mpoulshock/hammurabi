@@ -109,6 +109,7 @@
         </Folder>
         <Folder name="Sandbox">
             <File name="Sandbox\Test for Hammurabi Interactive.akk" />
+            <File name="Sandbox\Recursion test.akk" />
         </Folder>
         <File name="License.txt" />
         <File name="NPP workspace" />

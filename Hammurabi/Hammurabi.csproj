@@ -127,6 +127,7 @@
     <Compile Include="Generated source\Org - general.cs" />
     <Compile Include="Core\Engine\Engine.cs" />
     <Compile Include="Generated source\Test for Hammurabi Interactive.cs" />
+    <Compile Include="Generated source\Recursion test.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
