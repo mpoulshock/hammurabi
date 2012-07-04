@@ -33,54 +33,6 @@ namespace Hammurabi
         /// Sample usage: Switch(Tbool1, Tvar1, Tbool2, Tvar2, ..., defaultTvar).  
         /// Returns Tvar1 if Tbool2 is true, else Tvar2 if Tbool2 is true, etc., else defaultTvar. 
         /// </remarks>
-        public static T SwitchOld<T>(params object[] arguments) where T : Tvar
-        {
-            // Default result
-            Hval h = new Hval(null, Hstate.Null);
-            T result = (T)Auxiliary.ReturnProperTvar<T>(h);
-
-            // Keep going until all intervals of the result Tvar are defined...
-            while (Util.HasUndefinedIntervals(result)) 
-            {
-                // For each condition-value pair...
-                int len = (int)arguments.Length;
-                for (int arg=0; arg < len-1; arg+=2)
-                {
-                    // Get value of the condition
-                    Tbool newCondition = Auxiliary.ConvertToTvar<Tbool>(arguments[arg]);
-
-                    // Identify the intervals when the new condition is neither false nor true
-                    // Falsehood causes it to fall through to next condition. Truth causes the
-                    // result to assume the value during that interval.
-                    Tbool newConditionIsUnknown = Util.HasUnknownState(newCondition);
-
-                    // Merge these 'unknown' intervals in new condition into the result.
-                    result = Util.MergeTvars<T>(result,
-                                           Util.ConditionalAssignment<T>(newConditionIsUnknown, newCondition));
-
-                    // Identify the intervals when the new condition is true.
-                    // Ignore irrelevant periods when result is already determined.
-                    // During these intervals, "result" takes on the value of its conclusion.
-                    Tbool newConditionIsTrueAndResultIsNull = newCondition && Util.IsNull(result);
-
-                    // If new true segments are found, accumulate the values during those intervals
-                    if (newConditionIsTrueAndResultIsNull.IsEverTrue())
-                    {
-                        T val = (T)Auxiliary.ConvertToTvar<T>(arguments[arg+1]);
-                        result = Util.MergeTvars<T>(result,
-                                               Util.ConditionalAssignment<T>(newConditionIsTrueAndResultIsNull, val)); 
-                    }
-                }
-
-                T defaultVal = (T)Auxiliary.ConvertToTvar<T>(arguments[len-1]);
-                result = Util.MergeTvars<T>(result, defaultVal);
-
-                break;
-            }
-
-            return result.LeanTvar<T>();
-        }
-
         public static T Switch<T>(params Func<Tvar>[] arguments) where T : Tvar
         {
             // Default result
