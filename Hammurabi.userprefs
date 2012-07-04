@@ -7,6 +7,7 @@
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
+          <Node name="AkkadianCompiler" expanded="True" />
           <Node name="Hammurabi" expanded="True">
             <Node name="Core" expanded="True">
               <Node name="Engine" expanded="True">
@@ -14,7 +15,9 @@
               </Node>
               <Node name="Facts" expanded="True" />
             </Node>
+            <Node name="Generated source" expanded="True" />
           </Node>
+          <Node name="Unit tests - Hammurabi core" expanded="True" />
         </State>
       </Pad>
       <Pad Id="ClassPad">

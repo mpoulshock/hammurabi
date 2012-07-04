@@ -126,6 +126,7 @@
     <Compile Include="Generated source\VT Stat 12-7151 - Emancipated minors.cs" />
     <Compile Include="Generated source\Org - general.cs" />
     <Compile Include="Core\Engine\Engine.cs" />
+    <Compile Include="Generated source\Test for Hammurabi Interactive.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

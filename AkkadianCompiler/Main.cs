@@ -270,7 +270,7 @@ namespace Akkadian
             line = Regex.Replace(line, "endtemporal", "null)");    
     
             // Rule tables - must come before "dates"
-            line = Regex.Replace(line, @"match"+word, "Switch<" + currentRuleType + ">(", RegexOptions.IgnoreCase);    
+            line = Regex.Replace(line, @"match "+word, "Switch<" + currentRuleType + ">(");    
             if (line.Contains("->")) line = Util.RuleTableMatch(tableMatchLine, line, word);
              
             // yyyy-mm-dd -> Date(yyyy,mm,dd)

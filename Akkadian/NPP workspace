@@ -107,6 +107,9 @@
             </Folder>
             <Folder name="Tabular data" />
         </Folder>
+        <Folder name="Sandbox">
+            <File name="Sandbox\Test for Hammurabi Interactive.akk" />
+        </Folder>
         <File name="License.txt" />
         <File name="NPP workspace" />
         <File name="NPP Akkadian syntax highlighting" />
