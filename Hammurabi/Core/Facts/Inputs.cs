@@ -190,45 +190,24 @@ namespace Hammurabi
         {
             T defaultVal = (T)Auxiliary.ReturnProperTvar<T>(Hstate.Unstated);
             return QueryTvar<T>(e1, rel, e2, defaultVal);
-
-//                // Look up fact in table of facts
-//                foreach (Fact f in FactBase)
-//                {
-//                    if (f.subject == e1 && f.relationship == rel && f.directObject == e2)
-//                    {
-//                        return (T)f.v;
-//                    }
-//                }
-//    
-//                // Add the fact to the list of unknown facts
-//                if (GetUnknowns)
-//                {
-//                    AddUnknown(e1,rel,e2);
-//                }
-//
-//            // If fact is not found, return an unknown Tvar
-//            return (T)Auxiliary.ReturnProperTvar<T>(Hstate.Unstated);
         }
+
         protected static T QueryTvar<T>(LegalEntity e1, string rel, LegalEntity e2, T defaultValue) where T : Tvar
         {
-            // A relationship cannot go from an entity to itself...
-//            if (!System.Object.ReferenceEquals(e1,e2))
-//            {
-                // Look up fact in table of facts
-                foreach (Fact f in FactBase)
+            // Look up fact in table of facts
+            foreach (Fact f in FactBase)
+            {
+                if (f.subject == e1 && f.relationship == rel && f.directObject == e2)
                 {
-                    if (f.subject == e1 && f.relationship == rel && f.directObject == e2)
-                    {
-                        return (T)f.v;
-                    }
+                    return (T)f.v;
                 }
-    
-                // Add the fact to the list of unknown facts
-                if (GetUnknowns)
-                {
-                    AddUnknown(e1,rel,e2);
-                }
-//            }
+            }
+
+            // Add the fact to the list of unknown facts
+            if (GetUnknowns)
+            {
+                AddUnknown(e1,rel,e2);
+            }
 
             // If fact is not found, return a default value (usually "unstated")
             return defaultValue;
@@ -249,7 +228,7 @@ namespace Hammurabi
             
             if (GetUnknowns)
             {
-                AddUnknown(e1,rel);
+                AddUnknown(e1, rel, null);
             }
             
             return (T)Auxiliary.ReturnProperTvar<T>(Hstate.Unstated);
@@ -270,7 +249,7 @@ namespace Hammurabi
             
             if (GetUnknowns)
             {
-                AddUnknown(e1,rel);
+                AddUnknown(e1, rel, null);
             }
             
             return new Person("");

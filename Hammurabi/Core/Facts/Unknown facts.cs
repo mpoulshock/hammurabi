@@ -38,17 +38,6 @@ namespace Hammurabi
         public static bool GetUnknowns = false;
 
         /// <summary>
-        /// Turns on the mode in which unknowns are collected into the
-        /// Facts.Unknowns list.
-        /// </summary>
-        //  TODO: Delete?
-        public static void UnknownModeOn()
-        {
-            Facts.Reset();
-            Facts.GetUnknowns = true;
-        }
-        
-        /// <summary>
         /// Add a (two-entity) factlet to UnknownFacts.
         /// </summary>
         public static void AddUnknown(LegalEntity e1, string rel, LegalEntity e2)
@@ -63,15 +52,7 @@ namespace Hammurabi
                 }
             }
         }
-        
-        /// <summary>
-        /// Add a (one-entity) factlet to Facts.Unknowns.
-        /// </summary>
-        public static void AddUnknown(LegalEntity e1, string rel)
-        {
-            AddUnknown(e1, rel, null);
-        }
-        
+
         /// <summary>
         /// Indicates whether Facts.Unknowns contains a given factlet.
         /// </summary>
@@ -115,40 +96,15 @@ namespace Hammurabi
         }
 
         /// <summary>
-        /// Returns a string showing all relationships in Facts.Unknowns.
-        /// Used to test the order in which factlets are added to that list.
-        /// </summary>
-        public static string ShowUnknownTest()
-        {
-            string result = "";
-            
-            foreach (Facts.Factlet f in Facts.Unknowns)
-            {
-                result += f.relationship + " ";
-            }
-            
-            return result.Trim();
-        }
-        
-        /// <summary>
         /// A Factlet object represents a fact that has no value because it
-        /// is needed (unknown).
+        /// is needed (unstated).
         /// </summary>
         public class Factlet
         {
             public LegalEntity subject;
             public string relationship;
             public LegalEntity directObject;
-            
-            /// <summary>
-            /// Factlet that relates to one legal entity.
-            /// </summary>
-            public Factlet(LegalEntity subj, string rel)
-            {
-                subject = subj;
-                relationship = rel;
-            }
-            
+
             /// <summary>
             /// Factlet that relates to two legal entities.  
             /// </summary>
@@ -159,26 +115,5 @@ namespace Hammurabi
                 directObject = obj;
             }
         }
-        
-//        /// <summary>
-//        /// Returns a list of unknown facts that are relevant to a particular goal.
-//        /// </summary>
-//        /// <remarks>
-//        /// Properly handles global variables and data structures in an attempt to
-//        /// isolate these from the user.
-//        /// </remarks>
-//        public static List<Factlet> UnknownFacts(Func<object,object,Tbool> fcn, object A, object B)
-//        {
-//            Facts.Unknowns.Clear();
-//            Facts.GetUnknowns = true;
-//            fcn(A,B).Invoke;  // ?
-//            Facts.GetUnknowns = false;
-//            List<Factlet> result = Facts.Unknowns;
-//            Facts.Unknowns.Clear();
-//            return result;
-//        }
-        
     }
 }
-        
-

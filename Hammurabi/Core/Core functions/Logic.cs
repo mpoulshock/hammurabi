@@ -46,7 +46,7 @@ namespace Hammurabi
         /// Temporal AND function.
         /// </summary>
         public static Tbool operator & (Tbool tb1, Tbool tb2)
-        {         
+        {     
             return And(tb1,tb2);
         }
         
@@ -177,52 +177,17 @@ namespace Hammurabi
         }
         
         // ********************************************************************
-        //    XOR
+        //   Other
         // ********************************************************************
         
         /// <summary>
-        /// Temporal XOR function: returns true when the input is false and
-        /// vice versa.
+        /// Facts.Either operator
         /// </summary>
         public static Tbool operator ^ (Tbool tb1, Tbool tb2)
         {
-            // Temporarily using the ^ operator for Facts.Either()!!!
+            // Temporarily using the ^ operator for Facts.Either()
             return Facts.Either(tb1,tb2);
-//            return Xor(tb1,tb2);
         }
-        
-        /// <summary>
-        /// Private temporal XOR function
-        /// </summary>
-//        private static Tbool Xor(params Tbool[] list)
-//        {
-//            // Result is unknown if any input is unknown
-//            if (AnyAreUnknown(list)) { return new Tbool(); }
-//            
-//            return ApplyFcnToTimeline(x => Xor(x), list);
-//        }
-//        
-//        /// <summary>
-//        /// Private non-temporal OR function
-//        /// </summary>
-//        private static bool Xor(List<object> list)
-//        {
-//            int countT = 0;
-//            foreach (bool v in list)
-//            {
-//                if (v == true)
-//                {
-//                    countT++;
-//                }
-//            }
-//            
-//            if (countT > 1) { return false; }
-//
-//            if (list.Contains(true)) { return true; }
-//            
-//            return false;            
-//        }
-        
     }
     
     #pragma warning restore 660, 661
