@@ -22,28 +22,76 @@ using System;
 
 namespace Hammurabi
 {    
-    /*
-     * TODO:
-     *  - Overflows
-     *  - Performance
-     *  - Years, months, weeks, days
-     *  - Uncertainty
-     *  - Unit tests
-     */
-
     public partial class Tbool
     {
         /// <summary>
+        /// Provides a running count of how many years a Tbool has been continuously true.
+        /// </summary>
+        public Tnum YearsContinuouslyTrue 
+        {
+            get
+            {
+                return TimeContinuouslyTrue(Time.IntervalType.Year);
+            }
+        }
+
+        /// <summary>
+        /// Provides a running count of how many months a Tbool has been continuously true.
+        /// </summary>
+        /// <remarks>
+        /// Use judiciously, as this can involve thousands of time intervals.
+        /// </remarks>
+        public Tnum MonthsContinuouslyTrue 
+        {
+            get
+            {
+                return TimeContinuouslyTrue(Time.IntervalType.Month);
+            }
+        }
+
+        /// <summary>
+        /// Provides a running count of how many weeks a Tbool has been continuously true.
+        /// </summary>
+        /// <remarks>
+        /// Use judiciously, as this can involve thousands of time intervals.
+        /// </remarks>
+        public Tnum WeeksContinuouslyTrue 
+        {
+            get
+            {
+                return TimeContinuouslyTrue(Time.IntervalType.Week);
+            }
+        }
+
+        /// <summary>
         /// Provides a running count of how many days a Tbool has been continuously true.
+        /// </summary>
+        /// <remarks>
+        /// Use judiciously, as this can involve tens of thousands of time intervals.
+        /// </remarks>
+        public Tnum DaysContinuouslyTrue 
+        {
+            get
+            {
+                return TimeContinuouslyTrue(Time.IntervalType.Day);
+            }
+        }
+
+        /// <summary>
+        /// Provides a running count of how many intervals (years, days, etc.) a Tbool 
+        /// has been continuously true.
         /// </summary>
         /// <remarks>
         /// Example:
         ///         tb = <--f--|--t--|-f-|---t---|--f-->
         ///     tb.DCT = <--0--|01234|-0-|0123456|--0-->
         /// </remarks>
-        public Tnum YearsContinuouslyTrue()  
+        private Tnum TimeContinuouslyTrue(Time.IntervalType interval)  
         {
-            // TODO: Handle uncertainty
+            // If base Tnum is ever unknown during the time period, return 
+            // the state with the proper precedence
+            Hstate baseState = PrecedenceForMissingTimePeriods(this);
+            if (baseState != Hstate.Known) return new Tnum(baseState);
 
             Tnum result = new Tnum();
 
@@ -55,25 +103,27 @@ namespace Hammurabi
 
                 if (this.IntervalValues.Values[i].IsTrue) 
                 {
-                    // How many days are in this interval?
+                    // Determine the end of the interval
                     DateTime nextIntervalStart = new DateTime();
                     if (i == this.IntervalValues.Count-1)
                     {
-                        nextIntervalStart = Time.EndOf;
+                        nextIntervalStart = Time.EndOf.AddYears(-1);
                     }
                     else
                     {
                         nextIntervalStart = this.IntervalValues.Keys[i+1];
                     }
 
-                    // How many days are in this interval?
-                    TimeSpan diff = nextIntervalStart - intervalStart;
-                    int timeDiff = (int)(diff.TotalDays / 365);
-
-                    // Begin counting days
-                    for (int c=0; c<timeDiff; c++)
+                    // Variables to keep track of count and date
+                    int count = 0;
+                    DateTime indexDate = intervalStart;
+            
+                    // Begin counting off intervals
+                    while (indexDate < nextIntervalStart) 
                     {
-                        result.AddState(intervalStart.AddYears(c), c);
+                        result.AddState(indexDate, count);
+                        count++;
+                        indexDate = indexDate.AddInterval(interval, 1);
                     }
                 }
                 else
@@ -83,7 +133,7 @@ namespace Hammurabi
                 }
             }
             
-            return result;
+            return result.Lean;
         }
     }
 }

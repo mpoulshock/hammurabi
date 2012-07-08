@@ -305,7 +305,7 @@ namespace Hammurabi
             foreach (DateTime dt in dates) 
             {
                 if (dt < first)
-                    first = dt;; 
+                    first = dt;
             }
             return first;
         }
@@ -319,7 +319,7 @@ namespace Hammurabi
             foreach (DateTime dt in dates) 
             {
                 if (dt > last)
-                    last = dt;; 
+                    last = dt; 
             }
             return last;
         }
@@ -332,7 +332,8 @@ namespace Hammurabi
         {
             get
             {
-                return new DateTime(1,1,1);
+                // TODO: Change to 1800-01-01 (and fix 500 test cases)
+                return new DateTime(0001,1,1);
             }
         }
         
@@ -343,7 +344,7 @@ namespace Hammurabi
         {
             get
             {
-                return new DateTime(9999,12,31);
+                return new DateTime(2200,12,31);
             }
         }
     }

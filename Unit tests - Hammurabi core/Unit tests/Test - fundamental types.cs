@@ -659,15 +659,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tnum result = t.ElapsedDays(Time.DawnOf, Time.EndOf);
             Assert.AreEqual("1/1/0001 12:00:00 AM Uncertain ", result.TestOutput);
         }
-        
-        [Test]
-        public void FT_ElapsedTime_HowToHandleEternals ()
-        {
-            Tbool t = new Tbool(true);
-            Tnum result = t.ElapsedDays();
-            Assert.AreEqual("1/1/0001 12:00:00 AM 3652058 ", result.TestOutput);   // Is this the desired result?
-        }
-        
+
         // Tvar.ElapsedDaysPerInterval
         
         [Test]
