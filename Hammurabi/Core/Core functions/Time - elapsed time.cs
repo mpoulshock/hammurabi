@@ -27,7 +27,7 @@ namespace Hammurabi
     /// Determines how much time has elapsed during which a given Tbool
     /// is true.
     /// </summary>
-    public partial class Tvar
+    public partial class Tbool
     {
         /// <summary>
         /// Returns the total elapsed days that a Tvar has a given value,
@@ -45,17 +45,17 @@ namespace Hammurabi
 
             Tnum result = new Tnum();
             
-            int count = period.TimeLine.Count;
+            int count = period.IntervalValues.Count;
             for (int i=0; i < count; i++)
             {
                 DateTime spanEnd = Time.EndOf;
                 if (i < count-1)
                 {
-                    spanEnd = period.TimeLine.Keys[i+1];
+                    spanEnd = period.IntervalValues.Keys[i+1];
                 }
                 
-                TimeSpan time = this.ElapsedTime(period.TimeLine.Keys[i], spanEnd);
-                result.AddState(period.TimeLine.Keys[i], time.TotalDays);
+                TimeSpan time = this.ElapsedTime(period.IntervalValues.Keys[i], spanEnd);
+                result.AddState(period.IntervalValues.Keys[i], time.TotalDays);
             }
             
             return result.Lean;

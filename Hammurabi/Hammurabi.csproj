@@ -130,6 +130,7 @@
     <Compile Include="Generated source\Recursion test.cs" />
     <Compile Include="Generated source\Imm - citizenship by birth - ILRC Chart A.cs" />
     <Compile Include="Generated source\8 USC 1101 - Definitions.cs" />
+    <Compile Include="Core\Core functions\Time - continuously true.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
