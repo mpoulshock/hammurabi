@@ -1,6 +1,6 @@
 # Namespace:    Hammurabi.Imm
 # Summary:      Basic facts related to immigration
-# Updated:      2012-06-05
+# Updated:      2012-07-07
 # Author:       Michael Poulshock
 
 
@@ -22,6 +22,9 @@ Tbool IsUSNational(Person p) =
 
 	
 # IMMIGRATION STATUS
+	
+# Alien
+TboolIn IsAlien(Person p)
 
 # Legal permanent resident (LPR)
 TboolIn IsLPR(Person p) =

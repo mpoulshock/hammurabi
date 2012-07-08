@@ -1,0 +1,93 @@
+# Namespace:    USC.Tit8.Sec1401
+# Summary:      Is a child born outside the U.S. a citizenship at birth?
+# Source:       http://www.ilrc.org/files/nats_chart_a_10.pdf
+# Remarks:      Does not include children born out of wedlock.
+# Updated:      2012-07-07
+# Author:       Michael Poulshock
+
+
+# Born outside U.S.; acquired citizenship at birth
+Tbool AcquiredCitizenshipAtBirth(Person c) =
+	set:
+	if DoB(c) < 1934-05-25 -> Stub()
+	if DoB(c) < 1941-01-14 -> Stub()
+	if DoB(c) < 1952-12-14 -> Stub()
+	if DoB(c) < 1986-11-14 -> Stub()
+	else MeetsCurrentRule(c)
+	
+# Rule after 1986-11-14
+Tbool MeetsCurrentRule(Person c) =
+	...
+		BothParentsCitizens(c) &
+		ParentResidedInUS(c)
+	|
+	...
+		OneCitizenOneNationalParent(c) &
+		BirthParents(c).Exists(IsCitizenPresent1Year(_, DoB(c)))
+	|
+	...
+		OneCitizenOneAlienParent(c) &
+		Stub()
+
+# A parent resided in U.S. at or before child's birth
+Tbool ParentResidedInUS(Person c) =
+	IsUSResident(FatherOf(c)).IsEverTrueBefore(DoB(c)) |
+	IsUSResident(MotherOf(c)).IsEverTrueBefore(DoB(c))
+
+# U.S. citizen physically present in U.S. or outlying possession
+# for continuous period of one year before a given date
+Tbool IsCitizenPresent1Year(Person p, Tdate date) =
+	IsUSCitizen(p) &
+	Stub()
+	# PresentInUSOrOutlyingPossession(p)   # TODO: temporal aspect
+
+# Physically present in U.S. or outlying possession
+TboolIn PresentInUSOrOutlyingPossession(Person p) =
+	PresentInUS(p) |
+	Sec1101.IsUSOutlyingPossession(loc)
+	
+	Tstr loc = 
+		CountryLocation(p)
+		
+	
+# REFACTOR...
+# Also, how would these rules handle gay marriage?
+
+# Both parents are U.S. citizens
+Tbool BothParentsCitizens(Person c) =
+	IsUSCitizen(FatherOf(c)) &
+	IsUSCitizen(MotherOf(c))
+
+# One parent is a U.S. citizen; one is a U.S. national
+Tbool OneCitizenOneNationalParent(Person c) =
+	...
+		IsUSCitizen(FatherOf(c)) &
+		Imm.IsUSNational(MotherOf(c))
+	|
+	...
+		IsUSCitizen(MotherOf(c)) &
+		Imm.IsUSNational(FatherOf(c))
+
+# One parent is a U.S. citizen; one is an alien
+Tbool OneCitizenOneAlienParent(Person c) =
+	...
+		IsUSCitizen(FatherOf(c)) &
+		Imm.IsAlien(MotherOf(c))
+	|
+	...
+		IsUSCitizen(MotherOf(c)) &
+		Imm.IsAlien(FatherOf(c))		
+
+# The person's parents at the time of birth
+Tset BirthParents(Person c) =
+	new Tset(FatherOf(c), MotherOf(c))
+
+# Father at time of birth
+Person FatherOf(Person c) =
+	PersonIn FatherAtTimeOfBirth(c)	
+	
+# Mother at time of birth
+Person MotherOf(Person c) =
+	PersonIn MotherAtTimeOfBirth(c)	
+	
+	

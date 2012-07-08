@@ -1,27 +1,20 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Hammurabi\Core\Facts\Inputs.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Hammurabi\Core\Fundamental types\Tbool.cs">
     <Files>
-      <File FileName="Hammurabi\Core\Engine\Engine.cs" Line="119" Column="30" />
-      <File FileName="Hammurabi\Core\Facts\Unknown facts.cs" Line="38" Column="42" />
-      <File FileName="Hammurabi\Core\Core functions\Logic.cs" Line="59" Column="16" />
-      <File FileName="Unit tests - Hammurabi core\Unit tests\Test - facts - unknowns.cs" Line="182" Column="39" />
-      <File FileName="Hammurabi\Core\Facts\Inputs.cs" Line="209" Column="40" />
+      <File FileName="Hammurabi\Core\Fundamental types\Tbool.cs" Line="52" Column="10" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
           <Node name="Hammurabi" expanded="True">
             <Node name="Core" expanded="True">
-              <Node name="Core functions" expanded="True" />
-              <Node name="Engine" expanded="True" />
-              <Node name="Facts" expanded="True">
-                <Node name="Inputs.cs" selected="True" />
+              <Node name="Core functions" expanded="True">
+                <Node name="Auxiliary.cs" selected="True" />
               </Node>
+              <Node name="Facts" expanded="True" />
+              <Node name="Fundamental types" expanded="True" />
             </Node>
-          </Node>
-          <Node name="Unit tests - Hammurabi core" expanded="True">
-            <Node name="Unit tests" expanded="True" />
           </Node>
         </State>
       </Pad>

@@ -128,6 +128,8 @@
     <Compile Include="Core\Engine\Engine.cs" />
     <Compile Include="Generated source\Test for Hammurabi Interactive.cs" />
     <Compile Include="Generated source\Recursion test.cs" />
+    <Compile Include="Generated source\Imm - citizenship by birth - ILRC Chart A.cs" />
+    <Compile Include="Generated source\8 USC 1101 - Definitions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

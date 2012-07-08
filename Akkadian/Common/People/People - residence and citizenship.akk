@@ -26,7 +26,7 @@ TstrIn StateOfResidence(Person p)
 TboolIn IsUSCitizen(Person p) =
 	Imm.Status(p) == "U.S. citizen" |
 	Imm.IsCitizenOf(p, "United States") |
-	USC.Tit8.Gen.IsUSCitizenInferred(p)
+	USC.Tit8.Gen.IsUSCitizenInferred(p)	
 
 
 # BIRTH COUNTRY 
@@ -44,7 +44,7 @@ TstrIn BirthCountry(Person p)
 # Physically present in U.S.
 Tbool PresentInUS(Person p) =
 	CountryLocation(p) == "United States"
-
+	
 # Country where person is (currently) located
 TstrIn CountryLocation(Person p)
 

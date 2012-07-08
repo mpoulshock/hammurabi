@@ -33,6 +33,7 @@
                     </Folder>
                     <Folder name="Title 8 - Immigration">
                         <File name="Law\Federal law\US Code\Title 8 - Immigration\Imm - general.akk" />
+                        <File name="Law\Federal law\US Code\Title 8 - Immigration\8 USC 1101 - Definitions.akk" />
                         <File name="Law\Federal law\US Code\Title 8 - Immigration\8 USC 1182 - Inadmissible aliens.akk" />
                     </Folder>
                     <Folder name="Title 26 - Tax">
@@ -110,6 +111,7 @@
         <Folder name="Sandbox">
             <File name="Sandbox\Test for Hammurabi Interactive.akk" />
             <File name="Sandbox\Recursion test.akk" />
+            <File name="Sandbox\Imm - citizenship by birth - ILRC Chart A.akk" />
         </Folder>
         <File name="License.txt" />
         <File name="NPP workspace" />

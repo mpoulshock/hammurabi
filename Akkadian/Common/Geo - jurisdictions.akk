@@ -1,8 +1,13 @@
 # Namespace:    Hammurabi.Geo
-# Summary:      A few random geographical facts
-# Updated:      2012-06-28
+# Summary:      Geographical facts pertaining to jurisdiction
+# Updated:      2012-07-07
 # Author:       Michael Poulshock
 
+
+# Is U.S. state or Washington D.C.
+Tbool IsUSStateOrDC(Tstr jur) =
+	IsUSState(jur) |
+	jur == "District of Columbia"
 
 # One of the 48 contiguous states
 Tbool Among48ContiguousStates(Tstr jur) =
@@ -65,7 +70,7 @@ Tbool IsUSState(Tstr jur) =
 	Wyoming -> true
 	else false
 
-# Is an unincorporated U.S. territory
+# Unincorporated U.S. territory or possession
 Tbool IsUSTerritory(Tstr jur) =
 	match jur
 	American Samoa -> true
@@ -75,13 +80,36 @@ Tbool IsUSTerritory(Tstr jur) =
 	U.S. Virgin Islands	-> true	
 	else false
 
-##  Other jurisdictions:
-	District of Columbia
-	Guantanamo Bay Naval Base
-	Marshall Islands
-	Micronesia
-	Palau 
-	Native American reservations...
+# U.S. minor outlying island
+# Source: http://en.wikipedia.org/wiki/US_Minor_Outlying_Islands
+Tbool IsUSMinorOutlyingIsland(Tstr jur) =
+	match jur
+	Baker Island -> true
+	Howland Island -> true
+	Jarvis Island -> true
+	Johnston Atoll -> true
+	Kingman Reef -> true
+	Midway Islands -> true
+	Palmyra Atoll -> true
+	Wake Island -> true
+	Navassa Island -> true
+	Bajo Nuevo Bank -> Stub()  # disputed
+	Serranilla Bank -> Stub()  # disputed
+	else false
+	
+# Freely associated states (Compact of Free Association)
+# Source: http://en.wikipedia.org/wiki/Compact_of_Free_Association
+Tbool IsFreelyAssociatedState(Tstr jur) =
+	match jur
+	Marshall Islands -> true
+	Federated States of Micronesia -> true
+	Palau -> true
+	else false
+
+
+##  Other jurisdictions that have to be handled:
+	* Guantanamo Bay Naval Base
+	* Native American reservations...
 ##	
 
 		
