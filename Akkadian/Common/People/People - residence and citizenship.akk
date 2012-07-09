@@ -28,15 +28,23 @@ TboolIn IsUSCitizen(Person p) =
 	Imm.IsCitizenOf(p, "United States") |
 	USC.Tit8.Gen.IsUSCitizenInferred(p)	
 
+# Subject to U.S. jurisdiction
+TboolIn IsSubjectToUSJurisdiction(Person p)
 
-# BIRTH COUNTRY 
+
+# BIRTH LOCATION
 
 # Born in U.S.
 Tbool BornInTheUSA(Person p) =
 	BirthCountry(p) == "United States"
 
 # Birth country
+# TODO: Clarify how this compares to BirthState (below)
 TstrIn BirthCountry(Person p)
+
+# U.S. state in which person was born
+# Includes places like Puerto Rico, Panama Canal Zone, etc.
+TstrIn BirthState(Person p)
 
 
 # LOCATION

@@ -1,11 +1,22 @@
 # Namespace:    USC.Tit8.Gen
 # Summary:      Some general immigration related rules
-# Source:       Nolo Press, "U.S. Immigration Made Easy" (15th ed.)
-# Remarks:      Experimental; rules will later have to be checked and moved in line with U.S. Code.
-# Updated:      2012-05-06
+# Updated:      2012-07-09
 # Author:       Michael Poulshock
 
 
+# CITIZENSHIP, DEFINED
+
+# U.S. citizenship (inferred)
+# TODO: Collect conclusions from across statutes...
+Tbool IsUSCitizenInferred(Person p) =
+	Stub()
+	##
+	BirthCountry(p) == "United States" |
+	CitizenByBirthToCitizen(p) |
+	DerivationOfCitizenship(p)
+	##
+	
+	
 # GENERAL CONCEPTS
 
 # Type of visa the person has/is applying for
@@ -13,14 +24,8 @@ TstrIn VisaType(Person p)
 
 
 
-# CITIZENSHIP, DEFINED
 
-# U.S. citizenship (inferred)
-Tbool IsUSCitizenInferred(Person p) =
-	BirthCountry(p) == "United States" |
-	CitizenByBirthToCitizen(p) |
-	DerivationOfCitizenship(p)
-
+	##
 # Citizenship due to birth to citizen parents
 Tbool CitizenByBirthToCitizen(Person p) =
 	set:
@@ -93,5 +98,6 @@ Tbool MeetsOneParentPost1986Test(Person parent, Person child) =
 	
 	Tdate dob =
 		DoB(child)
+##
 		
 		

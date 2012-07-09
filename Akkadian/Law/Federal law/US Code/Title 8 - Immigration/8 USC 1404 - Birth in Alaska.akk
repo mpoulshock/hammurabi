@@ -1,0 +1,47 @@
+# Citation:     8 U.S.C. 1404 (2012)
+# Namespace:    USC.Tit8.Sec1404
+# Summary:      Persons born in Alaska on or after 1867-03-30
+# Updated:      2012-07-09
+# Author:       Michael Poulshock
+
+##
+A person born in Alaska on or after March 30, 1867, except a noncitizen Indian, is a citizen of the United States at birth. 
+
+A noncitizen Indian born in Alaska on or after March 30, 1867, and prior to June 2, 1924, is declared to be a citizen of the United States as of June 2, 1924. 
+
+An Indian born in Alaska on or after June 2, 1924, is a citizen of the United States at birth.
+##
+
+# Citizenship of people born in Alaska
+Tbool IsUSCitizenPerAlaska(Person p) = 
+	...
+		TestA(p) |
+		TestB(p) |
+		TestC(p)
+	& 
+	TheTime.IsAtOrAfter(DoB(p))    # Makes conclusion true from DoB onward
+
+# First test
+Tbool TestA(Person p) =
+	BirthState(p) == "Alaska" &
+	DoB(p) >= 1867-03-30 &
+	! IsIndian(p)    # Not "noncitizen Indian"
+
+# Second test	
+Tbool TestB(Person p) =
+	IsIndian(p) &    # "noncitizen Indian"
+	BirthState(p) == "Alaska" &
+	DoB(p) >= 1867-03-30 &
+	DoB(p) < 1924-06-02 &
+	TheTime.IsAtOrAfter(1924-06-02)    # Makes conclusion true from DoB onward
+
+# Third test
+Tbool TestC(Person p) =
+	IsIndian(p) &
+	BirthState(p) == "Alaska" &
+	DoB(p) >= 1924-06-02 
+	
+# Not entirely sure what this is intended to mean...
+# TODO: Move to common rules
+TboolIn IsIndian(Person p)
+

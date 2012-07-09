@@ -176,12 +176,14 @@ TboolIn MentallyUnfitForEmployment(Person p)
 # U.S. government employee
 TboolIn IsUSGovtEmployee(Person p)
 
-# Airline flight crew
-TboolIn IsAirlineFlightCrew(Person p, Corp c) 
-
 # Migrant farmworker
 TboolIn IsMigrantOrSeasonalFarmworker(Person p)
 
+# Airline flight crew
+TboolIn IsAirlineFlightCrew(Person p, Corp c) 
+
+# Is employee of Panama Railroad Company (or its successor in title)
+TboolIn IsPanamaRailroadEmployee(Person p)
 
 
 # UNIT TESTS

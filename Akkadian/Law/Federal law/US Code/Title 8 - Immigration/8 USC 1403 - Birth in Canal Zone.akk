@@ -1,0 +1,37 @@
+# Citation:     8 U.S.C. 1403 (2012)
+# Namespace:    USC.Tit8.Sec1403
+# Summary:      Persons born in Canal Zone or Panama on or after 1904-02-26
+# Updated:      2012-07-09
+# Author:       Michael Poulshock
+
+
+# Citizenship of people born in Puerto Rico
+Tbool IsUSCitizenPerCanalZone(Person p) = 
+	SubsecA(p) |
+	SubsecB(p)
+	
+# Birth in Canal Zone
+Tbool SubsecA(Person p) =
+	BirthState(p) == "Panama Canal Zone" &
+	DoB(p) >= 1904-02-26 &
+	Sec1401.BirthParents(p).Exists(IsUSCitizen(_)) &
+	TheTime.IsAtOrAfter(DoB(p))    # Makes conclusion true from DoB onward
+	
+# Birth in Panama
+Tbool SubsecB(Person p) =
+	BirthCountry(p) == "Panama" &
+	DoB(p) >= 1904-02-26 &
+	parentTest.AsOf(DoB(p)) &
+	TheTime.IsAtOrAfter(DoB(p))    # Makes conclusion true from DoB onward
+	
+	Tbool parentTest =
+		Sec1401.BirthParents(p).Exists(IsUSCitizenOrQualifyingEmployee(_))
+	
+# U.S. citizen and U.S. gov't/canal employee
+Tbool IsUSCitizenOrQualifyingEmployee(Person p) =
+	IsUSCitizen(p) &
+	...
+		Econ.IsUSGovtEmployee(p) |
+		Econ.IsPanamaRailroadEmployee(p)
+	
+	

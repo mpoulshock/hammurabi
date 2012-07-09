@@ -35,7 +35,13 @@
                         <File name="Law\Federal law\US Code\Title 8 - Immigration\Imm - general.akk" />
                         <File name="Law\Federal law\US Code\Title 8 - Immigration\8 USC 1101 - Definitions.akk" />
                         <File name="Law\Federal law\US Code\Title 8 - Immigration\8 USC 1182 - Inadmissible aliens.akk" />
-                        <File name="Law\Federal law\US Code\Title 8 - Immigration\8 USC 1401.akk" />
+                        <File name="Law\Federal law\US Code\Title 8 - Immigration\8 USC 1401 - Citizenship at birth.akk" />
+                        <File name="Law\Federal law\US Code\Title 8 - Immigration\8 USC 1401a - Birth abroad to servicemember.akk" />
+                        <File name="Law\Federal law\US Code\Title 8 - Immigration\8 USC 1402 - Birth in Puerto Rico.akk" />
+                        <File name="Law\Federal law\US Code\Title 8 - Immigration\8 USC 1403 - Birth in Canal Zone.akk" />
+                        <File name="Law\Federal law\US Code\Title 8 - Immigration\8 USC 1404 - Birth in Alaska.akk" />
+                        <File name="Law\Federal law\US Code\Title 8 - Immigration\8 USC 1405 - Birth in Hawaii.akk" />
+                        <File name="Law\Federal law\US Code\Title 8 - Immigration\8 USC 1409 - Born out of wedlock.akk" />
                     </Folder>
                     <Folder name="Title 26 - Tax">
                         <File name="Law\Federal law\US Code\Title 26 - Tax\26 USC 2 - Filing status.akk" />

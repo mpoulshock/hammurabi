@@ -1,0 +1,32 @@
+# Citation:     8 U.S.C. 1402 (2012)
+# Namespace:    USC.Tit8.Sec1402
+# Summary:      Persons born in Puerto Rico on or after 1899-04-11
+# Updated:      2012-07-09
+# Author:       Michael Poulshock
+
+
+# Citizenship of people born in Puerto Rico
+Tbool IsUSCitizenPerPuertoRico(Person p) = 
+	IsUSCitizenPerPuertoRico1941(p) |
+	IsUSCitizenAtBirthPerPuertoRico(p)
+	
+# Citizenship (1941) of people born in Puerto Rico
+Tbool IsUSCitizenPerPuertoRico1941(Person p) = 
+	BirthState(p) == "Puerto Rico" &
+	DoB(p) >= 1899-04-11 &
+	DoB(p) > 1941-01-13 &
+	IsSubjectToUSJurisdiction(p) &
+	...
+		IsResidentOf(p, "Puerto Rico").AsOf(1941-01-13) |  # Resides in PR as of 1941-01-13 or
+		Stub()  # Resides in other sovereign U.S. territory
+	&
+	TheTime.IsAtOrAfter(1941-01-13)    # Makes conclusion true from DoB onward
+
+# Citizenship (at birth) of people born in Puerto Rico
+Tbool IsUSCitizenAtBirthPerPuertoRico(Person p) = 
+	BirthState(p) == "Puerto Rico" &
+	DoB(p) >= 1941-01-13 &
+	IsSubjectToUSJurisdiction(p) &
+	TheTime.IsAtOrAfter(DoB(p))    # Makes conclusion true from DoB onward
+	
+	

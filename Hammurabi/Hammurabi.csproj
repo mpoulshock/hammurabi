@@ -131,7 +131,13 @@
     <Compile Include="Core\Core functions\Tbool - continuously true.cs" />
     <Compile Include="Core\Core functions\Tbool - elapsed time - total.cs" />
     <Compile Include="Core\Core functions\Tbool - elapsed time - running.cs" />
-    <Compile Include="Generated source\8 USC 1401.cs" />
+    <Compile Include="Generated source\8 USC 1401 - Citizenship at birth.cs" />
+    <Compile Include="Generated source\8 USC 1401a - Birth abroad to servicemember.cs" />
+    <Compile Include="Generated source\8 USC 1402 - Birth in Puerto Rico.cs" />
+    <Compile Include="Generated source\8 USC 1405 - Birth in Hawaii.cs" />
+    <Compile Include="Generated source\8 USC 1409 - Born out of wedlock.cs" />
+    <Compile Include="Generated source\8 USC 1403 - Birth in Canal Zone.cs" />
+    <Compile Include="Generated source\8 USC 1404 - Birth in Alaska.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
