@@ -144,8 +144,15 @@ namespace Hammurabi
                 string result = "";
                 foreach(KeyValuePair<DateTime,Hval> de in this.TimeLine)
                 {
-                    // Show the value as an element on the timeline
-                    result += de.Key + " " + de.Value.ToString + "\n"; 
+                    if (Convert.ToDateTime(de.Key) == Time.DawnOf)
+                    {
+                        result += "Time.DawnOf " + de.Value.ToString + "\n";
+                    }
+                    else
+                    {
+                        // Show the value as an element on the timeline
+                        result += de.Key + " " + de.Value.ToString + "\n"; 
+                    }
                 }
                 return result;
             }

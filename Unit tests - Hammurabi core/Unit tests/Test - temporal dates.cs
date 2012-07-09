@@ -34,7 +34,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tdate td = new Tdate();
             td.AddState(Time.DawnOf, Date(2011,01,01));
             td.AddState(Time.DawnOf.AddYears(2), Date(2011,01,01));
-            Assert.AreEqual("1/1/0001 12:00:00 AM 1/1/2011 12:00:00 AM ", td.Lean.TestOutput);        
+            Assert.AreEqual("Time.DawnOf 1/1/2011 12:00:00 AM ", td.Lean.TestOutput);        
         }
         
         // .AsOf
@@ -45,7 +45,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tdate td = new Tdate();
             td.AddState(Time.DawnOf, Date(2011,01,01));
             td.AddState(Time.DawnOf.AddYears(2), Date(2012,01,01));
-            Assert.AreEqual("1/1/0001 12:00:00 AM 1/1/2012 12:00:00 AM ", td.AsOf(Time.DawnOf.AddYears(3)).TestOutput);        
+            Assert.AreEqual("Time.DawnOf 1/1/2012 12:00:00 AM ", td.AsOf(Time.DawnOf.AddYears(3)).TestOutput);        
         }
         
         [Test]
@@ -54,7 +54,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tdate td = new Tdate();
             td.AddState(Time.DawnOf, Date(2011,01,01));
             td.AddState(Time.DawnOf.AddYears(2), Date(2012,01,01));
-            Assert.AreEqual("1/1/0001 12:00:00 AM 1/1/2011 12:00:00 AM ", td.AsOf(Time.DawnOf.AddYears(1)).TestOutput);        
+            Assert.AreEqual("Time.DawnOf 1/1/2011 12:00:00 AM ", td.AsOf(Time.DawnOf.AddYears(1)).TestOutput);        
         }
                 
         // Equals
@@ -63,11 +63,13 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void Tdate_Equals_1 ()
         {
             Tdate td1 = new Tdate(2010,5,13);
+
             Tdate td2 = new Tdate();
             td2.AddState(Time.DawnOf, Date(2011,01,01));
-            td2.AddState(Time.DawnOf.AddYears(2), Date(2010,5,13));
+            td2.AddState(Date(2000,1,1), Date(2010,5,13));
+
             Tbool result = td1 == td2;
-            Assert.AreEqual("1/1/0001 12:00:00 AM False 1/1/0003 12:00:00 AM True ", result.TestOutput);        
+            Assert.AreEqual("Time.DawnOf False 1/1/2000 12:00:00 AM True ", result.TestOutput);        
         }
         
         [Test]
@@ -76,9 +78,9 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tdate td1 = new Tdate(2010,5,13);
             Tdate td2 = new Tdate();
             td2.AddState(Time.DawnOf, Date(2011,01,01));
-            td2.AddState(Time.DawnOf.AddYears(2), Date(2010,5,13));
+            td2.AddState(Date(2000,1,1), Date(2010,5,13));
             Tbool result = td1 != td2;
-            Assert.AreEqual("1/1/0001 12:00:00 AM True 1/1/0003 12:00:00 AM False ", result.TestOutput);        
+            Assert.AreEqual("Time.DawnOf True 1/1/2000 12:00:00 AM False ", result.TestOutput);        
         }
         
         // IsBefore / IsAfter
@@ -89,9 +91,9 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tdate td1 = new Tdate(2010,1,1);
             Tdate td2 = new Tdate();
             td2.AddState(Time.DawnOf, Date(2009,1,1));
-            td2.AddState(Time.DawnOf.AddYears(2), Date(2011,1,1));
+            td2.AddState(Date(2000,1,1), Date(2011,1,1));
             Tbool result = td1 > td2;
-            Assert.AreEqual("1/1/0001 12:00:00 AM True 1/1/0003 12:00:00 AM False ", result.TestOutput);        
+            Assert.AreEqual("Time.DawnOf True 1/1/2000 12:00:00 AM False ", result.TestOutput);        
         }
         
         [Test]
@@ -100,9 +102,9 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tdate td1 = new Tdate(2010,1,1);
             Tdate td2 = new Tdate();
             td2.AddState(Time.DawnOf, Date(2009,1,1));
-            td2.AddState(Time.DawnOf.AddYears(2), Date(2011,1,1));
+            td2.AddState(Date(2000,1,1), Date(2011,1,1));
             Tbool result = td1 < td2;
-            Assert.AreEqual("1/1/0001 12:00:00 AM False 1/1/0003 12:00:00 AM True ", result.TestOutput);        
+            Assert.AreEqual("Time.DawnOf False 1/1/2000 12:00:00 AM True ", result.TestOutput);        
         }
         
         [Test]
@@ -111,9 +113,9 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tdate td1 = new Tdate(2008,1,1);
             Tdate td2 = new Tdate();
             td2.AddState(Time.DawnOf, Date(2009,1,1));
-            td2.AddState(Time.DawnOf.AddYears(2), Date(2008,1,1));
+            td2.AddState(Date(2000,1,1), Date(2008,1,1));
             Tbool result = td1 >= td2;
-            Assert.AreEqual("1/1/0001 12:00:00 AM False 1/1/0003 12:00:00 AM True ", result.TestOutput);        
+            Assert.AreEqual("Time.DawnOf False 1/1/2000 12:00:00 AM True ", result.TestOutput);        
         }
         
         [Test]
@@ -122,10 +124,10 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tdate td1 = new Tdate(2000,1,1);
             Tdate td2 = new Tdate();
             td2.AddState(Time.DawnOf, Date(1999,1,1));
-            td2.AddState(Time.DawnOf.AddYears(2), Date(2000,1,1));
-            td2.AddState(Time.DawnOf.AddYears(5), Date(2008,1,1));
+            td2.AddState(Date(2000,1,1), Date(2000,1,1));
+            td2.AddState(Date(2001,1,1), Date(2008,1,1));
             Tbool result = td2 <= td1;
-            Assert.AreEqual("1/1/0001 12:00:00 AM True 1/1/0006 12:00:00 AM False ", result.TestOutput);        
+            Assert.AreEqual("Time.DawnOf True 1/1/2001 12:00:00 AM False ", result.TestOutput);        
         }
         
         // .AddDays
@@ -135,7 +137,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         {
             Tdate td = new Tdate(2000,1,1);
             Tdate result = td.AddDays(3);
-            Assert.AreEqual("1/1/0001 12:00:00 AM 1/4/2000 12:00:00 AM ", result.TestOutput);        
+            Assert.AreEqual("Time.DawnOf 1/4/2000 12:00:00 AM ", result.TestOutput);        
         }
         
         [Test]
@@ -143,7 +145,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         {
             Tdate td = new Tdate(2000,1,1);
             Tdate result = td.AddDays(-3);
-            Assert.AreEqual("1/1/0001 12:00:00 AM 12/29/1999 12:00:00 AM ", result.TestOutput);        
+            Assert.AreEqual("Time.DawnOf 12/29/1999 12:00:00 AM ", result.TestOutput);        
         }
         
         // .AddMonths
@@ -153,7 +155,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         {
             Tdate td = new Tdate(2000,1,1);
             Tdate result = td.AddMonths(3);
-            Assert.AreEqual("1/1/0001 12:00:00 AM 4/1/2000 12:00:00 AM ", result.TestOutput);        
+            Assert.AreEqual("Time.DawnOf 4/1/2000 12:00:00 AM ", result.TestOutput);        
         }
         
         [Test]
@@ -161,7 +163,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         {
             Tdate td = new Tdate(2000,1,1);
             Tdate result = td.AddMonths(-3);
-            Assert.AreEqual("1/1/0001 12:00:00 AM 10/1/1999 12:00:00 AM ", result.TestOutput);        
+            Assert.AreEqual("Time.DawnOf 10/1/1999 12:00:00 AM ", result.TestOutput);        
         }
         
         // .AddYears
@@ -171,7 +173,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         {
             Tdate td = new Tdate(2000,1,1);
             Tdate result = td.AddYears(3);
-            Assert.AreEqual("1/1/0001 12:00:00 AM 1/1/2003 12:00:00 AM ", result.TestOutput);        
+            Assert.AreEqual("Time.DawnOf 1/1/2003 12:00:00 AM ", result.TestOutput);        
         }
         
         [Test]
@@ -179,7 +181,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         {
             Tdate td = new Tdate(2000,1,1);
             Tdate result = td.AddYears(-3);
-            Assert.AreEqual("1/1/0001 12:00:00 AM 1/1/1997 12:00:00 AM ", result.TestOutput);        
+            Assert.AreEqual("Time.DawnOf 1/1/1997 12:00:00 AM ", result.TestOutput);        
         }
         
         // DayDiff
@@ -190,7 +192,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tdate td1 = new Tdate(2000,1,1);
             Tdate td2 = new Tdate(2010,1,1);
             Tnum result = Tdate.DayDiff(td1,td2);
-            Assert.AreEqual("1/1/0001 12:00:00 AM 3653 ", result.TestOutput);        
+            Assert.AreEqual("Time.DawnOf 3653 ", result.TestOutput);        
         }
 
         [Test]
@@ -199,7 +201,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tdate td1 = new Tdate(2010,1,1);
             Tdate td2 = new Tdate(Hstate.Uncertain);
             Tnum result = Tdate.DayDiff(td1,td2);
-            Assert.AreEqual("1/1/0001 12:00:00 AM Uncertain ", result.TestOutput); 
+            Assert.AreEqual("Time.DawnOf Uncertain ", result.TestOutput); 
         }
         
         // WeekDiff
@@ -210,7 +212,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tdate td1 = new Tdate(2000,1,1);
             Tdate td2 = new Tdate(2000,1,8);
             Tnum result = Tdate.WeekDiff(td1,td2);
-            Assert.AreEqual("1/1/0001 12:00:00 AM 1 ", result.TestOutput);        
+            Assert.AreEqual("Time.DawnOf 1 ", result.TestOutput);        
         }
         
         [Test]
@@ -219,7 +221,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tdate td1 = new Tdate(2000,1,1);
             Tdate td2 = new Tdate(2000,1,7);
             Tnum result = Tdate.WeekDiff(td1,td2);
-            Assert.AreEqual("1/1/0001 12:00:00 AM 0 ", result.TestOutput);        
+            Assert.AreEqual("Time.DawnOf 0 ", result.TestOutput);        
         }
         
         [Test]
@@ -228,7 +230,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tdate td1 = new Tdate(2000,1,1);
             Tdate td2 = new Tdate(2000,1,15);
             Tnum result = Tdate.WeekDiff(td1,td2);
-            Assert.AreEqual("1/1/0001 12:00:00 AM 2 ", result.TestOutput);        
+            Assert.AreEqual("Time.DawnOf 2 ", result.TestOutput);        
         }
         
         // YearDiff
@@ -239,7 +241,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tdate td1 = new Tdate(2000,1,1);
             Tdate td2 = new Tdate(2010,1,1);
             Tnum result = Tdate.YearDiff(td1,td2);
-            Assert.AreEqual("1/1/0001 12:00:00 AM 10 ", result.TestOutput);        
+            Assert.AreEqual("Time.DawnOf 10 ", result.TestOutput);        
         }
         
         [Test]
@@ -248,7 +250,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tdate td1 = new Tdate(2000,1,2);
             Tdate td2 = new Tdate(2010,1,1);
             Tnum result = Tdate.YearDiff(td1,td2);
-            Assert.AreEqual("1/1/0001 12:00:00 AM 9 ", result.TestOutput);        
+            Assert.AreEqual("Time.DawnOf 9 ", result.TestOutput);        
         }
         
         [Test]
@@ -257,7 +259,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tdate td1 = new Tdate(2000,1,1);
             Tdate td2 = new Tdate(2000,1,2);
             Tnum result = Tdate.YearDiff(td1,td2);
-            Assert.AreEqual("1/1/0001 12:00:00 AM 0 ", result.TestOutput);        
+            Assert.AreEqual("Time.DawnOf 0 ", result.TestOutput);        
         }
         
         [Test]
@@ -266,7 +268,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tdate td1 = new Tdate(2000,2,29);
             Tdate td2 = new Tdate(2004,2,29);
             Tnum result = Tdate.YearDiff(td1,td2);
-            Assert.AreEqual("1/1/0001 12:00:00 AM 4 ", result.TestOutput);        
+            Assert.AreEqual("Time.DawnOf 4 ", result.TestOutput);        
         }
         
         [Test]
@@ -275,7 +277,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tdate td1 = new Tdate(2000,2,29);
             Tdate td2 = new Tdate(2004,2,28);
             Tnum result = Tdate.YearDiff(td1,td2);
-            Assert.AreEqual("1/1/0001 12:00:00 AM 3 ", result.TestOutput);        
+            Assert.AreEqual("Time.DawnOf 3 ", result.TestOutput);        
         } 
         
         // Tvar constructors

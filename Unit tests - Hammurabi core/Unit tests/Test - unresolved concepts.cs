@@ -46,7 +46,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             
             Tset result = Facts.AllKnownPeople().Filter( _ => IsParentOf(P1,_));
             
-            Assert.AreEqual("1/1/0001 12:00:00 AM P3, P4 ", 
+            Assert.AreEqual("Time.DawnOf P3, P4 ", 
                             result.TestOutput);
         }
         
@@ -66,7 +66,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Corp c2 = new Corp("c2");
             Facts.Assert(p, "EmploymentRelationship", c2, "Employee");
             Tbool result = Econ.IsEmployedBy(p,c);  // returns Unknown b/c this relationship has not been asserted
-            Assert.AreEqual("1/1/0001 12:00:00 AM False ", result.TestOutput);        
+            Assert.AreEqual("Time.DawnOf False ", result.TestOutput);        
         }
         
         [Test]
@@ -78,7 +78,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Corp c2 = new Corp("c2");
             Facts.Assert(p, "EmploymentRelationship", c2, "Employee");
             Tbool result = SomeoneWorksAt(c);  // returns Unknown b/c it's unknown whether IsEmployedBy(p,c)
-            Assert.AreEqual("1/1/0001 12:00:00 AM False ", result.TestOutput);        
+            Assert.AreEqual("Time.DawnOf False ", result.TestOutput);        
         }
         
         private static Tbool SomeoneWorksAt(Corp c)
@@ -94,7 +94,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tdate td1 = new Tdate(2010,1,1);
             Tdate td2 = new Tdate(2000,1,1);
             Tnum result = Tdate.DayDiff(td1,td2);
-            Assert.AreEqual("1/1/0001 12:00:00 AM 3653 ", result.TestOutput);        
+            Assert.AreEqual("Time.DawnOf 3653 ", result.TestOutput);        
         }
         
         // When making a running count of the true subintervals with in (say) a year, 
@@ -110,7 +110,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             t.AddState(Date(2011,1,1), true);
             t.AddState(Date(2011,2,1), false);
             Tnum actual = t.RunningCountPer(TheYear);
-            string expected = "1/1/0001 12:00:00 AM 0 12/1/2010 12:00:00 AM 1 1/1/2011 12:00:00 AM 0 2/1/2011 12:00:00 AM 1 3/1/2011 12:00:00 AM 2 1/1/2012 12:00:00 AM 0 ";
+            string expected = "Time.DawnOf 0 12/1/2010 12:00:00 AM 1 1/1/2011 12:00:00 AM 0 2/1/2011 12:00:00 AM 1 3/1/2011 12:00:00 AM 2 1/1/2012 12:00:00 AM 0 ";
             Assert.AreEqual(expected, actual.TestOutput);      
         }
     }

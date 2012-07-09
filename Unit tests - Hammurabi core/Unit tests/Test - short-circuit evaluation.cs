@@ -118,7 +118,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void And_TT_Result ()
         {
             Tbool t = MethodT() && MethodT();
-            Assert.AreEqual("1/1/0001 12:00:00 AM True ", t.TestOutput);      
+            Assert.AreEqual("Time.DawnOf True ", t.TestOutput);      
         }
         
         [Test]
@@ -133,7 +133,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void And_TF_Result ()
         {
             Tbool t = MethodT() && MethodF();
-            Assert.AreEqual("1/1/0001 12:00:00 AM False ", t.TestOutput);      
+            Assert.AreEqual("Time.DawnOf False ", t.TestOutput);      
         }
         
         [Test]
@@ -148,7 +148,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void And_TU_Result ()
         {
             Tbool t = MethodT() && MethodU();
-            Assert.AreEqual("1/1/0001 12:00:00 AM Unstated ", t.TestOutput);      
+            Assert.AreEqual("Time.DawnOf Unstated ", t.TestOutput);      
         }
         
         [Test]
@@ -163,7 +163,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void And_FT_Result ()
         {
             Tbool t = MethodF() && MethodT();
-            Assert.AreEqual("1/1/0001 12:00:00 AM False ", t.TestOutput);      
+            Assert.AreEqual("Time.DawnOf False ", t.TestOutput);      
         }
         
         [Test]
@@ -178,7 +178,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void And_FF_Result ()
         {
             Tbool t = MethodF() && MethodF();
-            Assert.AreEqual("1/1/0001 12:00:00 AM False ", t.TestOutput);      
+            Assert.AreEqual("Time.DawnOf False ", t.TestOutput);      
         }
         
         [Test]
@@ -193,7 +193,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void And_FU_Result ()
         {
             Tbool t = MethodF() && MethodU();
-            Assert.AreEqual("1/1/0001 12:00:00 AM False ", t.TestOutput);      
+            Assert.AreEqual("Time.DawnOf False ", t.TestOutput);      
         }
         
         [Test]
@@ -208,7 +208,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void And_UT_Result ()
         {
             Tbool t = MethodU() && MethodT();
-            Assert.AreEqual("1/1/0001 12:00:00 AM Unstated ", t.TestOutput);      
+            Assert.AreEqual("Time.DawnOf Unstated ", t.TestOutput);      
         }
         
         [Test]
@@ -223,7 +223,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void And_UF_Result ()
         {
             Tbool t = MethodU() && MethodF();
-            Assert.AreEqual("1/1/0001 12:00:00 AM False ", t.TestOutput);      
+            Assert.AreEqual("Time.DawnOf False ", t.TestOutput);      
         }
         
         [Test]
@@ -238,7 +238,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void And_UU_Result ()
         {
             Tbool t = MethodU() && MethodU();
-            Assert.AreEqual("1/1/0001 12:00:00 AM Unstated ", t.TestOutput);      
+            Assert.AreEqual("Time.DawnOf Unstated ", t.TestOutput);      
         }
         
         [Test]
@@ -261,7 +261,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void And_TFT_Result ()
         {
             Tbool t = MethodT() && MethodF() && MethodT();
-            Assert.AreEqual("1/1/0001 12:00:00 AM False ", t.TestOutput);      
+            Assert.AreEqual("Time.DawnOf False ", t.TestOutput);      
         }
         
         [Test]
@@ -276,7 +276,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void And_FTT_Result ()
         {
             Tbool t = MethodF() && MethodT() && MethodT();
-            Assert.AreEqual("1/1/0001 12:00:00 AM False ", t.TestOutput);      
+            Assert.AreEqual("Time.DawnOf False ", t.TestOutput);      
         }
         
         // ||
@@ -285,7 +285,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void Or_TT_Result ()
         {
             Tbool t = MethodT() || MethodT();
-            Assert.AreEqual("1/1/0001 12:00:00 AM True ", t.TestOutput);      
+            Assert.AreEqual("Time.DawnOf True ", t.TestOutput);      
         }
         
         [Test]
@@ -300,7 +300,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void Or_TF_Result ()
         {
             Tbool t = MethodT() || MethodF();
-            Assert.AreEqual("1/1/0001 12:00:00 AM True ", t.TestOutput);      
+            Assert.AreEqual("Time.DawnOf True ", t.TestOutput);      
         }
         
         [Test]
@@ -315,7 +315,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void Or_TU_Result ()
         {
             Tbool t = MethodT() || MethodU();
-            Assert.AreEqual("1/1/0001 12:00:00 AM True ", t.TestOutput);      
+            Assert.AreEqual("Time.DawnOf True ", t.TestOutput);      
         }
         
         [Test]
@@ -330,7 +330,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void Or_FT_Result ()
         {
             Tbool t = MethodF() || MethodT();
-            Assert.AreEqual("1/1/0001 12:00:00 AM True ", t.TestOutput);      
+            Assert.AreEqual("Time.DawnOf True ", t.TestOutput);      
         }
         
         [Test]
@@ -345,7 +345,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void Or_FF_Result ()
         {
             Tbool t = MethodF() || MethodF();
-            Assert.AreEqual("1/1/0001 12:00:00 AM False ", t.TestOutput);      
+            Assert.AreEqual("Time.DawnOf False ", t.TestOutput);      
         }
         
         [Test]
@@ -360,7 +360,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void Or_FU_Result ()
         {
             Tbool t = MethodF() || MethodU();
-            Assert.AreEqual("1/1/0001 12:00:00 AM Unstated ", t.TestOutput);      
+            Assert.AreEqual("Time.DawnOf Unstated ", t.TestOutput);      
         }
         
         [Test]
@@ -375,7 +375,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void Or_UT_Result ()
         {
             Tbool t = MethodU() || MethodT();
-            Assert.AreEqual("1/1/0001 12:00:00 AM True ", t.TestOutput);      
+            Assert.AreEqual("Time.DawnOf True ", t.TestOutput);      
         }
         
         [Test]
@@ -390,7 +390,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void Or_UF_Result ()
         {
             Tbool t = MethodU() || MethodF();
-            Assert.AreEqual("1/1/0001 12:00:00 AM Unstated ", t.TestOutput);      
+            Assert.AreEqual("Time.DawnOf Unstated ", t.TestOutput);      
         }
         
         [Test]
@@ -405,7 +405,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void Or_UU_Result ()
         {
             Tbool t = MethodU() || MethodU();
-            Assert.AreEqual("1/1/0001 12:00:00 AM Unstated ", t.TestOutput);      
+            Assert.AreEqual("Time.DawnOf Unstated ", t.TestOutput);      
         }
         
         [Test]

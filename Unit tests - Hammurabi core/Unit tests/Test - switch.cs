@@ -38,7 +38,7 @@ namespace Hammurabi.UnitTests.CoreFcns
                                  ()=> tbt, ()=> new Tnum(42),
                                  ()=> 43);
             
-            Assert.AreEqual("1/1/0001 12:00:00 AM 42 ", result.TestOutput);        
+            Assert.AreEqual("Time.DawnOf 42 ", result.TestOutput);        
         }
 
         [Test]
@@ -48,7 +48,7 @@ namespace Hammurabi.UnitTests.CoreFcns
                                  ()=> tbf, ()=> new Tnum(42),
                                  ()=> 43);
             
-            Assert.AreEqual("1/1/0001 12:00:00 AM 41 ", result.TestOutput);        
+            Assert.AreEqual("Time.DawnOf 41 ", result.TestOutput);        
         }
 
         [Test]
@@ -58,7 +58,7 @@ namespace Hammurabi.UnitTests.CoreFcns
                                  ()=> tbt, ()=> 42,
                                  ()=> new Tnum(43));
             
-            Assert.AreEqual("1/1/0001 12:00:00 AM 42 ", result.TestOutput);        
+            Assert.AreEqual("Time.DawnOf 42 ", result.TestOutput);        
         }
 
         [Test]
@@ -68,7 +68,7 @@ namespace Hammurabi.UnitTests.CoreFcns
                                  ()=> true, ()=> 42,
                                  ()=> new Tnum(43)); 
             
-            Assert.AreEqual("1/1/0001 12:00:00 AM 42 ", result.TestOutput);        
+            Assert.AreEqual("Time.DawnOf 42 ", result.TestOutput);        
         }
 
         [Test]
@@ -78,7 +78,7 @@ namespace Hammurabi.UnitTests.CoreFcns
                                  ()=> tbf, ()=> new Tnum(42),
                                  ()=> 43);
 
-            Assert.AreEqual("1/1/0001 12:00:00 AM 43 ", result.TestOutput);        
+            Assert.AreEqual("Time.DawnOf 43 ", result.TestOutput);        
         }
 
         [Test]
@@ -88,7 +88,7 @@ namespace Hammurabi.UnitTests.CoreFcns
                                  ()=> tbf, ()=> new Tnum(42),
                                  ()=> new Tnum(Hstate.Uncertain));  
 
-            Assert.AreEqual("1/1/0001 12:00:00 AM Uncertain ", result.TestOutput);        
+            Assert.AreEqual("Time.DawnOf Uncertain ", result.TestOutput);        
         }
 
         [Test]
@@ -98,7 +98,7 @@ namespace Hammurabi.UnitTests.CoreFcns
                                  ()=> true, ()=> new Tnum(Hstate.Uncertain),
                                  ()=> 42);   
             
-            Assert.AreEqual("1/1/0001 12:00:00 AM Uncertain ", result.TestOutput);        
+            Assert.AreEqual("Time.DawnOf Uncertain ", result.TestOutput);        
         }
 
         [Test]
@@ -108,7 +108,7 @@ namespace Hammurabi.UnitTests.CoreFcns
                                  ()=> new Tbool(Hstate.Uncertain), ()=> 101,
                                  ()=> 42);   
             
-            Assert.AreEqual("1/1/0001 12:00:00 AM Uncertain ", result.TestOutput);        
+            Assert.AreEqual("Time.DawnOf Uncertain ", result.TestOutput);        
         }
 
         [Test]
@@ -118,31 +118,31 @@ namespace Hammurabi.UnitTests.CoreFcns
                                  ()=> new Tbool(Hstate.Uncertain), ()=> new Tnum(Hstate.Stub),
                                  ()=> 42);   
             
-            Assert.AreEqual("1/1/0001 12:00:00 AM Uncertain ", result.TestOutput);        
+            Assert.AreEqual("Time.DawnOf Uncertain ", result.TestOutput);        
         }
 
         [Test]
         public void TnumSwitch10_lazy ()
         {
             Tnum x = new Tnum(10);
-            x.AddState(Time.DawnOf.AddYears(5), 1);
+            x.AddState(Date(2000,1,1), 1);
             
             Tnum result = Switch<Tnum>(()=> x <= 1, ()=> new Tnum(1),
                                  ()=> 2);   
             
-            Assert.AreEqual("1/1/0001 12:00:00 AM 2 1/1/0006 12:00:00 AM 1 ", result.TestOutput);        
+            Assert.AreEqual("Time.DawnOf 2 1/1/2000 12:00:00 AM 1 ", result.TestOutput);        
         }
 
         [Test]
         public void TnumSwitch11_lazy ()
         {
             Tnum x = new Tnum(10);
-            x.AddState(Time.DawnOf.AddYears(5), 1);
+            x.AddState(Date(2000,1,1), 1);
             
             Tnum result = Switch<Tnum>(()=> x >= 5, ()=> new Tnum(1),
                                  ()=> 2);   
             
-            Assert.AreEqual("1/1/0001 12:00:00 AM 1 1/1/0006 12:00:00 AM 2 ", result.TestOutput);        
+            Assert.AreEqual("Time.DawnOf 1 1/1/2000 12:00:00 AM 2 ", result.TestOutput);        
         }
 
         [Test]
@@ -155,7 +155,7 @@ namespace Hammurabi.UnitTests.CoreFcns
                                  ()=> true, ()=> new Tnum(42),
                                  ()=> new Tnum(43));   
             
-            Assert.AreEqual("1/1/0001 12:00:00 AM 41 1/1/2000 12:00:00 AM 42 ", result.TestOutput);        
+            Assert.AreEqual("Time.DawnOf 41 1/1/2000 12:00:00 AM 42 ", result.TestOutput);        
         }
 
         [Test]
@@ -172,7 +172,7 @@ namespace Hammurabi.UnitTests.CoreFcns
                                  ()=> tb2, ()=> new Tnum(42),
                                  ()=> new Tnum(43));   
             
-            Assert.AreEqual("1/1/0001 12:00:00 AM 41 1/1/2000 12:00:00 AM 43 ", result.TestOutput);        
+            Assert.AreEqual("Time.DawnOf 41 1/1/2000 12:00:00 AM 43 ", result.TestOutput);        
         }
 
         // Switch<Tbool>
@@ -184,7 +184,7 @@ namespace Hammurabi.UnitTests.CoreFcns
                                   ()=> true, ()=> true, 
                                   ()=> new Tbool(false));   
             
-            Assert.AreEqual("1/1/0001 12:00:00 AM True ", result.TestOutput);        
+            Assert.AreEqual("Time.DawnOf True ", result.TestOutput);        
         }
 
         [Test]
@@ -194,7 +194,7 @@ namespace Hammurabi.UnitTests.CoreFcns
                                   ()=> true, ()=> true,
                                   ()=> new Tbool(Hstate.Uncertain));   
             
-            Assert.AreEqual("1/1/0001 12:00:00 AM True ", result.TestOutput);        
+            Assert.AreEqual("Time.DawnOf True ", result.TestOutput);        
         }
 
         [Test]
@@ -203,7 +203,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tbool result = Switch<Tbool>(()=> false, ()=> true,
                                   ()=> new Tbool(true));   
             
-            Assert.AreEqual("1/1/0001 12:00:00 AM True ", result.TestOutput);        
+            Assert.AreEqual("Time.DawnOf True ", result.TestOutput);        
         }
 
         // Switch<Tstr>
@@ -215,7 +215,7 @@ namespace Hammurabi.UnitTests.CoreFcns
                                   ()=> true, ()=> "42",
                                   ()=> new Tstr("43"));   
             
-            Assert.AreEqual("1/1/0001 12:00:00 AM 42 ", result.TestOutput);        
+            Assert.AreEqual("Time.DawnOf 42 ", result.TestOutput);        
         }
 
         // ConditionalAssignment
@@ -230,7 +230,7 @@ namespace Hammurabi.UnitTests.CoreFcns
                                        Date(2002,1,1), true,
                                        Date(2003,1,1), Hstate.Stub);
             Tnum result = Util.ConditionalAssignment<Tnum>(tb,tn);
-            Assert.AreEqual("1/1/0001 12:00:00 AM Null 1/1/2000 12:00:00 AM 4 1/1/2001 12:00:00 AM Null 1/1/2002 12:00:00 AM 4 1/1/2003 12:00:00 AM Null ", result.TestOutput);        
+            Assert.AreEqual("Time.DawnOf Null 1/1/2000 12:00:00 AM 4 1/1/2001 12:00:00 AM Null 1/1/2002 12:00:00 AM 4 1/1/2003 12:00:00 AM Null ", result.TestOutput);        
         }
 
         // MergeTvars
@@ -250,7 +250,7 @@ namespace Hammurabi.UnitTests.CoreFcns
 //                                     Date(2002,1,1), unst,
 //                                     Date(2003,1,1), unst);
 //            Tnum result = MergeTvars<Tnum>(tn1,tn2);
-//            Assert.AreEqual("1/1/0001 12:00:00 AM 0 1/1/2000 12:00:00 AM 1 1/1/2001 12:00:00 AM 2 1/1/2002 12:00:00 AM 3 1/1/2003 12:00:00 AM Unstated ", result.TestOutput);        
+//            Assert.AreEqual("Time.DawnOf 0 1/1/2000 12:00:00 AM 1 1/1/2001 12:00:00 AM 2 1/1/2002 12:00:00 AM 3 1/1/2003 12:00:00 AM Unstated ", result.TestOutput);        
 //        }
 
         [Test]
@@ -271,7 +271,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             tn2.AddState(Date(2003,1,1), unst);
 
             Tnum result = Util.MergeTvars<Tnum>(tn1,tn2);
-            Assert.AreEqual("1/1/0001 12:00:00 AM 0 1/1/2000 12:00:00 AM 1 1/1/2001 12:00:00 AM 2 1/1/2002 12:00:00 AM 3 1/1/2003 12:00:00 AM Null ", result.TestOutput);        
+            Assert.AreEqual("Time.DawnOf 0 1/1/2000 12:00:00 AM 1 1/1/2001 12:00:00 AM 2 1/1/2002 12:00:00 AM 3 1/1/2003 12:00:00 AM Null ", result.TestOutput);        
         }
 
         [Test]
@@ -333,7 +333,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tnum result = Util.MergeTvars<Tnum>(initialResult,
                                          Util.ConditionalAssignment<Tnum>(newConditionIsUnknown, newCondition));
 
-            Assert.AreEqual("1/1/0001 12:00:00 AM Uncertain ", result.TestOutput); 
+            Assert.AreEqual("Time.DawnOf Uncertain ", result.TestOutput); 
         }
 
         [Test]
@@ -354,7 +354,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         {
             Tbool newCondition = new Tbool(Hstate.Uncertain);
             Tbool newConditionIsUnknown = Util.HasUnknownState(newCondition);
-            Assert.AreEqual("1/1/0001 12:00:00 AM True ", newConditionIsUnknown.TestOutput); 
+            Assert.AreEqual("Time.DawnOf True ", newConditionIsUnknown.TestOutput); 
         }
     }
 }

@@ -193,9 +193,17 @@ namespace Hammurabi
                 string result = "";
                 foreach(KeyValuePair<DateTime,Hval> de in this.TimeLine)
                 {
-                    // Show the value as an element on the timeline
-                    result += de.Key + " ";  
+                    // Show the interval start time
+                    if (Convert.ToDateTime(de.Key) == Time.DawnOf)
+                    {
+                        result += "Time.DawnOf ";
+                    }
+                    else
+                    {
+                        result += de.Key + " ";  
+                    }
 
+                    // Show the value
                     if (!de.Value.IsKnown) result += de.Value.ToString;
 
                     else

@@ -32,35 +32,35 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void StringComparison1 ()
         {
             Tbool t = new Tstr("Hello, world!") == new Tstr("Hello, world!");
-            Assert.AreEqual("1/1/0001 12:00:00 AM True ", t.TestOutput);        
+            Assert.AreEqual("Time.DawnOf True ", t.TestOutput);        
         }
 
         [Test]
         public void StringComparison2 ()
         {
             Tbool t = new Tstr("Hello, world!") == new Tstr("Jello, world!");
-            Assert.AreEqual("1/1/0001 12:00:00 AM False ", t.TestOutput);                
+            Assert.AreEqual("Time.DawnOf False ", t.TestOutput);                
         }
         
         [Test]
         public void StringComparison3 ()
         {
             Tbool t = new Tstr("Hello, world!") == "Hello, world!";
-            Assert.AreEqual("1/1/0001 12:00:00 AM True ", t.TestOutput);                
+            Assert.AreEqual("Time.DawnOf True ", t.TestOutput);                
         }
         
         [Test]
         public void StringComparison4 ()
         {
             Tbool t = new Tstr("Hello, world!") == "Hello, world";
-            Assert.AreEqual("1/1/0001 12:00:00 AM False ", t.TestOutput);                
+            Assert.AreEqual("Time.DawnOf False ", t.TestOutput);                
         }
         
         [Test]
         public void StringComparison5 ()
         {
             Tbool t = new Tstr(Hstate.Unstated) == "Hello, world";
-            Assert.AreEqual("1/1/0001 12:00:00 AM Unstated ", t.TestOutput);                
+            Assert.AreEqual("Time.DawnOf Unstated ", t.TestOutput);                
         }
         
         // NOT EQUAL
@@ -69,28 +69,28 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void StringComparison11 ()
         {
             Tbool t = new Tstr("Hello, world!") != new Tstr("Hello, world!");
-            Assert.AreEqual("1/1/0001 12:00:00 AM False ", t.TestOutput);        
+            Assert.AreEqual("Time.DawnOf False ", t.TestOutput);        
         }
 
         [Test]
         public void StringComparison12 ()
         {
             Tbool t = new Tstr("Hello, world!") != new Tstr("Jello, world!");
-            Assert.AreEqual("1/1/0001 12:00:00 AM True ", t.TestOutput);                
+            Assert.AreEqual("Time.DawnOf True ", t.TestOutput);                
         }
         
         [Test]
         public void StringComparison13 ()
         {
             Tbool t = new Tstr("Hello, world!") != "Hello, world!";
-            Assert.AreEqual("1/1/0001 12:00:00 AM False ", t.TestOutput);                
+            Assert.AreEqual("Time.DawnOf False ", t.TestOutput);                
         }
         
         [Test]
         public void StringComparison14 ()
         {
             Tbool t = new Tstr("Hello, world!") != "Hello, world";
-            Assert.AreEqual("1/1/0001 12:00:00 AM True ", t.TestOutput);                
+            Assert.AreEqual("Time.DawnOf True ", t.TestOutput);                
         }
         
     }

@@ -41,126 +41,126 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void LogicAnd1 ()
         {
             Tbool t1 = tbt & tbf;
-            Assert.AreEqual("1/1/0001 12:00:00 AM False ", t1.TestOutput);        
+            Assert.AreEqual("Time.DawnOf False ", t1.TestOutput);        
         }
         
         [Test]
         public void LogicAnd2 ()
         {
             Tbool t2 = tbt & tbt;
-            Assert.AreEqual("1/1/0001 12:00:00 AM True ", t2.TestOutput);        
+            Assert.AreEqual("Time.DawnOf True ", t2.TestOutput);        
         }
         
         [Test]
         public void LogicAnd3 ()
         {
             Tbool t7 = tbf & tbf;
-            Assert.AreEqual("1/1/0001 12:00:00 AM False ", t7.TestOutput);        
+            Assert.AreEqual("Time.DawnOf False ", t7.TestOutput);        
         }
         
         [Test]
         public void LogicAnd4 ()
         {
             Tbool t1 = tbt & tbt & tbf;
-            Assert.AreEqual("1/1/0001 12:00:00 AM False ", t1.TestOutput);            
+            Assert.AreEqual("Time.DawnOf False ", t1.TestOutput);            
         }
         
         [Test]
         public void LogicAnd5 ()
         {
             Tbool r = tbt & tbn;
-            Assert.AreEqual("1/1/0001 12:00:00 AM Uncertain ", r.TestOutput);          
+            Assert.AreEqual("Time.DawnOf Uncertain ", r.TestOutput);          
         }
         
         [Test]
         public void LogicAnd6 ()
         {
             Tbool r = tbf & tbn;
-            Assert.AreEqual("1/1/0001 12:00:00 AM False ", r.TestOutput);          
+            Assert.AreEqual("Time.DawnOf False ", r.TestOutput);          
         }
         
         [Test]
         public void LogicAnd7 ()
         {
             Tbool r = tbn & tbn;
-            Assert.AreEqual("1/1/0001 12:00:00 AM Uncertain ", r.TestOutput);          
+            Assert.AreEqual("Time.DawnOf Uncertain ", r.TestOutput);          
         }
         
         [Test]
         public void LogicAnd8 ()
         {
             Tbool r = tbu & tbn;
-            Assert.AreEqual("1/1/0001 12:00:00 AM Uncertain ", r.TestOutput);          
+            Assert.AreEqual("Time.DawnOf Uncertain ", r.TestOutput);          
         }
         
         [Test]
         public void LogicAnd9 ()
         {
             Tbool t1 = tbt & false;
-            Assert.AreEqual("1/1/0001 12:00:00 AM False ", t1.TestOutput);            
+            Assert.AreEqual("Time.DawnOf False ", t1.TestOutput);            
         }
         
         [Test]
         public void LogicAnd10 ()
         {
             Tbool t1 = false & tbt;
-            Assert.AreEqual("1/1/0001 12:00:00 AM False ", t1.TestOutput);            
+            Assert.AreEqual("Time.DawnOf False ", t1.TestOutput);            
         }
         
         [Test]
         public void Unknown_Logic_And_1 ()
         {
             Tbool t1 = tbt & tbf & tbu;
-            Assert.AreEqual("1/1/0001 12:00:00 AM False ", t1.TestOutput);        
+            Assert.AreEqual("Time.DawnOf False ", t1.TestOutput);        
         }
         
         [Test]
         public void Unknown_Logic_And_2 ()
         {
             Tbool t1 = tbt & tbu & tbf;
-            Assert.AreEqual("1/1/0001 12:00:00 AM False ", t1.TestOutput);        
+            Assert.AreEqual("Time.DawnOf False ", t1.TestOutput);        
         }
         
         [Test]
         public void Unknown_Logic_And_3 ()
         {
             Tbool t1 = tbt & tbu;
-            Assert.AreEqual("1/1/0001 12:00:00 AM Unstated ", t1.TestOutput);        
+            Assert.AreEqual("Time.DawnOf Unstated ", t1.TestOutput);        
         }
         
         [Test]
         public void Unknown_Logic_And_4 ()
         {
             Tbool t1 = tbf & tbu;
-            Assert.AreEqual("1/1/0001 12:00:00 AM False ", t1.TestOutput);        
+            Assert.AreEqual("Time.DawnOf False ", t1.TestOutput);        
         }
 
         [Test]
         public void LogicAndTime1 ()
         {
             Tbool t1 = tbv & tbu;
-            Assert.AreEqual("1/1/0001 12:00:00 AM False 1/1/2000 12:00:00 AM Unstated 1/1/2001 12:00:00 AM Uncertain 1/1/2002 12:00:00 AM Unstated ", t1.TestOutput);            
+            Assert.AreEqual("Time.DawnOf False 1/1/2000 12:00:00 AM Unstated 1/1/2001 12:00:00 AM Uncertain 1/1/2002 12:00:00 AM Unstated ", t1.TestOutput);            
         }
         
         [Test]
         public void LogicAndTime2 ()
         {
             Tbool t1 = tbv & tbt;
-            Assert.AreEqual("1/1/0001 12:00:00 AM False 1/1/2000 12:00:00 AM True 1/1/2001 12:00:00 AM Uncertain 1/1/2002 12:00:00 AM Unstated ", t1.TestOutput);            
+            Assert.AreEqual("Time.DawnOf False 1/1/2000 12:00:00 AM True 1/1/2001 12:00:00 AM Uncertain 1/1/2002 12:00:00 AM Unstated ", t1.TestOutput);            
         }
 
         [Test]
         public void LogicAndTime3 ()
         {
             Tbool t1 = tbv & tbf;
-            Assert.AreEqual("1/1/0001 12:00:00 AM False ", t1.TestOutput);            
+            Assert.AreEqual("Time.DawnOf False ", t1.TestOutput);            
         }
         
         [Test]
         public void LogicAndTime4 ()
         {
             Tbool t1 = tbv & tbn;
-            Assert.AreEqual("1/1/0001 12:00:00 AM False 1/1/2000 12:00:00 AM Uncertain ", t1.TestOutput);            
+            Assert.AreEqual("Time.DawnOf False 1/1/2000 12:00:00 AM Uncertain ", t1.TestOutput);            
         }
         
         // OR
@@ -169,91 +169,91 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void LogicOr1 ()
         {
             Tbool t1 = tbt | tbf;
-            Assert.AreEqual("1/1/0001 12:00:00 AM True ", t1.TestOutput);        
+            Assert.AreEqual("Time.DawnOf True ", t1.TestOutput);        
         }
         
         [Test]
         public void LogicOr2 ()
         {
             Tbool t2 = tbt | tbt;
-            Assert.AreEqual("1/1/0001 12:00:00 AM True ", t2.TestOutput);        
+            Assert.AreEqual("Time.DawnOf True ", t2.TestOutput);        
         }
         
         [Test]
         public void LogicOr3 ()
         {
             Tbool t7 = tbf | tbf;
-            Assert.AreEqual("1/1/0001 12:00:00 AM False ", t7.TestOutput);        
+            Assert.AreEqual("Time.DawnOf False ", t7.TestOutput);        
         }
         
         [Test]
         public void LogicOr4 ()
         {
             Tbool t1 = tbf | tbf | tbt;
-            Assert.AreEqual("1/1/0001 12:00:00 AM True ", t1.TestOutput);            
+            Assert.AreEqual("Time.DawnOf True ", t1.TestOutput);            
         }
         
         [Test]
         public void LogicOr5 ()
         {
             Tbool t1 = tbf | (tbf | tbt);
-            Assert.AreEqual("1/1/0001 12:00:00 AM True ", t1.TestOutput);            
+            Assert.AreEqual("Time.DawnOf True ", t1.TestOutput);            
         }
         
         [Test]
         public void Unknown_Logic_Or_1 ()
         {
             Tbool t1 = tbu | tbf | tbt;
-            Assert.AreEqual("1/1/0001 12:00:00 AM True ", t1.TestOutput);        
+            Assert.AreEqual("Time.DawnOf True ", t1.TestOutput);        
         }
         
         [Test]
         public void Unknown_Logic_Or_2 ()
         {
             Tbool t1 = tbt | tbu | tbf;
-            Assert.AreEqual("1/1/0001 12:00:00 AM True ", t1.TestOutput);        
+            Assert.AreEqual("Time.DawnOf True ", t1.TestOutput);        
         }
         
         [Test]
         public void Unknown_Logic_Or_3 ()
         {
             Tbool t1 = tbt | tbu;
-            Assert.AreEqual("1/1/0001 12:00:00 AM True ", t1.TestOutput);        
+            Assert.AreEqual("Time.DawnOf True ", t1.TestOutput);        
         }
         
         [Test]
         public void Unknown_Logic_Or_4 ()
         {
             Tbool t1 = tbf | tbu;
-            Assert.AreEqual("1/1/0001 12:00:00 AM Unstated ", t1.TestOutput);         
+            Assert.AreEqual("Time.DawnOf Unstated ", t1.TestOutput);         
         }
         
         [Test]
         public void LogicOrTime1 ()
         {
             Tbool t1 = tbv | tbu;
-            Assert.AreEqual("1/1/0001 12:00:00 AM Unstated 1/1/2000 12:00:00 AM True 1/1/2001 12:00:00 AM Uncertain 1/1/2002 12:00:00 AM Unstated ", t1.TestOutput);            
+            Assert.AreEqual("Time.DawnOf Unstated 1/1/2000 12:00:00 AM True 1/1/2001 12:00:00 AM Uncertain 1/1/2002 12:00:00 AM Unstated ", t1.TestOutput);            
         }
         
         [Test]
         public void LogicOrTime2 ()
         {
             Tbool t1 = tbv | tbt;
-            Assert.AreEqual("1/1/0001 12:00:00 AM True ", t1.TestOutput);            
+            Assert.AreEqual("Time.DawnOf True ", t1.TestOutput);            
         }
         
         [Test]
         public void LogicOrTime3 ()
         {
             Tbool t1 = tbv | tbf;
-            Assert.AreEqual("1/1/0001 12:00:00 AM False 1/1/2000 12:00:00 AM True 1/1/2001 12:00:00 AM Uncertain 1/1/2002 12:00:00 AM Unstated ", t1.TestOutput);            
+            Assert.AreEqual("Time.DawnOf False 1/1/2000 12:00:00 AM True 1/1/2001 12:00:00 AM Uncertain 1/1/2002 12:00:00 AM Unstated ", t1.TestOutput);            
         }
         
         [Test]
         public void LogicOrTime4 ()
         {
             Tbool t1 = tbv | tbn;
-            Assert.AreEqual("1/1/0001 12:00:00 AM Uncertain 1/1/2000 12:00:00 AM True 1/1/2001 12:00:00 AM Uncertain ", t1.TestOutput);            
+            Assert.AreEqual("Time.DawnOf Uncertain 1/1/2000 12:00:00 AM True 1/1/2001 12:00:00 AM Uncertain ", t1.TestOutput);            
         }
         
         // NOT
@@ -262,41 +262,41 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void LogicNot1 ()
         {
             Tbool t1 = !tbt;
-            Assert.AreEqual("1/1/0001 12:00:00 AM False ", t1.TestOutput);    
+            Assert.AreEqual("Time.DawnOf False ", t1.TestOutput);    
         }
         
         [Test]
         public void LogicNot2 ()
         {
             Tbool t2 = !tbf;
-            Assert.AreEqual("1/1/0001 12:00:00 AM True ", t2.TestOutput);        
+            Assert.AreEqual("Time.DawnOf True ", t2.TestOutput);        
         }
         
         [Test]
         public void LogicNot3 ()
         {
             Tbool t2 = !tbu;
-            Assert.AreEqual("1/1/0001 12:00:00 AM Unstated ", t2.TestOutput);        
+            Assert.AreEqual("Time.DawnOf Unstated ", t2.TestOutput);        
         }
 
         [Test]
         public void LogicNot4 ()
         {
             Tbool t2 = !tbn;
-            Assert.AreEqual("1/1/0001 12:00:00 AM Uncertain ", t2.TestOutput);        
+            Assert.AreEqual("Time.DawnOf Uncertain ", t2.TestOutput);        
         }
         
         [Test]
         public void LogicNot5 () 
         {
             Tbool t1 = !tbv;
-            Assert.AreEqual("1/1/0001 12:00:00 AM True 1/1/2000 12:00:00 AM False 1/1/2001 12:00:00 AM Uncertain 1/1/2002 12:00:00 AM Unstated ", t1.TestOutput);        
+            Assert.AreEqual("Time.DawnOf True 1/1/2000 12:00:00 AM False 1/1/2001 12:00:00 AM Uncertain 1/1/2002 12:00:00 AM Unstated ", t1.TestOutput);        
         }
 
         [Test]
         public void LogicNot5a ()
         {
-            Assert.AreEqual("1/1/0001 12:00:00 AM False 1/1/2000 12:00:00 AM True 1/1/2001 12:00:00 AM Uncertain 1/1/2002 12:00:00 AM Unstated ", tbv.TestOutput);        
+            Assert.AreEqual("Time.DawnOf False 1/1/2000 12:00:00 AM True 1/1/2001 12:00:00 AM Uncertain 1/1/2002 12:00:00 AM Unstated ", tbv.TestOutput);        
         }
 
         // Basic logic - nested and/or
@@ -305,7 +305,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void Unknown_Logic_AndOr_1 ()
         {
             Tbool t1 = tbf | ( tbu & tbt );
-            Assert.AreEqual("1/1/0001 12:00:00 AM Unstated ", t1.TestOutput);        
+            Assert.AreEqual("Time.DawnOf Unstated ", t1.TestOutput);        
         }
         
         // XOR
@@ -314,49 +314,49 @@ namespace Hammurabi.UnitTests.CoreFcns
 //        public void LogicXor1 ()
 //        {
 //            Tbool t1 = tbt ^ tbf;
-//            Assert.AreEqual("1/1/0001 12:00:00 AM True ", t1.TestOutput);        
+//            Assert.AreEqual("Time.DawnOf True ", t1.TestOutput);        
 //        }
 //        
 //        [Test]
 //        public void LogicXor2 ()
 //        {
 //            Tbool t2 = tbt ^ tbt;
-//            Assert.AreEqual("1/1/0001 12:00:00 AM False ", t2.TestOutput);        
+//            Assert.AreEqual("Time.DawnOf False ", t2.TestOutput);        
 //        }
 //        
 //        [Test]
 //        public void LogicXor3 ()
 //        {
 //            Tbool t7 = tbf ^ tbf;
-//            Assert.AreEqual("1/1/0001 12:00:00 AM False ", t7.TestOutput);        
+//            Assert.AreEqual("Time.DawnOf False ", t7.TestOutput);        
 //        }
 //        
 //        [Test]
 //        public void LogicXor4 ()
 //        {
 //            Tbool t1 = tbf ^ tbf ^ tbt;
-//            Assert.AreEqual("1/1/0001 12:00:00 AM True ", t1.TestOutput);            
+//            Assert.AreEqual("Time.DawnOf True ", t1.TestOutput);            
 //        }
 //        
 //        [Test]
 //        public void LogicXor5 ()
 //        {
 //            Tbool t1 = tbt ^ tbf ^ tbf;
-//            Assert.AreEqual("1/1/0001 12:00:00 AM True ", t1.TestOutput);            
+//            Assert.AreEqual("Time.DawnOf True ", t1.TestOutput);            
 //        }
 //        
 //        [Test]
 //        public void LogicXor6 ()
 //        {
 //            Tbool t1 = tbt ^ tbf ^ tbt;
-//            Assert.AreEqual("1/1/0001 12:00:00 AM False ", t1.TestOutput);            
+//            Assert.AreEqual("Time.DawnOf False ", t1.TestOutput);            
 //        }
 //        
 //        [Test]
 //        public void LogicXor7 ()
 //        {
 //            Tbool t1 = tbf ^ tbt ^ tbf;
-//            Assert.AreEqual("1/1/0001 12:00:00 AM True ", t1.TestOutput);            
+//            Assert.AreEqual("Time.DawnOf True ", t1.TestOutput);            
 //        }
 //        
         // BOOL COUNT
@@ -365,35 +365,35 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void LogicBoolCount1 ()
         {
             Tnum result = BoolCount(true, tbt);
-            Assert.AreEqual("1/1/0001 12:00:00 AM 1 ", result.TestOutput);    
+            Assert.AreEqual("Time.DawnOf 1 ", result.TestOutput);    
         }
         
         [Test]
         public void LogicBoolCount2 ()
         {
             Tnum result = BoolCount(false, tbt);
-            Assert.AreEqual("1/1/0001 12:00:00 AM 0 ", result.TestOutput);    
+            Assert.AreEqual("Time.DawnOf 0 ", result.TestOutput);    
         }
         
         [Test]
         public void LogicBoolCount3 ()
         {
             Tnum result = BoolCount(false, tbt, tbt);
-            Assert.AreEqual("1/1/0001 12:00:00 AM 0 ", result.TestOutput);    
+            Assert.AreEqual("Time.DawnOf 0 ", result.TestOutput);    
         }
         
         [Test]
         public void LogicBoolCount4 ()
         {
             Tnum result = BoolCount(true, tbt, tbt);
-            Assert.AreEqual("1/1/0001 12:00:00 AM 2 ", result.TestOutput);    
+            Assert.AreEqual("Time.DawnOf 2 ", result.TestOutput);    
         }
         
         [Test]
         public void LogicBoolCount5 ()
         {
             Tnum result = BoolCount(true, tbt, tbf);
-            Assert.AreEqual("1/1/0001 12:00:00 AM 1 ", result.TestOutput);    
+            Assert.AreEqual("Time.DawnOf 1 ", result.TestOutput);    
         }
         
     }

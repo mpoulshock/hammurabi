@@ -161,7 +161,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         [Test]
         public void TestTvar1 () //
         {
-            Assert.AreEqual("1/1/0001 12:00:00 AM 42 ", tn1.AsOf(Time.DawnOf).TestOutput);        
+            Assert.AreEqual("Time.DawnOf 42 ", tn1.AsOf(Time.DawnOf).TestOutput);        
         }
 
         [Test]
@@ -173,56 +173,56 @@ namespace Hammurabi.UnitTests.CoreFcns
         [Test]
         public void TestTvar4 ()
         {
-            Assert.AreEqual("1/1/0001 12:00:00 AM True ",tb1.TestOutput);        
+            Assert.AreEqual("Time.DawnOf True ",tb1.TestOutput);        
         }
         
         [Test]
         public void TestTvar5 ()
         {
             Tbool eq = tb1 == tb2;
-            Assert.AreEqual("1/1/0001 12:00:00 AM True ",eq.TestOutput);        
+            Assert.AreEqual("Time.DawnOf True ",eq.TestOutput);        
         }
         
         [Test]
         public void TestTvar6 () 
         {
             Tbool eq = tn1 == tn2;
-            Assert.AreEqual("1/1/0001 12:00:00 AM False ",eq.TestOutput);        
+            Assert.AreEqual("Time.DawnOf False ",eq.TestOutput);        
         }
 
         [Test]
         public void TestTvar6a() 
         {
             Tbool eq = tn0 == tn1;
-            Assert.AreEqual("1/1/0001 12:00:00 AM True ",eq.TestOutput);        
+            Assert.AreEqual("Time.DawnOf True ",eq.TestOutput);        
         }
 
         [Test]
         public void TestTvar6b() 
         {
             Tbool eq = tn1 != tn2;
-            Assert.AreEqual("1/1/0001 12:00:00 AM True ",eq.TestOutput);        
+            Assert.AreEqual("Time.DawnOf True ",eq.TestOutput);        
         }
 
         [Test]
         public void TestTvar8 ()
         {
             Tbool t2 = tbu;
-            Assert.AreEqual("1/1/0001 12:00:00 AM Unstated ", t2.TestOutput);        
+            Assert.AreEqual("Time.DawnOf Unstated ", t2.TestOutput);        
         }
 
         [Test]
         public void TestTvar9 ()
         {
             Tbool t2 = tbn;
-            Assert.AreEqual("1/1/0001 12:00:00 AM Uncertain ", t2.TestOutput);        
+            Assert.AreEqual("Time.DawnOf Uncertain ", t2.TestOutput);        
         }
 
         [Test]
         public void TestTvar10 ()
         {
             Tbool t2 = new Tbool(true);
-            Assert.AreEqual("1/1/0001 12:00:00 AM True ", t2.TestOutput);        
+            Assert.AreEqual("Time.DawnOf True ", t2.TestOutput);        
         }
 
         // Hval equality

@@ -40,7 +40,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Facts.Assert(p1, "IsMarriedTo", p2);
             Facts.Assert(p2, "IsMarriedTo", p1);
             Tbool result = Facts.Sym(p1, "IsMarriedTo", p2);
-            Assert.AreEqual("1/1/0001 12:00:00 AM True ", result.TestOutput);       
+            Assert.AreEqual("Time.DawnOf True ", result.TestOutput);       
         }
         
         [Test]
@@ -50,7 +50,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Facts.Assert(p1, "IsMarriedTo", p2);
             Facts.Assert(p2, "IsMarriedTo", p1, false);                         // contradictory assertion
             Tbool result = Facts.Sym(p1, "IsMarriedTo", p2);
-            Assert.AreEqual("1/1/0001 12:00:00 AM True ", result.TestOutput);    // what is desired here? (or forbid contradictions)
+            Assert.AreEqual("Time.DawnOf True ", result.TestOutput);    // what is desired here? (or forbid contradictions)
         }
         
         [Test]
@@ -59,7 +59,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Facts.Clear();
             Facts.Assert(p1, "IsMarriedTo", p2);
             Tbool result = Facts.Sym(p1, "IsMarriedTo", p2);
-            Assert.AreEqual("1/1/0001 12:00:00 AM True ", result.TestOutput);       
+            Assert.AreEqual("Time.DawnOf True ", result.TestOutput);       
         }
         
         [Test]
@@ -69,7 +69,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Facts.Assert(p1, "IsMarriedTo", p2, false);
             Facts.Assert(p2, "IsMarriedTo", p1, false);
             Tbool result = Facts.Sym(p1, "IsMarriedTo", p2);
-            Assert.AreEqual("1/1/0001 12:00:00 AM False ", result.TestOutput);       
+            Assert.AreEqual("Time.DawnOf False ", result.TestOutput);       
         }  
         
         [Test]
@@ -78,7 +78,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Facts.Clear();
             Facts.Assert(p1, "IsMarriedTo", p2, false);
             Tbool result = Facts.Sym(p1, "IsMarriedTo", p2);
-            Assert.AreEqual("1/1/0001 12:00:00 AM False ", result.TestOutput);       
+            Assert.AreEqual("Time.DawnOf False ", result.TestOutput);       
         }
         
         [Test]
@@ -86,7 +86,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         {
             Facts.Clear();
             Tbool result = Facts.Sym(p1, "IsMarriedTo", p2);
-            Assert.AreEqual("1/1/0001 12:00:00 AM Unstated ", result.TestOutput);       
+            Assert.AreEqual("Time.DawnOf Unstated ", result.TestOutput);       
         }
         
         // .Either - correct result?
@@ -97,7 +97,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Facts.Clear();
             Facts.Assert(p1, "FamilyRelationship", p2, "Biological parent");
             Tbool result = Fam.IsBiologicalParentOf(p1, p2);
-            Assert.AreEqual("1/1/0001 12:00:00 AM True ", result.TestOutput);       
+            Assert.AreEqual("Time.DawnOf True ", result.TestOutput);       
         }
         
         [Test]
@@ -106,7 +106,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Facts.Clear();
             Facts.Assert(p2, "FamilyRelationship", p1, "Biological child");
             Tbool result = Fam.IsBiologicalParentOf(p1, p2);
-            Assert.AreEqual("1/1/0001 12:00:00 AM True ", result.TestOutput);       
+            Assert.AreEqual("Time.DawnOf True ", result.TestOutput);       
         }
         
         [Test]
@@ -114,7 +114,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         {
             Facts.Clear();
             Tbool result = Fam.IsBiologicalParentOf(p1, p2);
-            Assert.AreEqual("1/1/0001 12:00:00 AM Unstated ", result.TestOutput);       
+            Assert.AreEqual("Time.DawnOf Unstated ", result.TestOutput);       
         }
         
         // .Either - correct identification of unknown facts?

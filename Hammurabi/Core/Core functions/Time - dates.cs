@@ -332,8 +332,7 @@ namespace Hammurabi
         {
             get
             {
-                // TODO: Change to 1800-01-01 (and fix 500 test cases)
-                return new DateTime(0001,1,1);
+                return new DateTime(1800,1,1);
             }
         }
         

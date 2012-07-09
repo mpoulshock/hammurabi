@@ -42,7 +42,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             s1.AddState(Time.DawnOf, P1);
             s1.AddState(Time.DawnOf.AddYears(1), P1);
             Tset s2 = new Tset(s1);
-            Assert.AreEqual("1/1/0001 12:00:00 AM P1 ", s2.Lean.TestOutput); 
+            Assert.AreEqual("Time.DawnOf P1 ", s2.Lean.TestOutput); 
         }
         
         // .Lean
@@ -53,7 +53,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tset s1 = new Tset();
             s1.AddState(Time.DawnOf, P1);
             s1.AddState(Time.DawnOf.AddYears(1), P1);
-            Assert.AreEqual("1/1/0001 12:00:00 AM P1 ", s1.Lean.TestOutput);
+            Assert.AreEqual("Time.DawnOf P1 ", s1.Lean.TestOutput);
         }
         
         // .AsOf
@@ -64,7 +64,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tset s1 = new Tset();
             s1.AddState(Time.DawnOf, P1);
             s1.AddState(Time.DawnOf.AddYears(1), P2);
-            Assert.AreEqual("1/1/0001 12:00:00 AM P2 ", s1.AsOf(Time.DawnOf.AddYears(2)).TestOutput);        // Lean not working
+            Assert.AreEqual("Time.DawnOf P2 ", s1.AsOf(Time.DawnOf.AddYears(2)).TestOutput);        // Lean not working
         }
         
         [Test]
@@ -73,7 +73,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tset s1 = new Tset();
             s1.AddState(Time.DawnOf, P1, P2);
             s1.AddState(Time.DawnOf.AddYears(3), P2);
-            Assert.AreEqual("1/1/0001 12:00:00 AM P1, P2 ", s1.AsOf(Time.DawnOf.AddYears(2)).TestOutput);        // Lean not working
+            Assert.AreEqual("Time.DawnOf P1, P2 ", s1.AsOf(Time.DawnOf.AddYears(2)).TestOutput);        // Lean not working
         }
         
         
@@ -82,7 +82,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         [Test]
         public void Test1_1 ()
         {
-            Assert.AreEqual("1/1/0001 12:00:00 AM P1, P2 ", new Tset(P1,P2).TestOutput);        
+            Assert.AreEqual("Time.DawnOf P1, P2 ", new Tset(P1,P2).TestOutput);        
         }
         
         [Test]
@@ -90,7 +90,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         {
             Tset s1 = new Tset();
             s1.SetEternally();
-            Assert.AreEqual("1/1/0001 12:00:00 AM ", s1.TestOutput);        
+            Assert.AreEqual("Time.DawnOf ", s1.TestOutput);        
         }
         
         // .Count
@@ -98,7 +98,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         [Test]
         public void Count1 ()
         {
-            Assert.AreEqual("1/1/0001 12:00:00 AM 2 ", new Tset(P1,P2).Count.TestOutput);        
+            Assert.AreEqual("Time.DawnOf 2 ", new Tset(P1,P2).Count.TestOutput);        
         }
         
         [Test]
@@ -107,7 +107,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             // This is how you assert an eternally empty set
             Tset s1 = new Tset();
             s1.SetEternally();
-            Assert.AreEqual("1/1/0001 12:00:00 AM 0 ", s1.Count.TestOutput);        
+            Assert.AreEqual("Time.DawnOf 0 ", s1.Count.TestOutput);        
         }
         
         [Test]
@@ -115,14 +115,14 @@ namespace Hammurabi.UnitTests.CoreFcns
         {
             Tset s1 = new Tset();
             s1.SetEternally();
-            Assert.AreEqual("1/1/0001 12:00:00 AM 0 ", s1.Count.TestOutput);        
+            Assert.AreEqual("Time.DawnOf 0 ", s1.Count.TestOutput);        
         }
 
         [Test]
         public void Count4 ()
         {
             Tset s1 = new Tset(Hstate.Stub);
-            Assert.AreEqual("1/1/0001 12:00:00 AM Stub ", s1.Count.TestOutput);        
+            Assert.AreEqual("Time.DawnOf Stub ", s1.Count.TestOutput);        
         }
 
         // .IsEmpty
@@ -130,7 +130,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         [Test]
         public void IsEmpty1 ()
         {
-            Assert.AreEqual("1/1/0001 12:00:00 AM False ", new Tset(P1,P2).IsEmpty.TestOutput);        
+            Assert.AreEqual("Time.DawnOf False ", new Tset(P1,P2).IsEmpty.TestOutput);        
         }
         
         [Test]
@@ -138,14 +138,14 @@ namespace Hammurabi.UnitTests.CoreFcns
         {
             Tset s1 = new Tset();
             s1.SetEternally();
-            Assert.AreEqual("1/1/0001 12:00:00 AM True ", s1.IsEmpty.TestOutput);        
+            Assert.AreEqual("Time.DawnOf True ", s1.IsEmpty.TestOutput);        
         }
 
         [Test]
         public void IsEmpty3 ()
         {
             Tset s1 = new Tset(Hstate.Uncertain);
-            Assert.AreEqual("1/1/0001 12:00:00 AM Uncertain ", s1.IsEmpty.TestOutput);        
+            Assert.AreEqual("Time.DawnOf Uncertain ", s1.IsEmpty.TestOutput);        
         }
 
         // .IsSubsetOf
@@ -155,7 +155,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         {
             Tset s1 = new Tset(P1,P2);
             Tset s2 = new Tset(P1,P3);    
-            Assert.AreEqual("1/1/0001 12:00:00 AM False ", s2.IsSubsetOf(s1).TestOutput);        
+            Assert.AreEqual("Time.DawnOf False ", s2.IsSubsetOf(s1).TestOutput);        
         }
         
         [Test]
@@ -163,7 +163,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         {
             Tset s1 = new Tset(P1,P2);    
             Tset s2 = new Tset(P1);
-            Assert.AreEqual("1/1/0001 12:00:00 AM True ", s2.IsSubsetOf(s1).TestOutput);        
+            Assert.AreEqual("Time.DawnOf True ", s2.IsSubsetOf(s1).TestOutput);        
         }
         
         [Test]
@@ -171,7 +171,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         {
             Tset s1 = new Tset(P1,P2,P3);
             Tset s2 = new Tset(P1,P2,P3);
-            Assert.AreEqual("1/1/0001 12:00:00 AM True ", s2.IsSubsetOf(s1).TestOutput);        
+            Assert.AreEqual("Time.DawnOf True ", s2.IsSubsetOf(s1).TestOutput);        
         }
         
         [Test]
@@ -179,7 +179,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         {
             Tset s1 = new Tset(P1,P2,P3);    
             Tset s2 = new Tset(P1,P2);
-            Assert.AreEqual("1/1/0001 12:00:00 AM True ", s2.IsSubsetOf(s1).TestOutput);        
+            Assert.AreEqual("Time.DawnOf True ", s2.IsSubsetOf(s1).TestOutput);        
         }
         
         [Test]
@@ -187,7 +187,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         {
             Tset s1 = new Tset(P1,P2);        
             Tset s2 = new Tset(P1,P2,P3);
-            Assert.AreEqual("1/1/0001 12:00:00 AM False ", s2.IsSubsetOf(s1).TestOutput);        
+            Assert.AreEqual("Time.DawnOf False ", s2.IsSubsetOf(s1).TestOutput);        
         }
         
         [Test]
@@ -196,7 +196,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tset s1 = new Tset(P1,P2);        
             Tset s2 = new Tset();
             s2.SetEternally();
-            Assert.AreEqual("1/1/0001 12:00:00 AM True ", s2.IsSubsetOf(s1).TestOutput);        
+            Assert.AreEqual("Time.DawnOf True ", s2.IsSubsetOf(s1).TestOutput);        
         }
         
         [Test]
@@ -205,7 +205,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tset s1 = new Tset();    
             s1.SetEternally();
             Tset s2 = new Tset(P1,P2);
-            Assert.AreEqual("1/1/0001 12:00:00 AM False ", s2.IsSubsetOf(s1).TestOutput);        
+            Assert.AreEqual("Time.DawnOf False ", s2.IsSubsetOf(s1).TestOutput);        
         }
         
         // .Contains
@@ -213,13 +213,13 @@ namespace Hammurabi.UnitTests.CoreFcns
         [Test]
         public void Test20 ()
         {
-            Assert.AreEqual("1/1/0001 12:00:00 AM True ", new Tset(P1,P2).Contains(P1).TestOutput);        
+            Assert.AreEqual("Time.DawnOf True ", new Tset(P1,P2).Contains(P1).TestOutput);        
         }
         
         [Test]
         public void Test21 ()
         {
-            Assert.AreEqual("1/1/0001 12:00:00 AM False ", new Tset(P1,P2).Contains(P3).TestOutput);        
+            Assert.AreEqual("Time.DawnOf False ", new Tset(P1,P2).Contains(P3).TestOutput);        
         }
         
         [Test]
@@ -227,7 +227,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         {
             Tset s1 = new Tset();
             s1.SetEternally();
-            Assert.AreEqual("1/1/0001 12:00:00 AM False ", s1.Contains(P3).TestOutput);        
+            Assert.AreEqual("Time.DawnOf False ", s1.Contains(P3).TestOutput);        
         }
         
         // Union
@@ -238,7 +238,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tset s1 = new Tset(P1,P2);
             Tset s2 = new Tset(P2,P3);
             Tset res = s1 | s2;
-            Assert.AreEqual("1/1/0001 12:00:00 AM P1, P2, P3 ", res.TestOutput);        
+            Assert.AreEqual("Time.DawnOf P1, P2, P3 ", res.TestOutput);        
         }
         
         [Test]
@@ -247,7 +247,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tset s1 = new Tset(P1);
             Tset s2 = new Tset(P2,P3);
             Tset res = s1 | s2;
-            Assert.AreEqual("1/1/0001 12:00:00 AM P1, P2, P3 ", res.TestOutput);        
+            Assert.AreEqual("Time.DawnOf P1, P2, P3 ", res.TestOutput);        
         }
         
         [Test]
@@ -257,7 +257,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             s1.SetEternally();
             Tset s2 = new Tset(P2,P3);
             Tset res = s1 | s2;
-            Assert.AreEqual("1/1/0001 12:00:00 AM P2, P3 ", res.TestOutput);        
+            Assert.AreEqual("Time.DawnOf P2, P3 ", res.TestOutput);        
         }
 
         [Test]
@@ -266,7 +266,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tset s1 = new Tset(Hstate.Stub);
             Tset s2 = new Tset(P2,P3);
             Tset res = s1 | s2;
-            Assert.AreEqual("1/1/0001 12:00:00 AM Stub ", res.TestOutput);        
+            Assert.AreEqual("Time.DawnOf Stub ", res.TestOutput);        
         }
 
         // Intersection
@@ -277,7 +277,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tset s1 = new Tset(P1,P2);
             Tset s2 = new Tset(P2,P3);
             Tset res = s1 & s2;
-            Assert.AreEqual("1/1/0001 12:00:00 AM P2 ", res.TestOutput);        
+            Assert.AreEqual("Time.DawnOf P2 ", res.TestOutput);        
         }
         
         [Test]
@@ -286,7 +286,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tset s1 = new Tset(P1);
             Tset s2 = new Tset(P2,P3);
             Tset res = s1 & s2;
-            Assert.AreEqual("1/1/0001 12:00:00 AM ", res.TestOutput);        
+            Assert.AreEqual("Time.DawnOf ", res.TestOutput);        
         }
         
         [Test]
@@ -296,7 +296,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             s1.SetEternally();
             Tset s2 = new Tset(P2,P3);
             Tset res = s1 & s2;
-            Assert.AreEqual("1/1/0001 12:00:00 AM ", res.TestOutput);        
+            Assert.AreEqual("Time.DawnOf ", res.TestOutput);        
         }
         
         [Test]
@@ -305,7 +305,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tset s1 = new Tset(P1,P2,P3);
             Tset s2 = new Tset(P2,P3);
             Tset res = s1 & s2;
-            Assert.AreEqual("1/1/0001 12:00:00 AM P2, P3 ", res.TestOutput);        
+            Assert.AreEqual("Time.DawnOf P2, P3 ", res.TestOutput);        
         }
 
         [Test]
@@ -314,7 +314,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tset s1 = new Tset(Hstate.Stub);
             Tset s2 = new Tset(P2,P3);
             Tset res = s1 & s2;
-            Assert.AreEqual("1/1/0001 12:00:00 AM Stub ", res.TestOutput);        
+            Assert.AreEqual("Time.DawnOf Stub ", res.TestOutput);        
         }
 
         // Relative complement
@@ -325,7 +325,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tset s1 = new Tset(P1,P2);
             Tset s2 = new Tset(P2,P3);
             Tset res = s1 - s2;
-            Assert.AreEqual("1/1/0001 12:00:00 AM P1 ", res.TestOutput);        
+            Assert.AreEqual("Time.DawnOf P1 ", res.TestOutput);        
         }
         
         [Test]
@@ -334,7 +334,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tset s1 = new Tset(P1);
             Tset s2 = new Tset(P2,P3);
             Tset res = s1 - s2;
-            Assert.AreEqual("1/1/0001 12:00:00 AM P1 ", res.TestOutput);        
+            Assert.AreEqual("Time.DawnOf P1 ", res.TestOutput);        
         }
         
         [Test]
@@ -344,7 +344,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             s1.SetEternally();
             Tset s2 = new Tset(P2,P3);
             Tset res = s1 - s2;
-            Assert.AreEqual("1/1/0001 12:00:00 AM ", res.TestOutput);        
+            Assert.AreEqual("Time.DawnOf ", res.TestOutput);        
         }
         
         [Test]
@@ -353,7 +353,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tset s1 = new Tset(P1,P2,P3);
             Tset s2 = new Tset(P2,P3);
             Tset res = s1 - s2;
-            Assert.AreEqual("1/1/0001 12:00:00 AM P1 ", res.TestOutput);        
+            Assert.AreEqual("Time.DawnOf P1 ", res.TestOutput);        
         }
         
         [Test]
@@ -363,7 +363,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             s1.SetEternally();
             Tset s2 = new Tset(P2,P3);
             Tset res = s2 - s1;
-            Assert.AreEqual("1/1/0001 12:00:00 AM P2, P3 ", res.TestOutput);        
+            Assert.AreEqual("Time.DawnOf P2, P3 ", res.TestOutput);        
         }
 
         [Test]
@@ -372,7 +372,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tset s1 = new Tset(Hstate.Unstated);
             Tset s2 = new Tset(P2,P3);
             Tset res = s2 - s1;
-            Assert.AreEqual("1/1/0001 12:00:00 AM Unstated ", res.TestOutput);        
+            Assert.AreEqual("Time.DawnOf Unstated ", res.TestOutput);        
         }
 
         // Equality
@@ -383,7 +383,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tset s1 = new Tset(P1,P2);
             Tset s2 = new Tset(P2,P3);
             Tbool res = s1 == s2;
-            Assert.AreEqual("1/1/0001 12:00:00 AM False ", res.TestOutput);        
+            Assert.AreEqual("Time.DawnOf False ", res.TestOutput);        
         }
         
         [Test]
@@ -392,7 +392,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tset s1 = new Tset(P1);
             Tset s2 = new Tset(P1);
             Tbool res = s1 == s2;
-            Assert.AreEqual("1/1/0001 12:00:00 AM True ", res.TestOutput);        
+            Assert.AreEqual("Time.DawnOf True ", res.TestOutput);        
         }
         
         [Test]
@@ -402,7 +402,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             s1.SetEternally();
             Tset s2 = new Tset(P2,P3);
             Tbool res = s1 == s2;
-            Assert.AreEqual("1/1/0001 12:00:00 AM False ", res.TestOutput);        
+            Assert.AreEqual("Time.DawnOf False ", res.TestOutput);        
         }
         
         [Test]
@@ -411,7 +411,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tset s1 = new Tset(P1,P2,P3);
             Tset s2 = new Tset(P2,P3,P3);
             Tbool res = s1 == s2;
-            Assert.AreEqual("1/1/0001 12:00:00 AM False ", res.TestOutput);        
+            Assert.AreEqual("Time.DawnOf False ", res.TestOutput);        
         }
         
         [Test]
@@ -421,7 +421,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             s1.SetEternally();
             Tset s2 = new Tset(P2,P3);
             Tbool res = s2 == s1;
-            Assert.AreEqual("1/1/0001 12:00:00 AM False ", res.TestOutput);        
+            Assert.AreEqual("Time.DawnOf False ", res.TestOutput);        
         }
         
         [Test]
@@ -430,7 +430,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tset s1 = new Tset(P1,P2,P3);
             Tset s2 = new Tset(P1,P2,P3);
             Tbool res = s1 == s2;
-            Assert.AreEqual("1/1/0001 12:00:00 AM True ", res.TestOutput);        
+            Assert.AreEqual("Time.DawnOf True ", res.TestOutput);        
         }
         
         // Inequality
@@ -441,7 +441,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tset s1 = new Tset(P1,P2);
             Tset s2 = new Tset(P2,P3);
             Tbool res = s1 != s2;
-            Assert.AreEqual("1/1/0001 12:00:00 AM True ", res.TestOutput);        
+            Assert.AreEqual("Time.DawnOf True ", res.TestOutput);        
         }
         
         [Test]
@@ -450,7 +450,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tset s1 = new Tset(P1);
             Tset s2 = new Tset(P1);
             Tbool res = s1 != s2;
-            Assert.AreEqual("1/1/0001 12:00:00 AM False ", res.TestOutput);        
+            Assert.AreEqual("Time.DawnOf False ", res.TestOutput);        
         }
         
         [Test]
@@ -460,7 +460,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             s1.SetEternally();
             Tset s2 = new Tset(P2,P3);
             Tbool res = s1 != s2;
-            Assert.AreEqual("1/1/0001 12:00:00 AM True ", res.TestOutput);        
+            Assert.AreEqual("Time.DawnOf True ", res.TestOutput);        
         }
         
         [Test]
@@ -469,7 +469,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tset s1 = new Tset(P1,P2,P3);
             Tset s2 = new Tset(P2,P3,P3);
             Tbool res = s1 != s2;
-            Assert.AreEqual("1/1/0001 12:00:00 AM True ", res.TestOutput);        
+            Assert.AreEqual("Time.DawnOf True ", res.TestOutput);        
         }
         
         [Test]
@@ -479,7 +479,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             s1.SetEternally();
             Tset s2 = new Tset(P2,P3);
             Tbool res = s2 != s1;
-            Assert.AreEqual("1/1/0001 12:00:00 AM True ", res.TestOutput);        
+            Assert.AreEqual("Time.DawnOf True ", res.TestOutput);        
         }
         
         [Test]
@@ -488,7 +488,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tset s1 = new Tset(P1,P2,P3);
             Tset s2 = new Tset(P1,P2,P3);
             Tbool res = s1 != s2;
-            Assert.AreEqual("1/1/0001 12:00:00 AM False ", res.TestOutput);        
+            Assert.AreEqual("Time.DawnOf False ", res.TestOutput);        
         }
     }
 }
