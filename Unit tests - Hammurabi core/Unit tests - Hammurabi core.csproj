@@ -65,6 +65,7 @@
     <Compile Include="Unit tests\Test - unresolved concepts.cs" />
     <Compile Include="Unit tests\Test - Hval.cs" />
     <Compile Include="Unit tests\Test - time - continuously true.cs" />
+    <Compile Include="Unit tests\Test - elapsed time - running.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Hammurabi\Hammurabi.csproj">

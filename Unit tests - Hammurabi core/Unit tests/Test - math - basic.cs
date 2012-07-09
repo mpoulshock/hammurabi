@@ -18,6 +18,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+using System;
 using Hammurabi;
 using NUnit.Framework;
 
@@ -222,7 +223,24 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tnum res = -0.10 / new Tnum(2);
             Assert.AreEqual("1/1/0001 12:00:00 AM -0.05 ", res.TestOutput);        
         }
-        
+
+        [Test]
+        public void Test39a ()
+        {
+            Tnum res = new Tnum(0) / 7;
+            Assert.AreEqual("1/1/0001 12:00:00 AM 0 ", res.TestOutput);        
+        }
+
+        [Test]
+        public void Test39b ()
+        {
+            Tnum t = new Tnum(0);
+            t.AddState(new DateTime(2000,1,1), 7);
+
+            Tnum res = t / 7;
+            Assert.AreEqual("1/1/0001 12:00:00 AM 0 1/1/2000 12:00:00 AM 1 ", res.TestOutput);        
+        }
+
         // MODULO
         
         [Test]

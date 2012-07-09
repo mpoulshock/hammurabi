@@ -92,7 +92,14 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tnum res = new Tnum(1324103).RoundDown(50000);
             Assert.AreEqual("1/1/0001 12:00:00 AM 1300000 ", res.TestOutput);    
         }
-        
+
+        [Test]
+        public void Down5 ()
+        {
+            Tnum res = new Tnum(0).RoundDown(1);
+            Assert.AreEqual("1/1/0001 12:00:00 AM 0 ", res.TestOutput);    
+        }
+
         // ROUND TO NEAREST
         
         [Test]
