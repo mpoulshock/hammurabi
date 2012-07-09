@@ -553,7 +553,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             t.AddState(Date(2000,1,2), false);
             t.AddState(Date(2000,1,3), true);
             t.AddState(Date(2000,1,4), false);      
-            Tnum result = t.ElapsedDays(Date(1999,1,1), Date(2000,1,6));
+            Tnum result = t.TotalElapsedDays(Date(1999,1,1), Date(2000,1,6));
             Assert.AreEqual("1/1/0001 12:00:00 AM 2 ", result.TestOutput);
         }
         
@@ -565,7 +565,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             t.AddState(Date(2000,1,2), false);
             t.AddState(Date(2000,1,3), true);
             t.AddState(Date(2000,1,4), false);
-            Tnum result = t.ElapsedDays(Date(2000,1,2), Date(2000,1,6));
+            Tnum result = t.TotalElapsedDays(Date(2000,1,2), Date(2000,1,6));
             Assert.AreEqual("1/1/0001 12:00:00 AM 1 ", result.TestOutput);      
         }
         
@@ -577,7 +577,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             t.AddState(Date(2000,1,2), false);
             t.AddState(Date(2000,1,3), true);
             t.AddState(Date(2000,1,4), false);
-            Tnum result = t.ElapsedDays(Date(2010,1,2), Date(2010,1,6));
+            Tnum result = t.TotalElapsedDays(Date(2010,1,2), Date(2010,1,6));
             Assert.AreEqual("1/1/0001 12:00:00 AM 0 ", result.TestOutput);      
         }
         
@@ -587,7 +587,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tbool t = new Tbool(false);
             t.AddState(Date(2000,1,1), true);
             t.AddState(Date(2000,1,2), false);
-            Tnum result = t.ElapsedDays(Date(1999,1,2), Date(1999,1,6));
+            Tnum result = t.TotalElapsedDays(Date(1999,1,2), Date(1999,1,6));
             Assert.AreEqual("1/1/0001 12:00:00 AM 0 ", result.TestOutput);
         }
         
@@ -597,7 +597,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tbool t = new Tbool(false);
             t.AddState(Date(2000,1,1), true);
             t.AddState(Date(2000,2,1), false);
-            Tnum result = t.ElapsedDays(Date(2000,1,15), Date(2000,1,20));
+            Tnum result = t.TotalElapsedDays(Date(2000,1,15), Date(2000,1,20));
             Assert.AreEqual("1/1/0001 12:00:00 AM 5 ", result.TestOutput);
         }
         
@@ -605,7 +605,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void FT_ElapsedTime_6 ()
         {
             Tbool t = new Tbool(true);
-            Tnum result = t.ElapsedDays(Date(2000,1,15), Date(2000,1,20));
+            Tnum result = t.TotalElapsedDays(Date(2000,1,15), Date(2000,1,20));
             Assert.AreEqual("1/1/0001 12:00:00 AM 5 ", result.TestOutput);
         }
         
@@ -613,7 +613,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void FT_ElapsedTime_7 ()
         {
             Tbool t = new Tbool(true);
-            Tnum result = (!t).ElapsedDays(Date(2000,1,15), Date(2000,1,20));
+            Tnum result = (!t).TotalElapsedDays(Date(2000,1,15), Date(2000,1,20));
             Assert.AreEqual("1/1/0001 12:00:00 AM 0 ", result.TestOutput);
         }
         
@@ -622,7 +622,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         {
             Tbool t = new Tbool(false);
             t.AddState(Date(2000,1,1), true);
-            Tnum result = t.ElapsedDays(Date(2000,1,15), Date(2000,1,20));
+            Tnum result = t.TotalElapsedDays(Date(2000,1,15), Date(2000,1,20));
             Assert.AreEqual("1/1/0001 12:00:00 AM 5 ", result.TestOutput);
         }
         
@@ -632,7 +632,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tbool t = new Tbool(false);
             t.AddState(Date(2000,1,1), true);
             t.AddState(Date(2000,1,5), false);
-            Tnum result = t.ElapsedDays(Date(2000,1,2), Date(2000,1,6));
+            Tnum result = t.TotalElapsedDays(Date(2000,1,2), Date(2000,1,6));
             Assert.AreEqual("1/1/0001 12:00:00 AM 3 ", result.TestOutput);
         }
         
@@ -640,7 +640,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void FT_ElapsedTime_10 ()
         {
             Tbool t = new Tbool(false);
-            Tnum result = t.ElapsedDays(Date(2000,1,1), Date(2010,1,1));
+            Tnum result = t.TotalElapsedDays(Date(2000,1,1), Date(2010,1,1));
             Assert.AreEqual("1/1/0001 12:00:00 AM 0 ", result.TestOutput);
         }
         
@@ -648,7 +648,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void FT_ElapsedTime_11 ()
         {
             Tbool t = new Tbool(false);
-            Tnum result = t.ElapsedDays(Time.DawnOf, Time.EndOf);
+            Tnum result = t.TotalElapsedDays(Time.DawnOf, Time.EndOf);
             Assert.AreEqual("1/1/0001 12:00:00 AM 0 ", result.TestOutput);
         }
         
@@ -656,7 +656,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void FT_ElapsedTime_12 ()
         {
             Tbool t = new Tbool(Hstate.Uncertain);
-            Tnum result = t.ElapsedDays(Time.DawnOf, Time.EndOf);
+            Tnum result = t.TotalElapsedDays(Time.DawnOf, Time.EndOf);
             Assert.AreEqual("1/1/0001 12:00:00 AM Uncertain ", result.TestOutput);
         }
 
@@ -670,7 +670,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             t.AddState(Date(2001,1,1), false);
             t.AddState(Date(2002,1,1), true);
             t.AddState(Date(2003,1,1), false);
-            Tnum result = t.ElapsedDaysPer(TheYear);
+            Tnum result = t.TotalElapsedDaysPer(TheYear);
             Assert.AreEqual("1/1/0001 12:00:00 AM 0 1/1/2000 12:00:00 AM 366 1/1/2001 12:00:00 AM 0 1/1/2002 12:00:00 AM 365 1/1/2003 12:00:00 AM 0 ", result.TestOutput);      
         }
         
@@ -680,7 +680,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tbool t = new Tbool(false);
             t.AddState(Date(2000,6,1), true);
             t.AddState(Date(2001,1,1), false);
-            Tnum result = t.ElapsedDaysPer(TheYear);
+            Tnum result = t.TotalElapsedDaysPer(TheYear);
             Assert.AreEqual("1/1/0001 12:00:00 AM 0 1/1/2000 12:00:00 AM 214 1/1/2001 12:00:00 AM 0 ", result.TestOutput);      
         }
         
@@ -688,7 +688,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void FT_ElapsedDaysPerInterval_3 ()
         {
             Tbool t = new Tbool(false);
-            Tnum result = t.ElapsedDaysPer(TheYear);
+            Tnum result = t.TotalElapsedDaysPer(TheYear);
             Assert.AreEqual("1/1/0001 12:00:00 AM 0 ", result.TestOutput);      
         }
 
@@ -696,7 +696,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void FT_ElapsedDaysPerInterval_4 ()
         {
             Tbool t = new Tbool(Hstate.Unstated);
-            Tnum result = t.ElapsedDaysPer(TheYear);
+            Tnum result = t.TotalElapsedDaysPer(TheYear);
             Assert.AreEqual("1/1/0001 12:00:00 AM Unstated ", result.TestOutput);      
         }
 
@@ -705,7 +705,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         {
             Tbool t = new Tbool(false);
             Tnum n = new Tnum(Hstate.Unstated);
-            Tnum result = t.ElapsedDaysPer(n);
+            Tnum result = t.TotalElapsedDaysPer(n);
             Assert.AreEqual("1/1/0001 12:00:00 AM Unstated ", result.TestOutput);      
         }
 

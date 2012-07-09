@@ -34,7 +34,7 @@ namespace Hammurabi
         /// for each of a given set of intervals.
         /// Example: meetsAnnualTest = var.ElapsedDaysPerInterval(theYear) > 183;
         /// </summary>
-        public Tnum ElapsedDaysPer(Tnum period)
+        public Tnum TotalElapsedDaysPer(Tnum period)
         {
             // If base Tnum is ever unknown during the time period, return 
             // the state with the proper precedence
@@ -54,7 +54,7 @@ namespace Hammurabi
                     spanEnd = period.IntervalValues.Keys[i+1];
                 }
                 
-                TimeSpan time = this.ElapsedTime(period.IntervalValues.Keys[i], spanEnd);
+                TimeSpan time = this.TotalElapsedTime(period.IntervalValues.Keys[i], spanEnd);
                 result.AddState(period.IntervalValues.Keys[i], time.TotalDays);
             }
             
@@ -65,28 +65,28 @@ namespace Hammurabi
         /// Returns the total elapsed years between two given DateTimes, during
         /// which a Tbool is true.
         /// </summary>
-        public Tnum ElapsedYearsBefore(Tdate end)
+        public Tnum TotalElapsedYearsBefore(Tdate end)
         {
-            return this.ElapsedDays(Time.DawnOf,end) / 365;   // Doesn't consider leap years!
+            return this.TotalElapsedDays(Time.DawnOf,end) / 365;   // Doesn't consider leap years!
         }
-        public Tnum ElapsedYears(Tdate start, Tdate end)
+        public Tnum TotalElapsedYears(Tdate start, Tdate end)
         {
-            return this.ElapsedDays(start,end) / 365;   // Doesn't consider leap years!
+            return this.TotalElapsedDays(start,end) / 365;   // Doesn't consider leap years!
         }
 
         /// <summary>
         /// Returns the total elapsed days during which a Tbool is true. 
         /// </summary>
-        public Tnum ElapsedDays()
+        public Tnum TotalElapsedDays()
         {
-            return ElapsedDays(Time.DawnOf, Time.EndOf);
+            return TotalElapsedDays(Time.DawnOf, Time.EndOf);
         }
 
         /// <summary>
         /// Returns the total elapsed days, between two given DateTimes, during
         /// which a Tbool is true. 
         /// </summary>
-        public Tnum ElapsedDays(Tdate start, Tdate end)  
+        public Tnum TotalElapsedDays(Tdate start, Tdate end)  
         {
             // This unknown-handling logic is not totally correct:
 
@@ -104,23 +104,23 @@ namespace Hammurabi
             DateTime endDT = Convert.ToDateTime(end.FirstValue.Val);
 
             // Else, calculate how much time has elapsed while the Tvar had that value.
-            double days = Convert.ToDouble(ElapsedTime(startDT, endDT).TotalDays);
+            double days = Convert.ToDouble(TotalElapsedTime(startDT, endDT).TotalDays);
             return new Tnum(days);
         }
 
         /// <summary>
         /// Returns the total elapsed time during which a Tvar has a given value. 
         /// </summary>
-        private TimeSpan ElapsedTime()
+        private TimeSpan TotalElapsedTime()
         {
-            return ElapsedTime(Time.DawnOf, Time.EndOf);
+            return TotalElapsedTime(Time.DawnOf, Time.EndOf);
         }
 
         /// <summary>
         /// Returns the total elapsed time, between two given DateTimes, during
         /// which a Tbool is true.
         /// </summary>
-        private TimeSpan ElapsedTime(DateTime start, DateTime end)
+        private TimeSpan TotalElapsedTime(DateTime start, DateTime end)
         {
             TimeSpan result = new TimeSpan();
             int count = this.TimeLine.Count;

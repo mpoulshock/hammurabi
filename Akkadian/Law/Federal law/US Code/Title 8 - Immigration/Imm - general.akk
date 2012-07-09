@@ -84,8 +84,8 @@ Tbool ResidentOfUSPriorTo(Person p, Tdate date) =
 # Post-1986 rule for children born to one U.S. citizen parent
 Tbool MeetsOneParentPost1986Test(Person parent, Person child) =
 	CitizenAsOf(parent, DoB(child)) &
-	IsUSResident(parent).ElapsedYearsBefore(dob) >= 5 &
-	residentAge14.ElapsedYearsBefore(dob) >= 2
+	IsUSResident(parent).TotalElapsedYearsBefore(dob) >= 5 &
+	residentAge14.TotalElapsedYearsBefore(dob) >= 2
 	
 	Tbool residentAge14 =
 		IsUSResident(parent) &

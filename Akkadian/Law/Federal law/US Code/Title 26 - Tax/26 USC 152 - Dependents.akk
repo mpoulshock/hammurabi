@@ -27,7 +27,7 @@ Tbool IsQualifyingChildOf(Person d, Person tp) =
 	
 # Qualifying child - c1 - general elements (excluding those in c2, c3, and c4)
 Tbool QCGenTest(Person d, Person tp, Tnum taxYear) =
-    Econ.SharePrincipalAbode(d,tp).ElapsedDaysPer(taxYear) > 182.5 &
+    Econ.SharePrincipalAbode(d,tp).TotalElapsedDaysPer(taxYear) > 182.5 &
     Econ.PercentSelfSupport(d) < 50 &        # per TY
     ...
         !Sec6013.IsMFJ(d) | 
@@ -303,13 +303,13 @@ Test: Basic_1
 - Person tp
 - Person d
 - LivesWith(tp,d) = true
-- (Econ.SharePrincipalAbode(d,tp).ElapsedDaysPer(Sec441.TaxYear(tp)) > 182.5).AsOf(2012-01-01).Out =?= true
+- (Econ.SharePrincipalAbode(d,tp).TotalElapsedDaysPer(Sec441.TaxYear(tp)) > 182.5).AsOf(2012-01-01).Out =?= true
 
 Test: Basic_2
 - Person tp
 - Person d
 - LivesWith(tp,d) = false
-- (Econ.SharePrincipalAbode(d,tp).ElapsedDaysPer(Sec441.TaxYear(tp)) > 182.5).AsOf(2012-01-01).Out =?= false
+- (Econ.SharePrincipalAbode(d,tp).TotalElapsedDaysPer(Sec441.TaxYear(tp)) > 182.5).AsOf(2012-01-01).Out =?= false
 
 Test: QCGenTest_1
 - Person tp
