@@ -4,13 +4,6 @@
 # Updated:      2012-07-09
 # Author:       Michael Poulshock
 
-##
-A person born in Alaska on or after March 30, 1867, except a noncitizen Indian, is a citizen of the United States at birth. 
-
-A noncitizen Indian born in Alaska on or after March 30, 1867, and prior to June 2, 1924, is declared to be a citizen of the United States as of June 2, 1924. 
-
-An Indian born in Alaska on or after June 2, 1924, is a citizen of the United States at birth.
-##
 
 # Citizenship of people born in Alaska
 Tbool IsUSCitizenPerAlaska(Person p) = 

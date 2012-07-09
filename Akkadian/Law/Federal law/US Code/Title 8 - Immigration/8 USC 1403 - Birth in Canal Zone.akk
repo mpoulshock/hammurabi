@@ -5,7 +5,7 @@
 # Author:       Michael Poulshock
 
 
-# Citizenship of people born in Puerto Rico
+# Citizenship of people born in Canal Zone or Panama
 Tbool IsUSCitizenPerCanalZone(Person p) = 
 	SubsecA(p) |
 	SubsecB(p)

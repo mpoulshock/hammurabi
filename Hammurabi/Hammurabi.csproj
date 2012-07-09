@@ -138,6 +138,9 @@
     <Compile Include="Generated source\8 USC 1409 - Born out of wedlock.cs" />
     <Compile Include="Generated source\8 USC 1403 - Birth in Canal Zone.cs" />
     <Compile Include="Generated source\8 USC 1404 - Birth in Alaska.cs" />
+    <Compile Include="Generated source\8 USC 1406 - Birth in Virgin Islands.cs" />
+    <Compile Include="Generated source\8 USC 1407 - Birth in Guam.cs" />
+    <Compile Include="Generated source\8 USC 1408 - Nationals of US at birth.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
