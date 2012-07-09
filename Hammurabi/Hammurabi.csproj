@@ -127,11 +127,11 @@
     <Compile Include="Core\Engine\Engine.cs" />
     <Compile Include="Generated source\Test for Hammurabi Interactive.cs" />
     <Compile Include="Generated source\Recursion test.cs" />
-    <Compile Include="Generated source\Imm - citizenship by birth - ILRC Chart A.cs" />
     <Compile Include="Generated source\8 USC 1101 - Definitions.cs" />
     <Compile Include="Core\Core functions\Tbool - continuously true.cs" />
     <Compile Include="Core\Core functions\Tbool - elapsed time - total.cs" />
     <Compile Include="Core\Core functions\Tbool - elapsed time - running.cs" />
+    <Compile Include="Generated source\8 USC 1401.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

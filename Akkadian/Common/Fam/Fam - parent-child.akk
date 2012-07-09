@@ -78,6 +78,9 @@ TboolIn IsPregnant(Person p)
 # Unborn - in order to reason about fetuses
 TboolIn IsUnborn(Person p)
 
+# Unknown parentage
+TboolIn IsOfUnknownParentage(Person p)
+
 
 # PATERNITY, LEGITIMATION, ETC.
 
