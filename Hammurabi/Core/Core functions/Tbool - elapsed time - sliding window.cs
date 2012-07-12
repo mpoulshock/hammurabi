@@ -64,18 +64,15 @@ namespace Hammurabi
             DateTime end = Time.EndOf;
 
             // If possible, narrow the range of analysis (for performance reasons)
-            if (this.IsEverTrue()) 
-            {
-                start = this.DateFirstTrue.ToDateTime.AddDays(windowSizeInDays * -1);
-                end = this.DateLastTrue.ToDateTime.AddDays(windowSizeInDays + 2);
-            }
+//            if (this.IsEverTrue()) 
+//            {
+//                start = this.DateFirstTrue.ToDateTime.AddDays(windowSizeInDays * -1);
+//                end = this.DateLastTrue.ToDateTime.AddDays(windowSizeInDays + 2);
+//            }
 
-            // Still a performance problem for eternal values...
-            // 0.16 sec for 400-year span
             Tnum theDay = Time.IntervalsSince(start, end, Time.IntervalType.Day, 0);
 
-            // 20-30 sec for 400-year span!!!
-            return CountPastNIntervals(theDay, windowSizeInDays+1, 1);
+            return CountPastNIntervals(theDay, windowSizeInDays + 1, 1);
         }
 
         /// <summary>

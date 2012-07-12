@@ -39,37 +39,37 @@ namespace Hammurabi.UnitTests.CoreFcns
             Assert.AreEqual("Time.DawnOf 0 1/2/2000 12:00:00 AM 1 1/3/2000 12:00:00 AM 2 1/4/2000 12:00:00 AM 1 1/5/2000 12:00:00 AM 0 ", r.TestOutput);    
         }
 
-//        [Test]
-//        public void ElapsedTimeSlidingWindow2 ()
-//        {
-//            Tbool tb = new Tbool(false);
-//            Tnum r = tb.ElapsedDaysInSlidingWindow(2, Time.IntervalType.Day);
-//
-//            Assert.AreEqual("Time.DawnOf 0 ", r.TestOutput);    
-//        }
-//
-//        [Test]
-//        public void ElapsedTimeSlidingWindow3 ()
-//        {
-//            Tbool tb = new Tbool(false);
-//            tb.AddState(new DateTime(2000,1,1), Hstate.Unstated);
-//            tb.AddState(new DateTime(2000,3,1), false);
-//
-//            Tnum r = tb.ElapsedDaysInSlidingWindow(2, Time.IntervalType.Day);
-//
-//            Assert.AreEqual("Time.DawnOf Unstated ", r.TestOutput);    
-//        }
-//
-//        [Test]
-//        public void ElapsedTimeSlidingWindow4 ()
-//        {
-//            Tbool tb = new Tbool(false);
-//            tb.AddState(new DateTime(2000,1,1), Hstate.Stub);
-//            tb.AddState(new DateTime(2000,3,1), false);
-//
-//            Tnum r = tb.ElapsedDaysInSlidingWindow(2, Time.IntervalType.Day);
-//
-//            Assert.AreEqual("Time.DawnOf Stub ", r.TestOutput);    
-//        }
+        [Test]
+        public void ElapsedTimeSlidingWindow2 ()
+        {
+            Tbool tb = new Tbool(false);
+            Tnum r = tb.ElapsedDaysInSlidingWindow(2, "Day");
+
+            Assert.AreEqual("Time.DawnOf 0 ", r.TestOutput);    
+        }
+
+        [Test]
+        public void ElapsedTimeSlidingWindow3 ()    // failing
+        {
+            Tbool tb = new Tbool(false);
+            tb.AddState(new DateTime(2000,1,1), Hstate.Unstated);
+            tb.AddState(new DateTime(2000,3,1), false);
+
+            Tnum r = tb.ElapsedDaysInSlidingWindow(2, "Day");
+
+            Assert.AreEqual("Time.DawnOf Unstated ", r.TestOutput);    
+        }
+
+        [Test]
+        public void ElapsedTimeSlidingWindow4 ()    // failing
+        {
+            Tbool tb = new Tbool(false);
+            tb.AddState(new DateTime(2000,1,1), Hstate.Stub);
+            tb.AddState(new DateTime(2000,3,1), false);
+
+            Tnum r = tb.ElapsedDaysInSlidingWindow(2, "Day");
+
+            Assert.AreEqual("Time.DawnOf Stub ", r.TestOutput);    
+        }
     }
 }

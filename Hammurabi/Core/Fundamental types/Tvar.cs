@@ -122,8 +122,46 @@ namespace Hammurabi
             // state, an error occurs.  We could check for duplicates here, but
             // this function is used extremely frequently and doing so would
             // probably affect performance.
+
+            // We could also check that newly added values are different from the 
+            // prior one.  (See LeanTvar<T>() below.)
+//            if (TimeLine.Count > 0)
+//            {
+//                if (!object.Equals(TimeLine.Values[TimeLine.Count-1].Val, hval.Val))
+//                {
+//                    TimeLine.Add(dt, hval);
+//                }
+//            }
+//            else
+//            {
+//                TimeLine.Add(dt, hval);
+//            }
+
+
             TimeLine.Add(dt, hval);
         }
+        
+        /// <summary>
+        /// Removes redundant intervals from the Tvar. 
+        /// </summary>
+        public T LeanTvar<T>() where T : Tvar
+        {
+            T result = (T)Auxiliary.ReturnProperTvar<T>();
+            result.AddState(TimeLine.Keys[0], TimeLine.Values[0]);
+
+            if (TimeLine.Count > 0)
+            {
+                for (int i=0; i < TimeLine.Count-1; i++ ) 
+                {
+                    if (!object.Equals(TimeLine.Values[i].Val, TimeLine.Values[i+1].Val))
+                    {
+                        result.AddState(TimeLine.Keys[i+1], TimeLine.Values[i+1]);
+                    }
+                }
+            }
+
+            return result;
+        }     
 
         /// <summary>
         /// Sets a Tvar to an "eternal" value (the same at all points in time). 
@@ -285,36 +323,6 @@ namespace Hammurabi
 
             return result;
         }
-
-        /// <summary>
-        /// Removes redundant intervals from the Tvar. 
-        /// </summary>
-        public T LeanTvar<T>() where T : Tvar
-        {
-            T n = (T)this;
-            
-            // Identify redundant intervals
-            List<DateTime> dupes = new List<DateTime>();
-            
-            if (TimeLine.Count > 0)
-            {
-                for (int i=0; i < TimeLine.Count-1; i++ ) 
-                {
-                    if (object.Equals(TimeLine.Values[i+1].Val, TimeLine.Values[i].Val))
-                    {
-                        dupes.Add(TimeLine.Keys[i+1]);
-                    }
-                }
-            }
-            
-            // Remove redundant intervals
-            foreach (DateTime d in dupes)
-            {
-                TimeLine.Remove(d);    
-            }
-                
-            return n;
-        }    
 
         /// <summary>
         /// Gets all points in time at which value of the Tvar changes.

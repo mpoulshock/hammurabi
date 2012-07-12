@@ -300,7 +300,7 @@ namespace Hammurabi
         ///                                  "now"
         ///                      (the interval being analyzed)
         /// </remarks>
-        public Tnum CountPastNIntervals(Tnum intervals, Tnum rangeStart, Tnum rangeEnd)
+        public Tnum CountPastNIntervalsOld(Tnum intervals, Tnum rangeStart, Tnum rangeEnd)
         {
             // TODO: Implement unknowns properly for all inputs
 
@@ -350,6 +350,88 @@ namespace Hammurabi
                 }
             }
 
+            return result.Lean;
+        }
+
+
+        public Tnum CountPastNIntervals(Tnum intervals, Tnum rangeStart, Tnum rangeEnd)
+        {
+            // TODO: Implement unknowns properly for all inputs
+
+            int rangeStartInt = Convert.ToInt32(rangeStart.FirstValue.Val);
+            int rangeEndInt = Convert.ToInt32(rangeEnd.FirstValue.Val);
+            int rangeWidth = rangeStartInt - rangeEndInt + 1;
+
+            Tnum result = new Tnum();
+            result.AddState(Time.DawnOf, 0);
+
+            SortedList<DateTime, Hval> intrvl = intervals.IntervalValues;
+
+            DateTime nextChangeDate = Time.DawnOf;
+            DateTime windowStart = Time.DawnOf;
+            DateTime windowEnd = Time.EndOf;
+
+            // Count forward from the beginning of time through each interval
+            for (int b = 0; b < intrvl.Count - 1; b++)
+            {
+                // Determine start and end of current window
+                windowEnd = intrvl.Keys[b];
+                if (b > rangeWidth) windowStart = intrvl.Keys[b - rangeWidth];
+
+                if (windowEnd <= nextChangeDate)
+                {
+                    // Skip ahead until the next time the Tbool changes value
+                }
+                else
+                {
+                    int count = 0;
+
+                    // Collect unknown states during the relevant time period
+                    List<Hval> states = new List<Hval>();
+
+                    // Look back the specified number of intervals
+                    for (int n = rangeEndInt; n < rangeStartInt; n++)
+                    {
+                        int index = b - n;
+                        if (index >= rangeEndInt)
+                        {
+                            // Handle unknowns
+                            Hval baseState = this.ObjectAsOf(intrvl.Keys[index]);
+                            if (!baseState.IsKnown)
+                            {
+                                states.Add(baseState);
+                            }
+                            else if (Convert.ToBoolean(baseState.Val))
+                            {
+                                // Count how many of the relevant intervals are true
+                                count++;
+                            }
+                        }
+                    }
+
+                    if (states.Count > 0)
+                    {
+                        result.AddState(intrvl.Keys[b], PrecedingState(states));
+                    }
+                    else
+                    {
+                        result.AddState(intrvl.Keys[b], count);
+                    }
+
+                    // Determine when the Tbool next changes its value
+                    for (int j=0; j < this.IntervalValues.Count; j++)
+                    {
+                        if (this.IntervalValues.Keys[j] > windowEnd &&
+                            this.IntervalValues.Keys[j-1] < windowStart)
+                        {
+                            nextChangeDate = this.IntervalValues.Keys[j];
+                            break;
+                        }
+                    }
+                }
+            }
+
+            Console.WriteLine(result.IntervalValues.Count);     // diagnostic
             return result.Lean;
         }
 
