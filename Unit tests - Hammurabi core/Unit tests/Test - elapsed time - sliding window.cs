@@ -71,5 +71,30 @@ namespace Hammurabi.UnitTests.CoreFcns
 
             Assert.AreEqual("Time.DawnOf Stub ", r.TestOutput);    
         }
+
+        [Test]
+        public void ElapsedTimeSlidingWindow5 ()
+        {
+            Tbool tb = new Tbool(false);
+            tb.AddState(new DateTime(2000,1,1),true);
+            tb.AddState(new DateTime(2000,1,3),false);
+            tb.AddState(new DateTime(2000,1,10),true);
+            tb.AddState(new DateTime(2000,2,18),false);
+
+            Tnum r = tb.ElapsedDaysInSlidingWindow(2, "Day");
+            string tline = "Time.DawnOf 0 1/2/2000 12:00:00 AM 1 1/3/2000 12:00:00 AM 2 1/4/2000 12:00:00 AM 1 1/5/2000 12:00:00 AM 0 " +
+                "1/11/2000 12:00:00 AM 1 1/12/2000 12:00:00 AM 2 2/19/2000 12:00:00 AM 1 2/20/2000 12:00:00 AM 0 "; 
+
+            Assert.AreEqual(tline, r.TestOutput);    
+        }
+
+        [Test]
+        public void ElapsedTimeSlidingWindow6 ()
+        {
+            // Not totally correct (around the dawn of time), but should be fine for most computations...
+            Tbool tb = new Tbool(true);
+            Tnum r = tb.ElapsedDaysInSlidingWindow(2, "Day");
+            Assert.AreEqual("Time.DawnOf 0 1/3/1800 12:00:00 AM 1 1/4/1800 12:00:00 AM 2 ", r.TestOutput);    
+        }
     }
 }

@@ -64,14 +64,16 @@ namespace Hammurabi
             DateTime end = Time.EndOf;
 
             // If possible, narrow the range of analysis (for performance reasons)
-//            if (this.IsEverTrue()) 
-//            {
-//                start = this.DateFirstTrue.ToDateTime.AddDays(windowSizeInDays * -1);
-//                end = this.DateLastTrue.ToDateTime.AddDays(windowSizeInDays + 2);
-//            }
+            if (this.IntervalValues.Count > 1 && this.IsEverTrue()) 
+            {
+                start = this.DateFirstTrue.ToDateTime.AddDays(windowSizeInDays * -1);
+                end = this.DateLastTrue.ToDateTime.AddDays(windowSizeInDays + 2);
+            }
 
+            // Create a time line of day-based intervals
             Tnum theDay = Time.IntervalsSince(start, end, Time.IntervalType.Day, 0);
 
+            // Analyze the window as it slides forward day-by-day
             return CountPastNIntervals(theDay, windowSizeInDays + 1, 1);
         }
 
