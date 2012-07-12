@@ -67,7 +67,7 @@ namespace Hammurabi
             if (this.IsEverTrue()) 
             {
                 start = this.DateFirstTrue.ToDateTime.AddDays(windowSizeInDays * -1);
-                end = this.DateLastTrue.ToDateTime.AddDays(windowSizeInDays+2);
+                end = this.DateLastTrue.ToDateTime.AddDays(windowSizeInDays + 2);
             }
 
             // Still a performance problem for eternal values...
@@ -88,10 +88,10 @@ namespace Hammurabi
         {
             double factor = 1;
 
-            if (windowIntervalType == "Year")    factor = 365.24;
-            if (windowIntervalType == "Quarter") factor = 91.31;
-            if (windowIntervalType == "Month")   factor = 30.436;
-            if (windowIntervalType == "Week")    factor = 7;
+            if (windowIntervalType == "Year")         factor = 365.24;
+            else if (windowIntervalType == "Quarter") factor = 91.31;
+            else if (windowIntervalType == "Month")   factor = 30.436;
+            else if (windowIntervalType == "Week")    factor = 7;
 
             return Convert.ToInt32(windowSize * factor);
         }

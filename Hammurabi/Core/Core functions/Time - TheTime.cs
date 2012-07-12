@@ -25,14 +25,14 @@ namespace Hammurabi
     public partial class H
     {
         /// <summary>
-        /// Returns a Tnum representing the calendar year
-        /// (by default, a 200-year span centered on the current year)
+        /// Returns a Tnum representing the calendar year.  Spans all of
+        /// "time": from 1800-01-01 to 2200-12-31.
         /// </summary>
         public static Tnum TheYear
         {
             get
             {
-                return TheTime.Year(100);
+                return Time.IntervalsSince(Time.DawnOf, Time.EndOf, Time.IntervalType.Year, Time.DawnOf.Year);
             }
         }
         
@@ -156,6 +156,7 @@ namespace Hammurabi
         /// Returns a Tnum representing the calendar year (with some
         /// span centered on the current year)
         /// </summary>
+        //  TODO: Delete?
         public static Tnum Year(int halfSpanInYears)
         {
             int currentYear = DateTime.Now.Year;
