@@ -22,10 +22,6 @@ using System;
 
 namespace Hammurabi
 {    
-    /// <summary>
-    /// Determines how much time has elapsed during which a given Tbool
-    /// is true.
-    /// </summary>
     public partial class Tbool
     {
         /// <summary>
@@ -119,7 +115,7 @@ namespace Hammurabi
         /// Returns the total elapsed time, between two given DateTimes, during
         /// which a Tbool is true.
         /// </summary>
-        private TimeSpan TotalElapsedTime(DateTime start, DateTime end)
+        protected TimeSpan TotalElapsedTime(DateTime start, DateTime end)
         {
             TimeSpan result = new TimeSpan();
             int count = this.TimeLine.Count;

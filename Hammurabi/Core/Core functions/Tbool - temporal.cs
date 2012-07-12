@@ -307,10 +307,14 @@ namespace Hammurabi
             int rangeStartInt = Convert.ToInt32(rangeStart.FirstValue.Val);
             int rangeEndInt = Convert.ToInt32(rangeEnd.FirstValue.Val);
             Tnum result = new Tnum();
-            SortedList<DateTime, Hval> t = intervals.IntervalValues;
+            SortedList<DateTime, Hval> intrvl = intervals.IntervalValues;
+
+            // TODO: Improve performance by only examining changes to the start
+            //       and end of the range.  (Values in the middle stay the same
+            //       as the windown shifts forward in time.)
 
             // Count forward from the beginning of time through each interval
-            for (int b = 0; b < t.Count - 1; b++)
+            for (int b = 0; b < intrvl.Count - 1; b++)
             {
                 int count = 0;
 
@@ -324,7 +328,7 @@ namespace Hammurabi
                     if (index >= rangeEndInt)
                     {
                         // Handle unknowns
-                        Hval baseState = this.ObjectAsOf(t.Keys[index]);
+                        Hval baseState = this.ObjectAsOf(intrvl.Keys[index]);
                         if (!baseState.IsKnown)
                         {
                             states.Add(baseState);
@@ -338,11 +342,11 @@ namespace Hammurabi
 
                 if (states.Count > 0)
                 {
-                    result.AddState(t.Keys[b], PrecedingState(states));
+                    result.AddState(intrvl.Keys[b], PrecedingState(states));
                 }
                 else
                 {
-                    result.AddState(t.Keys[b], count);
+                    result.AddState(intrvl.Keys[b], count);
                 }
             }
 

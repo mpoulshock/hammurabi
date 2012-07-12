@@ -246,6 +246,56 @@ namespace Hammurabi
                         else if (Convert.ToBoolean(line.Values[i].Val))
                         {
                             result = line.Keys[i];
+                            return new Tdate(result);
+                        }
+                        else
+                        {
+                            // If Tvar never has the given value, return the default value
+                        }
+                    }
+                }
+    
+                return new Tdate(result);
+            }
+        }
+
+        /// <summary>
+        /// Returns the DateTime when the Tbool is true for the last time
+        /// </summary>
+        public Tdate DateLastTrue
+        {
+            get
+            {
+                SortedList<DateTime, Hval> line = this.TimeLine;
+                Hval result = new Hval(null,Hstate.Stub);
+    
+                // If Tval is eternally unknown, return that value
+                if (this.IsEternallyUnknown)
+                {
+                    result = this.FirstValue;
+                }
+                else
+                {
+                    // For each time interval...
+                    for (int i = 0; i < line.Count; i++) 
+                    {
+                        // If you encounter an unknown interval, return that value
+                        // Warning: Could be problematic b/c initial intervals are likely to be unknown...
+                        if (!line.Values[i].IsKnown)
+                        {
+                            // result = line.Values[i];
+                        }
+                        // Look for the date when the Tvar has the given value
+                        else if (Convert.ToBoolean(line.Values[i].Val))
+                        {
+                            if (i >= line.Count-1)
+                            {
+                                result = Time.EndOf;
+                            }
+                            else
+                            {
+                                result = line.Keys[i+1].AddDays(-1);
+                            }
                         }
                         else
                         {

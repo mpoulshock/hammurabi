@@ -900,7 +900,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Assert.AreEqual("Time.DawnOf Uncertain ", r.TestOutput);      
         }
 
-        // Tbool.DateFirst
+        // Tbool.DateFirstTrue
 
         [Test]
         public void DateFirst_1 ()
@@ -940,6 +940,72 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tbool t = new Tbool(Hstate.Unstated);
             t.AddState(Date(2000,1,1), true);
             Assert.AreEqual(Date(2000,1,1), t.DateFirstTrue.ToDateTime);      
+        }
+
+        [Test]
+        public void DateFirst_6 ()
+        {
+            Tbool tb = new Tbool(false);
+            tb.AddState(new DateTime(2000,1,1),true);
+            tb.AddState(new DateTime(2000,1,3),false);
+            tb.AddState(new DateTime(2000,1,10),true);
+            tb.AddState(new DateTime(2000,2,18),false);
+
+            Assert.AreEqual(Date(2000,1,1), tb.DateFirstTrue.ToDateTime);      
+        }
+
+        // Tbool.DateLastTrue
+
+        [Test]
+        public void DateLast_1 ()
+        {
+            // Base Tvar never meets the specified condition
+            Tbool t = new Tbool(false);
+            Assert.AreEqual("Time.DawnOf Stub ", t.DateLastTrue.TestOutput);      
+        }
+        
+        [Test]
+        public void DateLast_2 ()
+        {
+            Tbool t = new Tbool(true);
+            Assert.AreEqual(Time.EndOf, t.DateLastTrue.ToDateTime);   
+        }
+        
+        [Test]
+        public void DateLast_3 ()
+        {
+            Tbool t = new Tbool(false);
+            t.AddState(Date(2000,1,1), true);
+            Assert.AreEqual(Time.EndOf, t.DateLastTrue.ToDateTime);      
+        }
+
+        [Test]
+        public void DateLast_4 ()
+        {
+            // Base Tvar is eternally unknown; that state must percolate up
+            Tbool t = new Tbool(Hstate.Unstated);
+            Assert.AreEqual("Time.DawnOf Unstated ", t.DateLastTrue.TestOutput);      
+        }
+
+        [Test]
+        public void DateLast_5 ()
+        {
+            // Base Tvar is unknown, then the required value
+            Tbool t = new Tbool(Hstate.Unstated);
+            t.AddState(Date(2000,1,1), true);
+            Assert.AreEqual(Time.EndOf, t.DateLastTrue.ToDateTime);      
+        }
+
+        [Test]
+        public void DateLast_6 ()
+        {
+            Tbool tb = new Tbool(false);
+            tb.AddState(new DateTime(2000,1,1),true);
+            tb.AddState(new DateTime(2000,1,3),false);
+            tb.AddState(new DateTime(2000,1,10),true);
+            tb.AddState(new DateTime(2000,2,18),false);
+
+            Assert.AreEqual(Date(2000,2,17), tb.DateLastTrue.ToDateTime);      
         }
 
         // Type identification

@@ -141,6 +141,7 @@
     <Compile Include="Generated source\8 USC 1406 - Birth in Virgin Islands.cs" />
     <Compile Include="Generated source\8 USC 1407 - Birth in Guam.cs" />
     <Compile Include="Generated source\8 USC 1408 - Nationals of US at birth.cs" />
+    <Compile Include="Core\Core functions\Tbool - elapsed time - sliding window.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
