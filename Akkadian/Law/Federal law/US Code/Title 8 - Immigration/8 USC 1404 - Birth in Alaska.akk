@@ -35,6 +35,6 @@ Tbool TestC(Person p) =
 	DoB(p) >= 1924-06-02 
 	
 # Not entirely sure what this is intended to mean...
-# TODO: Move to common rules
-TboolIn IsIndian(Person p)
+TboolIn IsIndian(Person p) =
+	IsNativeAmerican(p)
 

@@ -63,6 +63,14 @@ Tbool IsTransgendered(Person p) =
 TstrIn Gender(Person p)
 
 
+# ETHNICITY
+
+# Member of a Native American tribe
+# Includes Alaska Natives and Native Hawaiians
+# Note: Most legal sources use "Indian" or "American Indian"
+TboolIn IsNativeAmerican(Person p)
+
+
 # MISCELLANEOUS
 
 # Has a Social Security Number
