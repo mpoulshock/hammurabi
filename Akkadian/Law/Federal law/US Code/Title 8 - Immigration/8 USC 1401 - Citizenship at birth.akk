@@ -2,7 +2,7 @@
 # Namespace:    USC.Tit8.Sec1401
 # Summary:      When is a child a citizen at birth?
 # Supp source:  http://www.ilrc.org/files/nats_chart_a_10.pdf
-# Updated:      2012-07-09
+# Updated:      2012-07-12
 # Author:       Michael Poulshock
 
 ##
@@ -49,22 +49,22 @@ Tbool BornInUSorOP(Person c) =
 # birth.
 Tbool SubsecC(Person c) =
 	! BornInUSorOP(c) &
-	ParentsMarried(c) &
+	...
+		ParentsMarried(c) |
+		Sec1409.SubsecAApplies(c)	# Can never happen?
+	&
 	BothParentsCitizens(c) &
 	ParentResidedInUSorOPBeforeBirthOf(c)
-
-# Parents married as of child's date of birth
-# TODO: Connect to 8 U.S.C. 1409
-Tbool ParentsMarried(Person c) =
-	Fam.AreMarried(FatherOf(c), MotherOf(c)).AsOf(DoB(c))
-	# ! Fam.IsAdopted(c)
 	
 # (d) - Born outside U.S. and its outlying possessions; one parent 
 # citizen, one parent national; citizen parent physically present 
 # for a continuous period of one year prior to child's birth
 Tbool SubsecD(Person c) =
 	! BornInUSorOP(c) &
-	ParentsMarried(c) &
+	...
+		ParentsMarried(c) |
+		Sec1409.SubsecAApplies(c)
+	&
 	OneCitizenOneNationalParent(c) &
 	BirthParents(c).Exists(IsCitizenPresentInUSorOP1YearBefore(_, DoB(c)))
 	
@@ -73,7 +73,10 @@ Tbool SubsecD(Person c) =
 # of one year prior to child's birth
 Tbool SubsecE(Person c) =
 	Sec1101.IsUSOutlyingPossession(BirthCountry(c)) &
-	ParentsMarried(c) &
+	...
+		ParentsMarried(c) |
+		Sec1409.SubsecAApplies(c)
+	&
 	OneCitizenOneAlienParent(c) &
 	BirthParents(c).Exists(IsCitizenPresentInUSorOP1YearBefore(_, DoB(c)))
 	
@@ -87,7 +90,11 @@ Tbool SubsecF(Person c) =
 # citizen parent physically present for certain threshold. 
 Tbool SubsecG(Person c) =
 	! BornInUSorOP(c) &
-	ParentsMarried(c) &
+	...
+		ParentsMarried(c) |
+		Sec1409.SubsecAApplies(c) | 	# Can never happen?
+		Sec1409.SubsecBApplies(c)
+	&
 	OneCitizenOneAlienParent(c) &
 	BirthParents(c).Exists(SubsecGParentTest(_, DoB(c)))
 
@@ -122,12 +129,16 @@ Tbool SubsecGParentTest(Person parent, Tdate childDoB) =
 		
 	# Ways to be considered "physically present"
 	Tbool present =
-		PresentInUSorOP(parent) |
-		Mil.InArmedForces(parent) |
-		Econ.IsUSGovtEmployee(parent) |
-		# USC.Tit22.Sec288.IsEmployeeOfIntlOrg(parent)
-		Stub() 		# Parent is dependent of certain gov't officials
+		PresentUnderSubsecG(parent)
 
+# "Physically present" for purposes of subsection (g)
+Tbool PresentUnderSubsecG(Person p) =
+	PresentInUSorOP(p) |
+	Mil.InArmedForces(p) |
+	Econ.IsUSGovtEmployee(p) |
+	# USC.Tit22.Sec288.IsEmployeeOfIntlOrg(p)
+	Stub() 		# Parent is dependent of certain gov't officials
+		
 # (h) - Rule for children born before 1934ish
 # Are the gender assumptions here correct?
 Tbool SubsecH(Person c) =
@@ -186,6 +197,11 @@ Tbool BothParentsCitizens(Person c) =
 	IsUSCitizen(FatherOf(c)).AsOf(DoB(c)) &
 	IsUSCitizen(MotherOf(c)).AsOf(DoB(c))
 
+# Both parents are U.S. nationals
+Tbool BothParentsNationals(Person c) =
+	Imm.IsUSNational(FatherOf(c)).AsOf(DoB(c)) &
+	Imm.IsUSNational(MotherOf(c)).AsOf(DoB(c))
+	
 # One parent is a U.S. citizen, one is a U.S. national
 Tbool OneCitizenOneNationalParent(Person c) =
 	BirthParents(c).Exists(IsUSCitizen(_)).AsOf(DoB(c)) &
@@ -196,9 +212,20 @@ Tbool OneCitizenOneAlienParent(Person c) =
 	BirthParents(c).Exists(IsUSCitizen(_)).AsOf(DoB(c)) &
 	BirthParents(c).Exists(Imm.IsAlien(_)).AsOf(DoB(c))
 
+# One parent is a U.S. national, one is an alien
+Tbool OneNationalOneAlienParent(Person c) =
+	BirthParents(c).Exists(Imm.IsUSNational(_)).AsOf(DoB(c)) &
+	BirthParents(c).Exists(Imm.IsAlien(_)).AsOf(DoB(c))
+	
 	
 # PARENTS
 
+# Parents married as of child's date of birth
+# TODO: Connect to 8 U.S.C. 1409
+Tbool ParentsMarried(Person c) =
+	Fam.AreMarried(FatherOf(c), MotherOf(c)).AsOf(DoB(c))
+	# ! Fam.IsAdopted(c)
+	
 # The person's parents at time of birth
 Tset BirthParents(Person c) =
 	new Tset(FatherOf(c), MotherOf(c))

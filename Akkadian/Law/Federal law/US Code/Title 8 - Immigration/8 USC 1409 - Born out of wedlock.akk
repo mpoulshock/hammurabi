@@ -1,12 +1,63 @@
 # Citation:     8 U.S.C. 1409 (2012)
 # Namespace:    USC.Tit8.Sec1409
 # Summary:      Is a child born out of wedlock a citizen/national at birth?
-# Updated:      2012-07-09
+# Updated:      2012-07-12
 # Author:       Michael Poulshock
 
 
-# This is currently a placeholder...
-Tbool TODO(Person p) = 
-	Stub()
+# Subsection (a) - Legitimated children
+Tbool SubsecAApplies(Person c) =
+	! SubsecCApplies(c) &						# Is this correct?
+	Fam.BornOutOfWedlock(c) &
+	Fam.IsBiologicalParentOf(father, c) & 		# Established by clear and convincing evidence
+	Imm.IsUSNational(father).AsOf(DoB(c)) &		# Is this what "nationality of the U.S." means?
+	if IsAlive(father) then Fam.CommittedToFinanciallySupport(father, c) &
+	legitimated.IsEverTrue() &
+	TheTime.IsAtOrAfter(DoB(c))
+	
+	Tbool legitimated =
+		Age(c) < 18 &
+		...
+			Fam.IsLegitimatedByLaw(c) |		# Covers (4)(A) and (C)
+			Fam.Legitimated(father, c)
+
+	Person father =
+		Sec1401.FatherOf(c)		# Incorrect	
+		
+# Subsection (b) applies
+# Note: Section 405 pertains to rules in effect when Act was passed
+Tbool SubsecBApplies(Person c) = 
+	Fam.BornOutOfWedlock(c) &
+	DoB(c) >= 1941-01-13 &
+	paternityLegitimated.IsEverTrue()
+
+	# Paternity legitimated before child turns 21
+	Tbool paternityLegitimated =
+		Fam.Legitimated(father, c) &
+		Age(c) < 21
+	
+	Person father =
+		Sec1401.FatherOf(c)		# Incorrect	
+	
+# Child national if mother national
+Tbool IsUSNationalPerMother(Person p) =
+	# Nothwithstanding subsection (a)...
+	SubsecCApplies(p)
+
+# Subsection (c) applies
+Tbool SubsecCApplies(Person c) = 
+	DoB(c) > 1952-12-23 &
+	! BornInTheUSA(c) & 
+	Fam.BornOutOfWedlock(c) &
+	Imm.IsUSNational(mom).AsOf(DoB(c)) &
+	momPresent.IsEverTrueBefore(DoB(c)) &
+	TheTime.IsAtOrAfter(DoB(c))
+		
+	# Physically present for a continuous period of one year
+	Tbool momPresent =
+		Sec1401.PresentInUSorOP(mom).YearsContinuouslyTrue >= 1
+	
+	Person mom =
+		Sec1401.MotherOf(c)
 	
 	

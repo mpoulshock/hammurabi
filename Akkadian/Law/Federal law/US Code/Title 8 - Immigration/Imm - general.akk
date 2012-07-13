@@ -1,20 +1,34 @@
 # Namespace:    USC.Tit8.Gen
 # Summary:      Some general immigration related rules
-# Updated:      2012-07-09
+# Updated:      2012-07-12
 # Author:       Michael Poulshock
 
 
 # CITIZENSHIP, DEFINED
 
 # U.S. citizenship (inferred)
-# TODO: Collect conclusions from across statutes...
 Tbool IsUSCitizenInferred(Person p) =
-	Stub()
-	##
-	BirthCountry(p) == "United States" |
 	CitizenByBirthToCitizen(p) |
 	DerivationOfCitizenship(p)
-	##
+
+# Citizenship by birth
+Tbool CitizenByBirthToCitizen(Person p) =
+	Sec1401.AcquiredCitizenshipAtBirth(p) |
+	Sec1402.IsUSCitizenPerPuertoRico(p) |
+	Sec1403.IsUSCitizenPerCanalZone(p) |
+	Sec1404.IsUSCitizenPerAlaska(p) |
+	Sec1405.IsUSCitizenPerHawaii(p) |
+	Sec1406.IsUSCitizenPerVI(p) |
+	Sec1407.IsUSCitizenPerGuam(p)
+
+# Derivation of citizenship
+Tbool DerivationOfCitizenship(Person p) =
+	Stub()
+
+# U.S. national (inferred)
+Tbool IsUSNationalInferred(Person p) =
+	Sec1408.IsUSNationalByBirth(p) |
+	IsUSCitizenInferred(p) 				# See 8 U.S.C. 1401
 	
 	
 # GENERAL CONCEPTS
@@ -23,81 +37,8 @@ Tbool IsUSCitizenInferred(Person p) =
 TstrIn VisaType(Person p)
 
 
-
-
-	##
-# Citizenship due to birth to citizen parents
-Tbool CitizenByBirthToCitizen(Person p) =
-	set:
-	if dob < 1986-11-14 -> Stub()
-	else currentRule
-	
-	Tbool currentRule =
-		...
-			...
-				Fam.ParentsOf(p).ForAll(CitizenAsOf(_, dob)) &		 	# Both parents citizens at p's birth
-				Fam.ParentsOf(p).Exists(ResidentOfUSPriorTo(_, dob))	# One parent lived in US before p's birth
-			|
-			...
-			Fam.ParentsOf(p).Exists(MeetsOneParentPost1986Test(_, p))	# One parent citizen at p's birth...
-		&
-		if Fam.IsIllegitimate(p) then legitimationTest &
-		residencyTest
-		
-	Tdate dob =
-		DoB(p)		
-
-	Tbool legitimationTest =
-		Fam.Legitimated(dad, p).IsEverTrueBefore(bday18) &
-		Fam.PaternityEstablishedFor(dad, p).IsEverTrueBefore(bday18) &
-		Fam.CommittedToFinanciallySupport(dad, p).IsEverTrueBefore(bday18)
-		
-	Person dad =
-		Fam.FatherAsOf(p, bday18)
-		
-	Tdate bday18 =
-		DoB(p).AddYears(18)
-	
-	Tbool residencyTest =
-		Stub()
-
-# Citizenship due to naturalization of a parent
-Tbool DerivationOfCitizenship(Person p) =
-	set:
-	if currentTestApplies -> currentRule
-	else Stub()
-	
-	Tbool currentTestApplies =
-		Fam.ParentsOf(p).Exists(BornInTheUSA(_)) |
-		Fam.ParentsOf(p).Exists(NaturalizedAfter20010227(_))
-	
-	Tbool currentRule =
-		Stub()			
-		
-# Naturalized after 2001-02-27
-Tbool NaturalizedAfter20010227(Person p) =
-	Imm.IsNaturalizedCitizen(p).DateFirstTrue >= 2001-02-27
-
-# U.S. citizen as of a given date	
-Tbool CitizenAsOf(Person p, Tdate d) =
-	IsUSCitizen(p).AsOf(d)
-
 # U.S. resident prior to a given date
 Tbool ResidentOfUSPriorTo(Person p, Tdate date) =
 	IsUSResident(p).IsEverTrue(Time.DawnOf, date)
 	
-# Post-1986 rule for children born to one U.S. citizen parent
-Tbool MeetsOneParentPost1986Test(Person parent, Person child) =
-	CitizenAsOf(parent, DoB(child)) &
-	IsUSResident(parent).TotalElapsedYearsBefore(dob) >= 5 &
-	residentAge14.TotalElapsedYearsBefore(dob) >= 2
-	
-	Tbool residentAge14 =
-		IsUSResident(parent) &
-		Age(parent) >= 14
-	
-	Tdate dob =
-		DoB(child)
-##
-		
 		

@@ -1,6 +1,6 @@
 # Namespace:    Hammurabi.Fam
 # Summary:      Basic family relationships: parent-child
-# Updated:      2012-06-22
+# Updated:      2012-07-12
 # Author:       Michael Poulshock
 
 
@@ -97,11 +97,21 @@ Tbool PaternityEstablishedFor(Person parent, Person child) =
 	
 	Tdate date =
 		TdateIn DatePaternityEstablishedFor(parent,child)
+
+# Born "out of wedlock"
+TboolIn BornOutOfWedlock(Person p) =
+	IsIllegitimate(p)
 		
 # Illegitimate child
 Tbool IsIllegitimate(Person p) =
 	!ParentsMarriedAsOf(p, DoB(p))
+	# unless child is born shortly after the parents' divorce
 
+# Is legitimated by law (of the child's domicile)
+# Assumption: could be done by either statute, court, or both
+TboolIn IsLegitimatedByLaw(Person child) =
+	Stub()
+	
 # Legitimated by father (he acknowledged parental responsibility)
 # Example of temporal value built from threshold facts and an event
 Tbool Legitimated(Person parent, Person child) =

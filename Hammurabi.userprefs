@@ -1,21 +1,15 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Hammurabi\Core\Core functions\Tbool - temporal.cs">
-    <Files>
-      <File FileName="Hammurabi\Core\Core functions\Tbool - elapsed time - sliding window.cs" Line="75" Column="39" />
-      <File FileName="Hammurabi\Core\Core functions\Tbool - temporal.cs" Line="366" Column="53" />
-      <File FileName="Unit tests - Hammurabi core\Unit tests\Test - elapsed time - sliding window.cs" Line="64" Column="63" />
-    </Files>
+  <MonoDevelop.Ide.Workbench>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
-          <Node name="Hammurabi" expanded="True">
+          <Node name="Hammurabi" expanded="True" selected="True">
             <Node name="Core" expanded="True">
-              <Node name="Core functions" expanded="True">
-                <Node name="Tbool - temporal.cs" selected="True" />
-              </Node>
+              <Node name="Core functions" expanded="True" />
               <Node name="Fundamental types" expanded="True" />
             </Node>
+            <Node name="Generated source" expanded="True" />
           </Node>
           <Node name="Unit tests - Hammurabi core" expanded="True">
             <Node name="Unit tests" expanded="True" />
