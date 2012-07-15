@@ -267,7 +267,7 @@ namespace Akkadian
             // Temporal tables - must come before "rule tables"
             line = Regex.Replace(line.Replace("\t","    "), @"temporal:", currentRuleType + ".Make" + currentRuleType + "(");  
             line = Regex.Replace(line, @"from (?<condition>"+word+") -> (?<value>"+word+")", "${condition}, ${value},", RegexOptions.IgnoreCase);   
-            line = Regex.Replace(line, "endtemporal", "null)");    
+            line = Regex.Replace(line, "endtemporal", "new " + currentRuleType + "(Hstate.Stub))");    
     
             // Rule tables - must come before "dates"
             line = Regex.Replace(line, @"match "+word, "Switch<" + currentRuleType + ">(");    

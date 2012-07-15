@@ -309,5 +309,22 @@ namespace Akkadian
 
             return line;
         }
+        
+        /// <summary>
+        /// Determines whether a string is a valid number
+        /// </summary>
+        public static bool IsNumber(string s)
+        {
+            try
+            {
+                double.Parse(s);
+                return true;
+            }
+            catch
+            {
+            }
+
+            return false;
+        }
     }
 }

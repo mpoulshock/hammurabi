@@ -98,10 +98,20 @@ namespace Akkadian
         /// <summary>
         /// Converts an .akk fact expression into C#
         /// </summary>
-        private static string ConvertFact(string fact)
+        public static string ConvertFact(string fact)
         {
             string wrd = @"[a-zA-Z0-9]+";
-            
+
+            // Convert a temporal fact to the proper C# expression
+            if (fact.Contains("{") && fact.Contains("}"))
+            {
+                int open = fact.IndexOf("{");
+                int close = fact.IndexOf("}");
+                string brack = fact.Substring(open, close-open+1);
+                fact = fact.Replace(brack, ConvertTemporalFact(brack));
+            }
+
+            // Convert the assertion from Akkadian to C#
             fact = Regex.Replace(fact, 
                                  @"(?<fcn>"+wrd+@")\((?<arg1>[a-zA-Z0-9 ]+),(?<arg2>[a-zA-Z0-9 ]+)\) = (?<val>"+word+@")", 
                                  "            Facts.Assert(${arg1}, \"${fcn}\", ${arg2}, ${val});", RegexOptions.IgnoreCase);  
@@ -112,7 +122,44 @@ namespace Akkadian
             
             return fact;
         }
-        
+
+        /// <summary>
+        /// Converts a temporal fact value into an expression using MakeTvar().
+        /// </summary>
+        public static string ConvertTemporalFact(string fact)
+        {
+            // Parse string
+            fact = fact.Trim('{','}',' ');
+            string[] timepts = fact.Split(';');
+
+            // Detect Tbool type by looking at the value in the first time-value pair
+            string[] firstPair = timepts[0].Split(':');
+            string type = DetectType(firstPair[1].Trim());
+
+            // Generate MakeTvar() expression
+            string result = type + ".Make" + type + "(";
+            foreach (string s in timepts)
+            {
+                string[] pair = s.Split(':');
+                result += pair[0] + ", " + pair[1] + ", ";
+            }
+
+            result = result.TrimEnd(',',' ');
+            return result + ")";
+        }
+
+        /// <summary>
+        /// Given a string, detects the kind of Tvar it represents.
+        /// </summary>
+        private static string DetectType(string input)
+        {
+            // Doesn't handle Tsets yet...
+            if (input == "true" || input == "false") return "Tbool";
+            else if (input.StartsWith("Date(")) return "Tdate";
+            else if (Util.IsNumber(input)) return "Tnum";
+            else return "Tstr";
+        }
+
         /// <summary>
         /// Determines whether a line is that of an .akk unit test.
         /// </summary>

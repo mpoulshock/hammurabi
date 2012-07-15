@@ -23,7 +23,6 @@ Tnum Age(Person p) =
 Tbool IsAlive(Person p) =
 	set:
 	if Facts.HasBeenAsserted(p, "DateOfDeath") -> living
-	# if death.IsKnown -> living
 	else deceased
 	
 	Tbool living =
