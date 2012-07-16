@@ -80,7 +80,36 @@ namespace Hammurabi
             }
             return result;
         }
-        
+
+        public static Tbool MakeTboolNew(params Tvar[] list)
+        {
+            Tbool result = new Tbool();
+            for(int i=0; i < list.Length - 1; i+=2)  
+            {
+                Tdate date = (Tdate)list[i];
+                Tbool val = (Tbool)list[i+1];
+
+                result.AddState(date.ToDateTime, val.AsOf(date).FirstValue);
+
+//                try
+//                {
+//                    Hstate h = (Hstate)list[i+1];
+//                    if (h != Hstate.Known)
+//                    {
+//                        result.AddState(Convert.ToDateTime(list[i]),
+//                                    new Hval(null,h));
+//                    }
+//                }
+//                catch
+//                {
+//                    bool b = Convert.ToBoolean(list[i+1]);
+//                    result.AddState(Convert.ToDateTime(list[i]),
+//                                new Hval(b));
+//                }
+            }
+            return result;
+        }
+
         /// <summary>
         /// Implicitly converts bools to Tbools.
         /// </summary>
@@ -88,7 +117,7 @@ namespace Hammurabi
         {
             return new Tbool(b);
         }
-        
+
         /// <summary>
         /// Removes redundant intervals from the Tbool. 
         /// </summary>

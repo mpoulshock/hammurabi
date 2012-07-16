@@ -1,17 +1,24 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="Hammurabi\Core\Fundamental types\Tbool.cs">
+    <Files>
+      <File FileName="Hammurabi\Core\Facts\Inputs.cs" Line="219" Column="9" />
+      <File FileName="Hammurabi\Core\Fundamental types\Tbool.cs" Line="60" Column="25" />
+      <File FileName="AkkadianCompiler\Main.cs" Line="269" Column="13" />
+      <File FileName="Hammurabi\Core\Core functions\Time - dates.cs" Line="331" Column="9" />
+      <File FileName="c:\Users\spoulshock\Desktop\MP\Projects\hammurabi\Unit tests - Hammurabi core\Unit tests\Test - switch.cs" Line="227" Column="24" />
+    </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
-          <Node name="Hammurabi" expanded="True">
+          <Node name="AkkadianCompiler" expanded="True" />
+          <Node name="Hammurabi" expanded="True" selected="True">
             <Node name="Core" expanded="True">
               <Node name="Core functions" expanded="True" />
+              <Node name="Facts" expanded="True" />
               <Node name="Fundamental types" expanded="True" />
             </Node>
-            <Node name="Generated source" expanded="True">
-              <Node name="8 USC 1409 - Born out of wedlock.cs" selected="True" />
-            </Node>
+            <Node name="Generated source" expanded="True" />
           </Node>
           <Node name="Unit tests - Hammurabi core" expanded="True">
             <Node name="Unit tests" expanded="True" />

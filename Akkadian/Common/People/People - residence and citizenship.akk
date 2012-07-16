@@ -25,8 +25,8 @@ TstrIn StateOfResidence(Person p)
 # U.S. citizen
 TboolIn IsUSCitizen(Person p) =
 	Imm.Status(p) == "U.S. citizen" |
-	Imm.IsCitizenOf(p, "United States") |
-	USC.Tit8.Gen.IsUSCitizenInferred(p)	
+	Imm.IsCitizenOf(p, "United States") 
+	# USC.Tit8.Gen.IsUSCitizenInferred(p)	
 
 # Subject to U.S. jurisdiction
 TboolIn IsSubjectToUSJurisdiction(Person p)

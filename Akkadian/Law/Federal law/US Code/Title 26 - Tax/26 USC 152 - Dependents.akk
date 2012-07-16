@@ -143,6 +143,7 @@ Test: Pub501_Simple1
 - IsParentOf(t,c) = true
 - LivesWith(c,t) = true
 - DateOfBirth(c) = 2001-01-01
+- IsDeceased(c) = false 	#
 - IsUSCitizen(c) = true
 - CanBeClaimedAsQCByTwoTaxpayers(c) = false
 - PercentSelfSupport(c) = 0
@@ -159,6 +160,7 @@ Test: Pub501_Simple2
 - LivesWith(c,t) = true
 - DateOfBirth(c) = 2001-01-01
 - DateOfBirth(t) = 1970-01-01
+- IsDeceased(c) = false 	#
 - IsUSCitizen(c) = true
 - CanBeClaimedAsQCByTwoTaxpayers(c) = false
 - PercentSelfSupport(c) = 0
@@ -168,6 +170,7 @@ Test: Pub501_Simple2
 - FedTaxFilingStatus(t) = "Single"
 - GrossIncome(c) = 0
 - Sec152.IsDependentOf(c,t).AsOf(2010-12-31).Out =?= true
+
 
 ##
 # IRS Pub. 501 (2010), Page 10, Example 1.

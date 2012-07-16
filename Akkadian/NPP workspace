@@ -119,8 +119,9 @@
             <Folder name="Tabular data" />
         </Folder>
         <Folder name="Sandbox">
-            <File name="Sandbox\Test for Hammurabi Interactive.akk" />
+            <File name="Sandbox\Random unit tests.akk" />
             <File name="Sandbox\Recursion test.akk" />
+            <File name="Sandbox\Test for Hammurabi Interactive.akk" />
         </Folder>
         <File name="License.txt" />
         <File name="NPP workspace" />

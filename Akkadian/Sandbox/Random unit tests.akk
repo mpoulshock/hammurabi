@@ -1,0 +1,46 @@
+# Namespace:    Hammurabi.Sandbox
+# Summary:      A host of random unit tests
+# Updated:      2012-07-15
+# Author:       Michael Poulshock
+
+
+# TIME-VARYING BOOLEANS
+	
+# Time-varying boolean subrule
+Tbool SomeTemporalBooleanSubrule() =
+	rule
+	
+	Tbool rule =
+		temporal:
+		from Time.DawnOf -> false
+		from 2000-01-01 -> true
+		from 2001-01-01 -> false
+		endtemporal
+	
+Test: TimeVaryingBooleanSub1
+- Sandbox.SomeTemporalBooleanSubrule().AsOf(1999-03-09).Out =?= false
+
+Test: TimeVaryingBooleanSub2
+- Sandbox.SomeTemporalBooleanSubrule().AsOf(2000-03-09).Out =?= true
+
+Test: TimeVaryingBooleanSub3
+- Sandbox.SomeTemporalBooleanSubrule().AsOf(2002-03-09).Out =?= false		
+	
+	
+# Time-varying boolean
+Tbool SomeTemporalBoolean() =
+	temporal:
+	from Time.DawnOf -> false
+	from 2000-01-01 -> true
+	from 2001-01-01 -> false
+	endtemporal
+		
+Test: TimeVaryingBoolean1
+- Sandbox.SomeTemporalBoolean().AsOf(1999-03-09).Out =?= false
+
+Test: TimeVaryingBoolean2
+- Sandbox.SomeTemporalBoolean().AsOf(2000-03-09).Out =?= true
+
+Test: TimeVaryingBoolean3
+- Sandbox.SomeTemporalBoolean().AsOf(2002-03-09).Out =?= false		
+		
