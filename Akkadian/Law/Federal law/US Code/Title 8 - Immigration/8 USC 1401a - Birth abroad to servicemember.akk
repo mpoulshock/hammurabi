@@ -13,7 +13,7 @@ Tbool Sec1401gAppliesTo(Person c) =
 	parents.Exists(IsQualifyingServicemember(_))
 	
 	Tset parents =
-		Sec1401.BirthParents(c)
+		Sec1401.BirthParents(c)		# Assumes two parents
 		
 # Qualifying parent
 Tbool IsQualifyingServicemember(Person p) =
@@ -27,20 +27,39 @@ Tbool IsQualifyingServicemember(Person p) =
 
 # UNIT TESTS
 
-Test: Test1
+Test: BornTooEarly
 - Person child
 - DateOfBirth(child) = 1930-03-02
 - USC.Tit8.Sec1401a.Sec1401gAppliesTo(child).Out =?= false
 
-Test: Test2a
+Test: BornWithinRange1
 - Person child
 - DateOfBirth(child) = 1945-03-02
 - USC.Tit8.Sec1401a.Sec1401gAppliesTo(child).Out =?= "Unstated"
 
-Test: Test2b
+Test: BornWithinRange2
+- Person child
+- Person dad
+- Person mom
+- FatherAtTimeOfBirth(child) = dad
+- MotherAtTimeOfBirth(child) = mom
+- DateOfBirth(child) = 1945-03-02
+- USC.Tit8.Sec1401a.Sec1401gAppliesTo(child).Out =?= "Unstated"
+
+Test: DQbcUS
+- Person child
+- BirthCountry(child) = "United States"
+- USC.Tit8.Sec1401a.Sec1401gAppliesTo(child).Out =?= false
+
+Test: NoEligParent
 - Person child
 - Person dad
 - Person mom
 - DateOfBirth(child) = 1945-03-02
-- USC.Tit8.Sec1401a.Sec1401gAppliesTo(child).Out =?= "Unstated"
+- BirthCountry(child) = "Bolivia"
+- FatherAtTimeOfBirth(child) = dad
+- MotherAtTimeOfBirth(child) = mom
+- IsUSCitizen(dad) = false
+- InArmedForces(mom) = false
+- USC.Tit8.Sec1401a.Sec1401gAppliesTo(child).Out =?= false
 

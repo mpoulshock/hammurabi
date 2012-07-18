@@ -27,7 +27,7 @@ TboolIn OnActiveDuty(Person p) =
 # BRANCH OF ARMED FORCES
 	
 # Person serves in the Armed Forces in any capacity.
-Tbool InArmedForces(Person p) =
+TboolIn InArmedForces(Person p) =
 	InActiveArmedForces(p) |
 	InReserveArmedForces(p)
         

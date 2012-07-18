@@ -38,11 +38,6 @@ Tbool AcquiredCitizenshipAtBirth(Person c) =
 # (a) - Born in U.S.
 Tbool SubsecA(Person c) =
 	BornInUSorOP(c)
-
-# Born in U.S. or outlying possession
-Tbool BornInUSorOP(Person c) =
-	BornInTheUSA(c) |
-	Sec1101.IsUSOutlyingPossession(BirthCountry(c))
 	
 # (c) - Born outside U.S. and its outlying possessions, 
 # both parents citizens, one U.S. resident prior to child's
@@ -91,12 +86,14 @@ Tbool SubsecF(Person c) =
 Tbool SubsecG(Person c) =
 	! BornInUSorOP(c) &
 	...
-		ParentsMarried(c) |
-		Sec1409.SubsecAApplies(c) | 	# Can never happen?
-		Sec1409.SubsecBApplies(c)
-	&
-	OneCitizenOneAlienParent(c) &
-	BirthParents(c).Exists(SubsecGParentTest(_, DoB(c)))
+		Sec1401a.Sec1401gAppliesTo(c) |		# Is this what 1401a actually intends?
+		...
+			ParentsMarried(c) |
+			Sec1409.SubsecAApplies(c) | 	# Can never happen?
+			Sec1409.SubsecBApplies(c)
+		&
+		OneCitizenOneAlienParent(c) &
+		BirthParents(c).Exists(SubsecGParentTest(_, DoB(c)))
 
 # Citizen parent, prior to child's birth, physically present for a
 # total of 5 years, 2 of which were after 14 years of age.  
@@ -147,6 +144,14 @@ Tbool SubsecH(Person c) =
 	IsUSCitizen(MotherOf(c)) &
 	ResidedInUSorOP(MotherOf(c)).IsEverTrueBefore(DoB(c))
 
+
+# PLACE OF BIRTH
+
+# Born in U.S. or outlying possession
+Tbool BornInUSorOP(Person c) =
+	BornInTheUSA(c) |
+	Sec1101.IsUSOutlyingPossession(BirthCountry(c))
+	
 	
 # RESIDENCE IN U.S.
 
