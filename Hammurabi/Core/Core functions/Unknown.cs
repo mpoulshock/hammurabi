@@ -25,6 +25,29 @@ namespace Hammurabi
     public partial class H
     {
         /// <summary>
+        /// Given a group of boolean Hvals, returns Hstate that trumps the others.
+        /// This order is different than that of the function below because with ANDs
+        /// and ORs we always want to try to prove (OR) or falsify (AND) the consequent.
+        /// </summary>       
+        public static Hstate PrecedingStateForLogic(List<Hval> inputs) 
+        {
+            Hval[] list = Auxiliary.ListToArray<Hval>(inputs);
+
+            // If one fact is unstated, we want to continue trying to prove (OR) or 
+            // falsify (AND) the conclusion of the rule.
+            if (AnyHvalsAre(Hstate.Unstated, list)) return Hstate.Unstated;
+
+            // Uncertain trumps Stub because if the user were able to answer the question,
+            // Hammurabi could possibly provide a determination.
+            if (AnyHvalsAre(Hstate.Uncertain, list)) return Hstate.Uncertain;
+
+            // Else, stub...
+            if (AnyHvalsAre(Hstate.Stub, list)) return Hstate.Stub;
+
+            return Hstate.Known;
+        }
+
+        /// <summary>
         /// Given a group of Hvals, returns Hstate that trumps the others.
         /// </summary>       
         public static Hstate PrecedingState(List<Hval> list) 
@@ -45,7 +68,6 @@ namespace Hammurabi
             
             return Hstate.Known;
         }
-
 
         /// <summary>
         /// Returns true if any of the input Hvals are unstated.

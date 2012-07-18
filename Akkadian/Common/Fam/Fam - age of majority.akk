@@ -62,6 +62,8 @@ Test: Minor1
 Test: Minor2
 - Person p
 - CountryOfResidence(p) = "Poland"
+- StateOfResidence(p) = "N/A"
+- DateOfBirth(p) = 2010-10-10
 - Fam.IsMinor(p).AsOf(2012-10-10).Out =?= "Stub"
 
 Test: Minor3

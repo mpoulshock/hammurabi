@@ -28,9 +28,10 @@ namespace Hammurabi.UnitTests.CoreFcns
     {
         private static Tbool tbt = new Tbool(true);
         private static Tbool tbf = new Tbool(false);
-        private static Tbool tbu = new Tbool(Hstate.Unstated);                         // Unknown (not asked)
-        private static Tbool tbn = new Tbool(Hstate.Uncertain);                     // Null (user doesn't know)
-        private static Tbool tbv = Tbool.MakeTbool(Time.DawnOf, false,         // Time-varying boolean
+        private static Tbool stub = new Tbool(Hstate.Stub);
+        private static Tbool unstat = new Tbool(Hstate.Unstated); 
+        private static Tbool uncert = new Tbool(Hstate.Uncertain);  
+        private static Tbool tbv = Tbool.MakeTbool(Time.DawnOf, false,  
                                              Date(2000,1,1), true,
                                              Date(2001,1,1), Hstate.Uncertain,
                                              Date(2002,1,1), Hstate.Unstated); 
@@ -68,29 +69,29 @@ namespace Hammurabi.UnitTests.CoreFcns
         [Test]
         public void LogicAnd5 ()
         {
-            Tbool r = tbt & tbn;
+            Tbool r = tbt & uncert;
             Assert.AreEqual("Time.DawnOf Uncertain ", r.TestOutput);          
         }
         
         [Test]
         public void LogicAnd6 ()
         {
-            Tbool r = tbf & tbn;
+            Tbool r = tbf & uncert;
             Assert.AreEqual("Time.DawnOf False ", r.TestOutput);          
         }
         
         [Test]
         public void LogicAnd7 ()
         {
-            Tbool r = tbn & tbn;
+            Tbool r = uncert & uncert;
             Assert.AreEqual("Time.DawnOf Uncertain ", r.TestOutput);          
         }
         
         [Test]
         public void LogicAnd8 ()
         {
-            Tbool r = tbu & tbn;
-            Assert.AreEqual("Time.DawnOf Uncertain ", r.TestOutput);          
+            Tbool r = unstat & uncert;
+            Assert.AreEqual("Time.DawnOf Unstated ", r.TestOutput);          
         }
         
         [Test]
@@ -110,36 +111,64 @@ namespace Hammurabi.UnitTests.CoreFcns
         [Test]
         public void Unknown_Logic_And_1 ()
         {
-            Tbool t1 = tbt & tbf & tbu;
+            Tbool t1 = tbt & tbf & unstat;
             Assert.AreEqual("Time.DawnOf False ", t1.TestOutput);        
         }
         
         [Test]
         public void Unknown_Logic_And_2 ()
         {
-            Tbool t1 = tbt & tbu & tbf;
+            Tbool t1 = tbt & unstat & tbf;
             Assert.AreEqual("Time.DawnOf False ", t1.TestOutput);        
         }
         
         [Test]
         public void Unknown_Logic_And_3 ()
         {
-            Tbool t1 = tbt & tbu;
+            Tbool t1 = tbt & unstat;
             Assert.AreEqual("Time.DawnOf Unstated ", t1.TestOutput);        
         }
         
         [Test]
         public void Unknown_Logic_And_4 ()
         {
-            Tbool t1 = tbf & tbu;
+            Tbool t1 = tbf & unstat;
             Assert.AreEqual("Time.DawnOf False ", t1.TestOutput);        
+        }
+
+        [Test]
+        public void Unknown_Logic_And_5 ()
+        {
+            Tbool r = unstat & stub;
+            Assert.AreEqual("Time.DawnOf Unstated ", r.TestOutput);        
+        }
+
+        [Test]
+        public void Unknown_Logic_And_6 ()
+        {
+            Tbool r = tbf & stub;
+            Assert.AreEqual("Time.DawnOf False ", r.TestOutput);        
+        }
+
+        [Test]
+        public void Unknown_Logic_And_7 ()
+        {
+            Tbool r = tbt & stub;
+            Assert.AreEqual("Time.DawnOf Stub ", r.TestOutput);        
+        }
+
+        [Test]
+        public void Unknown_Logic_And_8 ()
+        {
+            Tbool r = uncert & stub;
+            Assert.AreEqual("Time.DawnOf Uncertain ", r.TestOutput);        
         }
 
         [Test]
         public void LogicAndTime1 ()
         {
-            Tbool t1 = tbv & tbu;
-            Assert.AreEqual("Time.DawnOf False 1/1/2000 12:00:00 AM Unstated 1/1/2001 12:00:00 AM Uncertain 1/1/2002 12:00:00 AM Unstated ", t1.TestOutput);            
+            Tbool t1 = tbv & unstat;
+            Assert.AreEqual("Time.DawnOf False 1/1/2000 12:00:00 AM Unstated ", t1.TestOutput);            
         }
         
         [Test]
@@ -159,8 +188,8 @@ namespace Hammurabi.UnitTests.CoreFcns
         [Test]
         public void LogicAndTime4 ()
         {
-            Tbool t1 = tbv & tbn;
-            Assert.AreEqual("Time.DawnOf False 1/1/2000 12:00:00 AM Uncertain ", t1.TestOutput);            
+            Tbool t1 = tbv & uncert;
+            Assert.AreEqual("Time.DawnOf False 1/1/2000 12:00:00 AM Uncertain 1/1/2002 12:00:00 AM Unstated ", t1.TestOutput);            
         }
         
         // OR
@@ -203,36 +232,64 @@ namespace Hammurabi.UnitTests.CoreFcns
         [Test]
         public void Unknown_Logic_Or_1 ()
         {
-            Tbool t1 = tbu | tbf | tbt;
+            Tbool t1 = unstat | tbf | tbt;
             Assert.AreEqual("Time.DawnOf True ", t1.TestOutput);        
         }
         
         [Test]
         public void Unknown_Logic_Or_2 ()
         {
-            Tbool t1 = tbt | tbu | tbf;
+            Tbool t1 = tbt | unstat | tbf;
             Assert.AreEqual("Time.DawnOf True ", t1.TestOutput);        
         }
         
         [Test]
         public void Unknown_Logic_Or_3 ()
         {
-            Tbool t1 = tbt | tbu;
+            Tbool t1 = tbt | unstat;
             Assert.AreEqual("Time.DawnOf True ", t1.TestOutput);        
         }
         
         [Test]
         public void Unknown_Logic_Or_4 ()
         {
-            Tbool t1 = tbf | tbu;
+            Tbool t1 = tbf | unstat;
             Assert.AreEqual("Time.DawnOf Unstated ", t1.TestOutput);         
+        }
+
+        [Test]
+        public void Unknown_Logic_Or_5 ()
+        {
+            Tbool r = unstat | stub;
+            Assert.AreEqual("Time.DawnOf Unstated ", r.TestOutput);        
+        }
+
+        [Test]
+        public void Unknown_Logic_Or_6 ()
+        {
+            Tbool r = tbf | stub;
+            Assert.AreEqual("Time.DawnOf Stub ", r.TestOutput);        
+        }
+
+        [Test]
+        public void Unknown_Logic_Or_7 ()
+        {
+            Tbool r = tbt | stub;
+            Assert.AreEqual("Time.DawnOf True ", r.TestOutput);        
+        }
+
+        [Test]
+        public void Unknown_Logic_Or_8 ()
+        {
+            Tbool r = uncert | stub;
+            Assert.AreEqual("Time.DawnOf Uncertain ", r.TestOutput);        
         }
         
         [Test]
         public void LogicOrTime1 ()
         {
-            Tbool t1 = tbv | tbu;
-            Assert.AreEqual("Time.DawnOf Unstated 1/1/2000 12:00:00 AM True 1/1/2001 12:00:00 AM Uncertain 1/1/2002 12:00:00 AM Unstated ", t1.TestOutput);            
+            Tbool t1 = tbv | unstat;
+            Assert.AreEqual("Time.DawnOf Unstated 1/1/2000 12:00:00 AM True 1/1/2001 12:00:00 AM Unstated ", t1.TestOutput);            
         }
         
         [Test]
@@ -252,8 +309,8 @@ namespace Hammurabi.UnitTests.CoreFcns
         [Test]
         public void LogicOrTime4 ()
         {
-            Tbool t1 = tbv | tbn;
-            Assert.AreEqual("Time.DawnOf Uncertain 1/1/2000 12:00:00 AM True 1/1/2001 12:00:00 AM Uncertain ", t1.TestOutput);            
+            Tbool t1 = tbv | uncert;
+            Assert.AreEqual("Time.DawnOf Uncertain 1/1/2000 12:00:00 AM True 1/1/2001 12:00:00 AM Uncertain 1/1/2002 12:00:00 AM Unstated ", t1.TestOutput);            
         }
         
         // NOT
@@ -275,14 +332,14 @@ namespace Hammurabi.UnitTests.CoreFcns
         [Test]
         public void LogicNot3 ()
         {
-            Tbool t2 = !tbu;
+            Tbool t2 = !unstat;
             Assert.AreEqual("Time.DawnOf Unstated ", t2.TestOutput);        
         }
 
         [Test]
         public void LogicNot4 ()
         {
-            Tbool t2 = !tbn;
+            Tbool t2 = !uncert;
             Assert.AreEqual("Time.DawnOf Uncertain ", t2.TestOutput);        
         }
         
@@ -304,7 +361,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         [Test]
         public void Unknown_Logic_AndOr_1 ()
         {
-            Tbool t1 = tbf | ( tbu & tbt );
+            Tbool t1 = tbf | ( unstat & tbt );
             Assert.AreEqual("Time.DawnOf Unstated ", t1.TestOutput);        
         }
         

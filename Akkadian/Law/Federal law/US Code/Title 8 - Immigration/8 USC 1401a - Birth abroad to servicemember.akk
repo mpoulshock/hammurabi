@@ -32,7 +32,12 @@ Test: Test1
 - DateOfBirth(child) = 1930-03-02
 - USC.Tit8.Sec1401a.Sec1401gAppliesTo(child).Out =?= false
 
-Test: Test2
+Test: Test2a
+- Person child
+- DateOfBirth(child) = 1945-03-02
+- USC.Tit8.Sec1401a.Sec1401gAppliesTo(child).Out =?= "Unstated"
+
+Test: Test2b
 - Person child
 - Person dad
 - Person mom

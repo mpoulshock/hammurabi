@@ -36,9 +36,9 @@ namespace Hammurabi
          *  "Truth table" for AND:
          * 
          *     If one input is False, returns False.
-         *     Else if one input is Stub, returns Stub.
-         *     Else if one input is Uncertain, returns Uncertain.
          *     Else if one input is Unstated, returns Unstated.
+         *     Else if one input is Uncertain, returns Uncertain.
+         *     Else if one input is Stub, returns Stub.
          *     Else, returns True.
          */
         
@@ -80,7 +80,7 @@ namespace Hammurabi
             }
 
             // Any higher-precedence states go next
-            Hstate top = PrecedingState(list);
+            Hstate top = PrecedingStateForLogic(list);
             if (top != Hstate.Known) return new Hval(null,top);
 
             // Otherwise, true
@@ -96,9 +96,9 @@ namespace Hammurabi
          *  "Truth table" for OR:
          * 
          *     If one input is False, returns True.
-         *     Else if one input is Stub, returns Stub.
-         *     Else if one input is Uncertain, returns Uncertain.
          *     Else if one input is Unstated, returns Unstated.
+         *     Else if one input is Uncertain, returns Uncertain.
+         *     Else if one input is Stub, returns Stub.
          *     Else, returns False.
          */
         
@@ -140,7 +140,7 @@ namespace Hammurabi
             }
 
             // Any higher-precedence states go next
-            Hstate top = PrecedingState(list);
+            Hstate top = PrecedingStateForLogic(list);
             if (top != Hstate.Known) return new Hval(null,top);
 
             // Otherwise, false
