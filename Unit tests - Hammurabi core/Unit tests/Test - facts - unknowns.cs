@@ -55,32 +55,32 @@ namespace Hammurabi.UnitTests.CoreFcns
         // Some functions that ask for input facts
         private static Tbool A()
         {
-            return Input.Tbool(p1, "A", p2);
+            return Facts.QueryTvar<Tbool>(p1, "A", p2);
         }
         
         private static Tbool B()
         {
-            return Input.Tbool(p1, "B", p2);
+            return Facts.QueryTvar<Tbool>(p1, "B", p2);
         }
         
         private static Tbool C()
         {
-            return Input.Tbool(p1, "C", p2);
+            return Facts.QueryTvar<Tbool>(p1, "C", p2);
         }
         
         private static Tbool D()
         {
-            return Input.Tbool(p1, "D", p2);
+            return Facts.QueryTvar<Tbool>(p1, "D", p2);
         }
         
         private static Tnum X()
         {
-            return Input.Tnum(p1, "X", p2);
+            return Facts.QueryTvar<Tnum>(p1, "X", p2);
         } 
         
         private static Tnum Y()
         {
-            return Input.Tnum(p1, "Y", p2);
+            return Facts.QueryTvar<Tnum>(p1, "Y", p2);
         } 
 
         /// <summary>
@@ -143,7 +143,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         {
             Facts.Reset();
             Facts.GetUnknowns = true;
-            Facts.Assert(p1, "A", p2);
+            Facts.Assert(p1, "A", p2, true);
             Tbool theRule = A() & B() & C();
             Assert.AreEqual("B C", ShowUnknownTest());           
         }
@@ -153,7 +153,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         {
             Facts.Reset();
             Facts.GetUnknowns = true;
-            Facts.Assert(p1, "B", p2);
+            Facts.Assert(p1, "B", p2, true);
             Tbool theRule = A() & B() & C();
             Assert.AreEqual("A C", ShowUnknownTest());           
         }
@@ -163,7 +163,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         {
             Facts.Reset();
             Facts.GetUnknowns = true;
-            Facts.Assert(p1, "C", p2);
+            Facts.Assert(p1, "C", p2, true);
             Tbool theRule = A() & B() & C();
             Assert.AreEqual("A B", ShowUnknownTest());           
         }
@@ -255,7 +255,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         {
             Facts.Reset();
             Facts.GetUnknowns = true;
-            Facts.Assert(p1, "B", p2);
+            Facts.Assert(p1, "B", p2, true);
             Tbool theRule = A() && !B();
             Assert.AreEqual("", ShowUnknownTest());    // currently returns "A" - not "looking ahead" to see the False
         }

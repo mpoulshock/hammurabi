@@ -24,63 +24,37 @@ namespace Hammurabi
 {
     public partial class Facts
     {
-        //TODO: Implement data validation of some sort (e.g. consistency checking)
-        
+        // TODO: Implement data validation of some sort (e.g. consistency checking)
+
         /// <summary>
-        /// Assert a temporal relation between two legal entities
+        /// Assert a temporal relation between legal entities (3)
         /// </summary>
-        public static void Assert(LegalEntity e1, string rel, LegalEntity e2, Tbool val)
-        {           
-            Fact f = new Fact(e1, e2, rel, val);
+        public static void Assert(LegalEntity e1, string rel, LegalEntity e2, LegalEntity e3, Tvar val)
+        { 
+            Fact f = new Fact(rel, e1, e2, e3, val);
+            FactBase.Add(f);
+        }
+
+        /// <summary>
+        /// Assert a temporal relation between legal entities (2)
+        /// </summary>
+        public static void Assert(LegalEntity e1, string rel, LegalEntity e2, Tvar val)
+        { 
+            Fact f = new Fact(rel, e1, e2, val);
             FactBase.Add(f);
         }
         public static void Assert(LegalEntity e1, string rel, LegalEntity e2)
-        {           
-            Fact f = new Fact(e1, e2, rel, new Tbool(true));
+        {    
+            Fact f = new Fact(rel, e1, e2, new Tbool(true));
             FactBase.Add(f);
         }
-        public static void Assert(LegalEntity e1, string rel, LegalEntity e2, Tnum val)
-        {            
-            Fact f = new Fact(e1, e2, rel, val);
-            FactBase.Add(f);
-        }
-        public static void Assert(LegalEntity e1, string rel, LegalEntity e2, Tstr val)
-        {           
-            Fact f = new Fact(e1, e2, rel, val);
-            FactBase.Add(f);
-        }
-        public static void Assert(LegalEntity e1, string rel, LegalEntity e2, Tdate dt)
-        {            
-            Fact f = new Fact(e1, e2, rel, dt);
-            FactBase.Add(f);
-        }
-        
+
         /// <summary>
         /// Assert a temporal property of one legal entity
         /// </summary>
-        public static void Assert(LegalEntity e1, string rel, Tbool val)
-        {           
-            Fact f = new Fact(e1, rel, val);
-            FactBase.Add(f);
-        }
-        public static void Assert(LegalEntity e1, string rel)
-        {           
-            Fact f = new Fact(e1, rel, new Tbool(true));
-            FactBase.Add(f);
-        }
-        public static void Assert(LegalEntity e1, string rel, Tnum val)
-        {           
-            Fact f = new Fact(e1, rel, val);
-            FactBase.Add(f);
-        }
-        public static void Assert(LegalEntity e1, string rel, Tstr val)
-        {           
-            Fact f = new Fact(e1, rel, val);
-            FactBase.Add(f);
-        }
-        public static void Assert(LegalEntity e1, string rel, Tdate dt)
-        {            
-            Fact f = new Fact(e1, rel, dt);
+        public static void Assert(LegalEntity e1, string rel, Tvar val)
+        {
+            Fact f = new Fact(rel, e1, val);
             FactBase.Add(f);
         }
     }

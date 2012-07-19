@@ -33,81 +33,53 @@ namespace Hammurabi
 		/// </summary>
 		private static List<Fact> FactBase = new List<Fact>();
         
-        
-//        /// <summary>
-//        /// Returns a string representation of the FactBase. 
-//        /// </summary>
-//        public static string SerializedFactBase
-//        {
-//            get
-//            {
-//                return Auxiliary.SerializeToStr<List<Fact>>(FactBase);
-//            }
-//        }
-//        
-//        /// <summary>
-//        /// Loads the FactBase from a serialized string. 
-//        /// </summary>
-//        public static void SetFactBase(string s)
-//        {
-//            FactBase = Auxiliary.DeserializeFromStr<List<Fact>>(s);
-//        }
-        
 		/// <summary>
 		/// A Fact object represents a fact that is stored in the knowledge
 		/// base.
 		/// </summary>
 		private class Fact
 		{
+            public string relationship;
 			public LegalEntity subject;
-			public string relationship;
 			public LegalEntity directObject;
+            public LegalEntity directObject2;
 			public Tvar v;
-			public DateTime time;
             
-			/// <summary>
-			/// Sets a Tvar fact that relates to one legal entity  
-			/// </summary>
-			public Fact(LegalEntity subj, string rel, Tvar val)
-			{
-				subject = subj;
-				relationship = rel;
-				v = val;
-			}
-			
-			/// <summary>
-			/// Sets a DateTime fact that relates to one legal entity  
-			/// </summary>
-			public Fact(LegalEntity subj, string rel, DateTime dt)
-			{
-				subject = subj;
-				relationship = rel;
-				time = dt;
-			}
-			
-			/// <summary>
-			/// Sets a Tvar fact that establishes a relation between two legal
-			/// entities  
-			/// </summary>
-			public Fact(LegalEntity subj, LegalEntity directObj, string rel, Tvar val)
-			{
-				subject = subj;
-				directObject = directObj;
-				relationship = rel;
-				v = val;
-			}
-			
-			/// <summary>
-			/// Sets a DateTime fact that establishes a relation between two legal
-			/// entities  
-			/// </summary>
-			public Fact(LegalEntity subj, LegalEntity directObj, string rel, DateTime dt)
-			{
-				subject = subj;
-				directObject = directObj;
-				relationship = rel;
-				time = dt;
-			}
+            /// <summary>
+            /// Sets a Tvar fact that establishes a relation between legal entities (1)
+            /// </summary>
+            public Fact(string rel, LegalEntity subj, Tvar val)
+            {
+                relationship = rel;
+                subject = subj;
+                directObject = null;
+                directObject2 = null;
+                v = val;
+            }
+
+            /// <summary>
+            /// Sets a Tvar fact that establishes a relation between legal entities (2)
+            /// </summary>
+            public Fact(string rel, LegalEntity subj, LegalEntity obj1, Tvar val)
+            {
+                relationship = rel;
+                subject = subj;
+                directObject = obj1;
+                directObject2 = null;
+                v = val;
+            }
+
+            /// <summary>
+            /// Sets a Tvar fact that establishes a relation between legal entities (3) 
+            /// </summary>
+            public Fact(string rel, LegalEntity subj, LegalEntity obj1, LegalEntity obj2, Tvar val)
+            {
+                relationship = rel;
+                subject = subj;
+                directObject = obj1;
+                directObject2 = obj2;
+                v = val;
+            }
 		}
 		
         /// <summary>

@@ -1,8 +1,20 @@
 # Namespace:    Hammurabi.Sandbox
 # Summary:      A host of random unit tests
-# Updated:      2012-07-15
+# Updated:      2012-07-18
 # Author:       Michael Poulshock
 
+
+# INFINITE LOOPS
+
+# Status potentially based on citizenship of mother
+Tbool IsCitizen(Person p) =
+	TboolIn IsCitizenByLaw(p) |
+	IsCitizen(mom)
+
+	Person mom =
+		PersonIn MotherOf(p)
+		
+		
 
 # TIME-VARYING BOOLEANS
 	

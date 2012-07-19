@@ -143,6 +143,8 @@
     <Compile Include="Generated source\8 USC 1408 - Nationals of US at birth.cs" />
     <Compile Include="Core\Core functions\Tbool - elapsed time - sliding window.cs" />
     <Compile Include="Generated source\Random unit tests.cs" />
+    <Compile Include="Generated source\0 - Test1.cs" />
+    <Compile Include="Core\Facts\Inputs - symmetrical.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -159,7 +161,7 @@
     <MonoDevelop>
       <Properties>
         <Policies>
-          <StandardHeader Text="Copyright (c) 2012 Hammura.bi LLC&#xA;&#xA;THIS PROGRAM IS CONFIDENTIAL AND PROPRIETARY TO HAMMURA.BI LLC&#xA;AND MAY NOT BE REPRODUCED, PUBLISHED, ADAPTED, OR DISCLOSED TO &#xA;OTHERS WITHOUT WRITTEN AUTHORIZATION.&#xA;&#xA;NO REPRESENTATION OR WARRANTY IS MADE THAT THIS PROGRAM ACCURATELY REFLECTS&#xA;OR EMBODIES ANY APPLICABLE LAWS, REGULATIONS, RULES OR EXECUTIVE ORDERS &#xA;(&quot;LAWS&quot;). YOU SHOULD RELY ONLY ON OFFICIAL VERSIONS OF LAWS PUBLISHED BY THE &#xA;RELEVANT GOVERNMENT AUTHORITY, AND YOU ASSUME THE RESPONSIBILITY OF &#xA;INDEPENDENTLY VERIFYING SUCH LAWS. THE USE OF THIS PROGRAM IS NOT A &#xA;SUBSTITUTE FOR THE ADVICE OF AN ATTORNEY." IncludeInNewFiles="True" />
+          <StandardHeader Text="" IncludeInNewFiles="True" />
         </Policies>
       </Properties>
     </MonoDevelop>

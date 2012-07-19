@@ -37,8 +37,8 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void SymTT ()
         {
             Facts.Clear();
-            Facts.Assert(p1, "IsMarriedTo", p2);
-            Facts.Assert(p2, "IsMarriedTo", p1);
+            Facts.Assert(p1, "IsMarriedTo", p2, true);
+            Facts.Assert(p2, "IsMarriedTo", p1, true);
             Tbool result = Facts.Sym(p1, "IsMarriedTo", p2);
             Assert.AreEqual("Time.DawnOf True ", result.TestOutput);       
         }
@@ -47,7 +47,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void SymTF ()
         {
             Facts.Clear();
-            Facts.Assert(p1, "IsMarriedTo", p2);
+            Facts.Assert(p1, "IsMarriedTo", p2, true);
             Facts.Assert(p2, "IsMarriedTo", p1, false);                         // contradictory assertion
             Tbool result = Facts.Sym(p1, "IsMarriedTo", p2);
             Assert.AreEqual("Time.DawnOf True ", result.TestOutput);    // what is desired here? (or forbid contradictions)
@@ -57,7 +57,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void SymTU ()
         {
             Facts.Clear();
-            Facts.Assert(p1, "IsMarriedTo", p2);
+            Facts.Assert(p1, "IsMarriedTo", p2, true);
             Tbool result = Facts.Sym(p1, "IsMarriedTo", p2);
             Assert.AreEqual("Time.DawnOf True ", result.TestOutput);       
         }

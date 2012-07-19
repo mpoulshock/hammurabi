@@ -78,7 +78,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         // "Pretend" functions for testing purposes
         private static Tnum AssetValue(Property asset)
         {
-            return Input.Tnum(asset,"ValueOf");
+            return Facts.QueryTvar<Tnum>(asset,"ValueOf");
         }
         private static Tbool AssetValueLessThan4(Property asset)    
         { 
@@ -90,11 +90,11 @@ namespace Hammurabi.UnitTests.CoreFcns
         }
         private static Tbool Owns(Person p, Property r)
         {
-            return Input.Tbool(p, "Owns", r);
+            return Facts.QueryTvar<Tbool>(p, "Owns", r);
         }
         private static Tbool IsParentOf(Person p1, Person p2)
         {
-            return Input.Tbool(p1, "IsParentOf", p2);
+            return Facts.QueryTvar<Tbool>(p1, "IsParentOf", p2);
         }
         
         // Filter
@@ -117,8 +117,8 @@ namespace Hammurabi.UnitTests.CoreFcns
             Person P3 = new Person("P3");
             Person P4 = new Person("P4");
             
-            Facts.Assert(P1, "IsParentOf", P3);
-            Facts.Assert(P1, "IsParentOf", P4);
+            Facts.Assert(P1, "IsParentOf", P3, true);
+            Facts.Assert(P1, "IsParentOf", P4, true);
             Facts.Assert(P1, "IsParentOf", P1, false);  // An absurd thing to have to assert
             
             Tset result = Facts.AllKnownPeople().Filter( _ => IsParentOf(P1,_));
@@ -161,8 +161,8 @@ namespace Hammurabi.UnitTests.CoreFcns
             Person P3 = new Person("P3");
             Person P4 = new Person("P4");
             
-            Facts.Assert(P1, "IsParentOf", P3);
-            Facts.Assert(P1, "IsParentOf", P4);
+            Facts.Assert(P1, "IsParentOf", P3, true);
+            Facts.Assert(P1, "IsParentOf", P4, true);
             Facts.Assert(P4, "IsParentOf", P3, false);
             Facts.Assert(P3, "IsParentOf", P3, false);
             
@@ -266,7 +266,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Person P2 = new Person("P2");
             Person P3 = new Person("P3");
 
-            Facts.Assert(P1,"IsMarriedTo",P2);
+            Facts.Assert(P1, "IsMarriedTo", P2, true);
             Facts.Assert(P3, "IsPermanentlyAndTotallyDisabled", new Tbool(false));
             Tset result = Facts.AllKnownPeople();
             Assert.AreEqual("Time.DawnOf P1, P2, P3 ", result.TestOutput);

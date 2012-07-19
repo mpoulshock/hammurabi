@@ -232,9 +232,16 @@ namespace Akkadian
         public static string TvarInTransform(string line)
         {
             string typs = @"(Tbool|Tnum|Tstr|Tset|Tdate|Date|Person)";
-            
-            // Input.Tvar()
-            if (Util.IsInputRule(line))  // Starts w/ TvarIn at indent 0...
+
+            // People (rule condition)
+            if (line.Trim().StartsWith("PersonIn"))
+            {
+                // Currently only handles one argument...
+                line = Regex.Replace(line, @"PersonIn (?<fcn>"+wrd+@")\((?<arg>"+wrd+@")\)", "Facts.QueryPerson(${arg}, \"${fcn}\")", RegexOptions.IgnoreCase);  
+            }
+
+            // Rule conclusion line 
+            else if (Util.IsInputRule(line))  // Starts w/ TvarIn at indent 0...
             {
                 // TboolInSym (always has two arguments)
                 line = Regex.Replace(line, 
@@ -244,24 +251,27 @@ namespace Akkadian
                 // Functions with two arguments
                 line = Regex.Replace(line, 
                           @"(?<type>"+typs+@")In (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@"), ?(?<argtyp2>"+wrd+@" )(?<arg2>"+wrd+@")\)",
-                          "        public static ${type} ${fcn}(${argtyp1} ${arg1}, ${argtyp2} ${arg2})\r\n        {\r\n            return Input.${type}(${arg1}, \"${fcn}\", ${arg2});");  
+                          "        public static ${type} ${fcn}(${argtyp1} ${arg1}, ${argtyp2} ${arg2})\r\n        {\r\n            return Facts.QueryTvar<${type}>(${arg1}, \"${fcn}\", ${arg2});");  
 
                 // Functions with one argument
                 line = Regex.Replace(line, 
                           @"(?<type>"+typs+@")In (?<fcn>"+wrd+@")\((?<argtyp>"+wrd+@" )(?<arg>"+wrd+@")\)",
-                          "        public static ${type} ${fcn}(${argtyp} ${arg})\r\n        {\r\n            return Input.${type}(${arg}, \"${fcn}\");");  
+                          "        public static ${type} ${fcn}(${argtyp} ${arg})\r\n        {\r\n            return Facts.QueryTvar<${type}>(${arg}, \"${fcn}\");");  
             }
-            else                // Is rule condition line, not rule conclusion
+
+            // Is rule condition line, not rule conclusion
+            else                
             {
                 // TboolInSym (always has two arguments)
                 line = Regex.Replace(line, @"TboolInSym (?<fcn>"+wrd+@")\((?<arg1>[a-zA-Z0-9 ]+),(?<arg2>[a-zA-Z0-9 ]+)\)", 
                                      "Facts.Sym(${arg1}, \"${fcn}\", ${arg2})");  
 
                 // Functions with two arguments
-                line = Regex.Replace(line, @"(?<type>"+typs+@")In (?<fcn>"+wrd+@")\((?<arg1>[a-zA-Z0-9 ]+),(?<arg2>[a-zA-Z0-9 ]+)\)", "Input.${type}(${arg1}, \"${fcn}\", ${arg2})", RegexOptions.IgnoreCase);  
+                line = Regex.Replace(line, @"(?<type>"+typs+@")In (?<fcn>"+wrd+@")\((?<arg1>[a-zA-Z0-9 ]+),(?<arg2>[a-zA-Z0-9 ]+)\)", 
+                                     "Facts.QueryTvar<${type}>(${arg1}, \"${fcn}\", ${arg2})", RegexOptions.IgnoreCase);  
 
                 // Functions with one argument
-                line = Regex.Replace(line, @"(?<type>"+typs+@")In (?<fcn>"+wrd+@")\((?<arg>"+wrd+@")\)", "Input.${type}(${arg}, \"${fcn}\")", RegexOptions.IgnoreCase);  
+                line = Regex.Replace(line, @"(?<type>"+typs+@")In (?<fcn>"+wrd+@")\((?<arg>"+wrd+@")\)", "Facts.QueryTvar<${type}>(${arg}, \"${fcn}\")", RegexOptions.IgnoreCase);  
             }
             
             return line;
@@ -281,7 +291,7 @@ namespace Akkadian
                      "        {\r\n" +
                      "            if (Facts.HasBeenAssertedSym(${arg1}, \"${fcn}\", ${arg2}))\r\n" +
                      "            {\r\n" +
-                     "                return Input.Sym(${arg1}, \"${fcn}\", ${arg2});\r\n" +
+                     "                return Facts.Sym(${arg1}, \"${fcn}\", ${arg2});\r\n" +
                      "            }\r\n\r\n");
             }
             else
@@ -293,7 +303,7 @@ namespace Akkadian
                      "        {\r\n" +
                      "            if (Facts.HasBeenAsserted(${arg1}, \"${fcn}\", ${arg2}))\r\n" +
                      "            {\r\n" +
-                     "                return Input.${typ}(${arg1}, \"${fcn}\", ${arg2});\r\n" +
+                     "                return Facts.QueryTvar<${typ}>(${arg1}, \"${fcn}\", ${arg2});\r\n" +
                      "            }\r\n\r\n");
 
                 // One argument
@@ -303,7 +313,7 @@ namespace Akkadian
                      "        {\r\n" +
                      "            if (Facts.HasBeenAsserted(${arg1}, \"${fcn}\"))\r\n" +
                      "            {\r\n" +
-                     "                return Input.${typ}(${arg1}, \"${fcn}\");\r\n" +
+                     "                return Facts.QueryTvar<${typ}>(${arg1}, \"${fcn}\");\r\n" +
                      "            }\r\n\r\n");
             }
 
