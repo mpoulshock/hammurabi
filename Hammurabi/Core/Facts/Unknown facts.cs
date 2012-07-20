@@ -40,15 +40,15 @@ namespace Hammurabi
         /// <summary>
         /// Add a (two-entity) factlet to UnknownFacts.
         /// </summary>
-        public static void AddUnknown(LegalEntity e1, string rel, LegalEntity e2)
+        public static void AddUnknown(string rel, LegalEntity e1, LegalEntity e2, LegalEntity e3)
         {
             // Keep list from devouring the entire universe
             if (Unknowns.Count < 500)
             {
                 // Ignore duplicates
-                if (!IsUnknown(e1,rel,e2))
+                if (!IsUnknown(rel, e1, e2, e3))
                 { 
-                    Unknowns.Add(new Factlet(e1,rel,e2));
+                    Unknowns.Add(new Factlet(rel, e1, e2, e3));
                 }
             }
         }
@@ -59,13 +59,14 @@ namespace Hammurabi
         /// <remarks>
         /// Note that this is distinct from whether a fact HasBeenAsserted.
         /// </remarks>
-        public static bool IsUnknown(LegalEntity e1, string rel, LegalEntity e2)
+        public static bool IsUnknown(string rel, LegalEntity e1, LegalEntity e2, LegalEntity e3)
         {
             foreach (Factlet t in Unknowns)
             {
-                if (t.subject == e1 &&
-                    t.relationship == rel &&
-                    t.directObject == e2)
+                if (t.relationship == rel &&
+                    t.subject == e1 &&
+                    t.object1 == e2 &&
+                    t.object2 == e3)
                 {
                     return true;
                 }
@@ -82,9 +83,13 @@ namespace Hammurabi
             
             foreach (Facts.Factlet f in Facts.Unknowns)
             {
-                if (f.directObject != null)
+                if (f.object2 != null)
                 {
-                    result += f.subject.Id + " " + f.relationship + " " + f.directObject.Id + "\n";
+                    result += f.subject.Id + " " + f.relationship + " " + f.object1.Id + " " + f.object2.Id+ "\n";
+                }
+                else if (f.object1 != null)
+                {
+                    result += f.subject.Id + " " + f.relationship + " " + f.object1.Id + "\n";
                 }
                 else
                 {
@@ -101,18 +106,20 @@ namespace Hammurabi
         /// </summary>
         public class Factlet
         {
-            public LegalEntity subject;
             public string relationship;
-            public LegalEntity directObject;
+            public LegalEntity subject;
+            public LegalEntity object1;
+            public LegalEntity object2;
 
             /// <summary>
             /// Factlet that relates to two legal entities.  
             /// </summary>
-            public Factlet(LegalEntity subj, string rel, LegalEntity obj)
+            public Factlet(string rel, LegalEntity subj, LegalEntity obj1, LegalEntity obj2)
             {
                 subject = subj;
                 relationship = rel;
-                directObject = obj;
+                object1 = obj1;
+                object2 = obj2;
             }
         }
     }

@@ -74,7 +74,7 @@ namespace Interactive
             // Default outputs
             bool allDone = true;
             int percent = 0;
-            Facts.Factlet theNextFact = new Facts.Factlet(null,"",null);
+            Facts.Factlet theNextFact = new Facts.Factlet("", null, null, null);
 
             // Prepare to look for unknown facts
             Facts.GetUnknowns = true;

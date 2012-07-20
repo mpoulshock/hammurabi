@@ -129,7 +129,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Facts.GetUnknowns = true;
             Tbool result = Fam.IsBiologicalParentOf(p1, p2);
             Facts.GetUnknowns = false;
-            bool f = Facts.IsUnknown(p2, "FamilyRelationship", p1);
+            bool f = Facts.IsUnknown("FamilyRelationship", p2, p1, null);
             Assert.AreEqual(false, f);       
         }
         
@@ -142,7 +142,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Facts.GetUnknowns = true;
             Tbool result = Fam.IsBiologicalParentOf(p1, p2);
             Facts.GetUnknowns = false;
-            bool f = Facts.IsUnknown(p2, "FamilyRelationship", p1);
+            bool f = Facts.IsUnknown("FamilyRelationship", p2, p1, null);
             Assert.AreEqual(false, f);       
         }
         
@@ -170,7 +170,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Facts.GetUnknowns = true;
             Tbool result = Fam.IsBiologicalParentOf(p1, p2);
             Facts.GetUnknowns = false;
-            bool f = Facts.IsUnknown(p1, "FamilyRelationship", p2);
+            bool f = Facts.IsUnknown("FamilyRelationship", p1, p2, null);
             Assert.AreEqual(false, f);       
         }
         

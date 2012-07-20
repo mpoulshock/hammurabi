@@ -37,7 +37,7 @@ namespace Hammurabi
         /// </remarks>
         public static Tbool Sym(LegalEntity subj, string rel, LegalEntity directObj)
         {
-            if (Facts.HasBeenAsserted(subj, rel, directObj))
+            if (Facts.HasBeenAsserted(rel, subj, directObj))
             {
                 return QueryTvar<Tbool>(subj, rel, directObj);
             }
@@ -50,7 +50,7 @@ namespace Hammurabi
         /// </summary>
         public static Tbool Sym(LegalEntity subj, string rel, LegalEntity directObj, string val)
         {
-            if (Facts.HasBeenAsserted(subj, rel, directObj))
+            if (Facts.HasBeenAsserted(rel, subj, directObj))
             {
                 return QueryTvar<Tstr>(subj, rel, directObj) == val;
             }
@@ -64,8 +64,8 @@ namespace Hammurabi
         /// </summary>
         public static Tbool Sym(LegalEntity subj, string rel, LegalEntity obj, string text, string reverseText)
         {
-            bool fwd = Facts.HasBeenAsserted(subj, rel, obj);
-            bool bwd = Facts.HasBeenAsserted(obj, rel, subj);
+            bool fwd = Facts.HasBeenAsserted(rel, subj, obj);
+            bool bwd = Facts.HasBeenAsserted(rel, obj, subj);
             
             if (fwd) { return QueryTvar<Tstr>(subj, rel, obj) == text; }
             

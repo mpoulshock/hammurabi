@@ -112,10 +112,17 @@ namespace Akkadian
             }
 
             // Convert the assertion from Akkadian to C#
+            // Facts with three arguments
+            fact = Regex.Replace(fact, 
+                                 @"(?<fcn>"+wrd+@")\((?<arg1>[a-zA-Z0-9 ]+),(?<arg2>[a-zA-Z0-9 ]+),(?<arg3>[a-zA-Z0-9 ]+)\) = (?<val>"+word+@")", 
+                                 "            Facts.Assert(${arg1}, \"${fcn}\", ${arg2}, ${arg3}, ${val});", RegexOptions.IgnoreCase);  
+            
+            // Facts with two arguments
             fact = Regex.Replace(fact, 
                                  @"(?<fcn>"+wrd+@")\((?<arg1>[a-zA-Z0-9 ]+),(?<arg2>[a-zA-Z0-9 ]+)\) = (?<val>"+word+@")", 
                                  "            Facts.Assert(${arg1}, \"${fcn}\", ${arg2}, ${val});", RegexOptions.IgnoreCase);  
             
+            // Facts with one argument
             fact = Regex.Replace(fact, 
                                  @"(?<fcn>"+wrd+@")\((?<arg>"+wrd+@")\) = (?<val>"+word+@")", 
                                  "            Facts.Assert(${arg}, \"${fcn}\", ${val});", RegexOptions.IgnoreCase);  

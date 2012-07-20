@@ -41,7 +41,7 @@ namespace Hammurabi
 		{
             public string relationship;
 			public LegalEntity subject;
-			public LegalEntity directObject;
+			public LegalEntity directObject1;
             public LegalEntity directObject2;
 			public Tvar v;
             
@@ -52,7 +52,7 @@ namespace Hammurabi
             {
                 relationship = rel;
                 subject = subj;
-                directObject = null;
+                directObject1 = null;
                 directObject2 = null;
                 v = val;
             }
@@ -64,7 +64,7 @@ namespace Hammurabi
             {
                 relationship = rel;
                 subject = subj;
-                directObject = obj1;
+                directObject1 = obj1;
                 directObject2 = null;
                 v = val;
             }
@@ -76,7 +76,7 @@ namespace Hammurabi
             {
                 relationship = rel;
                 subject = subj;
-                directObject = obj1;
+                directObject1 = obj1;
                 directObject2 = obj2;
                 v = val;
             }
@@ -113,41 +113,42 @@ namespace Hammurabi
         /// </summary>
         public static bool HasBeenAssertedSym(LegalEntity e1, string rel, LegalEntity e2)
         {
-            return HasBeenAsserted(e1, rel, e2) ||
-                   HasBeenAsserted(e2, rel, e1);
+            return HasBeenAsserted(rel, e1, e2) ||
+                   HasBeenAsserted(rel, e2, e1);
         }
 
         /// <summary>
-        /// Returns true if a fact has been assserted
+        /// Returns true if a fact has been assserted - 1 entity.
         /// </summary>
-        public static bool HasBeenAsserted(LegalEntity e1, string rel, LegalEntity e2)
+        public static bool HasBeenAsserted(string rel, LegalEntity e1)
+        {
+            return HasBeenAsserted(rel, e1, null, null);
+        }
+
+        /// <summary>
+        /// Returns true if a fact has been assserted - 2 entities.
+        /// </summary>
+        public static bool HasBeenAsserted(string rel, LegalEntity e1, LegalEntity e2)
+        {
+            return HasBeenAsserted(rel, e1, e2, null);
+        }
+
+        /// <summary>
+        /// Returns true if a fact has been assserted - 3 entities.
+        /// </summary>
+        public static bool HasBeenAsserted(string rel, LegalEntity e1, LegalEntity e2, LegalEntity e3)
         {
             // Look up fact in table of facts
             foreach (Fact f in FactBase)
             {
-                if (f.subject == e1 && f.relationship == rel && f.directObject == e2)
+                if (f.subject == e1 && f.relationship == rel && 
+                    f.directObject1 == e2 && f.directObject2 == e3)
                 {
                     return true;
                 }
             }
 
             // If fact is not found...
-            return false;
-        }
-        
-        /// <summary>
-        /// Returns true if a fact has been assserted
-        /// </summary>
-        public static bool HasBeenAsserted(LegalEntity e1, string rel)
-        {
-            foreach (Fact f in FactBase)
-            {
-                if (f.subject == e1 && f.relationship == rel)
-                {
-                    return true;
-                }
-            }
-
             return false;
         }
 
@@ -163,14 +164,13 @@ namespace Hammurabi
             {
                 result += f.subject.Id + " " + f.relationship;
 
-                if (f.directObject != null)
-                    result += " " + f.directObject.Id;
+                if (f.directObject1 != null)
+                    result += " " + f.directObject1.Id;
 
                 result += " = " + f.v.TestOutput + "\n";
             }
 
             return result;
         }
-
 	}
 }

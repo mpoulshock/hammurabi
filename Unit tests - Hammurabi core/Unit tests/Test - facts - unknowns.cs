@@ -106,7 +106,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         {
             Facts.Clear();
             Facts.Assert(p2, "FamilyRelationship", p1, "Biological child");
-            bool result = Facts.HasBeenAsserted(p2, "FamilyRelationship", p1);
+            bool result = Facts.HasBeenAsserted("FamilyRelationship", p2, p1);
             Assert.AreEqual(true, result);         
         }
         
@@ -115,7 +115,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         {
             Facts.Clear();
             Facts.Assert(p2, "FamilyRelationship", p1, "Biological child");
-            bool result = Facts.HasBeenAsserted(p1, "FamilyRelationship", p2);
+            bool result = Facts.HasBeenAsserted("FamilyRelationship", p1, p2);
             Assert.AreEqual(false, result);         
         }
         

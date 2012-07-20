@@ -1,7 +1,60 @@
 # Namespace:    Hammurabi.Sandbox
 # Summary:      A host of random unit tests
-# Updated:      2012-07-18
+# Updated:      2012-07-19
 # Author:       Michael Poulshock
+
+
+# METHODS WITH THREE PARAMETERS
+
+
+Tbool Another3ParamTest(Person a, Person b, Person c) =
+	TboolIn ABC(a,b,c)
+
+TboolIn IsABC(Person a, Person b, Property c) =
+	Stub() |
+	IsXYZ(a,b,c)
+
+TboolIn IsXYZ(Person x, Person y, Property z)
+
+Test: Param3_1a
+- Person x
+- Person y
+- Property z
+- IsXYZ(x,y,z) = true
+- Sandbox.IsXYZ(x,y,z).Out =?= true
+
+Test: Param3_1b
+- Person x
+- Person y
+- Property z
+- IsXYZ(x,y,z) = false
+- Sandbox.IsXYZ(x,y,z).Out =?= false
+
+Test: Param3_1c
+- Person x
+- Person y
+- Property z
+- Sandbox.IsXYZ(x,y,z).Out =?= "Unstated"
+
+Test: Param3_2a
+- Person a
+- Person b
+- Person c
+- ABC(a,b,c) = true
+- Sandbox.Another3ParamTest(a,b,c).Out =?= true
+
+Test: Param3_2b
+- Person a
+- Person b
+- Person c
+- ABC(a,b,c) = false
+- Sandbox.Another3ParamTest(a,b,c).Out =?= false
+
+Test: Param3_2c
+- Person a
+- Person b
+- Person c
+- Sandbox.Another3ParamTest(a,b,c).Out =?= "Unstated"
 
 
 # INFINITE LOOPS

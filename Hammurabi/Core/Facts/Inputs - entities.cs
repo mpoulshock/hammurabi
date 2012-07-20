@@ -60,9 +60,9 @@ namespace Hammurabi
                     if (!thePeople.Contains(f.subject))
                         thePeople.Add(f.subject);
 
-                if(f.directObject != null && f.directObject.GetType() == new Person("").GetType())
-                    if (!thePeople.Contains(f.directObject))
-                        thePeople.Add(f.directObject);
+                if(f.directObject1 != null && f.directObject1.GetType() == new Person("").GetType())
+                    if (!thePeople.Contains(f.directObject1))
+                        thePeople.Add(f.directObject1);
             }
             
             result.AddState(Time.DawnOf,new Hval(thePeople));
@@ -85,9 +85,9 @@ namespace Hammurabi
                     if (!theProp.Contains(f.subject))
                         theProp.Add(f.subject);
 
-                if(f.directObject != null && f.directObject.GetType() == new Property("").GetType())
-                    if (!theProp.Contains(f.directObject))
-                        theProp.Add(f.directObject);
+                if(f.directObject1 != null && f.directObject1.GetType() == new Property("").GetType())
+                    if (!theProp.Contains(f.directObject1))
+                        theProp.Add(f.directObject1);
             }
             
             result.AddState(Time.DawnOf,new Hval(theProp));

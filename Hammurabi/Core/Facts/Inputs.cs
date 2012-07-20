@@ -27,10 +27,10 @@ namespace Hammurabi
         /// <summary>
         /// Queries the fact base for a temporal property (fact) of a single legal entity.
         /// </summary>
-        public static T QueryTvar<T>(LegalEntity e1, string rel) where T : Tvar
-        {
-            return (T)QueryTvar<T>(e1, rel, null);
-        }
+//        public static T QueryTvar<T>(LegalEntity e1, string rel) where T : Tvar
+//        {
+//            return (T)QueryTvar<T>(e1, rel, null);
+//        }
 
         /// <summary>
         /// Queries the fact base for a temporal relationship (fact) of two legal entities.
@@ -50,7 +50,7 @@ namespace Hammurabi
             // Look up fact in table of facts
             foreach (Fact f in FactBase)
             {
-                if (f.subject == e1 && f.relationship == rel && f.directObject == e2)
+                if (f.subject == e1 && f.relationship == rel && f.directObject1 == e2)
                 {
                     return (T)f.v;
                 }
@@ -59,7 +59,64 @@ namespace Hammurabi
             // Add the fact to the list of unknown facts
             if (GetUnknowns)
             {
-                AddUnknown(e1,rel,e2);
+                AddUnknown(rel, e1, e2, null);
+            }
+
+            // If fact is not found, return a default value (usually "unstated")
+            return defaultValue;
+        }
+
+
+
+
+        /// <summary>
+        /// Queries the fact base - 1 entity.
+        /// </summary>
+        public static T QueryTvar<T>(string rel, LegalEntity e1) where T : Tvar
+        {
+            T defaultVal = (T)Auxiliary.ReturnProperTvar<T>(Hstate.Unstated);
+
+            return (T)QueryTvar<T>(rel, e1, null, null, defaultVal);
+        }
+
+        /// <summary>
+        /// Queries the fact base - 2 entities.
+        /// </summary>
+        public static T QueryTvar<T>(string rel, LegalEntity e1, LegalEntity e2) where T : Tvar
+        {
+            T defaultVal = (T)Auxiliary.ReturnProperTvar<T>(Hstate.Unstated);
+
+            return QueryTvar<T>(rel, e1, e2, null, defaultVal);
+        }
+
+        /// <summary>
+        /// Queries the fact base - 3 entities.
+        /// </summary>
+        public static T QueryTvar<T>(string rel, LegalEntity e1, LegalEntity e2, LegalEntity e3) where T : Tvar
+        {
+            T defaultVal = (T)Auxiliary.ReturnProperTvar<T>(Hstate.Unstated);
+
+            return QueryTvar<T>(rel, e1, e2, e3, defaultVal);
+        }
+
+        /// <summary>
+        /// Queries the fact base for a temporal relationship (fact) among three legal entities.
+        /// </summary>
+        public static T QueryTvar<T>(string rel, LegalEntity e1, LegalEntity e2, LegalEntity e3, T defaultValue) where T : Tvar
+        {
+            // Look up fact in table of facts
+            foreach (Fact f in FactBase)
+            {
+                if (f.subject == e1 && f.relationship == rel && f.directObject1 == e2 && f.directObject2 == e3)
+                {
+                    return (T)f.v;
+                }
+            }
+
+            // Add the fact to the list of unknown facts
+            if (GetUnknowns)
+            {
+                AddUnknown(rel, e1, e2, e3);
             }
 
             // If fact is not found, return a default value (usually "unstated")
@@ -69,19 +126,19 @@ namespace Hammurabi
         /// <summary>
         /// Queries the fact base for a person instance.
         /// </summary> 
-        public static Person QueryPerson(LegalEntity e1, string rel)
+        public static Person QueryPerson(string rel, LegalEntity e1)
         {
             foreach (Fact f in FactBase)
             {
                 if (f.subject == e1 && f.relationship == rel)
                 {
-                    return (Person)f.directObject;
+                    return (Person)f.directObject1;
                 }
             }
-            
+
             if (GetUnknowns)
             {
-                AddUnknown(e1, rel, null);
+                AddUnknown(rel, e1, null, null);
             }
             
             return new Person("");
