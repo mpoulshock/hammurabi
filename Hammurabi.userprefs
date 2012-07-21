@@ -5,15 +5,13 @@
       <Pad Id="ProjectPad">
         <State expanded="True">
           <Node name="AkkadianCompiler" expanded="True" />
-          <Node name="Hammurabi" expanded="True" selected="True">
-            <Node name="Core" expanded="True">
-              <Node name="Core functions" expanded="True" />
+          <Node name="Hammurabi" expanded="True">
+            <Node name="Core" expanded="True" />
+            <Node name="Generated source" expanded="True">
+              <Node name="0 - Test1.cs" selected="True" />
             </Node>
-            <Node name="Generated source" expanded="True" />
           </Node>
-          <Node name="Unit tests - Hammurabi core" expanded="True">
-            <Node name="Unit tests" expanded="True" />
-          </Node>
+          <Node name="Unit tests - Hammurabi core" expanded="True" />
         </State>
       </Pad>
       <Pad Id="ClassPad">

@@ -80,7 +80,7 @@ namespace Akkadian
                                        "            Facts.Clear();\r\n");
                    
             // Entity declarations
-            else if (Util.StartsWithAny(line,"Person","Property","Corp","LegalEntity") != "")
+            else if (Util.StartsWithAny(line,"Person ","Property ","Corp ","LegalEntity ") != "")
                 unitTests += Regex.Replace(line, @"(?<ent>(Person|Property|Corp|LegalEntity)) (?<id>[a-zA-Z0-9_]+)", 
                                        "            ${ent} ${id} = new ${ent}(\"${id}\");\r\n");
                         
