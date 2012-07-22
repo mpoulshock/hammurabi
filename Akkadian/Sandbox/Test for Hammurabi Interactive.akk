@@ -1,6 +1,6 @@
 # Namespace:    Hammurabi.Sandbox
 # Summary:      Provides a way to test the main rule types in Hammurabi Interactive.
-# Updated:      2012-07-03
+# Updated:      2012-07-21
 # Author:       Michael Poulshock
 	
 	
@@ -15,26 +15,18 @@ Current problems:
 	
 # Top-level conclusion
 Tbool MainGoalMet(Person p) =
-	TboolIn BoolA(p) &
+	BoolA(p) &
 	...
-		TboolIn BoolB(p) |
+		BoolB(p) |
 		TheNum(p) > 10
 	&
 	MatchTable(TstrIn StrA(p))
 	
-	##
-	Tnum num =
-		TheNum(p)
-	
-	Tstr str =
-		TstrIn StrA(p)
-	##
-	
 # If-then-else
 Tnum TheNum(Person p) =
 	set:
-	if TboolIn BoolC(p) -> 100
-	if TboolIn BoolD(p) -> 1
+	if BoolC(p) -> 100
+	if BoolD(p) -> 1
 	else 0
 	
 # Unincorporated U.S. territories
@@ -43,5 +35,20 @@ Tbool MatchTable(Tstr jur) =
 	A -> true
 	B -> false
 	else true
-	  
+
+	
+# INPUTS
+
+# >> Is {1} an A?
+TboolIn BoolA(Person p)
+
+# >> Is {1} an B?
+TboolIn BoolB(Person p)
+
+# >> Is {1} an C?
+TboolIn BoolC(Person p)
+
+# >> Is {1} an D?
+TboolIn BoolD(Person p)
+
 	  

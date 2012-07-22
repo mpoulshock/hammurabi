@@ -8,12 +8,17 @@
 
 # Date of birth
 TdateIn DoB(Person p) =
-	TdateIn DateOfBirth(p)
+	DateOfBirth(p)
+
+# >> What is {1}'s date of birth?
+TdateIn DateOfBirth(Person p)
 
 # Date of death
+# >> What is {1}'s date of death?
 TdateIn DateOfDeath(Person p)
 
 # Deceased
+# >> Is {1} deceased?
 TboolIn IsDeceased(Person p)
 
 # Age (in years)

@@ -39,6 +39,7 @@
     <Compile Include="Boilerplate.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Tests.cs" />
+    <Compile Include="Question metadata.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

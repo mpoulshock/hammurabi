@@ -81,7 +81,10 @@ namespace Akkadian
                 Compile(f, targetPath);
                 docCount++;
             }
-            
+
+            // Generate question metadata file
+            Questions.GenerateMetadataFile(targetPath);
+
             // Display elapsed time
             duration = DateTime.Now - startTime;
             
@@ -131,6 +134,7 @@ namespace Akkadian
             string rulePart = "";
             Tests.unitTests = "";
             List<string> subrules = new List<string>();
+            string previousLine = "";
          
             // Read the stream a line at a time and place each one into the stringbuilder
             while( (line = stream.ReadLine()) != null )
@@ -141,7 +145,11 @@ namespace Akkadian
                 // Handle commented lines, comment blocks, and mid-line comments
                 if (!isCommentBlock && Util.IsCommentBlockLine(line)) { isCommentBlock = true; }
                 else if (isCommentBlock && Util.IsCommentBlockLine(line)) { isCommentBlock = false; continue; }
-                if (isCommentBlock || Util.IsComment(line)) continue;
+                if (isCommentBlock || Util.IsComment(line)) 
+                {
+                    previousLine = line;    // Get previous line, to capture any question text
+                    continue;
+                }
                 line = Util.DeComment(line);
              
                 // Create unit test from .akk
@@ -163,7 +171,7 @@ namespace Akkadian
                     subrules.Clear(); 
 
                     // Process current line
-                    result += Convert(line);
+                    result += Convert(line, previousLine);
                  
                     // Set flag variables
                     ruleCount++;
@@ -196,7 +204,7 @@ namespace Akkadian
                     if (line.Trim().StartsWith("match")) tableMatchLine = line;
                  
                     // Convert the line items (to main rule or subrule)
-                    snippet += "        " + Convert(line) + "\r\n";
+                    snippet += "        " + Convert(line, previousLine) + "\r\n";
                     if (isRulePart) rulePart += snippet;
                     else result += snippet;
                 }
@@ -236,7 +244,7 @@ namespace Akkadian
         /// <summary>
         /// Applies transformation rules to the input line.
         /// </summary>
-        private static string Convert(string line)
+        private static string Convert(string line, string previousLine)
         {
             // Perform general syntactic replacements
             line = line.Replace("|~","^");
@@ -249,6 +257,9 @@ namespace Akkadian
              
             // Stub()
             line = Regex.Replace(line, @"Stub\(\)", "new " + currentRuleType + "(Hstate.Stub)");    
+
+            // Gather question text from the .akk documents
+            Questions.GatherMetadata(line, previousLine);
 
             // Start new rule / C# method (must come before TvarIn)
             // First, look for rules that require intermediate assertion checks

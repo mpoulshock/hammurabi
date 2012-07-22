@@ -145,6 +145,8 @@
     <Compile Include="Generated source\Random unit tests.cs" />
     <Compile Include="Generated source\0 - Test1.cs" />
     <Compile Include="Core\Facts\Inputs - symmetrical.cs" />
+    <Compile Include="Generated source\Question metadata.cs" />
+    <Compile Include="Core\Engine\Question class.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
