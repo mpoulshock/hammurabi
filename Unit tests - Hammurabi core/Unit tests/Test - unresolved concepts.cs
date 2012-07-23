@@ -52,7 +52,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         
         private static Tbool IsParentOf(Person p1, Person p2)
         {
-            return Facts.QueryTvar<Tbool>(p1, "IsParentOf", p2);
+            return Facts.QueryTvar<Tbool>("IsParentOf", p1, p2);
         }
         
         // Fact default assumption issue - another example...

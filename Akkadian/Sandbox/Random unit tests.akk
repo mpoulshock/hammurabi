@@ -1,11 +1,33 @@
 # Namespace:    Hammurabi.Sandbox
 # Summary:      A host of random unit tests
-# Updated:      2012-07-19
+# Updated:      2012-07-22
 # Author:       Michael Poulshock
 
 
-# METHODS WITH THREE PARAMETERS
 
+# INFINITE LOOPS
+
+# Status potentially based on citizenship of mother
+Tbool IsCitizen(Person p) =
+	TboolIn IsCitizenByLaw(p) |
+	IsCitizen(mom)
+
+	Person mom =
+		PersonIn MotherOf(p)
+
+## These cause infinite loops...		
+Test: Loop1
+- Person p
+- Sandbox.IsCitizen(p).Out =?= "Unstated"
+
+Test: Loop2
+- Person p
+- Person mom
+- MotherOf(p) = mom
+- Sandbox.IsCitizen(p).Out =?= "Unstated"
+##
+
+# METHODS WITH THREE PARAMETERS
 
 Tbool Another3ParamTest(Person a, Person b, Person c) =
 	TboolIn ABC(a,b,c)
@@ -56,18 +78,6 @@ Test: Param3_2c
 - Person c
 - Sandbox.Another3ParamTest(a,b,c).Out =?= "Unstated"
 
-
-# INFINITE LOOPS
-
-# Status potentially based on citizenship of mother
-Tbool IsCitizen(Person p) =
-	TboolIn IsCitizenByLaw(p) |
-	IsCitizen(mom)
-
-	Person mom =
-		PersonIn MotherOf(p)
-		
-		
 
 # TIME-VARYING BOOLEANS
 	

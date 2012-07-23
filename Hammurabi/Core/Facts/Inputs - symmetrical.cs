@@ -39,10 +39,10 @@ namespace Hammurabi
         {
             if (Facts.HasBeenAsserted(rel, subj, directObj))
             {
-                return QueryTvar<Tbool>(subj, rel, directObj);
+                return QueryTvar<Tbool>(rel, subj, directObj);
             }
             
-            return QueryTvar<Tbool>(directObj, rel, subj);
+            return QueryTvar<Tbool>(rel, directObj, subj);
         }
         
         /// <summary>
@@ -52,10 +52,10 @@ namespace Hammurabi
         {
             if (Facts.HasBeenAsserted(rel, subj, directObj))
             {
-                return QueryTvar<Tstr>(subj, rel, directObj) == val;
+                return QueryTvar<Tstr>(rel, subj, directObj) == val;
             }
             
-            return QueryTvar<Tstr>(directObj, rel, subj) == val;
+            return QueryTvar<Tstr>(rel, directObj, subj) == val;
         }
         
         /// <summary>
@@ -67,12 +67,12 @@ namespace Hammurabi
             bool fwd = Facts.HasBeenAsserted(rel, subj, obj);
             bool bwd = Facts.HasBeenAsserted(rel, obj, subj);
             
-            if (fwd) { return QueryTvar<Tstr>(subj, rel, obj) == text; }
+            if (fwd) { return QueryTvar<Tstr>(rel, subj, obj) == text; }
             
-            else if (bwd) { return QueryTvar<Tstr>(obj, rel, subj) == reverseText; }
+            else if (bwd) { return QueryTvar<Tstr>(rel, obj, subj) == reverseText; }
             
-            return Facts.Either(QueryTvar<Tstr>(subj, rel, obj) == text, 
-                                QueryTvar<Tstr>(obj, rel, subj) == reverseText);
+            return Facts.Either(QueryTvar<Tstr>(rel, subj, obj) == text, 
+                                QueryTvar<Tstr>(rel, obj, subj) == reverseText);
         }
         
         /// <summary>

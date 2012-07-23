@@ -136,7 +136,7 @@ namespace Akkadian
             }
 
             // Close out the question template class
-            result += "\r\ndefault: return new Question(rel, \"bool\", \"\", \"\"); }}}}";
+            result += "\r\ndefault: return new Question(rel, \"bool\", rel, \"\"); }}}}";
 
             // Write the string to a file
             System.IO.StreamWriter file = new System.IO.StreamWriter(filePath + "Question metadata.cs");

@@ -55,32 +55,32 @@ namespace Hammurabi.UnitTests.CoreFcns
         // Some functions that ask for input facts
         private static Tbool A()
         {
-            return Facts.QueryTvar<Tbool>(p1, "A", p2);
+            return Facts.QueryTvar<Tbool>("A", p1, p2);
         }
         
         private static Tbool B()
         {
-            return Facts.QueryTvar<Tbool>(p1, "B", p2);
+            return Facts.QueryTvar<Tbool>("B", p1, p2);
         }
         
         private static Tbool C()
         {
-            return Facts.QueryTvar<Tbool>(p1, "C", p2);
+            return Facts.QueryTvar<Tbool>("C", p1, p2);
         }
         
         private static Tbool D()
         {
-            return Facts.QueryTvar<Tbool>(p1, "D", p2);
+            return Facts.QueryTvar<Tbool>("D", p1, p2);
         }
         
         private static Tnum X()
         {
-            return Facts.QueryTvar<Tnum>(p1, "X", p2);
+            return Facts.QueryTvar<Tnum>("X", p1, p2);
         } 
         
         private static Tnum Y()
         {
-            return Facts.QueryTvar<Tnum>(p1, "Y", p2);
+            return Facts.QueryTvar<Tnum>("Y", p1, p2);
         } 
 
         /// <summary>

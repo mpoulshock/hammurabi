@@ -5,7 +5,11 @@
       <Pad Id="ProjectPad">
         <State expanded="True">
           <Node name="AkkadianCompiler" expanded="True" />
-          <Node name="Hammurabi" expanded="True" selected="True" />
+          <Node name="Hammurabi" expanded="True" selected="True">
+            <Node name="Core" expanded="True">
+              <Node name="Engine" expanded="True" />
+            </Node>
+          </Node>
           <Node name="Unit tests - Hammurabi core" expanded="True" />
         </State>
       </Pad>
@@ -14,6 +18,9 @@
       </Pad>
       <Pad Id="MonoDevelop.Debugger.WatchPad">
         <State />
+      </Pad>
+      <Pad Id="MonoDevelop.NUnit.TestPad">
+        <State expanded="True" selected="True" />
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>

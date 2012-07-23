@@ -25,51 +25,6 @@ namespace Hammurabi
     public partial class Facts
     {
         /// <summary>
-        /// Queries the fact base for a temporal property (fact) of a single legal entity.
-        /// </summary>
-//        public static T QueryTvar<T>(LegalEntity e1, string rel) where T : Tvar
-//        {
-//            return (T)QueryTvar<T>(e1, rel, null);
-//        }
-
-        /// <summary>
-        /// Queries the fact base for a temporal relationship (fact) of two legal entities.
-        /// </summary>
-        public static T QueryTvar<T>(LegalEntity e1, string rel, LegalEntity e2) where T : Tvar
-        {
-            T defaultVal = (T)Auxiliary.ReturnProperTvar<T>(Hstate.Unstated);
-            return QueryTvar<T>(e1, rel, e2, defaultVal);
-        }
-
-        /// <summary>
-        /// Queries the fact base for a temporal relationship (fact) of two legal entities,
-        /// returning a default value if the fact is unstated.
-        /// </summary>
-        public static T QueryTvar<T>(LegalEntity e1, string rel, LegalEntity e2, T defaultValue) where T : Tvar
-        {
-            // Look up fact in table of facts
-            foreach (Fact f in FactBase)
-            {
-                if (f.subject == e1 && f.relationship == rel && f.directObject1 == e2)
-                {
-                    return (T)f.v;
-                }
-            }
-
-            // Add the fact to the list of unknown facts
-            if (GetUnknowns)
-            {
-                AddUnknown(rel, e1, e2, null);
-            }
-
-            // If fact is not found, return a default value (usually "unstated")
-            return defaultValue;
-        }
-
-
-
-
-        /// <summary>
         /// Queries the fact base - 1 entity.
         /// </summary>
         public static T QueryTvar<T>(string rel, LegalEntity e1) where T : Tvar
