@@ -1,6 +1,6 @@
 # Namespace:    Hammurabi.Imm
 # Summary:      Basic facts related to immigration
-# Updated:      2012-07-07
+# Updated:      2012-07-23
 # Author:       Michael Poulshock
 
 
@@ -8,6 +8,7 @@
 
 # Country of residence
 # Includes U.S. territories, possessions, etc.
+# >>In which country does {1} reside?
 TstrIn CountryOfResidence(Person p)
 
 # Country of citizenship (can have more than one)

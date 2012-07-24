@@ -63,6 +63,7 @@ TstrIn Gender(Person p)
 # Member of a Native American tribe
 # Includes Alaska Natives and Native Hawaiians
 # Note: Most legal sources use "Indian" or "American Indian"
+# >> Is {1} a member of a Native American, Native Hawaiian, or Alaska Native tribe?
 TboolIn IsNativeAmerican(Person p)
 
 

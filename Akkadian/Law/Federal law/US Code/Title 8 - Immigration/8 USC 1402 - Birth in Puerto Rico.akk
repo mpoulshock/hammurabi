@@ -14,7 +14,7 @@ Tbool IsUSCitizenPerPuertoRico(Person p) =
 Tbool IsUSCitizenPerPuertoRico1941(Person p) = 
 	BirthState(p) == "Puerto Rico" &
 	DoB(p) >= 1899-04-11 &
-	DoB(p) > 1941-01-13 &
+	DoB(p) < 1941-01-13 &
 	IsSubjectToUSJurisdiction(p) &
 	...
 		IsResidentOf(p, "Puerto Rico").AsOf(1941-01-13) |  # Resides in PR as of 1941-01-13 or

@@ -1,16 +1,26 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="Hammurabi\Core\Facts\Inputs.cs">
+    <Files>
+      <File FileName="Hammurabi\Core\Facts\Inputs.cs" Line="87" Column="41" />
+    </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
           <Node name="AkkadianCompiler" expanded="True" />
-          <Node name="Hammurabi" expanded="True" selected="True">
+          <Node name="Hammurabi" expanded="True">
             <Node name="Core" expanded="True">
               <Node name="Engine" expanded="True" />
+              <Node name="Facts" expanded="True">
+                <Node name="Inputs.cs" selected="True" />
+              </Node>
+              <Node name="Legal entities" expanded="True" />
             </Node>
+            <Node name="Generated source" expanded="True" />
           </Node>
-          <Node name="Unit tests - Hammurabi core" expanded="True" />
+          <Node name="Unit tests - Hammurabi core" expanded="True">
+            <Node name="Unit tests" expanded="True" />
+          </Node>
         </State>
       </Pad>
       <Pad Id="ClassPad">

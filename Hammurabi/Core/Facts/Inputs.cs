@@ -81,6 +81,7 @@ namespace Hammurabi
         /// <summary>
         /// Queries the fact base for a person instance.
         /// </summary> 
+        //  TODO: Generalize to QueryEntity<T>
         public static Person QueryPerson(string rel, LegalEntity e1)
         {
             foreach (Fact f in FactBase)

@@ -1,21 +1,30 @@
 # Namespace:    Hammurabi.Sandbox
 # Summary:      A host of random unit tests
-# Updated:      2012-07-22
+# Updated:      2012-07-23
 # Author:       Michael Poulshock
-
 
 
 # INFINITE LOOPS
 
-# Status potentially based on citizenship of mother
-Tbool IsCitizen(Person p) =
+# Recursive rule that looks for unknown people
+TboolIn IsCitizen(Person p) =
+	# >> Is {1} a citizen by law?
 	TboolIn IsCitizenByLaw(p) |
-	IsCitizen(mom)
+	momIsCit
 
+	# Prevents loop!
+	Tbool momIsCit =
+		set:
+		if mom.Id == "" -> new Tbool(Hstate.Unstated)
+		else IsCitizen(mom)
+		
 	Person mom =
 		PersonIn MotherOf(p)
+		
+# >>What's the name of {1}'s mother?
+# PersonIn MotherOf(Person p)
 
-## These cause infinite loops...		
+	
 Test: Loop1
 - Person p
 - Sandbox.IsCitizen(p).Out =?= "Unstated"
@@ -25,7 +34,33 @@ Test: Loop2
 - Person mom
 - MotherOf(p) = mom
 - Sandbox.IsCitizen(p).Out =?= "Unstated"
-##
+
+Test: Loop3
+- Person p
+- Person mom
+- MotherOf(p) = mom
+- IsCitizenByLaw(p) = false
+- IsCitizenByLaw(mom) = true
+- Sandbox.IsCitizen(p).Out =?= true
+
+Test: Loop4
+- Person p
+- IsCitizenByLaw(p) = true
+- Sandbox.IsCitizen(p).Out =?= true
+
+Test: Loop5
+- Person p
+- IsCitizenByLaw(p) = false
+- Sandbox.IsCitizen(p).Out =?= "Unstated"
+
+Test: Loop6
+- Person p
+- Person mom
+- MotherOf(p) = mom
+- IsCitizenByLaw(p) = false
+- IsCitizen(mom) = false
+- Sandbox.IsCitizen(p).Out =?= false
+
 
 # METHODS WITH THREE PARAMETERS
 

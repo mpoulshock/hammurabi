@@ -35,6 +35,7 @@ Tbool TestC(Person p) =
 	DoB(p) >= 1924-06-02 
 	
 # Not entirely sure what this is intended to mean...
+# >>Is {1} a 'noncitizen Indian' (as that term is used in 8 U.S.C. 1404)?
 TboolIn IsNoncitizenIndian(Person p) =
 	IsNativeAmerican(p)
 

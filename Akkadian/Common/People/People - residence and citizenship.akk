@@ -17,6 +17,7 @@ Tbool IsResidentOf(Person p, string jur) =
 	StateOfResidence(p) == jur
 
 # State of residence
+# >>In what state does {1} reside?
 TstrIn StateOfResidence(Person p) 
 
 
@@ -29,6 +30,7 @@ TboolIn IsUSCitizen(Person p) =
 	USC.Tit8.Gen.IsUSCitizenInferred(p)	
 
 # Subject to U.S. jurisdiction
+# >>Is {1} subject to U.S. jurisdiction?
 TboolIn IsSubjectToUSJurisdiction(Person p)
 
 
@@ -39,11 +41,11 @@ Tbool BornInTheUSA(Person p) =
 	BirthCountry(p) == "United States"
 
 # Birth country
-# TODO: Clarify how this compares to BirthState (below)
+# >>In what country was {1} born?
 TstrIn BirthCountry(Person p)
 
 # U.S. state in which person was born
-# Includes places like Puerto Rico, Panama Canal Zone, etc.
+# >>In what state or territory was {1} born?  (This includes places like Guam, Puerto Rico, and the Panama Canal Zone.)
 TstrIn BirthState(Person p)
 
 
