@@ -28,7 +28,7 @@ namespace Akkadian
         private static string[] RuleTypes = new string[9]{"Tbool","Tnum","Tdate","Tstr","Tset","DateTime","Person","Entity","bool"};
         private static string[] DocHeaders = new string[5]{"Citation:","Namespace:","Summary:","Remarks:","References:"};    
         public static string EndRule = "        }\r\n\r\n";
-        public static string wrd = @"[a-zA-Z0-9]+";
+        public static string wrd = @"[a-zA-Z0-9_]+";
      
         public static string ClosingParens(int closingParensNeeded, int lastLineDepth)
         {
@@ -111,7 +111,13 @@ namespace Akkadian
             return Depth(line) == 0 &&
                    StartsWithAny(line, "TboolIn","TnumIn","TstrIn","TsetIn","TdateIn","DateIn","PersonIn") != "";
         }
-        
+
+        public static bool IsNewRule(string line)
+        {
+            return (IsInputRule(line) && line.TrimEnd().EndsWith("=")) ||
+                   IsMainRule(line);
+        }
+
         public static string ExtractRuleType(string line)
         {
             // remove whitespace
@@ -229,121 +235,6 @@ namespace Akkadian
             else return " == \"" + val + "\"";
         }
      
-        public static string TvarInTransform(string line)
-        {
-            string typs = @"(Tbool|Tnum|Tstr|Tset|Tdate|Date|Person)";
-
-            // People (rule condition)
-            if (line.Trim().StartsWith("PersonIn"))
-            {
-                // Currently only handles one argument...
-                line = Regex.Replace(line, @"PersonIn (?<fcn>"+wrd+@")\((?<arg>"+wrd+@")\)", "Facts.QueryPerson(\"${fcn}\", ${arg})", RegexOptions.IgnoreCase);  
-            }
-
-            // Rule conclusion line 
-            else if (Util.IsInputRule(line))  // Starts w/ TvarIn at indent 0...
-            {
-                // TboolInSym (always has two arguments)
-                line = Regex.Replace(line, 
-                          @"TboolInSym (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@"), ?(?<argtyp2>"+wrd+@" )(?<arg2>"+wrd+@")\)",
-                          "        public static Tbool ${fcn}(${argtyp1} ${arg1}, ${argtyp2} ${arg2})\r\n        {\r\n            return Facts.Sym(${arg1}, \"${fcn}\", ${arg2});");  
-    
-                // Functions with three arguments
-                line = Regex.Replace(line, 
-                          @"(?<type>"+typs+@")In (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@"), ?(?<argtyp2>"+wrd+@" )(?<arg2>"+wrd+@"), ?(?<argtyp3>"+wrd+@" )(?<arg3>"+wrd+@")\)",
-                          "        public static ${type} ${fcn}(${argtyp1} ${arg1}, ${argtyp2} ${arg2}, ${argtyp3} ${arg3})\r\n        {\r\n            return Facts.QueryTvar<${type}>(\"${fcn}\", ${arg1}, ${arg2}, ${arg3});");  
-
-
-                // Functions with two arguments
-                line = Regex.Replace(line, 
-                          @"(?<type>"+typs+@")In (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@"), ?(?<argtyp2>"+wrd+@" )(?<arg2>"+wrd+@")\)",
-                          "        public static ${type} ${fcn}(${argtyp1} ${arg1}, ${argtyp2} ${arg2})\r\n        {\r\n            return Facts.QueryTvar<${type}>(\"${fcn}\", ${arg1}, ${arg2});");  
-
-                // Functions with one argument
-                line = Regex.Replace(line, 
-                          @"(?<type>"+typs+@")In (?<fcn>"+wrd+@")\((?<argtyp>"+wrd+@" )(?<arg>"+wrd+@")\)",
-                          "        public static ${type} ${fcn}(${argtyp} ${arg})\r\n        {\r\n            return Facts.QueryTvar<${type}>(\"${fcn}\", ${arg});");  
-            }
-
-            // Is rule condition line, not rule conclusion
-            else                
-            {
-                // TboolInSym (always has two arguments)
-                line = Regex.Replace(line, @"TboolInSym (?<fcn>"+wrd+@")\((?<arg1>[a-zA-Z0-9 ]+),(?<arg2>[a-zA-Z0-9 ]+)\)", 
-                                     "Facts.Sym(${arg1}, \"${fcn}\", ${arg2})");  
-
-                // Functions with three arguments
-                line = Regex.Replace(line, @"(?<type>"+typs+@")In (?<fcn>"+wrd+@")\((?<arg1>[a-zA-Z0-9 ]+),(?<arg2>[a-zA-Z0-9 ]+),(?<arg3>[a-zA-Z0-9 ]+)\)", 
-                                     "Facts.QueryTvar<${type}>(\"${fcn}\", ${arg1}, ${arg2}, ${arg3})", RegexOptions.IgnoreCase);  
-
-                // Functions with two arguments
-                line = Regex.Replace(line, @"(?<type>"+typs+@")In (?<fcn>"+wrd+@")\((?<arg1>[a-zA-Z0-9 ]+),(?<arg2>[a-zA-Z0-9 ]+)\)", 
-                                     "Facts.QueryTvar<${type}>(\"${fcn}\", ${arg1}, ${arg2})", RegexOptions.IgnoreCase);  
-
-                // Functions with one argument
-                line = Regex.Replace(line, @"(?<type>"+typs+@")In (?<fcn>"+wrd+@")\((?<arg>"+wrd+@")\)", "Facts.QueryTvar<${type}>(\"${fcn}\", ${arg})", RegexOptions.IgnoreCase);  
-            }
-            
-            return line;
-        }
-        
-        /// <summary>
-        /// Handles intermediate facts (facts asserted mid-tree)
-        /// </summary>
-        public static string CreateIntermediateAssertion(string line)
-        {
-            // Symmetrical facts, e.g. TboolInSym Fcn(Person p1, Person p2) =
-            if (line.StartsWith("TboolInSym"))
-            {
-                line = Regex.Replace(line, 
-                    @"TboolInSym (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@"), ?(?<argtyp2>"+wrd+@" )(?<arg2>"+wrd+@")\) =",
-                     "        public static Tbool ${fcn}(${argtyp1} ${arg1}, ${argtyp2} ${arg2})\r\n" +
-                     "        {\r\n" +
-                     "            if (EntityArgIsUnknown(${arg1},${arg2})) return new Tbool(Hstate.Unstated);\r\n" +
-                     "            if (Facts.HasBeenAssertedSym(${arg1}, \"${fcn}\", ${arg2}))\r\n" +
-                     "            {\r\n" +
-                     "                return Facts.Sym(${arg1}, \"${fcn}\", ${arg2});\r\n" +
-                     "            }\r\n\r\n");
-            }
-            else
-            {
-                // Three arguments
-                line = Regex.Replace(line, 
-                    @"(?<typ>(Tbool|Tnum|Tstr|Tdate|Tset|Person))In (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@"), ?(?<argtyp2>"+wrd+@" )(?<arg2>"+wrd+@"), ?(?<argtyp3>"+wrd+@" )(?<arg3>"+wrd+@")\) =",
-                     "        public static ${typ} ${fcn}(${argtyp1} ${arg1}, ${argtyp2} ${arg2}, ${argtyp3} ${arg3})\r\n" +
-                     "        {\r\n" +
-                     "            if (EntityArgIsUnknown(${arg1},${arg2},${arg3})) return new ${typ}(Hstate.Unstated);\r\n" +
-                     "            if (Facts.HasBeenAsserted(\"${fcn}\", ${arg1}, ${arg2}, ${arg3}))\r\n" +
-                     "            {\r\n" +
-                     "                return Facts.QueryTvar<${typ}>(\"${fcn}\", ${arg1}, ${arg2}, ${arg3});\r\n" +
-                     "            }\r\n\r\n");
-
-                // Two arguments
-                line = Regex.Replace(line, 
-                    @"(?<typ>(Tbool|Tnum|Tstr|Tdate|Tset|Person))In (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@"), ?(?<argtyp2>"+wrd+@" )(?<arg2>"+wrd+@")\) =",
-                     "        public static ${typ} ${fcn}(${argtyp1} ${arg1}, ${argtyp2} ${arg2})\r\n" +
-                     "        {\r\n" +
-                     "            if (EntityArgIsUnknown(${arg1},${arg2})) return new ${typ}(Hstate.Unstated);\r\n" +
-                     "            if (Facts.HasBeenAsserted(\"${fcn}\", ${arg1}, ${arg2}))\r\n" +
-                     "            {\r\n" +
-                     "                return Facts.QueryTvar<${typ}>(\"${fcn}\", ${arg1}, ${arg2});\r\n" +
-                     "            }\r\n\r\n");
-
-                // One argument
-                line = Regex.Replace(line, 
-                    @"(?<typ>(Tbool|Tnum|Tstr|Tdate|Tset|Person))In (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@")\) =",
-                     "        public static ${typ} ${fcn}(${argtyp1} ${arg1})\r\n" +
-                     "        {\r\n" +
-                     "            if (EntityArgIsUnknown(${arg1})) return new ${typ}(Hstate.Unstated);\r\n" +
-                     "            if (Facts.HasBeenAsserted(\"${fcn}\", ${arg1}))\r\n" +
-                     "            {\r\n" +
-                     "                return Facts.QueryTvar<${typ}>(\"${fcn}\", ${arg1});\r\n" +
-                     "            }\r\n\r\n");
-            }
-
-            return line;
-        }
-        
         /// <summary>
         /// Determines whether a string is a valid number
         /// </summary>

@@ -420,5 +420,19 @@ namespace Hammurabi.UnitTests.CoreFcns
             Person p2 = new Person("");
             Assert.AreEqual(true, EntityArgIsUnknown(p1,p2));    
         }
+
+        [Test]
+        public void Unknown_EntInst6 ()
+        {
+            Person p = new Person("Jane");
+            Assert.AreEqual(false, EntityArgIsUnknown(p,"someString"));    
+        }
+
+        [Test]
+        public void Unknown_EntInst7 ()
+        {
+            Person p = new Person("Jane");
+            Assert.AreEqual(false, EntityArgIsUnknown(p,new Tstr("")));    
+        }
     }
 }

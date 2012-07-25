@@ -18,6 +18,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+using System;
 using System.Collections.Generic;
 
 namespace Hammurabi
@@ -25,13 +26,34 @@ namespace Hammurabi
     public partial class H
     {
         /// <summary>
-        /// Determines whether any of the input entities are unstated.
+        /// Determines whether any of the input objects are unstated legal entities.
         /// </summary>
-        public static bool EntityArgIsUnknown(params LegalEntity[] list)
+        /// <remarks>
+        /// Has to handle objects because some arguments might be things
+        /// other than LegalEntities.  We only care aboue whether the
+        /// LegalEntities are unknown.
+        /// </remarks>
+        public static bool EntityArgIsUnknown(params object[] list)
         {
-            foreach (LegalEntity e in list)
+            foreach (object e in list)
             {
-                if (e.Id == "") return true;
+                // I don't love this...
+                if (e.GetType() == new Person().GetType())
+                {
+                    if (((Person)e).Id == "") return true;
+                }
+                if (e.GetType() == new Corp().GetType())
+                {
+                    if (((Corp)e).Id == "") return true;
+                }
+                if (e.GetType() == new Entity().GetType())
+                {
+                    if (((Entity)e).Id == "") return true;
+                }
+                if (e.GetType() == new Property("").GetType())
+                {
+                    if (((Property)e).Id == "") return true;
+                }
             }
 
             return false;
