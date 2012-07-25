@@ -1,6 +1,6 @@
 # Namespace:    Hammurabi.Sandbox
 # Summary:      A host of random unit tests
-# Updated:      2012-07-23
+# Updated:      2012-07-25
 # Author:       Michael Poulshock
 
 
@@ -10,13 +10,7 @@
 TboolIn IsCitizen(Person p) =
 	# >> Is {1} a citizen by law?
 	TboolIn IsCitizenByLaw(p) |
-	momIsCit
-
-	# Prevents loop!
-	Tbool momIsCit =
-		set:
-		if mom.Id == "" -> new Tbool(Hstate.Unstated)
-		else IsCitizen(mom)
+	IsCitizen(mom)
 		
 	Person mom =
 		PersonIn MotherOf(p)

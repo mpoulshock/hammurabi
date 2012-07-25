@@ -380,5 +380,45 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tbool r = new Tnum(Hstate.Stub) == new Tnum(Hstate.Uncertain);
             Assert.AreEqual("Time.DawnOf Stub ", r.TestOutput);    
         }
+
+        // Unknown entity instances (that are function arguments)
+
+        [Test]
+        public void Unknown_EntInst1 ()
+        {
+            Person p = new Person("");
+            Assert.AreEqual(true, EntityArgIsUnknown(p));    
+        }
+
+        [Test]
+        public void Unknown_EntInst2 ()
+        {
+            Person p = new Person("Jane");
+            Assert.AreEqual(false, EntityArgIsUnknown(p));    
+        }
+
+        [Test]
+        public void Unknown_EntInst3 ()
+        {
+            Person p1 = new Person("");
+            Person p2 = new Person("Jane");
+            Assert.AreEqual(true, EntityArgIsUnknown(p1,p2));    
+        }
+
+        [Test]
+        public void Unknown_EntInst4 ()
+        {
+            Person p1 = new Person("Jim");
+            Person p2 = new Person("Jane");
+            Assert.AreEqual(false, EntityArgIsUnknown(p1,p2));    
+        }
+
+        [Test]
+        public void Unknown_EntInst5 ()
+        {
+            Person p1 = new Person("");
+            Person p2 = new Person("");
+            Assert.AreEqual(true, EntityArgIsUnknown(p1,p2));    
+        }
     }
 }

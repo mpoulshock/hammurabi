@@ -25,6 +25,19 @@ namespace Hammurabi
     public partial class H
     {
         /// <summary>
+        /// Determines whether any of the input entities are unstated.
+        /// </summary>
+        public static bool EntityArgIsUnknown(params LegalEntity[] list)
+        {
+            foreach (LegalEntity e in list)
+            {
+                if (e.Id == "") return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
         /// Given a group of boolean Hvals, returns Hstate that trumps the others.
         /// This order is different than that of the function below because with ANDs
         /// and ORs we always want to try to prove (OR) or falsify (AND) the consequent.

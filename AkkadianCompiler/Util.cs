@@ -299,6 +299,7 @@ namespace Akkadian
                     @"TboolInSym (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@"), ?(?<argtyp2>"+wrd+@" )(?<arg2>"+wrd+@")\) =",
                      "        public static Tbool ${fcn}(${argtyp1} ${arg1}, ${argtyp2} ${arg2})\r\n" +
                      "        {\r\n" +
+                     "            if (EntityArgIsUnknown(${arg1},${arg2})) return new Tbool(Hstate.Unstated);\r\n" +
                      "            if (Facts.HasBeenAssertedSym(${arg1}, \"${fcn}\", ${arg2}))\r\n" +
                      "            {\r\n" +
                      "                return Facts.Sym(${arg1}, \"${fcn}\", ${arg2});\r\n" +
@@ -311,6 +312,7 @@ namespace Akkadian
                     @"(?<typ>(Tbool|Tnum|Tstr|Tdate|Tset|Person))In (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@"), ?(?<argtyp2>"+wrd+@" )(?<arg2>"+wrd+@"), ?(?<argtyp3>"+wrd+@" )(?<arg3>"+wrd+@")\) =",
                      "        public static ${typ} ${fcn}(${argtyp1} ${arg1}, ${argtyp2} ${arg2}, ${argtyp3} ${arg3})\r\n" +
                      "        {\r\n" +
+                     "            if (EntityArgIsUnknown(${arg1},${arg2},${arg3})) return new ${typ}(Hstate.Unstated);\r\n" +
                      "            if (Facts.HasBeenAsserted(\"${fcn}\", ${arg1}, ${arg2}, ${arg3}))\r\n" +
                      "            {\r\n" +
                      "                return Facts.QueryTvar<${typ}>(\"${fcn}\", ${arg1}, ${arg2}, ${arg3});\r\n" +
@@ -321,6 +323,7 @@ namespace Akkadian
                     @"(?<typ>(Tbool|Tnum|Tstr|Tdate|Tset|Person))In (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@"), ?(?<argtyp2>"+wrd+@" )(?<arg2>"+wrd+@")\) =",
                      "        public static ${typ} ${fcn}(${argtyp1} ${arg1}, ${argtyp2} ${arg2})\r\n" +
                      "        {\r\n" +
+                     "            if (EntityArgIsUnknown(${arg1},${arg2})) return new ${typ}(Hstate.Unstated);\r\n" +
                      "            if (Facts.HasBeenAsserted(\"${fcn}\", ${arg1}, ${arg2}))\r\n" +
                      "            {\r\n" +
                      "                return Facts.QueryTvar<${typ}>(\"${fcn}\", ${arg1}, ${arg2});\r\n" +
@@ -331,6 +334,7 @@ namespace Akkadian
                     @"(?<typ>(Tbool|Tnum|Tstr|Tdate|Tset|Person))In (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@")\) =",
                      "        public static ${typ} ${fcn}(${argtyp1} ${arg1})\r\n" +
                      "        {\r\n" +
+                     "            if (EntityArgIsUnknown(${arg1})) return new ${typ}(Hstate.Unstated);\r\n" +
                      "            if (Facts.HasBeenAsserted(\"${fcn}\", ${arg1}))\r\n" +
                      "            {\r\n" +
                      "                return Facts.QueryTvar<${typ}>(\"${fcn}\", ${arg1});\r\n" +

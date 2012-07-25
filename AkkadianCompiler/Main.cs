@@ -163,7 +163,7 @@ namespace Akkadian
                 if (Util.IsMainRule(line))          // Begin a new rule
                 {
                     // Close previous rule
-                    if (ruleCount != 0)  //
+                    if (ruleCount != 0)
                     {
                         result += Util.ReorderSubrules(subrules); 
                         result += Util.EndRule;
@@ -268,7 +268,7 @@ namespace Akkadian
             // Else, all other rules
             else if (Util.IsMainRule(line))                                   
                 line = Regex.Replace(line, @"(?<dec>(Tbool|Tnum|Tstr|Tdate|Tset|Person|Entity|DateTime|bool)"+word+") =",
-                                      "        public static ${dec}\r\n        {\r\n"); 
+                                      "        public static ${dec}\r\n        {\r\n");  // TODO: Needs EntityArgIsUnknown() line
     
             // Switch(condition, value, ..., default) - must come before "rule tables" (b/c rule tables look for "->"
             line = Regex.Replace(line, @"set:", "Switch<" + currentRuleType + ">(", RegexOptions.IgnoreCase);    
@@ -287,7 +287,7 @@ namespace Akkadian
             // yyyy-mm-dd -> Date(yyyy,mm,dd)
             line = Util.ConvertDate(line); 
             
-            // Input.Tvar()
+            // Facts.QueryTvar<Tvar>()
             line = Util.TvarInTransform(line);
     
             // IfThen() 
