@@ -37,7 +37,11 @@ namespace Hammurabi
         {
             foreach (object e in list)
             {
-                // I don't love this...
+                // I don't love any of this...actually I detest it.
+                if (e == null)
+                {
+                    return true;
+                }
                 if (e.GetType() == new Person().GetType())
                 {
                     if (((Person)e).Id == "") return true;

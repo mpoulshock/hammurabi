@@ -19,8 +19,9 @@
 // THE SOFTWARE.
 
 using Hammurabi;
-using NUnit.Framework;
 using System;
+using System.Collections.Generic;
+using NUnit.Framework;
 
 namespace Hammurabi.UnitTests.CoreFcns
 {
@@ -489,6 +490,24 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tset s2 = new Tset(P1,P2,P3);
             Tbool res = s1 != s2;
             Assert.AreEqual("Time.DawnOf False ", res.TestOutput);        
+        }
+
+        // Tset.TestOutput
+
+        [Test]
+        public void TestOutput1 ()
+        {
+            string val = "ham; beans";
+            string[] items = val.Split(new char[] {';'});
+            List<LegalEntity> list = new List<LegalEntity>();
+
+            foreach (string i in items)
+            {
+                list.Add(new Person(i.Trim()));
+            }
+
+            Tset result = new Tset(list);
+            Assert.AreEqual("Time.DawnOf ham, beans ", result.TestOutput);        
         }
     }
 }

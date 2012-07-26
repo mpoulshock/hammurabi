@@ -4,19 +4,29 @@
 # Author:       Michael Poulshock
 
 
+# TSET INPUTS
+
+Tnum TestTsetCount(Person p) =
+	TestTset(p).Count
+
+# >>What are the items in {1}'s set?
+TsetIn TestTset(Person p)
+
+
 # INFINITE LOOPS
 
 # Recursive rule that looks for unknown people
 TboolIn IsCitizen(Person p) =
 	# >> Is {1} a citizen by law?
 	TboolIn IsCitizenByLaw(p) |
-	IsCitizen(mom)
-		
-	Person mom =
-		PersonIn MotherOf(p)
-		
+	IsCitizen(TheMotherOf(p))
+
+
 # >>What's the name of {1}'s mother?
-# PersonIn MotherOf(Person p)
+Person TheMotherOf(Person p) =
+	# PersonIn MotherOf(p)			# tests pass, but interview doesn't work
+	TsetIn MotherOf(p).ToPerson	    # interview works, but tests don't pass
+	
 
 	
 Test: Loop1

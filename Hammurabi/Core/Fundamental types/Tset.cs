@@ -168,9 +168,13 @@ namespace Hammurabi
         {
             get
             {
-                if (TimeLine.Count > 1) { return null; }
+                if (TimeLine.Count != 1) { return new Person(""); }
 
-                return (Person)this.TimeLine.Values[0].Obj;
+                List<LegalEntity> list = (List<LegalEntity>)this.TimeLine.Values[0].Obj;
+
+                if (list == null || list[0] == null) { return new Person(""); }
+
+                return (Person)list[0];
             }
         }
         
