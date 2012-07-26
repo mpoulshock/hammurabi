@@ -85,7 +85,7 @@ Tstr ReasonForLeave(Person e, Corp c) =
 	
 # Returns the person who the employee needs to take care of.
 Person SickFam(Person e) =
-	PersonIn NeedsLeaveToProvideCareFor(e)
+	TsetIn NeedsLeaveToProvideCareFor(e).ToPerson
 
 	
 # UNIT TESTS
@@ -182,7 +182,7 @@ Test: Test8_2612aC1_2
 - IsAirlineFlightCrew(e,c) = false
 - ReasonForRequestingLeaveFrom(e,c) = "To care for family member with a health condition"
 - DateFamilyLeaveBegins(e,c) = 2014-01-01
-- NeedsLeaveToProvideCareFor(e,f) = true
+- NeedsLeaveToProvideCareFor(e) = [[f]]
 - AreMarried(e,f) = true
 - HasSeriousHealthCondition(f) = true
 - Sec2612.IsEntitledToRegLeaveFrom(e,c).AsOf(2011-04-15).Out =?= true

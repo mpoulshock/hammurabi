@@ -77,27 +77,5 @@ namespace Hammurabi
             // If fact is not found, return a default value (usually "unstated")
             return defaultValue;
         }
-
-        /// <summary>
-        /// Queries the fact base for a person instance.
-        /// </summary> 
-        //  TODO: Generalize to QueryEntity<T>
-        public static Person QueryPerson(string rel, LegalEntity e1)
-        {
-            foreach (Fact f in FactBase)
-            {
-                if (f.subject == e1 && f.relationship == rel)
-                {
-                    return (Person)f.directObject1;
-                }
-            }
-
-            if (GetUnknowns)
-            {
-                AddUnknown(rel, e1, null, null);
-            }
-            
-            return new Person("");
-        }
     }
 }

@@ -237,9 +237,9 @@ Tset BirthParents(Person c) =
 
 # Father at time of birth
 Person FatherOf(Person c) =
-	PersonIn FatherAtTimeOfBirth(c)	
+	TsetIn FatherAtTimeOfBirth(c).ToPerson
 	
 # Mother at time of birth
 Person MotherOf(Person c) =
-	PersonIn MotherAtTimeOfBirth(c)	
+	TsetIn MotherAtTimeOfBirth(c).ToPerson
 	
