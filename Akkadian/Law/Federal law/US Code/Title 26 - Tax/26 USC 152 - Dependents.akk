@@ -171,7 +171,6 @@ Test: Pub501_Simple2
 - GrossIncome(c) = 0
 - Sec152.IsDependentOf(c,t).AsOf(2010-12-31).Out =?= true
 
-
 ##
 # IRS Pub. 501 (2010), Page 10, Example 1.
 # Cannot be a dependent because fails joint return test.

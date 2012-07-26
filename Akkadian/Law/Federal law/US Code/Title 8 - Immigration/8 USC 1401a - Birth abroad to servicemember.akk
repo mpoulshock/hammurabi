@@ -17,7 +17,7 @@ Tbool Sec1401gAppliesTo(Person c) =
 		
 # Qualifying parent
 Tbool IsQualifyingServicemember(Person p) =
-	IsUSCitizen(p) &		# This is one cause of an infinite loop
+	IsUSCitizen(p) &
 	inAF.IsEverTrue(1946-12-31,1952-12-24) &
 	Stub()  # case does not come within section 201(g) or (i) of the Nationality Act of 1940.
 	

@@ -13,9 +13,9 @@ Tbool IsUSCitizenInferred(Person p) =
 
 # Citizenship by birth
 Tbool CitizenByBirthToCitizen(Person p) =
-	# Sec1401.AcquiredCitizenshipAtBirth(p) |		# Part of an infinite loop
+	Sec1401.AcquiredCitizenshipAtBirth(p) |	
 	Sec1402.IsUSCitizenPerPuertoRico(p) |
-	# Sec1403.IsUSCitizenPerCanalZone(p) |			# Part of an infinite loop
+	Sec1403.IsUSCitizenPerCanalZone(p) |
 	Sec1404.IsUSCitizenPerAlaska(p) |
 	Sec1405.IsUSCitizenPerHawaii(p) |
 	Sec1406.IsUSCitizenPerVI(p) |
