@@ -28,7 +28,7 @@ namespace Akkadian
     /// </summary>
     public class Tests
     { 
-        private static string word = @"[-!\+\*/A-Za-z0-9\.;\(\),""'_<>=&| ]+";
+        private static string word = @"[-!\+\*/A-Za-z0-9\.;\(\),""'_<>=&|\[\] ]+";
 
         // Opens the testing namespace/class
         public static string unitSpaceOpen =
@@ -126,7 +126,11 @@ namespace Akkadian
             fact = Regex.Replace(fact, 
                                  @"(?<fcn>"+wrd+@")\((?<arg>"+wrd+@")\) = (?<val>"+word+@")", 
                                  "            Facts.Assert(${arg}, \"${fcn}\", ${val});", RegexOptions.IgnoreCase);  
-            
+
+            // Convert lists of Tset members to C#
+            fact = Regex.Replace(fact, @"\[\[(?<list>[a-zA-Z0-9, ]+)\]\]", @"new Tset(new List<LegalEntity>(){${list}})");
+
+
             return fact;
         }
 

@@ -2,7 +2,9 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Hammurabi\Core\Facts\Inputs.cs">
     <Files>
-      <File FileName="Hammurabi\Core\Facts\Inputs.cs" Line="90" Column="18" />
+      <File FileName="Hammurabi\Core\Facts\Inputs.cs" Line="74" Column="45" />
+      <File FileName="Hammurabi\Core\Fundamental types\Tset.cs" Line="177" Column="40" />
+      <File FileName="AkkadianCompiler\Question metadata.cs" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -15,6 +17,7 @@
               <Node name="Facts" expanded="True">
                 <Node name="Inputs.cs" selected="True" />
               </Node>
+              <Node name="Fundamental types" expanded="True" />
               <Node name="Legal entities" expanded="True" />
             </Node>
             <Node name="Generated source" expanded="True" />

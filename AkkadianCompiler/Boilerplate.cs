@@ -65,6 +65,7 @@ namespace Akkadian
          {
              string result = "using Hammurabi; \r\n" + 
                          "using System;\r\n" +
+                         "using System.Collections.Generic;\r\n" +
                          "using NUnit.Framework;\r\n" +
                          "using USC;\r\n";
             

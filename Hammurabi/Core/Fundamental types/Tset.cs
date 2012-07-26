@@ -168,6 +168,8 @@ namespace Hammurabi
         {
             get
             {
+                if (this.TimeLine.Values[0].IsUnstated) { return new Person(""); }
+
                 if (TimeLine.Count != 1) { return new Person(""); }
 
                 List<LegalEntity> list = (List<LegalEntity>)this.TimeLine.Values[0].Obj;
