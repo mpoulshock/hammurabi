@@ -69,9 +69,9 @@ Tbool IsQualifyingRelativeOf(Person d, Person tp) =
         ...
             Sec61.GrossIncome(d) == 0 |                         # shortcut
             Sec61.GrossIncome(d) < Sec151.ExemptionAmount(d)	# per TY
-        & 
+        # & 
 		# AllPeople.Exists(IsQualifyingChildOf(d,_))
-		!AllPeople.Exists(IsQualifyingChildOf(d,_))
+		# !AllPeople.Exists(IsQualifyingChildOf(d,_))
         # !Exists(allOtherKnownPeople, (x,y) => IsQualifyingChildOf(d, (Person)x), d, null)
 
 	Tset allOtherKnownPeople = 

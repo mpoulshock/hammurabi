@@ -92,30 +92,30 @@ Test: Tset4
 Tbool Another3ParamTest(Person a, Person b, Person c) =
 	TboolIn ABC(a,b,c)
 
-TboolIn IsABC(Person a, Person b, Property c) =
+TboolIn IsABC(Person a, Person b, Thing c) =
 	Stub() |
 	IsXYZ(a,b,c)
 
-TboolIn IsXYZ(Person x, Person y, Property z)
+TboolIn IsXYZ(Person x, Person y, Thing z)
 
 Test: Param3_1a
 - Person x
 - Person y
-- Property z
+- Thing z
 - IsXYZ(x,y,z) = true
 - Sandbox.IsXYZ(x,y,z).Out =?= true
 
 Test: Param3_1b
 - Person x
 - Person y
-- Property z
+- Thing z
 - IsXYZ(x,y,z) = false
 - Sandbox.IsXYZ(x,y,z).Out =?= false
 
 Test: Param3_1c
 - Person x
 - Person y
-- Property z
+- Thing z
 - Sandbox.IsXYZ(x,y,z).Out =?= "Unstated"
 
 Test: Param3_2a

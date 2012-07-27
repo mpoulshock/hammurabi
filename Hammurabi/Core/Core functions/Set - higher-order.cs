@@ -31,13 +31,13 @@ namespace Hammurabi
         /// <summary>
         /// Exists function - for various types of legal entities
         /// </summary>
-        public Tbool Exists(Func<Person,Tbool> argumentFcn)
+        public Tbool ExistsPerson(Func<Person,Tbool> argumentFcn)
         {
             return ExistsCore(this, x => argumentFcn((Person)x));
         }
-        public Tbool Exists(Func<Property,Tbool> argumentFcn)
+        public Tbool Exists(Func<Thing,Tbool> argumentFcn)
         {
-            return ExistsCore(this, x => argumentFcn((Property)x));
+            return ExistsCore(this, x => argumentFcn((Thing)x));
         }
 
         /// <summary>
@@ -53,13 +53,13 @@ namespace Hammurabi
         /// <summary>
         /// ForAll function - for various types of legal entities
         /// </summary>
-        public Tbool ForAll(Func<Person,Tbool> argumentFcn)
+        public Tbool ForAllPerson(Func<Person,Tbool> argumentFcn)
         {
             return ForAllCore(this, x => argumentFcn((Person)x));
         }
-        public Tbool ForAll(Func<Property,Tbool> argumentFcn)
+        public Tbool ForAll(Func<Thing,Tbool> argumentFcn)
         {
-            return ForAllCore(this, x => argumentFcn((Property)x));
+            return ForAllCore(this, x => argumentFcn((Thing)x));
         }
         
         /// <summary>
@@ -78,14 +78,14 @@ namespace Hammurabi
         /// <summary>
         /// Filter function - for various types of legal entities
         /// </summary>
-        public Tset Filter(Func<Person,Tbool> argumentFcn)
+        public Tset FilterPerson(Func<Person,Tbool> argumentFcn)
         {
             return FilterCore(this, x => argumentFcn((Person)x));
         }
-        
-        public Tset Filter(Func<Property,Tbool> argumentFcn)
+
+        public Tset Filter(Func<Thing,Tbool> argumentFcn)
         {
-            return FilterCore(this, x => argumentFcn((Property)x));
+            return FilterCore(this, x => argumentFcn((Thing)x));
         }
         
         /// <summary>
@@ -159,11 +159,11 @@ namespace Hammurabi
         /// Totals the values of a given numeric property of the members of
         /// a set.
         /// </summary>
-        public Tnum Sum(Func<Property,Tnum> func)
+        public Tnum Sum(Func<Thing,Tnum> func)
         {
-            return ApplyFcnToTset(this, x => func((Property)x), y => Tnum.Sum(y));
+            return ApplyFcnToTset(this, x => func((Thing)x), y => Tnum.Sum(y));
         }
-        public Tnum Sum(Func<Person,Tnum> func)
+        public Tnum SumPerson(Func<Person,Tnum> func)
         {
             return ApplyFcnToTset(this, x => func((Person)x), y => Tnum.Sum(y));
         }

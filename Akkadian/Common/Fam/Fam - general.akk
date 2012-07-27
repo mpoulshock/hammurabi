@@ -119,7 +119,8 @@ TboolIn IsNextOfKinOf(Person p1, Person p2)
 	
 # Lives with any parent, custodian, or guardian (PCG)
 Tbool LivesWithPCG(Person p) =
-	members.Exists(IsLivingWithPCG(p,_))
+	Stub()
+	# members.Exists(IsLivingWithPCG(p,_))
 
 	Tset members =
 		Econ.HouseholdMembersOf(p) - p

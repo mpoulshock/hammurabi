@@ -35,26 +35,29 @@ TnumIn BankAssets(Person p)
 
 # Total home equity
 Tnum RealPropEquity(Person p) =
-	AllProperty.Sum(EquityIn(p,_))
+	Stub()
+	# AllProperty.Sum(EquityIn(p,_))
 
 # Equity in a home or real property
-TnumIn EquityIn(Person p, Property r)
+TnumIn EquityIn(Person p, Thing r)
 
 # All real property of a given person
 Tset RealPropertyOf(Person p) =
-	PropertyOf(p).Filter(IsRealProperty(_))
+	Stub()
+	# PropertyOf(p).Filter(IsRealProperty(_))
 
 # All property of a given person
 Tset PropertyOf(Person p) =
-	AllProperty.Filter(Owns(p,_))
+	Stub()
+	# AllProperty.Filter(Owns(p,_))
 	
 # Property ownership
-TboolIn Owns(Person p, Property r)
+TboolIn Owns(Person p, Thing r)
 
 # Real property
-Tbool IsRealProperty(Property r) =
+Tbool IsRealProperty(Thing r) =
 	PropType(r) == "Real property"
 
 # Property type
-TstrIn PropType(Property r)
+TstrIn PropType(Thing r)
 

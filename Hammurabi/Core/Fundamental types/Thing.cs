@@ -62,16 +62,4 @@ namespace Hammurabi
             Id = name;
         }
     }
-
-    /// <summary>
-    /// Represents tangible or intangible property, i.e. something that can
-    /// be owned.  Synonymous with "asset."
-    /// </summary>
-    public class Property : Thing
-    {
-        public Property(string identifier) : base(identifier)
-        {
-            Id = identifier;
-        }
-    }
 }

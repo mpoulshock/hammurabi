@@ -19,7 +19,8 @@ Tbool ParentsMarriedAsOf(Person p, Tdate date) =
 # Mother on a particular date
 # Warning: returns null if more than one mother
 Person MotherAsOf(Person p, Tdate date) =
-	Fam.ParentsOf(p).AsOf(date).Filter(IsMotherOf(_,p)).ToPerson
+	new Person("")
+	# Fam.ParentsOf(p).AsOf(date).Filter(IsMotherOf(_,p)).ToPerson
 	
 # Is mother of
 Tbool IsMotherOf(Person p1, Person p2) =
@@ -29,7 +30,8 @@ Tbool IsMotherOf(Person p1, Person p2) =
 # Father on a particular date
 # Warning: returns null if more than one father
 Person FatherAsOf(Person p, Tdate date) =
-	Fam.ParentsOf(p).AsOf(date).Filter(IsFatherOf(_,p)).ToPerson
+	new Person("")
+	# Fam.ParentsOf(p).AsOf(date).Filter(IsFatherOf(_,p)).ToPerson
 	
 # Is father of
 Tbool IsFatherOf(Person p1, Person p2) =
@@ -38,11 +40,13 @@ Tbool IsFatherOf(Person p1, Person p2) =
 	
 # Person's parents
 Tset ParentsOf(Person p) =
-	AllPeopleExcept(p).Filter(IsParentOf(_,p))
+	Stub()
+	# AllPeopleExcept(p).Filter(IsParentOf(_,p))
 
 # Person's children
 Tset ChildrenOf(Person p) =
-	AllPeople.Filter(IsParentOf(p,_))
+	Stub()
+	# AllPeople.Filter(IsParentOf(p,_))
 
 # Child
 # Not strictly necessary but aids readability

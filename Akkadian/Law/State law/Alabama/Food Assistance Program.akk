@@ -58,7 +58,7 @@ Tbool MeetsWorkReqs(Person p, Tset householdMembers) =
 		Econ.PhysicallyUnfitForEmployment(p) |
 		Econ.MentallyUnfitForEmployment(p) |
 		Fam.IsPregnant(p) |
-		householdMembers.Exists(CaresForAsDependent(p,_)) |  
+		# householdMembers.Exists(CaresForAsDependent(p,_)) |  
 		TboolIn ComplyingWithJOBSOrUCB(p) |
 		Fam.CaresForIncapacitatedPerson(p) |
 		Edu.IsStudent(p) |
@@ -86,8 +86,9 @@ Tbool CaresForAsDependent(Person care, Person dep) =
 
 # Household meets the monthly financial requirements
 Tbool MeetsFinancialReqs(Thing household) =
-	NetIncome(household) <= NetIncomeLimit(size) &
-	if household.Constituents.Exists(IsElderlyOrDisabled(_)) then HouseholdMonthlyGrossIncome(household) <= GrossIncomeLimit(size) 
+	NetIncome(household) <= NetIncomeLimit(size) 
+	# &
+	# if household.Constituents.Exists(IsElderlyOrDisabled(_)) then HouseholdMonthlyGrossIncome(household) <= GrossIncomeLimit(size) 
 	
 	Tnum size =
 		household.Constituents.Count
@@ -141,7 +142,8 @@ Tnum NetIncome(Thing household) =
 	
 # Sum of individuals' gross income
 Tnum HouseholdMonthlyGrossIncome(Thing household) =
-	household.Constituents.Sum(MonthlyGrossIncome(_))
+	Stub()
+	# household.Constituents.Sum(MonthlyGrossIncome(_))
 	# Sum(household.Constituents, MonthlyGrossIncome(_))
 
 # Individual gross income
@@ -169,7 +171,8 @@ Tnum Deductions(Thing household) =
 		HouseholdMonthlyGrossIncome(household) * 0.20
 	
 	Tnum selfEmploymentDeduction =
-		household.Constituents.Sum(Econ.MonthlySelfEmploymentIncome(_)) * 0.40
+		Stub()
+	    # household.Constituents.Sum(Econ.MonthlySelfEmploymentIncome(_)) * 0.40
 		# Sum(household.Constituents, Econ.MonthlySelfEmploymentIncome(_)) * 0.40
 		
 	Tnum medicalDeduction =
@@ -218,6 +221,8 @@ Tnum AppProcessTime(Thing household) =
 
 # Expedited application
 Tbool ExpeditedAppRequired(Thing hh) =
+	Stub()
+	##
 	...
 		HouseholdMonthlyGrossIncome(hh) < 150 &
 		Econ.LiquidAssets(hh) < 100
@@ -226,7 +231,7 @@ Tbool ExpeditedAppRequired(Thing hh) =
 	...
 		Econ.LiquidAssets(hh) < 100 &
 		hh.Constituents.Exists(Econ.IsMigrantOrSeasonalFarmworker(_))
-	
+	##
 	
 	Tnum rentMortUtil =
 		Econ.MonthlyRent(hh) +

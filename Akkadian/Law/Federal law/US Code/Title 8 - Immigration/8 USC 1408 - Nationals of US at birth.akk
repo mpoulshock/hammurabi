@@ -52,8 +52,9 @@ Tbool Para3(Person p) =
 Tbool Para4(Person p) =
 	! Sec1401.BornInUSorOP(p) &
 	Sec1401.ParentsMarried(p) &
-	Sec1401.OneNationalOneAlienParent(p) &
-	Sec1401.BirthParents(p).Exists(Para4ParentTest(_, DoB(p)))
+	Sec1401.OneNationalOneAlienParent(p) 
+	# &
+	# Sec1401.BirthParents(p).Exists(Para4ParentTest(_, DoB(p)))
 
 # National parent meets complex time-based test for physical presence
 Tbool Para4ParentTest(Person parent, Tdate date) =

@@ -81,11 +81,11 @@ namespace Hammurabi
             
             foreach (Fact f in FactBase)
             {
-                if (f.subject.GetType() == new Property("").GetType())
+                if (f.subject.GetType() == new Thing("").GetType())
                     if (!theProp.Contains(f.subject))
                         theProp.Add(f.subject);
 
-                if(f.directObject1 != null && f.directObject1.GetType() == new Property("").GetType())
+                if(f.directObject1 != null && f.directObject1.GetType() == new Thing("").GetType())
                     if (!theProp.Contains(f.directObject1))
                         theProp.Add(f.directObject1);
             }

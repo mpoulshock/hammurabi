@@ -60,8 +60,9 @@ Tbool SubsecD(Person c) =
 		ParentsMarried(c) |
 		Sec1409.SubsecAApplies(c)
 	&
-	OneCitizenOneNationalParent(c) &
-	BirthParents(c).Exists(IsCitizenPresentInUSorOP1YearBefore(_, DoB(c)))
+	OneCitizenOneNationalParent(c) 
+	# &
+	# BirthParents(c).Exists(IsCitizenPresentInUSorOP1YearBefore(_, DoB(c)))
 	
 # (e) - Born in outlying possession; one parent citizen, one parent 
 # alien; citizen parent physically present for a continuous period 
@@ -72,8 +73,9 @@ Tbool SubsecE(Person c) =
 		ParentsMarried(c) |
 		Sec1409.SubsecAApplies(c)
 	&
-	OneCitizenOneAlienParent(c) &
-	BirthParents(c).Exists(IsCitizenPresentInUSorOP1YearBefore(_, DoB(c)))
+	OneCitizenOneAlienParent(c) 
+	# &
+	# BirthParents(c).Exists(IsCitizenPresentInUSorOP1YearBefore(_, DoB(c)))
 	
 # (f) - Person of unknown parentage found in U.S. while under age 5;
 # not proved, before age 21, to have been born outside U.S. 
@@ -92,8 +94,9 @@ Tbool SubsecG(Person c) =
 			Sec1409.SubsecAApplies(c) | 	# Can never happen?
 			Sec1409.SubsecBApplies(c)
 		&
-		OneCitizenOneAlienParent(c) &
-		BirthParents(c).Exists(SubsecGParentTest(_, DoB(c)))
+		OneCitizenOneAlienParent(c) 
+		# &
+		# BirthParents(c).Exists(SubsecGParentTest(_, DoB(c)))
 
 # Citizen parent, prior to child's birth, physically present for a
 # total of 5 years, 2 of which were after 14 years of age.  
@@ -209,18 +212,21 @@ Tbool BothParentsNationals(Person c) =
 	
 # One parent is a U.S. citizen, one is a U.S. national
 Tbool OneCitizenOneNationalParent(Person c) =
-	BirthParents(c).Exists(IsUSCitizen(_)).AsOf(DoB(c)) &
-	BirthParents(c).Exists(Imm.IsUSNational(_)).AsOf(DoB(c))
+	Stub()
+	# BirthParents(c).Exists(IsUSCitizen(_)).AsOf(DoB(c)) &
+	# BirthParents(c).Exists(Imm.IsUSNational(_)).AsOf(DoB(c))
 
 # One parent is a U.S. citizen, one is an alien
 Tbool OneCitizenOneAlienParent(Person c) =
-	BirthParents(c).Exists(IsUSCitizen(_)).AsOf(DoB(c)) &
-	BirthParents(c).Exists(Imm.IsAlien(_)).AsOf(DoB(c))
+	Stub()
+	# BirthParents(c).Exists(IsUSCitizen(_)).AsOf(DoB(c)) &
+	# BirthParents(c).Exists(Imm.IsAlien(_)).AsOf(DoB(c))
 
 # One parent is a U.S. national, one is an alien
 Tbool OneNationalOneAlienParent(Person c) =
-	BirthParents(c).Exists(Imm.IsUSNational(_)).AsOf(DoB(c)) &
-	BirthParents(c).Exists(Imm.IsAlien(_)).AsOf(DoB(c))
+	Stub()
+	# BirthParents(c).Exists(Imm.IsUSNational(_)).AsOf(DoB(c)) &
+	# BirthParents(c).Exists(Imm.IsAlien(_)).AsOf(DoB(c))
 	
 	
 # PARENTS

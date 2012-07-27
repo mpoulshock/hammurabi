@@ -9,8 +9,9 @@
 Tbool Sec1401gAppliesTo(Person c) =
 	! Sec1401.BornInUSorOP(c) &
 	DoB(c) > 1941-01-12 &
-	DoB(c) < 1952-12-24 &
-	parents.Exists(IsQualifyingServicemember(_))
+	DoB(c) < 1952-12-24 
+	# &
+	# parents.Exists(IsQualifyingServicemember(_))
 	
 	Tset parents =
 		Sec1401.BirthParents(c)		# Assumes two parents
