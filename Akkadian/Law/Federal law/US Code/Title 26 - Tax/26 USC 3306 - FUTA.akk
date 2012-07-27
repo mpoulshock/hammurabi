@@ -6,14 +6,14 @@
 
 
 # Determines whether a corporate entity is an "employer" under FUTA.
-Tbool IsEmployer(Corp c) =
-	a1(c) |
-	a2(c) |
-	a3(c)
+Tbool IsEmployer(Thing corp) =
+	a1(corp) |
+	a2(corp) |
+	a3(corp)
 	
 
 # Employer - general, defined
-Tbool a1(Corp c) =
+Tbool a1(Thing c) =
 	wageTest |
 	weekTest
 	
@@ -34,7 +34,7 @@ Tbool a1(Corp c) =
 
 		
 # Employer - agricultural, defined
-Tbool a2(Corp c) =
+Tbool a2(Thing c) =
 	wageTest |
 	weekTest
 
@@ -55,7 +55,7 @@ Tbool a2(Corp c) =
 
 	
 # Employer - domestic, defined
-Tbool a3(Corp c) = 
+Tbool a3(Thing c) = 
 	QWages1K.CountPastNIntervals(TheYear,2) > 0
 
 	# Paid $1,000 or more in wages in any calendar quarter in current or the preceding calendar year 
@@ -64,25 +64,25 @@ Tbool a3(Corp c) =
 
         
 # Number of general, not agricultural or domestic, employees
-Tnum NumberOfGeneralEmployees(Corp c) =
+Tnum NumberOfGeneralEmployees(Thing c) =
 	TnumIn NumberOfGeneralEmployees(c)
 
 # Number of agricultural employees.
-Tnum NumberOfAgEmployees(Corp c) =
+Tnum NumberOfAgEmployees(Thing c) =
 	TnumIn NumberOfAgriculturalEmployees(c)
         
 # Wages paid for general, not agricultural or domestic, employment.
 # This is a Tnum that varies quarterly.
-Tnum QuarterlyGeneralWagesPaid(Corp c) =
+Tnum QuarterlyGeneralWagesPaid(Thing c) =
 	TnumIn QuarterlyGeneralWagesPaid(c)
 	        
 # Wages paid for agricultural employment.
 # This is a Tnum that varies quarterly.
-Tnum QuarterlyAgWagesPaid(Corp c) =
+Tnum QuarterlyAgWagesPaid(Thing c) =
 	TnumIn QuarterlyAgriculturalWagesPaid(c)
         
 # Wages paid for domestic employment.
 # This is a Tnum that varies quarterly.
-Tnum QuarterlyDomesticWagesPaid(Corp c) =
+Tnum QuarterlyDomesticWagesPaid(Thing c) =
 	TnumIn QuarterlyDomesticWagesPaid(c)
 

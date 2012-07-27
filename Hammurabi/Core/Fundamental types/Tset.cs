@@ -180,21 +180,21 @@ namespace Hammurabi
             }
         }
 
-//        public Thing ToThing  // ToThing
-//        {
-//            get
-//            {
-//                if (this.TimeLine.Values[0].IsUnstated) { return new Thing(""); }
-//
-//                if (TimeLine.Count != 1) { return new Thing(""); }
-//
-//                List<Thing> list = (List<Thing>)this.TimeLine.Values[0].Obj;
-//
-//                if (list == null || list[0] == null) { return new Thing(""); }
-//
-//                return (Thing)list[0];
-//            }
-//        }
+        public Thing ToThing  // ToThing
+        {
+            get
+            {
+                if (this.TimeLine.Values[0].IsUnstated) { return new Thing(""); }
+
+                if (TimeLine.Count != 1) { return new Thing(""); }
+
+                List<Thing> list = (List<Thing>)this.TimeLine.Values[0].Obj;
+
+                if (list == null || list[0] == null) { return new Thing(""); }
+
+                return (Thing)list[0];
+            }
+        }
 
         /// <summary>
         /// Returns the members of the set at a specified point in time. 

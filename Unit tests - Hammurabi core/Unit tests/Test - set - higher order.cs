@@ -421,7 +421,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void Compiled2a ()
         {
             Facts.Clear();
-            Corp c = new Corp("");
+            Thing c = new Thing("");
             Tbool result = SomeoneWorksAt(c);
             Assert.AreEqual("Time.DawnOf False ", result.TestOutput);        
         }
@@ -430,7 +430,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void Compiled2b ()
         {
             Facts.Clear();
-            Corp c = new Corp("");
+            Thing c = new Thing("");
             Person p = new Person("");
             Tbool result = SomeoneWorksAt(c);
             Assert.AreEqual("Time.DawnOf False ", result.TestOutput);        
@@ -440,7 +440,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void Compiled2c ()
         {
             Facts.Clear();
-            Corp c = new Corp("");
+            Thing c = new Thing("");
             Person p = new Person("p");
             Facts.Assert(p, "EmploymentRelationship", c, "Employee");
             Tbool result = SomeoneWorksAt(c);
@@ -451,7 +451,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void Compiled2d ()
         {
             Facts.Clear();
-            Corp c = new Corp("");
+            Thing c = new Thing("");
             Person p = new Person("p");
             Facts.Assert(p, "EmploymentRelationship", c, "Intern");
             Tbool result = SomeoneWorksAt(c);
@@ -463,8 +463,8 @@ namespace Hammurabi.UnitTests.CoreFcns
         {
             Facts.Clear();
             Person p = new Person("p");
-            Corp c = new Corp("c");
-            Corp c2 = new Corp("c2");
+            Thing c = new Thing("c");
+            Thing c2 = new Thing("c2");
             Facts.Assert(p, "EmploymentRelationship", c2, "Employee");
             Tbool result = Econ.IsEmployedBy(p,c2);
             Assert.AreEqual("Time.DawnOf True ", result.TestOutput);        
@@ -475,15 +475,15 @@ namespace Hammurabi.UnitTests.CoreFcns
         {
             Facts.Clear();
             Person p = new Person("p");
-            Corp c = new Corp("c");
-            Corp c2 = new Corp("c2");
+            Thing c = new Thing("c");
+            Thing c2 = new Thing("c2");
             Facts.Assert(p, "EmploymentRelationship", c2, "Employee");
             Facts.Assert(p, "EmploymentRelationship", c, "Intern");
             Tbool result = SomeoneWorksAt(c);  
             Assert.AreEqual("Time.DawnOf False ", result.TestOutput);        
         }
         
-        private static Tbool SomeoneWorksAt(Corp c)
+        private static Tbool SomeoneWorksAt(Thing c)
         {
             return Facts.AllKnownPeople().Exists( _ => Econ.IsEmployedBy(_,c));
         }

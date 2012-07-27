@@ -37,15 +37,10 @@ namespace Hammurabi
         /// </summary>
         public string Id;
 
-//        public Thing(string name)
-//        {
-//            Id = name;
-//        }
-
-//        public Thing(Tset theMembers)
-//        {
-//            Members = theMembers;
-//        }
+        public Thing(string name)
+        {
+            Id = name;
+        }
 
         /// <summary>
         /// The set of legal entities that compose the (parent) entity.
@@ -62,21 +57,9 @@ namespace Hammurabi
     /// </summary>
     public class Person : Thing
     {
-        public Person(string name)
+        public Person(string name) : base(name)
         {
             Id = name;
-        }
-    }
-
-    /// <summary>
-    /// Represents a corporate entity.
-    /// Includes corporations, partnerships, sole props, gov't agencies, etc.
-    /// </summary>
-    public class Corp : Thing
-    {
-        public Corp(string identifier)
-        {
-            Id = identifier;
         }
     }
 
@@ -86,7 +69,7 @@ namespace Hammurabi
     /// </summary>
     public class Property : Thing
     {
-        public Property(string identifier)
+        public Property(string identifier) : base(identifier)
         {
             Id = identifier;
         }

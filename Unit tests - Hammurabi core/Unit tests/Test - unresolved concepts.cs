@@ -62,8 +62,8 @@ namespace Hammurabi.UnitTests.CoreFcns
         {
             Facts.Clear();
             Person p = new Person("p");
-            Corp c = new Corp("c");
-            Corp c2 = new Corp("c2");
+            Thing c = new Thing("c");
+            Thing c2 = new Thing("c2");
             Facts.Assert(p, "EmploymentRelationship", c2, "Employee");
             Tbool result = Econ.IsEmployedBy(p,c);  // returns Unknown b/c this relationship has not been asserted
             Assert.AreEqual("Time.DawnOf False ", result.TestOutput);        
@@ -74,14 +74,14 @@ namespace Hammurabi.UnitTests.CoreFcns
         {
             Facts.Clear();
             Person p = new Person("p");
-            Corp c = new Corp("c");
-            Corp c2 = new Corp("c2");
+            Thing c = new Thing("c");
+            Thing c2 = new Thing("c2");
             Facts.Assert(p, "EmploymentRelationship", c2, "Employee");
             Tbool result = SomeoneWorksAt(c);  // returns Unknown b/c it's unknown whether IsEmployedBy(p,c)
             Assert.AreEqual("Time.DawnOf False ", result.TestOutput);        
         }
-        
-        private static Tbool SomeoneWorksAt(Corp c)
+
+        private static Tbool SomeoneWorksAt(Thing c)
         {
             return Facts.AllKnownPeople().Exists ( _ => Econ.IsEmployedBy(_,c));
         }

@@ -6,8 +6,8 @@
 
 
 # 2611(2) - Indicates whether a person (p) is an eligible employee under the FMLA.
-Tbool IsEligibleEmployee(Person p, Corp c) =
-	Econ.IsEmployedBy(p,c) &
+Tbool IsEligibleEmployee(Person p, Thing corp) =
+	Econ.IsEmployedBy(p, corp) &
 	prongAi &
 	prongAii &
 	prongB &
@@ -27,33 +27,33 @@ Tbool IsEligibleEmployee(Person p, Corp c) =
 		else true
 
 	Tbool TwelveMoInLast7Yrs = 
-		Econ.IsEmployedBy(p,c).TotalElapsedDays(d.AddYears(-7),d) > 364
+		Econ.IsEmployedBy(p, corp).TotalElapsedDays(d.AddYears(-7),d) > 364
 		
 	Tbool Employed7YrsAgo = 
-		Econ.IsEmployedBy(p,c).TotalElapsedDays(Time.DawnOf,d.AddYears(-7)) > 0
+		Econ.IsEmployedBy(p, corp).TotalElapsedDays(Time.DawnOf,d.AddYears(-7)) > 0
 	
 	Tdate d = 
-		DateLeaveBegins(p,c)
+		DateLeaveBegins(p, corp)
 		
 	Tbool prongAii = 
-		HoursInLast12Mo(p,c) >= 1250
+		HoursInLast12Mo(p, corp) >= 1250
             
 	Tbool prongB = 
 		!Tit5.Sec6301.IsEmployee(p) &
 		...
-			! TboolIn LessThan50EmployeesWithin75MilesOfWorksite(p,c) |
-			TboolIn LessThan50EmployeesAtWorksite(p,c)
+			! TboolIn LessThan50EmployeesWithin75MilesOfWorksite(p, corp) |
+			TboolIn LessThan50EmployeesAtWorksite(p, corp)
 			
 	Tbool prongD = 
 		set:
-		if Econ.IsAirlineFlightCrew(p,c) -> Stub()
+		if Econ.IsAirlineFlightCrew(p, corp) -> Stub()
 		else true
 
 
 # Indicates whether a person has worked 1,250 hours in the 12-month period
 # leading up to the family leave start date.
 # HACK: Need to create a Tnum.SumOver(interval,start,end) function to implement this correctly...
-Tnum HoursInLast12Mo(Person p, Corp c) =
+Tnum HoursInLast12Mo(Person p, Thing c) =
 	(avgHours / 7) * employed.TotalElapsedDays(Time.DawnOf, start)
 	
 	Tnum avgHours = 
@@ -73,7 +73,7 @@ Tnum HoursInLast12Mo(Person p, Corp c) =
 # Subsection (4)(A)(ii) is not modeled.
 # The "engaged in commerce" test is subsumed by the "number of employees" test. See 29 CFR 825.104(b).
 # Does not handle situations where one corp has an ownership interest in another.
-Tbool IsCoveredEmployer(Corp c) =
+Tbool IsCoveredEmployer(Thing c) =
 	meetsThreshold | 
 	Org.IsGovtAgency(c)
 
@@ -123,7 +123,7 @@ Tbool IsChildOf(Person p1, Person p2) =
         
 
 # Indicates the date the person started or intends to start FMLA leave.
-Tdate DateLeaveBegins(Person p, Corp c) =
+Tdate DateLeaveBegins(Person p, Thing c) =
 	TdateIn DateFamilyLeaveBegins(p,c)
   
 
@@ -139,22 +139,22 @@ Tbool ActsInLocoParentisOf(Person p1, Person p2) =
 
 Test: No_Facts_Asserted_1
 - Person e
-- Corp c
+- Thing c
 - Sec2611.IsEligibleEmployee(e,c).AsOf(2011-04-15).Out =?= "Unstated"
 
 Test: No_Facts_Asserted_2
-- Corp c
+- Thing c
 - Sec2611.IsCoveredEmployer(c).AsOf(2011-04-15).Out =?= "Unstated"
 
 Test: Eligible_Employee_1
 - Person e
-- Corp c
+- Thing c
 - EmploymentRelationship(e,c) = "None"
 - Sec2611.IsEligibleEmployee(e,c).AsOf(2011-04-15).Out =?= false
 
 Test: Eligible_Employee_2
 - Person e
-- Corp c
+- Thing c
 - NumberOfEmployees(c) = 2000
 - EmploymentRelationship(e,c) = "Employee"
 - HoursWorkedPerWeek(e,c) = 40
@@ -167,7 +167,7 @@ Test: Eligible_Employee_2
 
 Test: Eligible_Employee_3
 - Person e
-- Corp c
+- Thing c
 - EmploymentRelationship(e,c) = "Employee"
 - HoursWorkedPerWeek(e,c) = 1
 - IsEmployeeUnder5USC6301(e) = false
@@ -178,7 +178,7 @@ Test: Eligible_Employee_3
 
 Test: Eligible_Employee_4
 - Person e
-- Corp c
+- Thing c
 - EmploymentRelationship(e,c) = "Employee"
 - HoursWorkedPerWeek(e,c) = 40
 - IsEmployeeUnder5USC6301(e) = false
@@ -189,7 +189,7 @@ Test: Eligible_Employee_4
 
 Test: Eligible_Employee_5	# Airline flight crew
 - Person e
-- Corp c
+- Thing c
 - EmploymentRelationship(e,c) = "Employee"
 - HoursWorkedPerWeek(e,c) = 40
 - IsEmployeeUnder5USC6301(e) = false
@@ -199,22 +199,22 @@ Test: Eligible_Employee_5	# Airline flight crew
 - Sec2611.IsEligibleEmployee(e,c).AsOf(2011-04-15).Out =?= "Stub"
 
 Test: Covered_Employer_1
-- Corp c
+- Thing c
 - NumberOfEmployees(c) = 2000
 - Sec2611.IsCoveredEmployer(c).AsOf(2011-04-15).Out =?= true
 
 Test: Covered_Employer_1a
-- Corp c
+- Thing c
 - NumberOfEmployees(c) = 2000
 - Sec2611.IsCoveredEmployer(c).IsEverTrue().Out =?= true
 
 Test: Covered_Employer_2
-- Corp c
+- Thing c
 - NumberOfEmployees(c) = 1
 - Sec2611.IsCoveredEmployer(c).AsOf(2011-04-15).Out =?= "Unstated"
 
 Test: Covered_Employer_3
-- Corp c
+- Thing c
 - NumberOfEmployees(c) = 1
 - IsGovtAgency(c) = false
 - Sec2611.IsCoveredEmployer(c).AsOf(2011-04-15).Out =?= false

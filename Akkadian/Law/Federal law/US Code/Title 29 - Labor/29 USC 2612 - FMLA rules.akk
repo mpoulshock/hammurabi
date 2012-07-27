@@ -7,26 +7,26 @@
 
 # Indicates whether it is during the period in which an employee (e)
 # is entitled to FMLA leave from corporation (c).
-Tbool IsDuringEligiblePeriod(Person e, Corp c) =
+Tbool IsDuringEligiblePeriod(Person e, Thing corp) =
 	Stub()
 
 # 2612(a) - Returns the number of weeks of FMLA leave to which an
 # employee (e) at corporation (c) is entitled in a 12-month period.
-Tnum NumberWeeksEntitled(Person e, Corp c) =
+Tnum NumberWeeksEntitled(Person e, Thing corp) =
 	set:
-	if IsEntitledToServiceLeaveFrom(e,c) -> 26
-    if IsEntitledToRegLeaveFrom(e,c) -> 12
+	if IsEntitledToServiceLeaveFrom(e, corp) -> 26
+    if IsEntitledToRegLeaveFrom(e, corp) -> 12
 	else 0
 	
 # 2612 - Indicates whether an employee (e) is eligible for 
 # any FMLA leave from a corporation (c).
-Tbool IsEntitledToLeaveFrom(Person e, Corp c) =
+Tbool IsEntitledToLeaveFrom(Person e, Thing c) =
 	IsEntitledToRegLeaveFrom(e,c) |
 	IsEntitledToServiceLeaveFrom(e,c)
 				   
 # 2612(a)(1) - Indicates whether an employee (e) is eligible for 
 # "regular" (non-servicemember) FMLA leave from a corporation (c).
-Tbool IsEntitledToRegLeaveFrom(Person e, Corp c) =
+Tbool IsEntitledToRegLeaveFrom(Person e, Thing c) =
 	Sec2611.IsEligibleEmployee(e,c) &
 	Sec2611.IsCoveredEmployer(c) &
 	...
@@ -37,11 +37,11 @@ Tbool IsEntitledToRegLeaveFrom(Person e, Corp c) =
 		a1E(e,c)
 		
 # 2612(a)(1)(A) - Birth of child
-Tbool a1A(Person e, Corp c) =
+Tbool a1A(Person e, Thing c) =
 	ReasonForLeave(e,c) == "Maternity or paternity"
 	
 # 2612(a)(1)(B) - Adopted / foster child
-Tbool a1B(Person e, Corp c) =
+Tbool a1B(Person e, Thing c) =
 	reason == "To adopt a child" |
 	reason == "To become a foster parent"
 
@@ -49,7 +49,7 @@ Tbool a1B(Person e, Corp c) =
 		ReasonForLeave(e,c)
 	
 # 2612(a)(1)(C) - Family member sick
-Tbool a1C(Person e, Corp c) =
+Tbool a1C(Person e, Thing c) =
 	ReasonForLeave(e,c) == "To care for family member with a health condition" &
 	...
 		Fam.AreMarried(e, SickFam(e)) |
@@ -59,17 +59,17 @@ Tbool a1C(Person e, Corp c) =
 	Sec2611.HasSeriousHealthCondition(SickFam(e))
     
 # 2612(a)(1)(D) - Employee sick
-Tbool a1D(Person e, Corp c) =
+Tbool a1D(Person e, Thing c) =
 	ReasonForLeave(e,c) == "Employee cannot work due to health condition" &
 	Sec2611.HasSeriousHealthCondition(e)
 	      
 # 2612(a)(1)(E) - Qualifying exigency / active duty
-Tbool a1E(Person e, Corp c) =
+Tbool a1E(Person e, Thing c) =
 	ReasonForLeave(e,c) == "Other need arising due to family member serving in Armed Forces"
 
 # 2612(a)(3) - Indicates whether an employee (e) is eligible for
 # servicemember family leave from a corporation (c).
-Tbool IsEntitledToServiceLeaveFrom(Person e, Corp c) =
+Tbool IsEntitledToServiceLeaveFrom(Person e, Thing c) =
 	ReasonForLeave(e,c) == "To care for a family member in the Armed Forces" &
 	Sec2611.IsCoveredEmployer(c) &
 	Sec2611.IsEligibleEmployee(e,c) &
@@ -80,7 +80,7 @@ Tbool IsEntitledToServiceLeaveFrom(Person e, Corp c) =
 		Fam.IsNextOfKinOf(e,SickFam(e))
 		        
 # Returns a person's reason for requesting family leave from an employer.
-Tstr ReasonForLeave(Person e, Corp c) =
+Tstr ReasonForLeave(Person e, Thing c) =
 	TstrIn ReasonForRequestingLeaveFrom(e,c)
 	
 # Returns the person who the employee needs to take care of.
@@ -92,24 +92,24 @@ Person SickFam(Person e) =
 
 Test: Test1
 - Person e
-- Corp c
+- Thing c
 - Sec2612.IsEntitledToRegLeaveFrom(e,c).AsOf(2011-04-15).Out =?= "Unstated"
 
 Test: Test2
 - Person e
-- Corp c
+- Thing c
 - ReasonForRequestingLeaveFrom(e,c) = "Other"
 - Sec2612.IsEntitledToRegLeaveFrom(e,c).AsOf(2011-04-15).Out =?= false
 
 Test: Test3
 - Person e
-- Corp c
+- Thing c
 - EmploymentRelationship(e,c) = "None"
 - Sec2612.IsEntitledToRegLeaveFrom(e,c).Out =?= false
 
 Test: Test4
 - Person e
-- Corp c
+- Thing c
 - NumberOfEmployees(c) = 2000
 - EmploymentRelationship(e,c) = "Employee"
 - HoursWorkedPerWeek(e,c) = 40
@@ -121,7 +121,7 @@ Test: Test4
 
 Test: Test5
 - Person e
-- Corp c
+- Thing c
 - NumberOfEmployees(c) = 2000
 - EmploymentRelationship(e,c) = "Employee"
 - HoursWorkedPerWeek(e,c) = 40
@@ -133,7 +133,7 @@ Test: Test5
 
 Test: Test6
 - Person e
-- Corp c
+- Thing c
 - NumberOfEmployees(c) = 2000
 - EmploymentRelationship(e,c) = "Employee"
 - HoursWorkedPerWeek(e,c) = 40
@@ -146,7 +146,7 @@ Test: Test6
 
 Test: Test7_FlightCrew
 - Person e
-- Corp c
+- Thing c
 - NumberOfEmployees(c) = 2000
 - EmploymentRelationship(e,c) = "Employee"
 - HoursWorkedPerWeek(e,c) = 40
@@ -159,7 +159,7 @@ Test: Test7_FlightCrew
 
 Test: Test8_2612aC1_1
 - Person e
-- Corp c
+- Thing c
 - NumberOfEmployees(c) = 2000
 - EmploymentRelationship(e,c) = "Employee"
 - HoursWorkedPerWeek(e,c) = 40
@@ -173,7 +173,7 @@ Test: Test8_2612aC1_1
 Test: Test8_2612aC1_2
 - Person e
 - Person f
-- Corp c
+- Thing c
 - NumberOfEmployees(c) = 2000
 - EmploymentRelationship(e,c) = "Employee"
 - HoursWorkedPerWeek(e,c) = 40

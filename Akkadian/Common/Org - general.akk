@@ -5,12 +5,12 @@
 
 
 # Number of employees
-TnumIn NumberOfEmployees(Corp c)
+TnumIn NumberOfEmployees(Thing c)
 	
 # Governmental/public agency
-TboolIn IsGovtAgency(Corp c)
+TboolIn IsGovtAgency(Thing c)
 
 # Type of corporate entity
-TstrIn TypeOfCorporateEntity(Corp c)
+TstrIn TypeOfCorporateEntity(Thing c)
 	
 	
