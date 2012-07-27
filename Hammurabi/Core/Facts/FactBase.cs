@@ -40,15 +40,15 @@ namespace Hammurabi
 		private class Fact
 		{
             public string relationship;
-			public LegalEntity subject;
-			public LegalEntity directObject1;
-            public LegalEntity directObject2;
+			public Thing subject;
+			public Thing directObject1;
+            public Thing directObject2;
 			public Tvar v;
             
             /// <summary>
             /// Sets a Tvar fact that establishes a relation between legal entities (1)
             /// </summary>
-            public Fact(string rel, LegalEntity subj, Tvar val)
+            public Fact(string rel, Thing subj, Tvar val)
             {
                 relationship = rel;
                 subject = subj;
@@ -60,7 +60,7 @@ namespace Hammurabi
             /// <summary>
             /// Sets a Tvar fact that establishes a relation between legal entities (2)
             /// </summary>
-            public Fact(string rel, LegalEntity subj, LegalEntity obj1, Tvar val)
+            public Fact(string rel, Thing subj, Thing obj1, Tvar val)
             {
                 relationship = rel;
                 subject = subj;
@@ -72,7 +72,7 @@ namespace Hammurabi
             /// <summary>
             /// Sets a Tvar fact that establishes a relation between legal entities (3) 
             /// </summary>
-            public Fact(string rel, LegalEntity subj, LegalEntity obj1, LegalEntity obj2, Tvar val)
+            public Fact(string rel, Thing subj, Thing obj1, Thing obj2, Tvar val)
             {
                 relationship = rel;
                 subject = subj;
@@ -111,7 +111,7 @@ namespace Hammurabi
         /// <summary>
         /// Returns true if a symmetrical fact has been assserted.
         /// </summary>
-        public static bool HasBeenAssertedSym(LegalEntity e1, string rel, LegalEntity e2)
+        public static bool HasBeenAssertedSym(Thing e1, string rel, Thing e2)
         {
             return HasBeenAsserted(rel, e1, e2) ||
                    HasBeenAsserted(rel, e2, e1);
@@ -120,7 +120,7 @@ namespace Hammurabi
         /// <summary>
         /// Returns true if a fact has been assserted - 1 entity.
         /// </summary>
-        public static bool HasBeenAsserted(string rel, LegalEntity e1)
+        public static bool HasBeenAsserted(string rel, Thing e1)
         {
             return HasBeenAsserted(rel, e1, null, null);
         }
@@ -128,7 +128,7 @@ namespace Hammurabi
         /// <summary>
         /// Returns true if a fact has been assserted - 2 entities.
         /// </summary>
-        public static bool HasBeenAsserted(string rel, LegalEntity e1, LegalEntity e2)
+        public static bool HasBeenAsserted(string rel, Thing e1, Thing e2)
         {
             return HasBeenAsserted(rel, e1, e2, null);
         }
@@ -136,7 +136,7 @@ namespace Hammurabi
         /// <summary>
         /// Returns true if a fact has been assserted - 3 entities.
         /// </summary>
-        public static bool HasBeenAsserted(string rel, LegalEntity e1, LegalEntity e2, LegalEntity e3)
+        public static bool HasBeenAsserted(string rel, Thing e1, Thing e2, Thing e3)
         {
             // Look up fact in table of facts
             foreach (Fact f in FactBase)

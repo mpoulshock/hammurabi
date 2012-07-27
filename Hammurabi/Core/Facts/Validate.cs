@@ -37,7 +37,7 @@ namespace Hammurabi
         /// </summary>
         public static void Validate()
         {
-            List<LegalEntity> allPeople = Facts.AllKnownPeople().DistinctEntities();
+            List<Thing> allPeople = Facts.AllKnownPeople().DistinctEntities();
             
             foreach(Person p in allPeople)
             {

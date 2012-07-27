@@ -42,17 +42,9 @@ namespace Hammurabi
                 {
                     return true;
                 }
-                if (e.GetType() == new Person().GetType())
+                if (e.GetType() == new Person("").GetType())
                 {
                     if (((Person)e).Id == "") return true;
-                }
-                if (e.GetType() == new Corp().GetType())
-                {
-                    if (((Corp)e).Id == "") return true;
-                }
-                if (e.GetType() == new Entity().GetType())
-                {
-                    if (((Entity)e).Id == "") return true;
                 }
                 if (e.GetType() == new Property("").GetType())
                 {

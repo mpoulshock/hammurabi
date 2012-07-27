@@ -97,7 +97,7 @@ namespace Hammurabi
         /// <summary>
         /// Implicitly converts a legal entity into a Tvar
         /// </summary>
-        public static implicit operator Tvar(LegalEntity e) 
+        public static implicit operator Tvar(Thing e) 
         {
             return new Tset(e);
         }

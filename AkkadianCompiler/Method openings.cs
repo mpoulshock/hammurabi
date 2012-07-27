@@ -28,7 +28,7 @@ namespace Akkadian
 
         public static string QueryTvarTransform(string line)
         {
-            string typs = @"(Tbool|Tnum|Tstr|Tset|Tdate|Date|Person)";
+            string typs = @"(Tbool|Tnum|Tstr|Tset|Tdate|Date|Person|Thing)";
 
             // People (rule condition)
             if (line.Trim().StartsWith("PersonIn"))
@@ -106,7 +106,7 @@ namespace Akkadian
             {
                 // Three arguments
                 line = Regex.Replace(line, 
-                    @"(?<typ>(Tbool|Tnum|Tstr|Tdate|Tset|Person))In (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@"), ?(?<argtyp2>"+wrd+@" )(?<arg2>"+wrd+@"), ?(?<argtyp3>"+wrd+@" )(?<arg3>"+wrd+@")\) =",
+                    @"(?<typ>(Tbool|Tnum|Tstr|Tdate|Tset|Person|Thing))In (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@"), ?(?<argtyp2>"+wrd+@" )(?<arg2>"+wrd+@"), ?(?<argtyp3>"+wrd+@" )(?<arg3>"+wrd+@")\) =",
                      "        public static ${typ} ${fcn}(${argtyp1} ${arg1}, ${argtyp2} ${arg2}, ${argtyp3} ${arg3})\r\n" +
                      "        {\r\n" +
                      "            if (EntityArgIsUnknown(${arg1},${arg2},${arg3})) return new ${typ}(Hstate.Unstated);\r\n" +
@@ -117,7 +117,7 @@ namespace Akkadian
 
                 // Two arguments
                 line = Regex.Replace(line, 
-                    @"(?<typ>(Tbool|Tnum|Tstr|Tdate|Tset|Person))In (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@"), ?(?<argtyp2>"+wrd+@" )(?<arg2>"+wrd+@")\) =",
+                    @"(?<typ>(Tbool|Tnum|Tstr|Tdate|Tset|Person|Thing))In (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@"), ?(?<argtyp2>"+wrd+@" )(?<arg2>"+wrd+@")\) =",
                      "        public static ${typ} ${fcn}(${argtyp1} ${arg1}, ${argtyp2} ${arg2})\r\n" +
                      "        {\r\n" +
                      "            if (EntityArgIsUnknown(${arg1},${arg2})) return new ${typ}(Hstate.Unstated);\r\n" +
@@ -128,7 +128,7 @@ namespace Akkadian
 
                 // One argument
                 line = Regex.Replace(line, 
-                    @"(?<typ>(Tbool|Tnum|Tstr|Tdate|Tset|Person))In (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@")\) =",
+                    @"(?<typ>(Tbool|Tnum|Tstr|Tdate|Tset|Person|Thing))In (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@")\) =",
                      "        public static ${typ} ${fcn}(${argtyp1} ${arg1})\r\n" +
                      "        {\r\n" +
                      "            if (EntityArgIsUnknown(${arg1})) return new ${typ}(Hstate.Unstated);\r\n" +
@@ -148,29 +148,29 @@ namespace Akkadian
         {
             // Three arguments
             line = Regex.Replace(line, 
-                @"(?<typ>(Tbool|Tnum|Tstr|Tdate|Tset)) (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@"), ?(?<argtyp2>"+wrd+@" )(?<arg2>"+wrd+@"), ?(?<argtyp3>"+wrd+@" )(?<arg3>"+wrd+@")\) =",
+                @"(?<typ>(Tbool|Tnum|Tstr|Tdate|Tset|Thing)) (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@"), ?(?<argtyp2>"+wrd+@" )(?<arg2>"+wrd+@"), ?(?<argtyp3>"+wrd+@" )(?<arg3>"+wrd+@")\) =",
                  "        public static ${typ} ${fcn}(${argtyp1} ${arg1}, ${argtyp2} ${arg2}, ${argtyp3} ${arg3})\r\n" +
                  "        {\r\n" +
                  "            if (EntityArgIsUnknown(${arg1},${arg2},${arg3})) return new ${typ}(Hstate.Unstated);\r\n\r\n");
 
             // Two arguments
             line = Regex.Replace(line, 
-                @"(?<typ>(Tbool|Tnum|Tstr|Tdate|Tset)) (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@"), ?(?<argtyp2>"+wrd+@" )(?<arg2>"+wrd+@")\) =",
+                @"(?<typ>(Tbool|Tnum|Tstr|Tdate|Tset|Thing)) (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@"), ?(?<argtyp2>"+wrd+@" )(?<arg2>"+wrd+@")\) =",
                  "        public static ${typ} ${fcn}(${argtyp1} ${arg1}, ${argtyp2} ${arg2})\r\n" +
                  "        {\r\n" +
                  "            if (EntityArgIsUnknown(${arg1},${arg2})) return new ${typ}(Hstate.Unstated);\r\n\r\n");
 
             // One argument
             line = Regex.Replace(line, 
-                @"(?<typ>(Tbool|Tnum|Tstr|Tdate|Tset)) (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@")\) =",
+                @"(?<typ>(Tbool|Tnum|Tstr|Tdate|Tset|Thing)) (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@")\) =",
                  "        public static ${typ} ${fcn}(${argtyp1} ${arg1})\r\n" +
                  "        {\r\n" +
                  "            if (EntityArgIsUnknown(${arg1})) return new ${typ}(Hstate.Unstated);\r\n\r\n");
 
             // Otherwise, no need to check the arguments for uncertainty...
             string word = @"[-!\+\*/A-Za-z0-9\.;\(\),""'_<>=&| ]+";
-            line = Regex.Replace(line, @"(?<dec>(Tbool|Tnum|Tstr|Tdate|Tset|Person|Entity|DateTime|bool)"+word+") =",
-                                      "        public static ${dec}\r\n        {\r\n");  // TODO: Needs EntityArgIsUnknown() line
+            line = Regex.Replace(line, @"(?<dec>(Tbool|Tnum|Tstr|Tdate|Tset|Person|Thing|Entity|DateTime|bool)"+word+") =",
+                                      "        public static ${dec}\r\n        {\r\n");  
 
             return line;
         }

@@ -499,7 +499,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         {
             string val = "ham; beans";
             string[] items = val.Split(new char[] {';'});
-            List<LegalEntity> list = new List<LegalEntity>();
+            List<Thing> list = new List<Thing>();
 
             foreach (string i in items)
             {

@@ -421,7 +421,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void Compiled2a ()
         {
             Facts.Clear();
-            Corp c = new Corp();
+            Corp c = new Corp("");
             Tbool result = SomeoneWorksAt(c);
             Assert.AreEqual("Time.DawnOf False ", result.TestOutput);        
         }
@@ -430,8 +430,8 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void Compiled2b ()
         {
             Facts.Clear();
-            Corp c = new Corp();
-            Person p = new Person();
+            Corp c = new Corp("");
+            Person p = new Person("");
             Tbool result = SomeoneWorksAt(c);
             Assert.AreEqual("Time.DawnOf False ", result.TestOutput);        
         }
@@ -440,8 +440,8 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void Compiled2c ()
         {
             Facts.Clear();
-            Corp c = new Corp();
-            Person p = new Person();
+            Corp c = new Corp("");
+            Person p = new Person("p");
             Facts.Assert(p, "EmploymentRelationship", c, "Employee");
             Tbool result = SomeoneWorksAt(c);
             Assert.AreEqual("Time.DawnOf True ", result.TestOutput);        
@@ -451,8 +451,8 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void Compiled2d ()
         {
             Facts.Clear();
-            Corp c = new Corp();
-            Person p = new Person();
+            Corp c = new Corp("");
+            Person p = new Person("p");
             Facts.Assert(p, "EmploymentRelationship", c, "Intern");
             Tbool result = SomeoneWorksAt(c);
             Assert.AreEqual("Time.DawnOf False ", result.TestOutput);        

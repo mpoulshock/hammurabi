@@ -52,7 +52,7 @@ namespace Hammurabi
         public static Tset AllKnownPeople()
         {
             Tset result = new Tset();
-            List<LegalEntity> thePeople = new List<LegalEntity>();
+            List<Thing> thePeople = new List<Thing>();
             
             foreach (Fact f in FactBase)
             {
@@ -77,7 +77,7 @@ namespace Hammurabi
         public static Tset AllKnownProperty()
         {
             Tset result = new Tset();
-            List<LegalEntity> theProp = new List<LegalEntity>();
+            List<Thing> theProp = new List<Thing>();
             
             foreach (Fact f in FactBase)
             {

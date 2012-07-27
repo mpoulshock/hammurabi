@@ -29,94 +29,64 @@ namespace Hammurabi
     /// legal concepts that are passed as arguments in the law-related methods
     /// of the project.
     /// </summary>
-    public abstract class LegalEntity
+    public class Thing
     {    
         /// <summary>
         /// Identifies each legal entity.
         /// The input value should be unique.
         /// </summary>
         public string Id;
-        
-        public Tstr Location;
-        
+
+//        public Thing(string name)
+//        {
+//            Id = name;
+//        }
+
+//        public Thing(Tset theMembers)
+//        {
+//            Members = theMembers;
+//        }
+
         /// <summary>
-        /// Indicates when a legal entity is a member of a Tset.
+        /// The set of legal entities that compose the (parent) entity.
         /// </summary>
-        public Tbool IsMemberOf(Tset s)
+        public Tset Constituents
         {
-            return Auxiliary.IsMemberOfSet(this,s);
-        }
-        
-        public Tstr EntityType
-        {
-            get 
-            {
-                if (Object.ReferenceEquals(this.GetType(), new Person().GetType())) return "Person";
-                if (Object.ReferenceEquals(this.GetType(), new Corp().GetType())) return "Corp";
-                return "?";
-            }
+            get;
+            set;
         }
     }
     
     /// <summary>
     /// Represents natural persons (i.e. humans).
     /// </summary>
-    public class Person : LegalEntity
+    public class Person : Thing
     {
-        // Characteristics - non-temporal
-        public string Name;
-        
-        /// <summary>
-        /// Constructs a person with a given name.
-        /// </summary>
         public Person(string name)
         {
             Id = name;
         }
-        
-        public Person()
-        {
-        }
     }
-    
-    /// <summary>
-    /// A catch-all type of legal entity for objects that don't fit other categories.
-    /// Could include, for example, households, married couples, estates, etc.
-    /// </summary>
-    public class Entity : LegalEntity
-    {      
-        /// <summary>
-        /// The set of legal entities that compose the (parent) entity.
-        /// </summary>
-        public Tset Members
-        {
-            get;
-            set;
-        }
-        
-        public Entity()
-        {
-        }
-        
-        public Entity(Tset theMembers)
-        {
-            Members = theMembers;
-        }
-    }
-    
+
     /// <summary>
     /// Represents a corporate entity.
     /// Includes corporations, partnerships, sole props, gov't agencies, etc.
     /// </summary>
-    public class Corp : LegalEntity
+    public class Corp : Thing
     {
-        public string Name;
-        
-        public Corp()
-        {
-        }
-        
         public Corp(string identifier)
+        {
+            Id = identifier;
+        }
+    }
+
+    /// <summary>
+    /// Represents tangible or intangible property, i.e. something that can
+    /// be owned.  Synonymous with "asset."
+    /// </summary>
+    public class Property : Thing
+    {
+        public Property(string identifier)
         {
             Id = identifier;
         }

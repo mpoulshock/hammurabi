@@ -10,10 +10,10 @@
             <Keywords name="Folder+"></Keywords>
             <Keywords name="Folder-"></Keywords>
             <Keywords name="Operators">! &amp; | ~</Keywords>
-            <Keywords name="Comment"> 1## 2## 0#</Keywords>
+            <Keywords name="Comment">1## 2## 0#</Keywords>
             <Keywords name="Words1">if then else match -&gt; set: null true false from temporal: endtemporal</Keywords>
             <Keywords name="Words2">mod TboolIn TnumIn TdateIn TstrIn TsetIn DateIn PersonIn TboolInSym Stub()</Keywords>
-            <Keywords name="Words3">Tbool Tnum Tdate Tstr Tset DateTime Entity Corp Person Property bool int</Keywords>
+            <Keywords name="Words3">Tbool Tnum Tdate Tstr Tset DateTime Entity Corp Person Property bool int Thing</Keywords>
             <Keywords name="Words4">Test:</Keywords>
         </KeywordLists>
         <Styles>

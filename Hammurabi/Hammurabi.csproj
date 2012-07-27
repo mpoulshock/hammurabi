@@ -71,8 +71,6 @@
     <Compile Include="Core\Core functions\Tbool - temporal.cs" />
     <Compile Include="Core\Facts\Inputs - lists.cs" />
     <Compile Include="Core\Fundamental types\Tline.cs" />
-    <Compile Include="Core\Legal entities\Entities - legal persons.cs" />
-    <Compile Include="Core\Legal entities\Entities - property and transactions.cs" />
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Core\Fundamental types\Hval.cs" />
     <Compile Include="Generated source\5 USC 6103 - Legal holidays.cs" />
@@ -147,6 +145,9 @@
     <Compile Include="Generated source\Question metadata.cs" />
     <Compile Include="Core\Engine\Question class.cs" />
     <Compile Include="Generated source\0 - Test1.cs" />
+    <Compile Include="Generated source\Econ - transactions.cs" />
+    <Compile Include="Generated source\Property - general.cs" />
+    <Compile Include="Core\Fundamental types\Thing.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

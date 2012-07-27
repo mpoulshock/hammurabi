@@ -52,7 +52,7 @@ namespace Hammurabi
         /// <summary>
         /// Constructs a Tset consisting eternally of a list of members. 
         /// </summary>
-        public Tset(params LegalEntity[] list)
+        public Tset(params Thing[] list)
         {
             this.SetEternally(list);
         }
@@ -60,7 +60,7 @@ namespace Hammurabi
         /// <summary>
         /// Constructs a Tset consisting eternally of a list of members. 
         /// </summary>
-        public Tset(List<LegalEntity> list)
+        public Tset(List<Thing> list)
         {
             this.SetEternally(new Hval(list));
         }
@@ -79,7 +79,7 @@ namespace Hammurabi
         /// <summary>
         /// Implicitly converts a legal entity into a Tset
         /// </summary>
-        public static implicit operator Tset(LegalEntity e) 
+        public static implicit operator Tset(Thing e) 
         {
             return new Tset(e);
         }
@@ -87,11 +87,11 @@ namespace Hammurabi
         /// <summary>
         /// Adds a time interval and list of set members to the timeline. 
         /// </summary>
-        public void AddState (DateTime dt, params LegalEntity[] list)
+        public void AddState (DateTime dt, params Thing[] list)
         {
-            List<LegalEntity> entities = new List<LegalEntity>();
+            List<Thing> entities = new List<Thing>();
             
-            foreach (LegalEntity le in list)
+            foreach (Thing le in list)
                 entities.Add(le);
 
             TimeLine.Add(dt, new Hval(entities));    
@@ -100,7 +100,7 @@ namespace Hammurabi
         /// <summary>
         /// Sets the Tset to eternally have a given member. 
         /// </summary>
-        public void SetEternally(LegalEntity val)
+        public void SetEternally(Thing val)
         {
             TimeLine.Add(Time.DawnOf, new Hval(val));    
         }
@@ -108,7 +108,7 @@ namespace Hammurabi
         /// <summary>
         /// Sets the Tset to eternally have a list of members. 
         /// </summary>
-        public void SetEternally(params LegalEntity[] list)
+        public void SetEternally(params Thing[] list)
         {
             AddState(Time.DawnOf,list);
         }
@@ -129,7 +129,7 @@ namespace Hammurabi
                 {
                     for (int i=0; i < TimeLine.Count-1; i++ ) 
                     {
-                        if (AreEquivalentSets((List<LegalEntity>)TimeLine.Values[i+1].Val,(List<LegalEntity>)TimeLine.Values[i].Val))
+                        if (AreEquivalentSets((List<Thing>)TimeLine.Values[i+1].Val,(List<Thing>)TimeLine.Values[i].Val))
                         {
                             dupes.Add(TimeLine.Keys[i+1]);
                         }
@@ -146,11 +146,11 @@ namespace Hammurabi
         /// <summary>
         /// Determines whether two lists of legal entities are equivalent (ignoring order)
         /// </summary>
-        public static bool AreEquivalentSets(List<LegalEntity> L1, List<LegalEntity> L2)
+        public static bool AreEquivalentSets(List<Thing> L1, List<Thing> L2)
         {
             if (L1.Count != L2.Count) return false;
             
-            foreach(LegalEntity i in L1)
+            foreach(Thing i in L1)
             {
                 if (!L2.Contains(i)) return false;
             }
@@ -164,7 +164,7 @@ namespace Hammurabi
         /// LegalEntity.  Returns null if the Tset is unknown, if it's 
         /// value changes over time, or if it has more than one member.
         /// </summary>
-        public Person ToPerson  // ToLegalEntity?
+        public Person ToPerson  // ToThing
         {
             get
             {
@@ -172,14 +172,30 @@ namespace Hammurabi
 
                 if (TimeLine.Count != 1) { return new Person(""); }
 
-                List<LegalEntity> list = (List<LegalEntity>)this.TimeLine.Values[0].Obj;
+                List<Thing> list = (List<Thing>)this.TimeLine.Values[0].Obj;
 
                 if (list == null || list[0] == null) { return new Person(""); }
 
                 return (Person)list[0];
             }
         }
-        
+
+//        public Thing ToThing  // ToThing
+//        {
+//            get
+//            {
+//                if (this.TimeLine.Values[0].IsUnstated) { return new Thing(""); }
+//
+//                if (TimeLine.Count != 1) { return new Thing(""); }
+//
+//                List<Thing> list = (List<Thing>)this.TimeLine.Values[0].Obj;
+//
+//                if (list == null || list[0] == null) { return new Thing(""); }
+//
+//                return (Thing)list[0];
+//            }
+//        }
+
         /// <summary>
         /// Returns the members of the set at a specified point in time. 
         /// </summary>
@@ -214,7 +230,7 @@ namespace Hammurabi
 
                     else
                     {
-                        foreach(LegalEntity le in (List<LegalEntity>)de.Value.Val)
+                        foreach(Thing le in (List<Thing>)de.Value.Val)
                         {
                             result += le.Id + ", ";
                         }
@@ -256,7 +272,7 @@ namespace Hammurabi
                     }
                     else
                     {
-                        List<LegalEntity> entities = (List<LegalEntity>)de.Value.Val;
+                        List<Thing> entities = (List<Thing>)de.Value.Val;
                         result.AddState(de.Key, new Hval(Convert.ToDecimal(entities.Count)));
                     }
                 }
@@ -284,8 +300,8 @@ namespace Hammurabi
             Tset sub = this;
             Tbool result = new Tbool();
             
-            List<LegalEntity> entitiesInSub = new List<LegalEntity>();
-            List<LegalEntity> entitiesInSuper = new List<LegalEntity>();
+            List<Thing> entitiesInSub = new List<Thing>();
+            List<Thing> entitiesInSuper = new List<Thing>();
                         
             foreach (DateTime d in TimePoints(sub, super))
             {
@@ -303,10 +319,10 @@ namespace Hammurabi
                 else
                 {
                     bool isSubset = true;
-                    entitiesInSub   = (List<LegalEntity>)subHval.Val;
-                    entitiesInSuper = (List<LegalEntity>)superHval.Val;
+                    entitiesInSub   = (List<Thing>)subHval.Val;
+                    entitiesInSuper = (List<Thing>)superHval.Val;
                         
-                    foreach (LegalEntity le in entitiesInSub)
+                    foreach (Thing le in entitiesInSub)
                     {
                         if (!entitiesInSuper.Contains(le))
                         {
@@ -324,7 +340,7 @@ namespace Hammurabi
         /// <summary>
         /// Returns true when the Tset contains a given legal entity. 
         /// </summary>
-        public Tbool Contains(LegalEntity e)
+        public Tbool Contains(Thing e)
         {
             return Auxiliary.IsMemberOfSet(e,this);
         }
@@ -348,14 +364,14 @@ namespace Hammurabi
                 }
                 else
                 {
-                    List<LegalEntity> intervalUnion = new List<LegalEntity>();
+                    List<Thing> intervalUnion = new List<Thing>();
     
                     // For each list of entities
                     for (int i=0; i<slice.Value.Count; i++)
                     {
-                        List<LegalEntity> entities = (List<LegalEntity>)slice.Value[i].Val;
+                        List<Thing> entities = (List<Thing>)slice.Value[i].Val;
     
-                        foreach (LegalEntity le in entities)
+                        foreach (Thing le in entities)
                         {
                             if (!intervalUnion.Contains(le))
                             {
@@ -392,11 +408,11 @@ namespace Hammurabi
                 }
                 else
                 {
-                    List<LegalEntity> entitiesInSet2 = (List<LegalEntity>)set2Val.Val;            
-                    List<LegalEntity> intersect = new List<LegalEntity>();
+                    List<Thing> entitiesInSet2 = (List<Thing>)set2Val.Val;            
+                    List<Thing> intersect = new List<Thing>();
                     
                     // Members of set 1 in set 2
-                    foreach (LegalEntity le in (List<LegalEntity>)set1Val.Val)
+                    foreach (Thing le in (List<Thing>)set1Val.Val)
                     {
                         if (entitiesInSet2.Contains(le))
                         {
@@ -433,11 +449,11 @@ namespace Hammurabi
                 }
                 else
                 {
-                    List<LegalEntity> entitiesInSet2 = (List<LegalEntity>)set2Val.Val;            
-                    List<LegalEntity> complement = new List<LegalEntity>();
+                    List<Thing> entitiesInSet2 = (List<Thing>)set2Val.Val;            
+                    List<Thing> complement = new List<Thing>();
                     
                     // Members of set 1 not in set 2
-                    foreach (LegalEntity le in (List<LegalEntity>)set1Val.Val)
+                    foreach (Thing le in (List<Thing>)set1Val.Val)
                     {
                         if (!entitiesInSet2.Contains(le))
                         {
@@ -497,22 +513,22 @@ namespace Hammurabi
                 return TimeLine.Values[TimeLine.Count-1];
             }
             
-            return new Hval(new List<LegalEntity>());
+            return new Hval(new List<Thing>());
         }
 
         /// <summary>
         /// Returns a list of all legal entities that were ever members of the 
         /// set. 
         /// </summary>
-        public List<LegalEntity> DistinctEntities()
+        public List<Thing> DistinctEntities()
         {
-            List<LegalEntity> result = new List<LegalEntity>();
+            List<Thing> result = new List<Thing>();
             
             foreach(KeyValuePair<DateTime,Hval> de in TimeLine )
             {
                 if (de.Value.IsKnown)
                 {
-                    foreach(LegalEntity le in (List<LegalEntity>)de.Value.Val)
+                    foreach(Thing le in (List<Thing>)de.Value.Val)
                     {
                         if (!result.Contains(le))
                         {

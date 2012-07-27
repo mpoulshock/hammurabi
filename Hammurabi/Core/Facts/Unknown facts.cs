@@ -40,7 +40,7 @@ namespace Hammurabi
         /// <summary>
         /// Add a (two-entity) factlet to UnknownFacts.
         /// </summary>
-        public static void AddUnknown(string rel, LegalEntity e1, LegalEntity e2, LegalEntity e3)
+        public static void AddUnknown(string rel, Thing e1, Thing e2, Thing e3)
         {
             // Keep list from devouring the entire universe
             if (Unknowns.Count < 500)
@@ -59,7 +59,7 @@ namespace Hammurabi
         /// <remarks>
         /// Note that this is distinct from whether a fact HasBeenAsserted.
         /// </remarks>
-        public static bool IsUnknown(string rel, LegalEntity e1, LegalEntity e2, LegalEntity e3)
+        public static bool IsUnknown(string rel, Thing e1, Thing e2, Thing e3)
         {
             foreach (Factlet t in Unknowns)
             {
@@ -107,14 +107,14 @@ namespace Hammurabi
         public class Factlet
         {
             public string relationship;
-            public LegalEntity subject;
-            public LegalEntity object1;
-            public LegalEntity object2;
+            public Thing subject;
+            public Thing object1;
+            public Thing object2;
 
             /// <summary>
             /// Factlet that relates to two legal entities.  
             /// </summary>
-            public Factlet(string rel, LegalEntity subj, LegalEntity obj1, LegalEntity obj2)
+            public Factlet(string rel, Thing subj, Thing obj1, Thing obj2)
             {
                 subject = subj;
                 relationship = rel;

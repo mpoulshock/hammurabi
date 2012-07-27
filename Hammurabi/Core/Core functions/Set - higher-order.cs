@@ -99,7 +99,7 @@ namespace Hammurabi
             List<Tvar> listOfTvars = new List<Tvar>();
             
             // Get the temporal value of each distinct entity in the set
-            foreach(LegalEntity le in theSet.DistinctEntities())
+            foreach(Thing le in theSet.DistinctEntities())
             {
                 Tbool val = argumentFcn(le);
                 fcnValues.Add(le, val);
@@ -120,10 +120,10 @@ namespace Hammurabi
                 }
                 else
                 {
-                    List<LegalEntity> membersOfNewSet = new List<LegalEntity>();
+                    List<Thing> membersOfNewSet = new List<Thing>();
                     List<Hval> unknownValues = new List<Hval>();
                     
-                    foreach(LegalEntity le in (List<LegalEntity>)membersOfOldSet.Val)
+                    foreach(Thing le in (List<Thing>)membersOfOldSet.Val)
                     {
                         Tbool funcVal = (Tbool)fcnValues[le];
                         Hval funcHval = funcVal.ObjectAsOf(dt);
@@ -172,7 +172,7 @@ namespace Hammurabi
         /// Returns the minimum value of a given numeric property of the 
         /// members of a set.
         /// </summary>
-        public Tnum Min(Func<LegalEntity,Tnum> func)
+        public Tnum Min(Func<Thing,Tnum> func)
         {
             return ApplyFcnToTset(this, x => func(x), y => Auxiliary.Minimum(y));
         }
@@ -181,7 +181,7 @@ namespace Hammurabi
         /// Returns the maximum value of a given numeric property of the 
         /// members of a set.
         /// </summary>
-        public Tnum Max(Func<LegalEntity,Tnum> func)
+        public Tnum Max(Func<Thing,Tnum> func)
         {
             return ApplyFcnToTset(this, x => func(x), y => Auxiliary.Maximum(y));
         }
@@ -190,14 +190,14 @@ namespace Hammurabi
         /// A private method that applies a higher-order function to a set.
         /// </summary>
         private static Tnum ApplyFcnToTset(Tset theSet, 
-                                           Func<LegalEntity,Tnum> argumentFcn, 
+                                           Func<Thing,Tnum> argumentFcn, 
                                            Func<List<Hval>,Hval> aggregationFcn)
         {
-            Dictionary<LegalEntity,Tvar> fcnValues = new Dictionary<LegalEntity,Tvar>();
+            Dictionary<Thing,Tvar> fcnValues = new Dictionary<Thing,Tvar>();
             List<Tvar> listOfTvars = new List<Tvar>();
             
             // Get the temporal value of each distinct entity in the set
-            foreach(LegalEntity le in theSet.DistinctEntities())
+            foreach(Thing le in theSet.DistinctEntities())
             {
                 Tvar val = argumentFcn(le);
                 fcnValues.Add(le, val);
@@ -220,7 +220,7 @@ namespace Hammurabi
                 {
                     List<Hval> values = new List<Hval>();
                     
-                    foreach(LegalEntity le in (List<LegalEntity>)membersOfSet.Val)
+                    foreach(Thing le in (List<Thing>)membersOfSet.Val)
                     {
                         Tvar funcVal = (Tvar)fcnValues[le];    
                         Hval funcValAt = funcVal.ObjectAsOf(dt);

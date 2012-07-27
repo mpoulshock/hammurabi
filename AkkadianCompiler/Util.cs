@@ -25,7 +25,7 @@ namespace Akkadian
 {
     public class Util
     {
-        private static string[] RuleTypes = new string[9]{"Tbool","Tnum","Tdate","Tstr","Tset","DateTime","Person","Entity","bool"};
+        private static string[] RuleTypes = new string[10]{"Tbool","Tnum","Tdate","Tstr","Tset","DateTime","Person","Entity","bool","Thing"};
         private static string[] DocHeaders = new string[5]{"Citation:","Namespace:","Summary:","Remarks:","References:"};    
         public static string EndRule = "        }\r\n\r\n";
         public static string wrd = @"[a-zA-Z0-9_]+";

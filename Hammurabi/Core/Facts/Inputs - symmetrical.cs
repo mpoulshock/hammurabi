@@ -35,7 +35,7 @@ namespace Hammurabi
         /// Facts.Unknowns list in the proper order and with proper short-
         /// circuiting.
         /// </remarks>
-        public static Tbool Sym(LegalEntity subj, string rel, LegalEntity directObj)
+        public static Tbool Sym(Thing subj, string rel, Thing directObj)
         {
             if (Facts.HasBeenAsserted(rel, subj, directObj))
             {
@@ -48,7 +48,7 @@ namespace Hammurabi
         /// <summary>
         /// Returns a symmetrical input string fact.
         /// </summary>
-        public static Tbool Sym(LegalEntity subj, string rel, LegalEntity directObj, string val)
+        public static Tbool Sym(Thing subj, string rel, Thing directObj, string val)
         {
             if (Facts.HasBeenAsserted(rel, subj, directObj))
             {
@@ -62,7 +62,7 @@ namespace Hammurabi
         /// Returns a symmetrical input string fact where the symmetrical relation
         /// has a different name in each direction (such as grandchild-grandparent).
         /// </summary>
-        public static Tbool Sym(LegalEntity subj, string rel, LegalEntity obj, string text, string reverseText)
+        public static Tbool Sym(Thing subj, string rel, Thing obj, string text, string reverseText)
         {
             bool fwd = Facts.HasBeenAsserted(rel, subj, obj);
             bool bwd = Facts.HasBeenAsserted(rel, obj, subj);

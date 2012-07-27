@@ -128,7 +128,7 @@ namespace Akkadian
                                  "            Facts.Assert(${arg}, \"${fcn}\", ${val});", RegexOptions.IgnoreCase);  
 
             // Convert lists of Tset members to C#
-            fact = Regex.Replace(fact, @"\[\[(?<list>[a-zA-Z0-9, ]+)\]\]", @"new Tset(new List<LegalEntity>(){${list}})");
+            fact = Regex.Replace(fact, @"\[\[(?<list>[a-zA-Z0-9, ]+)\]\]", @"new Tset(new List<Thing>(){${list}})");
 
 
             return fact;

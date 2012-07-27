@@ -1,0 +1,19 @@
+# Namespace:    Hammurabi.Prop
+# Summary:      Facts related to property.
+# Updated:      2012-07-26
+# Author:       Michael Poulshock
+
+
+# Nature of the property (e.g. currency, real estate, etc.)
+TstrIn TypeOf(Thing property)
+
+# Value in dollars
+TnumIn ValueInDollars(Thing property)
+
+# Set of owners
+TsetIn OwnersOf(Thing property)
+
+# Person owns property
+TboolIn Owns(Person p, Thing property)
+
+		

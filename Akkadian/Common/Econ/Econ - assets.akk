@@ -8,8 +8,9 @@
 # ASSETS 
 
 # Total household assets
-Tnum TotalAssets(Entity household) =
-	household.Members.Sum(TotalAssets(_))
+Tnum TotalAssets(Thing household) =
+	Stub()
+	# household.Constituents.Sum(TotalAssets(_))
 
 # Total assets
 Tnum TotalAssets(Person p) =
@@ -18,8 +19,9 @@ Tnum TotalAssets(Person p) =
 	Stub()
 
 # Household liquid assets
-Tnum LiquidAssets(Entity household) =
-	household.Members.Sum(LiquidAssets(_))	
+Tnum LiquidAssets(Thing household) =
+	Stub()
+	# household.Constituents.Sum(LiquidAssets(_))	
 
 # Liquid assets (cash, checking, saving ...)
 Tnum LiquidAssets(Person p) =

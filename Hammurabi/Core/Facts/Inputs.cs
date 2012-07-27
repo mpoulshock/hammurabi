@@ -27,7 +27,7 @@ namespace Hammurabi
         /// <summary>
         /// Queries the fact base - 1 entity.
         /// </summary>
-        public static T QueryTvar<T>(string rel, LegalEntity e1) where T : Tvar
+        public static T QueryTvar<T>(string rel, Thing e1) where T : Tvar
         {
             T defaultVal = (T)Auxiliary.ReturnProperTvar<T>(Hstate.Unstated);
 
@@ -37,7 +37,7 @@ namespace Hammurabi
         /// <summary>
         /// Queries the fact base - 2 entities.
         /// </summary>
-        public static T QueryTvar<T>(string rel, LegalEntity e1, LegalEntity e2) where T : Tvar
+        public static T QueryTvar<T>(string rel, Thing e1, Thing e2) where T : Tvar
         {
             T defaultVal = (T)Auxiliary.ReturnProperTvar<T>(Hstate.Unstated);
 
@@ -47,7 +47,7 @@ namespace Hammurabi
         /// <summary>
         /// Queries the fact base - 3 entities.
         /// </summary>
-        public static T QueryTvar<T>(string rel, LegalEntity e1, LegalEntity e2, LegalEntity e3) where T : Tvar
+        public static T QueryTvar<T>(string rel, Thing e1, Thing e2, Thing e3) where T : Tvar
         {
             T defaultVal = (T)Auxiliary.ReturnProperTvar<T>(Hstate.Unstated);
 
@@ -57,7 +57,7 @@ namespace Hammurabi
         /// <summary>
         /// Queries the fact base for a temporal relationship (fact) among three legal entities.
         /// </summary>
-        public static T QueryTvar<T>(string rel, LegalEntity e1, LegalEntity e2, LegalEntity e3, T defaultValue) where T : Tvar
+        public static T QueryTvar<T>(string rel, Thing e1, Thing e2, Thing e3, T defaultValue) where T : Tvar
         {
             // Look up fact in table of facts
             foreach (Fact f in FactBase)

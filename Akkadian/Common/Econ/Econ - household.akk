@@ -8,15 +8,18 @@
 
 # Household size
 Tnum HouseholdSize(Person p) =
-	HouseholdOf(p).Members.Count
+	Stub()
+	# HouseholdOf(p).Constituents.Count
 
 # A person's household (set)
 Tset HouseholdMembersOf(Person p) =
-	HouseholdOf(p).Members
+	Stub()
+	# HouseholdOf(p).Constituents
 
+	##
 # A person's household (entity)
-Entity HouseholdOf(Person p) =
-	new Entity(members)
+Thing HouseholdOf(Person p) =
+	new Thing(members)
 	
 	Tset members =
 		set:
@@ -25,6 +28,7 @@ Entity HouseholdOf(Person p) =
 	
 	Tset hh =
 		TsetIn HouseholdOf(p)
+	##
 	
 # Two people are members of the same household.
 Tbool ShareHousehold(Person p1, Person p2) =

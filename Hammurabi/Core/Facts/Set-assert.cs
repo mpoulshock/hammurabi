@@ -29,7 +29,7 @@ namespace Hammurabi
         /// <summary>
         /// Assert a temporal relation between legal entities (3)
         /// </summary>
-        public static void Assert(LegalEntity e1, string rel, LegalEntity e2, LegalEntity e3, Tvar val)
+        public static void Assert(Thing e1, string rel, Thing e2, Thing e3, Tvar val)
         { 
             Fact f = new Fact(rel, e1, e2, e3, val);
             FactBase.Add(f);
@@ -38,12 +38,12 @@ namespace Hammurabi
         /// <summary>
         /// Assert a temporal relation between legal entities (2)
         /// </summary>
-        public static void Assert(LegalEntity e1, string rel, LegalEntity e2, Tvar val)
+        public static void Assert(Thing e1, string rel, Thing e2, Tvar val)
         { 
             Fact f = new Fact(rel, e1, e2, val);
             FactBase.Add(f);
         }
-        public static void Assert(LegalEntity e1, string rel, LegalEntity e2)
+        public static void Assert(Thing e1, string rel, Thing e2)
         {    
             Fact f = new Fact(rel, e1, e2, new Tbool(true));
             FactBase.Add(f);
@@ -52,7 +52,7 @@ namespace Hammurabi
         /// <summary>
         /// Assert a temporal property of one legal entity
         /// </summary>
-        public static void Assert(LegalEntity e1, string rel, Tvar val)
+        public static void Assert(Thing e1, string rel, Tvar val)
         {
             Fact f = new Fact(rel, e1, val);
             FactBase.Add(f);

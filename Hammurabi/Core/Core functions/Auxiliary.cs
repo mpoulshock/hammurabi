@@ -74,7 +74,7 @@ namespace Hammurabi
         /// <summary>
         /// Determines whether a legal entity is a member of a Tset
         /// </summary>
-        public static Tbool IsMemberOfSet(LegalEntity entity, Tset theSet)
+        public static Tbool IsMemberOfSet(Thing entity, Tset theSet)
         {
             Tbool result = new Tbool();
             
@@ -82,7 +82,7 @@ namespace Hammurabi
             {
                 if (slice.Value.IsKnown)
                 {
-                    List<LegalEntity> entities = (List<LegalEntity>)slice.Value.Val;
+                    List<Thing> entities = (List<Thing>)slice.Value.Val;
                     result.AddState(slice.Key, entities.Contains(entity));
                 }
                 else
@@ -132,7 +132,7 @@ namespace Hammurabi
             }
             if (typeof(T) == new Tset().GetType())
             {
-                return new Tset((List<LegalEntity>)val);
+                return new Tset((List<Thing>)val);
             }
             // If all else fails return default...
             return default(T);
