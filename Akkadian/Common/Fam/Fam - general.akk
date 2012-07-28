@@ -8,92 +8,92 @@
 # Marital and parent-child relationships are elsewhere
 	
 # Siblings
-Tbool AreSiblings(Person p1, Person p2) =
+Tbool AreSiblings(Thing p1, Thing p2) =
 	Facts.Sym(p1, "FamilyRelationship", p2, "Sibling")    # or, share a parent
 
 # Half-siblings
-Tbool AreHalfSiblings(Person p1, Person p2) =
+Tbool AreHalfSiblings(Thing p1, Thing p2) =
 	Facts.Sym(p1, "FamilyRelationship", p2, "Half sibling")  # or, share one parent
 
 # Step-siblings
-Tbool AreStepsiblings(Person p1, Person p2) =
+Tbool AreStepsiblings(Thing p1, Thing p2) =
 	Facts.Sym(p1, "FamilyRelationship", p2, "Stepsibling")
 	
 # Grandparent
-Tbool IsGrandparentOf(Person p1, Person p2) =
+Tbool IsGrandparentOf(Thing p1, Thing p2) =
 	Facts.Sym(p1, "FamilyRelationship", p2, "Grandparent", "Grandchild")
 	
 # Great-grandparent
-Tbool IsGreatGrandparentOf(Person p1, Person p2) =
+Tbool IsGreatGrandparentOf(Thing p1, Thing p2) =
 	Facts.Sym(p1, "FamilyRelationship", p2, "Great-grandparent", "Great-grandchild")
   
 # Great-great-grandparent
-Tbool IsGreatGreatGrandparentOf(Person p1, Person p2) =
+Tbool IsGreatGreatGrandparentOf(Thing p1, Thing p2) =
 	Facts.Sym(p1, "FamilyRelationship", p2, "Great-great-grandparent", "Great-great-grandchild")
         
 # Aunt or uncle
-Tbool IsAuntOrUncleOf(Person p1, Person p2) =
+Tbool IsAuntOrUncleOf(Thing p1, Thing p2) =
 	Facts.Sym(p1, "FamilyRelationship", p2, "Aunt or uncle", "Niece or nephew")
         
 # Great aunt or uncle
-Tbool IsGreatAuntOrUncleOf(Person p1, Person p2) =
+Tbool IsGreatAuntOrUncleOf(Thing p1, Thing p2) =
 	Facts.Sym(p1, "FamilyRelationship", p2, "Great aunt or uncle", "Grand niece or nephew")
         
 # Great-great aunt or uncle
-Tbool IsGreatGreatAuntOrUncleOf(Person p1, Person p2) =
+Tbool IsGreatGreatAuntOrUncleOf(Thing p1, Thing p2) =
 	Facts.Sym(p1, "FamilyRelationship", p2, "Great-great aunt or uncle", "Great-grand niece or nephew")
         
 # Cousins
-Tbool IsCousinOf(Person p1, Person p2) =
+Tbool IsCousinOf(Thing p1, Thing p2) =
 	IsFirstCousinOf(p1, p2) |
 	IsNonFirstCousinOf(p1, p2)
         
 # First cousins
-Tbool IsFirstCousinOf(Person p1, Person p2) =
+Tbool IsFirstCousinOf(Thing p1, Thing p2) =
 	Facts.Sym(p1, "FamilyRelationship", p2, "First cousin")
         
 # Cousins, but not first cousins
-Tbool IsNonFirstCousinOf(Person p1, Person p2) =
+Tbool IsNonFirstCousinOf(Thing p1, Thing p2) =
 	Facts.Sym(p1, "FamilyRelationship", p2, "Other cousin")
         
 # Ancestor
-Tbool IsAncestorOf(Person p1, Person p2) =
+Tbool IsAncestorOf(Thing p1, Thing p2) =
 	TboolIn IsAncestorOf(p1, p2)
 	# or inferred
 
 # String indicating the family relationship between two people.
-Tstr Relationship(Person p1, Person p2) =
+Tstr Relationship(Thing p1, Thing p2) =
 	TstrIn FamilyRelationship(p1,p2)
 	
 
 # CUSTODY, GUARDIANSHIP, ETC.	
 
 # Legal custody
-TboolIn HasCustodyOf(Person p1, Person p2)
+TboolIn HasCustodyOf(Thing p1, Thing p2)
 
 # Ward (minor)
-Tbool IsWardOf(Person child, Person adult) =
+Tbool IsWardOf(Thing child, Thing adult) =
 	IsMinor(child) &
 	IsLegalGuardianOf(adult, child)
 
 # Legal guardian (general)
-TboolIn IsLegalGuardianOf(Person p1, Person p2) =
+TboolIn IsLegalGuardianOf(Thing p1, Thing p2) =
 	CanBeAGuardianOf(p1, p2) &
 	# !NotAGuardianOf(p1, p2) &
 	TboolIn IsLegalGuardianOf(p1, p2)
         
 # In loco parentis
-TboolIn ActsInLocoParentisOf(Person p1, Person p2) =
+TboolIn ActsInLocoParentisOf(Thing p1, Thing p2) =
 	!IsParentOf(p2,p1) &
 	TboolIn ActsInLocoParentisOf(p1, p2)
 
 # Day-to-day responsibility
-Tbool HasDayToDayResponsibilityFor(Person p1, Person p2) =
+Tbool HasDayToDayResponsibilityFor(Thing p1, Thing p2) =
 	CanBeAGuardianOf(p1, p2) &
 	TboolIn HasDayToDayResponsibilityFor(p1, p2)
 
 # Person can be the guardian of another
-Tbool CanBeAGuardianOf(Person guard, Person ward) =
+Tbool CanBeAGuardianOf(Thing guard, Thing ward) =
 	Age(guard) >= 16 &						
 	...
 		IsDisabled(ward) |					# Disablity (need to clarify)
@@ -106,7 +106,7 @@ Tbool CanBeAGuardianOf(Person guard, Person ward) =
 			!ExSpouses(guard, ward)
 
 # Custodial parent
-Tbool IsCustodialParentOf(Person p1, Person p2) =
+Tbool IsCustodialParentOf(Thing p1, Thing p2) =
 	IsParentOf(p1,p2) &
 	HasCustodyOf(p1,p2)
 
@@ -114,11 +114,11 @@ Tbool IsCustodialParentOf(Person p1, Person p2) =
 # OTHER
 
 # Next of kin (nearest blood relative)
-TboolIn IsNextOfKinOf(Person p1, Person p2) 
+TboolIn IsNextOfKinOf(Thing p1, Thing p2) 
 	# or inferred?
 	
 # Lives with any parent, custodian, or guardian (PCG)
-Tbool LivesWithPCG(Person p) =
+Tbool LivesWithPCG(Thing p) =
 	Stub()
 	# members.Exists(IsLivingWithPCG(p,_))
 
@@ -126,7 +126,7 @@ Tbool LivesWithPCG(Person p) =
 		Econ.HouseholdMembersOf(p) - p
 	
 # Person (p1) lives with parent, custodian, or guardian (PCG)
-Tbool IsLivingWithPCG(Person p1, Person p2) =
+Tbool IsLivingWithPCG(Thing p1, Thing p2) =
 	Econ.LivesWith(p1, p2) &
 	...
 		IsParentOf(p2, p1) |
@@ -134,57 +134,57 @@ Tbool IsLivingWithPCG(Person p1, Person p2) =
 		IsLegalGuardianOf(p2, p1)
 
 # Cohabitation
-Tbool AreCohabitating(Person p1, Person p2) =
+Tbool AreCohabitating(Thing p1, Thing p2) =
 	Econ.LivesWith(p1, p2) &
 	AreInIntimateRelationship(p1, p2)
 
 # Have a marriage contract or agreement
-TboolInSym HaveMarriageAgreement(Person p1, Person p2)	
+TboolInSym HaveMarriageAgreement(Thing p1, Thing p2)	
 
 # Held each other out to the community as spouses
-TboolInSym HeldOutAsSpouses(Person p1, Person p2)
+TboolInSym HeldOutAsSpouses(Thing p1, Thing p2)
 	
 # Intimate together
-TboolInSym AreInIntimateRelationship(Person p1, Person p2)
+TboolInSym AreInIntimateRelationship(Thing p1, Thing p2)
 
 # Cares for an incapacitated person
-TboolIn CaresForIncapacitatedPerson(Person p) 
+TboolIn CaresForIncapacitatedPerson(Thing p) 
 
 
 # UNIT TESTS
 
 Test: Sanity1a	
-- Person a
-- Person b
+- Thing a
+- Thing b
 - IsParentOf(a,b) = true
 - Fam.IsParentOf(a,b).Out =?= true
 
 Test: Sanity1b	
-- Person a
-- Person b
+- Thing a
+- Thing b
 - IsParentOf(a,b) = true
 - Fam.IsChildOf(b,a).Out =?= true
 
 Test: Sanity2
-- Person p
+- Thing p
 - IsMarried(p) = true
 - Fam.IsMarried(p).Out =?= true
 
 Test: ShortCircuit1
-- Person p1
-- Person p2
+- Thing p1
+- Thing p2
 - ActsInLocoParentisOf(p1,p2) = true
 - Fam.ActsInLocoParentisOf(p1,p2).Out =?= true
 
 Test: ShortCircuit2
-- Person p1
-- Person p2
+- Thing p1
+- Thing p2
 - ActsInLocoParentisOf(p1,p2) = false
 - Fam.ActsInLocoParentisOf(p1,p2).Out =?= false
 
 Test: ShortCircuit3
-- Person p1
-- Person p2
+- Thing p1
+- Thing p2
 - IsParentOf(p2,p1) = true
 - Fam.ActsInLocoParentisOf(p1,p2).Out =?= false
 

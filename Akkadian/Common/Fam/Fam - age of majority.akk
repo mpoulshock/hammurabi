@@ -6,14 +6,14 @@
 
 # Person is a minor
 # Warning: many statutes redefine "minor" for specific, limited purposes
-TboolIn IsMinor(Person p) =
+TboolIn IsMinor(Thing p) =
 	!ReachedAgeOfMajority(p) & 
 	!IsEmancipatedMinor(p)
 
 # Reached age of majority
 # Tentative source: http://contests.about.com/od/sweepstakes101/a/agemajoristate.htm!
 # State rules should be amalgamated here following the Alabama example
-Tbool ReachedAgeOfMajority(Person p) =
+Tbool ReachedAgeOfMajority(Thing p) =
 	set:
 	if !IsUSResident(p) -> Stub()
 	if state == "Alabama" -> Ala.Code.Tit26.Sec1_1.ReachedAgeOfMajority(p)
@@ -41,7 +41,7 @@ Tbool ReachedAgeOfMajority(Person p) =
 		
 # Emancipated minor
 # Will need to reference state rules, like Vermont example below...
-TboolIn IsEmancipatedMinor(Person p) =
+TboolIn IsEmancipatedMinor(Thing p) =
 	set:
 	if Age(p) <= 15 -> false		# Assumed
 	if state == "Vermont" -> Vt.Stat.Tit12.Sec7151.IsEmancipatedMinor(p)
@@ -54,20 +54,20 @@ TboolIn IsEmancipatedMinor(Person p) =
 # UNIT TESTS
 
 Test: Minor1
-- Person p
+- Thing p
 - DateOfBirth(p) = 2000-10-10
 - StateOfResidence(p) = "Hawaii"
 - Fam.IsMinor(p).AsOf(2012-10-10).Out =?= true
 
 Test: Minor2
-- Person p
+- Thing p
 - CountryOfResidence(p) = "Poland"
 - StateOfResidence(p) = "N/A"
 - DateOfBirth(p) = 2010-10-10
 - Fam.IsMinor(p).AsOf(2012-10-10).Out =?= "Stub"
 
 Test: Minor3
-- Person p
+- Thing p
 - DateOfBirth(p) = 2000-10-10
 - StateOfResidence(p) = "Nebraska"
 - Fam.IsMinor(p).AsOf(2032-10-10).Out =?= false

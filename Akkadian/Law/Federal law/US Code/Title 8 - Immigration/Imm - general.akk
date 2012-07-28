@@ -7,12 +7,12 @@
 # CITIZENSHIP, DEFINED
 
 # U.S. citizenship (inferred)
-Tbool IsUSCitizenInferred(Person p) =
+Tbool IsUSCitizenInferred(Thing p) =
 	CitizenByBirthToCitizen(p) |
 	DerivationOfCitizenship(p)
 
 # Citizenship by birth
-Tbool CitizenByBirthToCitizen(Person p) =
+Tbool CitizenByBirthToCitizen(Thing p) =
 	Sec1401.AcquiredCitizenshipAtBirth(p) |	
 	Sec1402.IsUSCitizenPerPuertoRico(p) |
 	Sec1403.IsUSCitizenPerCanalZone(p) |
@@ -22,11 +22,11 @@ Tbool CitizenByBirthToCitizen(Person p) =
 	Sec1407.IsUSCitizenPerGuam(p)
 
 # Derivation of citizenship
-Tbool DerivationOfCitizenship(Person p) =
+Tbool DerivationOfCitizenship(Thing p) =
 	Stub()
 
 # U.S. national (inferred)
-Tbool IsUSNationalInferred(Person p) =
+Tbool IsUSNationalInferred(Thing p) =
 	Sec1408.IsUSNationalByBirth(p) |
 	IsUSCitizenInferred(p) 				# See 8 U.S.C. 1401
 	
@@ -34,11 +34,11 @@ Tbool IsUSNationalInferred(Person p) =
 # GENERAL CONCEPTS
 
 # Type of visa the person has/is applying for
-TstrIn VisaType(Person p)
+TstrIn VisaType(Thing p)
 
 
 # U.S. resident prior to a given date
-Tbool ResidentOfUSPriorTo(Person p, Tdate date) =
+Tbool ResidentOfUSPriorTo(Thing p, Tdate date) =
 	IsUSResident(p).IsEverTrue(Time.DawnOf, date)
 	
 		

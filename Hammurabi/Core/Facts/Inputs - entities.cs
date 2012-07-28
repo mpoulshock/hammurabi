@@ -40,7 +40,7 @@ namespace Hammurabi
         /// <summary>
         /// Returns a set of all known people except a given person.
         /// </summary>
-        public static Tset EveryoneExcept(Person p)
+        public static Tset EveryoneExcept(Thing p)
         {
             return AllKnownPeople() - p;
         }
@@ -56,11 +56,11 @@ namespace Hammurabi
             
             foreach (Fact f in FactBase)
             {
-                if (f.subject.GetType() == new Person("").GetType())
+                if (f.subject.GetType() == new Thing("").GetType())
                     if (!thePeople.Contains(f.subject))
                         thePeople.Add(f.subject);
 
-                if(f.directObject1 != null && f.directObject1.GetType() == new Person("").GetType())
+                if(f.directObject1 != null && f.directObject1.GetType() == new Thing("").GetType())
                     if (!thePeople.Contains(f.directObject1))
                         thePeople.Add(f.directObject1);
             }

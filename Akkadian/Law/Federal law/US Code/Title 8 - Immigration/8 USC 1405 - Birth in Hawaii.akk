@@ -7,7 +7,7 @@
 
 # Citizenship of people born in Hawaii
 # Some obsolete nuances of the rule are omitted
-Tbool IsUSCitizenPerHawaii(Person p) = 
+Tbool IsUSCitizenPerHawaii(Thing p) = 
 	DoB(p) >= 1900-04-30 &
 	BirthState(p) == "Hawaii" &
 	TheTime.IsAtOrAfter(DoB(p))    # Makes conclusion true from DoB onward

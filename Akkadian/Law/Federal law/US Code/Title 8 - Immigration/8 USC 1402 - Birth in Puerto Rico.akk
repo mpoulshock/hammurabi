@@ -6,12 +6,12 @@
 
 
 # Citizenship of people born in Puerto Rico
-Tbool IsUSCitizenPerPuertoRico(Person p) = 
+Tbool IsUSCitizenPerPuertoRico(Thing p) = 
 	IsUSCitizenPerPuertoRico1941(p) |
 	IsUSCitizenAtBirthPerPuertoRico(p)
 	
 # Citizenship (1941) of people born in Puerto Rico
-Tbool IsUSCitizenPerPuertoRico1941(Person p) = 
+Tbool IsUSCitizenPerPuertoRico1941(Thing p) = 
 	BirthState(p) == "Puerto Rico" &
 	DoB(p) >= 1899-04-11 &
 	DoB(p) < 1941-01-13 &
@@ -23,7 +23,7 @@ Tbool IsUSCitizenPerPuertoRico1941(Person p) =
 	TheTime.IsAtOrAfter(1941-01-13)    # Makes conclusion true from DoB onward
 
 # Citizenship (at birth) of people born in Puerto Rico
-Tbool IsUSCitizenAtBirthPerPuertoRico(Person p) = 
+Tbool IsUSCitizenAtBirthPerPuertoRico(Thing p) = 
 	BirthState(p) == "Puerto Rico" &
 	DoB(p) >= 1941-01-13 &
 	IsSubjectToUSJurisdiction(p) &

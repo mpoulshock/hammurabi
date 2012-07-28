@@ -31,10 +31,6 @@ namespace Hammurabi
         /// <summary>
         /// Exists function - for various types of legal entities
         /// </summary>
-        public Tbool ExistsPerson(Func<Person,Tbool> argumentFcn)
-        {
-            return ExistsCore(this, x => argumentFcn((Person)x));
-        }
         public Tbool Exists(Func<Thing,Tbool> argumentFcn)
         {
             return ExistsCore(this, x => argumentFcn((Thing)x));
@@ -53,10 +49,6 @@ namespace Hammurabi
         /// <summary>
         /// ForAll function - for various types of legal entities
         /// </summary>
-        public Tbool ForAllPerson(Func<Person,Tbool> argumentFcn)
-        {
-            return ForAllCore(this, x => argumentFcn((Person)x));
-        }
         public Tbool ForAll(Func<Thing,Tbool> argumentFcn)
         {
             return ForAllCore(this, x => argumentFcn((Thing)x));
@@ -78,11 +70,6 @@ namespace Hammurabi
         /// <summary>
         /// Filter function - for various types of legal entities
         /// </summary>
-        public Tset FilterPerson(Func<Person,Tbool> argumentFcn)
-        {
-            return FilterCore(this, x => argumentFcn((Person)x));
-        }
-
         public Tset Filter(Func<Thing,Tbool> argumentFcn)
         {
             return FilterCore(this, x => argumentFcn((Thing)x));
@@ -162,10 +149,6 @@ namespace Hammurabi
         public Tnum Sum(Func<Thing,Tnum> func)
         {
             return ApplyFcnToTset(this, x => func((Thing)x), y => Tnum.Sum(y));
-        }
-        public Tnum SumPerson(Func<Person,Tnum> func)
-        {
-            return ApplyFcnToTset(this, x => func((Person)x), y => Tnum.Sum(y));
         }
   
         /// <summary>

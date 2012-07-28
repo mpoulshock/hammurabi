@@ -6,6 +6,6 @@
 
 
 # Subsec. 2 - Indicates whether a person (p) is an "employee"
-Tbool IsEmployee(Person p) =
+Tbool IsEmployee(Thing p) =
 	TboolIn IsEmployeeUnder5USC6301(p)
 

@@ -29,9 +29,9 @@ namespace Hammurabi.UnitTests.CoreFcns
     public class Set : H
     {        
         // Legal entities to be used as members of the sets
-        public static Person P1 = new Person("P1");
-        public static Person P2 = new Person("P2");
-        public static Person P3 = new Person("P3");
+        public static Thing P1 = new Thing("P1");
+        public static Thing P2 = new Thing("P2");
+        public static Thing P3 = new Thing("P3");
         
         
         // Construct a Tset from another Tset
@@ -503,7 +503,7 @@ namespace Hammurabi.UnitTests.CoreFcns
 
             foreach (string i in items)
             {
-                list.Add(new Person(i.Trim()));
+                list.Add(new Thing(i.Trim()));
             }
 
             Tset result = new Tset(list);

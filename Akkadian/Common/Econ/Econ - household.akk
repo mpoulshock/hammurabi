@@ -7,18 +7,18 @@
 # HOUSEHOLD-RELATED FACTS	
 
 # Household size
-Tnum HouseholdSize(Person p) =
+Tnum HouseholdSize(Thing p) =
 	Stub()
 	# HouseholdOf(p).Constituents.Count
 
 # A person's household (set)
-Tset HouseholdMembersOf(Person p) =
+Tset HouseholdMembersOf(Thing p) =
 	Stub()
 	# HouseholdOf(p).Constituents
 
 	##
 # A person's household (entity)
-Thing HouseholdOf(Person p) =
+Thing HouseholdOf(Thing p) =
 	new Thing(members)
 	
 	Tset members =
@@ -31,52 +31,52 @@ Thing HouseholdOf(Person p) =
 	##
 	
 # Two people are members of the same household.
-Tbool ShareHousehold(Person p1, Person p2) =
+Tbool ShareHousehold(Thing p1, Thing p2) =
 	LivesWith(p1, p2) 	# simplifying assumption
 				 
 # Two people share a principal abode.
-TboolInSym SharePrincipalAbode(Person p1, Person p2) =
+TboolInSym SharePrincipalAbode(Thing p1, Thing p2) =
 	LivesWith(p1, p2) 	# simplifying assumption
 
 # Live together	
-TboolInSym LivesWith(Person p1, Person p2)
+TboolInSym LivesWith(Thing p1, Thing p2)
 
 # Returns whether one person provides financial support for another.
-TboolIn ProvidesSupportFor(Person p1, Person p2)
+TboolIn ProvidesSupportFor(Thing p1, Thing p2)
 
 # Purchase and prepare meals together for home consumption
-TboolIn PurchaseAndPrepareMealsTogether(Person p1, Person p2) 
+TboolIn PurchaseAndPrepareMealsTogether(Thing p1, Thing p2) 
 
 
 # UNIT TESTS
 
 Test: TboolInSym1
-- Person a
-- Person b
+- Thing a
+- Thing b
 - SharePrincipalAbode(a,b) = true
 - Econ.SharePrincipalAbode(a,b).Out =?= true
 
 Test: TboolInSym2
-- Person a
-- Person b
+- Thing a
+- Thing b
 - SharePrincipalAbode(a,b) = true
 - Econ.SharePrincipalAbode(b,a).Out =?= true
 
 Test: ShareAbode
-- Person a
-- Person b
+- Thing a
+- Thing b
 - LivesWith(a,b) = true
 - Econ.SharePrincipalAbode(b,a).Out =?= true
 
 Test: LivesWith1
-- Person a
-- Person b
+- Thing a
+- Thing b
 - LivesWith(a,b) = true
 - Econ.LivesWith(a,b).Out =?= true
 
 Test: LivesWith2
-- Person a
-- Person b
+- Thing a
+- Thing b
 - LivesWith(a,b) = true
 - Econ.LivesWith(b,a).Out =?= true
 

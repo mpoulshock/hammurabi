@@ -6,19 +6,19 @@
 
 
 # Citizenship of people born in Canal Zone or Panama
-Tbool IsUSCitizenPerCanalZone(Person p) = 
+Tbool IsUSCitizenPerCanalZone(Thing p) = 
 	SubsecA(p) |
 	SubsecB(p)
 	
 # Birth in Canal Zone
-Tbool SubsecA(Person p) =
+Tbool SubsecA(Thing p) =
 	BirthState(p) == "Panama Canal Zone" &
 	DoB(p) >= 1904-02-26 &
 	# Sec1401.BirthParents(p).Exists(IsUSCitizen(_)) &
 	TheTime.IsAtOrAfter(DoB(p))    # Makes conclusion true from DoB onward
 	
 # Birth in Panama
-Tbool SubsecB(Person p) =
+Tbool SubsecB(Thing p) =
 	BirthCountry(p) == "Panama" &
 	DoB(p) >= 1904-02-26 &
 	parentTest.AsOf(DoB(p)) &
@@ -29,7 +29,7 @@ Tbool SubsecB(Person p) =
 		# Sec1401.BirthParents(p).Exists(IsUSCitizenOrQualifyingEmployee(_))
 	
 # U.S. citizen and U.S. gov't/canal employee
-Tbool IsUSCitizenOrQualifyingEmployee(Person p) =
+Tbool IsUSCitizenOrQualifyingEmployee(Thing p) =
 	IsUSCitizen(p) &
 	...
 		Econ.IsUSGovtEmployee(p) |

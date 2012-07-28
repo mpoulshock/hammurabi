@@ -49,8 +49,8 @@ namespace Hammurabi.UnitTests.CoreFcns
     public class UnknownFacts : H
     {
         // Some people
-        private static Person p1 = new Person("p1");
-        private static Person p2 = new Person("p2");
+        private static Thing p1 = new Thing("p1");
+        private static Thing p2 = new Thing("p2");
         
         // Some functions that ask for input facts
         private static Tbool A()

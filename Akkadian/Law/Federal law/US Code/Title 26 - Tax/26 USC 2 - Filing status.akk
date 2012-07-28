@@ -7,7 +7,7 @@
 
 # Federal tax filing status
 # Status is asserted individually; for MFJ, see 26 USC 6013.
-Tstr FilingStatus(Person p) =
+Tstr FilingStatus(Thing p) =
     TstrIn FedTaxFilingStatus(p)
 	
 	

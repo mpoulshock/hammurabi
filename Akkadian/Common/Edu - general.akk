@@ -5,12 +5,12 @@
 
 
 # Enrolled in high school (or its equivalent)
-Tbool IsEnrolledInHighSchool(Person p) =
+Tbool IsEnrolledInHighSchool(Thing p) =
 	IsStudent(p) &
 	EnrolledIn(p) == "High school"
 
 # Graduated high school (or its equivalent)
-TboolIn GraduatedHighSchool(Person p) =
+TboolIn GraduatedHighSchool(Thing p) =
 	HighestLevelAttained(p) == "High school" |
 	HighestLevelAttained(p) == "College" |
 	HighestLevelAttained(p) == "Master's degree" |
@@ -20,11 +20,11 @@ TboolIn GraduatedHighSchool(Person p) =
 # Highest educational degree earned
 # Options: High school, College, Master's degree, 
 # Professional degree (medicine, law, etc.), Doctorate degree
-TstrIn HighestLevelAttained(Person p)
+TstrIn HighestLevelAttained(Thing p)
 
 # Educational level in which currently enrolled
-TstrIn EnrolledIn(Person p)
+TstrIn EnrolledIn(Thing p)
 
 # Person is a student
-TboolIn IsStudent(Person p)
+TboolIn IsStudent(Thing p)
 

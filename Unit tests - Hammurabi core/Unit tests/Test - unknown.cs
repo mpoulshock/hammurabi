@@ -296,8 +296,8 @@ namespace Hammurabi.UnitTests.CoreFcns
         [Test]
         public void Unknown_Subset_1 ()
         {
-            Person P1 = new Person("P1");
-            Person P2 = new Person("P2");
+            Thing P1 = new Thing("P1");
+            Thing P2 = new Thing("P2");
             Tset s1 = new Tset(P1,P2);    
             Assert.AreEqual(eternallyUnstated, theSet.IsSubsetOf(s1).TestOutput);        
         }
@@ -307,7 +307,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         [Test]
         public void Unknown_SetContains_1 ()
         {
-            Person P1 = new Person("P1");
+            Thing P1 = new Thing("P1");
             Assert.AreEqual(eternallyUnstated, theSet.Contains(P1).TestOutput);        
         }
         
@@ -316,8 +316,8 @@ namespace Hammurabi.UnitTests.CoreFcns
         [Test]
         public void Unknown_SetEquality_1 ()
         {
-            Person P1 = new Person("P1");
-            Person P2 = new Person("P2");
+            Thing P1 = new Thing("P1");
+            Thing P2 = new Thing("P2");
             Tset s1 = new Tset(P1,P2);
             Tbool res = s1 == theSet;
             Assert.AreEqual(eternallyUnstated, res.TestOutput);        
@@ -326,8 +326,8 @@ namespace Hammurabi.UnitTests.CoreFcns
         [Test]
         public void Unknown_SetEquality_2 ()
         {
-            Person P1 = new Person("P1");
-            Person P2 = new Person("P2");
+            Thing P1 = new Thing("P1");
+            Thing P2 = new Thing("P2");
             Tset s1 = new Tset(P1,P2);
             Tbool res = s1 != theSet;
             Assert.AreEqual(eternallyUnstated, res.TestOutput);        
@@ -386,52 +386,52 @@ namespace Hammurabi.UnitTests.CoreFcns
         [Test]
         public void Unknown_EntInst1 ()
         {
-            Person p = new Person("");
+            Thing p = new Thing("");
             Assert.AreEqual(true, EntityArgIsUnknown(p));    
         }
 
         [Test]
         public void Unknown_EntInst2 ()
         {
-            Person p = new Person("Jane");
+            Thing p = new Thing("Jane");
             Assert.AreEqual(false, EntityArgIsUnknown(p));    
         }
 
         [Test]
         public void Unknown_EntInst3 ()
         {
-            Person p1 = new Person("");
-            Person p2 = new Person("Jane");
+            Thing p1 = new Thing("");
+            Thing p2 = new Thing("Jane");
             Assert.AreEqual(true, EntityArgIsUnknown(p1,p2));    
         }
 
         [Test]
         public void Unknown_EntInst4 ()
         {
-            Person p1 = new Person("Jim");
-            Person p2 = new Person("Jane");
+            Thing p1 = new Thing("Jim");
+            Thing p2 = new Thing("Jane");
             Assert.AreEqual(false, EntityArgIsUnknown(p1,p2));    
         }
 
         [Test]
         public void Unknown_EntInst5 ()
         {
-            Person p1 = new Person("");
-            Person p2 = new Person("");
+            Thing p1 = new Thing("");
+            Thing p2 = new Thing("");
             Assert.AreEqual(true, EntityArgIsUnknown(p1,p2));    
         }
 
         [Test]
         public void Unknown_EntInst6 ()
         {
-            Person p = new Person("Jane");
+            Thing p = new Thing("Jane");
             Assert.AreEqual(false, EntityArgIsUnknown(p,"someString"));    
         }
 
         [Test]
         public void Unknown_EntInst7 ()
         {
-            Person p = new Person("Jane");
+            Thing p = new Thing("Jane");
             Assert.AreEqual(false, EntityArgIsUnknown(p,new Tstr("")));    
         }
     }

@@ -7,26 +7,26 @@
 # BIRTH, LIFE, AND DEATH
 
 # Date of birth
-TdateIn DoB(Person p) =
+TdateIn DoB(Thing p) =
 	# >> What is {1}'s date of birth?
 	TdateIn DateOfBirth(p)
 
 # Date of death
 # >> What is {1}'s date of death?
-TdateIn DateOfDeath(Person p)
+TdateIn DateOfDeath(Thing p)
 
 # Deceased
 # >> Is {1} deceased?
-TboolIn IsDeceased(Person p)
+TboolIn IsDeceased(Thing p)
 
 # Age (in years)
-Tnum Age(Person p) =
+Tnum Age(Thing p) =
 	Time.IntervalsSince(DoB(p),
 	                    DoB(p).AddYears(110),
 						Time.IntervalType.Year)
 						
 # Alive
-Tbool IsAlive(Person p) =
+Tbool IsAlive(Thing p) =
 	...
 		!IsDeceased(p) &
 		TheTime.IsBetween(DoB(p), DoB(p).AddYears(120))
@@ -36,26 +36,26 @@ Tbool IsAlive(Person p) =
 		TheTime.IsBetween(DoB(p), DateOfDeath(p))
 		
 # Age in months (temporal)
-Tnum AgeInMonths(Person p) =
+Tnum AgeInMonths(Thing p) =
 	Time.IntervalsSince(DoB(p), DoB(p).AddYears(110), Time.IntervalType.Month)
 
 		
 # GENDER
 
 # Female
-Tbool IsFemale(Person p) =
+Tbool IsFemale(Thing p) =
 	Gender(p) == "Female"
 
 # Male
-Tbool IsMale(Person p) =
+Tbool IsMale(Thing p) =
 	Gender(p) == "Male"
 
 # Transgendered
-Tbool IsTransgendered(Person p) =
+Tbool IsTransgendered(Thing p) =
 	Gender(p) == "Transgendered"		
 
 # Gender
-TstrIn Gender(Person p)
+TstrIn Gender(Thing p)
 
 
 # ETHNICITY
@@ -64,83 +64,83 @@ TstrIn Gender(Person p)
 # Includes Alaska Natives and Native Hawaiians
 # Note: Most legal sources use "Indian" or "American Indian"
 # >> Is {1} a member of a Native American, Native Hawaiian, or Alaska Native tribe?
-TboolIn IsNativeAmerican(Person p)
+TboolIn IsNativeAmerican(Thing p)
 
 
 # MISCELLANEOUS
 
 # Has a Social Security Number
-TboolIn HasSSN(Person p) 
+TboolIn HasSSN(Thing p) 
 	
 # Has applied for (but not yet received) an SSN
-TboolIn AppliedForSSN(Person p) 
+TboolIn AppliedForSSN(Thing p) 
 
 # Blind (see 42 USC 416(i)(1)(B))
-TboolIn IsBlind(Person p)
+TboolIn IsBlind(Thing p)
 
 # Disabled 
 # Has a physical or mental impairment that substantially 
 # limits one or more major life activities (see 42 USC 12102)
-TboolIn IsDisabled(Person p)
+TboolIn IsDisabled(Thing p)
 
 # Incapable of self-care
-TboolIn IsIncapableOfSelfCare(Person p) 
+TboolIn IsIncapableOfSelfCare(Thing p) 
 
 # In prison
-TboolIn IsInPrison(Person p)
+TboolIn IsInPrison(Thing p)
 
 # In juvenile rehab facility
-TboolIn InJuvenileFacility(Person p)
+TboolIn InJuvenileFacility(Thing p)
 
 # In a drug or alcohol treatment program
-TboolIn InDrugOrAlcoholTreatmentProg(Person p) 
+TboolIn InDrugOrAlcoholTreatmentProg(Thing p) 
 	
 	
 # UNIT TESTS
 
 Test: TotalSanity
-- Person p
+- Thing p
 - DateOfBirth(p) = 1940-01-02
 - DoB(p).Out =?= 1940-01-02
 							
 Test: Alive1
-- Person p
+- Thing p
 - IsAlive(p).Out =?= "Unstated"
 
 Test: Alive2a
-- Person p
+- Thing p
 - DateOfBirth(p) = 2000-01-01
 - IsDeceased(p) = false
 - IsAlive(p).AsOf(2010-01-01).Out =?= true
 
 Test: Alive2b
-- Person p
+- Thing p
 - DateOfBirth(p) = 2000-01-01
 - IsDeceased(p) = false
 - IsAlive(p).AsOf(2150-01-01).Out =?= false
 
 Test: Alive2c
-- Person p
+- Thing p
 - DateOfBirth(p) = 1999-01-01
 - IsDeceased(p) = false
 - IsAlive(p).AsOf(2010-01-01).Out =?= true
 
 Test: Alive3a
-- Person p
+- Thing p
 - DateOfBirth(p) = 2000-01-01
 - DateOfDeath(p) = 2090-01-01
 - IsDeceased(p) = true
 - IsAlive(p).AsOf(2100-01-01).Out =?= false
 
 Test: Alive3b
-- Person p
+- Thing p
 - DateOfBirth(p) = 2000-01-01
 - DateOfDeath(p) = 2090-01-01
 - IsDeceased(p) = true
 - IsAlive(p).AsOf(2050-01-01).Out =?= true
 
 Test: Alive3c
-- Person p
+- Thing p
 - DateOfBirth(p) = 2000-01-01
 - DateOfDeath(p) = 2090-01-01
 - IsDeceased(p) = true

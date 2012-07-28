@@ -6,7 +6,7 @@
 
 
 # Citizenship - Virgin Islands
-Tbool IsUSCitizenPerVI(Person p) = 
+Tbool IsUSCitizenPerVI(Thing p) = 
 	BirthCountry(p) == "Virgin Islands" &
 	Stub()
 	

@@ -6,7 +6,7 @@
 
 
 # Citizenship - Guam
-Tbool IsUSCitizenPerGuam(Person p) = 
+Tbool IsUSCitizenPerGuam(Thing p) = 
 	BirthCountry(p) == "Guam" &
 	Stub()
 	

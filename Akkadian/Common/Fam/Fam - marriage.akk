@@ -7,7 +7,7 @@
 # MARITAL RELATIONSHIPS
 
 # One person is a man, the other a woman
-Tbool OneManOneWoman(Person p1, Person p2) =
+Tbool OneManOneWoman(Thing p1, Thing p2) =
 	...
 		IsFemale(p1) &
 		IsMale(p2)
@@ -17,54 +17,54 @@ Tbool OneManOneWoman(Person p1, Person p2) =
 		IsMale(p1)
 		
 # Gay marriage
-Tbool InSameSexMarriage(Person p1, Person p2) =
+Tbool InSameSexMarriage(Thing p1, Thing p2) =
 	AreMarried(p1,p2) &
 	Gender(p1) == Gender(p2)
 
 # Two people are legally married
 # TODO: shortcut - IsMarried
-TboolInSym AreMarried(Person p1, Person p2) =
+TboolInSym AreMarried(Thing p1, Thing p2) =
 	Facts.Sym(p1, "FamilyRelationship", p2, "Spouse")
 	# Or, are in common law marriage...
 
 # Spouse
-Person SpouseOf(Person p) =
-	TsetIn IsMarriedTo(p).ToPerson
+Thing SpouseOf(Thing p) =
+	TsetIn IsMarriedTo(p).ToThing
 	
 # Spouse (as a Tset)
-Tset SpousesOf(Person p) =
+Tset SpousesOf(Thing p) =
 	null
 	
 # One person's marital status is "married"
-TboolIn IsMarried(Person p) =
+TboolIn IsMarried(Thing p) =
 	MaritalStatus(p) == "Married"
 	
 # Marital status
-Tstr MaritalStatus(Person p) =
+Tstr MaritalStatus(Thing p) =
 	TstrIn MaritalStatus(p)
 	# or, has a spouse
 		
 # Domestic partners
-Tbool IsDomesticPartnerOf(Person p1, Person p2) =
+Tbool IsDomesticPartnerOf(Thing p1, Thing p2) =
 	Facts.Sym(p1, "FamilyRelationship", p2, "Domestic partner")
 
 # Civil union
-Tbool InCivilUnion(Person p1, Person p2) =
+Tbool InCivilUnion(Thing p1, Thing p2) =
 	Facts.Sym(p1, "FamilyRelationship", p2, "Partner by civil union")
 	
 # Ex-spouses
-Tbool ExSpouses(Person p1, Person p2) =
+Tbool ExSpouses(Thing p1, Thing p2) =
 	Facts.Sym(p1, "FamilyRelationship", p2, "Former spouse")
         
 # Legally separated
-TboolInSym AreSeparated(Person p1, Person p2)
+TboolInSym AreSeparated(Thing p1, Thing p2)
         
 # Divorced
-TboolInSym AreDivorced(Person p1, Person p2) 
+TboolInSym AreDivorced(Thing p1, Thing p2) 
 
 # Widowed (includes widows and widowers)
-TboolIn IsWidowed(Person p)
+TboolIn IsWidowed(Thing p)
 
 # Mental capacity to marry
-TboolIn HasMentalCapacityToMarry(Person p)
+TboolIn HasMentalCapacityToMarry(Thing p)
 

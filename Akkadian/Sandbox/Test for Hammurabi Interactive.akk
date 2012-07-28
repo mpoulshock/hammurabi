@@ -14,7 +14,7 @@ Current problems:
 	
 	
 # Top-level conclusion
-Tbool MainGoalMet(Person p) =
+Tbool MainGoalMet(Thing p) =
 	BoolA(p) &
 	...
 		BoolB(p) |
@@ -23,7 +23,7 @@ Tbool MainGoalMet(Person p) =
 	MatchTable(TstrIn StrA(p))
 	
 # If-then-else
-Tnum TheNum(Person p) =
+Tnum TheNum(Thing p) =
 	set:
 	if BoolC(p) -> 100
 	if BoolD(p) -> 1
@@ -40,15 +40,15 @@ Tbool MatchTable(Tstr jur) =
 # INPUTS
 
 # >> Is {1} an A?
-TboolIn BoolA(Person p)
+TboolIn BoolA(Thing p)
 
 # >> Is {1} an B?
-TboolIn BoolB(Person p)
+TboolIn BoolB(Thing p)
 
 # >> Is {1} an C?
-TboolIn BoolC(Person p)
+TboolIn BoolC(Thing p)
 
 # >> Is {1} an D?
-TboolIn BoolD(Person p)
+TboolIn BoolD(Thing p)
 
 	  

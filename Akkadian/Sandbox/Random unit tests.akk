@@ -7,48 +7,48 @@
 # INFINITE LOOPS
 
 # Recursive rule that looks for unknown people
-TboolIn IsCitizen(Person p) =
+TboolIn IsCitizen(Thing p) =
 	# >> Is {1} a citizen by law?
 	TboolIn IsCitizenByLaw(p) |
 	IsCitizen(TheMotherOf(p))
 
 # >>What's the name of {1}'s mother?
-Person TheMotherOf(Person p) =
+Thing TheMotherOf(Thing p) =
 	# >>What's the name of {1}'s mother?
-	TsetIn MotherOf(p).ToPerson
+	TsetIn MotherOf(p).ToThing
 	
 	
 Test: Loop1
-- Person p
+- Thing p
 - Sandbox.IsCitizen(p).Out =?= "Unstated"
 
 Test: Loop2
-- Person p
-- Person mom
+- Thing p
+- Thing mom
 - MotherOf(p) = [[mom]]
 - Sandbox.IsCitizen(p).Out =?= "Unstated"
 
 Test: Loop3
-- Person p
-- Person mom
+- Thing p
+- Thing mom
 - MotherOf(p) = [[mom]]
 - IsCitizenByLaw(p) = false
 - IsCitizenByLaw(mom) = true
 - Sandbox.IsCitizen(p).Out =?= true
 
 Test: Loop4
-- Person p
+- Thing p
 - IsCitizenByLaw(p) = true
 - Sandbox.IsCitizen(p).Out =?= true
 
 Test: Loop5
-- Person p
+- Thing p
 - IsCitizenByLaw(p) = false
 - Sandbox.IsCitizen(p).Out =?= "Unstated"
 
 Test: Loop6
-- Person p
-- Person mom
+- Thing p
+- Thing mom
 - MotherOf(p) = [[mom]]
 - IsCitizenByLaw(p) = false
 - IsCitizen(mom) = false
@@ -57,85 +57,85 @@ Test: Loop6
 
 # TSET INPUTS
 
-Tnum TestTsetCount(Person p) =
+Tnum TestTsetCount(Thing p) =
 	TestTset(p).Count
 
 # >>What items are in {1}'s set?
-TsetIn TestTset(Person p)
+TsetIn TestTset(Thing p)
 
 
 Test: Tset1
-- Person p
-- Person joan
+- Thing p
+- Thing joan
 - TestTset(p) = [[joan]]
 - Sandbox.TestTsetCount(p).Out =?= 1
 
 Test: Tset2
-- Person p
-- Person jim
-- Person joan
+- Thing p
+- Thing jim
+- Thing joan
 - TestTset(p) = [[jim, joan]]
 - Sandbox.TestTsetCount(p).Out =?= 2
 
 Test: Tset3
-- Person p
+- Thing p
 - TestTset(p) = [[ ]]
 - Sandbox.TestTsetCount(p).Out =?= 0
 
 Test: Tset4
-- Person p
+- Thing p
 - Sandbox.TestTsetCount(p).Out =?= "Unstated"
 
 
 # METHODS WITH THREE PARAMETERS
 
-Tbool Another3ParamTest(Person a, Person b, Person c) =
+Tbool Another3ParamTest(Thing a, Thing b, Thing c) =
 	TboolIn ABC(a,b,c)
 
-TboolIn IsABC(Person a, Person b, Thing c) =
+TboolIn IsABC(Thing a, Thing b, Thing c) =
 	Stub() |
 	IsXYZ(a,b,c)
 
-TboolIn IsXYZ(Person x, Person y, Thing z)
+TboolIn IsXYZ(Thing x, Thing y, Thing z)
 
 Test: Param3_1a
-- Person x
-- Person y
+- Thing x
+- Thing y
 - Thing z
 - IsXYZ(x,y,z) = true
 - Sandbox.IsXYZ(x,y,z).Out =?= true
 
 Test: Param3_1b
-- Person x
-- Person y
+- Thing x
+- Thing y
 - Thing z
 - IsXYZ(x,y,z) = false
 - Sandbox.IsXYZ(x,y,z).Out =?= false
 
 Test: Param3_1c
-- Person x
-- Person y
+- Thing x
+- Thing y
 - Thing z
 - Sandbox.IsXYZ(x,y,z).Out =?= "Unstated"
 
 Test: Param3_2a
-- Person a
-- Person b
-- Person c
+- Thing a
+- Thing b
+- Thing c
 - ABC(a,b,c) = true
 - Sandbox.Another3ParamTest(a,b,c).Out =?= true
 
 Test: Param3_2b
-- Person a
-- Person b
-- Person c
+- Thing a
+- Thing b
+- Thing c
 - ABC(a,b,c) = false
 - Sandbox.Another3ParamTest(a,b,c).Out =?= false
 
 Test: Param3_2c
-- Person a
-- Person b
-- Person c
+- Thing a
+- Thing b
+- Thing c
 - Sandbox.Another3ParamTest(a,b,c).Out =?= "Unstated"
 
 

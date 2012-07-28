@@ -6,18 +6,18 @@
 
 
 # Emancipated minor
-Tbool IsEmancipatedMinor(Person p) =
+Tbool IsEmancipatedMinor(Thing p) =
 	Fam.IsMarried(p) |				#  whether or not such civil marriage was terminated by dissolution
 	Mil.OnActiveDuty(p) |
 	OrderedEmancipated(p)
 
 # Has been ordered emancipated by a court
-TboolIn OrderedEmancipated(Person p) =
+TboolIn OrderedEmancipated(Thing p) =
 	IsEligibleForEmancipation(p) &
 	TboolIn OrderedEmancipated(p)
 	
 # Eligible to become emancipated
-Tbool IsEligibleForEmancipation(Person p) =
+Tbool IsEligibleForEmancipation(Thing p) =
 	Age(p) >= 16 &
 	!Fam.ReachedAgeOfMajority(p) &		# Later, reference VT age of majority law
 	LivedUnsupervisedFor3Months(p) &
@@ -33,7 +33,7 @@ Tbool IsEligibleForEmancipation(Person p) =
 	!InJuvenileFacility(p)
 	
 # Lived apart from parents, custodian, or guardian
-Tbool LivedUnsupervisedFor3Months(Person p) =
+Tbool LivedUnsupervisedFor3Months(Thing p) =
 	Time.IntervalsSince(start, start.AddYears(10), Time.IntervalType.Month) >= 3
 
 	Tdate start =

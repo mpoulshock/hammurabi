@@ -6,7 +6,7 @@
 
 
 # Subsection (a) - Legitimated children
-Tbool SubsecAApplies(Person c) =
+Tbool SubsecAApplies(Thing c) =
 	! SubsecCApplies(c) &						# Is this correct?
 	Fam.BornOutOfWedlock(c) &
 	Fam.IsBiologicalParentOf(father, c) & 		# Established by clear and convincing evidence
@@ -21,12 +21,12 @@ Tbool SubsecAApplies(Person c) =
 			Fam.IsLegitimatedByLaw(c) |		# Covers (4)(A) and (C)
 			Fam.Legitimated(father, c)
 
-	Person father =
+	Thing father =
 		Sec1401.FatherOf(c)		# Incorrect	
 		
 # Subsection (b) applies
 # Note: Section 405 pertains to rules in effect when Act was passed
-Tbool SubsecBApplies(Person c) = 
+Tbool SubsecBApplies(Thing c) = 
 	Fam.BornOutOfWedlock(c) &
 	DoB(c) >= 1941-01-13 &
 	paternityLegitimated.IsEverTrue()
@@ -36,16 +36,16 @@ Tbool SubsecBApplies(Person c) =
 		Fam.Legitimated(father, c) &
 		Age(c) < 21
 	
-	Person father =
+	Thing father =
 		Sec1401.FatherOf(c)		# Incorrect	
 	
 # Child national if mother national
-Tbool IsUSNationalPerMother(Person p) =
+Tbool IsUSNationalPerMother(Thing p) =
 	# Nothwithstanding subsection (a)...
 	SubsecCApplies(p)
 
 # Subsection (c) applies
-Tbool SubsecCApplies(Person c) = 
+Tbool SubsecCApplies(Thing c) = 
 	DoB(c) > 1952-12-23 &
 	! BornInTheUSA(c) & 
 	Fam.BornOutOfWedlock(c) &
@@ -57,7 +57,7 @@ Tbool SubsecCApplies(Person c) =
 	Tbool momPresent =
 		Sec1401.PresentInUSorOP(mom).YearsContinuouslyTrue >= 1
 	
-	Person mom =
+	Thing mom =
 		Sec1401.MotherOf(c)
 	
 	

@@ -28,8 +28,8 @@ namespace Hammurabi.UnitTests.CoreFcns
     [TestFixture]
     public class SymmetricalFacts : H
     {
-        private static Person p1 = new Person("P1");
-        private static Person p2 = new Person("P2");
+        private static Thing p1 = new Thing("P1");
+        private static Thing p2 = new Thing("P2");
         
         // .Sym combos
         

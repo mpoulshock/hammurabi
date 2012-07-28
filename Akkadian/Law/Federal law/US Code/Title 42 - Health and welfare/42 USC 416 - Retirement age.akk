@@ -8,11 +8,11 @@
 # STATUTORY LOGIC
 
 # 416(l)(1) - Reached retirement age
-Tbool ReachedRetirementAge(Person p) =
+Tbool ReachedRetirementAge(Thing p) =
 	AgeInMonths(p) >= RetirementAgeInMonths(p)
 
 # 416(l)(1) - Retirement age
-Tnum RetirementAgeInMonths(Person p) =
+Tnum RetirementAgeInMonths(Thing p) =
 	set:
 	if ret < 2000-01-01 -> 65 * 12
 	if ret < 2005-01-01 -> (65 * 12) + AgeIncreaseFactor(p)
@@ -24,7 +24,7 @@ Tnum RetirementAgeInMonths(Person p) =
 		EarlyRetirementDate(p)
 
 # 416(l)(3) - Age increase factor
-Tnum AgeIncreaseFactor(Person p) =
+Tnum AgeIncreaseFactor(Thing p) =
 	set:
 	if retYear >= 2000 & retYear <= 2004 -> 2 * (retYear - 2000 + 1)
 	if retYear >= 2017 & retYear <= 2021 -> 2 * (retYear - 2017 + 1)
@@ -36,21 +36,21 @@ Tnum AgeIncreaseFactor(Person p) =
 		EarlyRetirementDate(p).Year
 		
 # Early retirement date
-Tdate EarlyRetirementDate(Person p) =
+Tdate EarlyRetirementDate(Thing p) =
 	ReachedEarlyRetirement(p).DateFirstTrue
 
 # Reached early retirement
-Tbool ReachedEarlyRetirement(Person p) =
+Tbool ReachedEarlyRetirement(Thing p) =
 	SSAAge(p) >= EarlyRetirementAge(p)
 	
 # 416(l)(2) - Early retirement age
-Tnum EarlyRetirementAge(Person p) =
+Tnum EarlyRetirementAge(Thing p) =
 	set:
 	if Fam.IsWidowed(p) -> 60
 	else 62
 
 # SSA age
-Tnum SSAAge(Person p) =
+Tnum SSAAge(Thing p) =
 	Time.IntervalsSince(dob, dob.AddYears(110), Time.IntervalType.Year)
 	
 	Tdate dob =
@@ -60,7 +60,7 @@ Tnum SSAAge(Person p) =
 # If born on Jan. 1, use previous year
 # If born on first of month, use previous month
 # See www.ssa.gov/oact/ProgData/nra.html		
-Tdate SSADateOfBirth(Person p) =
+Tdate SSADateOfBirth(Thing p) =
 	set:
 	if DoB(p).Day == 1 -> DoB(p).AddDays(-1)
 	else DoB(p)
@@ -71,7 +71,7 @@ Tdate SSADateOfBirth(Person p) =
 
 # Retirement age according to SSA website
 # http://www.ssa.gov/oact/ProgData/nra.html
-Tnum SSARetirementAgeInMonths(Person p) =
+Tnum SSARetirementAgeInMonths(Thing p) =
 	set:
 	if birthYear <= 1937 -> 65 * 12
 	if birthYear <= 1938 -> (65 * 12) + 2
@@ -96,118 +96,118 @@ Tnum SSARetirementAgeInMonths(Person p) =
 
 
 Test: AIF_1975
-- Person p
+- Thing p
 - DateOfBirth(p) = 1975-01-04
 - IsWidowed(p) = false
 - Sec416.AgeIncreaseFactor(p).Out =?= 0
 
 Test: AIF_1940
-- Person p
+- Thing p
 - DateOfBirth(p) = 1940-01-04
 - IsWidowed(p) = false
 - Sec416.AgeIncreaseFactor(p).Out =?= 6
 
 Test: ERD_1975
-- Person p
+- Thing p
 - DateOfBirth(p) = 1975-01-04
 - IsWidowed(p) = false
 - Sec416.EarlyRetirementDate(p).Out =?= 2037-01-04
 
 Test: ERA_1975
-- Person p
+- Thing p
 - DateOfBirth(p) = 1975-01-04
 - IsWidowed(p) = false
 - Sec416.EarlyRetirementAge(p).Out =?= 62
 
 Test: ERA_1975_Widow
-- Person p
+- Thing p
 - DateOfBirth(p) = 1975-01-04
 - IsWidowed(p) = true
 - Sec416.EarlyRetirementAge(p).Out =?= 60
 
 Test: ERA_1975_Unknown
-- Person p
+- Thing p
 - DateOfBirth(p) = 1975-01-04
 - Sec416.EarlyRetirementAge(p).Out =?= "Unstated"
 
 Test: RA_1975_Unwidowed
-- Person p
+- Thing p
 - DateOfBirth(p) = 1975-01-04
 - IsWidowed(p) = false
 - Sec416.RetirementAgeInMonths(p).Out =?= 804
 
 Test: RA_1975_Widowed
-- Person p
+- Thing p
 - DateOfBirth(p) = 1975-01-04
 - IsWidowed(p) = true
 - Sec416.RetirementAgeInMonths(p).Out =?= 804
 
 Test: AIF_1942
-- Person p
+- Thing p
 - DateOfBirth(p) = 1942-01-04
 - IsWidowed(p) = false
 - Sec416.AgeIncreaseFactor(p).Out =?= 10
 
 Test: RA_1939
-- Person p
+- Thing p
 - DateOfBirth(p) = 1939-01-04
 - IsWidowed(p) = false
 - Sec416.SSARetirementAgeInMonths(p).Out =?= Sec416.RetirementAgeInMonths(p).Out
 
 Test: RA_1940a
-- Person p
+- Thing p
 - DateOfBirth(p) = 1940-01-04
 - IsWidowed(p) = false
 - Sec416.SSARetirementAgeInMonths(p).Out =?= Sec416.RetirementAgeInMonths(p).Out
 
 Test: RA_1940b
-- Person p
+- Thing p
 - DateOfBirth(p) = 1939-01-01
 - IsWidowed(p) = false
 - Sec416.SSARetirementAgeInMonths(p).Out =?= Sec416.RetirementAgeInMonths(p).Out
 
 Test: RA_1941
-- Person p
+- Thing p
 - DateOfBirth(p) = 1941-01-04
 - IsWidowed(p) = false
 - Sec416.SSARetirementAgeInMonths(p).Out =?= Sec416.RetirementAgeInMonths(p).Out
 
 Test: RA_1942
-- Person p
+- Thing p
 - DateOfBirth(p) = 1942-01-04
 - IsWidowed(p) = false
 - Sec416.SSARetirementAgeInMonths(p).Out =?= Sec416.RetirementAgeInMonths(p).Out
 
 Test: RA_1944
-- Person p
+- Thing p
 - DateOfBirth(p) = 1944-01-04
 - IsWidowed(p) = false
 - Sec416.SSARetirementAgeInMonths(p).Out =?= Sec416.RetirementAgeInMonths(p).Out
 
 Test: RA_1955
-- Person p
+- Thing p
 - DateOfBirth(p) = 1955-01-04
 - IsWidowed(p) = false
 - Sec416.SSARetirementAgeInMonths(p).Out =?= Sec416.RetirementAgeInMonths(p).Out
 
 Test: RA_1959
-- Person p
+- Thing p
 - DateOfBirth(p) = 1959-01-04
 - IsWidowed(p) = false
 - Sec416.SSARetirementAgeInMonths(p).Out =?= Sec416.RetirementAgeInMonths(p).Out
 
 Test: RA_1979
-- Person p
+- Thing p
 - DateOfBirth(p) = 1979-01-04
 - IsWidowed(p) = false
 - Sec416.SSARetirementAgeInMonths(p).Out =?= Sec416.RetirementAgeInMonths(p).Out
 
 Test: DoB1
-- Person p
+- Thing p
 - DateOfBirth(p) = 1940-01-01
 - Sec416.SSADateOfBirth(p).Out =?= 1939-12-31
 
 Test: DoB2
-- Person p
+- Thing p
 - DateOfBirth(p) = 1940-01-02
 - Sec416.SSADateOfBirth(p).Out =?= 1940-01-02

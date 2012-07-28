@@ -6,7 +6,7 @@
 
 
 # 2611(2) - Indicates whether a person (p) is an eligible employee under the FMLA.
-Tbool IsEligibleEmployee(Person p, Thing corp) =
+Tbool IsEligibleEmployee(Thing p, Thing corp) =
 	Econ.IsEmployedBy(p, corp) &
 	prongAi &
 	prongAii &
@@ -53,7 +53,7 @@ Tbool IsEligibleEmployee(Person p, Thing corp) =
 # Indicates whether a person has worked 1,250 hours in the 12-month period
 # leading up to the family leave start date.
 # HACK: Need to create a Tnum.SumOver(interval,start,end) function to implement this correctly...
-Tnum HoursInLast12Mo(Person p, Thing c) =
+Tnum HoursInLast12Mo(Thing p, Thing c) =
 	(avgHours / 7) * employed.TotalElapsedDays(Time.DawnOf, start)
 	
 	Tnum avgHours = 
@@ -91,7 +91,7 @@ Tbool IsCoveredEmployer(Thing c) =
 
 
 # 2611(7) - Indicates whether one person is considered the "parent" of another under the FMLA.
-Tbool IsParentOf(Person p1, Person p2) =
+Tbool IsParentOf(Thing p1, Thing p2) =
 	Fam.IsBiologicalParentOf(p1,p2) |
 	Fam.IsAdoptiveParentOf(p1,p2) |      # assumed
 	Fam.IsFosterParentOf(p1,p2) |        # assumed
@@ -101,13 +101,13 @@ Tbool IsParentOf(Person p1, Person p2) =
       
 	  
 # 2611(11) - Indicates whether a person (p) has a "serious health condition."
-TboolIn HasSeriousHealthCondition(Person p)
+TboolIn HasSeriousHealthCondition(Thing p)
 
         
 # 2611(12) - Indicates whether one person is considered the "child" of another under the FMLA.
 # The statute uses the terms "son" and "daughter" but because gender
 # has no bearing on the legal conclusions, "child" is used here.
-Tbool IsChildOf(Person p1, Person p2) =
+Tbool IsChildOf(Thing p1, Thing p2) =
 	...
 		Fam.IsBiologicalParentOf(p2,p1) |
 		Fam.IsAdoptiveParentOf(p2,p1) |
@@ -123,13 +123,13 @@ Tbool IsChildOf(Person p1, Person p2) =
         
 
 # Indicates the date the person started or intends to start FMLA leave.
-Tdate DateLeaveBegins(Person p, Thing c) =
+Tdate DateLeaveBegins(Thing p, Thing c) =
 	TdateIn DateFamilyLeaveBegins(p,c)
   
 
 # Indicates whether one person acts in loco parentis of another.
 # See 29 CFR 825.122
-Tbool ActsInLocoParentisOf(Person p1, Person p2) =
+Tbool ActsInLocoParentisOf(Thing p1, Thing p2) =
 	Fam.HasDayToDayResponsibilityFor(p1,p2) &
 	Econ.ProvidesSupportFor(p1,p2)
   
@@ -138,7 +138,7 @@ Tbool ActsInLocoParentisOf(Person p1, Person p2) =
 
 
 Test: No_Facts_Asserted_1
-- Person e
+- Thing e
 - Thing c
 - Sec2611.IsEligibleEmployee(e,c).AsOf(2011-04-15).Out =?= "Unstated"
 
@@ -147,13 +147,13 @@ Test: No_Facts_Asserted_2
 - Sec2611.IsCoveredEmployer(c).AsOf(2011-04-15).Out =?= "Unstated"
 
 Test: Eligible_Employee_1
-- Person e
+- Thing e
 - Thing c
 - EmploymentRelationship(e,c) = "None"
 - Sec2611.IsEligibleEmployee(e,c).AsOf(2011-04-15).Out =?= false
 
 Test: Eligible_Employee_2
-- Person e
+- Thing e
 - Thing c
 - NumberOfEmployees(c) = 2000
 - EmploymentRelationship(e,c) = "Employee"
@@ -166,7 +166,7 @@ Test: Eligible_Employee_2
 - Sec2611.IsEligibleEmployee(e,c).AsOf(2011-04-15).Out =?= true
 
 Test: Eligible_Employee_3
-- Person e
+- Thing e
 - Thing c
 - EmploymentRelationship(e,c) = "Employee"
 - HoursWorkedPerWeek(e,c) = 1
@@ -177,7 +177,7 @@ Test: Eligible_Employee_3
 - Sec2611.IsEligibleEmployee(e,c).AsOf(2011-04-15).Out =?= false
 
 Test: Eligible_Employee_4
-- Person e
+- Thing e
 - Thing c
 - EmploymentRelationship(e,c) = "Employee"
 - HoursWorkedPerWeek(e,c) = 40
@@ -188,7 +188,7 @@ Test: Eligible_Employee_4
 - Sec2611.IsEligibleEmployee(e,c).AsOf(2011-04-15).Out =?= true
 
 Test: Eligible_Employee_5	# Airline flight crew
-- Person e
+- Thing e
 - Thing c
 - EmploymentRelationship(e,c) = "Employee"
 - HoursWorkedPerWeek(e,c) = 40

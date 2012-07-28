@@ -156,31 +156,14 @@ namespace Hammurabi
             }
             
             return true;
-        }
-                                              
+        }                             
         
         /// <summary>
         /// Converts a Tset containing a single member into a (nullable) 
         /// LegalEntity.  Returns null if the Tset is unknown, if it's 
         /// value changes over time, or if it has more than one member.
         /// </summary>
-        public Person ToPerson  // ToThing
-        {
-            get
-            {
-                if (this.TimeLine.Values[0].IsUnstated) { return new Person(""); }
-
-                if (TimeLine.Count != 1) { return new Person(""); }
-
-                List<Thing> list = (List<Thing>)this.TimeLine.Values[0].Obj;
-
-                if (list == null || list[0] == null) { return new Person(""); }
-
-                return (Person)list[0];
-            }
-        }
-
-        public Thing ToThing  // ToThing
+        public Thing ToThing
         {
             get
             {

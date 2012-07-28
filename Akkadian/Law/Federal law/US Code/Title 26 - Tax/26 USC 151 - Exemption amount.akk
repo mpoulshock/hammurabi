@@ -5,8 +5,7 @@
 # Author:       Michael Poulshock
 
 
-# Indicates whether one person (d) is a dependent of a taxpayer (tp)
-Tnum ExemptionAmount(Person p) =
+Tnum ExemptionAmount(Thing p) =
 	TnumIn FedTaxExemptionAmount(p)
 
 	

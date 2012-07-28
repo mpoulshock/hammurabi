@@ -43,7 +43,7 @@ namespace Hammurabi.UnitTests.CoreFcns
              */
         
         // Some legal entities
-        private static Person M = new Person("M");
+        private static Thing M = new Thing("M");
         private static Thing A = new Thing("A");
         private static Thing B = new Thing("B");
         private static Thing C = new Thing("C");
@@ -88,11 +88,11 @@ namespace Hammurabi.UnitTests.CoreFcns
         { 
             return new Tbool(Hstate.Unstated);        // used to test unknowns
         }
-        private static Tbool Owns(Person p, Thing r)
+        private static Tbool Owns(Thing p, Thing r)
         {
             return Facts.QueryTvar<Tbool>("Owns", p, r);
         }
-        private static Tbool IsParentOf(Person p1, Person p2)
+        private static Tbool IsParentOf(Thing p1, Thing p2)
         {
             return Facts.QueryTvar<Tbool>("IsParentOf", p1, p2);
         }
@@ -103,7 +103,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void Filter1 ()
         {
             NewTest();
-            Tset theAssets = Facts.AllKnownProperty().Filter(_ => Owns (M,_));
+            Tset theAssets = (Facts.AllKnownProperty() - M).Filter(_ => Owns (M,_));
             Assert.AreEqual("Time.DawnOf A, B 1/1/2005 12:00:00 AM A, B, C 1/1/2008 12:00:00 AM A, C ", 
                             theAssets.TestOutput);        
         }
@@ -113,15 +113,15 @@ namespace Hammurabi.UnitTests.CoreFcns
         {
             Facts.Clear();
             
-            Person P1 = new Person("P1");
-            Person P3 = new Person("P3");
-            Person P4 = new Person("P4");
+            Thing P1 = new Thing("P1");
+            Thing P3 = new Thing("P3");
+            Thing P4 = new Thing("P4");
             
             Facts.Assert(P1, "IsParentOf", P3, true);
             Facts.Assert(P1, "IsParentOf", P4, true);
             Facts.Assert(P1, "IsParentOf", P1, false);  // An absurd thing to have to assert
             
-            Tset result = Facts.AllKnownPeople().FilterPerson( _ => IsParentOf(P1,_));
+            Tset result = Facts.AllKnownPeople().Filter( _ => IsParentOf(P1,_));
             
             Assert.AreEqual("Time.DawnOf P3, P4 ", 
                             result.TestOutput);
@@ -131,10 +131,10 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void Filter3 ()
         {
             Facts.Clear();
-            
-            Person P1 = new Person("P1");
-            Person P3 = new Person("P3");
-            Person P4 = new Person("P4");
+
+            Thing P1 = new Thing("P1");
+            Thing P3 = new Thing("P3");
+            Thing P4 = new Thing("P4");
 
             Tbool tb1 = new Tbool(false);
             tb1.AddState(new DateTime(2005,12,20),true);
@@ -146,7 +146,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Facts.Assert(P1, "IsParentOf", P4, tb2);
             Facts.Assert(P1, "IsParentOf", P1, false);  // An absurd thing to have to assert
             
-            Tset result = Facts.AllKnownPeople().FilterPerson( _ => IsParentOf(P1,_));
+            Tset result = Facts.AllKnownPeople().Filter( _ => IsParentOf(P1,_));
             
             Assert.AreEqual("Time.DawnOf 12/20/2005 12:00:00 AM P3 3/8/2008 12:00:00 AM P3, P4 ", 
                             result.TestOutput);
@@ -157,16 +157,16 @@ namespace Hammurabi.UnitTests.CoreFcns
         {
             Facts.Clear();
             
-            Person P1 = new Person("P1");
-            Person P3 = new Person("P3");
-            Person P4 = new Person("P4");
+            Thing P1 = new Thing("P1");
+            Thing P3 = new Thing("P3");
+            Thing P4 = new Thing("P4");
             
             Facts.Assert(P1, "IsParentOf", P3, true);
             Facts.Assert(P1, "IsParentOf", P4, true);
             Facts.Assert(P4, "IsParentOf", P3, false);
             Facts.Assert(P3, "IsParentOf", P3, false);
             
-            Tset result = Facts.AllKnownPeople().FilterPerson( _ => IsParentOf(_,P3));
+            Tset result = Facts.AllKnownPeople().Filter( _ => IsParentOf(_,P3));
             Assert.AreEqual("Time.DawnOf P1 ", result.TestOutput);
         }
         
@@ -174,8 +174,8 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void Filter5 ()
         {
             Facts.Clear();
-            Person P1 = new Person("P1");
-            Tset result = Facts.AllKnownPeople().FilterPerson( _ => IsParentOf(_,P1));
+            Thing P1 = new Thing("P1");
+            Tset result = Facts.AllKnownPeople().Filter( _ => IsParentOf(_,P1));
             Assert.AreEqual("Time.DawnOf ", result.TestOutput);
         }
         
@@ -183,7 +183,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void Filter6 ()
         {
             NewTest();
-            Tset theAssets = Facts.AllKnownProperty().Filter( _ => Owns (M,_));
+            Tset theAssets = (Facts.AllKnownProperty() - M).Filter( _ => Owns (M,_));
             Tset cheapAssets = theAssets.Filter(x => AssetValueLessThan4((Thing)x));            
             Assert.AreEqual("Time.DawnOf A, B 1/1/2005 12:00:00 AM A, B, C 1/1/2008 12:00:00 AM A, C 1/14/2011 12:00:00 AM A ", 
                             cheapAssets.TestOutput);        
@@ -202,7 +202,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         [Test]
         public void CountUnknown1 ()
         {
-            Person P1 = new Person("P1");
+            Thing P1 = new Thing("P1");
             Tset tsv = new Tset(Hstate.Stub);
             tsv.AddState(Date(2000,01,01),P1);
             tsv.AddState(Date(2001,01,01),Hstate.Uncertain);
@@ -214,7 +214,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         [Test]
         public void EntitiesAsOf1 ()
         {
-            Person P1 = new Person("P1");
+            Thing P1 = new Thing("P1");
             Tset tsv = new Tset(Hstate.Stub);
             tsv.AddState(Date(2000,01,01),P1);
             tsv.AddState(Date(2001,01,01),Hstate.Uncertain);
@@ -224,7 +224,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         [Test]
         public void EntitiesAsOf2 ()
         {
-            Person P1 = new Person("P1");
+            Thing P1 = new Thing("P1");
             Tset tsv = new Tset(Hstate.Stub);
             tsv.AddState(Date(2000,01,01),P1);
             tsv.AddState(Date(2001,01,01),Hstate.Uncertain);
@@ -238,9 +238,9 @@ namespace Hammurabi.UnitTests.CoreFcns
         {
             Facts.Clear();
             
-            Person P1 = new Person("P1");
-            Person P3 = new Person("P3");
-            Person P4 = new Person("P4");
+            Thing P1 = new Thing("P1");
+            Thing P3 = new Thing("P3");
+            Thing P4 = new Thing("P4");
 
             Facts.Assert(P1, "IsParentOf", P3, new Tbool(true));
             Facts.Assert(P1, "IsParentOf", P4, new Tbool(true));
@@ -262,9 +262,9 @@ namespace Hammurabi.UnitTests.CoreFcns
         {
             Facts.Clear();
             
-            Person P1 = new Person("P1");
-            Person P2 = new Person("P2");
-            Person P3 = new Person("P3");
+            Thing P1 = new Thing("P1");
+            Thing P2 = new Thing("P2");
+            Thing P3 = new Thing("P3");
 
             Facts.Assert(P1, "IsMarriedTo", P2, true);
             Facts.Assert(P3, "IsPermanentlyAndTotallyDisabled", new Tbool(false));
@@ -276,7 +276,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void AllKnownPeople4 ()
         {
             Facts.Clear();
-            Person P1 = new Person("P1");
+            Thing P1 = new Thing("P1");
             Facts.Assert(P1,"Gender", "Male");
             Tset result = Facts.AllKnownPeople();
             Assert.AreEqual("Time.DawnOf P1 ", result.TestOutput);
@@ -288,7 +288,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void Set_Sum1 ()
         {
             NewTest();
-            Tset theAssets = Facts.AllKnownProperty().Filter( _ => Owns (M,_));
+            Tset theAssets = (Facts.AllKnownProperty() - M).Filter( _ => Owns (M,_));
             Tnum sumOfAssets = theAssets.Sum(x => AssetValue((Thing)x));
             Assert.AreEqual("Time.DawnOf 3 1/1/2005 12:00:00 AM 6 1/1/2008 12:00:00 AM 4 1/14/2011 12:00:00 AM 5 ", 
                             sumOfAssets.TestOutput);        
@@ -298,7 +298,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void Set_Sum2 ()
         {
             NewTest();
-            Tset theAssets = Facts.AllKnownProperty().Filter( _ => Owns (M,_));
+            Tset theAssets = (Facts.AllKnownProperty() - M).Filter( _ => Owns (M,_));
             Tnum sumOfAssets = theAssets.Sum(x => AssetValue((Thing)x));
             Assert.AreEqual("Time.DawnOf 3 1/1/2005 12:00:00 AM 6 1/1/2008 12:00:00 AM 4 1/14/2011 12:00:00 AM 5 ", 
                             sumOfAssets.TestOutput);        
@@ -317,7 +317,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void Set_Sum_Unknown_2 ()
         {
             NewTest();
-            Tset theAssets = Facts.AllKnownProperty().Filter( _ => Owns (M,_));
+            Tset theAssets = (Facts.AllKnownProperty() - M).Filter( _ => Owns (M,_));
             Tnum sumOfAssets = theAssets.Sum(x => NullFcn(x) );
             Assert.AreEqual("Time.DawnOf Stub ", sumOfAssets.TestOutput);    
         }
@@ -332,7 +332,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void Exists_1 ()
         {
             NewTest();
-            Tset theAssets = Facts.AllKnownProperty().Filter( _ => Owns (M,_));
+            Tset theAssets = (Facts.AllKnownProperty() - M).Filter( _ => Owns (M,_));
             Tbool areAnyCheapAssets = theAssets.Exists(x => AssetValueLessThan4(x));
             Assert.AreEqual("Time.DawnOf True ", areAnyCheapAssets.TestOutput);        
         }
@@ -361,7 +361,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void ForAll1 ()
         {
             NewTest();
-            Tset theAssets = Facts.AllKnownProperty().Filter( _ => Owns (M,_));
+            Tset theAssets = (Facts.AllKnownProperty() - M).Filter( _ => Owns (M,_));
             Tbool allAssetsAreCheap = theAssets.ForAll( x => AssetValueLessThan4((Thing)x));
             Assert.AreEqual("Time.DawnOf True 1/14/2011 12:00:00 AM False ", allAssetsAreCheap.TestOutput);        
         }
@@ -380,7 +380,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void Compiled1b ()
         {
             Facts.Clear();
-            Person p = new Person("p");
+            Thing p = new Thing("p");
             Facts.Assert(p,"Gender","Male");
             Tbool result = AllAreMale();
             Assert.AreEqual("Time.DawnOf True ", result.TestOutput);        
@@ -390,8 +390,8 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void Compiled1c ()
         {
             Facts.Clear();
-            Person p1 = new Person("p1");
-            Person p2 = new Person("p2");
+            Thing p1 = new Thing("p1");
+            Thing p2 = new Thing("p2");
             Facts.Assert(p1,"Gender","Male");
             Facts.Assert(p2,"Gender","Male");
             Tbool result = AllAreMale();
@@ -402,8 +402,8 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void Compiled1d ()
         {
             Facts.Clear();
-            Person p1 = new Person("p1");
-            Person p2 = new Person("p2");
+            Thing p1 = new Thing("p1");
+            Thing p2 = new Thing("p2");
             Facts.Assert(p1,"Gender","Male");
             Facts.Assert(p2,"Gender","Female");
             Tbool result = AllAreMale();
@@ -412,7 +412,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         
         private static Tbool AllAreMale()
         {
-            return Facts.AllKnownPeople().ForAllPerson( _ => IsMale(_));
+            return Facts.AllKnownPeople().ForAll( _ => IsMale(_));
         }
         
         // ForAll using a filter method with two parameters
@@ -421,7 +421,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void Compiled2a ()
         {
             Facts.Clear();
-            Thing c = new Thing("");
+            Thing c = new Thing("corp");
             Tbool result = SomeoneWorksAt(c);
             Assert.AreEqual("Time.DawnOf False ", result.TestOutput);        
         }
@@ -430,8 +430,8 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void Compiled2b ()
         {
             Facts.Clear();
-            Thing c = new Thing("");
-            Person p = new Person("");
+            Thing c = new Thing("corp");
+            Thing p = new Thing("p");
             Tbool result = SomeoneWorksAt(c);
             Assert.AreEqual("Time.DawnOf False ", result.TestOutput);        
         }
@@ -440,8 +440,8 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void Compiled2c ()
         {
             Facts.Clear();
-            Thing c = new Thing("");
-            Person p = new Person("p");
+            Thing c = new Thing("corp");
+            Thing p = new Thing("p");
             Facts.Assert(p, "EmploymentRelationship", c, "Employee");
             Tbool result = SomeoneWorksAt(c);
             Assert.AreEqual("Time.DawnOf True ", result.TestOutput);        
@@ -451,8 +451,8 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void Compiled2d ()
         {
             Facts.Clear();
-            Thing c = new Thing("");
-            Person p = new Person("p");
+            Thing c = new Thing("corp");
+            Thing p = new Thing("p");
             Facts.Assert(p, "EmploymentRelationship", c, "Intern");
             Tbool result = SomeoneWorksAt(c);
             Assert.AreEqual("Time.DawnOf False ", result.TestOutput);        
@@ -462,7 +462,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void Compiled2g ()
         {
             Facts.Clear();
-            Person p = new Person("p");
+            Thing p = new Thing("p");
             Thing c = new Thing("c");
             Thing c2 = new Thing("c2");
             Facts.Assert(p, "EmploymentRelationship", c2, "Employee");
@@ -474,7 +474,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void Compiled2h ()
         {
             Facts.Clear();
-            Person p = new Person("p");
+            Thing p = new Thing("person");
             Thing c = new Thing("c");
             Thing c2 = new Thing("c2");
             Facts.Assert(p, "EmploymentRelationship", c2, "Employee");
@@ -485,7 +485,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         
         private static Tbool SomeoneWorksAt(Thing c)
         {
-            return Facts.AllKnownPeople().ExistsPerson( _ => Econ.IsEmployedBy(_,c));
+            return Facts.AllKnownPeople().Exists( _ => Econ.IsEmployedBy(_,c));
         }
         
     }

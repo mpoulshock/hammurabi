@@ -6,6 +6,6 @@
 
 
 # Permanently and totally disabled
-Tbool IsDisabledPT(Person p) =
+Tbool IsDisabledPT(Thing p) =
 	TboolIn IsPermanentlyAndTotallyDisabled(p)
 

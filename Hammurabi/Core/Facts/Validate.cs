@@ -37,18 +37,7 @@ namespace Hammurabi
         /// </summary>
         public static void Validate()
         {
-            List<Thing> allPeople = Facts.AllKnownPeople().DistinctEntities();
-            
-            foreach(Person p in allPeople)
-            {
-                if (DoB(p) < new DateTime(1895,1,1)) 
-                {
-                    ErrorList.Add(p + "'s date of birth is too far in the past.");
-                }
-                
-                // TODO: Develop data validation logic
-            }
-
+            // TODO: Develop data validation logic
         }
     }
 }

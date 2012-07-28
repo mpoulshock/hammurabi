@@ -42,10 +42,6 @@ namespace Hammurabi
                 {
                     return true;
                 }
-                if (e.GetType() == new Person("").GetType())
-                {
-                    if (((Person)e).Id == "") return true;
-                }
                 if (e.GetType() == new Thing("").GetType())
                 {
                     if (((Thing)e).Id == "") return true;

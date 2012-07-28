@@ -42,6 +42,11 @@ namespace Hammurabi
             Id = name;
         }
 
+        public Thing(Hstate h)
+        {
+            Id = "";
+        }
+
         /// <summary>
         /// The set of legal entities that compose the (parent) entity.
         /// </summary>
@@ -49,17 +54,6 @@ namespace Hammurabi
         {
             get;
             set;
-        }
-    }
-    
-    /// <summary>
-    /// Represents natural persons (i.e. humans).
-    /// </summary>
-    public class Person : Thing
-    {
-        public Person(string name) : base(name)
-        {
-            Id = name;
         }
     }
 }

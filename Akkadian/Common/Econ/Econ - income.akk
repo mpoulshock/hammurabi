@@ -7,7 +7,7 @@
 # ANNUAL INCOME
 
 # Total annual income
-Tnum AnnualIncome(Person p) =
+Tnum AnnualIncome(Thing p) =
 	AnnualWages(p) +
 	AnnualSelfEmploymentIncome(p) +
 	AnnualSocialSecurityBenefits(p) +
@@ -18,42 +18,42 @@ Tnum AnnualIncome(Person p) =
 	
 # Wages
 # TODO: Reconsider multiplying average wages by 12...
-Tnum AnnualWages(Person p) =
+Tnum AnnualWages(Thing p) =
 	MonthlyWages(p) * 12
 
 # Self-employment income
-Tnum AnnualSelfEmploymentIncome(Person p) =
+Tnum AnnualSelfEmploymentIncome(Thing p) =
 	MonthlySelfEmploymentIncome(p) * 12
 	
 # Commissions
-Tnum AnnualCommissions(Person p) =
+Tnum AnnualCommissions(Thing p) =
 	MonthlyCommissions(p) * 12
 
 # Social Security benefits
-Tnum AnnualSocialSecurityBenefits(Person p) =
+Tnum AnnualSocialSecurityBenefits(Thing p) =
 	MonthlySocialSecurityBenefits(p) * 12
 
 # Supplemental Security Income (SSI)
-Tnum AnnualSupplementalSecurityIncome(Person p) =
+Tnum AnnualSupplementalSecurityIncome(Thing p) =
 	MonthlySupplementalSecurityIncome(p) * 12
 
 # Veterans benefits
-Tnum AnnualVeteransBenefits(Person p) =
+Tnum AnnualVeteransBenefits(Thing p) =
 	MonthlyVeteransBenefits(p) * 12
 
 # Child support income
-Tnum AnnualChildSupportIncome(Person p) =
+Tnum AnnualChildSupportIncome(Thing p) =
 	MonthlyChildSupportIncome(p) * 12
 
 # Unemployment compensation
-Tnum AnnualUnemploymentCompensation(Person p) =
+Tnum AnnualUnemploymentCompensation(Thing p) =
 	MonthlyUnemploymentCompensation(p) * 12
 
 
 # MONTHLY INCOME
 
 # Total monthly income
-Tnum MonthlyIncome(Person p) =
+Tnum MonthlyIncome(Thing p) =
 	MonthlyWages(p) +
 	MonthlySelfEmploymentIncome(p) +
 	MonthlySocialSecurityBenefits(p) +
@@ -63,27 +63,27 @@ Tnum MonthlyIncome(Person p) =
 	MonthlyUnemploymentCompensation(p)
 
 # Wages
-TnumIn MonthlyWages(Person p) 
+TnumIn MonthlyWages(Thing p) 
 
 # Self-employment income
-TnumIn MonthlySelfEmploymentIncome(Person p)
+TnumIn MonthlySelfEmploymentIncome(Thing p)
 	
 # Commissions
-TnumIn MonthlyCommissions(Person p) 
+TnumIn MonthlyCommissions(Thing p) 
 
 # Social Security benefits
-TnumIn MonthlySocialSecurityBenefits(Person p) 
+TnumIn MonthlySocialSecurityBenefits(Thing p) 
 
 # Supplemental Security Income (SSI)
-TnumIn MonthlySupplementalSecurityIncome(Person p) 
+TnumIn MonthlySupplementalSecurityIncome(Thing p) 
 
 # Veterans benefits
-TnumIn MonthlyVeteransBenefits(Person p) 
+TnumIn MonthlyVeteransBenefits(Thing p) 
 
 # Child support income
-TnumIn MonthlyChildSupportIncome(Person p)
+TnumIn MonthlyChildSupportIncome(Thing p)
 
 # Unemployment compensation
-TnumIn MonthlyUnemploymentCompensation(Person p) 
+TnumIn MonthlyUnemploymentCompensation(Thing p) 
 	
 	

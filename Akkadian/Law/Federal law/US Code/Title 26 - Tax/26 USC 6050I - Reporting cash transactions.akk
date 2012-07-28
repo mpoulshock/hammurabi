@@ -6,11 +6,11 @@
 
 
 # Date IRS Form 8300 is due.
-Tdate DateForm8300Due(Thing recipient, Person person, Thing transaction) =
+Tdate DateForm8300Due(Thing recipient, Thing person, Thing transaction) =
     CFR.Tit26.Part1.Sec6050I1.DateForm8300Due(recipient, person, transaction);
 
 # (e) - Date by which the recipient must provide a statement to the other party.
-Tdate DateStatementDue(Thing r, Person p, Thing t) =
+Tdate DateStatementDue(Thing r, Thing p, Thing t) =
     set:
 	if  !due.IsEverTrue() -> Stub()
     else Date(due.DateFirstTrue.ToDateTime.Year + 1, 1, 31)
@@ -20,11 +20,11 @@ Tdate DateStatementDue(Thing r, Person p, Thing t) =
 
 # (a), (c), (d) - Does the recipient have to file IRS Form 8300 in relation 
 # to the other person, given a transaction (series of transfers)?
-Tbool Form8300Due(Thing r, Person p, Thing t) =
+Tbool Form8300Due(Thing r, Thing p, Thing t) =
     CFR.Tit26.Part1.Sec6050I1.Form8300Due(r,p,t);
 
 # (g) - Cash received by criminal court clerks
-Tbool FormDueByCourtClerk(Thing r, Person p, Thing t) =
+Tbool FormDueByCourtClerk(Thing r, Thing p, Thing t) =
     corpNature == "Criminal court clerk" &              # Federal or State
     # amount > 10,000  
     Trans.PurposeOfTransaction(t) == "Bail" &

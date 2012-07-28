@@ -8,7 +8,7 @@
 # Next of kin (to a decedent)
 # Order of precedence based on relationship
 # Lower number takes precedence
-Tnum NextOfKinPrecedence(Person p, Person dec) =
+Tnum NextOfKinPrecedence(Thing p, Thing dec) =
 	set:
 	if IsChildOf(p,dec)                 -> 1
 	if IsParentOf(p,dec) 				-> 2

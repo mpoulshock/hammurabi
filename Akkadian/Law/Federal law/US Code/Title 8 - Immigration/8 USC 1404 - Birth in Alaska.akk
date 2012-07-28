@@ -6,7 +6,7 @@
 
 
 # Citizenship of people born in Alaska
-Tbool IsUSCitizenPerAlaska(Person p) = 
+Tbool IsUSCitizenPerAlaska(Thing p) = 
 	...
 		TestA(p) |
 		TestB(p) |
@@ -15,13 +15,13 @@ Tbool IsUSCitizenPerAlaska(Person p) =
 	TheTime.IsAtOrAfter(DoB(p))    # Makes conclusion true from DoB onward
 
 # First test
-Tbool TestA(Person p) =
+Tbool TestA(Thing p) =
 	BirthState(p) == "Alaska" &
 	DoB(p) >= 1867-03-30 &
 	! IsNoncitizenIndian(p)
 
 # Second test	
-Tbool TestB(Person p) =
+Tbool TestB(Thing p) =
 	IsNoncitizenIndian(p) & 
 	BirthState(p) == "Alaska" &
 	DoB(p) >= 1867-03-30 &
@@ -29,26 +29,26 @@ Tbool TestB(Person p) =
 	TheTime.IsAtOrAfter(1924-06-02)    # Makes conclusion true from DoB onward
 
 # Third test
-Tbool TestC(Person p) =
+Tbool TestC(Thing p) =
 	IsNativeAmerican(p) &
 	BirthState(p) == "Alaska" &
 	DoB(p) >= 1924-06-02 
 	
 # Not entirely sure what this is intended to mean...
 # >>Is {1} a 'noncitizen Indian' (as that term is used in 8 U.S.C. 1404)?
-TboolIn IsNoncitizenIndian(Person p) =
+TboolIn IsNoncitizenIndian(Thing p) =
 	IsNativeAmerican(p)
 
 
 # UNIT TESTS
 
 Test: TemporalFact1
-- Person p
+- Thing p
 - IsNoncitizenIndian(p) = {1920-01-01: true; 1950-01-01: false}
 - USC.Tit8.Sec1404.IsNoncitizenIndian(p).AsOf(1930-01-01).Out =?= true
 
 Test: TemporalFact2
-- Person p
+- Thing p
 - IsNoncitizenIndian(p) = {1920-01-01: true; 1950-01-01: false}
 - USC.Tit8.Sec1404.IsNoncitizenIndian(p).AsOf(1960-01-01).Out =?= false
 

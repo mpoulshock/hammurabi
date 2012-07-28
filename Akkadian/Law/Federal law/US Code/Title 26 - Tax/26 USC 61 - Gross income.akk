@@ -6,7 +6,7 @@
 
 
 # Gross income
-Tnum GrossIncome(Person p) =
+Tnum GrossIncome(Thing p) =
 	TnumIn GrossIncome(p)
 
 	

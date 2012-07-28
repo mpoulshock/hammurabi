@@ -14,6 +14,6 @@ TnumIn ValueInDollars(Thing property)
 TsetIn OwnersOf(Thing property)
 
 # Person owns property
-TboolIn Owns(Person p, Thing property)
+TboolIn Owns(Thing p, Thing property)
 
 		

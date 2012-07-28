@@ -7,90 +7,90 @@
 # PARENT-CHILD RELATIONSHIPS
 
 # Parents married on a particular date
-Tbool ParentsMarriedAsOf(Person p, Tdate date) =
+Tbool ParentsMarriedAsOf(Thing p, Tdate date) =
 	Fam.AreMarried(mom,dad).AsOf(date)
 	
-	Person mom =
+	Thing mom =
 		MotherAsOf(p, date)
 	
-	Person dad =
+	Thing dad =
 		FatherAsOf(p, date)
 
 # Mother on a particular date
 # Warning: returns null if more than one mother
-Person MotherAsOf(Person p, Tdate date) =
-	new Person("")
-	# Fam.ParentsOf(p).AsOf(date).Filter(IsMotherOf(_,p)).ToPerson
+Thing MotherAsOf(Thing p, Tdate date) =
+	new Thing("")
+	# Fam.ParentsOf(p).AsOf(date).Filter(IsMotherOf(_,p)).ToThing
 	
 # Is mother of
-Tbool IsMotherOf(Person p1, Person p2) =
+Tbool IsMotherOf(Thing p1, Thing p2) =
 	IsParentOf(p1,p2) &
 	IsFemale(p1)
 
 # Father on a particular date
 # Warning: returns null if more than one father
-Person FatherAsOf(Person p, Tdate date) =
-	new Person("")
-	# Fam.ParentsOf(p).AsOf(date).Filter(IsFatherOf(_,p)).ToPerson
+Thing FatherAsOf(Thing p, Tdate date) =
+	new Thing("")
+	# Fam.ParentsOf(p).AsOf(date).Filter(IsFatherOf(_,p)).ToThing
 	
 # Is father of
-Tbool IsFatherOf(Person p1, Person p2) =
+Tbool IsFatherOf(Thing p1, Thing p2) =
 	IsParentOf(p1,p2) &
 	IsMale(p1)
 	
 # Person's parents
-Tset ParentsOf(Person p) =
+Tset ParentsOf(Thing p) =
 	Stub()
 	# AllPeopleExcept(p).Filter(IsParentOf(_,p))
 
 # Person's children
-Tset ChildrenOf(Person p) =
+Tset ChildrenOf(Thing p) =
 	Stub()
 	# AllPeople.Filter(IsParentOf(p,_))
 
 # Child
 # Not strictly necessary but aids readability
-Tbool IsChildOf(Person p1, Person p2) =
+Tbool IsChildOf(Thing p1, Thing p2) =
 	IsParentOf(p2,p1)
 	
 # One person is the parent of another
-TboolIn IsParentOf(Person p1, Person p2) =
+TboolIn IsParentOf(Thing p1, Thing p2) =
 	IsBiologicalParentOf(p1, p2) |
 	IsAdoptiveParentOf(p1, p2) |
 	IsFosterParentOf(p1, p2) |
 	IsStepparentOf(p1, p2)
             
 # Biological parent
-Tbool IsBiologicalParentOf(Person p1, Person p2) =
+Tbool IsBiologicalParentOf(Thing p1, Thing p2) =
 	Facts.Sym(p1, "FamilyRelationship", p2, "Biological parent", "Biological child")
 
 # Adoptive parent
-Tbool IsAdoptiveParentOf(Person p1, Person p2) =
+Tbool IsAdoptiveParentOf(Thing p1, Thing p2) =
 	Facts.Sym(p1, "FamilyRelationship", p2, "Adoptive parent", "Adopted child")
 
 # Foster parent
-Tbool IsFosterParentOf(Person p1, Person p2) =
+Tbool IsFosterParentOf(Thing p1, Thing p2) =
 	Facts.Sym(p1, "FamilyRelationship", p2, "Foster parent", "Foster child")
 
 # Stepparent
-Tbool IsStepparentOf(Person p1, Person p2) =
+Tbool IsStepparentOf(Thing p1, Thing p2) =
 	Facts.Sym(p1, "FamilyRelationship", p2, "Stepparent", "Stepchild")
 
 # Pregnant
-TboolIn IsPregnant(Person p)
+TboolIn IsPregnant(Thing p)
 
 # Unborn - in order to reason about fetuses
-TboolIn IsUnborn(Person p)
+TboolIn IsUnborn(Thing p)
 
 # Unknown parentage
 # TODO: Prove...
-TboolIn IsOfUnknownParentage(Person p)
+TboolIn IsOfUnknownParentage(Thing p)
 
 
 # PATERNITY, LEGITIMATION, ETC.
 
 # Establishes paternity
-Tbool PaternityEstablishedFor(Person parent, Person child) =
+Tbool PaternityEstablishedFor(Thing parent, Thing child) =
 	IsMale(parent) &
 	is12YearAgeDiff &
 	TboolIn PaternityEstablishedFor(parent,child) &
@@ -103,22 +103,22 @@ Tbool PaternityEstablishedFor(Person parent, Person child) =
 		TdateIn DatePaternityEstablishedFor(parent,child)
 
 # Born "out of wedlock"
-TboolIn BornOutOfWedlock(Person p) =
+TboolIn BornOutOfWedlock(Thing p) =
 	IsIllegitimate(p)
 		
 # Illegitimate child
-Tbool IsIllegitimate(Person p) =
+Tbool IsIllegitimate(Thing p) =
 	!ParentsMarriedAsOf(p, DoB(p))
 	# unless child is born shortly after the parents' divorce
 
 # Is legitimated by law (of the child's domicile)
 # Assumption: could be done by either statute, court, or both
-TboolIn IsLegitimatedByLaw(Person child) =
+TboolIn IsLegitimatedByLaw(Thing child) =
 	Stub()
 	
 # Legitimated by father (he acknowledged parental responsibility)
 # Example of temporal value built from threshold facts and an event
-Tbool Legitimated(Person parent, Person child) =
+Tbool Legitimated(Thing parent, Thing child) =
 	IsFatherOf(parent, child) &
 	IsIllegitimate(child) &
 	TboolIn Legitimated(parent,child) &
@@ -128,7 +128,7 @@ Tbool Legitimated(Person parent, Person child) =
 		TdateIn DateLegitimated(parent,child)
 
 # Legally committed to financially support child
-Tbool CommittedToFinanciallySupport(Person p1, Person p2) =
+Tbool CommittedToFinanciallySupport(Thing p1, Thing p2) =
 	TboolIn CommittedToFinanciallySupport(p1,p2) &
 	TheTime.IsAtOrAfter(date)
 	

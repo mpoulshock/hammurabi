@@ -6,18 +6,17 @@
 
 
 # Birth abroad before 1952 to service parent
-Tbool Sec1401gAppliesTo(Person c) =
+Tbool Sec1401gAppliesTo(Thing c) =
 	! Sec1401.BornInUSorOP(c) &
 	DoB(c) > 1941-01-12 &
-	DoB(c) < 1952-12-24 
-	# &
-	# parents.Exists(IsQualifyingServicemember(_))
+	DoB(c) < 1952-12-24 &
+	parents.Exists(IsQualifyingServicemember(_))
 	
 	Tset parents =
 		Sec1401.BirthParents(c)		# Assumes two parents
 		
 # Qualifying parent
-Tbool IsQualifyingServicemember(Person p) =
+Tbool IsQualifyingServicemember(Thing p) =
 	IsUSCitizen(p) &
 	inAF.IsEverTrue(1946-12-31,1952-12-24) &
 	Stub()  # case does not come within section 201(g) or (i) of the Nationality Act of 1940.
@@ -29,33 +28,33 @@ Tbool IsQualifyingServicemember(Person p) =
 # UNIT TESTS
 
 Test: BornTooEarly
-- Person child
+- Thing child
 - DateOfBirth(child) = 1930-03-02
 - USC.Tit8.Sec1401a.Sec1401gAppliesTo(child).Out =?= false
 
 Test: BornWithinRange1
-- Person child
+- Thing child
 - DateOfBirth(child) = 1945-03-02
 - USC.Tit8.Sec1401a.Sec1401gAppliesTo(child).Out =?= "Unstated"
 
 Test: BornWithinRange2
-- Person child
-- Person dad
-- Person mom
+- Thing child
+- Thing dad
+- Thing mom
 - FatherAtTimeOfBirth(child) = dad
 - MotherAtTimeOfBirth(child) = mom
 - DateOfBirth(child) = 1945-03-02
 - USC.Tit8.Sec1401a.Sec1401gAppliesTo(child).Out =?= "Unstated"
 
 Test: DQbcUS
-- Person child
+- Thing child
 - BirthCountry(child) = "United States"
 - USC.Tit8.Sec1401a.Sec1401gAppliesTo(child).Out =?= false
 
 Test: NoEligParent
-- Person child
-- Person dad
-- Person mom
+- Thing child
+- Thing dad
+- Thing mom
 - DateOfBirth(child) = 1945-03-02
 - BirthCountry(child) = "Bolivia"
 - FatherAtTimeOfBirth(child) = [[dad]]

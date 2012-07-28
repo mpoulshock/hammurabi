@@ -6,6 +6,6 @@
 
 
 # Adjusted gross income
-Tnum AGI(Person p) =
+Tnum AGI(Thing p) =
 	TnumIn AdjustedGrossIncome(p)
 	

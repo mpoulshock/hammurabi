@@ -9,43 +9,43 @@
 # Country of residence
 # Includes U.S. territories, possessions, etc.
 # >>In which country does {1} reside?
-TstrIn CountryOfResidence(Person p)
+TstrIn CountryOfResidence(Thing p)
 
 # Country of citizenship (can have more than one)
-Tbool IsCitizenOf(Person p, Tstr country) =
+Tbool IsCitizenOf(Thing p, Tstr country) =
 	TstrIn CountryOfCitizenship(p) == country
 
 # Naturalized citizen
-TboolIn IsNaturalizedCitizen(Person p)
+TboolIn IsNaturalizedCitizen(Thing p)
 
 # U.S. national (without U.S. citizenship)
-Tbool IsUSNational(Person p) =
+Tbool IsUSNational(Thing p) =
 	Status(p) == "U.S. national"
 
 	
 # IMMIGRATION STATUS
 	
 # Alien
-TboolIn IsAlien(Person p)
+TboolIn IsAlien(Thing p)
 
 # Legal permanent resident (LPR)
-TboolIn IsLPR(Person p) =
+TboolIn IsLPR(Thing p) =
 	Status(p) == "Legal permanent resident"
 
 # Lawful non-immigrant
-TboolIn IsLawfulNonImmigrant(Person p) =
+TboolIn IsLawfulNonImmigrant(Thing p) =
 	Stub()
 
 # Entered U.S. without inspection
-TboolIn EnteredUSWithoutInspection(Person p) =
+TboolIn EnteredUSWithoutInspection(Thing p) =
 	Stub()
 
 # Paroled into U.S.
-TboolIn ParoledIntoUS(Person p) =
+TboolIn ParoledIntoUS(Thing p) =
 	Stub()
 	
 # Citizenship/immigration status (input)
-Tstr Status(Person p) = 
+Tstr Status(Thing p) = 
 	TstrIn USImmigrationStatus(p)
 	
 

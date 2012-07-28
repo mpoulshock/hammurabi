@@ -6,7 +6,7 @@
 
 
 # U.S. national (but not citizen) by birth
-Tbool IsUSNationalByBirth(Person p) = 
+Tbool IsUSNationalByBirth(Thing p) = 
 	...
 		Para1(p) |
 		Para2(p) |
@@ -17,7 +17,7 @@ Tbool IsUSNationalByBirth(Person p) =
 	
 	
 # Paragraph (1) - Born in outlying possession on or after U.S. annexation
-Tbool Para1(Person p) =
+Tbool Para1(Thing p) =
 	Sec1101.IsUSOutlyingPossession(place) &
 	...
 		place == "American Samoa" &
@@ -32,7 +32,7 @@ Tbool Para1(Person p) =
 
 		
 # Paragraph (2) - Both parents nationals
-Tbool Para2(Person p) =
+Tbool Para2(Thing p) =
 	! Sec1401.BornInUSorOP(p) &
 	...
 		Sec1401.ParentsMarried(p) |
@@ -43,13 +43,13 @@ Tbool Para2(Person p) =
 
 	
 # Paragraph (3) - Of unknown parentage, found in outlying possession
-Tbool Para3(Person p) =
+Tbool Para3(Thing p) =
 	Fam.IsOfUnknownParentage(p) &
 	Stub()
 
 
 # Paragraph (4) - One parent national, one parent alien
-Tbool Para4(Person p) =
+Tbool Para4(Thing p) =
 	! Sec1401.BornInUSorOP(p) &
 	Sec1401.ParentsMarried(p) &
 	Sec1401.OneNationalOneAlienParent(p) 
@@ -57,7 +57,7 @@ Tbool Para4(Person p) =
 	# Sec1401.BirthParents(p).Exists(Para4ParentTest(_, DoB(p)))
 
 # National parent meets complex time-based test for physical presence
-Tbool Para4ParentTest(Person parent, Tdate date) =
+Tbool Para4ParentTest(Thing parent, Tdate date) =
 	Imm.IsUSNational(parent) &
 	present7YearsIn10.IsEverTrueBefore(date) &
 	fiveYearTestMet.IsEverTrueBefore(date) &

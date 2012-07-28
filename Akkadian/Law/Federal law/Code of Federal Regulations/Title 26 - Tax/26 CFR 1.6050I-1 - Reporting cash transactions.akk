@@ -7,7 +7,7 @@
 
 
 # (e)(1) - Date IRS Form 8300 is due.
-Tdate DateForm8300Due(Thing recipient, Person p, Thing transaction) =
+Tdate DateForm8300Due(Thing recipient, Thing p, Thing transaction) =
 	set:
 	if !due.IsEverTrue() -> null
 	else due.DateFirstTrue.AddDays(15)
@@ -18,7 +18,7 @@ Tdate DateForm8300Due(Thing recipient, Person p, Thing transaction) =
 		
 # Does the recipient have to file IRS Form 8300 in relation to the other person,
 # given a transaction (series of transfers)?
-Tbool Form8300Due(Thing r, Person p, Thing t) =
+Tbool Form8300Due(Thing r, Thing p, Thing t) =
 	USC.Tit26.Sec7701.IsPerson(r)    
 	# course of trade or business
 	# Met10KThreshold(r,p,t)

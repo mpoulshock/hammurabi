@@ -8,51 +8,51 @@
 # ASSETS 
 
 # Total household assets
-Tnum TotalAssets(Thing household) =
+Tnum TotalHouseholdAssets(Thing household) =
 	Stub()
 	# household.Constituents.Sum(TotalAssets(_))
 
 # Total assets
-Tnum TotalAssets(Person p) =
+Tnum TotalAssets(Thing p) =
 	BankAssets(p) + 
 	RealPropEquity(p) + 
 	Stub()
 
 # Household liquid assets
-Tnum LiquidAssets(Thing household) =
+Tnum LiquidHouseholdAssets(Thing household) =
 	Stub()
 	# household.Constituents.Sum(LiquidAssets(_))	
 
 # Liquid assets (cash, checking, saving ...)
-Tnum LiquidAssets(Person p) =
+Tnum LiquidAssets(Thing p) =
 	Stub()
 	
 # Bank account assets
-TnumIn BankAssets(Person p)
+TnumIn BankAssets(Thing p)
 
 
 # PROPERTY
 
 # Total home equity
-Tnum RealPropEquity(Person p) =
+Tnum RealPropEquity(Thing p) =
 	Stub()
 	# AllProperty.Sum(EquityIn(p,_))
 
 # Equity in a home or real property
-TnumIn EquityIn(Person p, Thing r)
+TnumIn EquityIn(Thing p, Thing r)
 
 # All real property of a given person
-Tset RealPropertyOf(Person p) =
+Tset RealPropertyOf(Thing p) =
 	Stub()
 	# PropertyOf(p).Filter(IsRealProperty(_))
 
 # All property of a given person
-Tset PropertyOf(Person p) =
+Tset PropertyOf(Thing p) =
 	Stub()
 	# AllProperty.Filter(Owns(p,_))
 	
 # Property ownership
-TboolIn Owns(Person p, Thing r)
+TboolIn Owns(Thing p, Thing r)
 
 # Real property
 Tbool IsRealProperty(Thing r) =

@@ -7,7 +7,7 @@
 
 
 # Indicates whether one person (d) is a dependent of a taxpayer (tp)
-Tbool IsDependentOf(Person d, Person tp) =
+Tbool IsDependentOf(Thing d, Thing tp) =
     ...
         IsQualifyingChildOf(d, tp) | 
         IsQualifyingRelativeOf(d, tp)
@@ -16,7 +16,7 @@ Tbool IsDependentOf(Person d, Person tp) =
 
 	
 # Indicates whether one person is a "qualifying child" of another.
-Tbool IsQualifyingChildOf(Person d, Person tp) =    
+Tbool IsQualifyingChildOf(Thing d, Thing tp) =    
     QCGenTest(d, tp, taxYear) &
     QCRelationTest(d, tp) &
     QCAgeTest(d, tp, taxYear) &
@@ -26,7 +26,7 @@ Tbool IsQualifyingChildOf(Person d, Person tp) =
 
 	
 # Qualifying child - c1 - general elements (excluding those in c2, c3, and c4)
-Tbool QCGenTest(Person d, Person tp, Tnum taxYear) =
+Tbool QCGenTest(Thing d, Thing tp, Tnum taxYear) =
     Econ.SharePrincipalAbode(d,tp).TotalElapsedDaysPer(taxYear) > 182.5 &
     Econ.PercentSelfSupport(d) < 50 &        # per TY
     ...
@@ -35,7 +35,7 @@ Tbool QCGenTest(Person d, Person tp, Tnum taxYear) =
     
     
 # Qualifying child - c2 - relationship test
-Tbool QCRelationTest(Person d, Person tp) =
+Tbool QCRelationTest(Thing d, Thing tp) =
     Fam.IsParentOf(tp,d) |
     Fam.IsGrandparentOf(tp,d) |
     Fam.IsGreatGrandparentOf(tp,d) |
@@ -44,7 +44,7 @@ Tbool QCRelationTest(Person d, Person tp) =
         
 		
 # Qualifying child - c3 - age test
-Tbool QCAgeTest(Person d, Person tp, Tnum taxYear) =
+Tbool QCAgeTest(Thing d, Thing tp, Tnum taxYear) =
     ...
         Age(d) < Age(tp) &
         ...
@@ -58,7 +58,7 @@ Tbool QCAgeTest(Person d, Person tp, Tnum taxYear) =
 	
 # Indicates whether one person is a "qualifying relative" of another.
 # Subsections d3 and d4 are omitted.
-Tbool IsQualifyingRelativeOf(Person d, Person tp) =
+Tbool IsQualifyingRelativeOf(Thing d, Thing tp) =
     genTest & 
     relationTest & 
     d4Test
@@ -72,7 +72,7 @@ Tbool IsQualifyingRelativeOf(Person d, Person tp) =
         # & 
 		# AllPeople.Exists(IsQualifyingChildOf(d,_))
 		# !AllPeople.Exists(IsQualifyingChildOf(d,_))
-        # !Exists(allOtherKnownPeople, (x,y) => IsQualifyingChildOf(d, (Person)x), d, null)
+        # !Exists(allOtherKnownPeople, (x,y) => IsQualifyingChildOf(d, (Thing)x), d, null)
 
 	Tset allOtherKnownPeople = 
         Facts.AllKnownPeople() - d - tp
@@ -100,7 +100,7 @@ Tbool IsQualifyingRelativeOf(Person d, Person tp) =
 
 		
 # Exceptions to whether a person can be a dependent. 152(b).
-Tbool CannotBeADependentOf(Person d, Person tp) =
+Tbool CannotBeADependentOf(Thing d, Thing tp) =
     !depTest | 
     !jointReturnTest | 
     !citizenshipTest
@@ -138,8 +138,8 @@ Tbool CannotBeADependentOf(Person d, Person tp) =
 # UNIT TESTS
 
 Test: Pub501_Simple1
-- Person c		# the child
-- Person t		# the taxpayer
+- Thing c		# the child
+- Thing t		# the taxpayer
 - IsParentOf(t,c) = true
 - LivesWith(c,t) = true
 - DateOfBirth(c) = 2001-01-01
@@ -154,8 +154,8 @@ Test: Pub501_Simple1
 - Sec152.IsDependentOf(c,t).AsOf(2010-12-31).Out =?= "Unstated"
 
 Test: Pub501_Simple2
-- Person c	
-- Person t	
+- Thing c	
+- Thing t	
 - IsParentOf(t,c) = true
 - LivesWith(c,t) = true
 - DateOfBirth(c) = 2001-01-01
@@ -175,9 +175,9 @@ Test: Pub501_Simple2
 # IRS Pub. 501 (2010), Page 10, Example 1.
 # Cannot be a dependent because fails joint return test.
 Test: Pub501_1
-- Person t		# Taxpayer
-- Person d 		# T's daughter
-- Person s		# T's son-in-law
+- Thing t		# Taxpayer
+- Thing d 		# T's daughter
+- Thing s		# T's son-in-law
 - FamilyRelationship(d,s) = "Spouse"
 - FilesJointFedTaxReturnWith(d,s) = true
 - FilesMFJOnlyToClaimRefund(d) = false
@@ -190,9 +190,9 @@ Test: Pub501_1
 
 # IRS Pub. 501 (2010), Page 10, Example 2 (son).
 Test: Pub501_2a
-- Person t		# Taxpayer
-- Person d 		# T's daughter
-- Person s		# T's son-in-law
+- Thing t		# Taxpayer
+- Thing d 		# T's daughter
+- Thing s		# T's son-in-law
 - FamilyRelationship(d,s) = "Spouse"
 - FilesJointFedTaxReturnWith(d,s) = true
 - FilesMFJOnlyToClaimRefund(d) = true
@@ -206,9 +206,9 @@ Test: Pub501_2a
 
 # IRS Pub. 501 (2010), Page 10, Example 2 (daughter-in-law).
 Test: Pub501_2b
-- Person t		# Taxpayer
-- Person d 		# T's daughter-in-law
-- Person s		# T's son
+- Thing t		# Taxpayer
+- Thing d 		# T's daughter-in-law
+- Thing s		# T's son
 - FamilyRelationship(d,s) = "Spouse"
 - FilesJointFedTaxReturnWith(d,s) = true
 - FilesMFJOnlyToClaimRefund(d) = true
@@ -222,9 +222,9 @@ Test: Pub501_2b
 
 # IRS Pub. 501 (2010), Page 10, Example 3.
 Test: Pub501_3
-- Person t		# Taxpayer
-- Person s 		# Son
-- Person d		# Daughter-in-law
+- Thing t		# Taxpayer
+- Thing s 		# Son
+- Thing d		# Daughter-in-law
 - DateOfBirth(s) = 1992-01-01
 - DateOfBirth(d) = 1991-01-01
 - FamilyRelationship(d,s) = "Spouse"
@@ -237,8 +237,8 @@ Test: Pub501_3
 
 # IRS Pub. 501 (2010), Page 11, Unnumbered example.
 Test: Pub501_4
-- Person t 		# Taxpayer
-- Person s		# Son
+- Thing t 		# Taxpayer
+- Thing s		# Son
 - DateOfBirth(s) = 1991-12-10
 - IsFullTimeStudent(s) = false
 - IsUSCitizen(s) = true
@@ -247,8 +247,8 @@ Test: Pub501_4
 
 # IRS Pub. 501 (2010), Page 11, Unnumbered example.
 Test: Pub501_5
-- Person t 		# Taxpayer
-- Person s		# Son
+- Thing t 		# Taxpayer
+- Thing s		# Son
 - DateOfBirth(s) = 1991-12-10
 - IsFullTimeStudent(s) = true
 - IsUSCitizen(s) = true
@@ -257,8 +257,8 @@ Test: Pub501_5
 
 # IRS Pub. 501 (2010), Page 11, Unnumbered example.
 Test: Pub501_6
-- Person t 		# Taxpayer
-- Person s		# Son
+- Thing t 		# Taxpayer
+- Thing s		# Son
 - DateOfBirth(s) = 1991-12-10
 - IsFullTimeStudent(s) = false
 - IsUSCitizen(s) = true
@@ -267,9 +267,9 @@ Test: Pub501_6
 
 # IRS Pub. 501 (2010), Page 11, Example 1.
 Test: Pub501_7
-- Person t		# Taxpayer
-- Person s		# T's spouse
-- Person b		# T's brother
+- Thing t		# Taxpayer
+- Thing s		# T's spouse
+- Thing b		# T's brother
 - DateOfBirth(t) = 1989-01-01
 - DateOfBirth(s) = 1989-01-01
 - FamilyRelationship(t,s) = "Spouse"
@@ -284,9 +284,9 @@ Test: Pub501_7
 
 # IRS Pub. 501 (2010), Page 11, Example 2.
 Test: Pub501_8
-- Person t		# Taxpayer
-- Person s		# T's spouse
-- Person b		# T's brother
+- Thing t		# Taxpayer
+- Thing s		# T's spouse
+- Thing b		# T's brother
 - DateOfBirth(t) = 1989-01-01
 - DateOfBirth(s) = 1985-01-01
 - FamilyRelationship(t,s) = "Spouse"
@@ -302,53 +302,53 @@ Test: Pub501_8
 ##
 
 Test: Basic_1
-- Person tp
-- Person d
+- Thing tp
+- Thing d
 - LivesWith(tp,d) = true
 - (Econ.SharePrincipalAbode(d,tp).TotalElapsedDaysPer(Sec441.TaxYear(tp)) > 182.5).AsOf(2012-01-01).Out =?= true
 
 Test: Basic_2
-- Person tp
-- Person d
+- Thing tp
+- Thing d
 - LivesWith(tp,d) = false
 - (Econ.SharePrincipalAbode(d,tp).TotalElapsedDaysPer(Sec441.TaxYear(tp)) > 182.5).AsOf(2012-01-01).Out =?= false
 
 Test: QCGenTest_1
-- Person tp
-- Person d
+- Thing tp
+- Thing d
 - LivesWith(tp,d) = false
 - Sec152.QCGenTest(d,tp,Sec441.TaxYear(tp)).AsOf(DateTime.Now).Out =?= false
 
 Test: QCGenTest_1a
-- Person tp
-- Person d
+- Thing tp
+- Thing d
 - LivesWith(tp,d) = false
 - Econ.SharePrincipalAbode(d,tp).AsOf(2012-05-29).Out =?= false
 
 Test: ShareHousehold
-- Person a
-- Person b
+- Thing a
+- Thing b
 - LivesWith(a,b) = true
 - Econ.SharePrincipalAbode(a,b).Out =?= true
 
 Test: QCGenTest_2
-- Person tp
-- Person d
+- Thing tp
+- Thing d
 - LivesWith(tp,d) = true
 - PercentSelfSupport(d) = 100
 - Sec152.QCGenTest(d,tp,Sec441.TaxYear(tp)).AsOf(DateTime.Now).Out =?= false
 
 Test: QCGenTest_3
-- Person tp
-- Person d
+- Thing tp
+- Thing d
 - LivesWith(tp,d) = true
 - PercentSelfSupport(d) = 0
 - FedTaxFilingStatus(d) = "not Married filing jointly"
 - Sec152.QCGenTest(d,tp,Sec441.TaxYear(tp)).AsOf(DateTime.Now).Out =?= true
 
 Test: QCGenTest_4
-- Person tp
-- Person d
+- Thing tp
+- Thing d
 - LivesWith(tp,d) = true
 - PercentSelfSupport(d) = 0
 - FedTaxFilingStatus(d) = "Married filing jointly"
@@ -356,8 +356,8 @@ Test: QCGenTest_4
 - Sec152.QCGenTest(d,tp,Sec441.TaxYear(tp)).AsOf(DateTime.Now).Out =?= true
 
 Test: QCGenTest_5
-- Person tp
-- Person d
+- Thing tp
+- Thing d
 - LivesWith(tp,d) = true
 - PercentSelfSupport(d) = 0
 - FedTaxFilingStatus(d) = "Married filing jointly" 
@@ -365,14 +365,14 @@ Test: QCGenTest_5
 - Sec152.QCGenTest(d,tp,Sec441.TaxYear(tp)).AsOf(DateTime.Now).Out =?= false
 
 Test: QCRelationship_1
-- Person tp
-- Person d
+- Thing tp
+- Thing d
 - FamilyRelationship(tp,d) = "Biological parent"
 - Sec152.QCRelationTest(d,tp).AsOf(DateTime.Now).Out =?= true
 
 Test: QCAge_1
-- Person tp
-- Person d
+- Thing tp
+- Thing d
 - DateOfBirth(tp) = 1975-01-01
 - DateOfBirth(d) = 2005-01-01
 - IsStudent(d) = false
@@ -380,8 +380,8 @@ Test: QCAge_1
 - Sec152.QCAgeTest(d,tp,Sec441.TaxYear(tp)).AsOf(2012-03-03).Out =?= true
 
 Test: QCAge_2
-- Person tp
-- Person d
+- Thing tp
+- Thing d
 - DateOfBirth(tp) = 1975-01-01
 - DateOfBirth(d) = 1940-01-01
 - IsStudent(d) = false

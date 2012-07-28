@@ -8,7 +8,7 @@
 
 
 # Person's household qualifies for Alabama SNAP
-Tbool HouseholdQualifies(Person p) =
+Tbool HouseholdQualifiesSNAP(Thing p) =
 	Stub()
 	##
 	HouseholdQualifies(mems)
@@ -18,7 +18,7 @@ Tbool HouseholdQualifies(Person p) =
 	##
 	
 # Members of a person's SNAP household
-Tbool IsMemberOfHouseholdOf(Person p1, Person p2) =
+Tbool IsMemberOfHouseholdOf(Thing p1, Thing p2) =
 	Econ.LivesWith(p1, p2) &
 	...
 		Econ.PurchaseAndPrepareMealsTogether(p1,p2) |
@@ -31,7 +31,7 @@ Tbool HouseholdQualifies(Thing household) =
 	Stub()
 	
 # Person meets technical requirements
-Tbool MeetsTechnicalReqs(Person p, Tset householdMembers) =
+Tbool MeetsTechnicalReqs(Thing p, Tset householdMembers) =
 	set:
 	if Econ.IsOnStrike(p) -> Stub()
 	if IsIneligible(p) -> false
@@ -50,7 +50,7 @@ Tbool MeetsTechnicalReqs(Person p, Tset householdMembers) =
 		MeetsWorkReqs(p, householdMembers)
 	
 # Person meets work requirements
-Tbool MeetsWorkReqs(Person p, Tset householdMembers) =
+Tbool MeetsWorkReqs(Thing p, Tset householdMembers) =
 	exempt |
 	meetsReqs
 	
@@ -78,7 +78,7 @@ Tbool MeetsWorkReqs(Person p, Tset householdMembers) =
 		Stub()
 	
 # Cares for a dependent
-Tbool CaresForAsDependent(Person care, Person dep) =
+Tbool CaresForAsDependent(Thing care, Thing dep) =
 	Fam.HasDayToDayResponsibilityFor(care, dep) &
 	...
 		Age(dep) < 18 |
@@ -147,7 +147,7 @@ Tnum HouseholdMonthlyGrossIncome(Thing household) =
 	# Sum(household.Constituents, MonthlyGrossIncome(_))
 
 # Individual gross income
-Tnum MonthlyGrossIncome(Person p) =
+Tnum MonthlyGrossIncome(Thing p) =
 	Econ.MonthlyWages(p) +
 	Econ.MonthlySelfEmploymentIncome(p) +
 	Econ.MonthlyCommissions(p) +
@@ -202,7 +202,7 @@ Tnum StandardDeduction(Tnum size) =
 	else 208
 	
 # Elderly
-Tbool IsElderlyOrDisabled(Person p) =
+Tbool IsElderlyOrDisabled(Thing p) =
 	Age(p) > 60 |
 	IsDisabled(p)
 
@@ -241,7 +241,7 @@ Tbool ExpeditedAppRequired(Thing hh) =
 # INELIGIBLE INDIVIDUALS
 
 # Ineligibility
-Tbool IsIneligible(Person p) = 
+Tbool IsIneligible(Thing p) = 
 	Stub()
 	
 	

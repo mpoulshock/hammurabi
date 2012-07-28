@@ -7,19 +7,19 @@
 # ACTIVE DUTY / COMBAT
 
 # Deployed to a combat zone
-TboolIn IsDeployedToCombatZone(Person p) =
+TboolIn IsDeployedToCombatZone(Thing p) =
 	OnActiveDuty(p) &
 	TboolIn IsDeployedToCombatZone(p)
 
 # Active duty for training (reserves)
-Tbool OnActiveDutyForTraining(Person p) =
+Tbool OnActiveDutyForTraining(Thing p) =
 	InReserveArmedForces(p) &
 	...
 		OnActiveDuty(p) |
 		TboolIn OnActiveDutyForTraining(p)
 	
 # On active duty
-TboolIn OnActiveDuty(Person p) =
+TboolIn OnActiveDuty(Thing p) =
 	InArmedForces(p) &
 	TboolIn OnActiveDuty(p)
 
@@ -27,12 +27,12 @@ TboolIn OnActiveDuty(Person p) =
 # BRANCH OF ARMED FORCES
 	
 # Person serves in the Armed Forces in any capacity.
-TboolIn InArmedForces(Person p) =
+TboolIn InArmedForces(Thing p) =
 	InActiveArmedForces(p) |
 	InReserveArmedForces(p)
         
 # Person serves (actively) in the Armed Forces.
-Tbool InActiveArmedForces(Person p) =
+Tbool InActiveArmedForces(Thing p) =
 	branch == "Army" |
 	branch == "Navy" |
 	branch == "Air Force" |
@@ -43,7 +43,7 @@ Tbool InActiveArmedForces(Person p) =
 		TstrIn BranchOfArmedForces(p)
             
 # Person serves in reserve component of the Armed Forces (including tNational Guard).
-Tbool InReserveArmedForces(Person p) =
+Tbool InReserveArmedForces(Thing p) =
 	branch == "Army National Guard" |
 	branch == "Army Reserve" |
 	branch == "Air National Guard" |
@@ -59,17 +59,17 @@ Tbool InReserveArmedForces(Person p) =
 # INJURY
 
 # Service-connected injury
-TboolIn ServiceConnectedInjury(Person p)
+TboolIn ServiceConnectedInjury(Thing p)
 
 
 # DISCHARGE
 		
 # Dishonorable discharge
-Tbool WasDishonorablyDischarged(Person p) =
+Tbool WasDishonorablyDischarged(Thing p) =
 	NatureOfDischarge(p) == "Dishonorable discharge"
 	
 # Nature of discharge from armed forces
-TstrIn NatureOfDischarge(Person p)
+TstrIn NatureOfDischarge(Thing p)
 
 ## Possible values:
 Expiration of term of service

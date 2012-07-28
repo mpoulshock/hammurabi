@@ -36,21 +36,21 @@ namespace Hammurabi.UnitTests.CoreFcns
         {
             Facts.Clear();
             
-            Person P1 = new Person("P1");
-            Person P3 = new Person("P3");
-            Person P4 = new Person("P4");
+            Thing P1 = new Thing("P1");
+            Thing P3 = new Thing("P3");
+            Thing P4 = new Thing("P4");
             
             Facts.Assert(P1, "IsParentOf", P3);
             Facts.Assert(P1, "IsParentOf", P4);
 //            Facts.Assert(P1, "IsParentOf", P1, false);  // Test fails when this is toggled out!!!
             
-            Tset result = Facts.AllKnownPeople().FilterPerson( _ => IsParentOf(P1,_));
+            Tset result = Facts.AllKnownPeople().Filter( _ => IsParentOf(P1,_));
             
             Assert.AreEqual("Time.DawnOf P3, P4 ", 
                             result.TestOutput);
         }
         
-        private static Tbool IsParentOf(Person p1, Person p2)
+        private static Tbool IsParentOf(Thing p1, Thing p2)
         {
             return Facts.QueryTvar<Tbool>("IsParentOf", p1, p2);
         }
@@ -61,7 +61,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void UnknownEmploymentRelationship () 
         {
             Facts.Clear();
-            Person p = new Person("p");
+            Thing p = new Thing("p");
             Thing c = new Thing("c");
             Thing c2 = new Thing("c2");
             Facts.Assert(p, "EmploymentRelationship", c2, "Employee");
@@ -73,7 +73,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void UnknownExistenceDueToUnknownFact ()  
         {
             Facts.Clear();
-            Person p = new Person("p");
+            Thing p = new Thing("p");
             Thing c = new Thing("c");
             Thing c2 = new Thing("c2");
             Facts.Assert(p, "EmploymentRelationship", c2, "Employee");
@@ -83,7 +83,7 @@ namespace Hammurabi.UnitTests.CoreFcns
 
         private static Tbool SomeoneWorksAt(Thing c)
         {
-            return Facts.AllKnownPeople().ExistsPerson( _ => Econ.IsEmployedBy(_,c));
+            return Facts.AllKnownPeople().Exists( _ => Econ.IsEmployedBy(_,c));
         }
         
         // When the earlier date is put after the prior date, should DayDiff return a negative number?
