@@ -169,12 +169,7 @@ namespace Hammurabi
             {
                 if (this.TimeLine.Values[0].IsUnstated) { return new Thing(""); }
 
-                if (TimeLine.Count != 1) { return new Thing(""); }
-
                 List<Thing> list = (List<Thing>)this.TimeLine.Values[0].Obj;
-
-                if (list == null || list[0] == null) { return new Thing(""); }
-
                 return (Thing)list[0];
             }
         }

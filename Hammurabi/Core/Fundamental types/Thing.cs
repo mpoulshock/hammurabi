@@ -23,11 +23,7 @@ using System;
 namespace Hammurabi
 { 
     /// <summary>
-    /// Represents legal entities, i.e. things that are recognized by the law
-    /// as having rights and/or obligations.
-    /// This class and its inherited classes form something of an ontology of
-    /// legal concepts that are passed as arguments in the law-related methods
-    /// of the project.
+    /// Represents legal entities, i.e. things that are recognized by the law.
     /// </summary>
     public class Thing
     {    
@@ -37,23 +33,20 @@ namespace Hammurabi
         /// </summary>
         public string Id;
 
+        /// <summary>
+        /// Named (stated) Things.
+        /// </summary>
         public Thing(string name)
         {
             Id = name;
         }
 
+        /// <summary>
+        /// Unstated Things.
+        /// </summary>
         public Thing(Hstate h)
         {
             Id = "";
-        }
-
-        /// <summary>
-        /// The set of legal entities that compose the (parent) entity.
-        /// </summary>
-        public Tset Constituents
-        {
-            get;
-            set;
         }
     }
 }

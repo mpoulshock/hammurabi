@@ -51,46 +51,43 @@ namespace Hammurabi
         /// </summary>
         public static Tset AllKnownPeople()
         {
-            Tset result = new Tset();
-            List<Thing> thePeople = new List<Thing>();
-            
-            foreach (Fact f in FactBase)
-            {
-                if (f.subject.GetType() == new Thing("").GetType())
-                    if (!thePeople.Contains(f.subject))
-                        thePeople.Add(f.subject);
-
-                if(f.directObject1 != null && f.directObject1.GetType() == new Thing("").GetType())
-                    if (!thePeople.Contains(f.directObject1))
-                        thePeople.Add(f.directObject1);
-            }
-            
-            result.AddState(Time.DawnOf,new Hval(thePeople));
-            return result;
+            // TODO: Filter for people
+            return AllKnownThings();
         }
             
         /// <summary>
         /// Queries the fact base to get all known items of property and returns
         /// the result in an eternal Tset.
         /// </summary>
-        /// TODO: Refactor with AllKnownPeople
         public static Tset AllKnownProperty()
         {
+            // TODO: Filter for property
+            return AllKnownThings();
+        }
+
+        /// <summary>
+        /// Creates a Tset of all Things in the asserted facts.
+        /// </summary>
+        public static Tset AllKnownThings()
+        {
             Tset result = new Tset();
-            List<Thing> theProp = new List<Thing>();
+            List<Thing> theThings = new List<Thing>();
             
             foreach (Fact f in FactBase)
             {
-                if (f.subject.GetType() == new Thing("").GetType())
-                    if (!theProp.Contains(f.subject))
-                        theProp.Add(f.subject);
+                if (!theThings.Contains(f.subject))
+                    theThings.Add(f.subject);
 
-                if(f.directObject1 != null && f.directObject1.GetType() == new Thing("").GetType())
-                    if (!theProp.Contains(f.directObject1))
-                        theProp.Add(f.directObject1);
+                if(f.directObject1 != null)
+                    if (!theThings.Contains(f.directObject1))
+                        theThings.Add(f.directObject1);
+
+                if(f.directObject2 != null)
+                    if (!theThings.Contains(f.directObject1))
+                        theThings.Add(f.directObject2);
             }
             
-            result.AddState(Time.DawnOf,new Hval(theProp));
+            result.AddState(Time.DawnOf,new Hval(theThings));
             return result;
         }
     }

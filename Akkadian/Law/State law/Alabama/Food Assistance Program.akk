@@ -91,7 +91,8 @@ Tbool MeetsFinancialReqs(Thing household) =
 	# if household.Constituents.Exists(IsElderlyOrDisabled(_)) then HouseholdMonthlyGrossIncome(household) <= GrossIncomeLimit(size) 
 	
 	Tnum size =
-		household.Constituents.Count
+		Stub()
+		# household.Constituents.Count
 
 # Net income limit
 Tnum NetIncomeLimit(Tnum size) =
@@ -159,7 +160,7 @@ Tnum MonthlyGrossIncome(Thing p) =
 	
 # Deductions
 Tnum Deductions(Thing household) = 
-	StandardDeduction(household.Constituents.Count) +
+	# StandardDeduction(household.Constituents.Count) +
 	earnedIncomeDeduction +
 	selfEmploymentDeduction +
 	medicalDeduction +
