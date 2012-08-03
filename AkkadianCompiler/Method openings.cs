@@ -28,7 +28,7 @@ namespace Akkadian
         public static string wrd = @"[a-zA-Z0-9_]+";
 
         // Pieces of code that determine whether a method's input entities are unknown
-        public static string entArg1 = "Hstate h = EntityArgIsUnknown2(";
+        public static string entArg1 = "Hstate h = EntityArgIsUnknown(";
         public static string entArg2 = ");\r\n            if (h != Hstate.Known) return new ";
         public static string entArg3 = "(h);\r\n\r\n";
 

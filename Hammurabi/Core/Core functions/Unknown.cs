@@ -26,27 +26,14 @@ namespace Hammurabi
     public partial class H
     {
         /// <summary>
-        /// Determines whether any of the input objects are unstated legal entities.
+        /// Determines whether any of the input objects are unknown Things.
         /// </summary>
         /// <remarks>
         /// Has to handle objects because some arguments might be things
-        /// other than LegalEntities.  We only care aboue whether the
-        /// LegalEntities are unknown.
+        /// other than Things.  We only care aboue whether the Things are 
+        /// unknown.
         /// </remarks>
-        public static bool EntityArgIsUnknown(params object[] list)
-        {
-            foreach (object e in list)
-            {
-                if (e.GetType() == new Thing("").GetType())
-                {
-                    if (((Thing)e).Id == "") return true;
-                }
-            }
-
-            return false;
-        }
-
-        public static Hstate EntityArgIsUnknown2(params object[] list)
+        public static Hstate EntityArgIsUnknown(params object[] list)
         {
             bool hasUnstated = false;
             bool hasUncertain = false;
