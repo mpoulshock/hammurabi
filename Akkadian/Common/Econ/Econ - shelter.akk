@@ -4,6 +4,8 @@
 # Author:       Michael Poulshock
 
 
+# TODO: Clarify whether this applies to households or individuals.
+
 # Monthly rent
 TnumIn MonthlyRent(Thing household) 
 

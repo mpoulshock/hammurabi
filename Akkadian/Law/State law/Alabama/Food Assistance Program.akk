@@ -3,19 +3,19 @@
 # Source:       http://dhr.alabama.gov/services/Food_Assistance/Documents/Summarized_Eligiblity_2012.pdf
 # See also:     http://www.law.cornell.edu/cfr/text/7/273
 # Remarks:      These rules are based on the summarized, not full, requirements.
-# Updated:      2012-07-26
+# Updated:      2012-08-02
 # Author:       Michael Poulshock
 
 
 # Person's household qualifies for Alabama SNAP
-Tbool HouseholdQualifiesSNAP(Thing p) =
-	Stub()
-	##
-	HouseholdQualifies(mems)
+Tbool HouseholdQualifiesSNAP(Thing person) =
+	HouseholdQualifies(person, qualifyingMembers)
 	
-	Thing mems = 
-		new Thing(AllPeople.Filter(IsMemberOfHouseholdOf(_, p)))
-	##
+	Tset qualifyingMembers = 
+		hhMembers.Filter(IsMemberOfHouseholdOf(_, person))
+
+	Tset hhMembers =
+		Econ.HouseholdMembersOf(person)
 	
 # Members of a person's SNAP household
 Tbool IsMemberOfHouseholdOf(Thing p1, Thing p2) =
@@ -26,8 +26,8 @@ Tbool IsMemberOfHouseholdOf(Thing p1, Thing p2) =
 		Age(p1) < 22
 	
 # Household qualifies
-Tbool HouseholdQualifies(Thing household) =
-	MeetsFinancialReqs(household) &
+Tbool HouseholdQualifies(Thing person, Tset household) =
+	MeetsFinancialReqs(person, household) &
 	Stub()
 	
 # Person meets technical requirements
@@ -58,7 +58,7 @@ Tbool MeetsWorkReqs(Thing p, Tset householdMembers) =
 		Econ.PhysicallyUnfitForEmployment(p) |
 		Econ.MentallyUnfitForEmployment(p) |
 		Fam.IsPregnant(p) |
-		# householdMembers.Exists(CaresForAsDependent(p,_)) |  
+		householdMembers.Exists(CaresForAsDependent(p,_)) |  
 		TboolIn ComplyingWithJOBSOrUCB(p) |
 		Fam.CaresForIncapacitatedPerson(p) |
 		Edu.IsStudent(p) |
@@ -85,14 +85,12 @@ Tbool CaresForAsDependent(Thing care, Thing dep) =
 		IsDisabled(dep)
 
 # Household meets the monthly financial requirements
-Tbool MeetsFinancialReqs(Thing household) =
-	NetIncome(household) <= NetIncomeLimit(size) 
-	# &
-	# if household.Constituents.Exists(IsElderlyOrDisabled(_)) then HouseholdMonthlyGrossIncome(household) <= GrossIncomeLimit(size) 
+Tbool MeetsFinancialReqs(Thing p, Tset household) =
+	NetIncome(p, household) <= NetIncomeLimit(size) &
+	if household.Exists(IsElderlyOrDisabled(_)) then HouseholdMonthlyGrossIncome(household) <= GrossIncomeLimit(size) 
 	
 	Tnum size =
-		Stub()
-		# household.Constituents.Count
+		household.Count
 
 # Net income limit
 Tnum NetIncomeLimit(Tnum size) =
@@ -136,15 +134,13 @@ Tnum GrossLimit2012(Tnum size) =
 	8 -> 4077
 	else 4077 + ((size-8) * 414)
 	
-	
 # Net income
-Tnum NetIncome(Thing household) =
-	HouseholdMonthlyGrossIncome(household) - Deductions(household)
+Tnum NetIncome(Thing person, Tset household) =
+	HouseholdMonthlyGrossIncome(household) - Deductions(person, household)
 	
 # Sum of individuals' gross income
-Tnum HouseholdMonthlyGrossIncome(Thing household) =
-	Stub()
-	# household.Constituents.Sum(MonthlyGrossIncome(_))
+Tnum HouseholdMonthlyGrossIncome(Tset household) =
+	household.Sum(MonthlyGrossIncome(_))
 	# Sum(household.Constituents, MonthlyGrossIncome(_))
 
 # Individual gross income
@@ -159,8 +155,8 @@ Tnum MonthlyGrossIncome(Thing p) =
 	Econ.MonthlyUnemploymentCompensation(p)
 	
 # Deductions
-Tnum Deductions(Thing household) = 
-	# StandardDeduction(household.Constituents.Count) +
+Tnum Deductions(Thing p, Tset household) = 
+	StandardDeduction(household.Count) +
 	earnedIncomeDeduction +
 	selfEmploymentDeduction +
 	medicalDeduction +
@@ -172,8 +168,7 @@ Tnum Deductions(Thing household) =
 		HouseholdMonthlyGrossIncome(household) * 0.20
 	
 	Tnum selfEmploymentDeduction =
-		Stub()
-	    # household.Constituents.Sum(Econ.MonthlySelfEmploymentIncome(_)) * 0.40
+		household.Sum(Econ.MonthlySelfEmploymentIncome(_)) * 0.40
 		# Sum(household.Constituents, Econ.MonthlySelfEmploymentIncome(_)) * 0.40
 		
 	Tnum medicalDeduction =
@@ -186,12 +181,12 @@ Tnum Deductions(Thing household) =
 		Stub()
 		
 	Tnum shelterCosts=
-		Econ.MonthlyRent(household) +
-		Econ.MonthlyMortgageCosts(household) +
-		Econ.MonthlyPropertyTaxes(household) +
-		Econ.MonthlyHomeOwnersInsurancePremium(household) +
-		Econ.MonthlyRentersInsurancePremium(household) +
-		Econ.MonthlyUtilities(household)
+		Econ.MonthlyRent(p) +
+		Econ.MonthlyMortgageCosts(p) +
+		Econ.MonthlyPropertyTaxes(p) +
+		Econ.MonthlyHomeOwnersInsurancePremium(p) +
+		Econ.MonthlyRentersInsurancePremium(p) +
+		Econ.MonthlyUtilities(p)
 	
 # Standard deduction
 # Note: no temporal constraints stated
@@ -208,36 +203,37 @@ Tbool IsElderlyOrDisabled(Thing p) =
 	IsDisabled(p)
 
 # Resource test
-Tbool MeetsResourceTest(Thing household) =
+Tbool MeetsResourceTest(Tset household) =
 	Stub()
 
 	
 # APPLICATION PROCESSING	
 
 # Processing time (in calendar days)
-Tnum AppProcessTime(Thing household) =
+Tnum AppProcessTime(Thing person) =
 	set:
-	if ExpeditedAppRequired(household) -> 7
+	if ExpeditedAppRequired(person) -> 7
 	else 30
 
 # Expedited application
-Tbool ExpeditedAppRequired(Thing hh) =
-	Stub()
-	##
+Tbool ExpeditedAppRequired(Thing p) =
 	...
 		HouseholdMonthlyGrossIncome(hh) < 150 &
-		Econ.LiquidAssets(hh) < 100
+		Econ.LiquidAssets(p) < 100
 	|
-	rentMortUtil > HouseholdMonthlyGrossIncome(hh) + Econ.LiquidAssets(hh) |
+	rentMortUtil > HouseholdMonthlyGrossIncome(hh) + Econ.LiquidAssets(p) |
 	...
-		Econ.LiquidAssets(hh) < 100 &
-		hh.Constituents.Exists(Econ.IsMigrantOrSeasonalFarmworker(_))
-	##
+		Econ.LiquidAssets(p) < 100 &
+		hh.Exists(Econ.IsMigrantOrSeasonalFarmworker(_))
 	
 	Tnum rentMortUtil =
-		Econ.MonthlyRent(hh) +
-		Econ.MonthlyMortgageCosts(hh) +
-		Econ.MonthlyUtilities(hh)
+		Econ.MonthlyRent(p) +
+		Econ.MonthlyMortgageCosts(p) +
+		Econ.MonthlyUtilities(p)
+		
+	Tset hh = 
+		Econ.HouseholdMembersOf(p)
+		
 
 # INELIGIBLE INDIVIDUALS
 
