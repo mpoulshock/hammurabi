@@ -37,11 +37,6 @@ namespace Hammurabi
         {
             foreach (object e in list)
             {
-                // I don't love any of this...actually I detest it.
-                if (e == null)
-                {
-                    return true;
-                }
                 if (e.GetType() == new Thing("").GetType())
                 {
                     if (((Thing)e).Id == "") return true;
@@ -49,6 +44,29 @@ namespace Hammurabi
             }
 
             return false;
+        }
+
+        public static Hstate EntityArgIsUnknown2(params object[] list)
+        {
+            bool hasUnstated = false;
+            bool hasUncertain = false;
+            bool hasStub = false;
+
+            foreach (object e in list)
+            {
+                if (e.GetType() == new Thing("").GetType())
+                {
+                    string id = ((Thing)e).Id;
+                    if (id == "#Unstated#" || id == "") hasUnstated = true;
+                    else if (id == "#Uncertain#") hasUncertain = true;
+                    else if (id == "#Stub#") hasStub = true;
+                }
+            }
+
+            if (hasUnstated) return Hstate.Unstated;
+            else if (hasStub) return Hstate.Stub;
+            else if (hasUncertain) return Hstate.Uncertain;
+            return Hstate.Known;
         }
 
         /// <summary>

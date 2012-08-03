@@ -24,7 +24,13 @@ namespace Akkadian
 {
     public class Meth
     {
+        // Regex for detecting function names
         public static string wrd = @"[a-zA-Z0-9_]+";
+
+        // Pieces of code that determine whether a method's input entities are unknown
+        public static string entArg1 = "Hstate h = EntityArgIsUnknown2(";
+        public static string entArg2 = ");\r\n            if (h != Hstate.Known) return new ";
+        public static string entArg3 = "(h);\r\n\r\n";
 
         public static string QueryTvarTransform(string line)
         {
@@ -89,7 +95,7 @@ namespace Akkadian
                     @"TboolInSym (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@"), ?(?<argtyp2>"+wrd+@" )(?<arg2>"+wrd+@")\) =",
                      "        public static Tbool ${fcn}(${argtyp1} ${arg1}, ${argtyp2} ${arg2})\r\n" +
                      "        {\r\n" +
-                     "            if (EntityArgIsUnknown(${arg1},${arg2})) return new Tbool(Hstate.Unstated);\r\n" +
+                     "            " + entArg1 + "${arg1},${arg2}" + entArg2 + "Tbool" + entArg3 +
                      "            if (Facts.HasBeenAssertedSym(${arg1}, \"${fcn}\", ${arg2}))\r\n" +
                      "            {\r\n" +
                      "                return Facts.Sym(${arg1}, \"${fcn}\", ${arg2});\r\n" +
@@ -102,7 +108,7 @@ namespace Akkadian
                     @"(?<typ>(Tbool|Tnum|Tstr|Tdate|Tset|Thing))In (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@"), ?(?<argtyp2>"+wrd+@" )(?<arg2>"+wrd+@"), ?(?<argtyp3>"+wrd+@" )(?<arg3>"+wrd+@")\) =",
                      "        public static ${typ} ${fcn}(${argtyp1} ${arg1}, ${argtyp2} ${arg2}, ${argtyp3} ${arg3})\r\n" +
                      "        {\r\n" +
-                     "            if (EntityArgIsUnknown(${arg1},${arg2},${arg3})) return new ${typ}(Hstate.Unstated);\r\n" +
+                     "            " + entArg1 + "${arg1},${arg2},${arg3}" + entArg2 + "${typ}" + entArg3 +
                      "            if (Facts.HasBeenAsserted(\"${fcn}\", ${arg1}, ${arg2}, ${arg3}))\r\n" +
                      "            {\r\n" +
                      "                return Facts.QueryTvar<${typ}>(\"${fcn}\", ${arg1}, ${arg2}, ${arg3});\r\n" +
@@ -113,18 +119,18 @@ namespace Akkadian
                     @"(?<typ>(Tbool|Tnum|Tstr|Tdate|Tset|Thing))In (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@"), ?(?<argtyp2>"+wrd+@" )(?<arg2>"+wrd+@")\) =",
                      "        public static ${typ} ${fcn}(${argtyp1} ${arg1}, ${argtyp2} ${arg2})\r\n" +
                      "        {\r\n" +
-                     "            if (EntityArgIsUnknown(${arg1},${arg2})) return new ${typ}(Hstate.Unstated);\r\n" +
+                     "            " + entArg1 + "${arg1},${arg2}" + entArg2 + "${typ}" + entArg3 +
                      "            if (Facts.HasBeenAsserted(\"${fcn}\", ${arg1}, ${arg2}))\r\n" +
                      "            {\r\n" +
                      "                return Facts.QueryTvar<${typ}>(\"${fcn}\", ${arg1}, ${arg2});\r\n" +
                      "            }\r\n\r\n");
 
-                // One argument
+                // One argument - FAIL
                 line = Regex.Replace(line, 
                     @"(?<typ>(Tbool|Tnum|Tstr|Tdate|Tset|Thing))In (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@")\) =",
                      "        public static ${typ} ${fcn}(${argtyp1} ${arg1})\r\n" +
                      "        {\r\n" +
-                     "            if (EntityArgIsUnknown(${arg1})) return new ${typ}(Hstate.Unstated);\r\n" +
+                     "            " + entArg1 + "${arg1}" + entArg2 + "${typ}" + entArg3 +
                      "            if (Facts.HasBeenAsserted(\"${fcn}\", ${arg1}))\r\n" +
                      "            {\r\n" +
                      "                return Facts.QueryTvar<${typ}>(\"${fcn}\", ${arg1});\r\n" +
@@ -135,7 +141,7 @@ namespace Akkadian
         }
 
         /// <summary>
-        /// Handles intermediate facts (facts asserted mid-tree)
+        /// Handles ordinary rules
         /// </summary>
         public static string CreateMainRule(string line)
         {
@@ -144,21 +150,21 @@ namespace Akkadian
                 @"(?<typ>(Tbool|Tnum|Tstr|Tdate|Tset|Thing)) (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@"), ?(?<argtyp2>"+wrd+@" )(?<arg2>"+wrd+@"), ?(?<argtyp3>"+wrd+@" )(?<arg3>"+wrd+@")\) =",
                  "        public static ${typ} ${fcn}(${argtyp1} ${arg1}, ${argtyp2} ${arg2}, ${argtyp3} ${arg3})\r\n" +
                  "        {\r\n" +
-                 "            if (EntityArgIsUnknown(${arg1},${arg2},${arg3})) return new ${typ}(Hstate.Unstated);\r\n\r\n");
+                 "            " + entArg1 + "${arg1},${arg2},${arg3}" + entArg2 + "${typ}" + entArg3);
 
             // Two arguments
             line = Regex.Replace(line, 
                 @"(?<typ>(Tbool|Tnum|Tstr|Tdate|Tset|Thing)) (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@"), ?(?<argtyp2>"+wrd+@" )(?<arg2>"+wrd+@")\) =",
                  "        public static ${typ} ${fcn}(${argtyp1} ${arg1}, ${argtyp2} ${arg2})\r\n" +
                  "        {\r\n" +
-                 "            if (EntityArgIsUnknown(${arg1},${arg2})) return new ${typ}(Hstate.Unstated);\r\n\r\n");
+                 "            " + entArg1 + "${arg1},${arg2}" + entArg2 + "${typ}" + entArg3);
 
             // One argument
             line = Regex.Replace(line, 
                 @"(?<typ>(Tbool|Tnum|Tstr|Tdate|Tset|Thing)) (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@")\) =",
                  "        public static ${typ} ${fcn}(${argtyp1} ${arg1})\r\n" +
                  "        {\r\n" +
-                 "            if (EntityArgIsUnknown(${arg1})) return new ${typ}(Hstate.Unstated);\r\n\r\n");
+                 "            " + entArg1 + "${arg1}" + entArg2 + "${typ}" + entArg3);
 
             // Otherwise, no need to check the arguments for uncertainty...
             string word = @"[-!\+\*/A-Za-z0-9\.;\(\),""'_<>=&| ]+";

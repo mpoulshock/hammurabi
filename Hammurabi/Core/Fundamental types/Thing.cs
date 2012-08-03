@@ -46,7 +46,10 @@ namespace Hammurabi
         /// </summary>
         public Thing(Hstate h)
         {
-            Id = "";
+            if (h == Hstate.Unstated)  Id = "#Unstated#";
+            else if (h == Hstate.Uncertain) Id = "#Uncertain#";
+            else if (h == Hstate.Stub)      Id = "#Stub#";
+            else Id = "";
         }
     }
 }
