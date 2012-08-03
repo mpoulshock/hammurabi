@@ -40,13 +40,11 @@ Tnum RealPropEquity(Thing p) =
 TnumIn EquityIn(Thing p, Thing r)
 
 # All real property of a given person
-Tset RealPropertyOf(Thing p) =
-	Stub()
+TsetIn RealPropertyOf(Thing p)
 	# PropertyOf(p).Filter(IsRealProperty(_))
 
 # All property of a given person
-Tset PropertyOf(Thing p) =
-	Stub()
+TsetIn PropertyOf(Thing p)
 	# AllProperty.Filter(Owns(p,_))
 	
 # Property ownership

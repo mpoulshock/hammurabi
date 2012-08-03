@@ -4,24 +4,24 @@
 # Author:       Michael Poulshock
 
 
-# TODO: Clarify whether this applies to households or individuals.
+# These facts can apply to households or individuals.
 
 # Monthly rent
-TnumIn MonthlyRent(Thing household) 
+TnumIn MonthlyRent(Thing p) 
 
 # Monthly mortgage costs
-TnumIn MonthlyMortgageCosts(Thing household)
+TnumIn MonthlyMortgageCosts(Thing p)
 	
 # Monthly rent
-TnumIn MonthlyPropertyTaxes(Thing household)
+TnumIn MonthlyPropertyTaxes(Thing p)
 	
 # Monthly homeowners insurance premium
-TnumIn MonthlyHomeOwnersInsurancePremium(Thing household) 
+TnumIn MonthlyHomeOwnersInsurancePremium(Thing p) 
 	
 # Monthly renters insurance premium
-TnumIn MonthlyRentersInsurancePremium(Thing household)
+TnumIn MonthlyRentersInsurancePremium(Thing p)
 	
 # Monthly utility costs
-TnumIn MonthlyUtilities(Thing household) 
+TnumIn MonthlyUtilities(Thing p) 
 	
 	
