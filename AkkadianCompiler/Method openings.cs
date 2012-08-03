@@ -28,17 +28,10 @@ namespace Akkadian
 
         public static string QueryTvarTransform(string line)
         {
-            string typs = @"(Tbool|Tnum|Tstr|Tset|Tdate|Date|Person|Thing)";
-
-            // People (rule condition)
-            if (line.Trim().StartsWith("PersonIn"))
-            {
-                // Currently only handles one argument...
-                line = Regex.Replace(line, @"PersonIn (?<fcn>"+wrd+@")\((?<arg>"+wrd+@")\)", "Facts.QueryPerson(\"${fcn}\", ${arg})", RegexOptions.IgnoreCase);  
-            }
+            string typs = @"(Tbool|Tnum|Tstr|Tset|Tdate|Date|Thing)";
 
             // Rule conclusion line 
-            else if (Util.IsInputRule(line))  // Starts w/ TvarIn at indent 0...
+            if (Util.IsInputRule(line))  // Starts w/ TvarIn at indent 0...
             {
                 // TboolInSym (always has two arguments)
                 line = Regex.Replace(line, 
@@ -89,7 +82,7 @@ namespace Akkadian
         /// </summary>
         public static string CreateIntermediateAssertion(string line)
         {
-            // Symmetrical facts, e.g. TboolInSym Fcn(Person p1, Person p2) =
+            // Symmetrical facts, e.g. TboolInSym Fcn(Thing p1, Thing p2) =
             if (line.StartsWith("TboolInSym"))
             {
                 line = Regex.Replace(line, 
@@ -106,7 +99,7 @@ namespace Akkadian
             {
                 // Three arguments
                 line = Regex.Replace(line, 
-                    @"(?<typ>(Tbool|Tnum|Tstr|Tdate|Tset|Person|Thing))In (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@"), ?(?<argtyp2>"+wrd+@" )(?<arg2>"+wrd+@"), ?(?<argtyp3>"+wrd+@" )(?<arg3>"+wrd+@")\) =",
+                    @"(?<typ>(Tbool|Tnum|Tstr|Tdate|Tset|Thing))In (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@"), ?(?<argtyp2>"+wrd+@" )(?<arg2>"+wrd+@"), ?(?<argtyp3>"+wrd+@" )(?<arg3>"+wrd+@")\) =",
                      "        public static ${typ} ${fcn}(${argtyp1} ${arg1}, ${argtyp2} ${arg2}, ${argtyp3} ${arg3})\r\n" +
                      "        {\r\n" +
                      "            if (EntityArgIsUnknown(${arg1},${arg2},${arg3})) return new ${typ}(Hstate.Unstated);\r\n" +
@@ -117,7 +110,7 @@ namespace Akkadian
 
                 // Two arguments
                 line = Regex.Replace(line, 
-                    @"(?<typ>(Tbool|Tnum|Tstr|Tdate|Tset|Person|Thing))In (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@"), ?(?<argtyp2>"+wrd+@" )(?<arg2>"+wrd+@")\) =",
+                    @"(?<typ>(Tbool|Tnum|Tstr|Tdate|Tset|Thing))In (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@"), ?(?<argtyp2>"+wrd+@" )(?<arg2>"+wrd+@")\) =",
                      "        public static ${typ} ${fcn}(${argtyp1} ${arg1}, ${argtyp2} ${arg2})\r\n" +
                      "        {\r\n" +
                      "            if (EntityArgIsUnknown(${arg1},${arg2})) return new ${typ}(Hstate.Unstated);\r\n" +
@@ -128,7 +121,7 @@ namespace Akkadian
 
                 // One argument
                 line = Regex.Replace(line, 
-                    @"(?<typ>(Tbool|Tnum|Tstr|Tdate|Tset|Person|Thing))In (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@")\) =",
+                    @"(?<typ>(Tbool|Tnum|Tstr|Tdate|Tset|Thing))In (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@")\) =",
                      "        public static ${typ} ${fcn}(${argtyp1} ${arg1})\r\n" +
                      "        {\r\n" +
                      "            if (EntityArgIsUnknown(${arg1})) return new ${typ}(Hstate.Unstated);\r\n" +
@@ -169,7 +162,7 @@ namespace Akkadian
 
             // Otherwise, no need to check the arguments for uncertainty...
             string word = @"[-!\+\*/A-Za-z0-9\.;\(\),""'_<>=&| ]+";
-            line = Regex.Replace(line, @"(?<dec>(Tbool|Tnum|Tstr|Tdate|Tset|Person|Thing|Entity|DateTime|bool)"+word+") =",
+            line = Regex.Replace(line, @"(?<dec>(Tbool|Tnum|Tstr|Tdate|Tset|Thing|DateTime|bool)"+word+") =",
                                       "        public static ${dec}\r\n        {\r\n");  
 
             return line;

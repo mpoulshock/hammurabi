@@ -43,8 +43,9 @@ namespace Hammurabi.UnitTests.CoreFcns
             Facts.Assert(P1, "IsParentOf", P3);
             Facts.Assert(P1, "IsParentOf", P4);
 //            Facts.Assert(P1, "IsParentOf", P1, false);  // Test fails when this is toggled out!!!
-            
-            Tset result = Facts.AllKnownPeople().Filter( _ => IsParentOf(P1,_));
+
+            Tset people = new Tset(P1,P3,P4);
+            Tset result = people.Filter( _ => IsParentOf(P1,_));
             
             Assert.AreEqual("Time.DawnOf P3, P4 ", 
                             result.TestOutput);
@@ -77,13 +78,13 @@ namespace Hammurabi.UnitTests.CoreFcns
             Thing c = new Thing("c");
             Thing c2 = new Thing("c2");
             Facts.Assert(p, "EmploymentRelationship", c2, "Employee");
-            Tbool result = SomeoneWorksAt(c);  // returns Unknown b/c it's unknown whether IsEmployedBy(p,c)
+            Tbool result = SomeoneWorksAt(c, new Tset(p));  // returns Unknown b/c it's unknown whether IsEmployedBy(p,c)
             Assert.AreEqual("Time.DawnOf False ", result.TestOutput);        
         }
 
-        private static Tbool SomeoneWorksAt(Thing c)
+        private static Tbool SomeoneWorksAt(Thing c, Tset theSet)
         {
-            return Facts.AllKnownPeople().Exists( _ => Econ.IsEmployedBy(_,c));
+            return theSet.Exists( _ => Econ.IsEmployedBy(_,c));
         }
         
         // When the earlier date is put after the prior date, should DayDiff return a negative number?

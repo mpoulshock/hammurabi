@@ -54,16 +54,6 @@ namespace Hammurabi
             // TODO: Filter for people
             return AllKnownThings();
         }
-            
-        /// <summary>
-        /// Queries the fact base to get all known items of property and returns
-        /// the result in an eternal Tset.
-        /// </summary>
-        public static Tset AllKnownProperty()
-        {
-            // TODO: Filter for property
-            return AllKnownThings();
-        }
 
         /// <summary>
         /// Creates a Tset of all Things in the asserted facts.

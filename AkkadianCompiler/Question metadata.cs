@@ -57,7 +57,7 @@ namespace Akkadian
             if (line.Contains("In"))
             {
                 // Identify lines that contain question metadata
-                string[] ruleTypes = new string[7]{"TboolIn","TboolInSym","TnumIn","TdateIn","TstrIn","TsetIn","PersonIn"};
+                string[] ruleTypes = new string[6]{"TboolIn","TboolInSym","TnumIn","TdateIn","TstrIn","TsetIn"};
                 string inputType = Util.StartsWithAny(line.Trim(), ruleTypes);
 
                 // If the line has metadata, parse it
@@ -88,7 +88,6 @@ namespace Akkadian
             else if (tvarType == "TnumIn") return "numvar";
             else if (tvarType == "TdateIn") return "date";
             else if (tvarType == "TsetIn") return "set";
-            else if (tvarType == "PersonIn") return "person";
             else return "string";
         }
 
@@ -99,7 +98,7 @@ namespace Akkadian
         {
             // Use a regex to identify the function name
             Match match = Regex.Match(line, 
-                           @"(TboolIn|TboolInSym|TnumIn|TdateIn|TstrIn|TsetIn|PersonIn) ([a-zA-Z0-9]+)");
+                           @"(TboolIn|TboolInSym|TnumIn|TdateIn|TstrIn|TsetIn) ([a-zA-Z0-9]+)");
             if (match.Success)
             {
                 return match.Groups[2].Value.Trim();

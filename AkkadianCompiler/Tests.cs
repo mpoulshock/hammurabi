@@ -79,11 +79,11 @@ namespace Akkadian
                                        "        {\r\n" +
                                        "            Facts.Clear();\r\n");
                    
-            // Entity declarations
-            else if (Util.StartsWithAny(line,"Person ","Property ","Corp ","LegalEntity ","Thing ") != "")
-                unitTests += Regex.Replace(line, @"(?<ent>(Person|Property|Corp|LegalEntity|Thing)) (?<id>[a-zA-Z0-9_]+)", 
+            // Entity declarations          
+            else if (line.StartsWith("Thing "))
+                unitTests += Regex.Replace(line, @"(?<ent>(Thing)) (?<id>[a-zA-Z0-9_]+)", 
                                        "            ${ent} ${id} = new ${ent}(\"${id}\");\r\n");
-                        
+
             // Test assertion (and method close)
             else if (line.Contains(" =?= "))
                 unitTests += Regex.Replace(line, @"(?<actual>"+word+") =\\?= (?<expected>"+word+")", 

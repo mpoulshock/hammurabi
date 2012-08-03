@@ -86,6 +86,13 @@ Test: Tset4
 - Thing p
 - Sandbox.TestTsetCount(p).Out =?= "Unstated"
 
+Test: Tset5  # fail b/c doesn't output Tset data
+- Thing p
+- Thing jim
+- Thing joan
+- TestTset(p) = [[jim, joan]]
+- Sandbox.TestTset(p).Out =?= "jim, joan"
+
 
 # METHODS WITH THREE PARAMETERS
 

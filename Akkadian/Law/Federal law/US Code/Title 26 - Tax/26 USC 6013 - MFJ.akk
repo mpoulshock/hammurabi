@@ -17,9 +17,13 @@ Tbool AreMFJ(Thing p1, Thing p2) =
 # Person is married filing jointly
 Tbool IsMFJ(Thing p) =
 	Sec2.FilingStatus(p) == "Married filing jointly" |~		# Person indicated MFJ
-	AllPeopleExcept(p).Exists(AreMFJ(p,_))					# Spouse indicated MFJ
-
-		
+	Fam.SpousesOf(p).Exists(AreMFJ(p,_))					    # Spouse indicated MFJ
+	
+	##
+	Thing spouse =
+		Fam.SpouseOf(p)
+	##
+	
 # JOINT RETURN TO CLAIM A REFUND
 
 # Filing a joint return merely to claim a refund.
@@ -27,7 +31,7 @@ TboolInSym FileMFJOnlyToClaimRefund(Thing p1, Thing p2)
 
 # Person is filing a joint return
 TboolIn FilesMFJOnlyToClaimRefund(Thing p) =
-	AllPeopleExcept(p).Exists(FileMFJOnlyToClaimRefund(p,_))
+	Fam.SpousesOf(p).Exists(FileMFJOnlyToClaimRefund(p,_))
 
 		
 # UNIT TESTS

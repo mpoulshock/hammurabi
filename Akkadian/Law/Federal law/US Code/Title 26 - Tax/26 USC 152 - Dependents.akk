@@ -69,13 +69,9 @@ Tbool IsQualifyingRelativeOf(Thing d, Thing tp) =
         ...
             Sec61.GrossIncome(d) == 0 |                         # shortcut
             Sec61.GrossIncome(d) < Sec151.ExemptionAmount(d)	# per TY
-        # & 
-		# AllPeople.Exists(IsQualifyingChildOf(d,_))
-		# !AllPeople.Exists(IsQualifyingChildOf(d,_))
-        # !Exists(allOtherKnownPeople, (x,y) => IsQualifyingChildOf(d, (Thing)x), d, null)
-
-	Tset allOtherKnownPeople = 
-        Facts.AllKnownPeople() - d - tp
+        & 
+		! IsQualifyingChildOf(d, tp) &
+		TboolIn NotQualifyingChildOfAnyTaxpayer(d)
 		
     # d2 - relationship test
     Tbool relationTest = 
@@ -153,6 +149,7 @@ Test: Pub501_Simple1
 - GrossIncome(c) = 0
 - Sec152.IsDependentOf(c,t).AsOf(2010-12-31).Out =?= "Unstated"
 
+##
 Test: Pub501_Simple2
 - Thing c	
 - Thing t	
@@ -171,7 +168,6 @@ Test: Pub501_Simple2
 - GrossIncome(c) = 0
 - Sec152.IsDependentOf(c,t).AsOf(2010-12-31).Out =?= true
 
-##
 # IRS Pub. 501 (2010), Page 10, Example 1.
 # Cannot be a dependent because fails joint return test.
 Test: Pub501_1

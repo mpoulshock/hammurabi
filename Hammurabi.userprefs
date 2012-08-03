@@ -1,31 +1,28 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Unit tests - Hammurabi core\Unit tests\Test - set - higher order.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Hammurabi\Core\Facts\Inputs - entities.cs">
     <Files>
-      <File FileName="Unit tests - Hammurabi core\Unit tests\Test - set - higher order.cs" Line="488" Column="33" />
-      <File FileName="Hammurabi\Core\Facts\Inputs - entities.cs" Line="67" Column="9" />
+      <File FileName="Unit tests - Hammurabi core\Unit tests\Test - set - higher order.cs" Line="301" Column="40" />
+      <File FileName="Hammurabi\Core\Facts\Inputs - entities.cs" Line="43" Column="34" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
           <Node name="AkkadianCompiler" expanded="True" />
-          <Node name="Hammurabi" expanded="True">
+          <Node name="Hammurabi" expanded="True" selected="True">
             <Node name="Core" expanded="True">
-              <Node name="Core functions" expanded="True" />
-              <Node name="Engine" expanded="True" />
               <Node name="Facts" expanded="True" />
               <Node name="Fundamental types" expanded="True" />
             </Node>
+            <Node name="Generated source" expanded="True" />
           </Node>
           <Node name="Unit tests - Hammurabi core" expanded="True">
-            <Node name="Unit tests" expanded="True">
-              <Node name="Test - set - higher order.cs" selected="True" />
-            </Node>
+            <Node name="Unit tests" expanded="True" />
           </Node>
         </State>
       </Pad>
       <Pad Id="ClassPad">
-        <State selected="True" />
+        <State expanded="True" selected="True" />
       </Pad>
       <Pad Id="MonoDevelop.Debugger.WatchPad">
         <State />
