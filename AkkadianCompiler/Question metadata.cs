@@ -71,6 +71,10 @@ namespace Akkadian
                     {
                         questionText = previousLine.Trim().Replace("# >>","").Trim();
                     }
+                    else
+                    {
+                        questionText = rel;
+                    }
 
                     // Add metadata to the question list
                     Qdata newQ = new Qdata(rel, type, questionText);

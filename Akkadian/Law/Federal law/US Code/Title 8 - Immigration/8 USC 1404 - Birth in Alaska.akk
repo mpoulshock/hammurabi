@@ -33,7 +33,7 @@ Tbool TestC(Thing p) =
 	IsNativeAmerican(p) &
 	BirthState(p) == "Alaska" &
 	DoB(p) >= 1924-06-02 
-	
+
 # Not entirely sure what this is intended to mean...
 # >>Is {1} a 'noncitizen Indian' (as that term is used in 8 U.S.C. 1404)?
 TboolIn IsNoncitizenIndian(Thing p) =
@@ -51,7 +51,4 @@ Test: TemporalFact2
 - Thing p
 - IsNoncitizenIndian(p) = {1920-01-01: true; 1950-01-01: false}
 - USC.Tit8.Sec1404.IsNoncitizenIndian(p).AsOf(1960-01-01).Out =?= false
-
-
-
 

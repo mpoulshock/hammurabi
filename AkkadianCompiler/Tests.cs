@@ -28,7 +28,7 @@ namespace Akkadian
     /// </summary>
     public class Tests
     { 
-        private static string word = @"[-!\+\*/A-Za-z0-9\.;\(\),""'_<>=&|\[\] ]+";
+        private static string word = @"[-!\+\*/A-Za-z0-9\.;:\(\),""'_<>=&|\[\] ]+";
 
         // Opens the testing namespace/class
         public static string unitSpaceOpen =
@@ -79,10 +79,14 @@ namespace Akkadian
                                        "        {\r\n" +
                                        "            Facts.Clear();\r\n");
                    
-            // Entity declarations          
+            // Thing declarations (one)         
             else if (line.StartsWith("Thing "))
-                unitTests += Regex.Replace(line, @"(?<ent>(Thing)) (?<id>[a-zA-Z0-9_]+)", 
-                                       "            ${ent} ${id} = new ${ent}(\"${id}\");\r\n");
+                unitTests += Regex.Replace(line, @"Thing (?<id>[a-zA-Z0-9_]+)", 
+                                       "            Thing ${id} = new Thing(\"${id}\");\r\n");
+
+            // Thing declarations (multiple)         
+            else if (line.StartsWith("Things "))
+                unitTests += DeclareThings(line);
 
             // Test assertion (and method close)
             else if (line.Contains(" =?= "))
@@ -94,7 +98,7 @@ namespace Akkadian
             else
                 unitTests += ConvertFact(line) + "\r\n";
         }
-        
+
         /// <summary>
         /// Converts an .akk fact expression into C#
         /// </summary>
@@ -179,6 +183,22 @@ namespace Akkadian
             return Util.Depth(line) == 0 &&
                    (line.StartsWith("Test: ") ||
                     line.StartsWith("- "));
+        }
+
+        /// <summary>
+        /// Parse a line declaring multiple Things in .akk, and declare them in C#.
+        /// </summary>
+        public static string DeclareThings(string line)
+        {
+            string result = "";
+            line = line.Replace("Things ","");
+            string[] things = line.Split(',');
+            foreach (string s in things)
+            {
+                string t = s.Trim();
+                result += "            Thing " + t + " = new Thing(\"" + t + "\");\r\n";
+            }
+            return result;
         }
     }
 }

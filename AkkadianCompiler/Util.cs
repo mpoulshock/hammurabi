@@ -23,12 +23,18 @@ using System.Text.RegularExpressions;
 
 namespace Akkadian
 {
+    /// <summary>
+    /// A class of utility functions for the Akkadian-C# compiler.
+    /// </summary>
     public class Util
     {
         private static string[] RuleTypes = new string[8]{"Tbool","Tnum","Tdate","Tstr","Tset","DateTime","bool","Thing"};
         public static string EndRule = "        }\r\n\r\n";
         public static string wrd = @"[a-zA-Z0-9_]+";
      
+        /// <summary>
+        /// Creates closing parentheses for a nested Boolean expression.
+        /// </summary>
         public static string ClosingParens(int closingParensNeeded, int lastLineDepth)
         {
             string result = "";
@@ -43,6 +49,9 @@ namespace Akkadian
             return result;
         }
 
+        /// <summary>
+        /// Creates a string of N blank spaces.
+        /// </summary>
         public static string NSpaces(int count)
         {
             string result = "";
@@ -51,6 +60,9 @@ namespace Akkadian
             return result;
         }
      
+        /// <summary>
+        /// Determines line depth, based on the number of blank spaces.
+        /// </summary>
         public static int Depth(string line)
         {
             if (IsBlank(line)) return 0;
@@ -64,59 +76,59 @@ namespace Akkadian
             else return 0;
         }
      
+        /// <summary>
+        /// Determines whether a line is a blank line.
+        /// </summary>
         public static bool IsBlank(string line)
         {
-            line = line.Trim();
-            if (line == "" || line == null)
-                return true;
-            return false;
+            return line.Trim() == "";
         }
      
+        /// <summary>
+        /// Determines whether a line is a comment line.
+        /// </summary>
         public static bool IsComment(string line)
         {
-            line = line.TrimStart();
-            if (line.StartsWith("#"))
-                return true;
-            return false;
+            return line.TrimStart().StartsWith("#");
         }
      
+        /// <summary>
+        /// Determines whether a line is a line opening or closing a comment block.
+        /// </summary>
         public static bool IsCommentBlockLine(string line)
         {
-            line = line.TrimStart();
-            if (line.StartsWith("##"))
-                return true;
-            return false;
+            return line.TrimStart().StartsWith("##");
         }
      
+        /// <summary>
+        /// Determines whether a line indicates the start of a rule.
+        /// </summary>
         public static bool IsMainRule(string line)
         {
-            if (Depth(line) == 0 && IsDeclaration(line))
-                return true;
-            return false;
+            return Depth(line) == 0 && IsDeclaration(line);
         }
      
+        /// <summary>
+        /// Determines whether a line declares a rule or subrule.
+        /// </summary>
         public static bool IsDeclaration(string line)
         {
-            line = line.TrimStart();
-            string swa = StartsWithAny(line, RuleTypes);
-         
-            if (swa != "")
-                return true;
-            return false;
+            return StartsWithAny(line.TrimStart(), RuleTypes) != "";
         }
   
+        /// <summary>
+        /// Determines whether a line requires the rule to first look for the
+        /// fact in the factbase.
+        /// </summary>
         public static bool IsInputRule(string line)
         {
             return Depth(line) == 0 &&
                    StartsWithAny(line, "TboolIn","TnumIn","TstrIn","TsetIn","TdateIn","DateIn") != "";
         }
 
-        public static bool IsNewRule(string line)
-        {
-            return (IsInputRule(line) && line.TrimEnd().EndsWith("=")) ||
-                   IsMainRule(line);
-        }
-
+        /// <summary>
+        /// Determines the type of rule.
+        /// </summary>
         public static string ExtractRuleType(string line)
         {
             // remove whitespace
@@ -126,6 +138,9 @@ namespace Akkadian
             return StartsWithAny(line, RuleTypes);
         }
      
+        /// <summary>
+        /// Determines whether a string starts with any of a set of substrings.
+        /// </summary>
         public static string StartsWithAny(string s, params string[] list)
         {
             foreach(string sub in list)
@@ -136,28 +151,38 @@ namespace Akkadian
             return "";
         }
         
-        // Strip comment tag, declarations, whitespace, and a substring
+        /// <summary>
+        /// Strips comment tags, declarations, whitespace, and a given substring.
+        /// </summary>
         public static string Clean(string s, string sub)
         {
             s = s.TrimStart('#',' ');
-            s = s.Replace(sub, "");
-            return s.Trim();
+            return s.Replace(sub, "").Trim();
         }
 
+        /// <summary>
+        /// Remove the comments from a line.
+        /// </summary>
         public static string DeComment(string line)
         {
             if (line.Contains("#"))
             {
-                return line.Substring(0,line.IndexOf("#")-1);
+                return line.Substring(0,line.IndexOf("#") - 1);
             }
             return line;
         }
      
+        /// <summary>
+        /// Converts a yyyy-mm-dd date to Date(yyyy,mm,dd).
+        /// </summary>
         public static string ConvertDate(string line)
         {
             return Regex.Replace(line, @"(?<year>[0-9]{4})-(?<mo>[0-9]{2})-(?<day>[0-9]{2})", "Date(${year},${mo},${day})", RegexOptions.IgnoreCase);           
         }
-        
+
+        /// <summary>
+        /// Puts the subrules in the order required by C#.
+        /// </summary>
         public static string ReorderSubrules(List<string> subrules)
         {
             subrules.Reverse();
@@ -178,9 +203,14 @@ namespace Akkadian
             return result;
         }
      
-        // ' match a, b '
-        // ' Alabama,   9 ' 
-        // -> 'a == "Alabama" && b == 9'
+        /// <summary>
+        /// Converts the part of a "match" rule to C# boolean expressions.
+        /// </summary>
+        /// <example>
+        ///   ' match a, b '
+        //    ' Alabama,   9 ' 
+        //     -> 'a == "Alabama" && b == 9'
+        /// </example>
         public static string RuleTableMatch(string template, string line)
         {
             string result = "    ()=> ";
@@ -211,6 +241,9 @@ namespace Akkadian
             return result;
         }
      
+        /// <summary>
+        /// Converts the ending of a clause in a rule table to valid C#.
+        /// </summary>
         private static string RuleTableClauseEnd(string val)
         {
             // If comparison...
