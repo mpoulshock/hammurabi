@@ -35,7 +35,7 @@ namespace Interactive
         public static string goal = "USC.Tit8.Sec1404.IsUSCitizenPerAlaska(p).TestOutput";
 
         // Thing(s) referenced by the goal
-        public static string things = "- Thing p \r\n";
+        public static string things = "- Thing p";
 
         // File to write generated test case to
         public static string akkFile = @"\Law\Federal law\US Code\Title 8 - Immigration\8 USC 1404 - Birth in Alaska.akk";
@@ -57,7 +57,7 @@ namespace Interactive
             testStr += "Test: " + RandomNumber() + "\r\n";
 
             // Line declaring the Things used
-            testStr += things;
+            testStr += things + "\r\n";
         }
 
         /// <summary>

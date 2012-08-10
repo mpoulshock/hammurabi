@@ -1,0 +1,32 @@
+This is a bare-bones prototype of an interactive interview module for Hammurabi. 
+It's meant to show how an interactive layer could be built on top of the 
+Hammurabi Project knowledge base, in the hope that someone will come along and 
+expand it into something robust, usable, and beautiful.
+
+To grow this project into something worthwhile, here are some required features:
+
+* Rich front-end that would allow users to input answers through standard controls
+* Different controls for different kinds of questions (Tdates, Tbools, Tsets, etc.)
+* Way to group questions on a page
+* Way to put text messages on a page (and display them conditionally)
+* Screen to allow users to view and change prior answers
+* Mechanism for validating a user's answers
+* Way to display coherent result messages at the end of the interview
+* Additional types of inputs:
+  * Single instances of legal entities (a special case of sets?)
+  * Temporal versions of Booleans, dates, strings, etc.
+* Allow user to say "don't know" (or "Uncertain" in Hammurabi)
+* Ability to save/restore interview session
+* Some sort of progress bar
+* Database of metadata about Hammurabi relationships (see "Question templates.cs")
+
+Nice-to-haves / advanced issues:
+
+* Interview flow editor to override the "backwards chaining" mechanism when desired
+* Way to hide/display questions conditionally
+* Beware of the "back" button: Is it intended to retract facts? Or not?
+* Orphaned facts problem: When a fact is retracted, all other facts that assume it 
+  should also be retracted.  (E.g. if user retracts the fact that they're a female,
+  the system should also retract the fact that they are pregnant.)
+
+Note that Hammurabi Interactive is also used as a way to test the Akkadian rules.
