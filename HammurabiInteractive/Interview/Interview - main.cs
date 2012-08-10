@@ -71,19 +71,19 @@ namespace Interactive
 
 				// Ask the current question, or display the results
 				if (!response.InvestigationComplete)
-	            {
-					// Ask the next question
-					DisplayQuestion(response); 
+                {
+                    // Ask the next question
+                    DisplayQuestion(response); 
 
-					// Get and validate the answer
-					GetAndParseAnswer(response);
-	            } 
-	            else
-	            {
-	                DisplayResults(goals);
-					break;
-	            }
-			}
+                    // Get and validate the answer
+                    GetAndParseAnswer(response);
+                } 
+                else
+                {
+                    DisplayResults(goals);
+                    break;
+                }
+            }
 
 			// Display all facts that have been asserted (for diagnostic purposes)
 			// Console.WriteLine("\nFacts: \n" + Facts.AssertedFacts());
@@ -168,35 +168,35 @@ namespace Interactive
         
             return qText;
         }
-		
-		/// <summary>
-		/// Displays the engine's results of the interview session.
-		/// </summary>
-		private static void DisplayResults(List<Func<Tvar>> goals)
-		{
-			Console.WriteLine("\nResults: \n");
-			Console.WriteLine(ResultsText(goals));
-		}
+
+        /// <summary>
+        /// Displays the engine's results of the interview session.
+        /// </summary>
+        private static void DisplayResults(List<Func<Tvar>> goals)
+        {
+            Console.WriteLine("\nResults: \n");
+            Console.WriteLine(ResultsText(goals));
+        }
 
 		/// <summary>
         /// Displays the results of each goal.
         /// </summary>
         private static string ResultsText(List<Func<Tvar>> goals)
         {
-			string result = "";
+            string result = "";
 
-			// TODO: Does not correctly display Tset.TestOutput
+            // TODO: Does not correctly display Tset.TestOutput
             foreach (Func<Tvar> g in goals)
             {
-				result += g.Invoke().TestOutput + "\n";
+                result += g.Invoke().TestOutput + "\n";
             }
-            
-			// Add result to test case
-			Tvar testResult = goals[0].Invoke();
-			AkkTest.CloseUnitTest(testResult);
 
-			return result;
-		}
+            // Add result to test case
+            Tvar testResult = goals[0].Invoke();
+            AkkTest.CloseUnitTest(testResult);
+
+            return result;
+        }
 
 		/// <summary>
 		/// Converts free-text DOS answers into valid booleans, if applicable.
