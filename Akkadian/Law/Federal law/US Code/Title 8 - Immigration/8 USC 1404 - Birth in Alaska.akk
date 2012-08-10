@@ -52,3 +52,6 @@ Test: TemporalFact2
 - IsNoncitizenIndian(p) = {1920-01-01: true; 1950-01-01: false}
 - USC.Tit8.Sec1404.IsNoncitizenIndian(p).AsOf(1960-01-01).Out =?= false
 
+
+
+

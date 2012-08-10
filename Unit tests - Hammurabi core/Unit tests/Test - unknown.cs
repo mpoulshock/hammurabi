@@ -387,14 +387,14 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void Unknown_EntInst1 ()
         {
             Thing p = new Thing("");
-            Assert.AreEqual(true, EntityArgIsUnknown(p));    
+            Assert.AreEqual(Hstate.Unstated, EntityArgIsUnknown(p));    
         }
 
         [Test]
         public void Unknown_EntInst2 ()
         {
             Thing p = new Thing("Jane");
-            Assert.AreEqual(false, EntityArgIsUnknown(p));    
+            Assert.AreEqual(Hstate.Known, EntityArgIsUnknown(p));    
         }
 
         [Test]
@@ -402,7 +402,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         {
             Thing p1 = new Thing("");
             Thing p2 = new Thing("Jane");
-            Assert.AreEqual(true, EntityArgIsUnknown(p1,p2));    
+            Assert.AreEqual(Hstate.Unstated, EntityArgIsUnknown(p1,p2));    
         }
 
         [Test]
@@ -410,7 +410,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         {
             Thing p1 = new Thing("Jim");
             Thing p2 = new Thing("Jane");
-            Assert.AreEqual(false, EntityArgIsUnknown(p1,p2));    
+            Assert.AreEqual(Hstate.Known, EntityArgIsUnknown(p1,p2));    
         }
 
         [Test]
@@ -418,21 +418,21 @@ namespace Hammurabi.UnitTests.CoreFcns
         {
             Thing p1 = new Thing("");
             Thing p2 = new Thing("");
-            Assert.AreEqual(true, EntityArgIsUnknown(p1,p2));    
+            Assert.AreEqual(Hstate.Unstated, EntityArgIsUnknown(p1,p2));    
         }
 
         [Test]
         public void Unknown_EntInst6 ()
         {
             Thing p = new Thing("Jane");
-            Assert.AreEqual(false, EntityArgIsUnknown(p,"someString"));    
+            Assert.AreEqual(Hstate.Known, EntityArgIsUnknown(p,"someString"));    
         }
 
         [Test]
         public void Unknown_EntInst7 ()
         {
             Thing p = new Thing("Jane");
-            Assert.AreEqual(false, EntityArgIsUnknown(p,new Tstr("")));    
+            Assert.AreEqual(Hstate.Known, EntityArgIsUnknown(p,new Tstr("")));    
         }
     }
 }
