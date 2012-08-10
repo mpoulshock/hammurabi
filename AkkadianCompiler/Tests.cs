@@ -28,7 +28,7 @@ namespace Akkadian
     /// </summary>
     public class Tests
     { 
-        private static string word = @"[-!\+\*/A-Za-z0-9\.;:\(\),""'_<>=&|\[\] ]+";
+        private static string word = @"[-!\+\*/A-Za-z0-9\.;:\(\),""'_<>=&|\[\]\? ]+";
 
         // Opens the testing namespace/class
         public static string unitSpaceOpen =
@@ -95,8 +95,7 @@ namespace Akkadian
                                        "        }\r\n\r\n");
             
             // Factual assertions
-            else
-                unitTests += ConvertFact(line) + "\r\n";
+            else unitTests += ConvertFact(line) + "\r\n";
         }
 
         /// <summary>

@@ -49,16 +49,15 @@ namespace Interactive
             Facts.Clear();
             AssertPreliminaryFacts();    
 
-            // Initialize the .akk unit test
+            // Initialize the .akk unit test text string
             AkkTest.testStr = "";
             AkkTest.InitializeUnitTest();
 
             // Load the goals to be investigated (onto the goals list)
             List<Func<Tvar>> goals = new List<Func<Tvar>>();
 
-//            goals.Add(()=> USC.Tit8.Sec1403.IsUSCitizenPerCanalZone(e));
             goals.Add(()=> USC.Tit8.Sec1404.IsUSCitizenPerAlaska(p));
-
+//            goals.Add(()=> USC.Tit8.Sec1403.IsUSCitizenPerCanalZone(e));
 //            goals.Add(()=> Hammurabi.Sandbox.IsCitizen(e));
 //            goals.Add(()=> Facts.QueryTvar<Tbool>("IsAlive", e));
 //            goals.Add(()=> Facts.QueryTvar<Tdate>("DateOfBirth", e));

@@ -33,10 +33,13 @@ namespace Interactive
 		/// </summary>
 		public static bool AnswerIsValid(Question question, string input)
 		{
-			string qType = question.questionType;
+            // Allow "unstated"
+            if (input.Trim() == "?") return true;
 
+            // Otherwise, see if the input is consistent with the question type
+			string qType = question.questionType;
 			if (qType == "bool") return BoolIsValid(input);
-			else if (qType == "numvar" || qType == "dollars") return NumberIsValid(question, input);
+			else if (qType == "numvar") return NumberIsValid(question, input);
 			else if (qType == "date") return DateIsValid(question, input);
 			return true;
 		}

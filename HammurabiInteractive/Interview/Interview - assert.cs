@@ -44,44 +44,54 @@ namespace Interactive
             // Assert the fact (converted to the proper type of Tvar)
             if (qType == "bool")
             {
-                Tbool result = new Tbool(Convert.ToBoolean(val));
-                if (obj == null) { Facts.Assert(subj, rel, result); }
-                else { Facts.Assert(subj, rel, (Thing)obj, result); }
+                // Assert the fact (handling uncertainty)
+                if (val == "?") Facts.Assert(subj, rel, obj, new Tbool(Hstate.Uncertain));
+                else Facts.Assert(subj, rel, obj, new Tbool(Convert.ToBoolean(val)));
+
+                // Create the Akkadian unit test string
                 AkkTest.testStr += val + "\r\n";
             }
             else if (qType == "string")
             {
-                Tstr result = new Tstr(Convert.ToString(val));
-                if (obj == null) { Facts.Assert(subj, rel, result); }
-                else { Facts.Assert(subj, rel, (Thing)obj, result); }
+                if (val == "?") Facts.Assert(subj, rel, obj, new Tstr(Hstate.Uncertain));
+                else Facts.Assert(subj, rel, obj, new Tstr(Convert.ToString(val)));
+
                 AkkTest.testStr += "\"" + val + "\"\r\n";
             }
-            else if (qType == "numvar" || qType == "dollars")
+            else if (qType == "numvar")
             {
-                Tnum result = new Tnum(Convert.ToDouble(val));
-                if (obj == null) { Facts.Assert(subj, rel, result); }
-                else { Facts.Assert(subj, rel, (Thing)obj, result); }
+                if (val == "?") Facts.Assert(subj, rel, obj, new Tnum(Hstate.Uncertain));
+                else Facts.Assert(subj, rel, obj, new Tnum(Convert.ToDouble(val)));
+
                 AkkTest.testStr += val + "\r\n";
             }
             else if (qType == "date")
             {
-                Tdate result = new Tdate(DateTime.Parse(val));
-                if (obj == null) { Facts.Assert(subj, rel, result); }
-                else { Facts.Assert(subj, rel, (Thing)obj, result); }
+                if (val == "?") Facts.Assert(subj, rel, obj, new Tdate(Hstate.Uncertain));
+                else Facts.Assert(subj, rel, obj, new Tdate(DateTime.Parse(val)));
+
                 AkkTest.testStr += val + "\r\n";
             }
             else if (qType == "set")
             {
-                string[] items = val.Split(new char[] {';'});
-                List<Thing> list = new List<Thing>();
-
-                foreach (string i in items)
+                if (val == "?") 
                 {
-                    list.Add(new Thing(i.Trim()));
+                    Facts.Assert(subj, rel, obj, new Tset(Hstate.Uncertain));
+                }
+                else
+                {
+                    string[] items = val.Split(new char[] {';'});
+                    List<Thing> list = new List<Thing>();
+
+                    foreach (string i in items)
+                    {
+                        list.Add(new Thing(i.Trim()));
+                    }
+
+                    Tset result = new Tset(list);
+                    Facts.Assert(subj, rel, obj, result);
                 }
 
-                Tset result = new Tset(list);
-                Facts.Assert(subj, rel, obj, result);
                 AkkTest.testStr += "[[" + val + "]]\r\n";
             }
         }
