@@ -24,66 +24,66 @@ using Hammurabi;
 
 namespace Interactive
 {
-	/// <summary>
-	/// Generates a DOS-based, utterly primitive interview designed
-	/// to illustrate how Hammurabi can simulate backwards chaining.
-	/// </summary>
-	public static partial class Interview 
-	{	
-		/// <summary>
+    /// <summary>
+    /// Generates a DOS-based, utterly primitive interview designed
+    /// to illustrate how Hammurabi can simulate backwards chaining.
+    /// </summary>
+    public static partial class Interview 
+    {    
+        /// <summary>
         /// Asserts a fact.
         /// </summary>
         public static void AssertAnswer(Engine.Response response, string val)
         {
-			// Get the data pertaining to the current question
-			Thing subj = response.NextFact.subject;
-			Thing obj = response.NextFact.object1;
-			string rel = response.NextFact.relationship;
-			string qType = Templates.GetQ(rel).questionType;
+            // Get the data pertaining to the current question
+            Thing subj = response.NextFact.subject;
+            Thing obj = response.NextFact.object1;
+            string rel = response.NextFact.relationship;
+            string qType = Templates.GetQ(rel).questionType;
 
-			// Assert the fact (converted to the proper type of Tvar)
+            // Assert the fact (converted to the proper type of Tvar)
             if (qType == "bool")
             {
-				Tbool result = new Tbool(Convert.ToBoolean(val));
+                Tbool result = new Tbool(Convert.ToBoolean(val));
                 if (obj == null) { Facts.Assert(subj, rel, result); }
                 else { Facts.Assert(subj, rel, (Thing)obj, result); }
-				AkkTest.testStr += val + "\r\n";
+                AkkTest.testStr += val + "\r\n";
             }
             else if (qType == "string")
             {
-				Tstr result = new Tstr(Convert.ToString(val));
+                Tstr result = new Tstr(Convert.ToString(val));
                 if (obj == null) { Facts.Assert(subj, rel, result); }
                 else { Facts.Assert(subj, rel, (Thing)obj, result); }
-				AkkTest.testStr += "\"" + val + "\"\r\n";
+                AkkTest.testStr += "\"" + val + "\"\r\n";
             }
             else if (qType == "numvar" || qType == "dollars")
             {
-				Tnum result = new Tnum(Convert.ToDouble(val));
+                Tnum result = new Tnum(Convert.ToDouble(val));
                 if (obj == null) { Facts.Assert(subj, rel, result); }
                 else { Facts.Assert(subj, rel, (Thing)obj, result); }
-				AkkTest.testStr += val + "\r\n";
+                AkkTest.testStr += val + "\r\n";
             }
             else if (qType == "date")
             {
-				Tdate result = new Tdate(DateTime.Parse(val));
+                Tdate result = new Tdate(DateTime.Parse(val));
                 if (obj == null) { Facts.Assert(subj, rel, result); }
                 else { Facts.Assert(subj, rel, (Thing)obj, result); }
-				AkkTest.testStr += val + "\r\n";
+                AkkTest.testStr += val + "\r\n";
             }
-			else if (qType == "set")
-			{
-				string[] items = val.Split(new char[] {';'});
-				List<Thing> list = new List<Thing>();
+            else if (qType == "set")
+            {
+                string[] items = val.Split(new char[] {';'});
+                List<Thing> list = new List<Thing>();
 
-				foreach (string i in items)
-				{
-					list.Add(new Thing(i.Trim()));
-				}
+                foreach (string i in items)
+                {
+                    list.Add(new Thing(i.Trim()));
+                }
 
-				Tset result = new Tset(list);
-				Facts.Assert(subj, rel, obj, result);
-				AkkTest.testStr += "[[" + val + "]]\r\n";
-			}
+                Tset result = new Tset(list);
+                Facts.Assert(subj, rel, obj, result);
+                AkkTest.testStr += "[[" + val + "]]\r\n";
+            }
         }
-	}
+    }
 }
