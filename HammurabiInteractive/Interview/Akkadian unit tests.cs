@@ -22,78 +22,78 @@ using System;
 using System.IO;
 using System.Net;
 using Hammurabi;
-	
+    
 namespace Interactive
 {
-	/// <summary>
-	/// Converts an interview session to an Akkadian test case that is
-	/// then written into the proper .akk file.
-	/// </summary>
-	public static class AkkTest 
-	{
-		// Goal being tested
-		public static string goal = "USC.Tit8.Sec1404.IsUSCitizenPerAlaska(p).TestOutput";
+    /// <summary>
+    /// Converts an interview session to an Akkadian test case that is
+    /// then written into the proper .akk file.
+    /// </summary>
+    public static class AkkTest 
+    {
+        // Goal being tested
+        public static string goal = "USC.Tit8.Sec1404.IsUSCitizenPerAlaska(p).TestOutput";
 
-		// Thing(s) referenced by the goal
-		public static string things = "- Thing p \r\n";
+        // Thing(s) referenced by the goal
+        public static string things = "- Thing p \r\n";
 
-		// File to write generated test case to
+        // File to write generated test case to
         public static string akkFile = @"\Law\Federal law\US Code\Title 8 - Immigration\8 USC 1404 - Birth in Alaska.akk";
         public static string filePath = Environment.CurrentDirectory.Replace(@"HammurabiInteractive\bin\Debug","") + @"Akkadian\" + akkFile;
-	
+    
         // Build up a string representing an .akk test case
         public static string testStr = "";
 
-		// Identifier for each test case
-		public static Random random = new Random();
+        // Identifier for each test case
+        public static Random random = new Random();
 
 
-		/// <summary>
+        /// <summary>
         /// Starts the .akk unit test text.
         /// </summary>
         public static void InitializeUnitTest()
         {
             // First line of test case (declaration)
-			testStr += "Test: " + RandomNumber() + "\r\n";
+            testStr += "Test: " + RandomNumber() + "\r\n";
 
-			// Line declaring the Things used
-			testStr += things;
-		}
+            // Line declaring the Things used
+            testStr += things;
+        }
 
-		/// <summary>
+        /// <summary>
         /// Adds the assertion relationship to the .akk unit test text.
         /// </summary>
         public static void AddUnitTestAssertRel(Facts.Factlet theF, Question theQ)
         {
-			testStr += "- " + theQ.relationship + "(" + theF.subject.Id;
+            testStr += "- " + theQ.relationship + "(" + theF.subject.Id;
 
             if (theF.object1 == null)
             {
-				// e.g. Rel(p) =
-				testStr += ") = ";
+                // e.g. Rel(p) =
+                testStr += ") = ";
             }
-			else
-			{
-				// e.g. Rel(p,q) =
-				testStr += "," + theF.object1.Id + ") = ";
-			}
+            else
+            {
+                // e.g. Rel(p,q) =
+                testStr += "," + theF.object1.Id + ") = ";
+            }
         }
 
-		/// <summary>
+        /// <summary>
         /// Ends the .akk unit test text.
         /// </summary>
         public static void CloseUnitTest(Tvar val)
         {
-			string result = Convert.ToString(val.TestOutput);
-			testStr += "- " + goal + " =?= \"" + result + "\"";
-		}
+            string result = Convert.ToString(val.TestOutput);
+            testStr += "- " + goal + " =?= \"" + result + "\"";
+        }
 
-		/// <summary>
-		/// Writes the .akk test case string to a file.
-		/// </summary>
-		public static void WriteToFile()
-		{
-			string result = "";
+        /// <summary>
+        /// Writes the .akk test case string to a file.
+        /// </summary>
+        public static void WriteToFile()
+        {
+            string result = "";
             string line;
 
             // Read each line of the .akk file, looking for the place to insert the unit test text.
@@ -101,28 +101,28 @@ namespace Interactive
             StreamReader stream = new StreamReader(req.GetResponse().GetResponseStream());
             while( (line = stream.ReadLine()) != null )
             {
-				result += line + "\r\n";
+                result += line + "\r\n";
 
-				if (line.StartsWith("# UNIT TESTS"))
-				{
-					result += "\r\n" + testStr + "\r\n";
-				}
-			}
-			stream.Close();
+                if (line.StartsWith("# UNIT TESTS"))
+                {
+                    result += "\r\n" + testStr + "\r\n";
+                }
+            }
+            stream.Close();
 
-			// Write the updated Akkadian to a file
+            // Write the updated Akkadian to a file
             System.IO.StreamWriter file = new System.IO.StreamWriter(filePath);
             file.WriteLine(result);
-			file.Close();
+            file.Close();
             
-		}
+        }
 
-		/// <summary>
-		/// Generates a random number (to identify each test case).
-		/// </summary>
-		public static int RandomNumber()
-		{
-			return random.Next(100000, 999999999); 
-		}
-	}
+        /// <summary>
+        /// Generates a random number (to identify each test case).
+        /// </summary>
+        public static int RandomNumber()
+        {
+            return random.Next(100000, 999999999); 
+        }
+    }
 }
