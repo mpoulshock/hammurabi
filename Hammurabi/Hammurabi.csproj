@@ -147,7 +147,6 @@
     <Compile Include="Generated source\Econ - transactions.cs" />
     <Compile Include="Generated source\Property - general.cs" />
     <Compile Include="Core\Fundamental types\Thing.cs" />
-    <Compile Include="Generated source\0 - Test1.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

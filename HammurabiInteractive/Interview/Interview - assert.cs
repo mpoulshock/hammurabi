@@ -44,39 +44,64 @@ namespace Interactive
             // Assert the fact (converted to the proper type of Tvar)
             if (qType == "bool")
             {
-                // Assert the fact (handling uncertainty)
-                if (val == "?") Facts.Assert(subj, rel, obj, new Tbool(Hstate.Uncertain));
-                else Facts.Assert(subj, rel, obj, new Tbool(Convert.ToBoolean(val)));
-
-                // Create the Akkadian unit test string
-                AkkTest.testStr += val + "\r\n";
+                // Asserts the fact (handling uncertainty) 
+                // Also, creates part of the .akk unit test string
+                if (val == "?") 
+                {
+                    Facts.Assert(subj, rel, obj, new Tbool(Hstate.Uncertain));
+                    AkkTest.testStr += "Tbool(?)\r\n";
+                }
+                else 
+                {
+                    Facts.Assert(subj, rel, obj, new Tbool(Convert.ToBoolean(val)));
+                    AkkTest.testStr += "\"" + val + "\"\r\n";
+                }
             }
             else if (qType == "string")
             {
-                if (val == "?") Facts.Assert(subj, rel, obj, new Tstr(Hstate.Uncertain));
-                else Facts.Assert(subj, rel, obj, new Tstr(Convert.ToString(val)));
-
-                AkkTest.testStr += "\"" + val + "\"\r\n";
+                if (val == "?") 
+                {
+                    Facts.Assert(subj, rel, obj, new Tstr(Hstate.Uncertain));
+                    AkkTest.testStr += "Tstr(?)\r\n";
+                }
+                else 
+                {
+                    Facts.Assert(subj, rel, obj, new Tstr(Convert.ToString(val)));
+                    AkkTest.testStr += "\"" + val + "\"\r\n";
+                }
             }
             else if (qType == "numvar")
             {
-                if (val == "?") Facts.Assert(subj, rel, obj, new Tnum(Hstate.Uncertain));
-                else Facts.Assert(subj, rel, obj, new Tnum(Convert.ToDouble(val)));
-
-                AkkTest.testStr += val + "\r\n";
+                if (val == "?") 
+                {
+                    Facts.Assert(subj, rel, obj, new Tnum(Hstate.Uncertain));
+                    AkkTest.testStr += "Tnum(?)\r\n";
+                }
+                else 
+                {
+                    Facts.Assert(subj, rel, obj, new Tnum(Convert.ToDouble(val)));
+                    AkkTest.testStr += "\"" + val + "\"\r\n";
+                }
             }
             else if (qType == "date")
             {
-                if (val == "?") Facts.Assert(subj, rel, obj, new Tdate(Hstate.Uncertain));
-                else Facts.Assert(subj, rel, obj, new Tdate(DateTime.Parse(val)));
-
-                AkkTest.testStr += val + "\r\n";
+                if (val == "?") 
+                {
+                    Facts.Assert(subj, rel, obj, new Tdate(Hstate.Uncertain));
+                    AkkTest.testStr += "Tdate(?)\r\n";
+                }
+                else 
+                {
+                    Facts.Assert(subj, rel, obj, new Tdate(DateTime.Parse(val)));
+                    AkkTest.testStr += "\"" + val + "\"\r\n";
+                }
             }
             else if (qType == "set")
             {
                 if (val == "?") 
                 {
                     Facts.Assert(subj, rel, obj, new Tset(Hstate.Uncertain));
+                    AkkTest.testStr += "Tset(?)\r\n";
                 }
                 else
                 {
@@ -90,9 +115,8 @@ namespace Interactive
 
                     Tset result = new Tset(list);
                     Facts.Assert(subj, rel, obj, result);
+                    AkkTest.testStr += "[[" + val + "]]\r\n";
                 }
-
-                AkkTest.testStr += "[[" + val + "]]\r\n";
             }
         }
     }

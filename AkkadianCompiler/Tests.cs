@@ -68,8 +68,13 @@ namespace Akkadian
         /// </summary>
         public static void ProcessTestLine(string line)
         {
+            // Do some initial text conversions
             line = line.TrimStart('-',' ');
-            line = Util.ConvertDate(line); 
+            line = Util.ConvertDate(line);
+
+            // Handle assertions with uncertain values
+            line = Regex.Replace(line, @"(?<typ>(Tbool|Tstr|Tnum|Tdate|Tset))\(\?\)", 
+                                       "new ${typ}(Hstate.Uncertain)");
 
             // Test declaration (and method open)
             if (line.StartsWith("Test: "))
@@ -201,4 +206,3 @@ namespace Akkadian
         }
     }
 }
-

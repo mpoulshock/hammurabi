@@ -42,11 +42,18 @@ TboolIn IsNoncitizenIndian(Thing p) =
 
 # UNIT TESTS
 
+Test: 917373403
+- Thing p
+- BirthState(p) = Tstr(?)
+- DateOfBirth(p) = Tdate(?)
+- IsNativeAmerican(p) = Tbool(?)
+- USC.Tit8.Sec1404.IsUSCitizenPerAlaska(p).TestOutput =?= "Time.DawnOf Uncertain "
+
 Test: 93000163
 - Thing p
 - BirthState(p) = "Alaska"
 - DateOfBirth(p) = 2011-01-01
-# - IsNativeAmerican(p) = ?
+- IsNativeAmerican(p) = Tbool(?)
 - USC.Tit8.Sec1404.IsUSCitizenPerAlaska(p).TestOutput =?= "Time.DawnOf False 1/1/2011 12:00:00 AM Uncertain "
 
 Test: TemporalFact1
@@ -58,6 +65,8 @@ Test: TemporalFact2
 - Thing p
 - IsNoncitizenIndian(p) = {1920-01-01: true; 1950-01-01: false}
 - USC.Tit8.Sec1404.IsNoncitizenIndian(p).AsOf(1960-01-01).Out =?= false
+
+
 
 
 

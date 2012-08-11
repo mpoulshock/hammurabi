@@ -44,7 +44,7 @@ namespace Interactive
         // Build up a string representing an .akk test case
         public static string testStr = "";
 
-        // Identifier for each test case
+        // Generates an identifier for each test case
         public static Random random = new Random();
 
 
