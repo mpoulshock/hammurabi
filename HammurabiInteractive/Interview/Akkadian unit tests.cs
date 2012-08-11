@@ -31,15 +31,8 @@ namespace Interactive
     /// </summary>
     public static class AkkTest 
     {
-        // Goal being tested
-        public static string goal = "Sandbox.AnotherMethod(p)";
-
-        // Thing(s) referenced by the goal
-        public static string things = "- Thing p";
-
         // File to write generated test case to
-        public static string akkFile = @"\Law\Federal law\US Code\Title 8 - Immigration\8 USC 1401a - Birth abroad to servicemember.akk";
-        public static string filePath = Environment.CurrentDirectory.Replace(@"HammurabiInteractive\bin\Debug","") + @"Akkadian\" + akkFile;
+        public static string filePath = Environment.CurrentDirectory.Replace(@"HammurabiInteractive\bin\Debug","") + @"Akkadian\" + Interview.akkFile;
     
         // Build up a string representing an .akk test case
         public static string testStr = "";
@@ -57,7 +50,7 @@ namespace Interactive
             testStr += "Test: " + RandomNumber() + "\r\n";
 
             // Line declaring the Things used
-            testStr += things + "\r\n";
+            testStr += Interview.things + "\r\n";
         }
 
         /// <summary>
@@ -85,7 +78,7 @@ namespace Interactive
         public static void CloseUnitTest(Tvar val)
         {
             string result = Convert.ToString(val.TestOutput);
-            testStr += "- " + goal + ".TestOutput =?= \"" + result + "\"";
+            testStr += "- " + Interview.goal + ".TestOutput =?= \"" + result + "\"";
         }
 
         /// <summary>

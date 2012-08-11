@@ -264,10 +264,10 @@ namespace Akkadian
             // Start new rule / C# method (must come before TvarIn)
             // First, look for rules that require intermediate assertion checks
             if (Util.IsInputRule(line) && line.TrimEnd().EndsWith("="))
-                line = Meth.CreateIntermediateAssertion(line);  
+                line = TransformMethod.CreateIntermediateAssertion(line);  
             // Else, all other rules
             else if (Util.IsMainRule(line))  
-                line = Meth.CreateMainRule(line);
+                line = TransformMethod.CreateMainRule(line);
    
             // Switch(condition, value, ..., default) - must come before "rule tables" (b/c rule tables look for "->"
             line = Regex.Replace(line, @"set:", "Switch<" + currentRuleType + ">(", RegexOptions.IgnoreCase);    
@@ -287,7 +287,7 @@ namespace Akkadian
             line = Util.ConvertDate(line); 
             
             // Facts.QueryTvar<Tvar>()
-            line = Meth.QueryTvarTransform(line);
+            line = TransformMethod.QueryTvarTransform(line);
     
             // IfThen() 
             line = Regex.Replace(line, @"if (?<txt>"+word+@") then (?<txt2>[-!\+\*/A-Za-z0-9\.;\(\),""'_<>= ]+)", "IfThen(${txt}, ${txt2})", RegexOptions.IgnoreCase);  

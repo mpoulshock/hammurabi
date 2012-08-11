@@ -22,7 +22,7 @@ using System.Text.RegularExpressions;
 
 namespace Akkadian
 {
-    public class Meth
+    public class TransformMethod
     {
         // Regex for detecting function names
         public static string wrd = @"[a-zA-Z0-9_]+";
@@ -32,6 +32,9 @@ namespace Akkadian
         public static string entArg2 = ");\r\n            if (h != Hstate.Known) return new ";
         public static string entArg3 = "(h);\r\n\r\n";
 
+        /// <summary>
+        /// Handles fact inputs
+        /// </summary>
         public static string QueryTvarTransform(string line)
         {
             string typs = @"(Tbool|Tnum|Tstr|Tset|Tdate|Date|Thing)";
@@ -44,21 +47,10 @@ namespace Akkadian
                           @"TboolInSym (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@"), ?(?<argtyp2>"+wrd+@" )(?<arg2>"+wrd+@")\)",
                           "        public static Tbool ${fcn}(${argtyp1} ${arg1}, ${argtyp2} ${arg2})\r\n        {\r\n            return Facts.Sym(${arg1}, \"${fcn}\", ${arg2});");  
     
-                // Functions with three arguments
+                // Functions with 1-3 arguments
                 line = Regex.Replace(line, 
-                          @"(?<type>"+typs+@")In (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@"), ?(?<argtyp2>"+wrd+@" )(?<arg2>"+wrd+@"), ?(?<argtyp3>"+wrd+@" )(?<arg3>"+wrd+@")\)",
-                          "        public static ${type} ${fcn}(${argtyp1} ${arg1}, ${argtyp2} ${arg2}, ${argtyp3} ${arg3})\r\n        {\r\n            return Facts.QueryTvar<${type}>(\"${fcn}\", ${arg1}, ${arg2}, ${arg3});");  
-
-
-                // Functions with two arguments
-                line = Regex.Replace(line, 
-                          @"(?<type>"+typs+@")In (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@"), ?(?<argtyp2>"+wrd+@" )(?<arg2>"+wrd+@")\)",
-                          "        public static ${type} ${fcn}(${argtyp1} ${arg1}, ${argtyp2} ${arg2})\r\n        {\r\n            return Facts.QueryTvar<${type}>(\"${fcn}\", ${arg1}, ${arg2});");  
-
-                // Functions with one argument
-                line = Regex.Replace(line, 
-                          @"(?<type>"+typs+@")In (?<fcn>"+wrd+@")\((?<argtyp>"+wrd+@" )(?<arg>"+wrd+@")\)",
-                          "        public static ${type} ${fcn}(${argtyp} ${arg})\r\n        {\r\n            return Facts.QueryTvar<${type}>(\"${fcn}\", ${arg});");  
+                          @"(?<type>"+typs+@")In (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@")(?<comma1>, ?)?(?<argtyp2>"+wrd+@" )?(?<arg2>"+wrd+@")?(?<comma2>, ?)?(?<argtyp3>"+wrd+@" )?(?<arg3>"+wrd+@")?\)",
+                          "        public static ${type} ${fcn}(${argtyp1} ${arg1}${comma1}${argtyp2} ${arg2}${comma2}${argtyp3} ${arg3})\r\n        {\r\n            return Facts.QueryTvar<${type}>(\"${fcn}\", ${arg1}${comma1}${arg2}${comma2}${arg3});");  
             }
 
             // Is rule condition line, not rule conclusion
@@ -68,16 +60,9 @@ namespace Akkadian
                 line = Regex.Replace(line, @"TboolInSym (?<fcn>"+wrd+@")\((?<arg1>[a-zA-Z0-9 ]+),(?<arg2>[a-zA-Z0-9 ]+)\)", 
                                      "Facts.Sym(${arg1}, \"${fcn}\", ${arg2})");  
 
-                // Functions with three arguments
-                line = Regex.Replace(line, @"(?<type>"+typs+@")In (?<fcn>"+wrd+@")\((?<arg1>[a-zA-Z0-9 ]+),(?<arg2>[a-zA-Z0-9 ]+),(?<arg3>[a-zA-Z0-9 ]+)\)", 
-                                     "Facts.QueryTvar<${type}>(\"${fcn}\", ${arg1}, ${arg2}, ${arg3})", RegexOptions.IgnoreCase);  
-
-                // Functions with two arguments
-                line = Regex.Replace(line, @"(?<type>"+typs+@")In (?<fcn>"+wrd+@")\((?<arg1>[a-zA-Z0-9 ]+),(?<arg2>[a-zA-Z0-9 ]+)\)", 
-                                     "Facts.QueryTvar<${type}>(\"${fcn}\", ${arg1}, ${arg2})", RegexOptions.IgnoreCase);  
-
-                // Functions with one argument
-                line = Regex.Replace(line, @"(?<type>"+typs+@")In (?<fcn>"+wrd+@")\((?<arg>"+wrd+@")\)", "Facts.QueryTvar<${type}>(\"${fcn}\", ${arg})", RegexOptions.IgnoreCase);  
+                // Functions with 1-3 arguments
+                line = Regex.Replace(line, @"(?<type>"+typs+@")In (?<fcn>"+wrd+@")\((?<arg1>[a-zA-Z0-9 ]+)(?<comma1>, ?)?(?<arg2>[a-zA-Z0-9 ]+)?(?<comma2>, ?)?(?<arg3>[a-zA-Z0-9 ]+)?\)", 
+                                     "Facts.QueryTvar<${type}>(\"${fcn}\", ${arg1}${comma1}${arg2}${comma2}${arg3})", RegexOptions.IgnoreCase); 
             }
             
             return line;
@@ -88,9 +73,9 @@ namespace Akkadian
         /// </summary>
         public static string CreateIntermediateAssertion(string line)
         {
-            // Symmetrical facts, e.g. TboolInSym Fcn(Thing p1, Thing p2) =
             if (line.StartsWith("TboolInSym"))
             {
+                // Symmetrical facts, e.g. TboolInSym Fcn(Thing p1, Thing p2) =
                 line = Regex.Replace(line, 
                     @"TboolInSym (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@"), ?(?<argtyp2>"+wrd+@" )(?<arg2>"+wrd+@")\) =",
                      "        public static Tbool ${fcn}(${argtyp1} ${arg1}, ${argtyp2} ${arg2})\r\n" +
@@ -103,37 +88,15 @@ namespace Akkadian
             }
             else
             {
-                // Three arguments
+                // Non-symmetrical functions with 1-3 arguments
                 line = Regex.Replace(line, 
-                    @"(?<typ>(Tbool|Tnum|Tstr|Tdate|Tset|Thing))In (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@"), ?(?<argtyp2>"+wrd+@" )(?<arg2>"+wrd+@"), ?(?<argtyp3>"+wrd+@" )(?<arg3>"+wrd+@")\) =",
-                     "        public static ${typ} ${fcn}(${argtyp1} ${arg1}, ${argtyp2} ${arg2}, ${argtyp3} ${arg3})\r\n" +
+                    @"(?<typ>(Tbool|Tnum|Tstr|Tdate|Tset|Thing))In (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@")(?<comma1>, ?)?(?<argtyp2>"+wrd+@" )?(?<arg2>"+wrd+@")?(?<comma2>, ?)?(?<argtyp3>"+wrd+@" )?(?<arg3>"+wrd+@")?\) =",
+                     "        public static ${typ} ${fcn}(${argtyp1} ${arg1}${comma1} ${argtyp2} ${arg2}${comma2} ${argtyp3} ${arg3})\r\n" +
                      "        {\r\n" +
-                     "            " + entArg1 + "${arg1},${arg2},${arg3}" + entArg2 + "${typ}" + entArg3 +
-                     "            if (Facts.HasBeenAsserted(\"${fcn}\", ${arg1}, ${arg2}, ${arg3}))\r\n" +
+                     "            " + entArg1 + "${arg1}${comma1}${arg2}${comma2}${arg3}" + entArg2 + "${typ}" + entArg3 +
+                     "            if (Facts.HasBeenAsserted(\"${fcn}\", ${arg1}${comma1} ${arg2}${comma2} ${arg3}))\r\n" +
                      "            {\r\n" +
-                     "                return Facts.QueryTvar<${typ}>(\"${fcn}\", ${arg1}, ${arg2}, ${arg3});\r\n" +
-                     "            }\r\n\r\n");
-
-                // Two arguments
-                line = Regex.Replace(line, 
-                    @"(?<typ>(Tbool|Tnum|Tstr|Tdate|Tset|Thing))In (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@"), ?(?<argtyp2>"+wrd+@" )(?<arg2>"+wrd+@")\) =",
-                     "        public static ${typ} ${fcn}(${argtyp1} ${arg1}, ${argtyp2} ${arg2})\r\n" +
-                     "        {\r\n" +
-                     "            " + entArg1 + "${arg1},${arg2}" + entArg2 + "${typ}" + entArg3 +
-                     "            if (Facts.HasBeenAsserted(\"${fcn}\", ${arg1}, ${arg2}))\r\n" +
-                     "            {\r\n" +
-                     "                return Facts.QueryTvar<${typ}>(\"${fcn}\", ${arg1}, ${arg2});\r\n" +
-                     "            }\r\n\r\n");
-
-                // One argument - FAIL
-                line = Regex.Replace(line, 
-                    @"(?<typ>(Tbool|Tnum|Tstr|Tdate|Tset|Thing))In (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@")\) =",
-                     "        public static ${typ} ${fcn}(${argtyp1} ${arg1})\r\n" +
-                     "        {\r\n" +
-                     "            " + entArg1 + "${arg1}" + entArg2 + "${typ}" + entArg3 +
-                     "            if (Facts.HasBeenAsserted(\"${fcn}\", ${arg1}))\r\n" +
-                     "            {\r\n" +
-                     "                return Facts.QueryTvar<${typ}>(\"${fcn}\", ${arg1});\r\n" +
+                     "                return Facts.QueryTvar<${typ}>(\"${fcn}\", ${arg1}${comma1} ${arg2}${comma2} ${arg3});\r\n" +
                      "            }\r\n\r\n");
             }
 
@@ -145,26 +108,12 @@ namespace Akkadian
         /// </summary>
         public static string CreateMainRule(string line)
         {
-            // Three arguments
+            // Functions with 1-3 arguments
             line = Regex.Replace(line, 
-                @"(?<typ>(Tbool|Tnum|Tstr|Tdate|Tset|Thing)) (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@"), ?(?<argtyp2>"+wrd+@" )(?<arg2>"+wrd+@"), ?(?<argtyp3>"+wrd+@" )(?<arg3>"+wrd+@")\) =",
-                 "        public static ${typ} ${fcn}(${argtyp1} ${arg1}, ${argtyp2} ${arg2}, ${argtyp3} ${arg3})\r\n" +
+                @"(?<typ>(Tbool|Tnum|Tstr|Tdate|Tset|Thing)) (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@")(?<comma1>, ?)?(?<argtyp2>"+wrd+@" )?(?<arg2>"+wrd+@")?(?<comma2>, ?)?(?<argtyp3>"+wrd+@" )?(?<arg3>"+wrd+@")?\) =",
+                 "        public static ${typ} ${fcn}(${argtyp1} ${arg1}${comma1} ${argtyp2} ${arg2}${comma2} ${argtyp3} ${arg3})\r\n" +
                  "        {\r\n" +
-                 "            " + entArg1 + "${arg1},${arg2},${arg3}" + entArg2 + "${typ}" + entArg3);
-
-            // Two arguments
-            line = Regex.Replace(line, 
-                @"(?<typ>(Tbool|Tnum|Tstr|Tdate|Tset|Thing)) (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@"), ?(?<argtyp2>"+wrd+@" )(?<arg2>"+wrd+@")\) =",
-                 "        public static ${typ} ${fcn}(${argtyp1} ${arg1}, ${argtyp2} ${arg2})\r\n" +
-                 "        {\r\n" +
-                 "            " + entArg1 + "${arg1},${arg2}" + entArg2 + "${typ}" + entArg3);
-
-            // One argument
-            line = Regex.Replace(line, 
-                @"(?<typ>(Tbool|Tnum|Tstr|Tdate|Tset|Thing)) (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@")\) =",
-                 "        public static ${typ} ${fcn}(${argtyp1} ${arg1})\r\n" +
-                 "        {\r\n" +
-                 "            " + entArg1 + "${arg1}" + entArg2 + "${typ}" + entArg3);
+                 "            " + entArg1 + "${arg1}${comma1}${arg2}${comma2}${arg3}" + entArg2 + "${typ}" + entArg3);
 
             // Otherwise, no need to check the arguments for uncertainty...
             string word = @"[-!\+\*/A-Za-z0-9\.;\(\),""'_<>=&| ]+";

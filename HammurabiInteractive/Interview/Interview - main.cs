@@ -34,34 +34,28 @@ namespace Interactive
         // Create some entities that will be the subject of the interview.
         // Later, this will have to be made more dynamic...
         public static Thing p = new Thing("p");
-        public static Thing e = new Thing("the person"); 
-        public static Thing c = new Thing("the employer");
-        public static Thing p1 = new Thing("the seller"); 
-        public static Thing p2 = new Thing("the buyer"); 
-        public static Thing prop = new Thing("the item"); 
 
+        // Thing(s) referenced by the goal (for .akk test case)
+        public static string things = "- Thing p";
+
+        // Goal being tested (for .akk test case)
+        public static string goal = "Sandbox.AnotherMethod(p)";
+
+        // File to write generated test case to (for .akk test case)
+        public static string akkFile = 
+            @"\Law\Federal law\US Code\Title 8 - Immigration\8 USC 1401a - Birth abroad to servicemember.akk";
+        
         /// <summary>
         /// Assesses the state of asserted facts and then decides what to do next.
         /// </summary>
         public static void ProcessRequest() 
         {
-            // Clear fact base and assert any assumed facts
-            Facts.Clear();
-            AssertPreliminaryFacts();    
-
-            // Initialize the .akk unit test text string
-            AkkTest.testStr = "";
-            AkkTest.InitializeUnitTest();
+            InitializeSession();
 
             // Load the goals to be investigated (onto the goals list)
             List<Func<Tvar>> goals = new List<Func<Tvar>>();
-
-//            goals.Add(()=> USC.Tit8.Sec1401a.IsQualifyingServicemember(p));
-//            goals.Add(()=> USC.Tit8.Sec1403.IsUSCitizenPerCanalZone(e));
             goals.Add(()=> Hammurabi.Sandbox.AnotherMethod(p));
-//            goals.Add(()=> Facts.QueryTvar<Tbool>("IsAlive", e));
-//            goals.Add(()=> Facts.QueryTvar<Tdate>("DateOfBirth", e));
-//            goals.Add(()=> USC.Tit29.Sec2612.IsEntitledToLeaveFrom(e,c));
+//            goals.Add(()=> USC.Tit8.Sec1401a.IsQualifyingServicemember(p));
 
             while (true)
             {
@@ -86,6 +80,20 @@ namespace Interactive
 
             // Display all facts that have been asserted (for diagnostic purposes)
             // Console.WriteLine("\nFacts: \n" + Facts.AssertedFacts());
+        }
+
+        /// <summary>
+        /// Sets/resets data structures for new interview session.
+        /// </summary>
+        public static void InitializeSession()
+        {
+            // Clear fact base and assert any assumed facts
+            Facts.Clear();
+            AssertPreliminaryFacts();    
+
+            // Initialize the .akk unit test text string
+            AkkTest.testStr = "";
+            AkkTest.InitializeUnitTest();
         }
 
         /// <summary>
