@@ -54,7 +54,7 @@ namespace Interactive
                 else 
                 {
                     Facts.Assert(subj, rel, obj, new Tbool(Convert.ToBoolean(val)));
-                    AkkTest.testStr += "\"" + val + "\"\r\n";
+                    AkkTest.testStr += val + "\r\n";
                 }
             }
             else if (qType == "string")
@@ -80,7 +80,7 @@ namespace Interactive
                 else 
                 {
                     Facts.Assert(subj, rel, obj, new Tnum(Convert.ToDouble(val)));
-                    AkkTest.testStr += "\"" + val + "\"\r\n";
+                    AkkTest.testStr += val + "\r\n";
                 }
             }
             else if (qType == "date")
@@ -93,7 +93,7 @@ namespace Interactive
                 else 
                 {
                     Facts.Assert(subj, rel, obj, new Tdate(DateTime.Parse(val)));
-                    AkkTest.testStr += "\"" + val + "\"\r\n";
+                    AkkTest.testStr += val + "\r\n";
                 }
             }
             else if (qType == "set")

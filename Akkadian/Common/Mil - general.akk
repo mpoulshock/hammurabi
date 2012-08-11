@@ -27,9 +27,11 @@ TboolIn OnActiveDuty(Thing p) =
 # BRANCH OF ARMED FORCES
 	
 # Person serves in the Armed Forces in any capacity.
-TboolIn InArmedForces(Thing p) =
-	InActiveArmedForces(p) |
-	InReserveArmedForces(p)
+Tbool InArmedForces(Thing p) =
+	TboolIn InArmedForces(p) |~
+	...
+		InActiveArmedForces(p) |
+		InReserveArmedForces(p)
         
 # Person serves (actively) in the Armed Forces.
 Tbool InActiveArmedForces(Thing p) =
@@ -40,7 +42,7 @@ Tbool InActiveArmedForces(Thing p) =
 	branch == "Coast Guard"
 	
 	Tstr branch = 
-		TstrIn BranchOfArmedForces(p)
+		BranchOfArmedForces(p)
             
 # Person serves in reserve component of the Armed Forces (including tNational Guard).
 Tbool InReserveArmedForces(Thing p) =
@@ -53,7 +55,10 @@ Tbool InReserveArmedForces(Thing p) =
 	branch == "Coast Guard Reserve"
 	
 	Tstr branch = 
-		TstrIn BranchOfArmedForces(p)
+		BranchOfArmedForces(p)
+
+# >>What branch of the U.S. Armed Forces did {1} serve in?
+TstrIn BranchOfArmedForces(Thing person)
 
 
 # INJURY

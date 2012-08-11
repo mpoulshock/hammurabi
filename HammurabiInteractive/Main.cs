@@ -46,16 +46,17 @@ namespace Interactive
                 Console.WriteLine("Repeat the interview?");
                 string next = Console.ReadLine().ToLower();
 
+
                 // Save interview as an .akk test
-                if (next == "save") 
+                if (next == "save" || next == "s") 
                 {
                     AkkTest.WriteToFile();
-                    Console.WriteLine("\r\nTest case saved.  Repeat the interview?");
-                    next = Console.ReadLine().ToLower();
+                    Console.WriteLine("Restarting interview...");
                 }
 
                 // Repeat or quit
-                if (next == "y" || next == "yes") {}
+                if (next == "y" || next == "yes" || 
+                    next == "save" || next == "s") {}
                 else break;
             }
         }

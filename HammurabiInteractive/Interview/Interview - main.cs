@@ -56,9 +56,9 @@ namespace Interactive
             // Load the goals to be investigated (onto the goals list)
             List<Func<Tvar>> goals = new List<Func<Tvar>>();
 
-            goals.Add(()=> USC.Tit8.Sec1404.IsUSCitizenPerAlaska(p));
+//            goals.Add(()=> USC.Tit8.Sec1401a.IsQualifyingServicemember(p));
 //            goals.Add(()=> USC.Tit8.Sec1403.IsUSCitizenPerCanalZone(e));
-//            goals.Add(()=> Hammurabi.Sandbox.IsCitizen(e));
+            goals.Add(()=> Hammurabi.Sandbox.AnotherMethod(p));
 //            goals.Add(()=> Facts.QueryTvar<Tbool>("IsAlive", e));
 //            goals.Add(()=> Facts.QueryTvar<Tdate>("DateOfBirth", e));
 //            goals.Add(()=> USC.Tit29.Sec2612.IsEntitledToLeaveFrom(e,c));

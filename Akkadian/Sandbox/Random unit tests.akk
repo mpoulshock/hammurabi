@@ -1,7 +1,45 @@
 # Namespace:    Hammurabi.Sandbox
 # Summary:      A host of random unit tests
-# Updated:      2012-08-03
+# Updated:      2012-08-11
 # Author:       Michael Poulshock
+
+
+# INTERVIEW SEQUENCE WITH |~ OPERATOR
+
+Tbool AnotherMethod(Thing p) =
+	TboolIn TestMethod101(p) |~
+	TboolIn TestMethod102(p)
+
+# Note: These tests validate the logic, not the interview sequence. But
+#       that sequence was tested and is also working properly (2012-08-11).
+
+Test: 171824320
+- Thing p
+- TestMethod101(p) = Tbool(?)
+- TestMethod102(p) = false
+- Sandbox.AnotherMethod(p).TestOutput =?= "Time.DawnOf False "
+
+Test: 580982293
+- Thing p
+- TestMethod101(p) = Tbool(?)
+- TestMethod102(p) = true
+- Sandbox.AnotherMethod(p).TestOutput =?= "Time.DawnOf True "
+
+Test: 288489417
+- Thing p
+- TestMethod101(p) = Tbool(?)
+- TestMethod102(p) = Tbool(?)
+- Sandbox.AnotherMethod(p).TestOutput =?= "Time.DawnOf Uncertain "
+
+Test: 798236451
+- Thing p
+- TestMethod101(p) = false
+- Sandbox.AnotherMethod(p).TestOutput =?= "Time.DawnOf False "
+
+Test: 416036083
+- Thing p
+- TestMethod101(p) = true
+- Sandbox.AnotherMethod(p).TestOutput =?= "Time.DawnOf True "
 
 
 # UNKNOWN THINGS
