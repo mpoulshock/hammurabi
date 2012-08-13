@@ -38,9 +38,9 @@ namespace Interactive
 
             // Otherwise, see if the input is consistent with the question type
 			string qType = question.questionType;
-			if (qType == "bool") return BoolIsValid(input);
-			else if (qType == "numvar") return NumberIsValid(question, input);
-			else if (qType == "date") return DateIsValid(question, input);
+			if (qType == "Tbool") return BoolIsValid(input);
+			else if (qType == "Tnum") return NumberIsValid(question, input);
+			else if (qType == "Tdate") return DateIsValid(question, input);
 			return true;
 		}
 
@@ -68,21 +68,8 @@ namespace Interactive
 				return false;
 			}
 			
-			decimal val = Convert.ToDecimal(answer);
-			decimal min = question.minValue;
-			decimal max = question.maxValue;
-
-			// Is the value more than the maximum acceptable value?
-			if (val > max)
-			{
-				return false;
-			}
-
-			// Is the value less than the minimum acceptable value?
-			else if (val < min)
-			{
-				return false;
-			}
+            // Here you could validate that the number is between some
+            // preset minimum and maximum values...
 			
 			return true;
 		}
@@ -109,29 +96,17 @@ namespace Interactive
 		/// </summary>
 		private static bool DateIsValid(Question question, string input)
 		{
-			DateTime theDate;
-
-			// Is the date a validly-formatted date?
 			try
 			{
-				theDate = DateTime.Parse(input); 
+				DateTime theDate = DateTime.Parse(input); 
 			}
 			catch
 			{
 				return false;
 			}
 
-			// Is the date after the latest acceptable date for this question?
-//			if (theDate > question.latestDate)
-//			{
-//				return false;
-//			}
-//
-//			// Is the date before the earliest acceptable date for this question?
-//			else if (theDate < question.earliestDate)
-//			{
-//				return false;
-//			}	
+            // Here you could validate that the number is between two
+            // preset earliest and latest acceptable dates...
 			
 			return true;
 		}

@@ -33,18 +33,13 @@ namespace Interactive
     {
         // Create some entities that will be the subject of the interview.
         // Later, this will have to be made more dynamic...
-        public static Thing p = new Thing("p");
+        public static Thing t1 = new Thing("t1");
+        public static Thing t2 = new Thing("t2");
 
-        // Thing(s) referenced by the goal (for .akk test case)
-        public static string things = "- Thing p";
+        // SET THE TEST GOAL HERE
+        public static Func<Tvar> testGoalFcn = ()=> USC.Tit29.Sec2612.IsEntitledToLeaveFrom(t1,t2);
+        public static string testGoalRel = "IsEntitledToLeaveFrom";
 
-        // Goal being tested (for .akk test case)
-        public static string goal = "Sandbox.AnotherMethod(p)";
-
-        // File to write generated test case to (for .akk test case)
-        public static string akkFile = 
-            @"\Law\Federal law\US Code\Title 8 - Immigration\8 USC 1401a - Birth abroad to servicemember.akk";
-        
         /// <summary>
         /// Assesses the state of asserted facts and then decides what to do next.
         /// </summary>
@@ -54,7 +49,9 @@ namespace Interactive
 
             // Load the goals to be investigated (onto the goals list)
             List<Func<Tvar>> goals = new List<Func<Tvar>>();
-            goals.Add(()=> Hammurabi.Sandbox.AnotherMethod(p));
+            goals.Add(testGoalFcn);
+
+//            goals.Add(()=> Hammurabi.Sandbox.AnotherMethod(p));
 //            goals.Add(()=> USC.Tit8.Sec1401a.IsQualifyingServicemember(p));
 
             while (true)
@@ -164,7 +161,7 @@ namespace Interactive
         /// </summary>
         public static string QuestionText(Facts.Factlet theF, Question theQ)
         {
-            // Embed the name of the subject into the question
+            // Embed the names of the Things into the question
             string qText = theQ.questionText.Replace("{1}", theF.subject.Id);
 
             // If there is a direct object, embed its name into the question
@@ -172,7 +169,7 @@ namespace Interactive
             {
                 qText = qText.Replace("{2}", theF.object1.Id);
             }
-        
+
             return qText;
         }
 
@@ -212,7 +209,7 @@ namespace Interactive
         {
             string i = input.Trim();
 
-            if (currentQType == "bool")
+            if (currentQType == "Tbool")
             {
                 i = i.ToLower();
                 if (i == "t" || i == "yes" || i == "y") return "true";

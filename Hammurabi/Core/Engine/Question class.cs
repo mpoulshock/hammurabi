@@ -39,18 +39,16 @@ namespace Interactive
     public class Question
     {
         public string relationship;
-        public string questionType;         // bool, string, numvar, dollars, date, calendar
+        public string questionType;
         public string questionText;
-        public List<string> dropDownOptions;
         public string explanation;
-        public DateTime earliestDate;
-        public DateTime latestDate;
-        public decimal minValue;
-        public decimal maxValue;
+        public string filePath;
+        public string fullMethod;
+        public string arg1Type;
+        public string arg2Type;
+        public string arg3Type;
 
-        /// <summary>
-        /// General question constructor.
-        /// </summary>
+
         public Question(string rel, string type, string text, string explan)
         {
             relationship = rel;
@@ -59,42 +57,18 @@ namespace Interactive
             explanation = explan;
         }
 
-        /// <summary>
-        /// Constructor for numeric questions.
-        /// </summary>
-        public Question(string rel, string type, string text, string explan, decimal min, decimal max)
+        public Question(string rel, string type, string text, string explan,
+                        string file, string method, string arg1, string arg2, string arg3)
         {
             relationship = rel;
             questionType = type;
             questionText = text;
             explanation = explan;
-            minValue = min;
-            maxValue = max;
-        }
-
-        /// <summary>
-        /// Constructor for string-based questions with drop down lists.
-        /// </summary>
-        public Question(string rel, string type, string text, string explan, List<string> ddlOptions)
-        {
-            relationship = rel;
-            questionType = type;
-            questionText = text;
-            explanation = explan;
-            dropDownOptions = ddlOptions;
-        }
-
-        /// <summary>
-        /// Constructor for date-based questions.
-        /// </summary>
-        public Question(string rel, string type, string text, string explan, DateTime earliest, DateTime latest)
-        {
-            relationship = rel;
-            questionType = type;
-            questionText = text;
-            explanation = explan;
-            earliestDate = earliest;
-            latestDate = latest;
+            filePath = file;
+            fullMethod = method;
+            arg1Type = arg1;
+            arg2Type = arg2;
+            arg3Type = arg3;
         }
     }
 }

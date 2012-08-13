@@ -26,43 +26,59 @@ namespace Akkadian
 {
     public class Boilerplate
     {
-         public static string InitialBoilerplate(string file)
-         {
-             // Read the file and extract the "namespace" and "using" data
-             WebRequest req = WebRequest.Create(file);
-             StreamReader stream = new StreamReader(req.GetResponse().GetResponseStream());
-             string line = "", space = "", refs = "";
-             while( (line = stream.ReadLine()) != null )
-             {
-                 if (line.Contains("Namespace:")) space = Util.Clean(line, "Namespace:");
-                 else if (line.Contains("References:")) refs = Util.Clean(line, "References:");
-             }
-             stream.Close();
+        /// <summary>
+        /// Assembles the text that goes at the top of the .cs file
+        /// </summary>
+        public static string InitialBoilerplate(string file)
+        {
+            // Read the file and extract the "namespace" and "using" data
+            WebRequest req = WebRequest.Create(file);
+            StreamReader stream = new StreamReader(req.GetResponse().GetResponseStream());
+            string line = "", space = "", refs = "";
+            while( (line = stream.ReadLine()) != null )
+            {
+                if (line.Contains("Namespace:")) 
+                {
+                    space = Util.Clean(line, "Namespace:");
+                    MainClass.docNameSpace = space;
+                }
+                else if (line.Contains("References:")) refs = Util.Clean(line, "References:");
+            }
+            stream.Close();
              
-             // Get namespace to be used in unit tests
-             MainClass.unitTestNameSpace = space.Replace(".","");
+            // Get namespace to be used in unit tests
+            MainClass.unitTestNameSpace = space.Replace(".","");
 
-             // Assemble the result
-             string nspace = GetNamespace(space);
-             return Boilerplate.license +
-                    Boilerplate.Using(refs, nspace) +
-                    "namespace " + nspace + "\r\n{\r\n" +
-                    ClassDecl(GetClass(space));
-         }
-            
-         private static string ClassDecl(string className)
-         {
-              if (className == "H")
-                  return "    public partial class H \r\n" + "    { \r\n";
-              else
-                  return "    public partial class " + className + " : H \r\n" + "    { \r\n";
-         }
+            // Assemble the result
+            string nspace = GetNamespace(space);
+            return Boilerplate.license +
+                   Boilerplate.Using(refs, nspace) +
+                   "namespace " + nspace + "\r\n{\r\n" +
+                   ClassDecl(GetClass(space));
+        }
          
-         private static string license = 
-             "// Copyright (c) " + DateTime.Now.Year.ToString() + " Hammura.bi LLC \r\n\r\n";
+        /// <summary>
+        /// Declares the class in the .cs file.
+        /// </summary>
+        private static string ClassDecl(string className)
+        {
+            if (className == "H")
+                return "    public partial class H \r\n" + "    { \r\n";
+            else
+                return "    public partial class " + className + " : H \r\n" + "    { \r\n";
+        }
          
-         private static string Using(string references, string nspace)
-         {
+        /// <summary>
+        /// Inserts the license terms in the .cs file.
+        /// </summary>
+        private static string license = 
+            "// Copyright (c) " + DateTime.Now.Year.ToString() + " Hammura.bi LLC \r\n\r\n";
+         
+        /// <summary>
+        /// Inserts the "using" statements in the .cs file.
+        /// </summary>
+        private static string Using(string references, string nspace)
+        {
              string result = "using Hammurabi; \r\n" + 
                          "using System;\r\n" +
                          "using System.Collections.Generic;\r\n" +
@@ -81,22 +97,31 @@ namespace Akkadian
              }
     
              return result += "\r\n";
-         }
+        }
          
-         private static string GetNamespace(string s)
-         {
+        /// <summary>
+        /// Extracts the namespace from a string.
+        /// </summary>
+        private static string GetNamespace(string s)
+        {
              int i = s.LastIndexOf(".");
              if (i >= 0) return s.Substring(0,i);
              return "";
-         }
+        }
          
-         private static string GetClass(string s)
-         {
+        /// <summary>
+        /// Extracts the class name from a string.
+        /// </summary>
+        private static string GetClass(string s)
+        {
              int i = s.LastIndexOf(".") + 1;
              if (i >= 0) return s.Substring(i,s.Length-i);
              return "";
-         }
-         
-         public static string ClassAndNamespaceClose = "    } \r\n}\r\n";
+        }
+
+        /// <summary>
+        /// Closes the .cs class and namespace.
+        /// </summary>
+        public static string ClassAndNamespaceClose = "    } \r\n}\r\n";
     }
 }

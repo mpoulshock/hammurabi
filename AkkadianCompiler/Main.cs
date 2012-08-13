@@ -32,6 +32,10 @@ namespace Akkadian
         private static string tableMatchLine = "";
         private static int totalRuleCount = 0;
         public static string unitTestNameSpace = "";
+
+        // Variables for question metadata
+        public static string docNameSpace = "";
+        public static string akkDoc = "";
      
         /// <summary>
         /// The entry point of the program, where the program control starts and ends.
@@ -77,6 +81,10 @@ namespace Akkadian
             int docCount = 0;
             foreach(string f in Directory.GetFiles(sourcePath, "*.akk", SearchOption.AllDirectories))
             {
+                // Keep track of current rule document
+                akkDoc = f;
+
+                // Do the compilation
                 Console.WriteLine(" * " + f.Replace(sourcePath,""));
                 Compile(f, targetPath);
                 docCount++;

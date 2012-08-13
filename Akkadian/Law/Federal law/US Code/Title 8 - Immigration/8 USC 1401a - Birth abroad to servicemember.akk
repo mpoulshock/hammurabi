@@ -27,6 +27,11 @@ Tbool IsQualifyingServicemember(Thing p) =
 
 # UNIT TESTS
 
+Test: 127066866
+- Things t1, t2
+- InArmedForces(t1) = false
+- USC.Tit8.Sec1401a.IsQualifyingServicemember(t1).TestOutput =?= "Time.DawnOf False "
+
 Test: BornTooEarly
 - Thing child
 - DateOfBirth(child) = 1930-03-02
@@ -62,6 +67,9 @@ Test: NoEligParent
 - IsUSCitizen(dad) = false
 - InArmedForces(mom) = false
 - USC.Tit8.Sec1401a.Sec1401gAppliesTo(child).Out =?= false
+
+
+
 
 
 

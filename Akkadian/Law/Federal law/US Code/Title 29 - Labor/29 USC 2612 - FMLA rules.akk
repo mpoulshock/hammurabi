@@ -90,6 +90,15 @@ Thing SickFam(Thing e) =
 	
 # UNIT TESTS
 
+Test: 54153730
+- Things t1, t2
+- IsAirlineFlightCrew(t1,t2) = false
+- IsEmployeeUnder5USC6301(t1) = false
+- LessThan50EmployeesWithin75MilesOfWorksite(t1,t2) = false
+- DateFamilyLeaveBegins(t1,t2) = 2010-01-02
+- EmploymentRelationship(t1,t2) = "None"
+- USC.Tit29.Sec2612.IsEntitledToLeaveFrom(t1, t2).TestOutput =?= "Time.DawnOf False "
+
 Test: Test1
 - Thing e
 - Thing c
@@ -186,5 +195,6 @@ Test: Test8_2612aC1_2
 - AreMarried(e,f) = true
 - HasSeriousHealthCondition(f) = true
 - Sec2612.IsEntitledToRegLeaveFrom(e,c).AsOf(2011-04-15).Out =?= true
+
 
 

@@ -42,7 +42,7 @@ namespace Interactive
             string qType = Templates.GetQ(rel).questionType;
 
             // Assert the fact (converted to the proper type of Tvar)
-            if (qType == "bool")
+            if (qType == "Tbool")
             {
                 // Asserts the fact (handling uncertainty) 
                 // Also, creates part of the .akk unit test string
@@ -57,7 +57,7 @@ namespace Interactive
                     AkkTest.testStr += val + "\r\n";
                 }
             }
-            else if (qType == "string")
+            else if (qType == "Tstr")
             {
                 if (val == "?") 
                 {
@@ -70,7 +70,7 @@ namespace Interactive
                     AkkTest.testStr += "\"" + val + "\"\r\n";
                 }
             }
-            else if (qType == "numvar")
+            else if (qType == "Tnum")
             {
                 if (val == "?") 
                 {
@@ -83,7 +83,7 @@ namespace Interactive
                     AkkTest.testStr += val + "\r\n";
                 }
             }
-            else if (qType == "date")
+            else if (qType == "Tdate")
             {
                 if (val == "?") 
                 {
@@ -96,7 +96,7 @@ namespace Interactive
                     AkkTest.testStr += val + "\r\n";
                 }
             }
-            else if (qType == "set")
+            else if (qType == "Tset")
             {
                 if (val == "?") 
                 {

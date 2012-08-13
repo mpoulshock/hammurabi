@@ -40,12 +40,23 @@ namespace Akkadian
             public string relationship;
             public string questionType;
             public string questionText;
+            public string filePath;
+            public string fullMethod;
+            public string param1Type;
+            public string param2Type;
+            public string param3Type;
 
-            public Qdata(string rel, string type, string text)
+            public Qdata(string rel, string type, string text, string file, 
+                         string method, string param1, string param2, string param3)
             {
                 relationship = rel;
                 questionType = type;
                 questionText = text;
+                filePath = file;
+                fullMethod = method;
+                param1Type = param1;
+                param2Type = param2;
+                param3Type = param3;
             }
         }
 
@@ -54,61 +65,35 @@ namespace Akkadian
         /// </summary>
         public static void GatherMetadata(string line, string previousLine)
         {
-            if (line.Contains("In"))
-            {
-                // Identify lines that contain question metadata
-                string[] ruleTypes = new string[6]{"TboolIn","TboolInSym","TnumIn","TdateIn","TstrIn","TsetIn"};
-                string inputType = Util.StartsWithAny(line.Trim(), ruleTypes);
-
-                // If the line has metadata, parse it
-                if (inputType != "")
-                {
-                    string rel = GetRelationship(line);
-                    string type = GetQuestionType(inputType);
-                    string questionText = "";
-
-                    if (previousLine.Contains("# >>"))
-                    {
-                        questionText = previousLine.Trim().Replace("# >>","").Trim();
-                    }
-                    else
-                    {
-                        questionText = rel;
-                    }
-
-                    // Add metadata to the question list
-                    Qdata newQ = new Qdata(rel, type, questionText);
-                    questionData.Add(newQ);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Extracts the question type.
-        /// </summary>
-        private static string GetQuestionType(string tvarType)
-        {
-            if (tvarType == "TboolIn" | tvarType == "TboolInSym") return "bool";
-            else if (tvarType == "TnumIn") return "numvar";
-            else if (tvarType == "TdateIn") return "date";
-            else if (tvarType == "TsetIn") return "set";
-            else return "string";
-        }
-
-        /// <summary>
-        /// Extracts the relationship.
-        /// </summary>
-        private static string GetRelationship(string line)
-        {
-            // Use a regex to identify the function name
+            // Use a regex to identify the function parts
+            string wrd = @"[a-zA-Z0-9_]+";
             Match match = Regex.Match(line, 
-                           @"(TboolIn|TboolInSym|TnumIn|TdateIn|TstrIn|TsetIn) ([a-zA-Z0-9]+)");
-            if (match.Success)
-            {
-                return match.Groups[2].Value.Trim();
-            }
+                @"(Tbool|Tnum|Tdate|Tstr|Tset)(In)?(Sym)? (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" ?)(?<arg1>"+wrd+@")?(?<comma1>, ?)?(?<argtyp2>"+wrd+@" )?(?<arg2>"+wrd+@")?(?<comma2>, ?)?(?<argtyp3>"+wrd+@" )?(?<arg3>"+wrd+@")?\)");
 
-            return "";
+            // If line is a main rule or a line using TvarIn, capture metadata
+            if (match.Success && (Util.IsMainRule(line) || match.Groups[2].Value == "In"))
+            {
+                // Extract relationship details
+                string type = match.Groups[1].Value.Trim();
+                string rel = match.Groups[4].Value.Trim();
+                string method = MainClass.docNameSpace + "." + rel;
+                string param1 = match.Groups[5].Value.Trim();
+                string param2 = match.Groups[8].Value.Trim();
+                string param3 = match.Groups[11].Value.Trim();
+                string file = MainClass.akkDoc;
+
+                // Determine the question text (default to the relationship text)
+                string questionText = rel;
+                if (previousLine.Contains("# >>"))
+                {
+                    questionText = previousLine.Trim().Replace("# >>","").Trim();
+                }
+
+                // Add metadata to the question list
+                Qdata newQ = new Qdata(rel, type, questionText, file, 
+                                       method, param1, param2, param3);
+                questionData.Add(newQ);
+            }
         }
 
         /// <summary>
@@ -132,8 +117,9 @@ namespace Akkadian
 
                 // Write it...
                 if (!alreadyHave)
-                    result += "case \"" + q.relationship + "\": return new Question(rel, \"" + q.questionType + "\", \"" + q.questionText + "\", \"\");\r\n";
-            
+                    result += "case \"" + q.relationship + "\": return new Question(rel, \"" + q.questionType + "\", \"" + q.questionText + "\", \"\", @\"" +
+                        q.filePath + "\",\"" + q.fullMethod + "\",\"" + q.param1Type + "\",\"" + q.param2Type + "\",\"" + q.param3Type + "\");\r\n";
+  
                 // Add it to the list of questions that have already been written
                 questionsSoFar += q.relationship + ",";
             }
