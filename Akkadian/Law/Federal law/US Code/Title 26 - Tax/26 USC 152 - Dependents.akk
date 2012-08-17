@@ -138,7 +138,7 @@ Test: Pub501_Simple1
 - Thing t		# the taxpayer
 - IsParentOf(t,c) = true
 - LivesWith(c,t) = true
-- DateOfBirth(c) = 2001-01-01
+- DoB(c) = 2001-01-01
 - IsDeceased(c) = false 	#
 - IsUSCitizen(c) = true
 - CanBeClaimedAsQCByTwoTaxpayers(c) = false
@@ -155,8 +155,8 @@ Test: Pub501_Simple2
 - Thing t	
 - IsParentOf(t,c) = true
 - LivesWith(c,t) = true
-- DateOfBirth(c) = 2001-01-01
-- DateOfBirth(t) = 1970-01-01
+- DoB(c) = 2001-01-01
+- DoB(t) = 1970-01-01
 - IsDeceased(c) = false 	#
 - IsUSCitizen(c) = true
 - CanBeClaimedAsQCByTwoTaxpayers(c) = false
@@ -179,7 +179,7 @@ Test: Pub501_1
 - FilesMFJOnlyToClaimRefund(d) = false
 - IsParentOf(t,d) = true
 - LivesWith(t,d) = true
-- DateOfBirth(d) = 1992-01-01
+- DoB(d) = 1992-01-01
 - InArmedForces(s) = true
 - IsUSCitizen(d) = true
 - Sec152.IsDependentOf(d,t).AsOf(2010-12-31).Out =?= false
@@ -193,8 +193,8 @@ Test: Pub501_2a
 - FilesJointFedTaxReturnWith(d,s) = true
 - FilesMFJOnlyToClaimRefund(d) = true
 - IsParentOf(t,d) = true
-- DateOfBirth(s) = 1992-01-01
-- DateOfBirth(d) = 1992-01-01
+- DoB(s) = 1992-01-01
+- DoB(d) = 1992-01-01
 - IsUSCitizen(s) = true
 - CanClaimSomeoneAsDependent(s) = false
 - CanBeClaimedAsDependentBySomeone(t) = false
@@ -209,8 +209,8 @@ Test: Pub501_2b
 - FilesJointFedTaxReturnWith(d,s) = true
 - FilesMFJOnlyToClaimRefund(d) = true
 - IsParentOf(t,d) = true
-- DateOfBirth(s) = 1992-01-01
-- DateOfBirth(d) = 1992-01-01
+- DoB(s) = 1992-01-01
+- DoB(d) = 1992-01-01
 - IsUSCitizen(d) = true
 - CanClaimSomeoneAsDependent(s) = false
 - CanBeClaimedAsDependentBySomeone(t) = false
@@ -221,8 +221,8 @@ Test: Pub501_3
 - Thing t		# Taxpayer
 - Thing s 		# Son
 - Thing d		# Daughter-in-law
-- DateOfBirth(s) = 1992-01-01
-- DateOfBirth(d) = 1991-01-01
+- DoB(s) = 1992-01-01
+- DoB(d) = 1991-01-01
 - FamilyRelationship(d,s) = "Spouse"
 - IsUSCitizen(s) = true
 - FilesJointFedTaxReturnWith(d,s) = true
@@ -235,7 +235,7 @@ Test: Pub501_3
 Test: Pub501_4
 - Thing t 		# Taxpayer
 - Thing s		# Son
-- DateOfBirth(s) = 1991-12-10
+- DoB(s) = 1991-12-10
 - IsFullTimeStudent(s) = false
 - IsUSCitizen(s) = true
 - IsPermanentlyAndTotallyDisabled(s) = false
@@ -245,7 +245,7 @@ Test: Pub501_4
 Test: Pub501_5
 - Thing t 		# Taxpayer
 - Thing s		# Son
-- DateOfBirth(s) = 1991-12-10
+- DoB(s) = 1991-12-10
 - IsFullTimeStudent(s) = true
 - IsUSCitizen(s) = true
 - IsPermanentlyAndTotallyDisabled(s) = false
@@ -255,7 +255,7 @@ Test: Pub501_5
 Test: Pub501_6
 - Thing t 		# Taxpayer
 - Thing s		# Son
-- DateOfBirth(s) = 1991-12-10
+- DoB(s) = 1991-12-10
 - IsFullTimeStudent(s) = false
 - IsUSCitizen(s) = true
 - IsPermanentlyAndTotallyDisabled(s) = true
@@ -266,11 +266,11 @@ Test: Pub501_7
 - Thing t		# Taxpayer
 - Thing s		# T's spouse
 - Thing b		# T's brother
-- DateOfBirth(t) = 1989-01-01
-- DateOfBirth(s) = 1989-01-01
+- DoB(t) = 1989-01-01
+- DoB(s) = 1989-01-01
 - FamilyRelationship(t,s) = "Spouse"
 - FamilyRelationship(b,t) = "Sibling"
-- DateOfBirth(b) = 1987-01-01
+- DoB(b) = 1987-01-01
 - IsMarried(b) = false
 - LivesWith(t,s) = true
 - LivesWith(t,b) = true
@@ -283,11 +283,11 @@ Test: Pub501_8
 - Thing t		# Taxpayer
 - Thing s		# T's spouse
 - Thing b		# T's brother
-- DateOfBirth(t) = 1989-01-01
-- DateOfBirth(s) = 1985-01-01
+- DoB(t) = 1989-01-01
+- DoB(s) = 1985-01-01
 - FamilyRelationship(t,s) = "Spouse"
 - FamilyRelationship(b,t) = "Sibling"
-- DateOfBirth(b) = 1987-01-01
+- DoB(b) = 1987-01-01
 - IsFullTimeStudent(b) = true
 - IsMarried(b) = false
 - LivesWith(t,s) = true
@@ -369,8 +369,8 @@ Test: QCRelationship_1
 Test: QCAge_1
 - Thing tp
 - Thing d
-- DateOfBirth(tp) = 1975-01-01
-- DateOfBirth(d) = 2005-01-01
+- DoB(tp) = 1975-01-01
+- DoB(d) = 2005-01-01
 - IsStudent(d) = false
 - IsPermanentlyAndTotallyDisabled(d) = false
 - Sec152.QCAgeTest(d,tp,Sec441.TaxYear(tp)).AsOf(2012-03-03).Out =?= true
@@ -378,8 +378,8 @@ Test: QCAge_1
 Test: QCAge_2
 - Thing tp
 - Thing d
-- DateOfBirth(tp) = 1975-01-01
-- DateOfBirth(d) = 1940-01-01
+- DoB(tp) = 1975-01-01
+- DoB(d) = 1940-01-01
 - IsStudent(d) = false
 - IsPermanentlyAndTotallyDisabled(d) = true
 - Sec152.QCAgeTest(d,tp,Sec441.TaxYear(tp)).AsOf(2012-03-03).Out =?= true

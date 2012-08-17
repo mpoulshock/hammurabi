@@ -34,12 +34,12 @@ Test: 127066866
 
 Test: BornTooEarly
 - Thing child
-- DateOfBirth(child) = 1930-03-02
+- DoB(child) = 1930-03-02
 - USC.Tit8.Sec1401a.Sec1401gAppliesTo(child).Out =?= false
 
 Test: BornWithinRange1
 - Thing child
-- DateOfBirth(child) = 1945-03-02
+- DoB(child) = 1945-03-02
 - USC.Tit8.Sec1401a.Sec1401gAppliesTo(child).Out =?= "Unstated"
 
 Test: BornWithinRange2
@@ -48,7 +48,7 @@ Test: BornWithinRange2
 - Thing mom
 - FatherAtTimeOfBirth(child) = dad
 - MotherAtTimeOfBirth(child) = mom
-- DateOfBirth(child) = 1945-03-02
+- DoB(child) = 1945-03-02
 - USC.Tit8.Sec1401a.Sec1401gAppliesTo(child).Out =?= "Unstated"
 
 Test: DQbcUS
@@ -60,7 +60,7 @@ Test: NoEligParent
 - Thing child
 - Thing dad
 - Thing mom
-- DateOfBirth(child) = 1945-03-02
+- DoB(child) = 1945-03-02
 - BirthCountry(child) = "Bolivia"
 - FatherAtTimeOfBirth(child) = [[dad]]
 - MotherAtTimeOfBirth(child) = [[mom]]

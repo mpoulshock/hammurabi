@@ -6,16 +6,12 @@
 
 # BIRTH, LIFE, AND DEATH
 
-# Date of birth
-TdateIn DoB(Thing p) =
-	# >> What is {1}'s date of birth?
-	TdateIn DateOfBirth(p)
+# >> What is {1}'s date of birth?
+TdateIn DoB(Thing p)
 
-# Date of death
 # >> What is {1}'s date of death?
 TdateIn DateOfDeath(Thing p)
 
-# Deceased
 # >> Is {1} deceased?
 TboolIn IsDeceased(Thing p)
 
@@ -54,7 +50,7 @@ Tbool IsMale(Thing p) =
 Tbool IsTransgendered(Thing p) =
 	Gender(p) == "Transgendered"		
 
-# Gender
+# >>What is {1}'s gender? (Options: Male, Female, Transgendered)
 TstrIn Gender(Thing p)
 
 
@@ -69,24 +65,22 @@ TboolIn IsNativeAmerican(Thing p)
 
 # MISCELLANEOUS
 
-# Has a Social Security Number
+# >>Does/did {1} have a valid Social Security Number?
 TboolIn HasSSN(Thing p) 
 	
-# Has applied for (but not yet received) an SSN
+# >>Has {1} applied for (but not yet received) a Social Security Number?
 TboolIn AppliedForSSN(Thing p) 
 
-# Blind (see 42 USC 416(i)(1)(B))
+# >>Is {1} legally blind? (See 42 USC 416(i)(1)(B).)
 TboolIn IsBlind(Thing p)
 
-# Disabled 
-# Has a physical or mental impairment that substantially 
-# limits one or more major life activities (see 42 USC 12102)
+# Does/did {1} have a physical or mental impairment that substantially limits one or more major life activities (see 42 USC 12102)?
 TboolIn IsDisabled(Thing p)
 
-# Incapable of self-care
+# Is/was {1} incapable of self-care?
 TboolIn IsIncapableOfSelfCare(Thing p) 
 
-# In prison
+# Is/was {1} in prison?
 TboolIn IsInPrison(Thing p)
 
 # In juvenile rehab facility
@@ -98,9 +92,19 @@ TboolIn InDrugOrAlcoholTreatmentProg(Thing p)
 	
 # UNIT TESTS
 
+Test: 773795755
+- Things t1, t2
+- Gender(t1) = "Female"
+- Hammurabi.H.IsFemale(t1).TestOutput =?= "Time.DawnOf True "
+
+Test: 308454842
+- Things t1, t2
+- Gender(t1) = "Male"
+- Hammurabi.H.IsFemale(t1).TestOutput =?= "Time.DawnOf False "
+
 Test: TotalSanity
 - Thing p
-- DateOfBirth(p) = 1940-01-02
+- DoB(p) = 1940-01-02
 - DoB(p).Out =?= 1940-01-02
 							
 Test: Alive1
@@ -109,41 +113,43 @@ Test: Alive1
 
 Test: Alive2a
 - Thing p
-- DateOfBirth(p) = 2000-01-01
+- DoB(p) = 2000-01-01
 - IsDeceased(p) = false
 - IsAlive(p).AsOf(2010-01-01).Out =?= true
 
 Test: Alive2b
 - Thing p
-- DateOfBirth(p) = 2000-01-01
+- DoB(p) = 2000-01-01
 - IsDeceased(p) = false
 - IsAlive(p).AsOf(2150-01-01).Out =?= false
 
 Test: Alive2c
 - Thing p
-- DateOfBirth(p) = 1999-01-01
+- DoB(p) = 1999-01-01
 - IsDeceased(p) = false
 - IsAlive(p).AsOf(2010-01-01).Out =?= true
 
 Test: Alive3a
 - Thing p
-- DateOfBirth(p) = 2000-01-01
+- DoB(p) = 2000-01-01
 - DateOfDeath(p) = 2090-01-01
 - IsDeceased(p) = true
 - IsAlive(p).AsOf(2100-01-01).Out =?= false
 
 Test: Alive3b
 - Thing p
-- DateOfBirth(p) = 2000-01-01
+- DoB(p) = 2000-01-01
 - DateOfDeath(p) = 2090-01-01
 - IsDeceased(p) = true
 - IsAlive(p).AsOf(2050-01-01).Out =?= true
 
 Test: Alive3c
 - Thing p
-- DateOfBirth(p) = 2000-01-01
+- DoB(p) = 2000-01-01
 - DateOfDeath(p) = 2090-01-01
 - IsDeceased(p) = true
 - IsAlive(p).AsOf(1999-01-01).Out =?= false
 
 	
+
+

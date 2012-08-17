@@ -186,7 +186,7 @@ Tbool IsCitizenPresentInUSorOPNYearsBefore(Thing p, Tnum years, Tdate date) =
 	Tbool present =
 		PresentInUSorOP(p).YearsContinuouslyTrue >= years
 
-# Physically present in U.S. or outlying possession
+# >>Was {1} physically present in the U.S. or one of its outlying possessions?
 TboolIn PresentInUSorOP(Thing p) =
 	PresentInUS(p) |
 	Sec1101.IsUSOutlyingPossession(loc)
@@ -235,11 +235,11 @@ Tbool ParentsMarried(Thing c) =
 Tset BirthParents(Thing c) =
 	new Tset(FatherOf(c), MotherOf(c))
 
-# Father at time of birth
+# >>Who was {1}'s father at the time of his or her birth?
 Thing FatherOf(Thing c) =
 	TsetIn FatherAtTimeOfBirth(c).ToThing
 	
-# Mother at time of birth
+# >>Who was {1}'s mother at the time of his or her birth?
 Thing MotherOf(Thing c) =
 	TsetIn MotherAtTimeOfBirth(c).ToThing
 	

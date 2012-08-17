@@ -36,20 +36,19 @@ namespace Interactive
         public static Thing t1 = new Thing("t1");
         public static Thing t2 = new Thing("t2");
 
-        // SET THE TEST GOAL HERE
-        public static Func<Tvar> testGoalFcn = ()=> USC.Tit29.Sec2612.IsEntitledToLeaveFrom(t1,t2);
-        public static string testGoalRel = "IsEntitledToLeaveFrom";
-
         /// <summary>
         /// Assesses the state of asserted facts and then decides what to do next.
         /// </summary>
-        public static void ProcessRequest() 
+        public static void ProcessRequest(string goalText) 
         {
             InitializeSession();
 
+            // Given a relationship name, get the goal as a function
+            Func<Tvar> seedGoal = Interactive.Templates.GetQ(goalText).theFunc;
+
             // Load the goals to be investigated (onto the goals list)
             List<Func<Tvar>> goals = new List<Func<Tvar>>();
-            goals.Add(testGoalFcn);
+            goals.Add(seedGoal);
 
 //            goals.Add(()=> Hammurabi.Sandbox.AnotherMethod(p));
 //            goals.Add(()=> USC.Tit8.Sec1401a.IsQualifyingServicemember(p));
@@ -70,7 +69,7 @@ namespace Interactive
                 } 
                 else
                 {
-                    DisplayResults(goals);
+                    DisplayResults(goals, goalText);
                     break;
                 }
             }
@@ -91,31 +90,6 @@ namespace Interactive
             // Initialize the .akk unit test text string
             AkkTest.testStr = "";
             AkkTest.InitializeUnitTest();
-        }
-
-        /// <summary>
-        /// Gets the and validates the user's answer to a question.
-        /// </summary>
-        private static void GetAndParseAnswer(Engine.Response response)
-        {
-            // Get data pertaining to the current question
-            string currentRel = response.NextFact.relationship;
-            Question currentQuestion = Templates.GetQ(currentRel);
-            string currentQType = currentQuestion.questionType;
-
-            // Read (and gently massage) the answer
-            string answer = Console.ReadLine();
-            answer = CleanBooleans(currentQType, answer);
-
-            // Validate answer, then assert it
-            if (AnswerIsValid(currentQuestion, answer))
-            {
-                AssertAnswer(response, answer);
-            }
-            else
-            {
-                GetAndParseAnswer(response);
-            }
         }
 
         /// <summary>
@@ -174,18 +148,43 @@ namespace Interactive
         }
 
         /// <summary>
+        /// Gets the and validates the user's answer to a question.
+        /// </summary>
+        private static void GetAndParseAnswer(Engine.Response response)
+        {
+            // Get data pertaining to the current question
+            string currentRel = response.NextFact.relationship;
+            Question currentQuestion = Templates.GetQ(currentRel);
+            string currentQType = currentQuestion.questionType;
+
+            // Read (and gently massage) the answer
+            string answer = Console.ReadLine();
+            answer = CleanBooleans(currentQType, answer);
+
+            // Validate answer, then assert it
+            if (AnswerIsValid(currentQuestion, answer))
+            {
+                AssertAnswer(response, answer);
+            }
+            else
+            {
+                GetAndParseAnswer(response);
+            }
+        }
+
+        /// <summary>
         /// Displays the engine's results of the interview session.
         /// </summary>
-        private static void DisplayResults(List<Func<Tvar>> goals)
+        private static void DisplayResults(List<Func<Tvar>> goals, string goalText)
         {
             Console.WriteLine("\nResults: \n");
-            Console.WriteLine(ResultsText(goals));
+            Console.WriteLine(ResultsText(goals, goalText));
         }
 
         /// <summary>
         /// Displays the results of each goal.
         /// </summary>
-        private static string ResultsText(List<Func<Tvar>> goals)
+        private static string ResultsText(List<Func<Tvar>> goals, string goalText)
         {
             string result = "";
 
@@ -197,7 +196,7 @@ namespace Interactive
 
             // Add result to test case
             Tvar testResult = goals[0].Invoke();
-            AkkTest.CloseUnitTest(testResult);
+            AkkTest.CloseUnitTest(testResult, goalText);
 
             return result;
         }

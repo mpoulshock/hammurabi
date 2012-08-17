@@ -27,12 +27,19 @@ TboolIn OnActiveDuty(Thing p) =
 # BRANCH OF ARMED FORCES
 	
 # Person serves in the Armed Forces in any capacity.
+# >>Does/did {1} serve in the U.S. Armed Forces?
+TboolIn InArmedForces(Thing p) =
+	InActiveArmedForces(p) |
+	InReserveArmedForces(p)
+	
+##
 Tbool InArmedForces(Thing p) =
 	TboolIn InArmedForces(p) |~
 	...
 		InActiveArmedForces(p) |
 		InReserveArmedForces(p)
-        
+##
+		
 # Person serves (actively) in the Armed Forces.
 Tbool InActiveArmedForces(Thing p) =
 	branch == "Army" |
@@ -57,7 +64,7 @@ Tbool InReserveArmedForces(Thing p) =
 	Tstr branch = 
 		BranchOfArmedForces(p)
 
-# >>What branch of the U.S. Armed Forces did {1} serve in?
+# >>What branch of the U.S. Armed Forces does/did {1} serve in?
 TstrIn BranchOfArmedForces(Thing person)
 
 

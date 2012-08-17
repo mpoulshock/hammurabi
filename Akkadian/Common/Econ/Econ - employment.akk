@@ -5,24 +5,27 @@
 
 # NATURE OF EMPLOYMENT RELATIONSHIP
 
-# Is employed
-Tbool IsEmployed(Thing p) =
+# Is/was {1} employed?
+TboolIn IsEmployed(Thing p) =
 	Stub()
 	# Exists(AllCorps, IsEmployedBy(p,_))
 	
 # Indicates whether a person is employed by a particular employer (corporation).  
 # It is assumed that "employee" does not include independent contractors.
 Tbool IsEmployedBy(Thing p, Thing corp) =
-	TstrIn EmploymentRelationship(p, corp) == "Employee" 
+	EmploymentRelationship(p, corp) == "Employee" 
 
 # Person is an independent contractor at an employer
 Tbool IsIndependentContractor(Thing p, Thing corp) =
-	TstrIn EmploymentRelationship(p, corp) == "Independent contractor"
-        
-# Returns the date a person started working at an employer
+	EmploymentRelationship(p, corp) == "Independent contractor"
+
+# >>What is/was {1}'s employment relationship with {2}? (Options: Employee, Independent contractor, Intern, None)
+TstrIn EmploymentRelationship(Thing person, Thing corp)
+    
+# >>When did {1} start working at {2}?
 TdateIn DateStartedWorkAt(Thing p, Thing corp)
 
-# Person is a full-time employee
+# >>Is {1} a full-time employee at {2}?
 TboolIn IsFullTimeEmployee(Thing p, Thing corp) =
 	set:
 	if !IsEmployedBy(p, corp) -> false
@@ -33,10 +36,10 @@ TboolIn IsFullTimeEmployee(Thing p, Thing corp) =
 	Tnum hours = 
 		HoursWorkedPerWeek(p, corp)
 
-# Number of hours per week that a person works at a given employer
+# >>How many hours per week (on average) does {1} work at {2}?
 TnumIn HoursWorkedPerWeek(Thing p, Thing corp)
 	
-# Length of an employee's initial probationary period (in months)
+# >>How long is/was {1}'s initial probationary period at {2} (in months)?
 TnumIn InitialProbationLength(Thing p, Thing corp)
 
 
@@ -47,10 +50,13 @@ TnumIn InitialProbationLength(Thing p, Thing corp)
 Tbool DQFromUnemploymentInsurance(Thing p, Thing corp) =
 	TerminatedFrom(p, corp) |
 	ResignedFrom(p, corp) |
-	TboolIn RefusesSuitableWorkWithoutGoodCause(p) |
+	RefusesSuitableWorkWithoutGoodCause(p) |
 	IsOnStrikeFrom(p, corp) |
 	IsReceivingSeveranceFrom(p, corp).IsEverTrue() |
 	IsReceivingWorkersComp(p)
+
+# >>Did {1} refuse suitable work without good cause?	
+TboolIn RefusesSuitableWorkWithoutGoodCause(Thing p)
 	
 	
 # SEPARATION FROM AN EMPLOYER
@@ -130,59 +136,58 @@ Tbool PresumptivelyResignedFrom(Thing p, Thing corp) =
 # Length of unpaid suspension (in days)
 TnumIn LengthOfSuspensionFrom(Thing p, Thing corp) 
 	
-# Reason person left an employer
+# >>What was the nature of {1}'s separation from {2}? (Options: Resignation; Resignation in lieu of discharge; Termination for misconduct or cause; Layoff, reduction in force, or downsizing; Temporary job ended; Voluntary retirement; Forced retirement; Constructive discharge; Mutual agreement; Failed to return following unpaid suspension)
 TstrIn NatureOfSeparation(Thing p, Thing corp)
 
 	
 # OTHER	
 
-# Received severance pay or wages in lieu of notice
+# >>Is/was {1} receiving severance pay or wages from {2} in lieu of notice?
 TboolIn IsReceivingSeveranceFrom(Thing p, Thing corp)
 
-# Received severance pay or wages in lieu of notice
+# >>Is/was {1} receiving worker's compensation?
 TboolIn IsReceivingWorkersComp(Thing p) 
 	
-# On stike from an employer
+# >>Is {1} on strike from {2}?
 TboolIn IsOnStrikeFrom(Thing p, Thing corp) 
 	
-# On strike - from any employer
+# >>Is {1} on strike from any employer?
 TboolIn IsOnStrike(Thing p) 
 
 		
 
 # SELF-SUPPORT
 
-# Manages own financial affairs
+# >>Does/did {1} manage his or her own financial affairs?
 TboolIn ManagesOwnAffairs(Thing p) =
 	PercentSelfSupport(p) > 50 |		# Assumed
 	TboolIn ManagesOwnAffairs(p)
 	
-# Percentage which a person supports themselves financially.
-# In percentage points (e.g. 50, not 0.50)
+# >>To what degree does {1} support himself or herself financially? (Express the answer in percentage points.)
 TnumIn PercentSelfSupport(Thing p)
 
-# Receives public assistance
+# >>Does/did {1} receive public assistance?
 TboolIn ReceivesPublicAssistance(Thing p)
 
-# Physically unfit for employment
+# >>Is/was {1} physically unfit for employment?
 TboolIn PhysicallyUnfitForEmployment(Thing p) 
 
-# Mentally unfit for employment
+# >>Is/was {1} mentally unfit for employment?
 TboolIn MentallyUnfitForEmployment(Thing p) 
 
 
 # RANDOM OCCUPATIONS WITH LEGAL SIGNFICANCE
 
-# U.S. government employee
+# >>Is/was {1} a U.S. government employee?
 TboolIn IsUSGovtEmployee(Thing p)
 
-# Migrant farmworker
+# >>Is/was {1} a migrant farmworker?
 TboolIn IsMigrantOrSeasonalFarmworker(Thing p)
 
-# Airline flight crew
+# >>At {2}, is does/did {1} work as part of an airline flight crew?
 TboolIn IsAirlineFlightCrew(Thing p, Thing corp) 
 
-# Is employee of Panama Railroad Company (or its successor in title)
+# >>Is {1} an employee of the Panama Railroad Company (or its successor in title)?
 TboolIn IsPanamaRailroadEmployee(Thing p)
 
 

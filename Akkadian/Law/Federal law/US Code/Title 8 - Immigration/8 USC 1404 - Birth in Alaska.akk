@@ -45,14 +45,14 @@ TboolIn IsNoncitizenIndian(Thing p) =
 Test: 917373403
 - Thing p
 - BirthState(p) = Tstr(?)
-- DateOfBirth(p) = Tdate(?)
+- DoB(p) = Tdate(?)
 - IsNativeAmerican(p) = Tbool(?)
 - USC.Tit8.Sec1404.IsUSCitizenPerAlaska(p).TestOutput =?= "Time.DawnOf Uncertain "
 
 Test: 93000163
 - Thing p
 - BirthState(p) = "Alaska"
-- DateOfBirth(p) = 2011-01-01
+- DoB(p) = 2011-01-01
 - IsNativeAmerican(p) = Tbool(?)
 - USC.Tit8.Sec1404.IsUSCitizenPerAlaska(p).TestOutput =?= "Time.DawnOf False 1/1/2011 12:00:00 AM Uncertain "
 

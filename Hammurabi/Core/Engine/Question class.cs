@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using Hammurabi;
 
 namespace Interactive
 {
@@ -47,6 +48,7 @@ namespace Interactive
         public string arg1Type;
         public string arg2Type;
         public string arg3Type;
+        public Func<Tvar> theFunc;
 
 
         public Question(string rel, string type, string text, string explan)
@@ -58,7 +60,8 @@ namespace Interactive
         }
 
         public Question(string rel, string type, string text, string explan,
-                        string file, string method, string arg1, string arg2, string arg3)
+                        string file, string method, string arg1, string arg2, 
+                        string arg3, Func<Tvar> theFunction)
         {
             relationship = rel;
             questionType = type;
@@ -69,6 +72,7 @@ namespace Interactive
             arg1Type = arg1;
             arg2Type = arg2;
             arg3Type = arg3;
+            theFunc = theFunction;
         }
     }
 }

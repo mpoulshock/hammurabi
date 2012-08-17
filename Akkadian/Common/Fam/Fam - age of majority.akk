@@ -55,7 +55,7 @@ TboolIn IsEmancipatedMinor(Thing p) =
 
 Test: Minor1
 - Thing p
-- DateOfBirth(p) = 2000-10-10
+- DoB(p) = 2000-10-10
 - StateOfResidence(p) = "Hawaii"
 - Fam.IsMinor(p).AsOf(2012-10-10).Out =?= true
 
@@ -63,12 +63,12 @@ Test: Minor2
 - Thing p
 - CountryOfResidence(p) = "Poland"
 - StateOfResidence(p) = "N/A"
-- DateOfBirth(p) = 2010-10-10
+- DoB(p) = 2010-10-10
 - Fam.IsMinor(p).AsOf(2012-10-10).Out =?= "Stub"
 
 Test: Minor3
 - Thing p
-- DateOfBirth(p) = 2000-10-10
+- DoB(p) = 2000-10-10
 - StateOfResidence(p) = "Nebraska"
 - Fam.IsMinor(p).AsOf(2032-10-10).Out =?= false
 

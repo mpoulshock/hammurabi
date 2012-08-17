@@ -34,9 +34,6 @@ namespace Interactive
         // Thing(s) referenced by the goal (for .akk test case)
         public static string things = "- Things t1, t2";
 
-        // File to write generated test case to (for .akk test case)
-        public static string filePath = Templates.GetQ(Interview.testGoalRel).filePath;
-
         // Build up a string representing an .akk test case
         public static string testStr = "";
 
@@ -78,22 +75,27 @@ namespace Interactive
         /// <summary>
         /// Ends the .akk unit test text.
         /// </summary>
-        public static void CloseUnitTest(Tvar val)
+        public static void CloseUnitTest(Tvar val, string goal)
         {
             string result = Convert.ToString(val.TestOutput);
-            testStr += "- " + TestGoal() + ".TestOutput =?= \"" + result + "\"";
+            testStr += "- " + TestGoal(goal) + ".TestOutput =?= \"" + result + "\"";
         }
         
         /// <summary>
         /// Builds the string of the goal being tested in .akk test case.
         /// </summary>
-        public static string TestGoal()
+        public static string TestGoal(string goal)
         {
-            string result = Templates.GetQ(Interview.testGoalRel).fullMethod + "(t1";
+            Question q = Templates.GetQ(goal);
+
+            string result = q.fullMethod + "(t1";
 
             // Note: for now, this only handles methods with Things as arguments
-            if (Templates.GetQ(Interview.testGoalRel).arg2Type != "")
+            if (q.arg2Type != "")
                 result += ", t2";
+
+            if (q.arg3Type != "")
+                result += ", t3";
 
             return result + ")";
         }
@@ -101,7 +103,7 @@ namespace Interactive
         /// <summary>
         /// Writes the .akk test case string to a file.
         /// </summary>
-        public static void WriteToFile()
+        public static void WriteToFile(string filePath)
         {
             string result = "";
             string line;

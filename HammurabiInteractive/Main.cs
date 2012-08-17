@@ -36,22 +36,26 @@ namespace Interactive
     {
         public static void Main (string[] args)
         {
+            // Ask the user what goal they want to investigate
+            Console.WriteLine("Enter goal:");
+            string goal = Console.ReadLine();
+
             // Main loop - runs the interview multiple times
             while (true)
             {
                 // Run the interview
-                Interview.ProcessRequest();
+                Interview.ProcessRequest(goal);
 
                 // Repeat?
                 Console.WriteLine("Repeat the interview?");
                 string next = Console.ReadLine().ToLower();
 
-
                 // Save interview as an .akk test
                 if (next == "save" || next == "s") 
                 {
-                    AkkTest.WriteToFile();
-                    Console.WriteLine("Restarting interview...");
+                    string file = Interactive.Templates.GetQ(goal).filePath;
+                    AkkTest.WriteToFile(file);
+                    Console.WriteLine("Test case saved.  Restarting interview...");
                 }
 
                 // Repeat or quit

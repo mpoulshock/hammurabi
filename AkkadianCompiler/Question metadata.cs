@@ -68,7 +68,8 @@ namespace Akkadian
             // Use a regex to identify the function parts
             string wrd = @"[a-zA-Z0-9_]+";
             Match match = Regex.Match(line, 
-                @"(Tbool|Tnum|Tdate|Tstr|Tset)(In)?(Sym)? (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" ?)(?<arg1>"+wrd+@")?(?<comma1>, ?)?(?<argtyp2>"+wrd+@" )?(?<arg2>"+wrd+@")?(?<comma2>, ?)?(?<argtyp3>"+wrd+@" )?(?<arg3>"+wrd+@")?\)");
+                @"(Tbool|Tnum|Tdate|Tstr|Tset)(In)?(Sym)? (?<fcn>"+wrd+@")\((?<argtyp1>Thing )(?<arg1>"+wrd+@")?(?<comma1>, ?)?(?<argtyp2>Thing )?(?<arg2>"+wrd+@")?(?<comma2>, ?)?(?<argtyp3>Thing )?(?<arg3>"+wrd+@")?\)");
+            // TODO: Line above is ignoring declarations that don't use Thing, like TboolIn Fcn(p)
 
             // If line is a main rule or a line using TvarIn, capture metadata
             if (match.Success && (Util.IsMainRule(line) || match.Groups[2].Value == "In"))
@@ -103,7 +104,8 @@ namespace Akkadian
         {
             // Open the question template class
             string result = 
-                "using System; \r\nusing System.Collections.Generic; \r\nnamespace Interactive { \r\npublic class Templates {" +
+                "using System; \r\nusing System.Collections.Generic; \r\nusing Hammurabi; \r\nnamespace Interactive { \r\npublic class Templates {" +
+                "public static Thing t1 = new Thing(\"t1\");\r\npublic static Thing t2 = new Thing(\"t2\");public static Thing t3 = new Thing(\"t3\");" +
                 "\r\npublic static Question GetQ(string rel) { \r\nswitch(rel) { \r\n";
 
             // Keep track of what has already been added to the file
@@ -118,7 +120,8 @@ namespace Akkadian
                 // Write it...
                 if (!alreadyHave)
                     result += "case \"" + q.relationship + "\": return new Question(rel, \"" + q.questionType + "\", \"" + q.questionText + "\", \"\", @\"" +
-                        q.filePath + "\",\"" + q.fullMethod + "\",\"" + q.param1Type + "\",\"" + q.param2Type + "\",\"" + q.param3Type + "\");\r\n";
+                        q.filePath + "\",\"" + q.fullMethod + "\",\"" + q.param1Type + "\",\"" + q.param2Type + "\",\"" + q.param3Type + "\"," +
+                        FuncText(q) + ");\r\n";
   
                 // Add it to the list of questions that have already been written
                 questionsSoFar += q.relationship + ",";
@@ -131,6 +134,23 @@ namespace Akkadian
             System.IO.StreamWriter file = new System.IO.StreamWriter(filePath + "Question metadata.cs");
             file.WriteLine(result);
             file.Close();
+        }
+
+        /// <summary>
+        /// Creates the first-order function text to write to the metadata file.
+        /// </summary>
+        private static string FuncText(Questions.Qdata q)
+        {
+            string result = "()=>" + q.fullMethod + "(t1";
+
+            // Note: for now, this only handles methods with Things as arguments
+            if (q.param2Type != "")
+                result += ",t2";
+
+            if (q.param3Type != "")
+                result += ",t3";
+
+            return result + ")";
         }
     }
 }

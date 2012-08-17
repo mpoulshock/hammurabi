@@ -9,8 +9,15 @@ AkkadianCompiler.exe
 cd C:\Program Files\MonoDevelop\bin
 mdtool build --f --buildfile:"%~dp0\Hammurabi\Hammurabi.csproj"
 
+:: Build Hammurabi Interactive
+mdtool build --f --buildfile:"%~dp0\HammurabiInteractive\HammurabiInteractive.csproj"
+
+:: Start the interactive test interview
+cd %~dp0\HammurabiInteractive\bin\Debug
+HammurabiInteractive.exe
+
 :: Leave the DOS window open so user can see if there are any compilation errors
-pause
+:: pause
 
 
 :: NOTE: To pin this .bat file to the Windows 7 toolbar:
