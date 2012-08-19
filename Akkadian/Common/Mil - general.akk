@@ -26,7 +26,6 @@ TboolIn OnActiveDuty(Thing p) =
 	
 # BRANCH OF ARMED FORCES
 	
-# Person serves in the Armed Forces in any capacity.
 # >>Does/did {1} serve in the U.S. Armed Forces?
 TboolIn InArmedForces(Thing p) =
 	InActiveArmedForces(p) |

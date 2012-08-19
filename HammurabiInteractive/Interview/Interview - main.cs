@@ -74,8 +74,8 @@ namespace Interactive
                 }
             }
 
-            // Display all facts that have been asserted (for diagnostic purposes)
-            // Console.WriteLine("\nFacts: \n" + Facts.AssertedFacts());
+//             Display all facts that have been asserted (for diagnostic purposes)
+//             Console.WriteLine("\nFacts: \n" + Facts.AssertedFacts());
         }
 
         /// <summary>

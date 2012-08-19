@@ -18,11 +18,8 @@ Tbool Sec1401gAppliesTo(Thing c) =
 # Qualifying parent
 Tbool IsQualifyingServicemember(Thing p) =
 	IsUSCitizen(p) &
-	inAF.IsEverTrue(1946-12-31,1952-12-24) &
+	Mil.InArmedForces(p).IsEverTrue(1946-12-31,1952-12-24) &
 	Stub()  # case does not come within section 201(g) or (i) of the Nationality Act of 1940.
-	
-	Tbool inAF =
-		Mil.InArmedForces(p)
 
 
 # UNIT TESTS

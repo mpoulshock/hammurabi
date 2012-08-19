@@ -38,7 +38,7 @@ namespace Hammurabi
         public static bool GetUnknowns = false;
 
         /// <summary>
-        /// Add a (two-entity) factlet to UnknownFacts.
+        /// Add a factlet to UnknownFacts.
         /// </summary>
         public static void AddUnknown(string rel, Thing e1, Thing e2, Thing e3)
         {

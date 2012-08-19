@@ -273,6 +273,17 @@ namespace Hammurabi
         }
 
         /// <summary>
+        /// Indicates whether the Tvar is eternally uncertain.
+        /// </summary>
+        public bool IsEternallyUncertain
+        {
+            get
+            {
+                return this.IsEternal && this.FirstValue.IsUncertain;
+            }
+        }
+
+        /// <summary>
         /// Returns the value of a Tvar at a specified point in time. 
         /// </summary>
         /// <remarks>

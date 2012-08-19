@@ -26,6 +26,83 @@ namespace Hammurabi
     public partial class H
     {
         /// <summary>
+        /// Structure that conveys information about whether a rule should short-circuit (see below).
+        /// </summary>
+        public class RulePreCheckResponse
+        {
+            public Tvar val;
+            public bool shouldShortCircuit;
+
+            public RulePreCheckResponse(Tvar theTvar, bool shortCircuit)
+            {
+                val = theTvar;
+                shouldShortCircuit = shortCircuit;
+            }
+        }
+
+        /// <summary>
+        /// Determines whether the rule should short-circuit before firing the actual rule logic.
+        /// </summary>
+        public static RulePreCheckResponse ShortCircuitValue<T>(string rel, string symIndicator, params Thing[] argList) where T : Tvar
+        {
+            // First, determine whether any of the Things are unknown.
+            Hstate h = EntityArgIsUnknown(argList);
+            if (h != Hstate.Known) 
+            {
+                T scv = (T)Auxiliary.ReturnProperTvar<T>(new Hval(null, h));
+                return new RulePreCheckResponse(scv, true);
+            }
+
+            // Extract argument parameters from argList
+            Thing param1 = argList[0];
+            Thing param2 = argList.Length > 1 ? argList[1] : null;
+            Thing param3 = argList.Length > 2 ? argList[2] : null;
+
+            // Handle symmetrical facts
+            if (symIndicator == "Sym")
+            {
+                // If the fact has not been asserted, add it to the list of unknown facts, so it gets asked.
+                if (!Facts.HasBeenAssertedSym(param1, rel, param2))
+                {
+                    Facts.AddUnknown(rel, param1, param2, null);
+                }
+
+                // If the fact has been asserted and is not "uncertain", return the asserted value.
+                else
+                {
+                    Tbool f = Facts.Sym(param1, rel, param2);
+                    if (!f.IsEternallyUncertain)
+                    {
+                        return new RulePreCheckResponse(f, true);
+                    }
+                }
+            }
+
+            // Handle non-symmetrical facts
+            else
+            {
+                // If the fact has not been asserted, add it to the list of unknown facts, so it gets asked.
+                if (!Facts.HasBeenAsserted(rel, param1, param2, param3))
+                {
+                    Facts.AddUnknown(rel, param1, param2, param3);
+                }
+
+                // If the fact has been asserted and is not "uncertain", return the asserted value.
+                else
+                {
+                    T f = Facts.QueryTvar<T>(rel, param1, param2, param3);
+                    if (!f.IsEternallyUncertain)
+                    {
+                        return new RulePreCheckResponse(f, true);
+                    }
+                }
+            }
+
+            // Otherwise, proceed to examine the rule conditions and sub-rules.
+            return new RulePreCheckResponse(null, false);
+        }
+
+        /// <summary>
         /// Determines whether any of the input objects are unknown Things.
         /// </summary>
         /// <remarks>
