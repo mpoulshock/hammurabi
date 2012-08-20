@@ -1,26 +1,12 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="HammurabiInteractive\Interview\Interview - main.cs">
-    <Files>
-      <File FileName="HammurabiInteractive\Interview\Interview - main.cs" Line="42" Column="9" />
-      <File FileName="AkkadianCompiler\Question metadata.cs" Line="68" Column="42" />
-      <File FileName="Hammurabi\Generated source\Question metadata.cs" Line="363" Column="18" />
-    </Files>
+  <MonoDevelop.Ide.Workbench>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
           <Node name="AkkadianCompiler" expanded="True" />
-          <Node name="Hammurabi" expanded="True">
-            <Node name="Core" expanded="True">
-              <Node name="Engine" expanded="True" />
-            </Node>
-            <Node name="Generated source" expanded="True" />
-          </Node>
-          <Node name="HammurabiInteractive" expanded="True" selected="True">
-            <Node name="Interview" expanded="True" />
-            <Node name="Questions" expanded="True" />
-          </Node>
-          <Node name="Unit tests - Hammurabi core" expanded="True" />
+          <Node name="Hammurabi" expanded="True" />
+          <Node name="HammurabiInteractive" expanded="True" selected="True" />
         </State>
       </Pad>
       <Pad Id="ClassPad">

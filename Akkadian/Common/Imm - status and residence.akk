@@ -6,16 +6,14 @@
 
 # CITIZENSHIP & RESIDENCE
 
-# Country of residence
-# Includes U.S. territories, possessions, etc.
-# >>In which country does/did {1} reside?
+# >>In which country (or territory) does/did {1} reside?
 TstrIn CountryOfResidence(Thing p)
 
 # Country of citizenship (can have more than one)
 Tbool IsCitizenOf(Thing p, Tstr country) =
 	CountryOfCitizenship(p) == country
 
-#  >>What is/was {1}'s country of citizenship?
+# >>What is/was {1}'s country of citizenship?
 TstrIn CountryOfCitizenship(Thing p)
 
 # >>Is {1} a naturalized U.S. citizen?
@@ -47,7 +45,7 @@ TboolIn EnteredUSWithoutInspection(Thing p) =
 TboolIn ParoledIntoUS(Thing p) =
 	Stub()
 	
-# What is/was {1}'s U.S. immigration status?
+# >>What is/was {1}'s U.S. immigration status?
 Tstr Status(Thing p) = 
 	TstrIn USImmigrationStatus(p)
 	

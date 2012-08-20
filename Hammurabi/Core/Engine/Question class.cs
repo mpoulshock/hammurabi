@@ -50,7 +50,6 @@ namespace Interactive
         public string arg3Type;
         public Func<Tvar> theFunc;
 
-
         public Question(string rel, string type, string text, string explan)
         {
             relationship = rel;

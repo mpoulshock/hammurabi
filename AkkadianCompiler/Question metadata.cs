@@ -68,20 +68,13 @@ namespace Akkadian
             // Use a regex to identify the function parts
             string wrd = @"[a-zA-Z0-9_]+";
             Match match = Regex.Match(line, 
-                @"(Tbool|Tnum|Tdate|Tstr|Tset)(In)?(Sym)? (?<fcn>"+wrd+@")\((?<argtyp1>Thing )(?<arg1>"+wrd+@")?(?<comma1>, ?)?(?<argtyp2>Thing )?(?<arg2>"+wrd+@")?(?<comma2>, ?)?(?<argtyp3>Thing )?(?<arg3>"+wrd+@")?\)");
-            // TODO: Line above is ignoring declarations that don't use Thing, like TboolIn Fcn(p)
+                @"(Tbool|Tnum|Tdate|Tstr|Tset)(In)?(Sym)? (?<fcn>"+wrd+@")\((?<p1>"+wrd+@" ?)(?<a1>"+wrd+@")?(?<c1>, ?)?(?<p2>Thing )?(?<a2>"+wrd+@")?(?<c2>, ?)?(?<p3>Thing )?(?<a3>"+wrd+@")?\)");
 
-            // If line is a main rule or a line using TvarIn, capture metadata
-            if (match.Success && (Util.IsMainRule(line) || match.Groups[2].Value == "In"))
+            if (match.Success)
             {
-                // Extract relationship details
+                // Extract basic relationship details
                 string type = match.Groups[1].Value.Trim();
                 string rel = match.Groups[4].Value.Trim();
-                string method = MainClass.docNameSpace + "." + rel;
-                string param1 = match.Groups[5].Value.Trim();
-                string param2 = match.Groups[8].Value.Trim();
-                string param3 = match.Groups[11].Value.Trim();
-                string file = MainClass.akkDoc;
 
                 // Determine the question text (default to the relationship text)
                 string questionText = rel;
@@ -90,11 +83,39 @@ namespace Akkadian
                     questionText = previousLine.Trim().Replace("# >>","").Trim();
                 }
 
-                // Add metadata to the question list
-                Qdata newQ = new Qdata(rel, type, questionText, file, 
-                                       method, param1, param2, param3);
-                questionData.Add(newQ);
+                // Determine the nature of the parameters
+                string param1 = match.Groups[5].Value.Trim();
+                string param2 = match.Groups[8].Value.Trim();
+                string param3 = match.Groups[11].Value.Trim();
+
+                // Only get method-related data if it's a main rule and all parameters are Things.
+                // This is because only rule conclusions will be used as interview starting points.
+                if (Util.IsMainRule(line) && AllParamsAreThings(param1, param2, param3))
+                {
+                    // Details captured for the purpose of interview goals
+                    string method = MainClass.docNameSpace + "." + rel;
+                    string file = MainClass.akkDoc;
+
+                    // Add metadata to the question list
+                    questionData.Add(new Qdata(rel, type, questionText, file, method, param1, param2, param3));
+                }
+                // Capture metadata from embedded TvarIn statement
+                else if (match.Groups[2].Value == "In")
+                {
+                    // Add metadata to the question list
+                    questionData.Add(new Qdata(rel, type, questionText, null, null, null, null, null));
+                }
             }
+        }
+
+        /// <summary>
+        /// Determine if all of the input parameter types are Things (or blank).
+        /// </summary>
+        private static bool AllParamsAreThings(string p1, string p2, string p3)
+        {
+            return (p1 == "Thing" || p1 == "") &&
+                   (p2 == "Thing" || p2 == "") &&
+                   (p3 == "Thing" || p3 == "");
         }
 
         /// <summary>
@@ -120,7 +141,7 @@ namespace Akkadian
                 // Write it...
                 if (!alreadyHave)
                     result += "case \"" + q.relationship + "\": return new Question(rel, \"" + q.questionType + "\", \"" + q.questionText + "\", \"\", @\"" +
-                        q.filePath + "\",\"" + q.fullMethod + "\",\"" + q.param1Type + "\",\"" + q.param2Type + "\",\"" + q.param3Type + "\"," +
+                        q.filePath + "\",\"" + q.fullMethod + "\",\"" + q.param1Type + "\",\"" + q.param2Type + "\",\"" + q.param3Type + "\"" +
                         FuncText(q) + ");\r\n";
   
                 // Add it to the list of questions that have already been written
@@ -141,15 +162,12 @@ namespace Akkadian
         /// </summary>
         private static string FuncText(Questions.Qdata q)
         {
-            string result = "()=>" + q.fullMethod + "(t1";
+            // If no method is provided, don't create a '()=>Fcn' string
+            if (q.fullMethod == null) return ", null";
 
-            // Note: for now, this only handles methods with Things as arguments
-            if (q.param2Type != "")
-                result += ",t2";
-
-            if (q.param3Type != "")
-                result += ",t3";
-
+            string result = ",()=>" + q.fullMethod + "(t1";
+            if (q.param2Type != "") result += ",t2";
+            if (q.param3Type != "") result += ",t3";
             return result + ")";
         }
     }

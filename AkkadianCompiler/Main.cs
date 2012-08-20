@@ -260,7 +260,7 @@ namespace Akkadian
             line = line.Replace("...","(");
             line = line.Replace("<>","!=");
              
-            // Convert specific syntactic elements from Akk to C#   
+            // Regex part  
             string word = @"[-!\+\*/A-Za-z0-9\.;\(\),""'_<>=&| ]+";
              
             // Stub()

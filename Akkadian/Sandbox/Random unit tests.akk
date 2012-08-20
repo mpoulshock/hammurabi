@@ -8,27 +8,11 @@
 
 Tbool MeetsSomeCriteria(Thing p) =
 	MeetsCriteria1(p) &
-	MeetsCriteria2(p)
+	TboolIn MeetsCriteria2(p)
 
 TboolIn MeetsCriteria1(Thing p) = 
-	Meets1a(p) &
-	Meets1b(p)
-
-TboolIn MeetsCriteria2(Thing p) = 
-	Meets2a(p) |
-	Meets2b(p)
-
-TboolIn Meets1a(Thing p)	
-
-TboolIn Meets1b(Thing p)
-
-TboolIn Meets2a(Thing p)
-
-TboolIn Meets2b(Thing p)
-
-Tbool HaveSomeRel(Thing p1, Thing p2) =
-	Econ.SharePrincipalAbode(p1, p2) &
-	Meets1a(p1)
+	TboolIn Meets1a(p) &
+	TboolIn Meets1b(p)
 	
 	
 # INTERVIEW SEQUENCE WITH |~ OPERATOR

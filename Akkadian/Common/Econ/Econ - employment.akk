@@ -29,12 +29,9 @@ TdateIn DateStartedWorkAt(Thing p, Thing corp)
 TboolIn IsFullTimeEmployee(Thing p, Thing corp) =
 	set:
 	if !IsEmployedBy(p, corp) -> false
-	if hours >= 35 -> true
-	if hours <= 30 -> false
+	if HoursWorkedPerWeek(p, corp) >= 35 -> true
+	if HoursWorkedPerWeek(p, corp) <= 30 -> false
 	else Stub()
-	
-	Tnum hours = 
-		HoursWorkedPerWeek(p, corp)
 
 # >>How many hours per week (on average) does {1} work at {2}?
 TnumIn HoursWorkedPerWeek(Thing p, Thing corp)
@@ -193,6 +190,46 @@ TboolIn IsPanamaRailroadEmployee(Thing p)
 
 # UNIT TESTS
 
+Test: 257940961
+- Things t1, t2
+- ManagesOwnAffairs(t1) = Tbool(?)
+- PercentSelfSupport(t1) = 20
+- Hammurabi.Econ.ManagesOwnAffairs(t1).TestOutput =?= "Time.DawnOf Uncertain "
+
+Test: 528969603
+- Things t1, t2
+- ManagesOwnAffairs(t1) = Tbool(?)
+- PercentSelfSupport(t1) = 80
+- Hammurabi.Econ.ManagesOwnAffairs(t1).TestOutput =?= "Time.DawnOf True "
+
+Test: 87584116
+- Things t1, t2
+- IsFullTimeEmployee(t1,t2) = Tbool(?)
+- HoursWorkedPerWeek(t1,t2) = 45
+- EmploymentRelationship(t1,t2) = "Intern"
+- Hammurabi.Econ.IsFullTimeEmployee(t1, t2).TestOutput =?= "Time.DawnOf False "
+
+Test: 202197433
+- Things t1, t2
+- IsFullTimeEmployee(t1,t2) = Tbool(?)
+- HoursWorkedPerWeek(t1,t2) = 33
+- EmploymentRelationship(t1,t2) = "Employee"
+- Hammurabi.Econ.IsFullTimeEmployee(t1, t2).TestOutput =?= "Time.DawnOf Stub "
+
+Test: 936674161
+- Things t1, t2
+- IsFullTimeEmployee(t1,t2) = Tbool(?)
+- HoursWorkedPerWeek(t1,t2) = 39
+- EmploymentRelationship(t1,t2) = "Employee"
+- Hammurabi.Econ.IsFullTimeEmployee(t1, t2).TestOutput =?= "Time.DawnOf True "
+
+Test: 526288678
+- Things t1, t2
+- IsFullTimeEmployee(t1,t2) = Tbool(?)
+- HoursWorkedPerWeek(t1,t2) = 10
+- EmploymentRelationship(t1,t2) = "Employee"
+- Hammurabi.Econ.IsFullTimeEmployee(t1, t2).TestOutput =?= "Time.DawnOf False "
+
 Test: TboolIn1
 - Thing p
 - Thing c
@@ -204,4 +241,10 @@ Test: Employ
 - Thing c
 - EmploymentRelationship(p,c) = "None"
 - Econ.IsEmployedBy(p,c).Out =?= false	
+
+
+
+
+
+
 

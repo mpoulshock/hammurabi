@@ -123,7 +123,7 @@ namespace Akkadian
         public static bool IsInputRule(string line)
         {
             return Depth(line) == 0 &&
-                   StartsWithAny(line, "TboolIn","TnumIn","TstrIn","TsetIn","TdateIn","DateIn") != "";
+                   StartsWithAny(line, "TboolIn","TnumIn","TstrIn","TsetIn","TdateIn") != "";
         }
 
         /// <summary>
@@ -133,8 +133,6 @@ namespace Akkadian
         {
             // remove whitespace
             line = line.TrimStart(' ');
-            if (line.StartsWith("mod "))
-                line = line.Substring(4, line.Length-4);
             return StartsWithAny(line, RuleTypes);
         }
      
@@ -177,7 +175,7 @@ namespace Akkadian
         /// </summary>
         public static string ConvertDate(string line)
         {
-            return Regex.Replace(line, @"(?<year>[0-9]{4})-(?<mo>[0-9]{2})-(?<day>[0-9]{2})", "Date(${year},${mo},${day})", RegexOptions.IgnoreCase);           
+            return Regex.Replace(line, @"(?<year>[0-9]{4})-(?<mo>[0-9]{2})-(?<day>[0-9]{2})", "Date(${year},${mo},${day})");           
         }
 
         /// <summary>
