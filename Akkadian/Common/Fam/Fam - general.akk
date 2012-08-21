@@ -1,14 +1,13 @@
 # Namespace:    Hammurabi.Fam
 # Summary:      Basic family relationships
-# Updated:      2012-08-01
+# Updated:      2012-08-21
 # Author:       Michael Poulshock
 
 
 # FAMILY MEMBERS
 
-# Family members of a given person
-TsetIn FamilyOf(Thing person) = 
-	Stub()
+# >>Who are {1}'s family members?
+TsetIn FamilyOf(Thing person)
 
 
 # BASIC FAMILY RELATIONSHIPS
@@ -63,19 +62,19 @@ Tbool IsFirstCousinOf(Thing p1, Thing p2) =
 Tbool IsNonFirstCousinOf(Thing p1, Thing p2) =
 	Facts.Sym(p1, "FamilyRelationship", p2, "Other cousin")
         
-# Ancestor
+# >>Is {1} an ancestor of {2}?
 Tbool IsAncestorOf(Thing p1, Thing p2) =
 	TboolIn IsAncestorOf(p1, p2)
 	# or inferred
 
-# String indicating the family relationship between two people.
+# >>What is/was {1}'s family relationship to {2} (if any)?
 Tstr Relationship(Thing p1, Thing p2) =
 	TstrIn FamilyRelationship(p1,p2)
 	
 
 # CUSTODY, GUARDIANSHIP, ETC.	
 
-# Legal custody
+# >>Does/did {1} have legal custody over {2}?
 TboolIn HasCustodyOf(Thing p1, Thing p2)
 
 # Ward (minor)
@@ -83,18 +82,17 @@ Tbool IsWardOf(Thing child, Thing adult) =
 	IsMinor(child) &
 	IsLegalGuardianOf(adult, child)
 
-# Legal guardian (general)
+# >>Is/was {1} a (general) legal guardian of {2}?
 TboolIn IsLegalGuardianOf(Thing p1, Thing p2) =
 	CanBeAGuardianOf(p1, p2) &
-	# !NotAGuardianOf(p1, p2) &
 	TboolIn IsLegalGuardianOf(p1, p2)
         
-# In loco parentis
+# >>Does/did {1} act in loco parentis with respect to {2}?
 TboolIn ActsInLocoParentisOf(Thing p1, Thing p2) =
 	!IsParentOf(p2,p1) &
 	TboolIn ActsInLocoParentisOf(p1, p2)
 
-# Day-to-day responsibility
+# >>Does/did {1} have day-to-day responsibility for {2}?
 Tbool HasDayToDayResponsibilityFor(Thing p1, Thing p2) =
 	CanBeAGuardianOf(p1, p2) &
 	TboolIn HasDayToDayResponsibilityFor(p1, p2)
@@ -120,14 +118,13 @@ Tbool IsCustodialParentOf(Thing p1, Thing p2) =
 
 # OTHER
 
-# Next of kin (nearest blood relative)
+# >>Is {1} the next of kin (nearest blood relative) of {2}?
 TboolIn IsNextOfKinOf(Thing p1, Thing p2) 
 	# or inferred?
 	
 # Lives with any parent, custodian, or guardian (PCG)
 Tbool LivesWithPCG(Thing p) =
-	Stub()
-	# members.Exists(IsLivingWithPCG(p,_))
+	members.Exists(IsLivingWithPCG(p,_))
 
 	Tset members =
 		Econ.HouseholdMembersOf(p) - p
@@ -145,20 +142,36 @@ Tbool AreCohabitating(Thing p1, Thing p2) =
 	Econ.LivesWith(p1, p2) &
 	AreInIntimateRelationship(p1, p2)
 
-# Have a marriage contract or agreement
+# >>Do/did {1} and {2} have a marriage contract or agreement?
 TboolInSym HaveMarriageAgreement(Thing p1, Thing p2)	
 
-# Held each other out to the community as spouses
+# >>Do/did {1} and {2} hold each other out to the community as spouses?
 TboolInSym HeldOutAsSpouses(Thing p1, Thing p2)
 	
-# Intimate together
+# >>Are/were {1} and {2} in an intimate relationship?
 TboolInSym AreInIntimateRelationship(Thing p1, Thing p2)
 
-# Cares for an incapacitated person
+# >>Does/did {1} care for an incapacitated person?
 TboolIn CaresForIncapacitatedPerson(Thing p) 
 
 
 # UNIT TESTS
+
+Test: 49171719
+- Things t1, t2
+- Things sam, john
+- HouseholdMembersOf(t1) = [[sam, john]]
+- LivesWith(sam,t1) = true
+- IsParentOf(sam,t1) = false
+- HasCustodyOf(sam,t1) = false
+- IsLegalGuardianOf(sam,t1) = true
+- LivesWith(john,t1) = false
+- Hammurabi.Fam.LivesWithPCG(t1).TestOutput =?= "Time.DawnOf True "
+
+Test: 135354455
+- Things t1, t2
+- FamilyRelationship(t2,t1) = "First cousin"
+- Hammurabi.Fam.IsCousinOf(t1, t2).TestOutput =?= "Time.DawnOf True "
 
 Test: Sanity1a	
 - Thing a
@@ -194,4 +207,6 @@ Test: ShortCircuit3
 - Thing p2
 - IsParentOf(p2,p1) = true
 - Fam.ActsInLocoParentisOf(p1,p2).Out =?= false
+
+
 

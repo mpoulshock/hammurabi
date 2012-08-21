@@ -46,21 +46,34 @@ namespace Interactive
                 // Run the interview
                 Interview.ProcessRequest(goal);
 
-                // Repeat?
-                Console.WriteLine("Repeat the interview?");
-                string next = Console.ReadLine().ToLower();
+                // Next action
+                Console.WriteLine("Repeat?    r");
+                Console.WriteLine("Save?      s");
+                Console.WriteLine("New topic? n");
+                string next = Console.ReadLine();
 
                 // Save interview as an .akk test
-                if (next == "save" || next == "s") 
+                if (next == "s") 
                 {
                     string file = Interactive.Templates.GetQ(goal).filePath;
                     AkkTest.WriteToFile(file);
-                    Console.WriteLine("Test case saved.  Restarting interview...");
+
+                    // Next action
+                    Console.WriteLine("\nTest case saved.\n");
+                    Console.WriteLine("Repeat?    r");
+                    Console.WriteLine("New topic? n");
+                    next = Console.ReadLine();
                 }
 
-                // Repeat or quit
-                if (next == "y" || next == "yes" || 
-                    next == "save" || next == "s") {}
+                // Switch to a new interview topic
+                if (next == "n")
+                {
+                    Console.WriteLine("\nEnter goal:");
+                    goal = Console.ReadLine();
+                }
+
+                // Continue session or quit
+                if (next == "r" || next == "n") {}
                 else break;
             }
         }

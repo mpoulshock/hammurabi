@@ -6,13 +6,13 @@
 
 # BIRTH, LIFE, AND DEATH
 
-# >> What is {1}'s date of birth?
+# >>What is {1}'s date of birth?
 TdateIn DoB(Thing p)
 
-# >> What is {1}'s date of death?
+# >>What is {1}'s date of death?
 TdateIn DateOfDeath(Thing p)
 
-# >> Is {1} deceased?
+# >>Is {1} deceased?
 TboolIn IsDeceased(Thing p)
 
 # Age (in years)
@@ -71,26 +71,40 @@ TboolIn HasSSN(Thing p)
 # >>Has {1} applied for (but not yet received) a Social Security Number?
 TboolIn AppliedForSSN(Thing p) 
 
-# >>Is {1} legally blind? (See 42 USC 416(i)(1)(B).)
+# See 42 USC 416(i)(1)(B).
+# >>Is {1} legally blind?
 TboolIn IsBlind(Thing p)
 
-# Does/did {1} have a physical or mental impairment that substantially limits one or more major life activities (see 42 USC 12102)?
+# >>Does/did {1} have a physical or mental impairment that substantially limits one or more major life activities (see 42 USC 12102)?
 TboolIn IsDisabled(Thing p)
 
-# Is/was {1} incapable of self-care?
+# >>Is/was {1} incapable of self-care?
 TboolIn IsIncapableOfSelfCare(Thing p) 
 
-# Is/was {1} in prison?
+# >>Is/was {1} in prison?
 TboolIn IsInPrison(Thing p)
 
-# In juvenile rehab facility
+# >>In juvenile rehab facility
 TboolIn InJuvenileFacility(Thing p)
 
-# In a drug or alcohol treatment program
+# >>In a drug or alcohol treatment program
 TboolIn InDrugOrAlcoholTreatmentProg(Thing p) 
 	
 	
 # UNIT TESTS
+
+Test: 193653325
+- Things t1, t2
+- IsDeceased(t1) = true
+- DoB(t1) = 2000-01-02
+- DateOfDeath(t1) = 2088-03-02
+- Hammurabi.H.IsAlive(t1).TestOutput =?= "Time.DawnOf False 1/2/2000 12:00:00 AM True 3/2/2088 12:00:00 AM False "
+
+Test: 143320034
+- Things t1, t2
+- IsDeceased(t1) = false
+- DoB(t1) = 2011-01-01
+- Hammurabi.H.IsAlive(t1).TestOutput =?= "Time.DawnOf False 1/1/2011 12:00:00 AM True 1/1/2131 12:00:00 AM False "
 
 Test: 773795755
 - Things t1, t2
@@ -149,7 +163,4 @@ Test: Alive3c
 - DateOfDeath(p) = 2090-01-01
 - IsDeceased(p) = true
 - IsAlive(p).AsOf(1999-01-01).Out =?= false
-
-	
-
 

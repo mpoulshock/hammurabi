@@ -62,28 +62,42 @@ Tnum MonthlyIncome(Thing p) =
 	MonthlyChildSupportIncome(p) +
 	MonthlyUnemploymentCompensation(p)
 
-# Wages
+# >>What are/were {1}'s monthly wages?
 TnumIn MonthlyWages(Thing p) 
 
-# Self-employment income
+# >>What is/was {1}'s monthly self-employment income?
 TnumIn MonthlySelfEmploymentIncome(Thing p)
 	
-# Commissions
+# >>What are/were {1}'s monthly commissions?
 TnumIn MonthlyCommissions(Thing p) 
 
-# Social Security benefits
+# >>What are/were {1}'s monthly Social Security benefits?
 TnumIn MonthlySocialSecurityBenefits(Thing p) 
 
-# Supplemental Security Income (SSI)
+# >>What is/was {1}'s monthly Supplemental Security Income (SSI)?
 TnumIn MonthlySupplementalSecurityIncome(Thing p) 
 
-# Veterans benefits
+# >>What are/were {1}'s monthly veterans benefits?
 TnumIn MonthlyVeteransBenefits(Thing p) 
 
-# Child support income
+# >>What is/was {1}'s monthly child support income?
 TnumIn MonthlyChildSupportIncome(Thing p)
 
-# Unemployment compensation
+# >>What is/was {1}'s monthly unemployment compensation?
 TnumIn MonthlyUnemploymentCompensation(Thing p) 
 	
 	
+
+# UNIT TESTS
+
+Test: 708567851
+- Things t1, t2
+- MonthlyWages(t1) = 800
+- MonthlySelfEmploymentIncome(t1) = 0
+- MonthlySocialSecurityBenefits(t1) = 1
+- MonthlySupplementalSecurityIncome(t1) = 2
+- MonthlyVeteransBenefits(t1) = 0
+- MonthlyChildSupportIncome(t1) = 3
+- MonthlyUnemploymentCompensation(t1) = 0
+- Hammurabi.Econ.AnnualIncome(t1).TestOutput =?= "Time.DawnOf 9672 "
+

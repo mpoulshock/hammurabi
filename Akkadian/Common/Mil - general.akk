@@ -101,3 +101,12 @@ Dishonorable discharge
 Uncharacterized 
 ##
 
+
+
+# UNIT TESTS
+
+Test: 108379812
+- Things t1, t2
+- InArmedForces(t1) = false
+- Hammurabi.Mil.InArmedForces(t1).TestOutput =?= "Time.DawnOf False "
+

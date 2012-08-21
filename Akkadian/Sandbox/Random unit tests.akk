@@ -144,6 +144,20 @@ Test: Loop6
 - IsCitizen(mom) = false
 - Sandbox.IsCitizen(p).Out =?= false
 
+Test: 864022057
+- Things t1, t2
+- IsCitizen(t1) = Tbool(?)
+- IsCitizenByLaw(t1) = false
+- Things barry
+- MotherOf(t1) = [[barry]]
+- IsCitizen(barry) = Tbool(?)
+- IsCitizenByLaw(barry) = false
+- Things monroevius
+- MotherOf(barry) = [[monroevius]]
+- IsCitizen(monroevius) = Tbool(?)
+- IsCitizenByLaw(monroevius) = true
+- Hammurabi.Sandbox.IsCitizen(t1).TestOutput =?= "Time.DawnOf True "
+
 
 # TSET INPUTS
 
@@ -276,3 +290,10 @@ Test: TimeVaryingBoolean2
 Test: TimeVaryingBoolean3
 - Sandbox.SomeTemporalBoolean().AsOf(2002-03-09).Out =?= false		
 		
+
+# UNIT TESTS
+
+
+
+
+

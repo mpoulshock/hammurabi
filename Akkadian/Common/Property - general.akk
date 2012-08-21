@@ -4,16 +4,19 @@
 # Author:       Michael Poulshock
 
 
-# Nature of the property (e.g. currency, real estate, etc.)
+# TODO: Possibly redundant...
+
+
+# >>What's the nature of {1}?  (Options: Currency, Real estate.)
 TstrIn TypeOf(Thing property)
 
-# Value in dollars
+# >>What is/was the value of the property (in dollars)?
 TnumIn ValueInDollars(Thing property)
 
-# Set of owners
+# >>Who owns/owned the property?
 TsetIn OwnersOf(Thing property)
 
-# Person owns property
-TboolIn Owns(Thing p, Thing property)
+# >>Does/did {1} own {2}?
+TboolIn Owns(Thing person, Thing property)
 
 		

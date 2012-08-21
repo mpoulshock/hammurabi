@@ -41,6 +41,9 @@ namespace Interactive
             string rel = response.NextFact.relationship;
             string qType = Templates.GetQ(rel).questionType;
 
+            // Create the fact/relationship text for the .akk unit test
+            if (qType != "Tset")  AkkTest.testStr += AkkTest.assertedRelationship;
+
             // Assert the fact (converted to the proper type of Tvar)
             if (qType == "Tbool")
             {
@@ -105,17 +108,22 @@ namespace Interactive
                 }
                 else
                 {
+                    // Create a list of Things
                     string[] items = val.Split(new char[] {';'});
                     List<Thing> list = new List<Thing>();
-
                     foreach (string i in items)
                     {
                         list.Add(new Thing(i.Trim()));
                     }
 
+                    // Assert the Tset
                     Tset result = new Tset(list);
                     Facts.Assert(subj, rel, obj, result);
-                    AkkTest.testStr += "[[" + val + "]]\r\n";
+
+                    // Build the .akk unit test string
+                    AkkTest.testStr += "- Things " + val.Replace(";",",") + "\r\n";
+                    AkkTest.testStr += AkkTest.assertedRelationship;
+                    AkkTest.testStr += "[[" + val.Replace(";",",") + "]]\r\n";
                 }
             }
         }

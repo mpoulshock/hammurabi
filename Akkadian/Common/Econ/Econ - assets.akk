@@ -36,8 +36,8 @@ Tnum RealPropEquity(Thing p) =
 	Stub()
 	# AllProperty.Sum(EquityIn(p,_))
 
-# Equity in a home or real property
-TnumIn EquityIn(Thing p, Thing r)
+# What amount of equity does {1} have in {2}?  (Express the answer in percentage points.)
+TnumIn EquityIn(Thing person, Thing property)
 
 # All real property of a given person
 TsetIn RealPropertyOf(Thing p)
@@ -47,13 +47,13 @@ TsetIn RealPropertyOf(Thing p)
 TsetIn PropertyOf(Thing p)
 	# AllProperty.Filter(Owns(p,_))
 	
-# Property ownership
-TboolIn Owns(Thing p, Thing r)
+# >>Does {1} own {2}?
+TboolIn Owns(Thing person, Thing property)
 
 # Real property
 Tbool IsRealProperty(Thing r) =
 	PropType(r) == "Real property"
 
-# Property type
+# >>What type of property is {1}?
 TstrIn PropType(Thing r)
 

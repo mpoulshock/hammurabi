@@ -4,13 +4,13 @@
 # Author:       Michael Poulshock
 
 
-# Number of employees
-TnumIn NumberOfEmployees(Thing c)
+# >>How many employees does {1} have?
+TnumIn NumberOfEmployees(Thing corp)
 	
-# Governmental/public agency
-TboolIn IsGovtAgency(Thing c)
+# >>Is {1} a governmental entity?
+TboolIn IsGovtAgency(Thing corp)
 
-# Type of corporate entity
-TstrIn TypeOfCorporateEntity(Thing c)
+# >>What type of corporate entity is {1}?
+TstrIn TypeOfCorporateEntity(Thing corp)
 	
 	

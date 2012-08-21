@@ -1,6 +1,6 @@
 # Namespace:    Hammurabi.Fam
 # Summary:      Basic family relationships: parent-child
-# Updated:      2012-07-12
+# Updated:      2012-08-21
 # Author:       Michael Poulshock
 
 
@@ -53,7 +53,7 @@ Tset ChildrenOf(Thing p) =
 Tbool IsChildOf(Thing p1, Thing p2) =
 	IsParentOf(p2,p1)
 	
-# One person is the parent of another
+# >>Is {1} {2}'s parent?
 TboolIn IsParentOf(Thing p1, Thing p2) =
 	IsBiologicalParentOf(p1, p2) |
 	IsAdoptiveParentOf(p1, p2) |
@@ -76,14 +76,15 @@ Tbool IsFosterParentOf(Thing p1, Thing p2) =
 Tbool IsStepparentOf(Thing p1, Thing p2) =
 	Facts.Sym(p1, "FamilyRelationship", p2, "Stepparent", "Stepchild")
 
-# Pregnant
+# >>Is/was {1} pregnant?
 TboolIn IsPregnant(Thing p)
 
-# Unborn - in order to reason about fetuses
+# To reason about fetuses...
+# >>Is {1} as yet unborn?
 TboolIn IsUnborn(Thing p)
 
-# Unknown parentage
 # TODO: Prove...
+# >>Is/was {1} of unknown parentage?
 TboolIn IsOfUnknownParentage(Thing p)
 
 
@@ -94,45 +95,45 @@ Tbool PaternityEstablishedFor(Thing parent, Thing child) =
 	IsMale(parent) &
 	is12YearAgeDiff &
 	TboolIn PaternityEstablishedFor(parent,child) &
-	TheTime.IsAtOrAfter(date)
+	TheTime.IsAtOrAfter(DatePaternityEstablishedFor(parent,child))
 	
 	Tbool is12YearAgeDiff =
 		Age(parent) - Age(child) >= 12
 	
-	Tdate date =
-		TdateIn DatePaternityEstablishedFor(parent,child)
+# >> When was {1}'s paternity of {2} established?
+TdateIn DatePaternityEstablishedFor(Thing parent, Thing child)
 
 # Born "out of wedlock"
-TboolIn BornOutOfWedlock(Thing p) =
+Tbool BornOutOfWedlock(Thing p) =
 	IsIllegitimate(p)
 		
-# Illegitimate child
-Tbool IsIllegitimate(Thing p) =
+# >>Was {1} an illegitimate child?
+TboolIn IsIllegitimate(Thing p) =
 	!ParentsMarriedAsOf(p, DoB(p))
 	# unless child is born shortly after the parents' divorce
 
-# Is legitimated by law (of the child's domicile)
 # Assumption: could be done by either statute, court, or both
+# >>Is/was {1} legitimated (under the law of {1}'s domicile)?
 TboolIn IsLegitimatedByLaw(Thing child) =
 	Stub()
 	
 # Legitimated by father (he acknowledged parental responsibility)
 # Example of temporal value built from threshold facts and an event
+# >>Does/did {1} legitimate {2}?
 Tbool Legitimated(Thing parent, Thing child) =
 	IsFatherOf(parent, child) &
 	IsIllegitimate(child) &
 	TboolIn Legitimated(parent,child) &
-	TheTime.IsAtOrAfter(date)
-	
-	Tdate date =
-		TdateIn DateLegitimated(parent,child)
+	TheTime.IsAtOrAfter(DateLegitimated(parent,child))
 
-# Legally committed to financially support child
+# >>When did {1} legitimate {2}?
+TdateIn DateLegitimated(Thing parent, Thing child)
+	
+# >>Is/was {1} legally committed to financially supporting {2}?
 Tbool CommittedToFinanciallySupport(Thing p1, Thing p2) =
 	TboolIn CommittedToFinanciallySupport(p1,p2) &
-	TheTime.IsAtOrAfter(date)
+	TheTime.IsAtOrAfter(DateCommittedToFinanciallySupport(p1,p2))
 	
-	Tdate date =
-		TdateIn DateCommittedToFinanciallySupport(p1,p2)
-		
-		
+# >>When was {1} first legally committed to financially supporting {2}?
+TdateIn DateCommittedToFinanciallySupport(Thing parent, Thing child)		
+

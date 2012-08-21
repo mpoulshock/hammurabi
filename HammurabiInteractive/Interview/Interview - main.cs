@@ -121,7 +121,7 @@ namespace Interactive
             // Display question text
             string qText = QuestionText(theFact, theQ);
             Console.WriteLine(qText);
-            AkkTest.AddUnitTestAssertRel(theFact, theQ);
+            AkkTest.assertedRelationship = AkkTest.AddUnitTestAssertRel(theFact, theQ);
 
             // Display an explanation (if any) 
             if (theQ.explanation != "")

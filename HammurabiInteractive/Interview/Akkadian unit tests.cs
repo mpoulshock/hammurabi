@@ -31,11 +31,14 @@ namespace Interactive
     /// </summary>
     public static class AkkTest 
     {
+        // Build up a string representing an .akk test case
+        public static string testStr = "";
+
         // Thing(s) referenced by the goal (for .akk test case)
         public static string things = "- Things t1, t2";
 
-        // Build up a string representing an .akk test case
-        public static string testStr = "";
+        // Relationship that is asserted on each line of the .akk unit test
+        public static string assertedRelationship = "";
 
         // Generates an identifier for each test case
         public static Random random = new Random();
@@ -56,20 +59,22 @@ namespace Interactive
         /// <summary>
         /// Adds the assertion relationship to the .akk unit test text.
         /// </summary>
-        public static void AddUnitTestAssertRel(Facts.Factlet theF, Question theQ)
+        public static string AddUnitTestAssertRel(Facts.Factlet theF, Question theQ)
         {
-            testStr += "- " + theQ.relationship + "(" + theF.subject.Id;
+            string result = "- " + theQ.relationship + "(" + theF.subject.Id;
 
             if (theF.object1 == null)
             {
                 // e.g. Rel(p) =
-                testStr += ") = ";
+                result += ") = ";
             }
             else
             {
                 // e.g. Rel(p,q) =
-                testStr += "," + theF.object1.Id + ") = ";
+                result += "," + theF.object1.Id + ") = ";
             }
+
+            return result;
         }
 
         /// <summary>
@@ -107,6 +112,7 @@ namespace Interactive
         {
             string result = "";
             string line;
+            bool success = false;
 
             // Read each line of the .akk file, looking for the place to insert the unit test text.
             WebRequest req = WebRequest.Create(filePath);
@@ -118,9 +124,17 @@ namespace Interactive
                 if (line.StartsWith("# UNIT TESTS"))
                 {
                     result += "\r\n" + testStr + "\r\n";
+                    success = true;
                 }
             }
             stream.Close();
+
+            // If file doesn't have # UNIT TEST block, add one
+            if (!success)
+            {
+                result += "\r\n# UNIT TESTS\r\n";
+                result += "\r\n" + testStr + "\r\n";
+            }
 
             // Write the updated Akkadian to a file
             System.IO.StreamWriter file = new System.IO.StreamWriter(filePath);

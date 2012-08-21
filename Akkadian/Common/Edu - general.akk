@@ -20,7 +20,7 @@ TboolIn GraduatedHighSchool(Thing p) =
 # >>What is the highest educational degree that {1} earned? (Options: High school, College, Master's degree, Professional degree, Doctorate degree)
 TstrIn HighestLevelAttained(Thing p)
 
-# >>At what educational level is {1} currently enrolled?
+# >>At what educational level is/was {1} enrolled?
 TstrIn EnrolledIn(Thing p)
 
 # >>Is/was {1} a student?

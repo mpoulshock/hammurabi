@@ -17,7 +17,7 @@ of different ways:
 
 # MARITAL RELATIONSHIPS
 
-# Two people are legally married
+# >>Are/were {1} and {2} legally married?
 TboolInSym AreMarried(Thing p1, Thing p2) =
 	set: 
 	if Facts.HasBeenAsserted("IsMarried",p1) & !IsMarried(p1) -> false
@@ -26,7 +26,7 @@ TboolInSym AreMarried(Thing p1, Thing p2) =
 	if Facts.HasBeenAsserted("SpousesOf",p2) -> SpousesOf(p2).Contains(p1)
 	else Facts.Sym(p1, "FamilyRelationship", p2, "Spouse")
 	
-# Spouse (as a Tset)
+# >>Who is/was {1}'s spouse(s)?
 TsetIn SpousesOf(Thing p) =
 	set: 
 	if !Facts.HasBeenAsserted("SpousesOf",p) & spouses.Count == 0 -> new Tset(Hstate.Unstated)
@@ -35,20 +35,16 @@ TsetIn SpousesOf(Thing p) =
 	Tset spouses = 
 		Facts.EveryoneExcept(p).Filter(AreMarried(p,_))
 	
-# One person's marital status is "married"
+# >>Is/was {1} married?
 TboolIn IsMarried(Thing p) =
 	MaritalStatus(p) == "Married" |
 	SpousesOf(p).Count > 0 |
 	Facts.EveryoneExcept(p).Exists(AreMarried(p,_))
 	
-# Marital status
+# >>What is/was {1}'s marital status?
 Tstr MaritalStatus(Thing p) =
 	TstrIn MaritalStatus(p)
 	# or, has a spouse
-
-# Spouse
-# Thing SpouseOf(Thing p) =
-# 	TsetIn IsMarriedTo(p).ToThing
 
 	
 # GAY MARRIAGE
@@ -83,20 +79,28 @@ Tbool InCivilUnion(Thing p1, Thing p2) =
 Tbool ExSpouses(Thing p1, Thing p2) =
 	Facts.Sym(p1, "FamilyRelationship", p2, "Former spouse")
         
-# Legally separated
+# >>Are/were {1} and {2} legally separated?
 TboolInSym AreSeparated(Thing p1, Thing p2)
         
-# Divorced
+# >>Are/were {1} and {2} divorced?
 TboolInSym AreDivorced(Thing p1, Thing p2) 
 
-# Widowed (includes widows and widowers)
+# >>Is {1} a widow(er)?
 TboolIn IsWidowed(Thing p)
 
-# Mental capacity to marry
+# >>Does/did {1} have the mental capacity to marry?
 TboolIn HasMentalCapacityToMarry(Thing p)
 
 
 # UNIT TESTS
+
+Test: 482400415
+- Things t1, t2
+- IsMarried(t1) = Tbool(?)
+- MaritalStatus(t1) = Tstr(?)
+- Things jon
+- SpousesOf(t1) = [[jon]]
+- Hammurabi.Fam.IsMarried(t1).TestOutput =?= "Time.DawnOf True "
 
 Test: IsMarried1a
 - Thing p
@@ -270,4 +274,6 @@ Test: SpousesOf7b
 - Thing q
 - FamilyRelationship(p,q) = "Spouse"
 - Fam.SpousesOf(q).Count.Out =?= 1
+
+
 
