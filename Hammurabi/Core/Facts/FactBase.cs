@@ -172,5 +172,23 @@ namespace Hammurabi
 
             return result;
         }
+
+        /// <summary>
+        /// Determine whether a Thing has been referenced in any fact.
+        /// </summary>
+        public static bool ThingExists(string name)
+        {
+            foreach (Fact f in FactBase)
+            {
+                if (f.subject.Id == name ||
+                    f.directObject1.Id == name ||
+                    f.directObject2.Id == name)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
 	}
 }

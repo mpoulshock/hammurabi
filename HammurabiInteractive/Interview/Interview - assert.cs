@@ -111,9 +111,15 @@ namespace Interactive
                     // Create a list of Things
                     string[] items = val.Split(new char[] {';'});
                     List<Thing> list = new List<Thing>();
+                    string thingList = "";
                     foreach (string i in items)
                     {
-                        list.Add(new Thing(i.Trim()));
+                        string name = i.Trim();
+//                        if (name != "t1" && name != "t2" && !Facts.ThingExists(name))
+//                        {
+                            list.Add(new Thing(name));
+                            thingList += name + ",";
+//                        }
                     }
 
                     // Assert the Tset
@@ -121,7 +127,7 @@ namespace Interactive
                     Facts.Assert(subj, rel, obj, result);
 
                     // Build the .akk unit test string
-                    AkkTest.testStr += "- Things " + val.Replace(";",",") + "\r\n";
+                    AkkTest.testStr += "- Things " + thingList.TrimEnd(',') + "\r\n";
                     AkkTest.testStr += AkkTest.assertedRelationship;
                     AkkTest.testStr += "[[" + val.Replace(";",",") + "]]\r\n";
                 }

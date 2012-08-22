@@ -19,8 +19,7 @@ Tbool ParentsMarriedAsOf(Thing p, Tdate date) =
 # Mother on a particular date
 # Warning: returns null if more than one mother
 Thing MotherAsOf(Thing p, Tdate date) =
-	new Thing("")
-	# Fam.ParentsOf(p).AsOf(date).Filter(IsMotherOf(_,p)).ToThing
+	ParentsOf(p).AsOf(date).Filter(IsMotherOf(_,p)).ToThing
 	
 # Is mother of
 Tbool IsMotherOf(Thing p1, Thing p2) =
@@ -30,31 +29,35 @@ Tbool IsMotherOf(Thing p1, Thing p2) =
 # Father on a particular date
 # Warning: returns null if more than one father
 Thing FatherAsOf(Thing p, Tdate date) =
-	new Thing("")
-	# Fam.ParentsOf(p).AsOf(date).Filter(IsFatherOf(_,p)).ToThing
+	ParentsOf(p).AsOf(date).Filter(IsFatherOf(_,p)).ToThing
 	
 # Is father of
 Tbool IsFatherOf(Thing p1, Thing p2) =
 	IsParentOf(p1,p2) &
 	IsMale(p1)
 	
-# Person's parents
-Tset ParentsOf(Thing p) =
-	Stub()
-	# AllPeopleExcept(p).Filter(IsParentOf(_,p))
+# Who are/were {1}'s parents?
+TsetIn ParentsOf(Thing p) 
 
-# Person's children
-Tset ChildrenOf(Thing p) =
-	Stub()
-	# AllPeople.Filter(IsParentOf(p,_))
-
-# Child
+# Who are/were {1}'s children?
+TsetIn ChildrenOf(Thing p)	
+	
 # Not strictly necessary but aids readability
 Tbool IsChildOf(Thing p1, Thing p2) =
 	IsParentOf(p2,p1)
 	
+##
 # >>Is {1} {2}'s parent?
 TboolIn IsParentOf(Thing p1, Thing p2) =
+	IsBiologicalParentOf(p1, p2) |
+	IsAdoptiveParentOf(p1, p2) |
+	IsFosterParentOf(p1, p2) |
+	IsStepparentOf(p1, p2)
+##
+
+# >>Is {1} {2}'s parent?
+TboolIn IsParentOf(Thing p1, Thing p2) =
+	ChildrenOf(p1).Contains(p2) |
 	IsBiologicalParentOf(p1, p2) |
 	IsAdoptiveParentOf(p1, p2) |
 	IsFosterParentOf(p1, p2) |
@@ -79,8 +82,7 @@ Tbool IsStepparentOf(Thing p1, Thing p2) =
 # >>Is/was {1} pregnant?
 TboolIn IsPregnant(Thing p)
 
-# To reason about fetuses...
-# >>Is {1} as yet unborn?
+# >>Is {1} unborn (i.e. a fetus)?
 TboolIn IsUnborn(Thing p)
 
 # TODO: Prove...
@@ -90,7 +92,7 @@ TboolIn IsOfUnknownParentage(Thing p)
 
 # PATERNITY, LEGITIMATION, ETC.
 
-# Establishes paternity
+# >> Was {1}'s paternity of {2} established?
 Tbool PaternityEstablishedFor(Thing parent, Thing child) =
 	IsMale(parent) &
 	is12YearAgeDiff &
@@ -136,4 +138,15 @@ Tbool CommittedToFinanciallySupport(Thing p1, Thing p2) =
 	
 # >>When was {1} first legally committed to financially supporting {2}?
 TdateIn DateCommittedToFinanciallySupport(Thing parent, Thing child)		
+
+
+# UNIT TESTS
+
+Test: 880020957
+- Things t1, t2
+- IsParentOf(t1,t2) = Tbool(?)
+- Thing t3
+- ChildrenOf(t1) = [[t2, t3]]
+- Hammurabi.Fam.IsParentOf(t1, t2).TestOutput =?= "Time.DawnOf True "
+
 

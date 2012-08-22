@@ -4,6 +4,17 @@
 # Author:       Michael Poulshock
 
 
+# TSET.CONTAINS
+
+Tbool SetContainsThing(Thing p1, Thing p2) =
+	Fam.ChildrenOf(p1).Contains(p2)
+
+Test: 85594484
+- Things t1, t2
+- ChildrenOf(t1) = [[t2]]
+- Hammurabi.Sandbox.SetContainsThing(t1, t2).TestOutput =?= "Time.DawnOf True "
+
+
 # ASK INTERMEDIATE QUESTION BEFORE DESCENDING TREE
 
 Tbool MeetsSomeCriteria(Thing p) =
@@ -292,8 +303,5 @@ Test: TimeVaryingBoolean3
 		
 
 # UNIT TESTS
-
-
-
 
 
