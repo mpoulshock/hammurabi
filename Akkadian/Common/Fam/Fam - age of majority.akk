@@ -6,7 +6,7 @@
 
 # Warning: many statutes redefine "minor" for specific, limited purposes
 # >>Is/was {1} a minor?
-TboolIn IsMinor(Thing p) =
+TboolIn? IsMinor(Thing p) =
 	!ReachedAgeOfMajority(p) & 
 	!IsEmancipatedMinor(p)
 

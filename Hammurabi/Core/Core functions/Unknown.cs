@@ -43,7 +43,7 @@ namespace Hammurabi
         /// <summary>
         /// Determines whether the rule should short-circuit before firing the actual rule logic.
         /// </summary>
-        public static RulePreCheckResponse ShortCircuitValue<T>(string rel, string symIndicator, params Thing[] argList) where T : Tvar
+        public static RulePreCheckResponse ShortCircuitValue<T>(string rel, string symIndicator, string questionIndicator, params Thing[] argList) where T : Tvar
         {
             // First, determine whether any of the Things are unknown.
             Hstate h = EntityArgIsUnknown(argList);
@@ -64,7 +64,11 @@ namespace Hammurabi
                 // If the fact has not been asserted, add it to the list of unknown facts, so it gets asked.
                 if (!Facts.HasBeenAssertedSym(param1, rel, param2))
                 {
-                    Facts.AddUnknown(rel, param1, param2, null);
+                    // "?" indicates that this node is a question to be asked of the user
+                    if (questionIndicator == "?")
+                    {
+                        Facts.AddUnknown(rel, param1, param2, null);
+                    }
                 }
 
                 // If the fact has been asserted and is not "uncertain", return the asserted value.
@@ -78,16 +82,16 @@ namespace Hammurabi
                 }
             }
 
-            // Handle non-symmetrical facts
+            // Handle non-symmetrical facts (same code pattern as above)
             else
             {
-                // If the fact has not been asserted, add it to the list of unknown facts, so it gets asked.
                 if (!Facts.HasBeenAsserted(rel, param1, param2, param3))
                 {
-                    Facts.AddUnknown(rel, param1, param2, param3);
+                    if (questionIndicator == "?")
+                    {
+                        Facts.AddUnknown(rel, param1, param2, param3);
+                    }
                 }
-
-                // If the fact has been asserted and is not "uncertain", return the asserted value.
                 else
                 {
                     T f = Facts.QueryTvar<T>(rel, param1, param2, param3);

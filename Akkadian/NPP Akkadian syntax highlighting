@@ -12,7 +12,7 @@
             <Keywords name="Operators">! &amp; | ~</Keywords>
             <Keywords name="Comment">1## 2## 0#</Keywords>
             <Keywords name="Words1">if then else match -&gt; set: null true false from temporal: endtemporal</Keywords>
-            <Keywords name="Words2">mod TboolIn TnumIn TdateIn TstrIn TsetIn DateIn TboolInSym Stub()</Keywords>
+            <Keywords name="Words2">TboolIn TboolIn? TnumIn TnumIn? TdateIn TdateIn? TstrIn TstrIn? TsetIn TsetIn? DateIn TboolInSym TboolInSym? Stub()</Keywords>
             <Keywords name="Words3">Tbool Tnum Tdate Tstr Tset DateTime bool int Thing Things</Keywords>
             <Keywords name="Words4">Test:</Keywords>
         </KeywordLists>

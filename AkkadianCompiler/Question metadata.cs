@@ -68,7 +68,7 @@ namespace Akkadian
             // Use a regex to identify the function parts
             string wrd = @"[a-zA-Z0-9_]+";
             Match match = Regex.Match(line, 
-                @"(Tbool|Tnum|Tdate|Tstr|Tset)(In)?(Sym)? (?<fcn>"+wrd+@")\((?<p1>"+wrd+@" ?)(?<a1>"+wrd+@")?(?<c1>, ?)?(?<p2>Thing )?(?<a2>"+wrd+@")?(?<c2>, ?)?(?<p3>Thing )?(?<a3>"+wrd+@")?\)");
+                @"(Tbool|Tnum|Tdate|Tstr|Tset)(In)?(Sym)?\?? (?<fcn>"+wrd+@")\((?<p1>"+wrd+@" ?)(?<a1>"+wrd+@")?(?<c1>, ?)?(?<p2>Thing )?(?<a2>"+wrd+@")?(?<c2>, ?)?(?<p3>Thing )?(?<a3>"+wrd+@")?\)");
 
             if (match.Success)
             {

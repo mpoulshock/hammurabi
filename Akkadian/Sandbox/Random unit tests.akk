@@ -21,7 +21,7 @@ Tbool MeetsSomeCriteria(Thing p) =
 	MeetsCriteria1(p) &
 	TboolIn MeetsCriteria2(p)
 
-TboolIn MeetsCriteria1(Thing p) = 
+TboolIn? MeetsCriteria1(Thing p) = 
 	TboolIn Meets1a(p) &
 	TboolIn Meets1b(p)
 	
