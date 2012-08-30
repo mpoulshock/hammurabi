@@ -108,7 +108,7 @@ Test: UncertainThing7
 # INFINITE LOOPS
 
 # Recursive rule that looks for unknown people
-TboolIn IsCitizen(Thing p) =
+Tbool IsCitizen(Thing p) =
 	# >> Is {1} a citizen by law?
 	TboolIn IsCitizenByLaw(p) |
 	IsCitizen(TheMotherOf(p))

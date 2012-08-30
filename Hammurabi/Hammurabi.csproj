@@ -147,6 +147,8 @@
     <Compile Include="Generated source\Econ - transactions.cs" />
     <Compile Include="Generated source\Property - general.cs" />
     <Compile Include="Core\Fundamental types\Thing.cs" />
+    <Compile Include="Core\Facts\Assumptions.cs" />
+    <Compile Include="Generated source\Assumption rules.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
