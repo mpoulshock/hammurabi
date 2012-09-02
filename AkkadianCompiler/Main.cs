@@ -28,7 +28,10 @@ namespace Akkadian
 {
     class MainClass
     {
-        private static string currentRuleType = "";
+        private static string mainRuleType = "";        // For main rules
+        private static string currentRuleType = "";     // For main rules and subrules
+        public static string methodCacheLine = "";      // Creates line that caches method results
+        private static bool cacheRule = false;           // Should method results be cached?
         private static string tableMatchLine = "";
         private static int totalRuleCount = 0;
         public static string unitTestNameSpace = "";
@@ -173,18 +176,20 @@ namespace Akkadian
                     // Close previous rule
                     if (ruleCount != 0)
                     {
-                        result += Util.ReorderSubrules(subrules); 
+                        result += Util.ReorderSubrules(subrules, mainRuleType, cacheRule); 
                         result += Util.EndRule;
                     }
                     subrules.Clear(); 
 
                     // Process current line
+                    cacheRule = false;
                     result += Convert(line, previousLine);
                  
                     // Set flag variables
                     ruleCount++;
                     parenCount = 0;
                     currentRuleType = Util.ExtractRuleType(line);
+                    mainRuleType = currentRuleType;
                     totalRuleCount++;
                 }
                 else                     // Add ordinary rule conditions
@@ -230,7 +235,7 @@ namespace Akkadian
             }
          
             // Close the final method
-            result += Util.ReorderSubrules(subrules); 
+            result += Util.ReorderSubrules(subrules, mainRuleType, cacheRule); 
             result += Util.EndRule;
          
             // Close stream and convert to string
@@ -272,7 +277,11 @@ namespace Akkadian
             // Start new rule / C# method (must come before TvarIn)
             // First, look for rules that require intermediate assertion checks
             if (Util.IsInputRule(line) && line.TrimEnd().EndsWith("="))
+            {
+                cacheRule = true;
+                methodCacheLine = TransformMethod.MethodCacheLine(line); 
                 line = TransformMethod.CreateIntermediateAssertion(line);  
+            }
             // Else, all other rules
             else if (Util.IsMainRule(line))  
                 line = TransformMethod.CreateMainRule(line);

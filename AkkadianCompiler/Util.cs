@@ -181,15 +181,26 @@ namespace Akkadian
         /// <summary>
         /// Puts the subrules in the order required by C#.
         /// </summary>
-        public static string ReorderSubrules(List<string> subrules)
+        /// <remarks>
+        /// If the results of the rule need to be cached/memoized, this method implements it.
+        /// </remarks>
+        public static string ReorderSubrules(List<string> subrules, string ruleType, bool cache)
         {
+            if (subrules.Count == 0) return "";
+
             subrules.Reverse();
          
             string result = "";
             for (int i=0; i<subrules.Count; i++)
             {
-                if (i == subrules.Count-1) result += "            return\r\n";
+                // Main rule
+                if (i == subrules.Count-1) 
+                {
+                    if (cache) result += "            " + ruleType + " RESULT =\r\n";
+                    else result += "            return\r\n";
+                }
              
+                // Subrules
                 string s = subrules[i];
                 s = s.TrimEnd();
                 if (s.EndsWith("\r\n"))     // put semicolon at end of expression
@@ -198,6 +209,14 @@ namespace Akkadian
                 }
                 result += s + ";\r\n\r\n";
             }
+
+            // Assemble cache line
+            if (cache)
+            {
+                result += MainClass.methodCacheLine;
+                result += "            return RESULT;\r\n";
+            }
+
             return result;
         }
      

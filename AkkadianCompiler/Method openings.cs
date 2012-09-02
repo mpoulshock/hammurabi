@@ -68,14 +68,23 @@ namespace Akkadian
         /// </summary>
         public static string CreateIntermediateAssertion(string line)
         {
-            line = Regex.Replace(line, 
+            return Regex.Replace(line, 
                 @"(?<typ>"+typs+@")In(?<sym>Sym)?(?<quest>\?)? (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@")(?<comma1>, ?)?(?<argtyp2>"+wrd+@" )?(?<arg2>"+wrd+@")?(?<comma2>, ?)?(?<argtyp3>"+wrd+@" )?(?<arg3>"+wrd+@")?\) =",
                 "        public static ${typ} ${fcn}(${argtyp1} ${arg1}${comma1} ${argtyp2} ${arg2}${comma2} ${argtyp3} ${arg3})\r\n" +
                 "        {\r\n" +
                 "            RulePreCheckResponse r = ShortCircuitValue<${typ}>(\"${fcn}\",\"${sym}\",\"${quest}\",${arg1}${comma1} ${arg2}${comma2} ${arg3});\r\n" +
                 "            if (r.shouldShortCircuit) return (${typ})r.val;\r\n\r\n");
-
-            return line;
+        }
+        
+        /// <summary>
+        /// Generates the c# line that caches the result of the method.
+        /// </summary>
+        public static string MethodCacheLine(string line)
+        {
+            return Regex.Replace(line, 
+                @"(?<typ>"+typs+@")In(?<sym>Sym)?(?<quest>\?)? (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@")(?<comma1>, ?)?(?<argtyp2>"+wrd+@" )?(?<arg2>"+wrd+@")?(?<comma2>, ?)?(?<argtyp3>"+wrd+@" )?(?<arg3>"+wrd+@")?\) =",
+                 "            if (!RESULT.IsEverUnstated) Facts.Assert" +
+                 "(${arg1}, \"${fcn}\"${comma1}${arg2}${comma2}${arg3}, RESULT);\r\n");
         }
 
         /// <summary>

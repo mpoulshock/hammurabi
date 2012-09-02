@@ -284,6 +284,17 @@ namespace Hammurabi
         }
 
         /// <summary>
+        /// Returns true if the Tvar is ever unstated; otherwise false.
+        /// </summary>
+        public bool IsEverUnstated
+        {
+            get
+            {
+                return this.IsUnstated.IsEverTrue().ToBool == true ? true : false;
+            }
+        }
+
+        /// <summary>
         /// Returns the value of a Tvar at a specified point in time. 
         /// </summary>
         /// <remarks>
