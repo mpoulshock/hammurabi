@@ -21,7 +21,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Net;
 using System.Text.RegularExpressions;
 
 namespace Akkadian
@@ -30,15 +29,13 @@ namespace Akkadian
     {
         private static string mainRuleType = "";        // For main rules
         private static string currentRuleType = "";     // For main rules and subrules
-        public static string methodCacheLine = "";      // Creates line that caches method results
-        private static bool cacheRule = false;           // Should method results be cached?
-        private static string tableMatchLine = "";
-        private static int totalRuleCount = 0;
-        public static string unitTestNameSpace = "";
-
-        // Variables for question metadata
-        public static string docNameSpace = "";
-        public static string akkDoc = "";
+        private static string methodCacheLine = "";     // Creates line that caches method results
+        private static bool cacheRule = false;          // Should method results be cached?
+        private static string tableMatchLine = "";      // Rule input that must be matched in a table
+        private static int totalRuleCount = 0;          // Total rules in project
+        public static string unitTestNameSpace = "";    // Namespace of unit tests
+        public static string docNameSpace = "";         // For question metadata
+        public static string akkDoc = "";               // For question metadata
      
         /// <summary>
         /// The entry point of the program, where the program control starts and ends.
@@ -58,7 +55,6 @@ namespace Akkadian
 
             // Go
             CompileAll(sourcePath, targetPath);
-//            Console.ReadLine();
         }
      
         /// <summary>
@@ -84,7 +80,7 @@ namespace Akkadian
             int docCount = 0;
             foreach(string f in Directory.GetFiles(sourcePath, "*.akk", SearchOption.AllDirectories))
             {
-                // Keep track of current rule document
+                // Keep track of current rule document - for question metadata
                 akkDoc = f;
 
                 // Do the compilation
@@ -127,16 +123,16 @@ namespace Akkadian
         /// <summary>
         /// Iterates through the .akk file line by line and converts it to C#.
         /// </summary>
-        public static string CompilerOutput(string url)
+        public static string CompilerOutput(string file)
         {
             // First pass: get the file metadata
-            string result = Boilerplate.InitialBoilerplate(url);
+            string result = Boilerplate.InitialBoilerplate(file);
          
             // Second pass: parse the rules, line by line
-            WebRequest req = WebRequest.Create(url);
-            StreamReader stream = new StreamReader(req.GetResponse().GetResponseStream());
+            StreamReader stream = new StreamReader(file);
             string line;
          
+            // Mutable variables
             int ruleCount = 0;
             int lastLineDepth = 0;
             int parenCount = 0;
@@ -147,7 +143,7 @@ namespace Akkadian
             List<string> subrules = new List<string>();
             string previousLine = "";
          
-            // Read the stream a line at a time and place each one into the stringbuilder
+            // Read the stream a line at a time
             while( (line = stream.ReadLine()) != null )
             {
                 line = line.Replace("\t","    ");
@@ -176,7 +172,7 @@ namespace Akkadian
                     // Close previous rule
                     if (ruleCount != 0)
                     {
-                        result += Util.ReorderSubrules(subrules, mainRuleType, cacheRule); 
+                        result += Util.ReorderSubrules(subrules, mainRuleType, cacheRule, methodCacheLine); 
                         result += Util.EndRule;
                     }
                     subrules.Clear(); 
@@ -233,24 +229,16 @@ namespace Akkadian
              
                 lastLineDepth = depth;
             }
-         
-            // Close the final method
-            result += Util.ReorderSubrules(subrules, mainRuleType, cacheRule); 
-            result += Util.EndRule;
-         
-            // Close stream and convert to string
             stream.Close();
 
+            // Close the final method
+            result += Util.ReorderSubrules(subrules, mainRuleType, cacheRule, methodCacheLine); 
+            result += Util.EndRule;
+
+            // Close the class/namespace, and add the unit tests
             result += Boilerplate.ClassAndNamespaceClose;
-            
-            // Add unit test code
-            if (Tests.unitTests.Trim() != "")
-            {
-                result += Tests.unitSpaceOpen2(unitTestNameSpace) +
-                          Tests.unitTests +
-                          Tests.unitSpaceClose;
-            }
-            
+            result += Tests.WriteUnitTests(unitTestNameSpace);
+
             return result;
         }
      
@@ -271,52 +259,80 @@ namespace Akkadian
             // Stub()
             line = Regex.Replace(line, @"Stub\(\)", "new " + currentRuleType + "(Hstate.Stub)");    
 
-            // Gather question text from the .akk documents
+            // Process question-related metadata and declared assumptions
             Questions.GatherMetadata(line, previousLine);
+            line = Assumptions.Process(line);
 
-            // Start new rule / C# method (must come before TvarIn)
-            // First, look for rules that require intermediate assertion checks
-            if (Util.IsInputRule(line) && line.TrimEnd().EndsWith("="))
-            {
-                cacheRule = true;
-                methodCacheLine = TransformMethod.MethodCacheLine(line); 
-                line = TransformMethod.CreateIntermediateAssertion(line);  
-            }
-            // Else, all other rules
-            else if (Util.IsMainRule(line))  
-                line = TransformMethod.CreateMainRule(line);
-   
-            // Switch(condition, value, ..., default) - must come before "rule tables" (b/c rule tables look for "->"
-            line = Regex.Replace(line, @"set:", "Switch<" + currentRuleType + ">(", RegexOptions.IgnoreCase);    
-            line = Regex.Replace(line, @"if (?<condition>"+word+") -> (?<value>"+word+")", "()=> ${condition}, ()=> ${value},", RegexOptions.IgnoreCase);    
-            line = Regex.Replace(line, @"else (?<default>"+word+")", "()=> ${default})", RegexOptions.IgnoreCase);  
-             
-            // Temporal tables - must come before "rule tables"
-            line = Regex.Replace(line.Replace("\t","    "), @"temporal:", currentRuleType + ".Make" + currentRuleType + "(");  
-            line = Regex.Replace(line, @"from (?<condition>"+word+") -> (?<value>"+word+")", "${condition}, ${value},", RegexOptions.IgnoreCase);   
-            line = Regex.Replace(line, "endtemporal", "new " + currentRuleType + "(Hstate.Stub))");    
-    
-            // Rule tables - must come before "dates"
-            line = Regex.Replace(line, @"match "+word, "Switch<" + currentRuleType + ">(");    
-            if (line.Contains("->")) line = Util.RuleTableMatch(tableMatchLine, line);
-             
-            // yyyy-mm-dd -> Date(yyyy,mm,dd)
-            line = Util.ConvertDate(line); 
+            // Convert rules and dates
+            line = ConvertRegularRules(line);
+            line = ConvertRuleTables(line, currentRuleType, tableMatchLine, word);
             
             // Facts.QueryTvar<Tvar>()
             line = TransformMethod.QueryTvarTransform(line);
     
             // IfThen() 
-            line = Regex.Replace(line, @"if (?<txt>"+word+@") then (?<txt2>[-!\+\*/A-Za-z0-9\.;\(\),""'_<>= ]+)", "IfThen(${txt}, ${txt2})", RegexOptions.IgnoreCase);  
+            line = Regex.Replace(line, @"if (?<txt>"+word+@") then (?<txt2>[-!\+\*/A-Za-z0-9\.;\(\),""'_<>= ]+)", "IfThen(${txt}, ${txt2})");  
              
-            // Facts.AllKnownPeople, Property, etc.
-            line = Regex.Replace(line, @"AllPeopleExcept\(", "Facts.EveryoneExcept(", RegexOptions.IgnoreCase);  
-            line = Regex.Replace(line, @"AllPeople", "Facts.AllKnownPeople()", RegexOptions.IgnoreCase);  
-            line = Regex.Replace(line, @"AllProperty", "Facts.AllKnownProperty()", RegexOptions.IgnoreCase);  
+            // Facts.AllKnownPeople, Property, etc. - Compiler is 2x as fast when these are toggled out
+//            line = Regex.Replace(line, @"AllPeopleExcept\(", "Facts.EveryoneExcept(");  
+//            line = Regex.Replace(line, @"AllPeople", "Facts.AllKnownPeople()");  
+//            line = Regex.Replace(line, @"AllProperty", "Facts.AllKnownProperty()");  
             
             // Exists/ForAll/Filter
-            line = Regex.Replace(line, @"\.(?<quant>(Exists|ForAll|Filter|Sum|Min|Max))\((?<fcn>[a-z0-9\(\)\._, ]+)\)", ".${quant}( _ => ${fcn})", RegexOptions.IgnoreCase);  
+            line = Regex.Replace(line, @"\.(?<quant>(Exists|ForAll|Filter|Sum|Min|Max))\((?<fcn>[a-zA-Z0-9\(\)\._, ]+)\)", ".${quant}( _ => ${fcn})");  
                 
+            return line;
+        }
+
+        /// <summary>
+        /// Converts "standard" rules from .akk to .cs.
+        /// </summary>
+        /// <remarks>
+        /// This method must come before the conversion to Facts.QueryTvar<Tvar>().
+        /// </remarks>
+        private static string ConvertRegularRules(string line)
+        {
+            // First, look for rules that require intermediate assertion checks
+            if (Util.IsInputRule(line) && line.TrimEnd().EndsWith("="))
+            {
+                // Note: These set class-level variables!
+                cacheRule = true;
+                methodCacheLine = TransformMethod.MethodCacheLine(line); 
+
+                // Do the conversion
+                line = TransformMethod.CreateIntermediateAssertion(line);  
+            }
+            // Else, process all other rules
+            else if (Util.IsMainRule(line))
+            {
+                line = TransformMethod.CreateMainRule(line);
+            }
+
+            return line;
+        }
+
+        /// <summary>
+        /// Converts various types of rule tables (and dates) from .akk to .cs.
+        /// </summary>
+        private static string ConvertRuleTables(string line, string ruleType, string matchLine, string word)
+        {
+            // Switch(condition, value, ..., default) - must come before "rule tables" (b/c rule tables look for "->"
+            line = Regex.Replace(line, @"set:", "Switch<" + ruleType + ">(");    
+            line = Regex.Replace(line, @"if (?<condition>"+word+") -> (?<value>"+word+")", "()=> ${condition}, ()=> ${value},");    
+            line = Regex.Replace(line, @"else (?<default>"+word+")", "()=> ${default})");  
+             
+            // Temporal tables - must come before "rule tables"
+            line = Regex.Replace(line.Replace("\t","    "), @"temporal:", ruleType + ".Make" + ruleType + "(");  
+            line = Regex.Replace(line, @"from (?<condition>"+word+") -> (?<value>"+word+")", "${condition}, ${value},");   
+            line = Regex.Replace(line, "endtemporal", "new " + ruleType + "(Hstate.Stub))");    
+    
+            // Rule tables - must come before "dates"
+            line = Regex.Replace(line, @"match "+word, "Switch<" + ruleType + ">(");    
+            if (line.Contains("->")) line = Util.RuleTableMatch(matchLine, line);
+
+            // yyyy-mm-dd -> Date(yyyy,mm,dd)
+            line = Util.ConvertDate(line); 
+
             return line;
         }
     }       

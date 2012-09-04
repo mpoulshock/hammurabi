@@ -31,8 +31,7 @@ namespace Hammurabi
         /// </summary>
         public static void Assert(Thing e1, string rel, Thing e2, Thing e3, Tvar val)
         { 
-            Fact f = new Fact(rel, e1, e2, e3, val);
-            FactBase.Add(f);
+            CoreAssert(rel, e1, e2, e3, val);
         }
 
         /// <summary>
@@ -40,13 +39,11 @@ namespace Hammurabi
         /// </summary>
         public static void Assert(Thing e1, string rel, Thing e2, Tvar val)
         { 
-            Fact f = new Fact(rel, e1, e2, val);
-            FactBase.Add(f);
+            CoreAssert(rel, e1, e2, null, val);
         }
         public static void Assert(Thing e1, string rel, Thing e2)
-        {    
-            Fact f = new Fact(rel, e1, e2, new Tbool(true));
-            FactBase.Add(f);
+        {
+            CoreAssert(rel, e1, e2, null, new Tbool(true));;
         }
 
         /// <summary>
@@ -54,8 +51,20 @@ namespace Hammurabi
         /// </summary>
         public static void Assert(Thing e1, string rel, Tvar val)
         {
-            Fact f = new Fact(rel, e1, val);
+            CoreAssert(rel, e1, null, null, val);
+        }
+
+        /// <summary>
+        /// Assert a fact to the FactBase.
+        /// </summary>
+        private static void CoreAssert(string rel, Thing e1, Thing e2, Thing e3, Tvar val)
+        {
+            // Assert the fact
+            Fact f = new Fact(rel, e1, e2, e3, val);
             FactBase.Add(f);
+
+            // Look for additional inferences that can be drawn, based on assumptions.
+            Assumptions.TriggerInferences(rel, e1, e2, e3, val);
         }
     }
 }

@@ -193,5 +193,20 @@ namespace Akkadian
             }
             return result;
         }
+
+        /// <summary>
+        /// Writes the unit tests to the C# file.
+        /// </summary>
+        public static string WriteUnitTests(string nameSpace)
+        {
+            if (unitTests.Trim() != "")
+            {
+                return unitSpaceOpen2(nameSpace) +
+                          unitTests +
+                          unitSpaceClose;
+            }
+
+            return "";
+        }
     }
 }

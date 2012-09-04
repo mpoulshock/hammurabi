@@ -24,10 +24,11 @@ using System.Collections.Generic;
 namespace Hammurabi
 {
     /*
-     * Akkadian rules let you specify when one fact assumes another. For example:
+     * Akkadian rules let you specify when one fact assumes another. Examples:
      * 
      *   OnActiveDuty(p) assumes InArmedForces(p)
-     *   IsPregnant(p) assumes Gender(p) == "Female"
+     *   IsPregnant(p) assumes Gender(p) = "Female"
+     *   AreMarried(p,q) assumes IsMarried(p)
      * 
      * A statement like "<A> assumes <B>" allows two inferences to be drawn:
      * 
@@ -38,9 +39,9 @@ namespace Hammurabi
      * InArmedForces() can have 'regular' rules with conditions proving them, and in 
      * addition have assumptions that cause short-circuit inferences, when appropriate.
      * 
-     * The assumption relationships are stored in a tabular data structure.  When 
-     * Hammurabi evaluates a fact/method, it first checks the table to see if any
-     * short-circuit inferences can be made, before evaluating the rule itself. 
+     * The assumption relationships are stored in a tabular data structure.  Whenever a
+     * new fact is asserted, Hammurabi checks the table to see if any short-circuit 
+     * inferences can be made. 
      * 
      * The rules below implement this assumption-checking procedure.
      */
@@ -51,63 +52,58 @@ namespace Hammurabi
     public partial class Assumptions
     {
         /// <summary>
-        /// All asserted assumptions.
+        /// List of all assumptions that have been declared in the rules.
         /// </summary>
         public static List<AssumptionPair> AssumptionPairs;
 
         /// <summary>
-        /// Pair of nodes of the fact tree.
+        /// Pair of nodes composing an assumption.
         /// </summary>
         public class AssumptionPair
         {
-            public AssumptionPoint leftHandPoint {get; set;} 
-            public AssumptionPoint rightHandPoint {get; set;} 
+            public AssumptionPoint LeftHandPoint {get; set;} 
+            public AssumptionPoint RightHandPoint {get; set;} 
 
             public AssumptionPair(AssumptionPoint leftP, AssumptionPoint rightP)
             {
-                leftHandPoint = leftP;
-                rightHandPoint = rightP;
+                LeftHandPoint = leftP;
+                RightHandPoint = rightP;
             }
         }
 
         /// <summary>
-        /// Node of the fact tree.
+        /// One node of an assumption.
         /// </summary>
         public class AssumptionPoint
         {
-            /* Assumption table (each column):
-             * 
-             * - Relationship text
-             * - Func of method
-             * - Method signature
-             * - Tvar value
-             */
+            public string Relationship;
+            public int Arg1, Arg2, Arg3;
+            public Tvar Value;
 
-            public string relationship;
-            public Tvar value;
-
-            public AssumptionPoint(string rel, Tvar val)
+            public AssumptionPoint(string rel, int arg1, int arg2, int arg3, Tvar val)
             {
-                relationship = rel;
-                value = val;
+                Relationship = rel;
+                Arg1 = arg1;
+                Arg2 = arg2;
+                Arg3 = arg3;
+                Value = val;
             }
         }
 
-
-        public static void TriggerAssumptionInference(string relationship, Func<Tvar> theMethod,
-                                                      Thing t1, Thing t2, Thing t3)
+        /// <summary>
+        /// Scans the assumption table, looking for forward-chaining inferences.
+        /// </summary>
+        public static void TriggerInferences(string rel, Thing e1, Thing e2, Thing e3, Tvar val)
         {
-            Facts.GetUnknowns = false;
-
             // First, look to see if fact (f1) is assumed by another true fact (f2)
             // Iterate through assumptions table for f2-f1 pair
-            foreach (AssumptionPair pair in AssumptionPairs)
-            {
-                if (pair.rightHandPoint.relationship == relationship)
-                {
-                    // If f2 == true, return f1 == true
-                }
-            }
+//            foreach (AssumptionPair pair in AssumptionPairs)
+//            {
+//                if (pair.rightHandPoint.relationship == rel)
+//                {
+//                    // If f2 == true, return f1 == true
+//                }
+//            }
 
 
 
@@ -115,7 +111,6 @@ namespace Hammurabi
             // Iterate through the assumptions table looking for f1-f3 pair
             // If f3 == false, return f1 == false
 
-            Facts.GetUnknowns = true;
         }
     }
 }

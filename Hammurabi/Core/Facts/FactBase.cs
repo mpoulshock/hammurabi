@@ -44,33 +44,9 @@ namespace Hammurabi
 			public Thing directObject1;
             public Thing directObject2;
 			public Tvar v;
-            
-            /// <summary>
-            /// Sets a Tvar fact that establishes a relation between legal entities (1)
-            /// </summary>
-            public Fact(string rel, Thing subj, Tvar val)
-            {
-                relationship = rel;
-                subject = subj;
-                directObject1 = null;
-                directObject2 = null;
-                v = val;
-            }
 
             /// <summary>
-            /// Sets a Tvar fact that establishes a relation between legal entities (2)
-            /// </summary>
-            public Fact(string rel, Thing subj, Thing obj1, Tvar val)
-            {
-                relationship = rel;
-                subject = subj;
-                directObject1 = obj1;
-                directObject2 = null;
-                v = val;
-            }
-
-            /// <summary>
-            /// Sets a Tvar fact that establishes a relation between legal entities (3) 
+            /// Sets a Tvar fact that establishes a relation between legal entities.
             /// </summary>
             public Fact(string rel, Thing subj, Thing obj1, Thing obj2, Tvar val)
             {

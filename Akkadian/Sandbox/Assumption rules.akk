@@ -7,8 +7,14 @@
 Tbool TheTest() =
 	Stub()
 	
-# OnActiveDuty(p) assumes InArmedForces(p)
 
-# IsPregnant(p) assumes Gender(p) == "Female"
+OnActiveDuty(1) assumes InArmedForces(1)
+IsPregnant(1) assumes Gender(1) = "Female"
+IsPregnant(1) assumes IsMale(1) = false
+IsMale(1) assumes IsPregnant(1) = false
+IsGuardian(1,2) assumes LivesWith(1,2)
+AreMarried(1,2) assumes IsMarried(1)
+AreMarried(1,2) assumes IsMarried(2)
+IsBroke(1) assumes Savings(1) = 0
 
 

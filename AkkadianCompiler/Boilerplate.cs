@@ -20,7 +20,6 @@
 
 using System;
 using System.IO;
-using System.Net;
 
 namespace Akkadian
 {
@@ -32,8 +31,7 @@ namespace Akkadian
         public static string InitialBoilerplate(string file)
         {
             // Read the file and extract the "namespace" and "using" data
-            WebRequest req = WebRequest.Create(file);
-            StreamReader stream = new StreamReader(req.GetResponse().GetResponseStream());
+            StreamReader stream = new StreamReader(file);
             string line = "", space = "", refs = "";
             while( (line = stream.ReadLine()) != null )
             {

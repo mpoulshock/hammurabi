@@ -184,7 +184,7 @@ namespace Akkadian
         /// <remarks>
         /// If the results of the rule need to be cached/memoized, this method implements it.
         /// </remarks>
-        public static string ReorderSubrules(List<string> subrules, string ruleType, bool cache)
+        public static string ReorderSubrules(List<string> subrules, string ruleType, bool cache, string methodCacheLine)
         {
             if (subrules.Count == 0) return "";
 
@@ -213,7 +213,7 @@ namespace Akkadian
             // Assemble cache line
             if (cache)
             {
-                result += MainClass.methodCacheLine;
+                result += methodCacheLine;
                 result += "            return RESULT;\r\n";
             }
 

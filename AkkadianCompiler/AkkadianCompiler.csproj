@@ -41,6 +41,7 @@
     <Compile Include="Tests.cs" />
     <Compile Include="Question metadata.cs" />
     <Compile Include="Method openings.cs" />
+    <Compile Include="Assumptions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
