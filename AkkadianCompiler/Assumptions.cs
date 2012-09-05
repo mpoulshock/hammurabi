@@ -29,6 +29,9 @@ namespace Akkadian
     /// </summary>
     public class Assumptions
     {
+        // Keeps track of assumptions declared in the rules
+        public static string AccumulatedAssumptions = "";
+
         /// <summary>
         /// Converts any assumptions on the specified line to C#.
         /// </summary>
@@ -36,21 +39,15 @@ namespace Akkadian
         {
             if (line.Contains(" assumes "))
             {
-
-                // Regex for a relationship
+                // Analyze the assumption line
                 string relRegex = "[a-zA-Z0-9_,()= \"]+";
-
                 Match match = Regex.Match(line, "(?<rel1>" + relRegex + ") assumes (?<rel2>" + relRegex + ")");
-
                 if (match.Success)
                 {
+                    // Create the C# line defining the pair of assumption points
                     string leftNode = NodeString(match.Groups[1].Value.Trim());
                     string rightNode = NodeString(match.Groups[2].Value.Trim());
-
-                    // Assemble full line...
-                    string fullLine = "(" + leftNode + ", " + rightNode + ")";
-//                    Console.WriteLine(fullLine);
-//                    Console.ReadLine();
+                    AccumulatedAssumptions += "            , new Pair(" + leftNode + ", " + rightNode + ")\r\n";
                 }
 
                 // Return a blank line so this doesn't interfere with rule compilation
@@ -80,7 +77,7 @@ namespace Akkadian
                 string arg1 = match.Groups[2].Value != "" ? match.Groups[2].Value : "0";
                 string arg2 = match.Groups[3].Value != "" ? match.Groups[3].Value : "0";
                 string arg3 = match.Groups[4].Value != "" ? match.Groups[4].Value : "0";
-                result = "new AssumptionPoint(\""+rel+"\", "+arg1+", "+arg2+", "+arg3+", ";
+                result = "new Point(\""+rel+"\", "+arg1+", "+arg2+", "+arg3+", ";
 
                 // Create the string for the proper type of Tvar
                 if (match.Groups[5].Value == "") result += "new Tbool(true)";
@@ -91,6 +88,31 @@ namespace Akkadian
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// Write the assumption file to .../Generated source/Assumption metadata.cs.
+        /// </summary>
+        public static void GenerateAssumptionFile(string filePath)
+        {
+            // Open the question template class
+            string result = 
+                "using System.Collections.Generic; \r\n" +
+                "namespace Hammurabi \r\n{ \r\n" +
+                "    public partial class Assumptions { \r\n" +
+                "        public static List<Pair> Pairs = new List<Pair> {\r\n" +
+                "            new Pair(new Point(\"\", 0, 0, 0, null), new Point(\"\", 0, 0, 0, null))\r\n";
+
+            // Add assumption relationships
+            result += AccumulatedAssumptions;
+
+            // Close out the question template class
+            result += "        };\r\n    }\r\n}";
+
+            // Write the string to a file
+            System.IO.StreamWriter file = new System.IO.StreamWriter(filePath + "Assumption metadata.cs");
+            file.WriteLine(result);
+            file.Close();
         }
     }
 }

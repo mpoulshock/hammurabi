@@ -8,6 +8,7 @@ Tbool TheTest() =
 	Stub()
 	
 
+CountryOfCitizenship(1) = "USA" assumes IsAmerican(1)
 OnActiveDuty(1) assumes InArmedForces(1)
 IsPregnant(1) assumes Gender(1) = "Female"
 IsPregnant(1) assumes IsMale(1) = false

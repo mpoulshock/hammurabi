@@ -19,7 +19,6 @@
 // THE SOFTWARE.
 
 using System;
-using System.Collections.Generic;
 
 namespace Hammurabi
 {
@@ -52,19 +51,14 @@ namespace Hammurabi
     public partial class Assumptions
     {
         /// <summary>
-        /// List of all assumptions that have been declared in the rules.
-        /// </summary>
-        public static List<AssumptionPair> AssumptionPairs;
-
-        /// <summary>
         /// Pair of nodes composing an assumption.
         /// </summary>
-        public class AssumptionPair
+        public class Pair
         {
-            public AssumptionPoint LeftHandPoint {get; set;} 
-            public AssumptionPoint RightHandPoint {get; set;} 
+            public Point LeftHandPoint {get; set;} 
+            public Point RightHandPoint {get; set;} 
 
-            public AssumptionPair(AssumptionPoint leftP, AssumptionPoint rightP)
+            public Pair(Point leftP, Point rightP)
             {
                 LeftHandPoint = leftP;
                 RightHandPoint = rightP;
@@ -74,13 +68,13 @@ namespace Hammurabi
         /// <summary>
         /// One node of an assumption.
         /// </summary>
-        public class AssumptionPoint
+        public class Point
         {
             public string Relationship;
             public int Arg1, Arg2, Arg3;
             public Tvar Value;
 
-            public AssumptionPoint(string rel, int arg1, int arg2, int arg3, Tvar val)
+            public Point(string rel, int arg1, int arg2, int arg3, Tvar val)
             {
                 Relationship = rel;
                 Arg1 = arg1;
@@ -95,22 +89,24 @@ namespace Hammurabi
         /// </summary>
         public static void TriggerInferences(string rel, Thing e1, Thing e2, Thing e3, Tvar val)
         {
-            // First, look to see if fact (f1) is assumed by another true fact (f2)
-            // Iterate through assumptions table for f2-f1 pair
-//            foreach (AssumptionPair pair in AssumptionPairs)
-//            {
-//                if (pair.rightHandPoint.relationship == rel)
-//                {
-//                    // If f2 == true, return f1 == true
-//                }
-//            }
+            foreach (Pair p in Pairs)
+            {
+                // If A, then B
+                if (p.LeftHandPoint.Relationship == rel)
+                {
+                    // TODO: Currently only handles expressions that are eternally true
+                    if (Tvar.EqualTo(p.LeftHandPoint.Value, val))
+                    {
+//                        Console.WriteLine("match");
+                        Facts.Assert(e1, p.RightHandPoint.Relationship, e2, e3, p.RightHandPoint.Value);
+                    }
+                }
 
-
-
-            // Else, look to see if some other fact (f3) assumes the main fact (f1)
-            // Iterate through the assumptions table looking for f1-f3 pair
-            // If f3 == false, return f1 == false
-
+                // If -B, then -A
+                else if (p.RightHandPoint.Relationship == rel)
+                {
+                }
+            }
         }
     }
 }

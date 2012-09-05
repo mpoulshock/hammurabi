@@ -149,6 +149,7 @@
     <Compile Include="Core\Fundamental types\Thing.cs" />
     <Compile Include="Core\Facts\Assumptions.cs" />
     <Compile Include="Generated source\Assumption rules.cs" />
+    <Compile Include="Generated source\Assumption metadata.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

@@ -89,8 +89,9 @@ namespace Akkadian
                 docCount++;
             }
 
-            // Generate question metadata file
+            // Generate metadata files
             Questions.GenerateMetadataFile(targetPath);
+            Assumptions.GenerateAssumptionFile(targetPath);
 
             // Display elapsed time
             duration = DateTime.Now - startTime;
