@@ -43,6 +43,8 @@ namespace Hammurabi
      * inferences can be made. 
      * 
      * The rules below implement this assumption-checking procedure.
+     * 
+     * This table-scanning concept will not scale and will someday have to be reinvented.
      */
 
     /// <summary>
@@ -97,14 +99,55 @@ namespace Hammurabi
                     // TODO: Currently only handles expressions that are eternally true
                     if (Tvar.EqualTo(p.LeftHandPoint.Value, val))
                     {
-//                        Console.WriteLine("match");
-                        Facts.Assert(e1, p.RightHandPoint.Relationship, e2, e3, p.RightHandPoint.Value);
+                        // For each rightPoint.Arg number, get the corresponding Thing
+                        Thing[] args = new Thing[3]{e1,e2,e3};
+
+                        int a1 = p.RightHandPoint.Arg1 - 1;  // -1 b/c array is base-zero
+                        int a2 = p.RightHandPoint.Arg2 - 1;
+                        int a3 = p.RightHandPoint.Arg3 - 1;
+
+                        Thing t1 = a1 >= 0 ? args[a1] : null;
+                        Thing t2 = a2 >= 0 ? args[a2] : null;
+                        Thing t3 = a3 >= 0 ? args[a3] : null;
+
+                        Facts.Assert(t1, p.RightHandPoint.Relationship, t2, t3, p.RightHandPoint.Value);
                     }
                 }
 
                 // If -B, then -A
                 else if (p.RightHandPoint.Relationship == rel)
                 {
+                    // If right-hand expression is always false...
+                    if (Tvar.EqualTo(p.RightHandPoint.Value, val).IsFalse)
+                    {
+                        // If the left-hand side is a boolean (non-booleans can't be negated)...
+                        if (Tvar.EqualTo(p.LeftHandPoint.Value, new Tbool(true)) ||
+                            Tvar.EqualTo(p.LeftHandPoint.Value, new Tbool(false)))
+                        {
+                            // For each leftPoint.Arg number, get the corresponding Thing
+                            int r1 = p.RightHandPoint.Arg1;
+                            int r2 = p.RightHandPoint.Arg2;
+                            int r3 = p.RightHandPoint.Arg3;
+
+                            // I hope no one sees how ugly this is
+                            Thing t1, t2, t3;
+                            if (r1 == 1)      t1 = e1;
+                            else if (r2 == 1) t1 = e2;
+                            else              t1 = e3;
+
+                            if (r1 == 2)      t2 = e1;
+                            else if (r2 == 2) t2 = e2;
+                            else              t2 = e3;
+
+                            if (r1 == 3)      t3 = e1;
+                            else if (r2 == 3) t3 = e2;
+                            else              t3 = e3;
+
+                            // Assert -A
+                            Tbool leftVal = (Tbool)p.LeftHandPoint.Value;
+                            Facts.Assert(t1, p.LeftHandPoint.Relationship, t2, t3, !leftVal);
+                        }
+                    }
                 }
             }
         }
