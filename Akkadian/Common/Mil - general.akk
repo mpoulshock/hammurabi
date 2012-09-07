@@ -1,85 +1,65 @@
 # Namespace:    Hammurabi.Mil
 # Summary:      Relationships related to the Armed Services.
-# Updated:      2012-06-02
+# Updated:      2012-09-06
 # Author:       Michael Poulshock
 
 
-# ACTIVE DUTY / COMBAT
+# GENERAL / ACTIVE DUTY / COMBAT
 
-# Deployed to a combat zone
-TboolIn IsDeployedToCombatZone(Thing p) =
-	OnActiveDuty(p) &
-	TboolIn IsDeployedToCombatZone(p)
+# >>Does/did {1} serve in the U.S. Armed Forces?
+TboolIn InArmedForces(Thing p)
 
-# Active duty for training (reserves)
-Tbool OnActiveDutyForTraining(Thing p) =
-	InReserveArmedForces(p) &
-	...
-		OnActiveDuty(p) |
-		TboolIn OnActiveDutyForTraining(p)
-	
-# On active duty
-TboolIn OnActiveDuty(Thing p) =
-	InArmedForces(p) &
-	TboolIn OnActiveDuty(p)
+# >>Is/was {1} deployed to a combat zone?
+TboolIn IsDeployedToCombatZone(Thing p)
 
-	
+# >>Is/was {1} on active duty for training in the Armed Forces reserves?
+TboolIn OnActiveDutyForTraining(Thing p) 
+
+# >>Is/was {1} on active duty in the Armed Forces?
+TboolIn OnActiveDuty(Thing p)
+
+
 # BRANCH OF ARMED FORCES
 	
-# >>Does/did {1} serve in the U.S. Armed Forces?
-TboolIn InArmedForces(Thing p) =
-	InActiveArmedForces(p) |
-	InReserveArmedForces(p)
-	
-##
-Tbool InArmedForces(Thing p) =
-	TboolIn InArmedForces(p) |~
-	...
-		InActiveArmedForces(p) |
-		InReserveArmedForces(p)
-##
-		
 # Person serves (actively) in the Armed Forces.
 Tbool InActiveArmedForces(Thing p) =
-	branch == "Army" |
-	branch == "Navy" |
-	branch == "Air Force" |
-	branch == "Marine Corps" |
-	branch == "Coast Guard"
-	
-	Tstr branch = 
-		BranchOfArmedForces(p)
+	InArmedForces(p) &
+	...
+		BranchOfArmedForces(p) == "Army" |
+		BranchOfArmedForces(p) == "Navy" |
+		BranchOfArmedForces(p) == "Air Force" |
+		BranchOfArmedForces(p) == "Marine Corps" |
+		BranchOfArmedForces(p) == "Coast Guard"
             
-# Person serves in reserve component of the Armed Forces (including tNational Guard).
+# Person serves in reserve component of the Armed Forces (including National Guard).
 Tbool InReserveArmedForces(Thing p) =
-	branch == "Army National Guard" |
-	branch == "Army Reserve" |
-	branch == "Air National Guard" |
-	branch == "Navy Reserve" |
-	branch == "Air Force Reserve" |
-	branch == "Marine Corps Reserve" |
-	branch == "Coast Guard Reserve"
-	
-	Tstr branch = 
-		BranchOfArmedForces(p)
+	InArmedForces(p) &
+	...
+		BranchOfArmedForces(p) == "Army National Guard" |
+		BranchOfArmedForces(p) == "Army Reserve" |
+		BranchOfArmedForces(p) == "Air National Guard" |
+		BranchOfArmedForces(p) == "Navy Reserve" |
+		BranchOfArmedForces(p) == "Air Force Reserve" |
+		BranchOfArmedForces(p) == "Marine Corps Reserve" |
+		BranchOfArmedForces(p) == "Coast Guard Reserve"
 
-# >>What branch of the U.S. Armed Forces does/did {1} serve in?
+# >>What branch of the U.S. Armed Forces does/did {1} serve in? (Options: Army, Navy, Air Force, Marine Corps, Coast Guard, Army National Guard, Army Reserve, Air National Guard, Navy Reserve, Air Force Reserve, Marine Corps Reserve, Coast Guard Reserve.)
 TstrIn BranchOfArmedForces(Thing person)
 
 
 # INJURY
 
-# Service-connected injury
+# >>Does/did {1} have a service-connected injury?
 TboolIn ServiceConnectedInjury(Thing p)
 
 
 # DISCHARGE
 		
 # Dishonorable discharge
-Tbool WasDishonorablyDischarged(Thing p) =
+Tbool DishonorablyDischarged(Thing p) =
 	NatureOfDischarge(p) == "Dishonorable discharge"
 	
-# Nature of discharge from armed forces
+# >>What is the nature of {1}'s discharge from the U.S. Armed Forces?
 TstrIn NatureOfDischarge(Thing p)
 
 ## Possible values:
@@ -101,6 +81,15 @@ Dishonorable discharge
 Uncharacterized 
 ##
 
+
+# ASSUMPTIONS
+
+IsDeployedToCombatZone(1) assumes OnActiveDuty(1)
+OnActiveDutyForTraining(1) assumes InReserveArmedForces(1)
+OnActiveDutyForTraining(1) assumes OnActiveDuty(1)
+OnActiveDuty(1) assumes InArmedForces(1)
+InActiveArmedForces(1) assumes InArmedForces(1)
+InReserveArmedForces(1) assumes InArmedForces(1)
 
 
 # UNIT TESTS
