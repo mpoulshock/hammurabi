@@ -42,11 +42,12 @@ TboolIn IsMarried(Thing p) =
 	Facts.EveryoneExcept(p).Exists(AreMarried(p,_))
 	
 # >>What is/was {1}'s marital status?
-Tstr MaritalStatus(Thing p) =
-	TstrIn MaritalStatus(p)
-	# or, has a spouse
+TstrIn MaritalStatus(Thing p)
 
-	
+AreMarried(1,2) assumes MaritalStatus(1) = "Married"
+AreMarried(1,2) assumes MaritalStatus(2) = "Married"
+
+
 # GAY MARRIAGE
 
 # One person is a man, the other a woman

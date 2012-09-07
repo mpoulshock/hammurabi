@@ -10,6 +10,7 @@
 Tnum HouseholdSize(Thing p) =
 	HouseholdMembersOf(p).Count
 
+# TODO: This currently does not include the person!
 # >>Who are/were the other members of {1}'s household?
 TsetIn HouseholdMembersOf(Thing person)
 
@@ -32,6 +33,8 @@ TboolIn ProvidesSupportFor(Thing p1, Thing p2)
 
 # >>Do/did {1} and {2} purchase and prepare meals together (for home consumption)?
 TboolIn PurchaseAndPrepareMealsTogether(Thing p1, Thing p2) 
+
+PurchaseAndPrepareMealsTogether(1,2) assumes LivesWith(1,2)
 
 
 # UNIT TESTS

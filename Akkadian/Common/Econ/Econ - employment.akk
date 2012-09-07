@@ -1,15 +1,14 @@
 # Namespace:    Hammurabi.Econ
 # Summary:      Basic economic relationships related to employment.
-# Updated:      2012-06-23
+# Updated:      2012-09-06
 # Author:       Michael Poulshock
+
 
 # NATURE OF EMPLOYMENT RELATIONSHIP
 
 # Is/was {1} employed?
-TboolIn IsEmployed(Thing p) =
-	Stub()
-	# Exists(AllCorps, IsEmployedBy(p,_))
-	
+TboolIn IsEmployed(Thing p)
+
 # Indicates whether a person is employed by a particular employer (corporation).  
 # It is assumed that "employee" does not include independent contractors.
 Tbool IsEmployedBy(Thing p, Thing corp) =
@@ -130,7 +129,7 @@ Tbool PresumptivelyResignedFrom(Thing p, Thing corp) =
 	NatureOfSeparation(p, corp) == "Failed to return following unpaid suspension" &
 	LengthOfSuspensionFrom(p, corp) < 3		# May vary by jurisdiction!
 	
-# Length of unpaid suspension (in days)
+# >>How long (in days) was {1}'s unpaid suspension from {2}?
 TnumIn LengthOfSuspensionFrom(Thing p, Thing corp) 
 	
 # >>What was the nature of {1}'s separation from {2}? (Options: Resignation; Resignation in lieu of discharge; Termination for misconduct or cause; Layoff, reduction in force, or downsizing; Temporary job ended; Voluntary retirement; Forced retirement; Constructive discharge; Mutual agreement; Failed to return following unpaid suspension)
@@ -151,15 +150,15 @@ TboolIn IsOnStrikeFrom(Thing p, Thing corp)
 # >>Is {1} on strike from any employer?
 TboolIn IsOnStrike(Thing p) 
 
-		
 
 # SELF-SUPPORT
 
 # >>Does/did {1} manage his or her own financial affairs?
-TboolIn ManagesOwnAffairs(Thing p) =
-	PercentSelfSupport(p) > 50 |		# Assumed
-	TboolIn ManagesOwnAffairs(p)
-	
+TboolIn ManagesOwnAffairs(Thing p)
+
+# TODO: PercentSelfSupport(p) > 50 assumes ManagesOwnAffairs(1) - LHS syntax not parseable yet
+
+
 # >>To what degree does {1} support himself or herself financially? (Express the answer in percentage points.)
 TnumIn PercentSelfSupport(Thing p)
 
@@ -188,19 +187,21 @@ TboolIn IsAirlineFlightCrew(Thing p, Thing corp)
 TboolIn IsPanamaRailroadEmployee(Thing p)
 
 
+# ASSUMPTIONS
+
+IsEmployedBy(1,2) assumes IsEmployed(1)
+IsOnStrikeFrom(1,2) assumes IsOnStrike(1)
+IsOnStrike(1) assumes IsEmployed(1)
+IsUSGovtEmployee(1) assumes IsEmployed(1)
+IsPanamaRailroadEmployee(1) assumes IsEmployed(1)
+
+
 # UNIT TESTS
 
 Test: 257940961
 - Things t1, t2
-- ManagesOwnAffairs(t1) = Tbool(?)
 - PercentSelfSupport(t1) = 20
-- Hammurabi.Econ.ManagesOwnAffairs(t1).TestOutput =?= "Time.DawnOf Uncertain "
-
-Test: 528969603
-- Things t1, t2
-- ManagesOwnAffairs(t1) = Tbool(?)
-- PercentSelfSupport(t1) = 80
-- Hammurabi.Econ.ManagesOwnAffairs(t1).TestOutput =?= "Time.DawnOf True "
+- Hammurabi.Econ.ManagesOwnAffairs(t1).TestOutput =?= "Time.DawnOf Unstated "
 
 Test: 87584116
 - Things t1, t2

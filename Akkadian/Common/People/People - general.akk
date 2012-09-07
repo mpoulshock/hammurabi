@@ -72,7 +72,7 @@ TboolIn HasSSN(Thing p)
 TboolIn AppliedForSSN(Thing p) 
 
 # See 42 USC 416(i)(1)(B).
-# >>Is {1} legally blind?
+# >>Is/was {1} legally blind?
 TboolIn IsBlind(Thing p)
 
 # >>Does/did {1} have a physical or mental impairment that substantially limits one or more major life activities (see 42 USC 12102)?
@@ -84,10 +84,13 @@ TboolIn IsIncapableOfSelfCare(Thing p)
 # >>Is/was {1} in prison?
 TboolIn IsInPrison(Thing p)
 
-# >>In juvenile rehab facility
+# >>Is/was {1} in a juvenile rehabilitation facility?
 TboolIn InJuvenileFacility(Thing p)
 
-# >>In a drug or alcohol treatment program
+# >>Is/was {1} in foster care?
+TboolIn InFosterCare(Thing p)
+
+# >>Is/was {1} in a drug or alcohol treatment program?
 TboolIn InDrugOrAlcoholTreatmentProg(Thing p) 
 	
 	
