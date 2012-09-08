@@ -1,6 +1,6 @@
 # Namespace:    Hammurabi.Fam
 # Summary:      Basic family relationships
-# Updated:      2012-08-21
+# Updated:      2012-09-08
 # Author:       Michael Poulshock
 
 
@@ -15,39 +15,49 @@ TsetIn FamilyOf(Thing person)
 	
 # Siblings
 Tbool AreSiblings(Thing p1, Thing p2) =
-	Facts.Sym(p1, "FamilyRelationship", p2, "Sibling")    # or, share a parent
+    Relationship(p1,p2) == "Sibling" |~
+	Relationship(p2,p1) == "Sibling"
 
 # Half-siblings
 Tbool AreHalfSiblings(Thing p1, Thing p2) =
-	Facts.Sym(p1, "FamilyRelationship", p2, "Half sibling")  # or, share one parent
+    Relationship(p1,p2) == "Half sibling" |~
+	Relationship(p2,p1) == "Half sibling"
+	# or, share one parent
 
 # Step-siblings
 Tbool AreStepsiblings(Thing p1, Thing p2) =
-	Facts.Sym(p1, "FamilyRelationship", p2, "Stepsibling")
+    Relationship(p1,p2) == "Stepsibling" |~
+	Relationship(p2,p1) == "Stepsibling"
 	
 # Grandparent
 Tbool IsGrandparentOf(Thing p1, Thing p2) =
-	Facts.Sym(p1, "FamilyRelationship", p2, "Grandparent", "Grandchild")
+    Relationship(p1,p2) == "Grandparent" |~
+	Relationship(p2,p1) == "Grandchild"
 	
 # Great-grandparent
 Tbool IsGreatGrandparentOf(Thing p1, Thing p2) =
-	Facts.Sym(p1, "FamilyRelationship", p2, "Great-grandparent", "Great-grandchild")
+    Relationship(p1,p2) == "Great-grandparent" |~
+	Relationship(p2,p1) == "Great-grandchild"
   
 # Great-great-grandparent
 Tbool IsGreatGreatGrandparentOf(Thing p1, Thing p2) =
-	Facts.Sym(p1, "FamilyRelationship", p2, "Great-great-grandparent", "Great-great-grandchild")
+    Relationship(p1,p2) == "Great-great-grandparent" |~
+	Relationship(p2,p1) == "Great-great-grandchild"
         
 # Aunt or uncle
 Tbool IsAuntOrUncleOf(Thing p1, Thing p2) =
-	Facts.Sym(p1, "FamilyRelationship", p2, "Aunt or uncle", "Niece or nephew")
+    Relationship(p1,p2) == "Aunt or uncle" |~
+	Relationship(p2,p1) == "Niece or nephew"
         
 # Great aunt or uncle
 Tbool IsGreatAuntOrUncleOf(Thing p1, Thing p2) =
-	Facts.Sym(p1, "FamilyRelationship", p2, "Great aunt or uncle", "Grand niece or nephew")
+    Relationship(p1,p2) == "Great aunt or uncle" |~
+	Relationship(p2,p1) == "Grand niece or nephew"
         
 # Great-great aunt or uncle
 Tbool IsGreatGreatAuntOrUncleOf(Thing p1, Thing p2) =
-	Facts.Sym(p1, "FamilyRelationship", p2, "Great-great aunt or uncle", "Great-grand niece or nephew")
+    Relationship(p1,p2) == "Great-great aunt or uncle" |~
+	Relationship(p2,p1) == "Great-grand niece or nephew"
         
 # Cousins
 Tbool IsCousinOf(Thing p1, Thing p2) =
@@ -56,11 +66,13 @@ Tbool IsCousinOf(Thing p1, Thing p2) =
         
 # First cousins
 Tbool IsFirstCousinOf(Thing p1, Thing p2) =
-	Facts.Sym(p1, "FamilyRelationship", p2, "First cousin")
+    Relationship(p1,p2) == "First cousin" |~
+	Relationship(p2,p1) == "First cousin"
         
 # Cousins, but not first cousins
 Tbool IsNonFirstCousinOf(Thing p1, Thing p2) =
-	Facts.Sym(p1, "FamilyRelationship", p2, "Other cousin")
+    Relationship(p1,p2) == "Other cousin" |~
+	Relationship(p2,p1) == "Other cousin"
         
 # >>Is {1} an ancestor of {2}?
 Tbool IsAncestorOf(Thing p1, Thing p2) =
@@ -156,6 +168,30 @@ TboolIn CaresForIncapacitatedPerson(Thing p)
 
 
 # UNIT TESTS
+
+Test: Grandparent1
+- Things t1, t2
+- FamilyRelationship(t1,t2) = "Grandparent"
+- Hammurabi.Fam.IsGrandparentOf(t1,t2).Out =?= true
+
+Test: Grandparent2
+- Things t1, t2
+- FamilyRelationship(t2,t1) = "Grandchild"
+- Hammurabi.Fam.IsGrandparentOf(t1,t2).Out =?= true
+
+Test: Grandparent3
+- Things t1, t2
+- FamilyRelationship(t1,t2) = "Sibling"
+- Hammurabi.Fam.IsGrandparentOf(t1,t2).Out =?= false
+
+Test: Grandparent4
+- Things t1, t2
+- FamilyRelationship(t2,t1) = "Sibling"
+- Hammurabi.Fam.IsGrandparentOf(t1,t2).Out =?= false
+
+Test: Grandparent5
+- Things t1, t2
+- Hammurabi.Fam.IsGrandparentOf(t1,t2).Out =?= "Unstated"
 
 Test: 49171719
 - Things t1, t2

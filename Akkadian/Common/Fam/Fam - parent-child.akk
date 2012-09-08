@@ -1,6 +1,6 @@
 # Namespace:    Hammurabi.Fam
 # Summary:      Basic family relationships: parent-child
-# Updated:      2012-08-21
+# Updated:      2012-09-08
 # Author:       Michael Poulshock
 
 
@@ -36,24 +36,15 @@ Tbool IsFatherOf(Thing p1, Thing p2) =
 	IsParentOf(p1,p2) &
 	IsMale(p1)
 	
-# Who are/were {1}'s parents?
+# Who are {1}'s parents?
 TsetIn ParentsOf(Thing p) 
 
-# Who are/were {1}'s children?
+# Who are {1}'s children?
 TsetIn ChildrenOf(Thing p)	
 	
 # Not strictly necessary but aids readability
 Tbool IsChildOf(Thing p1, Thing p2) =
 	IsParentOf(p2,p1)
-	
-##
-# >>Is {1} {2}'s parent?
-TboolIn IsParentOf(Thing p1, Thing p2) =
-	IsBiologicalParentOf(p1, p2) |
-	IsAdoptiveParentOf(p1, p2) |
-	IsFosterParentOf(p1, p2) |
-	IsStepparentOf(p1, p2)
-##
 
 # >>Is {1} {2}'s parent?
 TboolIn IsParentOf(Thing p1, Thing p2) =
@@ -65,22 +56,28 @@ TboolIn IsParentOf(Thing p1, Thing p2) =
             
 # Biological parent
 Tbool IsBiologicalParentOf(Thing p1, Thing p2) =
-	Facts.Sym(p1, "FamilyRelationship", p2, "Biological parent", "Biological child")
+    Relationship(p1,p2) == "Biological parent" |~
+	Relationship(p2,p1) == "Biological child"
 
 # Adoptive parent
 Tbool IsAdoptiveParentOf(Thing p1, Thing p2) =
-	Facts.Sym(p1, "FamilyRelationship", p2, "Adoptive parent", "Adopted child")
+	Relationship(p1,p2) == "Adoptive parent" |~
+	Relationship(p2,p1) == "Adopted child"
 
 # Foster parent
 Tbool IsFosterParentOf(Thing p1, Thing p2) =
-	Facts.Sym(p1, "FamilyRelationship", p2, "Foster parent", "Foster child")
+	Relationship(p1,p2) == "Foster parent" |~
+	Relationship(p2,p1) == "Foster child"
 
 # Stepparent
 Tbool IsStepparentOf(Thing p1, Thing p2) =
-	Facts.Sym(p1, "FamilyRelationship", p2, "Stepparent", "Stepchild")
+	Relationship(p1,p2) == "Stepparent" |~
+	Relationship(p2,p1) == "Stepchild"
 
 # >>Is/was {1} pregnant?
 TboolIn IsPregnant(Thing p)
+
+IsPregnant(1) assumes Gender(1) = "Female"
 
 # >>Is {1} unborn (i.e. a fetus)?
 TboolIn IsUnborn(Thing p)
@@ -95,12 +92,9 @@ TboolIn IsOfUnknownParentage(Thing p)
 # >> Was {1}'s paternity of {2} established?
 Tbool PaternityEstablishedFor(Thing parent, Thing child) =
 	IsMale(parent) &
-	is12YearAgeDiff &
+	Age(parent) - Age(child) >= 12 &
 	TboolIn PaternityEstablishedFor(parent,child) &
 	TheTime.IsAtOrAfter(DatePaternityEstablishedFor(parent,child))
-	
-	Tbool is12YearAgeDiff =
-		Age(parent) - Age(child) >= 12
 	
 # >> When was {1}'s paternity of {2} established?
 TdateIn DatePaternityEstablishedFor(Thing parent, Thing child)
@@ -113,11 +107,11 @@ Tbool BornOutOfWedlock(Thing p) =
 TboolIn IsIllegitimate(Thing p) =
 	!ParentsMarriedAsOf(p, DoB(p))
 	# unless child is born shortly after the parents' divorce
+	# ...married as of date of conception?
 
 # Assumption: could be done by either statute, court, or both
 # >>Is/was {1} legitimated (under the law of {1}'s domicile)?
-TboolIn IsLegitimatedByLaw(Thing child) =
-	Stub()
+TboolIn IsLegitimatedByLaw(Thing child)
 	
 # Legitimated by father (he acknowledged parental responsibility)
 # Example of temporal value built from threshold facts and an event

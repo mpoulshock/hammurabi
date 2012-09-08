@@ -13,6 +13,10 @@ of different ways:
   * SpousesOf(p)
   * MaritalStatus(p)
   * FamilyRelation(p,q)
+  
+TOOD: Could the rules below be simplified by defining IsMarried, AreMarried, and 
+MaritalStatus in terms of SpousesOf (i.e. let the fact that conveys the most
+information be at the bottom of the pile)?
 ##
 
 # MARITAL RELATIONSHIPS
@@ -24,7 +28,7 @@ TboolInSym AreMarried(Thing p1, Thing p2) =
 	if Facts.HasBeenAsserted("IsMarried",p2) & !IsMarried(p2) -> false
 	if Facts.HasBeenAsserted("SpousesOf",p1) -> SpousesOf(p1).Contains(p2)
 	if Facts.HasBeenAsserted("SpousesOf",p2) -> SpousesOf(p2).Contains(p1)
-	else Facts.Sym(p1, "FamilyRelationship", p2, "Spouse")
+	else Relationship(p1,p2) == "Spouse" |~ Relationship(p2,p1) == "Spouse"
 	
 # >>Who is/was {1}'s spouse(s)?
 TsetIn SpousesOf(Thing p) =
@@ -38,14 +42,13 @@ TsetIn SpousesOf(Thing p) =
 # >>Is/was {1} married?
 TboolIn IsMarried(Thing p) =
 	MaritalStatus(p) == "Married" |
-	SpousesOf(p).Count > 0 |
-	Facts.EveryoneExcept(p).Exists(AreMarried(p,_))
+	SpousesOf(p).Count > 0 
 	
 # >>What is/was {1}'s marital status?
 TstrIn MaritalStatus(Thing p)
 
-AreMarried(1,2) assumes MaritalStatus(1) = "Married"
-AreMarried(1,2) assumes MaritalStatus(2) = "Married"
+# AreMarried(1,2) assumes MaritalStatus(1) = "Married"
+# AreMarried(1,2) assumes MaritalStatus(2) = "Married"
 
 
 # GAY MARRIAGE
@@ -70,21 +73,25 @@ Tbool InSameSexMarriage(Thing p1, Thing p2) =
 	
 # Domestic partners
 Tbool IsDomesticPartnerOf(Thing p1, Thing p2) =
-	Facts.Sym(p1, "FamilyRelationship", p2, "Domestic partner")
+    Relationship(p1,p2) == "Domestic partner" |~
+	Relationship(p2,p1) == "Domestic partner"
 
 # Civil union
 Tbool InCivilUnion(Thing p1, Thing p2) =
-	Facts.Sym(p1, "FamilyRelationship", p2, "Partner by civil union")
+    Relationship(p1,p2) == "Partner by civil union" |~
+	Relationship(p2,p1) == "Partner by civil union"
 	
 # Ex-spouses
 Tbool ExSpouses(Thing p1, Thing p2) =
-	Facts.Sym(p1, "FamilyRelationship", p2, "Former spouse")
+    Relationship(p1,p2) == "Former spouse" |~
+	Relationship(p2,p1) == "Former spouse"
         
 # >>Are/were {1} and {2} legally separated?
 TboolInSym AreSeparated(Thing p1, Thing p2)
         
 # >>Are/were {1} and {2} divorced?
-TboolInSym AreDivorced(Thing p1, Thing p2) 
+TboolInSym AreDivorced(Thing p1, Thing p2) =
+	ExSpouses(p1,p2)
 
 # >>Is {1} a widow(er)?
 TboolIn IsWidowed(Thing p)
