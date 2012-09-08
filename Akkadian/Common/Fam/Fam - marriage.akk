@@ -73,17 +73,17 @@ Tbool InSameSexMarriage(Thing p1, Thing p2) =
 	
 # Domestic partners
 Tbool IsDomesticPartnerOf(Thing p1, Thing p2) =
-    Relationship(p1,p2) == "Domestic partner" |~
+	Relationship(p1,p2) == "Domestic partner" |~
 	Relationship(p2,p1) == "Domestic partner"
 
 # Civil union
 Tbool InCivilUnion(Thing p1, Thing p2) =
-    Relationship(p1,p2) == "Partner by civil union" |~
+	Relationship(p1,p2) == "Partner by civil union" |~
 	Relationship(p2,p1) == "Partner by civil union"
 	
 # Ex-spouses
 Tbool ExSpouses(Thing p1, Thing p2) =
-    Relationship(p1,p2) == "Former spouse" |~
+	Relationship(p1,p2) == "Former spouse" |~
 	Relationship(p2,p1) == "Former spouse"
         
 # >>Are/were {1} and {2} legally separated?

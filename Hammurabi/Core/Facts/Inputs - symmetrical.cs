@@ -44,37 +44,7 @@ namespace Hammurabi
             
             return QueryTvar<Tbool>(rel, directObj, subj);
         }
-        
-        /// <summary>
-        /// Returns a symmetrical input string fact.
-        /// </summary>
-        public static Tbool Sym(Thing subj, string rel, Thing directObj, string val)
-        {
-            if (Facts.HasBeenAsserted(rel, subj, directObj))
-            {
-                return QueryTvar<Tstr>(rel, subj, directObj) == val;
-            }
-            
-            return QueryTvar<Tstr>(rel, directObj, subj) == val;
-        }
-        
-        /// <summary>
-        /// Returns a symmetrical input string fact where the symmetrical relation
-        /// has a different name in each direction (such as grandchild-grandparent).
-        /// </summary>
-        public static Tbool Sym(Thing subj, string rel, Thing obj, string text, string reverseText)
-        {
-            bool fwd = Facts.HasBeenAsserted(rel, subj, obj);
-            bool bwd = Facts.HasBeenAsserted(rel, obj, subj);
-            
-            if (fwd) { return QueryTvar<Tstr>(rel, subj, obj) == text; }
-            
-            else if (bwd) { return QueryTvar<Tstr>(rel, obj, subj) == reverseText; }
-            
-            return Facts.Either(QueryTvar<Tstr>(rel, subj, obj) == text, 
-                                QueryTvar<Tstr>(rel, obj, subj) == reverseText);
-        }
-        
+
         /// <summary>
         /// Returns either of the two Tbools.
         /// </summary>

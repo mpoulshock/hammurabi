@@ -14,49 +14,58 @@ TsetIn FamilyOf(Thing person)
 # Marital and parent-child relationships are elsewhere
 	
 # Siblings
-Tbool AreSiblings(Thing p1, Thing p2) =
-    Relationship(p1,p2) == "Sibling" |~
+TboolInSym AreSiblings(Thing p1, Thing p2) =
+	Relationship(p1,p2) == "Sibling" |~
 	Relationship(p2,p1) == "Sibling"
 
 # Half-siblings
 Tbool AreHalfSiblings(Thing p1, Thing p2) =
-    Relationship(p1,p2) == "Half sibling" |~
+	Relationship(p1,p2) == "Half sibling" |~
 	Relationship(p2,p1) == "Half sibling"
 	# or, share one parent
 
 # Step-siblings
 Tbool AreStepsiblings(Thing p1, Thing p2) =
-    Relationship(p1,p2) == "Stepsibling" |~
+	Relationship(p1,p2) == "Stepsibling" |~
 	Relationship(p2,p1) == "Stepsibling"
 	
 # Grandparent
 Tbool IsGrandparentOf(Thing p1, Thing p2) =
-    Relationship(p1,p2) == "Grandparent" |~
+	Relationship(p1,p2) == "Grandparent" |~
 	Relationship(p2,p1) == "Grandchild"
 	
 # Great-grandparent
 Tbool IsGreatGrandparentOf(Thing p1, Thing p2) =
-    Relationship(p1,p2) == "Great-grandparent" |~
+	Relationship(p1,p2) == "Great-grandparent" |~
 	Relationship(p2,p1) == "Great-grandchild"
   
 # Great-great-grandparent
 Tbool IsGreatGreatGrandparentOf(Thing p1, Thing p2) =
-    Relationship(p1,p2) == "Great-great-grandparent" |~
+	Relationship(p1,p2) == "Great-great-grandparent" |~
 	Relationship(p2,p1) == "Great-great-grandchild"
         
 # Aunt or uncle
 Tbool IsAuntOrUncleOf(Thing p1, Thing p2) =
-    Relationship(p1,p2) == "Aunt or uncle" |~
+	others.Exists(PersonParentAunt(p2,_,p1)) |~
+	Relationship(p1,p2) == "Aunt or uncle" |~
 	Relationship(p2,p1) == "Niece or nephew"
-        
+	
+	Tset others =
+		Facts.AllKnownPeople() - p1 - p2;
+
+# Triangular relationship
+Tbool PersonParentAunt(Thing person, Thing parent, Thing auntUncle) =
+	IsParentOf(parent,person) &
+	AreSiblings(parent,auntUncle)
+
 # Great aunt or uncle
 Tbool IsGreatAuntOrUncleOf(Thing p1, Thing p2) =
-    Relationship(p1,p2) == "Great aunt or uncle" |~
+	Relationship(p1,p2) == "Great aunt or uncle" |~
 	Relationship(p2,p1) == "Grand niece or nephew"
         
 # Great-great aunt or uncle
 Tbool IsGreatGreatAuntOrUncleOf(Thing p1, Thing p2) =
-    Relationship(p1,p2) == "Great-great aunt or uncle" |~
+	Relationship(p1,p2) == "Great-great aunt or uncle" |~
 	Relationship(p2,p1) == "Great-grand niece or nephew"
         
 # Cousins
@@ -66,12 +75,12 @@ Tbool IsCousinOf(Thing p1, Thing p2) =
         
 # First cousins
 Tbool IsFirstCousinOf(Thing p1, Thing p2) =
-    Relationship(p1,p2) == "First cousin" |~
+	Relationship(p1,p2) == "First cousin" |~
 	Relationship(p2,p1) == "First cousin"
         
 # Cousins, but not first cousins
 Tbool IsNonFirstCousinOf(Thing p1, Thing p2) =
-    Relationship(p1,p2) == "Other cousin" |~
+	Relationship(p1,p2) == "Other cousin" |~
 	Relationship(p2,p1) == "Other cousin"
         
 # >>Is {1} an ancestor of {2}?
@@ -168,6 +177,17 @@ TboolIn CaresForIncapacitatedPerson(Thing p)
 
 
 # UNIT TESTS
+
+Test: AuntUncleInferred1
+- Things person, parent, aunt
+- IsParentOf(parent,person) = true
+- AreSiblings(parent,aunt) = true
+- Hammurabi.Fam.IsAuntOrUncleOf(aunt,person).Out =?= true
+
+Test: AuntUncleInferred2
+- Things person, parent, aunt
+- AreSiblings(parent,aunt) = true
+- Hammurabi.Fam.IsAuntOrUncleOf(aunt,person).Out =?= "Unstated"
 
 Test: Grandparent1
 - Things t1, t2

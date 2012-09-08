@@ -26,18 +26,6 @@ namespace Hammurabi
     public partial class Facts
     {
         /// <summary>
-        /// Queries the fact base to get all objects in a symmetrical
-        /// relationship with a given object.
-        /// For example: spousesOfBill = AllXSymmetrical(Bill,"IsMarriedTo");
-        /// </summary>
-//        public static Tset AllXSymmetrical(LegalEntity entity, string relationship)
-//        {
-//            return Facts.AllXSuchThatX(relationship, entity) |
-//                   Facts.AllXThat(entity, relationship);
-//        }
-
-
-        /// <summary>
         /// Returns a set of all known people except a given person.
         /// </summary>
         public static Tset EveryoneExcept(Thing p)
