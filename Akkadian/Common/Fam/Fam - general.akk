@@ -18,6 +18,14 @@ TboolInSym AreSiblings(Thing p1, Thing p2) =
 	Relationship(p1,p2) == "Sibling" |~
 	Relationship(p2,p1) == "Sibling"
 
+##
+Tbool AreSiblingsInferred(Thing kid1, Thing kid2, Thing parent1, Thing parent2) =
+	IsParentOf(parent1,kid1) &
+	IsParentOf(parent2,kid1) &
+	IsParentOf(parent1,kid2) &
+	IsParentOf(parent2,kid2)
+##
+	
 # Half-siblings
 Tbool AreHalfSiblings(Thing p1, Thing p2) =
 	Relationship(p1,p2) == "Half sibling" |~
@@ -31,14 +39,24 @@ Tbool AreStepsiblings(Thing p1, Thing p2) =
 	
 # Grandparent
 Tbool IsGrandparentOf(Thing p1, Thing p2) =
+	peopleBut(p1,p2).Exists(IsGrandparentInferred(p1,_,p2)) |
 	Relationship(p1,p2) == "Grandparent" |~
 	Relationship(p2,p1) == "Grandchild"
 	
+Tbool IsGrandparentInferred(Thing grandparent, Thing parent, Thing person) =
+	IsParentOf(parent,person) &
+	IsParentOf(grandparent,parent)
+
 # Great-grandparent
 Tbool IsGreatGrandparentOf(Thing p1, Thing p2) =
+	peopleBut(p1,p2).Exists(IsGreatGrandparentInferred(p1,_,p2)) |
 	Relationship(p1,p2) == "Great-grandparent" |~
 	Relationship(p2,p1) == "Great-grandchild"
-  
+
+Tbool IsGreatGrandparentInferred(Thing ggparent, Thing parent, Thing person) =
+	IsParentOf(parent,person) &
+	IsGrandparentOf(ggparent,parent)
+	
 # Great-great-grandparent
 Tbool IsGreatGreatGrandparentOf(Thing p1, Thing p2) =
 	Relationship(p1,p2) == "Great-great-grandparent" |~
@@ -46,23 +64,24 @@ Tbool IsGreatGreatGrandparentOf(Thing p1, Thing p2) =
         
 # Aunt or uncle
 Tbool IsAuntOrUncleOf(Thing p1, Thing p2) =
-	others.Exists(PersonParentAunt(p2,_,p1)) |~
+	peopleBut(p1,p2).Exists(IsAuntUncleInferred(p1,_,p2)) |
 	Relationship(p1,p2) == "Aunt or uncle" |~
 	Relationship(p2,p1) == "Niece or nephew"
-	
-	Tset others =
-		Facts.AllKnownPeople() - p1 - p2;
 
-# Triangular relationship
-Tbool PersonParentAunt(Thing person, Thing parent, Thing auntUncle) =
+Tbool IsAuntUncleInferred(Thing auntUncle, Thing parent, Thing person) =
 	IsParentOf(parent,person) &
 	AreSiblings(parent,auntUncle)
 
 # Great aunt or uncle
 Tbool IsGreatAuntOrUncleOf(Thing p1, Thing p2) =
+	peopleBut(p1,p2).Exists(IsGreatAuntUncleInferred(p1,_,p2)) |
 	Relationship(p1,p2) == "Great aunt or uncle" |~
 	Relationship(p2,p1) == "Grand niece or nephew"
-        
+
+Tbool IsGreatAuntUncleInferred(Thing auntUncle, Thing parent, Thing person) =
+	IsParentOf(parent,person) &
+	IsAuntOrUncleOf(auntUncle,parent)
+
 # Great-great aunt or uncle
 Tbool IsGreatGreatAuntOrUncleOf(Thing p1, Thing p2) =
 	Relationship(p1,p2) == "Great-great aunt or uncle" |~
@@ -83,11 +102,32 @@ Tbool IsNonFirstCousinOf(Thing p1, Thing p2) =
 	Relationship(p1,p2) == "Other cousin" |~
 	Relationship(p2,p1) == "Other cousin"
         
-# >>Is {1} an ancestor of {2}?
+# Ancestor
 Tbool IsAncestorOf(Thing p1, Thing p2) =
-	TboolIn IsAncestorOf(p1, p2)
-	# or inferred
+	IsAncestorInferred(p1,p2) |
+	Relationship(p1,p2) == "Other ancestor" |~
+	Relationship(p2,p1) == "Other descendant"
 
+# Look for chains of linked ancestors
+TboolIn IsAncestorInferred(Thing ancestor, Thing person) =
+	set:
+	if IsAncestorAsserted(ancestor,person) -> true
+	else nextGen.Exists(IsAncestorInferred(ancestor,_))
+	
+	Tset nextGen =
+		peopleBut(person).Filter(IsAncestorAsserted(_,person))
+	
+IsParentOf(1,2) assumes IsAncestorAsserted(1,2)
+IsGrandparentOf(1,2) assumes IsAncestorAsserted(1,2)
+IsGreatGrandparentOf(1,2) assumes IsAncestorAsserted(1,2)
+
+TboolIn IsAncestorAsserted(Thing p1, Thing p2) =
+	false	# default to false
+
+# Descendant
+Tbool IsDescendantOf(Thing p1, Thing p2) =
+	IsAncestorOf(p2,p1)
+	
 # >>What is/was {1}'s family relationship to {2} (if any)?
 Tstr Relationship(Thing p1, Thing p2) =
 	TstrIn FamilyRelationship(p1,p2)
@@ -178,6 +218,34 @@ TboolIn CaresForIncapacitatedPerson(Thing p)
 
 # UNIT TESTS
 
+Test: Ancestor1
+- Things person, parent, grandparent
+- IsParentOf(parent,person) = true
+- IsParentOf(grandparent,parent) = true
+- Fam.IsAncestorInferred(grandparent,person).Out =?= true
+
+Test: Ancestor2
+- Things person, parent, grandparent
+- IsParentOf(grandparent,parent) = true
+- Fam.IsAncestorInferred(grandparent,person).Out =?= false
+
+Test: Ancestor3a		# fails b/c no fwd chaining!
+- Things person, parent, ggparent
+- FamilyRelationship(parent,person) = "Biological parent"
+- FamilyRelationship(ggparent,parent) = "Grandparent"
+- Fam.IsAncestorInferred(ggparent,person).Out =?= true
+
+Test: Ancestor3b
+- Things person, parent, ggparent
+- IsParentOf(parent,person) = true
+- IsGrandparentOf(ggparent,parent) = true
+- Fam.IsAncestorInferred(ggparent,person).Out =?= true
+
+Test: Ancestor4
+- Things person, cousin
+- FamilyRelationship(person,cousin) = "First cousin"
+- Fam.IsAncestorInferred(person,cousin).Out =?= false
+
 Test: AuntUncleInferred1
 - Things person, parent, aunt
 - IsParentOf(parent,person) = true
@@ -188,6 +256,16 @@ Test: AuntUncleInferred2
 - Things person, parent, aunt
 - AreSiblings(parent,aunt) = true
 - Hammurabi.Fam.IsAuntOrUncleOf(aunt,person).Out =?= "Unstated"
+
+Test: AuntUncleInferred3
+- Things t1, t2
+- FamilyRelationship(t1,t2) = "Aunt or uncle"
+- Hammurabi.Fam.IsAuntOrUncleOf(t1,t2).Out =?= true
+
+Test: AuntUncleInferred4
+- Things t1, t2
+- FamilyRelationship(t1,t2) = "Biological parent"
+- Hammurabi.Fam.IsAuntOrUncleOf(t1,t2).Out =?= false
 
 Test: Grandparent1
 - Things t1, t2
@@ -212,6 +290,17 @@ Test: Grandparent4
 Test: Grandparent5
 - Things t1, t2
 - Hammurabi.Fam.IsGrandparentOf(t1,t2).Out =?= "Unstated"
+
+Test: Grandparent6
+- Things person, parent, grandparent
+- IsParentOf(parent, person) = true
+- IsParentOf(grandparent, parent) = true
+- Fam.IsGrandparentOf(grandparent,person).Out =?= true
+
+Test: Grandparent7
+- Things person, parent, grandparent
+- IsParentOf(grandparent, parent) = true
+- Fam.IsGrandparentOf(grandparent,person).Out =?= "Unstated"
 
 Test: 49171719
 - Things t1, t2

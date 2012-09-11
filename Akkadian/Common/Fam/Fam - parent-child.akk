@@ -37,8 +37,11 @@ Tbool IsFatherOf(Thing p1, Thing p2) =
 	IsMale(p1)
 	
 # Who are {1}'s parents?
-TsetIn ParentsOf(Thing p) 
+TsetIn ParentsOf(Thing p)
 
+Tset ParentsOfInferred(Thing p) =
+	peopleBut(p).Filter(IsParentOf(_,p))
+	
 # Who are {1}'s children?
 TsetIn ChildrenOf(Thing p)	
 	

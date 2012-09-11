@@ -273,12 +273,7 @@ namespace Akkadian
     
             // IfThen() 
             line = Regex.Replace(line, @"if (?<txt>"+word+@") then (?<txt2>[-!\+\*/A-Za-z0-9\.;\(\),""'_<>= ]+)", "IfThen(${txt}, ${txt2})");  
-             
-            // Facts.AllKnownPeople, Property, etc. - Compiler is 2x as fast when these are toggled out
-//            line = Regex.Replace(line, @"AllPeopleExcept\(", "Facts.EveryoneExcept(");  
-//            line = Regex.Replace(line, @"AllPeople", "Facts.AllKnownPeople()");  
-//            line = Regex.Replace(line, @"AllProperty", "Facts.AllKnownProperty()");  
-            
+
             // Exists/ForAll/Filter
             line = Regex.Replace(line, @"\.(?<quant>(Exists|ForAll|Filter|Sum|Min|Max))\((?<fcn>[a-zA-Z0-9\(\)\._, ]+)\)", ".${quant}( _ => ${fcn})");  
                 
