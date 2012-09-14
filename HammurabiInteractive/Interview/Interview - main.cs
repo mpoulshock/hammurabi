@@ -20,7 +20,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using Hammurabi;
     
 namespace Interactive
@@ -31,16 +30,13 @@ namespace Interactive
     /// </summary>
     public static partial class Interview 
     {
-        // Create some entities that will be the subject of the interview.
-        // Later, this will have to be made more dynamic...
-        public static Thing t1 = new Thing("t1");
-        public static Thing t2 = new Thing("t2");
-
         /// <summary>
         /// Assesses the state of asserted facts and then decides what to do next.
         /// </summary>
-        public static void ProcessRequest(string goalText) 
+        public static void ProcessRequest(string request) 
         {
+            string goalText = ParseRequest(request);
+
             InitializeSession();
 
             // Given a relationship name, get the goal as a function
@@ -76,6 +72,24 @@ namespace Interactive
 
 //             Display all facts that have been asserted (for diagnostic purposes)
 //             Console.WriteLine("\nFacts: \n" + Facts.AssertedFacts());
+        }
+
+        /// <summary>
+        /// Parses the interview goal request.
+        /// </summary>
+        private static string ParseRequest(string request)
+        {
+            // Request format: <goal> <Thing1> <Thing2>? <Thing3>?
+            // Example: IsUSCitizen Jane
+            string[] req = request.Split(' ');
+            
+            // Set values for the initial Things
+            Engine.Thing1 = new Thing(req.Length > 1 ? req[1] : "");
+            Engine.Thing2 = new Thing(req.Length > 2 ? req[2] : "");
+            Engine.Thing3 = new Thing(req.Length > 3 ? req[3] : "");
+
+            // Return the goal name
+            return req[0];
         }
 
         /// <summary>

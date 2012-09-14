@@ -116,64 +116,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tbool result = Fam.IsBiologicalParentOf(p1, p2);
             Assert.AreEqual("Time.DawnOf Unstated ", result.TestOutput);       
         }
-        
-        // .Either - correct identification of unknown facts?
-        
-        [Test]
-        public void Either_Unknowns_1 ()
-        {
-            // After first fact is established, the second one should not be added
-            // to the Facts.Unknowns list.
-            Facts.Reset();
-            Facts.Assert(p1, "FamilyRelationship", p2, "Biological parent");
-            Facts.GetUnknowns = true;
-            Tbool result = Fam.IsBiologicalParentOf(p1, p2);
-            Facts.GetUnknowns = false;
-            bool f = Facts.IsUnknown("FamilyRelationship", p2, p1, null);
-            Assert.AreEqual(false, f);       
-        }
-        
-        [Test]
-        public void Either_Unknowns_2 ()
-        {
-            // Same as above, but input fact is false
-            Facts.Reset();
-            Facts.Assert(p1, "FamilyRelationship", p2, "Grandchild");
-            Facts.GetUnknowns = true;
-            Tbool result = Fam.IsBiologicalParentOf(p1, p2);
-            Facts.GetUnknowns = false;
-            bool f = Facts.IsUnknown("FamilyRelationship", p2, p1, null);
-            Assert.AreEqual(false, f);       
-        }
-        
-//        [Test]
-//        public void Either_Unknowns_3 ()
-//        {
-//            // After reverse fact is established, the fwd-fact should not be added
-//            // to the Facts.Unknowns list.
-//            Facts.Reset();
-//            Facts.Assert(p2, "FamilyRelationship", p1, "Biological parent");
-//            Facts.GetUnknowns = true;
-//            Tbool result = Fam.IsParentOf(p1, p2);
-//            Facts.GetUnknowns = false;
-//            bool f = Facts.IsUnknown(p1, "FamilyRelationship", p2);
-//            Assert.AreEqual(false, f);       
-//        }
-        
-        [Test]
-        public void Either_Unknowns_4 ()
-        {
-            // After reverse fact is established, the fwd-fact should not be added
-            // to the Facts.Unknowns list.
-            Facts.Reset();
-            Facts.Assert(p2, "FamilyRelationship", p1, "Biological parent");
-            Facts.GetUnknowns = true;
-            Tbool result = Fam.IsBiologicalParentOf(p1, p2);
-            Facts.GetUnknowns = false;
-            bool f = Facts.IsUnknown("FamilyRelationship", p1, p2, null);
-            Assert.AreEqual(false, f);       
-        }
-        
+
         // Some family relationship inputs
         
         [Test]

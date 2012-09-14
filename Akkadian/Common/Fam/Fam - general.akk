@@ -102,29 +102,22 @@ Tbool IsNonFirstCousinOf(Thing p1, Thing p2) =
 	Relationship(p1,p2) == "Other cousin" |~
 	Relationship(p2,p1) == "Other cousin"
         
-# Ancestor
-Tbool IsAncestorOf(Thing p1, Thing p2) =
-	IsAncestorInferred(p1,p2) |
-	Relationship(p1,p2) == "Other ancestor" |~
-	Relationship(p2,p1) == "Other descendant"
-
-# Look for chains of linked ancestors
-TboolIn IsAncestorInferred(Thing ancestor, Thing person) =
+# Lineal ancestor (only includes blood relatives)
+Tbool IsAncestorOf(Thing ancestor, Thing person) =
 	set:
 	if IsAncestorAsserted(ancestor,person) -> true
-	else nextGen.Exists(IsAncestorInferred(ancestor,_))
+	else nextGen.Exists(IsAncestorOf(ancestor,_))
 	
 	Tset nextGen =
 		peopleBut(person).Filter(IsAncestorAsserted(_,person))
-	
-IsParentOf(1,2) assumes IsAncestorAsserted(1,2)
-IsGrandparentOf(1,2) assumes IsAncestorAsserted(1,2)
-IsGreatGrandparentOf(1,2) assumes IsAncestorAsserted(1,2)
+
+FamilyRelationship(1,2) = "Biological parent" assumes IsAncestorAsserted(1,2)
+FamilyRelationship(1,2) = "Biological child"	assumes IsAncestorAsserted(2,1)
 
 TboolIn IsAncestorAsserted(Thing p1, Thing p2) =
 	false	# default to false
 
-# Descendant
+# Lineal descendant (only includes blood relatives)
 Tbool IsDescendantOf(Thing p1, Thing p2) =
 	IsAncestorOf(p2,p1)
 	
@@ -151,8 +144,10 @@ TboolIn IsLegalGuardianOf(Thing p1, Thing p2) =
 # >>Does/did {1} act in loco parentis with respect to {2}?
 TboolIn ActsInLocoParentisOf(Thing p1, Thing p2) =
 	!IsParentOf(p2,p1) &
-	TboolIn ActsInLocoParentisOf(p1, p2)
+	TboolIn ActsInLocoParentisOf(p1,p2)
 
+# ActsInLocoParentisOf(1,2) assumes IsParentOf(1,2) = false	
+	
 # >>Does/did {1} have day-to-day responsibility for {2}?
 Tbool HasDayToDayResponsibilityFor(Thing p1, Thing p2) =
 	CanBeAGuardianOf(p1, p2) &
@@ -176,6 +171,11 @@ Tbool IsCustodialParentOf(Thing p1, Thing p2) =
 	IsParentOf(p1,p2) &
 	HasCustodyOf(p1,p2)
 
+# Noncustodial parent
+Tbool IsNoncustodialParentOf(Thing parent, Thing child) =
+	IsParentOf(parent,child) &
+	!HasCustodyOf(parent,child)
+	
 
 # OTHER
 
@@ -199,7 +199,7 @@ Tbool IsLivingWithPCG(Thing p1, Thing p2) =
 		IsLegalGuardianOf(p2, p1)
 
 # Cohabitation
-Tbool AreCohabitating(Thing p1, Thing p2) =
+Tbool Cohabitate(Thing p1, Thing p2) =
 	Econ.LivesWith(p1, p2) &
 	AreInIntimateRelationship(p1, p2)
 
@@ -220,31 +220,23 @@ TboolIn CaresForIncapacitatedPerson(Thing p)
 
 Test: Ancestor1
 - Things person, parent, grandparent
-- IsParentOf(parent,person) = true
-- IsParentOf(grandparent,parent) = true
-- Fam.IsAncestorInferred(grandparent,person).Out =?= true
+- FamilyRelationship(parent,person) = "Biological parent"
+- FamilyRelationship(grandparent,parent) = "Biological parent"
+- Fam.IsAncestorOf(grandparent,person).Out =?= true
 
 Test: Ancestor2
-- Things person, parent, grandparent
-- IsParentOf(grandparent,parent) = true
-- Fam.IsAncestorInferred(grandparent,person).Out =?= false
+- Things person, grandparent
+- Fam.IsAncestorOf(grandparent,person).Out =?= false
 
-Test: Ancestor3a		# fails b/c no fwd chaining!
-- Things person, parent, ggparent
+Test: Ancestor3
+- Things person, parent
 - FamilyRelationship(parent,person) = "Biological parent"
-- FamilyRelationship(ggparent,parent) = "Grandparent"
-- Fam.IsAncestorInferred(ggparent,person).Out =?= true
-
-Test: Ancestor3b
-- Things person, parent, ggparent
-- IsParentOf(parent,person) = true
-- IsGrandparentOf(ggparent,parent) = true
-- Fam.IsAncestorInferred(ggparent,person).Out =?= true
+- Fam.IsAncestorOf(parent,person).Out =?= true
 
 Test: Ancestor4
 - Things person, cousin
 - FamilyRelationship(person,cousin) = "First cousin"
-- Fam.IsAncestorInferred(person,cousin).Out =?= false
+- Fam.IsAncestorOf(person,cousin).Out =?= false
 
 Test: AuntUncleInferred1
 - Things person, parent, aunt

@@ -59,12 +59,16 @@ namespace Hammurabi
         /// </summary>
         private static void CoreAssert(string rel, Thing e1, Thing e2, Thing e3, Tvar val)
         {
-            // Assert the fact
-            Fact f = new Fact(rel, e1, e2, e3, val);
-            FactBase.Add(f);
+            // Don't assert a fact that's already been asserted
+            if (!HasBeenAsserted(rel, e1, e2, e3))
+            {
+                // Assert the fact
+                Fact f = new Fact(rel, e1, e2, e3, val);
+                FactBase.Add(f);
 
-            // Look for additional inferences that can be drawn, based on assumptions.
-            Assumptions.TriggerInferences(rel, e1, e2, e3, val);
+                // Look for additional inferences that can be drawn, based on assumptions.
+                Assumptions.TriggerInferences(rel, e1, e2, e3, val);
+            }
         }
     }
 }

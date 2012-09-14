@@ -6,7 +6,7 @@
 
 
 # Citizenship of people born in Puerto Rico
-Tbool IsUSCitizenPerPuertoRico(Thing p) = 
+TboolIn IsUSCitizenPerPuertoRico(Thing p) = 
 	IsUSCitizenPerPuertoRico1941(p) |
 	IsUSCitizenAtBirthPerPuertoRico(p)
 	
@@ -30,3 +30,5 @@ Tbool IsUSCitizenAtBirthPerPuertoRico(Thing p) =
 	TheTime.IsAtOrAfter(DoB(p))    # Makes conclusion true from DoB onward
 	
 	
+# UNIT TESTS
+

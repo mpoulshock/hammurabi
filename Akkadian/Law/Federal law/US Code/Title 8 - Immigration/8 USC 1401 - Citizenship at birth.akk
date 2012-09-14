@@ -227,7 +227,7 @@ Tbool OneNationalOneAlienParent(Thing c) =
 
 # Parents married as of child's date of birth
 # TODO: Connect to 8 U.S.C. 1409
-Tbool ParentsMarried(Thing c) =
+TboolIn ParentsMarried(Thing c) =
 	Fam.AreMarried(FatherOf(c), MotherOf(c)).AsOf(DoB(c))
 	# ! Fam.IsAdopted(c)
 	

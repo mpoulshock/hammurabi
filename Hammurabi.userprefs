@@ -1,12 +1,6 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Hammurabi\Generated source\Assumption metadata.cs">
-    <Files>
-      <File FileName="AkkadianCompiler\Assumptions.cs" Line="105" Column="1" />
-      <File FileName="Hammurabi\Core\Facts\Assumptions.cs" Line="106" Column="16" />
-      <File FileName="AkkadianCompiler\Main.cs" Line="92" Column="39" />
-      <File FileName="Hammurabi\Generated source\Assumption metadata.cs" Line="8" Column="2" />
-    </Files>
+  <MonoDevelop.Ide.Workbench>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
@@ -14,10 +8,16 @@
           <Node name="Hammurabi" expanded="True">
             <Node name="Core" expanded="True">
               <Node name="Facts" expanded="True" />
+              <Node name="Fundamental types" expanded="True">
+                <Node name="Tvar.cs" selected="True" />
+              </Node>
             </Node>
           </Node>
-          <Node name="HammurabiInteractive" expanded="True" selected="True">
+          <Node name="HammurabiInteractive" expanded="True">
             <Node name="Interview" expanded="True" />
+          </Node>
+          <Node name="Unit tests - Hammurabi core" expanded="True">
+            <Node name="Unit tests" expanded="True" />
           </Node>
         </State>
       </Pad>

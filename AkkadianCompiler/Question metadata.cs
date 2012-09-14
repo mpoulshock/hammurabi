@@ -126,7 +126,6 @@ namespace Akkadian
             // Open the question template class
             string result = 
                 "using System; \r\nusing System.Collections.Generic; \r\nusing Hammurabi; \r\nnamespace Interactive { \r\npublic class Templates {" +
-                "public static Thing t1 = new Thing(\"t1\");\r\npublic static Thing t2 = new Thing(\"t2\");public static Thing t3 = new Thing(\"t3\");" +
                 "\r\npublic static Question GetQ(string rel) { \r\nswitch(rel) { \r\n";
 
             // Keep track of what has already been added to the file
@@ -165,9 +164,9 @@ namespace Akkadian
             // If no method is provided, don't create a '()=>Fcn' string
             if (q.fullMethod == null) return ", null";
 
-            string result = ",()=>" + q.fullMethod + "(t1";
-            if (q.param2Type != "") result += ",t2";
-            if (q.param3Type != "") result += ",t3";
+            string result = ",()=>" + q.fullMethod + "(Engine.Thing1";
+            if (q.param2Type != "") result += ",Engine.Thing2";
+            if (q.param3Type != "") result += ",Engine.Thing3";
             return result + ")";
         }
     }

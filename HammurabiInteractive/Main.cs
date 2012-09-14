@@ -55,7 +55,7 @@ namespace Interactive
                 // Save interview as an .akk test
                 if (next == "s") 
                 {
-                    string file = Interactive.Templates.GetQ(goal).filePath;
+                    string file = Interactive.Templates.GetQ(goal.Split(' ')[0]).filePath;
                     AkkTest.WriteToFile(file);
 
                     // Next action

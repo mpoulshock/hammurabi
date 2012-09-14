@@ -10,6 +10,17 @@ TnumIn NumberOfEmployees(Thing corp)
 # >>Is {1} a governmental entity?
 TboolIn IsGovtAgency(Thing corp)
 
+# Unincorporated business entity (UBE)
+Tbool IsUnincorporatedBusinessEntity(Thing entity) =
+	type == "Limited Partnership" |
+	type == "Limited Liability Partnership" |
+	type == "Limited Limited Liability Partnership" |
+	type == "Limited Liability Company" |
+	type == "Trust"
+	
+	Tstr type =
+		TypeOfCorporateEntity(entity)
+
 # >>What type of corporate entity is {1}?
 TstrIn TypeOfCorporateEntity(Thing corp)
 	

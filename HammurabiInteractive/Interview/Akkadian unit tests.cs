@@ -20,7 +20,6 @@
 
 using System;
 using System.IO;
-using System.Net;
 using Hammurabi;
     
 namespace Interactive
@@ -33,9 +32,6 @@ namespace Interactive
     {
         // Build up a string representing an .akk test case
         public static string testStr = "";
-
-        // Thing(s) referenced by the goal (for .akk test case)
-        public static string things = "- Things t1, t2";
 
         // Relationship that is asserted on each line of the .akk unit test
         public static string assertedRelationship = "";
@@ -52,8 +48,14 @@ namespace Interactive
             // First line of test case (declaration)
             testStr += "Test: " + RandomNumber() + "\r\n";
 
+            string t1 = Engine.Thing1.Id;
+            string t2 = Engine.Thing2.Id;
+            string t3 = Engine.Thing3.Id;
+
             // Line declaring the Things used
-            testStr += things + "\r\n";
+            if (t3 != "")      testStr += "- Things " + t1 + ", " + t2 + ", " + t3 + "\r\n";
+            else if (t2 != "") testStr += "- Things " + t1 + ", " + t2 + "\r\n";
+            else               testStr += "- Thing " + t1 + "\r\n";
         }
 
         /// <summary>
@@ -93,15 +95,10 @@ namespace Interactive
         {
             Question q = Templates.GetQ(goal);
 
-            string result = q.fullMethod + "(t1";
-
             // Note: for now, this only handles methods with Things as arguments
-            if (q.arg2Type != "")
-                result += ", t2";
-
-            if (q.arg3Type != "")
-                result += ", t3";
-
+            string result = q.fullMethod + "(" + Engine.Thing1.Id;
+            if (q.arg2Type != "") result += ", " + Engine.Thing2.Id;
+            if (q.arg3Type != "") result += ", " + Engine.Thing3.Id;
             return result + ")";
         }
 
@@ -115,8 +112,7 @@ namespace Interactive
             bool success = false;
 
             // Read each line of the .akk file, looking for the place to insert the unit test text.
-            WebRequest req = WebRequest.Create(filePath);
-            StreamReader stream = new StreamReader(req.GetResponse().GetResponseStream());
+            StreamReader stream = new StreamReader(filePath);
             while( (line = stream.ReadLine()) != null )
             {
                 result += line + "\r\n";
