@@ -17,6 +17,12 @@ Test: 85594484
 
 # ASK INTERMEDIATE QUESTION BEFORE DESCENDING TREE
 
+TboolIn Test9(Thing p) =
+	set.Exists(IsUSCitizen(_))
+	
+	Tset set =
+		TsetIn SomeRandomPeople(p)
+
 Tbool MeetsSomeCriteria(Thing p) =
 	MeetsCriteria1(p) &
 	TboolIn MeetsCriteria2(p)

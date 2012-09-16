@@ -241,5 +241,6 @@ Thing FatherOf(Thing c) =
 	
 # >>Who was {1}'s mother at the time of his or her birth?
 Thing MotherOf(Thing c) =
+	# Fam.MotherAsOf(c, DoB(c))
 	TsetIn MotherAtTimeOfBirth(c).ToThing
 	

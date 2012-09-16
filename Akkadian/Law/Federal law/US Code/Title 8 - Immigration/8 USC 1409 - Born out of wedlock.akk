@@ -41,7 +41,6 @@ Tbool SubsecBApplies(Thing c) =
 	
 # Child national if mother national
 Tbool IsUSNationalPerMother(Thing p) =
-	# Nothwithstanding subsection (a)...
 	SubsecCApplies(p)
 
 # Subsection (c) applies
@@ -61,3 +60,23 @@ Tbool SubsecCApplies(Thing c) =
 		Sec1401.MotherOf(c)
 	
 	
+
+# UNIT TESTS
+
+Test: Utter_shit
+- Thing jamie
+- DoB(jamie) = 1977-02-03
+- Things mom,dad
+- ParentsOf(jamie) = [[mom, dad]]
+- ChildrenOf(mom) = [[jamie]]
+- FamilyRelationship(mom,jamie) = "Biological parent"
+- FamilyRelationship(jamie,mom) = "Biological child"
+- Gender(mom) = "Female"
+- ChildrenOf(dad) = [[jamie]]
+- FamilyRelationship(dad,jamie) = "Biological parent"
+- FamilyRelationship(jamie,dad) = "Biological child"
+- Gender(dad) = "Male"
+- CountryLocation(mom) = "United States"
+- BirthCountry(jamie) = "United States"
+- USC.Tit8.Sec1409.SubsecCApplies(jamie).TestOutput =?= "Time.DawnOf False "
+

@@ -1,7 +1,7 @@
 # Citation:     8 U.S.C. 1408 (2012)
 # Namespace:    USC.Tit8.Sec1408
 # Summary:      Nationals but not citizens of the U.S. at birth
-# Updated:      2012-07-12
+# Updated:      2012-09-16
 # Author:       Michael Poulshock
 
 
@@ -18,17 +18,13 @@ Tbool IsUSNationalByBirth(Thing p) =
 	
 # Paragraph (1) - Born in outlying possession on or after U.S. annexation
 Tbool Para1(Thing p) =
-	Sec1101.IsUSOutlyingPossession(place) &
 	...
-		place == "American Samoa" &
+		BirthCountry(p) == "American Samoa" &
 		DoB(p) >= 1911-07-17         # http://en.wikipedia.org/wiki/American_Samoa
-	&
+	|
 	...
-		place == "Swains Island" &
+		BirthCountry(p) == "Swains Island" &
 		DoB(p) >= 1925-03-04         # http://en.wikipedia.org/wiki/Swains_Island
-		
-	Tstr place = 
-		BirthCountry(p)
 
 		
 # Paragraph (2) - Both parents nationals
@@ -36,27 +32,31 @@ Tbool Para2(Thing p) =
 	! Sec1401.BornInUSorOP(p) &
 	...
 		Sec1401.ParentsMarried(p) |
-		Sec1409.SubsecAApplies(p)
+		Sec1409.SubsecAApplies(p)		# Paternal legitimation
 	&
 	Sec1401.BothParentsNationals(p) &
 	Sec1401.ParentResidedInUSorOPBeforeBirthOf(p)
 
 	
 # Paragraph (3) - Of unknown parentage, found in outlying possession
+# Actual rule is more subtle, involving a rebuttable presumption re:
+# birth location
 Tbool Para3(Thing p) =
 	Fam.IsOfUnknownParentage(p) &
-	Stub()
+	...
+		BirthCountry(p) == "American Samoa" |
+		BirthCountry(p) == "Swains Island"
 
 
 # Paragraph (4) - One parent national, one parent alien
 Tbool Para4(Thing p) =
 	! Sec1401.BornInUSorOP(p) &
 	Sec1401.ParentsMarried(p) &
-	Sec1401.OneNationalOneAlienParent(p) 
-	# &
-	# Sec1401.BirthParents(p).Exists(Para4ParentTest(_, DoB(p)))
+	Sec1401.OneNationalOneAlienParent(p) &
+	Sec1401.BirthParents(p).Exists(Para4ParentTest(_, DoB(p)))
 
 # National parent meets complex time-based test for physical presence
+# TODO: Test this thoroughly; not convinced that it's correct yet.
 Tbool Para4ParentTest(Thing parent, Tdate date) =
 	Imm.IsUSNational(parent) &
 	present7YearsIn10.IsEverTrueBefore(date) &
@@ -88,3 +88,33 @@ Tbool Para4ParentTest(Thing parent, Tdate date) =
 	
 
 	
+
+# UNIT TESTS
+
+Test: Para3
+- Thing liz
+- BirthCountry(liz) = "Swains Island"
+- DoB(liz) = 1900-02-01
+- IsOfUnknownParentage(liz) = true
+- USC.Tit8.Sec1408.IsUSNationalByBirth(liz).TestOutput =?= "Time.DawnOf False 2/1/1900 12:00:00 AM True "
+
+Test: Para2
+- Things izzy, mom, dad
+- BirthCountry(izzy) = "Saipan"
+- FatherAtTimeOfBirth(izzy) = [[dad]]
+- MotherAtTimeOfBirth(izzy) = [[mom]]
+- FamilyRelationship(dad,mom) = "Spouse"
+- DoB(izzy) = 1975-03-03
+- USImmigrationStatus(dad) = "U.S. national"
+- USImmigrationStatus(mom) = "U.S. national"
+- CountryOfResidence(dad) = "American Samoa"
+- USC.Tit8.Sec1408.IsUSNationalByBirth(izzy).TestOutput =?= "Time.DawnOf False 3/3/1975 12:00:00 AM True "
+
+Test: Para1
+- Thing izzy
+- BirthCountry(izzy) = "American Samoa"
+- DoB(izzy) = 1977-04-12
+- USC.Tit8.Sec1408.IsUSNationalByBirth(izzy).TestOutput =?= "Time.DawnOf False 4/12/1977 12:00:00 AM True "
+
+
+

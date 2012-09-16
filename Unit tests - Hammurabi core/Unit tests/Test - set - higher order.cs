@@ -393,7 +393,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         {
             Facts.Clear();
             Tbool result = AllAreMale(new Tset(new List<Thing>()));
-            Assert.AreEqual("Time.DawnOf False ", result.TestOutput);        
+            Assert.AreEqual("Time.DawnOf True ", result.TestOutput);        
         }
         
         [Test]

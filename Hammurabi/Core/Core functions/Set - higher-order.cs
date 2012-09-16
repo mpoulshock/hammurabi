@@ -42,6 +42,16 @@ namespace Hammurabi
         /// </summary>
         private static Tbool ExistsCore(Tset theSet, Func<object,Tbool> argumentFcn)
         {
+            // Short-circuit to true if one set member is eternally true
+            foreach (Thing le in theSet.DistinctEntities())
+            {
+                if (argumentFcn(le).IsTrue)
+                {
+                    return new Tbool(true);
+                }
+            }
+
+            // Analyze set for existence of the condition
             Tset subset = Tset.FilterCore(theSet, x => argumentFcn(x));
             return subset.Count > 0;
         }
@@ -60,12 +70,23 @@ namespace Hammurabi
         /// </summary>
         private static Tbool ForAllCore(Tset theSet, Func<object,Tbool> argumentFcn)
         {
-            if (theSet.Count == 0) return false;  // Is this correct?
+            // By convention, the universal quantification of an empty set is always true
+            // http://en.wikipedia.org/wiki/Universal_quantification#The_empty_set
+            if (theSet.Count == 0) return new Tbool(true);
+
+            // Short-circuit to false if one set member is eternally false
+            foreach (Thing le in theSet.DistinctEntities())
+            {
+                if (argumentFcn(le).IsFalse)
+                {
+                    return new Tbool(false);
+                }
+            }
             
+            // Analyze set for universality of the condition
             Tset subset = Tset.FilterCore(theSet, x => argumentFcn(x));
             return theSet.Count == subset.Count;
         }
-        
         
         /// <summary>
         /// Filter function - for various types of legal entities

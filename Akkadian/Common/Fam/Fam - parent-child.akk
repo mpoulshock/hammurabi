@@ -36,13 +36,13 @@ Tbool IsFatherOf(Thing p1, Thing p2) =
 	IsParentOf(p1,p2) &
 	IsMale(p1)
 	
-# Who are {1}'s parents?
+# >>Who are {1}'s parents?
 TsetIn ParentsOf(Thing p)
 
 Tset ParentsOfInferred(Thing p) =
 	peopleBut(p).Filter(IsParentOf(_,p))
 	
-# Who are {1}'s children?
+# >>Who are {1}'s children?
 TsetIn ChildrenOf(Thing p)	
 	
 # Not strictly necessary but aids readability
@@ -99,7 +99,7 @@ Tbool PaternityEstablishedFor(Thing parent, Thing child) =
 	TboolIn PaternityEstablishedFor(parent,child) &
 	TheTime.IsAtOrAfter(DatePaternityEstablishedFor(parent,child))
 	
-# >> When was {1}'s paternity of {2} established?
+# >>When was {1}'s paternity of {2} established?
 TdateIn DatePaternityEstablishedFor(Thing parent, Thing child)
 
 # Born "out of wedlock"
