@@ -284,6 +284,17 @@ namespace Hammurabi
         }
 
         /// <summary>
+        /// Indicates whether the Tvar is eternally unstated.
+        /// </summary>
+        public bool IsEternallyUnstated
+        {
+            get
+            {
+                return this.IsEternal && this.FirstValue.IsUnstated;
+            }
+        }
+
+        /// <summary>
         /// Returns true if the Tvar is ever unstated; otherwise false.
         /// </summary>
         public bool IsEverUnstated

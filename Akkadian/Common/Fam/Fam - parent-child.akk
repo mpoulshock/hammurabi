@@ -1,10 +1,29 @@
 # Namespace:    Hammurabi.Fam
 # Summary:      Basic family relationships: parent-child
-# Updated:      2012-09-08
+# Updated:      2012-09-16
 # Author:       Michael Poulshock
 
 
-# PARENT-CHILD RELATIONSHIPS
+# PARENT-CHILD RELATIONSHIPS: CORE INPUTS
+
+# >>Who are {1}'s parents?
+TsetIn ParentsOf(Thing p)
+
+# >>Who are {1}'s children?
+TsetIn ChildrenOf(Thing p)	
+
+# >>Is {1} {2}'s parent?
+TboolIn IsParentOf(Thing p1, Thing p2) =
+	ChildrenOf(p1).Contains(p2) |~
+	ParentsOf(p2).Contains(p1) |~
+	...
+		IsBiologicalParentOf(p1, p2) |
+		IsAdoptiveParentOf(p1, p2) |
+		IsFosterParentOf(p1, p2) |
+		IsStepparentOf(p1, p2)
+	
+
+# PARENT-CHILD RELATIONSHIPS: DERIVED RULES
 
 # Parents married on a particular date
 Tbool ParentsMarriedAsOf(Thing p, Tdate date) =
@@ -16,6 +35,10 @@ Tbool ParentsMarriedAsOf(Thing p, Tdate date) =
 	Thing dad =
 		FatherAsOf(p, date)
 
+# Birth mother
+Thing BirthMother(Thing p) =
+	Fam.MotherAsOf(p, DoB(p))
+	
 # Mother on a particular date
 # Warning: returns null if more than one mother
 Thing MotherAsOf(Thing p, Tdate date) =
@@ -23,9 +46,13 @@ Thing MotherAsOf(Thing p, Tdate date) =
 	
 # Is mother of
 Tbool IsMotherOf(Thing p1, Thing p2) =
-	IsParentOf(p1,p2) &
-	IsFemale(p1)
+	IsFemale(p1) &
+	IsParentOf(p1,p2)
 
+# Birth father
+Thing BirthFather(Thing p) =
+	Fam.FatherAsOf(p, DoB(p))
+	
 # Father on a particular date
 # Warning: returns null if more than one father
 Thing FatherAsOf(Thing p, Tdate date) =
@@ -33,29 +60,16 @@ Thing FatherAsOf(Thing p, Tdate date) =
 	
 # Is father of
 Tbool IsFatherOf(Thing p1, Thing p2) =
-	IsParentOf(p1,p2) &
-	IsMale(p1)
+	IsMale(p1) &
+	IsParentOf(p1,p2)
 	
-# >>Who are {1}'s parents?
-TsetIn ParentsOf(Thing p)
-
+# Experimental
 Tset ParentsOfInferred(Thing p) =
 	peopleBut(p).Filter(IsParentOf(_,p))
-	
-# >>Who are {1}'s children?
-TsetIn ChildrenOf(Thing p)	
 	
 # Not strictly necessary but aids readability
 Tbool IsChildOf(Thing p1, Thing p2) =
 	IsParentOf(p2,p1)
-
-# >>Is {1} {2}'s parent?
-TboolIn IsParentOf(Thing p1, Thing p2) =
-	ChildrenOf(p1).Contains(p2) |
-	IsBiologicalParentOf(p1, p2) |
-	IsAdoptiveParentOf(p1, p2) |
-	IsFosterParentOf(p1, p2) |
-	IsStepparentOf(p1, p2)
             
 # Biological parent
 Tbool IsBiologicalParentOf(Thing p1, Thing p2) =
@@ -139,11 +153,27 @@ TdateIn DateCommittedToFinanciallySupport(Thing parent, Thing child)
 
 # UNIT TESTS
 
-Test: 880020957
-- Things t1, t2
-- IsParentOf(t1,t2) = Tbool(?)
-- Thing t3
-- ChildrenOf(t1) = [[t2, t3]]
-- Hammurabi.Fam.IsParentOf(t1, t2).TestOutput =?= "Time.DawnOf True "
+Test: IsParentOf1
+- Things kid, parent
+- ChildrenOf(parent) = [[kid]]
+- Hammurabi.Fam.IsParentOf(parent,kid).TestOutput =?= "Time.DawnOf True "
 
+Test: IsParentOf2
+- Things kid, parent
+- FamilyRelationship(parent,kid) = "Biological parent"
+- Hammurabi.Fam.IsParentOf(parent,kid).TestOutput =?= "Time.DawnOf True "
+
+Test: IsParentOf3
+- Things kid, aunt
+- FamilyRelationship(aunt,kid) = "Aunt or uncle"
+- Hammurabi.Fam.IsParentOf(aunt,kid).TestOutput =?= "Time.DawnOf False "
+
+Test: IsParentOf4
+- Things kid, parent
+- Hammurabi.Fam.IsParentOf(parent,kid).TestOutput =?= "Time.DawnOf Unstated "
+
+Test: IsParentOf5
+- Things kid, parent
+- ParentsOf(kid) = [[parent]]
+- Hammurabi.Fam.IsParentOf(parent,kid).TestOutput =?= "Time.DawnOf True "
 

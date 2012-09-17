@@ -235,12 +235,11 @@ TboolIn ParentsMarried(Thing c) =
 Tset BirthParents(Thing c) =
 	new Tset(FatherOf(c), MotherOf(c))
 
-# >>Who was {1}'s father at the time of his or her birth?
+# Father at time of birth
 Thing FatherOf(Thing c) =
-	TsetIn FatherAtTimeOfBirth(c).ToThing
+	Fam.BirthFather(c)
 	
-# >>Who was {1}'s mother at the time of his or her birth?
+# Mother at time of birth
 Thing MotherOf(Thing c) =
-	# Fam.MotherAsOf(c, DoB(c))
-	TsetIn MotherAtTimeOfBirth(c).ToThing
+	Fam.BirthMother(c)
 	

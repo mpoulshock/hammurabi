@@ -39,12 +39,11 @@ Tbool IsUSCitizenOrQualifyingEmployee(Thing p) =
 # UNIT TESTS
 
 Test: 619099897
-- Thing leon
+- Things leon, sam, minerva
 - BirthState(leon) = "Panama"
-- Things sam
-- FatherAtTimeOfBirth(leon) = [[sam]]
-- Things minerva
-- MotherAtTimeOfBirth(leon) = [[minerva]]
+- ParentsOf(leon) = [[minerva, sam]]
+- Gender(minerva) = "Female"
+- Gender(sam) = "Male"
 - IsUSCitizen(sam) = true
 - IsUSGovtEmployee(sam) = true
 - IsUSCitizen(minerva) = false
@@ -53,14 +52,13 @@ Test: 619099897
 - USC.Tit8.Sec1403.IsUSCitizenPerCanalZone(leon).TestOutput =?= "Time.DawnOf False 3/22/1978 12:00:00 AM True "
 
 Test: 708272036
-- Thing ted
+- Things ted, jed, edna
 - BirthCountry(ted) = "United States"
 - BirthState(ted) = "Panama Canal Zone"
 - DoB(ted) = 1988-03-09
-- Things jed
-- FatherAtTimeOfBirth(ted) = [[jed]]
-- Things edna
-- MotherAtTimeOfBirth(ted) = [[edna]]
+- ParentsOf(ted) = [[edna, jed]]
+- Gender(edna) = "Female"
+- Gender(jed) = "Male"
 - USImmigrationStatus(jed) = "U.S. citizen"
 - USImmigrationStatus(edna) = "U.S. citizen"
 - USC.Tit8.Sec1403.IsUSCitizenPerCanalZone(ted).TestOutput =?= "Time.DawnOf False 3/9/1988 12:00:00 AM True "

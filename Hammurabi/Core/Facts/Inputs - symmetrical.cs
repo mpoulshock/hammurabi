@@ -51,12 +51,12 @@ namespace Hammurabi
         /// <remarks>
         /// This function is needed because if either A or B is false, the
         /// funtion should return false.  If, instead, A || B were used to
-        /// analyze input facts, and if A were false and B were unknown, the 
-        /// function would erroneously return unknown.
+        /// analyze input facts, and if A were false and B were unstated, the 
+        /// function would erroneously return unstated.
         /// </remarks>
         public static Tbool Either(Tbool A, Tbool B)
         {
-            if (!A.IsEternallyUnknown)
+            if (!A.IsEternallyUnstated)
             {
                 return A;
             }

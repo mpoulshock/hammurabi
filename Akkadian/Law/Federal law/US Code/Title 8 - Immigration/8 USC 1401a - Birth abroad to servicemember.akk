@@ -18,11 +18,22 @@ Tbool Sec1401gAppliesTo(Thing c) =
 # Qualifying parent
 Tbool IsQualifyingServicemember(Thing p) =
 	IsUSCitizen(p) &
-	Mil.InArmedForces(p).IsEverTrue(1946-12-31,1952-12-24) &
+	Mil.InArmedForces(p).IsEverTrue(1946-12-31, 1952-12-24) &
 	Stub()  # case does not come within section 201(g) or (i) of the Nationality Act of 1940.
 
 
 # UNIT TESTS
+
+Test: 461666829
+- Things kid, mom, dad
+- DoB(kid) = 1950-01-01
+- ParentsOf(kid) = [[mom, dad]]
+- Gender(mom) = "Female"
+- Gender(dad) = "Male"
+- BirthCountry(kid) = "Saipan"
+- IsUSCitizen(dad) = true
+- InArmedForces(dad) = true
+- USC.Tit8.Sec1401a.Sec1401gAppliesTo(kid).TestOutput =?= "Time.DawnOf Stub "
 
 Test: 127066866
 - Things t1, t2
@@ -59,11 +70,13 @@ Test: NoEligParent
 - Thing mom
 - DoB(child) = 1945-03-02
 - BirthCountry(child) = "Bolivia"
-- FatherAtTimeOfBirth(child) = [[dad]]
-- MotherAtTimeOfBirth(child) = [[mom]]
+- ParentsOf(child) = [[mom, dad]]
+- Gender(mom) = "Female"
+- Gender(dad) = "Male"
 - IsUSCitizen(dad) = false
 - InArmedForces(mom) = false
 - USC.Tit8.Sec1401a.Sec1401gAppliesTo(child).Out =?= false
+
 
 
 

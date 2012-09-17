@@ -66,11 +66,11 @@ Tbool Para4ParentTest(Thing parent, Tdate date) =
 	
 	# (4) - present for a total of seven years in any continuous period of ten years
 	Tbool present7YearsIn10 =
-		present.ElapsedYearsInSlidingWindow(10, "Year") >= 7
+		present.ElapsedYearsInSlidingWindow(10, "Year") >= 7	# Poor performance
 	
 	# (4)(B)
 	Tbool fiveYearTestMet =
-		present.RunningElapsedYears >= 5 &
+		present.RunningElapsedYears >= 5 &						# Extremely poor performance
 		Age(parent) >= 14
 	
 	# "Physically present"
@@ -101,8 +101,9 @@ Test: Para3
 Test: Para2
 - Things izzy, mom, dad
 - BirthCountry(izzy) = "Saipan"
-- FatherAtTimeOfBirth(izzy) = [[dad]]
-- MotherAtTimeOfBirth(izzy) = [[mom]]
+- ParentsOf(izzy) = [[mom, dad]]
+- Gender(mom) = "Female"
+- Gender(dad) = "Male"
 - FamilyRelationship(dad,mom) = "Spouse"
 - DoB(izzy) = 1975-03-03
 - USImmigrationStatus(dad) = "U.S. national"

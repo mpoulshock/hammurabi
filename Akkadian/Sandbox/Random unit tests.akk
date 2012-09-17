@@ -1,7 +1,60 @@
 # Namespace:    Hammurabi.Sandbox
 # Summary:      A host of random unit tests
-# Updated:      2012-08-11
+# Updated:      2012-09-16
 # Author:       Michael Poulshock
+
+
+# ELAPSED TIME - PERFORMANCE ISSUES
+
+# Extremely poor performance
+Tbool TimeError1(Thing t) =
+	(new Tbool(true)).RunningElapsedYears >= 5
+
+# Poor performance	
+Tbool TimeError2(Thing t) =
+	(new Tbool(true)).ElapsedYearsInSlidingWindow(10, "Year") >= 7
+	
+	
+# INTERVIEW SEQUENCE WITH |~ OPERATOR
+
+Tbool Test917(Thing a, Thing b) =
+	Fam.IsBiologicalParentOf(a,b) &
+	Imm.IsUSNational(a)				# Adding this condition causes interview to ask FamRel in both directions!
+
+Tbool AnotherMethod(Thing p) =
+	TboolIn TestMethod101(p) |~
+	TboolIn TestMethod102(p)
+
+# Note: These tests validate the logic, not the interview sequence. But
+#       that sequence was tested and is also working properly (2012-08-11).
+
+Test: 171824320
+- Thing p
+- TestMethod101(p) = new Tbool(Hstate.Unstated)
+- TestMethod102(p) = false
+- Sandbox.AnotherMethod(p).TestOutput =?= "Time.DawnOf False "
+
+Test: 580982293
+- Thing p
+- TestMethod101(p) = new Tbool(Hstate.Unstated)
+- TestMethod102(p) = true
+- Sandbox.AnotherMethod(p).TestOutput =?= "Time.DawnOf True "
+
+Test: 288489417
+- Thing p
+- TestMethod101(p) = Tbool(?)
+- TestMethod102(p) = Tbool(?)
+- Sandbox.AnotherMethod(p).TestOutput =?= "Time.DawnOf Uncertain "
+
+Test: 798236451
+- Thing p
+- TestMethod101(p) = false
+- Sandbox.AnotherMethod(p).TestOutput =?= "Time.DawnOf False "
+
+Test: 416036083
+- Thing p
+- TestMethod101(p) = true
+- Sandbox.AnotherMethod(p).TestOutput =?= "Time.DawnOf True "
 
 
 # TSET.CONTAINS
@@ -32,44 +85,6 @@ TboolIn? MeetsCriteria1(Thing p) =
 	TboolIn Meets1b(p)
 	
 	
-# INTERVIEW SEQUENCE WITH |~ OPERATOR
-
-Tbool AnotherMethod(Thing p) =
-	TboolIn TestMethod101(p) |~
-	TboolIn TestMethod102(p)
-
-# Note: These tests validate the logic, not the interview sequence. But
-#       that sequence was tested and is also working properly (2012-08-11).
-
-Test: 171824320
-- Thing p
-- TestMethod101(p) = Tbool(?)
-- TestMethod102(p) = false
-- Sandbox.AnotherMethod(p).TestOutput =?= "Time.DawnOf False "
-
-Test: 580982293
-- Thing p
-- TestMethod101(p) = Tbool(?)
-- TestMethod102(p) = true
-- Sandbox.AnotherMethod(p).TestOutput =?= "Time.DawnOf True "
-
-Test: 288489417
-- Thing p
-- TestMethod101(p) = Tbool(?)
-- TestMethod102(p) = Tbool(?)
-- Sandbox.AnotherMethod(p).TestOutput =?= "Time.DawnOf Uncertain "
-
-Test: 798236451
-- Thing p
-- TestMethod101(p) = false
-- Sandbox.AnotherMethod(p).TestOutput =?= "Time.DawnOf False "
-
-Test: 416036083
-- Thing p
-- TestMethod101(p) = true
-- Sandbox.AnotherMethod(p).TestOutput =?= "Time.DawnOf True "
-
-
 # UNKNOWN THINGS
 
 Tbool SomeMethod(Thing t1, Thing t2) =

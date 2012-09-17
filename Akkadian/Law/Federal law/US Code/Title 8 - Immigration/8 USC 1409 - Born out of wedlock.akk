@@ -1,43 +1,48 @@
 # Citation:     8 U.S.C. 1409 (2012)
 # Namespace:    USC.Tit8.Sec1409
 # Summary:      Is a child born out of wedlock a citizen/national at birth?
-# Updated:      2012-07-12
+# Updated:      2012-09-16
 # Author:       Michael Poulshock
 
 
 # Subsection (a) - Legitimated children
 Tbool SubsecAApplies(Thing c) =
-	! SubsecCApplies(c) &						# Is this correct?
 	Fam.BornOutOfWedlock(c) &
-	Fam.IsBiologicalParentOf(father, c) & 		# Established by clear and convincing evidence
-	Imm.IsUSNational(father).AsOf(DoB(c)) &		# Is this what "nationality of the U.S." means?
-	if IsAlive(father) then Fam.CommittedToFinanciallySupport(father, c) &
-	legitimated.IsEverTrue() &
+	Fam.ParentsOf(c).Exists(IsLegitimatingFatherSubsecA(_,c)) &
 	TheTime.IsAtOrAfter(DoB(c))
+
+# Paternity legitimated before child turns 21
+Tbool IsLegitimatingFatherSubsecA(Thing father, Thing child) =
+	legitimated.IsEverTrue() &
+	Fam.IsBiologicalParentOf(father, child) & 		# Established by clear and convincing evidence
+	Imm.IsUSNational(father).AsOf(DoB(child)) &		# Is this what "nationality of the U.S." means?
+	if IsAlive(father) then Fam.CommittedToFinanciallySupport(father, child)
 	
 	Tbool legitimated =
-		Age(c) < 18 &
+		Fam.IsFatherOf(father,child) &
+		Age(child) < 18 &
 		...
-			Fam.IsLegitimatedByLaw(c) |		# Covers (4)(A) and (C)
-			Fam.Legitimated(father, c)
+			Fam.IsLegitimatedByLaw(child) |		# Covers (4)(A) and (C)
+			Fam.Legitimated(father, child)
 
-	Thing father =
-		Sec1401.FatherOf(c)		# Incorrect	
-		
+			
 # Subsection (b) applies
 # Note: Section 405 pertains to rules in effect when Act was passed
 Tbool SubsecBApplies(Thing c) = 
 	Fam.BornOutOfWedlock(c) &
 	DoB(c) >= 1941-01-13 &
+	DoB(c) < 1952-12-24 &
+	Fam.ParentsOf(c).Exists(IsLegitimatingFatherSubsecB(_,c))
+
+# Paternity legitimated before child turns 21
+Tbool IsLegitimatingFatherSubsecB(Thing father, Thing child) =
 	paternityLegitimated.IsEverTrue()
 
-	# Paternity legitimated before child turns 21
 	Tbool paternityLegitimated =
-		Fam.Legitimated(father, c) &
-		Age(c) < 21
-	
-	Thing father =
-		Sec1401.FatherOf(c)		# Incorrect	
+		Fam.IsFatherOf(father,child) &
+		Fam.Legitimated(father, child) &
+		Age(child) < 21
+
 	
 # Child national if mother national
 Tbool IsUSNationalPerMother(Thing p) =
@@ -63,20 +68,58 @@ Tbool SubsecCApplies(Thing c) =
 
 # UNIT TESTS
 
-Test: Utter_shit
-- Thing jamie
-- DoB(jamie) = 1977-02-03
-- Things mom,dad
-- ParentsOf(jamie) = [[mom, dad]]
-- ChildrenOf(mom) = [[jamie]]
-- FamilyRelationship(mom,jamie) = "Biological parent"
-- FamilyRelationship(jamie,mom) = "Biological child"
+Test: 348118400
+- Things tom, mom, dad
+- DoB(tom) = 1980-01-01
+- ParentsOf(tom) = [[mom, dad]]
 - Gender(mom) = "Female"
-- ChildrenOf(dad) = [[jamie]]
-- FamilyRelationship(dad,jamie) = "Biological parent"
-- FamilyRelationship(jamie,dad) = "Biological child"
+- Gender(dad) = "Male"
+- FamilyRelationship(mom,dad) = "None"
+- IsLegitimatedByLaw(tom) = false
+- Legitimated(dad,tom) = true
+- DateLegitimated(dad,tom) = 1985-01-01
+- FamilyRelationship(dad,tom) = "Biological parent"
+- USImmigrationStatus(dad) = "U.S. national"
+- IsDeceased(dad) = false
+- DoB(dad) = 1955-01-01
+- CommittedToFinanciallySupport(dad,tom) = true
+- DateCommittedToFinanciallySupport(dad,tom) = 1985-01-01
+- USC.Tit8.Sec1409.SubsecAApplies(tom).TestOutput =?= "Time.DawnOf False 1/1/1985 12:00:00 AM True "
+
+Test: 225658686
+- Things roy, mom, dad
+- DoB(roy) = 1950-02-02
+- ParentsOf(roy) = [[mom, dad]]
+- Gender(mom) = "Female"
+- Gender(dad) = "Male"
+- FamilyRelationship(mom,dad) = "None"
+- Legitimated(dad,roy) = true
+- DateLegitimated(dad,roy) = 1960-02-02
+- USC.Tit8.Sec1409.SubsecBApplies(roy).TestOutput =?= "Time.DawnOf True "
+
+Test: 380775793
+- Things ramsey, mom, dad
+- DoB(ramsey) = 1988-03-03
+- ParentsOf(ramsey) = [[mom, dad]]
+- Gender(mom) = "Female"
+- Gender(dad) = "Male"
+- CountryLocation(mom) = "United States"
+- BirthCountry(ramsey) = "Japan"
+- FamilyRelationship(mom,dad) = "None"
+- USImmigrationStatus(mom) = "U.S. national"
+- USC.Tit8.Sec1409.SubsecCApplies(ramsey).TestOutput =?= "Time.DawnOf False 3/3/1988 12:00:00 AM True "
+
+Test: SubsecC_UnnecessaryQuestion
+- Things jamie, mom, dad
+- DoB(jamie) = 1977-02-03
+- ParentsOf(jamie) = [[mom, dad]]
+# - ChildrenOf(mom) = [[jamie]]		# Asked unnecessarily b/c currently no look-ahead for |~ (IsParentOf)
+- Gender(mom) = "Female"
 - Gender(dad) = "Male"
 - CountryLocation(mom) = "United States"
 - BirthCountry(jamie) = "United States"
 - USC.Tit8.Sec1409.SubsecCApplies(jamie).TestOutput =?= "Time.DawnOf False "
+
+
+
 

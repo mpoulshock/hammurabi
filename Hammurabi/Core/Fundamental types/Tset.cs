@@ -165,6 +165,7 @@ namespace Hammurabi
         /// </summary>
         public Thing ToThing
         {
+            // TODO: Handle exceptions...(e.g. empty sets)
             get
             {
                 if (this.TimeLine.Values[0].IsUnstated) { return new Thing(""); }
