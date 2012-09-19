@@ -55,8 +55,7 @@ namespace Hammurabi
         /// </summary>
         private static Tbool And(Tbool t1, Tbool t2)
         {
-            // Short circuit:
-            // If any input is eternally false, return false
+            // Short circuit: If any input is eternally false, return false
             if (t1.IsFalse || t2.IsFalse) return new Tbool(false);
 
             // Else, apply the AND function to the inputs
@@ -115,8 +114,7 @@ namespace Hammurabi
         /// </summary>
         private static Tbool Or(Tbool t1, Tbool t2)
         {
-            // Short circuit:
-            // If any input is eternally false, return false
+            // Short circuit: If any input is eternally true, return true
             if (t1.IsTrue || t2.IsTrue) return new Tbool(true);
 
             // Else, apply the AND function to the inputs
@@ -177,17 +175,39 @@ namespace Hammurabi
         }
         
         // ********************************************************************
-        //   Other
+        //   Either
         // ********************************************************************
         
         /// <summary>
-        /// Facts.Either operator
+        /// "Either" operator (|~ in Akkadian)
         /// </summary>
         public static Tbool operator ^ (Tbool tb1, Tbool tb2)
         {
-            // Temporarily using the ^ operator for Facts.Either()
-            return Facts.Either(tb1,tb2);
+            return Either(tb1,tb2);
         }
+
+        /// <summary>
+        /// Returns either of the two Tbools.
+        /// </summary>
+        /// <remarks>
+        /// This function is needed because if either A or B is false, the
+        /// funtion should return false.  If, instead, A || B were used to
+        /// analyze input facts, and if A were false and B were unstated, the 
+        /// function would erroneously return unstated.
+        /// </remarks>
+        // ^ operator does not short-circuit like && and ||
+        // So in interview, this asks B when A is known
+        private static Tbool Either(Tbool A, Tbool B)
+        {
+//            return Hammurabi.Sandbox.EitherTbool(A,B);
+
+            if (!A.IsEternallyUnstated)
+            {
+                return A;
+            }
+            
+            return B;
+        } 
     }
     
     #pragma warning restore 660, 661

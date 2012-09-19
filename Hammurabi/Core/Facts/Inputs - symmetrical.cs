@@ -43,25 +43,6 @@ namespace Hammurabi
             }
             
             return QueryTvar<Tbool>(rel, directObj, subj);
-        }
-
-        /// <summary>
-        /// Returns either of the two Tbools.
-        /// </summary>
-        /// <remarks>
-        /// This function is needed because if either A or B is false, the
-        /// funtion should return false.  If, instead, A || B were used to
-        /// analyze input facts, and if A were false and B were unstated, the 
-        /// function would erroneously return unstated.
-        /// </remarks>
-        public static Tbool Either(Tbool A, Tbool B)
-        {
-            if (!A.IsEternallyUnstated)
-            {
-                return A;
-            }
-            
-            return B;
-        }   
+        }  
     }
 }

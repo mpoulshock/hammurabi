@@ -325,8 +325,7 @@ namespace Hammurabi
         {
             get
             {
-                return this.IntervalValues.Count == 1 && 
-                    Convert.ToBoolean(this.FirstValue.IsTrue);
+                return this.IsEternal && this.FirstValue.IsTrue;
 
 //                if (Facts.WindowOfConcernIsDefault)
 //                {
@@ -361,20 +360,21 @@ namespace Hammurabi
         {
             get
             {
-                if (Facts.WindowOfConcernIsDefault)
-                {
-                    return this.IntervalValues.Count == 1 && 
-                           Convert.ToBoolean(this.FirstValue.Val) == false; 
-                }
-                if (Facts.WindowOfConcernIsPoint)
-                {
-                    return Convert.ToBoolean(this.AsOf(Facts.WindowOfConcernStart));
-                }
-                
-                return Convert.ToBoolean((!this).IsAlwaysTrue( 
-                                                       Facts.WindowOfConcernStart, 
-                                                       Facts.WindowOfConcernEnd
-                                                       ).ToBool);
+                return this.IsEternal && this.FirstValue.IsFalse;
+
+//                if (Facts.WindowOfConcernIsDefault)
+//                {
+//                    return this.IsEternal && this.FirstValue.IsFalse;
+//                }
+//                if (Facts.WindowOfConcernIsPoint)
+//                {
+//                    return Convert.ToBoolean((!this).AsOf(Facts.WindowOfConcernStart));
+//                }
+//                
+//                return Convert.ToBoolean((!this).IsAlwaysTrue( 
+//                                                       Facts.WindowOfConcernStart, 
+//                                                       Facts.WindowOfConcernEnd
+//                                                       ).ToBool);
             }
         }
         

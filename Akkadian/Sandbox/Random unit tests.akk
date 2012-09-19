@@ -17,10 +17,29 @@ Tbool TimeError2(Thing t) =
 	
 # INTERVIEW SEQUENCE WITH |~ OPERATOR
 
-Tbool Test917(Thing a, Thing b) =
-	Fam.IsBiologicalParentOf(a,b) &
-	Imm.IsUSNational(a)				# Adding this condition causes interview to ask FamRel in both directions!
+# Attempt at a fix...
+Tbool EitherTbool(Tbool a, Tbool b) =
+	set:
+	if a.IsEternallyUnstated -> b
+	else a
+	
+# Interview sequence fails - conclusions correct
+# Asks 918b when 918a is true!
+Tbool Test918a(Thing a) =
+	...
+		TboolIn TestMethod918a(a) |~
+		TboolIn TestMethod918b(a)
+	&	# Same problem when this is |
+	Imm.IsUSNational(a)
+	
+# Works fine
+Tbool Test918b(Thing a) =
+	Imm.IsUSNational(a) &
+	...
+		TboolIn TestMethod918a(a) |~
+		TboolIn TestMethod918b(a)
 
+	
 Tbool AnotherMethod(Thing p) =
 	TboolIn TestMethod101(p) |~
 	TboolIn TestMethod102(p)
