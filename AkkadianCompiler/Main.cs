@@ -32,7 +32,7 @@ namespace Akkadian
         private static string methodCacheLine = "";     // Creates line that caches method results
         private static bool cacheRule = false;          // Should method results be cached?
         private static string tableMatchLine = "";      // Rule input that must be matched in a table
-        private static int totalRuleCount = 0;          // Total rules in project
+        public static int totalRuleCount = 0;           // Total rules in project
         public static string unitTestNameSpace = "";    // Namespace of unit tests
         public static string docNameSpace = "";         // For question metadata
         public static string akkDoc = "";               // For question metadata

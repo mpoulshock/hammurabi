@@ -1,6 +1,6 @@
 # Namespace:    Hammurabi.Sandbox
 # Summary:      A host of random unit tests
-# Updated:      2012-09-16
+# Updated:      2012-09-21
 # Author:       Michael Poulshock
 
 
@@ -14,31 +14,40 @@ Tbool TimeError1(Thing t) =
 Tbool TimeError2(Thing t) =
 	(new Tbool(true)).ElapsedYearsInSlidingWindow(10, "Year") >= 7
 	
-	
-# INTERVIEW SEQUENCE WITH |~ OPERATOR
 
-# Attempt at a fix...
-Tbool EitherTbool(Tbool a, Tbool b) =
-	set:
-	if a.IsEternallyUnstated -> b
-	else a
+# INTERVIEW SEQUENCE WITH |~ OPERATOR - NOT WORKING
+
+##
+Diagnosis: The |~ operator (^ in C#) does not short-circuit like
+&& and ||.  Those operators cause AND and OR to ignore irrelevant
+interview branches.  With |~ however, both Tbool inputs to that 
+function are evaluated before the logic within the function is
+applied.
+
+Temporary fix: Use assumption rules where possible to stave off
+investigations into irrelevant branches.
+
+Needed long-term fix: Make Tvars into Func<Tvar> so they are invoked
+lazily.
+##
+
+# Sequence fails - conclusions correct
+# Only asks FamRel reverse if first FamRel test is true!
+Tbool Test917d(Thing a, Thing b) =
+	Fam.IsBiologicalParentOf(a,b) &
+	Imm.IsUSNational(a)				# Adding this condition causes interview to ask FamRel in both directions!
 	
 # Interview sequence fails - conclusions correct
-# Asks 918b when 918a is true!
+# Asks 918b when 918a has already been asked (unless rule has been proven)
 Tbool Test918a(Thing a) =
 	...
 		TboolIn TestMethod918a(a) |~
 		TboolIn TestMethod918b(a)
 	&	# Same problem when this is |
 	Imm.IsUSNational(a)
-	
-# Works fine
-Tbool Test918b(Thing a) =
-	Imm.IsUSNational(a) &
-	...
-		TboolIn TestMethod918a(a) |~
-		TboolIn TestMethod918b(a)
 
+
+# INTERVIEW SEQUENCE WITH |~ OPERATOR - WORKING
 	
 Tbool AnotherMethod(Thing p) =
 	TboolIn TestMethod101(p) |~
@@ -74,6 +83,107 @@ Test: 416036083
 - Thing p
 - TestMethod101(p) = true
 - Sandbox.AnotherMethod(p).TestOutput =?= "Time.DawnOf True "
+
+
+# DATE EQUALITY
+
+Tbool DateEquality1(Thing c) =
+	DoB(c) == 2000-01-01
+	
+Test: DateEquality1a
+- Thing b
+- DoB(b) = 2000-01-01
+- Hammurabi.Sandbox.DateEquality1(b).Out =?= true
+
+Test: DateEquality1b
+- Thing b
+- DoB(b) = 2002-01-01
+- Hammurabi.Sandbox.DateEquality1(b).Out =?= false
+
+Tbool DateEquality2(Thing c) =
+	DoB(c) <> 2000-01-01
+	
+Test: DateEquality2a
+- Thing b
+- DoB(b) = 2000-01-01
+- Hammurabi.Sandbox.DateEquality2(b).Out =?= false
+
+Test: DateEquality2b
+- Thing b
+- DoB(b) = 2000-02-01
+- Hammurabi.Sandbox.DateEquality2(b).Out =?= true
+
+Tbool DateEquality3(Thing c) =
+	DoB(c) < 2000-01-01
+
+Test: DateEquality3a
+- Thing b
+- DoB(b) = 2000-01-01
+- Hammurabi.Sandbox.DateEquality3(b).Out =?= false
+
+Test: DateEquality3b
+- Thing b
+- DoB(b) = 2001-01-01
+- Hammurabi.Sandbox.DateEquality3(b).Out =?= false
+
+Test: DateEquality3c
+- Thing b
+- DoB(b) = 1999-01-01
+- Hammurabi.Sandbox.DateEquality3(b).Out =?= true
+
+Tbool DateEquality4(Thing c) =
+	DoB(c) <= 2000-01-01
+	
+Test: DateEquality4a
+- Thing b
+- DoB(b) = 2000-01-01
+- Hammurabi.Sandbox.DateEquality4(b).Out =?= true
+
+Test: DateEquality4b
+- Thing b
+- DoB(b) = 2001-01-01
+- Hammurabi.Sandbox.DateEquality4(b).Out =?= false
+
+Test: DateEquality4c
+- Thing b
+- DoB(b) = 1999-01-01
+- Hammurabi.Sandbox.DateEquality4(b).Out =?= true
+
+Tbool DateEquality5(Thing c) =
+	DoB(c) > 2000-01-01
+
+Test: DateEquality5a
+- Thing b
+- DoB(b) = 2000-01-01
+- Hammurabi.Sandbox.DateEquality5(b).Out =?= false
+
+Test: DateEquality5b
+- Thing b
+- DoB(b) = 2001-01-01
+- Hammurabi.Sandbox.DateEquality5(b).Out =?= true
+
+Test: DateEquality5c
+- Thing b
+- DoB(b) = 1999-01-01
+- Hammurabi.Sandbox.DateEquality5(b).Out =?= false
+
+Tbool DateEquality6(Thing c) =
+	DoB(c) >= 2000-01-01
+
+Test: DateEquality6a
+- Thing b
+- DoB(b) = 2000-01-01
+- Hammurabi.Sandbox.DateEquality6(b).Out =?= true
+
+Test: DateEquality6b
+- Thing b
+- DoB(b) = 2001-01-01
+- Hammurabi.Sandbox.DateEquality6(b).Out =?= true
+
+Test: DateEquality6c
+- Thing b
+- DoB(b) = 1999-01-01
+- Hammurabi.Sandbox.DateEquality6(b).Out =?= false
 
 
 # TSET.CONTAINS
@@ -340,8 +450,7 @@ Test: TimeVaryingBoolean2
 
 Test: TimeVaryingBoolean3
 - Sandbox.SomeTemporalBoolean().AsOf(2002-03-09).Out =?= false		
-		
 
-# UNIT TESTS
+
 
 

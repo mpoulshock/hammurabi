@@ -76,6 +76,10 @@ Tbool IsBiologicalParentOf(Thing p1, Thing p2) =
     Relationship(p1,p2) == "Biological parent" |~
 	Relationship(p2,p1) == "Biological child"
 
+# Causes rule above to short-circuit in interview
+# Deeper fix: make Tvars into Func<Tvar>
+FamilyRelationship(1,2) = "Biological parent" assumes FamilyRelationship(2,1) = "Biological child"
+	
 # Adoptive parent
 Tbool IsAdoptiveParentOf(Thing p1, Thing p2) =
 	Relationship(p1,p2) == "Adoptive parent" |~

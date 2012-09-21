@@ -25,7 +25,6 @@ namespace Hammurabi
 {    
     public partial class Tdate
     {
-
         /// <summary>
         /// Returns true when one Tdate is equal to another.
         /// </summary>
@@ -77,12 +76,7 @@ namespace Hammurabi
         /// </summary>
         public static Tbool operator >= (Tdate td1, Tdate td2)
         {
-            return IsAtOrAfter(td1,td2);
-        }
-        
-        private static Tbool IsAtOrAfter(Tdate td1, Tdate td2)
-        {
-            return IsAfter(td1,td2) | EqualTo(td1,td2);
+            return IsAfter(td1,td2) || EqualTo(td1,td2);
         }
 
         /// <summary>
@@ -90,12 +84,7 @@ namespace Hammurabi
         /// </summary>
         public static Tbool operator < (Tdate td1, Tdate td2)
         {
-            return !IsAfter(td1,td2);
-        }
-        
-        private static Tbool IsBefore(Tdate td1, Tdate td2)
-        {
-            return !IsAtOrAfter(td1,td2);
+            return !(IsAfter(td1,td2) || EqualTo(td1,td2));
         }
                 
         /// <summary>
@@ -103,7 +92,7 @@ namespace Hammurabi
         /// </summary>
         public static Tbool operator <= (Tdate td1, Tdate td2)
         {
-            return IsBefore(td1,td2) | EqualTo(td1,td2);
+            return !IsAfter(td1,td2);
         }
     }
 }

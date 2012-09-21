@@ -165,10 +165,10 @@ namespace Hammurabi
         /// </summary>
         public Thing ToThing
         {
-            // TODO: Handle exceptions...(e.g. empty sets)
+            // TODO: Handle exceptions...(e.g. empty and uncertain sets)
             get
             {
-                if (this.TimeLine.Values[0].IsUnstated) { return new Thing(""); }
+                if (this.FirstValue.IsUnstated) { return new Thing(""); }
 
                 List<Thing> list = (List<Thing>)this.TimeLine.Values[0].Obj;
                 return (Thing)list[0];

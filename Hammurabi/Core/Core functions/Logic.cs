@@ -199,8 +199,6 @@ namespace Hammurabi
         // So in interview, this asks B when A is known
         private static Tbool Either(Tbool A, Tbool B)
         {
-//            return Hammurabi.Sandbox.EitherTbool(A,B);
-
             if (!A.IsEternallyUnstated)
             {
                 return A;
@@ -212,4 +210,3 @@ namespace Hammurabi
     
     #pragma warning restore 660, 661
 }
-

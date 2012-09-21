@@ -48,6 +48,8 @@ namespace Akkadian
                     string leftNode = NodeString(match.Groups[1].Value.Trim());
                     string rightNode = NodeString(match.Groups[2].Value.Trim());
                     AccumulatedAssumptions += "            , new Pair(" + leftNode + ", " + rightNode + ")\r\n";
+
+                    MainClass.totalRuleCount++;
                 }
 
                 // Return a blank line so this doesn't interfere with rule compilation
