@@ -40,7 +40,7 @@ namespace Akkadian
             if (line.Contains(" assumes "))
             {
                 // Analyze the assumption line
-                string relRegex = "[a-zA-Z0-9_,()= \"]+";
+                string relRegex = "[a-zA-Z0-9_,()= \"" + @"\." + "]+";
                 Match match = Regex.Match(line, "(?<rel1>" + relRegex + ") assumes (?<rel2>" + relRegex + ")");
                 if (match.Success)
                 {
@@ -71,7 +71,7 @@ namespace Akkadian
             string quote = "\"";
 
             // Analyze the relationship...         1             2        3         4        5        7       8                   9
-            Match match = Regex.Match(node, @"([a-zA-Z0-9_]+)\(([0-9]),?([0-9])?,?([0-9])?\)( = )?((false)|([0-9]+)|("+quote+"[a-zA-Z0-9 ]+"+quote+"))?");
+            Match match = Regex.Match(node, @"([a-zA-Z0-9_]+)\(([0-9]),?([0-9])?,?([0-9])?\)( = )?((false)|([0-9]+)|("+quote+@"[a-zA-Z0-9\. ]+"+quote+"))?");
             if (match.Success)
             {
                 // Get the relationship and the arguments

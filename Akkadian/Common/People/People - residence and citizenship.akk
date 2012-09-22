@@ -1,20 +1,29 @@
 # Namespace:    Hammurabi.H
 # Summary:      Facts about individual people relating to residence, location, and U.S. citizenship.
-# Updated:      2012-06-22
+# Updated:      2012-09-22
 # Author:       Michael Poulshock
 
 
 # PLACE OF RESIDENCE
 
-# >>Is/was {1} a U.S. resident?
+# U.S. resident
 TboolIn IsUSResident(Thing p) =
-	Imm.CountryOfResidence(p) == "United States" |~
+	CountryOfResidence(p) == "United States" |
+	ResidesInUSState(p)
+	
+ResidesInUSState(1) assumes CountryOfResidence(1) == "United States"
+
+# Resides in U.S. state
+TboolIn ResidesInUSState(Thing p) =
 	Geo.IsUSState(StateOfResidence(p))
 	
-# Resident of a state or country
+# Resident of a given state or country
 Tbool IsResidentOf(Thing p, string jur) =
-	Imm.CountryOfResidence(p) == jur |
+	CountryOfResidence(p) == jur |
 	StateOfResidence(p) == jur
+
+# >>In which country (or territory) does/did {1} reside?
+TstrIn CountryOfResidence(Thing p)
 
 # >>In what state does/did {1} reside?
 TstrIn StateOfResidence(Thing p) 
@@ -22,11 +31,9 @@ TstrIn StateOfResidence(Thing p)
 
 # U.S. CITIZENSHIP
 
-# >>Is/was {1} a U.S. citizen?
-TboolIn? IsUSCitizen(Thing p) =
-	Imm.Status(p) == "U.S. citizen" |
-	Imm.IsCitizenOf(p, "United States") |
-	USC.Tit8.Gen.IsUSCitizenInferred(p)	
+# U.S. citizen
+TboolIn IsUSCitizen(Thing p) =
+	Imm.Status(p) == "U.S. citizen" 	
 
 # >>Is {1} subject to U.S. jurisdiction?
 TboolIn IsSubjectToUSJurisdiction(Thing p)
@@ -53,4 +60,23 @@ Tbool PresentInUS(Thing p) =
 	
 # >>In what country is/was {1} physically located?
 TstrIn CountryLocation(Thing p)
+
+
+# UNIT TESTS
+
+Test: 909943367
+- Thing jane
+- StateOfResidence(jane) = "Louisiana"
+- Hammurabi.H.IsUSResident(jane).TestOutput =?= "Time.DawnOf True "
+
+Test: 280315571
+- Thing jane
+- CountryOfResidence(jane) = "Japan"
+- Hammurabi.H.IsUSResident(jane).TestOutput =?= "Time.DawnOf False "
+
+Test: 909943867
+- Thing jane
+- CountryOfResidence(jane) = "United States"
+- Hammurabi.H.IsUSResident(jane).TestOutput =?= "Time.DawnOf True "
+
 

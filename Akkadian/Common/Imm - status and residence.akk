@@ -1,41 +1,70 @@
 # Namespace:    Hammurabi.Imm
 # Summary:      Basic facts related to immigration
-# Updated:      2012-08-16
+# Updated:      2012-09-22
 # Author:       Michael Poulshock
 
 
-# CITIZENSHIP & RESIDENCE
+# COUNTRY OF CITIZENSHIP 
 
-# >>In which country (or territory) does/did {1} reside?
-TstrIn CountryOfResidence(Thing p)
-
-# Country of citizenship (can have more than one)
-Tbool IsCitizenOf(Thing p, Tstr country) =
-	CountryOfCitizenship(p) == country
-
+# TODO: Handle dual citizenship
 # >>What is/was {1}'s country of citizenship?
 TstrIn CountryOfCitizenship(Thing p)
 
-# >>Is {1} a naturalized U.S. citizen?
-TboolIn IsNaturalizedCitizen(Thing p)
+IsUSCitizen(1) assumes CountryOfCitizenship(1) = "United States"
+USImmigrationStatus(1) = "U.S. citizen" assumes CountryOfCitizenship(1) = "United States"
+	
+	
+# U.S. IMMIGRATION STATUS
+
+# These rules consolidate all facts pertaining to immigration status
+# into one point.  That way, a person's status can be asked or asserted
+# as a single fact (Imm.Status).  If the user doesn't know that fact and 
+# needs to probe down, they can investigate the rule tree below it.
+
+# Note: IsUSCitizen() is defined in People - residence and citizenship.akk
+
+# The following facts should be used in other rules:
 
 # U.S. national (without U.S. citizenship)
 Tbool IsUSNational(Thing p) =
 	Status(p) == "U.S. national"
-
 	
-# IMMIGRATION STATUS
+# Alien
+Tbool IsAlien(Thing p) =
+	! IsUSCitizen(p) &
+	! IsUSNational(p)
 	
-# >>Is {1} an alien under U.S. immigration law?
-TboolIn IsAlien(Thing p)
-
-# >>Is {1} a legal permanent resident?
-TboolIn IsLPR(Thing p) =
+# Legal permanent resident
+Tbool IsLPR(Thing p) =
 	Status(p) == "Legal permanent resident"
 
-# >>Is {1} a lawful non-immigrant?
-TboolIn IsLawfulNonImmigrant(Thing p) =
+# Lawful non-immigrant
+Tbool IsLawfulNonImmigrant(Thing p) =
 	Stub()
+
+
+# CORE IMMIGRATION STATUS RULES
+
+# This rule is for brevity (Imm.Status instead of Imm.USImmigrationStatus)
+Tstr Status(Thing p) = 
+	USImmigrationStatus(p)
+
+# Stopping point before descending into citizenship law
+# >>What is/was {1}'s U.S. immigration status? (Options: U.S. citizen, U.S. national, Legal permanent resident, Refugee, Temporary visitor, Undocumented immigrant)
+TstrIn? USImmigrationStatus(Thing p) = 
+	set:
+	if USC.Tit8.Gen.IsUSCitizenInferred(p) -> "U.S. citizen"
+	if USC.Tit8.Gen.IsUSNationalInferred(p) -> "U.S. national"
+	else AssignedStatus(p)
+
+# >>What immigration status was {1} assigned by the Department of Homeland Security?
+TstrIn AssignedStatus(Thing p)
+
+
+# OTHER FACTS
+
+# >>Is {1} a naturalized U.S. citizen?
+TboolIn IsNaturalizedCitizen(Thing p)
 
 # >>Did {1} enter the U.S. without inspection?
 TboolIn EnteredUSWithoutInspection(Thing p) =
@@ -44,10 +73,5 @@ TboolIn EnteredUSWithoutInspection(Thing p) =
 # >>Was {1} paroled into the U.S.?
 TboolIn ParoledIntoUS(Thing p) =
 	Stub()
-	
-# >>What is/was {1}'s U.S. immigration status?
-Tstr Status(Thing p) = 
-	TstrIn USImmigrationStatus(p)
-	
 
 	

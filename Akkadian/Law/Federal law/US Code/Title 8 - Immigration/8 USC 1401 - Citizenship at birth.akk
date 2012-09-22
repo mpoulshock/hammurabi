@@ -173,7 +173,7 @@ Tbool ResidedInUSorOP(Thing p) =
 	Sec1101.IsUSOutlyingPossession(loc)
 	
 	Tstr loc = 
-		Imm.CountryOfResidence(p)
+		CountryOfResidence(p)
 		
 
 # CONTINUOUS PHYSICAL PRESENCE IN U.S.
@@ -253,12 +253,7 @@ Thing MotherOf(Thing c) =
 
 # UNIT TESTS
 
-Test: 856160232
-- Thing a
-- DoB(a) = 1934-05-24
-- USC.Tit8.Sec1401.SubsecH(a).TestOutput =?= "Time.DawnOf Stub "
-
-Test: 399466811
+Test: 574277777
 - Thing a
 - DoB(a) = 1950-02-02
 - Things jini,barka
@@ -266,10 +261,15 @@ Test: 399466811
 - Gender(jini) = "Male"
 - Gender(barka) = "Female"
 - FamilyRelationship(jini,barka) = "Spouse"
-- IsAlien(jini) = true
-- IsUSCitizen(barka) = true
+- USImmigrationStatus(jini) = "Legal permanent resident"
+- USImmigrationStatus(barka) = "U.S. citizen"
 - CountryOfResidence(barka) = "United States"
 - USC.Tit8.Sec1401.SubsecH(a).TestOutput =?= "Time.DawnOf True "
+
+Test: 856160232
+- Thing a
+- DoB(a) = 1934-05-24
+- USC.Tit8.Sec1401.SubsecH(a).TestOutput =?= "Time.DawnOf Stub "
 
 Test: 506836087
 - Thing a
@@ -294,6 +294,8 @@ Test: 350267835
 - Thing a
 - BirthCountry(a) = "United States"
 - USC.Tit8.Sec1401.AcquiredCitizenshipAtBirth(a).TestOutput =?= "Time.DawnOf True "
+
+
 
 
 
