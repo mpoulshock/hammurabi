@@ -4,17 +4,9 @@
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
-          <Node name="Hammurabi" expanded="True">
-            <Node name="Core" expanded="True">
-              <Node name="Facts" expanded="True">
-                <Node name="Assumptions.cs" selected="True" />
-              </Node>
-            </Node>
+          <Node name="Hammurabi" expanded="True" selected="True">
+            <Node name="Core" expanded="True" />
           </Node>
-          <Node name="HammurabiInteractive" expanded="True">
-            <Node name="Interview" expanded="True" />
-          </Node>
-          <Node name="Unit tests - Hammurabi core" expanded="True" />
         </State>
       </Pad>
       <Pad Id="ClassPad">

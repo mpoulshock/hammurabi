@@ -89,6 +89,12 @@
                         <File name="Law\Federal law\Federal Rules\FRCP\Rule 6 - Computing time.akk" />
                     </Folder>
                 </Folder>
+                <Folder name="Agency interpretations">
+                    <Folder name="IRS">
+                        <File name="Law\Federal law\Agency interpretations\IRS\Pub 519 - Alien tax status.akk" />
+                        <File name="Law\Federal law\Agency interpretations\IRS\Pub 901 - Tax treaties.akk" />
+                    </Folder>
+                </Folder>
             </Folder>
             <Folder name="State law">
                 <Folder name="Multi-state">

@@ -1,0 +1,71 @@
+# Namespace:    IRS.Pub519
+# Summary:      IRS Publication 519 - Alien Tax Status
+# Updated:      2012-09-22
+# Author:       Michael Poulshock
+
+# Determines a person's alien tax status: resident alien or
+# nonresident alien.  Resident aliens are generally taxed like 
+# U.S. citizens.
+
+
+# Nonresident alien for tax purposes
+Tbool IsNonresidentAlien(Thing person) =
+	Imm.IsAlien(person) &
+	! IsResidentAlien(person)
+
+# Resident alien for tax purposes
+Tbool IsResidentAlien(Thing p) =
+	Imm.IsAlien(p) &
+	...
+		...
+			! IRS.Pub901.IsResidentOfForeignCountryUnderTaxTreaty(p) &		# Pub 519, p. 8
+			...
+				MeetsGreenCardTest(p) |
+				MeetsSubstantialPresenceTest(p) 
+		|
+		ChoosesResidentAlienStatus(p)
+
+		
+# GREEN CARD TEST
+
+Tbool MeetsGreenCardTest(Thing p) = 
+	Stub()
+
+	
+# SUBSTANTIAL PRESENCE TEST
+	
+Tbool MeetsSubstantialPresenceTest(Thing p) =
+	MeetsBasicSubstantialPresenceTest(p) &
+	! HasCloserConnectionToForeignCountry(p)
+
+Tbool MeetsBasicSubstantialPresenceTest(Thing p) =
+	Stub()
+	
+Tbool HasCloserConnectionToForeignCountry(Thing p) =
+	Stub()
+	
+	
+# DUAL-STATUS
+
+Tbool ChoosesResidentAlienStatus(Thing p) =
+	IsDualStatusAlien(p) &
+	Stub() &
+	ChoosesToBeTreatedAsResidentAlien(p)
+	
+Tbool IsDualStatusAlien(Thing p) =
+	Stub()
+	
+	
+# INPUTS
+
+# >>Is/was {1} a bona fide resident of American Samoa?
+TboolIn IsBonaFideResidentOfAmericanSamoa(Thing p)
+
+# >>Is/was {1} a bona fide resident of Puerto Rico?
+TboolIn IsBonaFideResidentOfPuertoRico(Thing p)
+
+# >>Does {1} choose to be treated as a resident alien for tax purposes?
+TboolIn ChoosesToBeTreatedAsResidentAlien(Thing p)
+
+
+

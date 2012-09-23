@@ -151,6 +151,8 @@
     <Compile Include="Generated source\Assumption rules.cs" />
     <Compile Include="Generated source\Assumption metadata.cs" />
     <Compile Include="Core\Engine\Interview - things.cs" />
+    <Compile Include="Generated source\Pub 519 - Alien tax status.cs" />
+    <Compile Include="Generated source\Pub 901 - Tax treaties.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
