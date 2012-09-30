@@ -33,7 +33,7 @@ TboolInSym AreMarried(Thing p1, Thing p2) =
 FamilyRelationship(1,2) = "Spouse" assumes FamilyRelationship(2,1) = "Spouse"
 
 # >>Who is/was {1}'s spouse(s)?
-TsetIn SpousesOf(Thing p) =
+TsetIn? SpousesOf(Thing p) =
 	set: 
 	if !Facts.HasBeenAsserted("SpousesOf",p) & spouses.Count == 0 -> new Tset(Hstate.Unstated)
 	else spouses

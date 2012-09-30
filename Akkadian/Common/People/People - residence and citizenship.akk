@@ -22,7 +22,7 @@ Tbool IsResidentOf(Thing p, string jur) =
 	CountryOfResidence(p) == jur |
 	StateOfResidence(p) == jur
 
-# >>In which country (or territory) does/did {1} reside?
+# >>In which country or territory does/did {1} reside?
 TstrIn CountryOfResidence(Thing p)
 
 # >>In what state does/did {1} reside?
@@ -58,7 +58,7 @@ TstrIn BirthState(Thing p)
 Tbool PresentInUS(Thing p) =
 	CountryLocation(p) == "United States"
 	
-# >>In what country is/was {1} physically located?
+# >>In what country or territory is/was {1} physically located?
 TstrIn CountryLocation(Thing p)
 
 

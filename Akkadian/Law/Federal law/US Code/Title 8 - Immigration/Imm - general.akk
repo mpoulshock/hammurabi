@@ -34,10 +34,6 @@ Tbool IsUSNationalInferred(Thing p) =
 	
 # GENERAL CONCEPTS
 
-# Type of visa the person has/is applying for
-TstrIn VisaType(Thing p)
-
-
 # U.S. resident prior to a given date
 Tbool ResidentOfUSPriorTo(Thing p, Tdate date) =
 	IsUSResident(p).IsEverTrue(Time.DawnOf, date)
