@@ -458,5 +458,71 @@ namespace Hammurabi
 
             return Hstate.Known;
         }
+
+        /// <summary>
+        /// Returns a Tvar in which the values are shifted in time relative to
+        /// the dates. A negative offset gets values from the past; a positive one
+        /// gets them from the future.
+        /// </summary>
+        /// <remarks>
+        /// Used, for example, to get the value of a Tvar during a prior or future
+        /// time period.
+        /// Note: Time points on both the base Tvar and the temporalPeriod Tnum 
+        /// must line up in order for the method to work properly.
+        /// </remarks>
+        /// <example>
+        ///                 N =  <--33--|--44--|--55--|--66--|--77-->
+        ///              Year =  <-2010-|-2011-|-2012-|-2013-|-2014->
+        ///  N.Shift(-2,Year) =  <---------33---------|--44--|--55--|--66--|--77-->
+        /// </example>            
+        public T Shift<T>(int offset, Tnum temporalPeriod) where T : Tvar
+        {
+            T result = (T)Auxiliary.ReturnProperTvar<T>();
+            result.AddState(this.TimeLine.Keys[0], this.TimeLine.Values[0]);
+
+            // No need to handle uncertainty b/c this method just reuses the values in
+            // the base Tvar.
+
+            // Iterate through pairs in the base Tvar
+            foreach(KeyValuePair<DateTime,Hval> de in this.TimeLine)
+            {
+                // Extract parts of the date-value pair
+                DateTime origDate = Convert.ToDateTime(de.Key);
+                Hval val = de.Value;
+                DateTime offsetDate = Time.EndOf;
+
+                // Leave the value at Time.DawnOf alone
+                if (origDate != Time.DawnOf)
+                {
+                    // Get the time point with the appropriate offset from the current time point
+                    // First, look up the original date in temporalPeriod
+                    for (int i=0; i<temporalPeriod.TimeLine.Values.Count; i++)
+                    {
+                        DateTime testDate = Convert.ToDateTime(temporalPeriod.TimeLine.Keys[i]);
+                        if (testDate == origDate)
+                        {
+                            // Then get the date offset from the original date
+                            int offsetIndex = i + (offset * -1);
+
+                            // Don't overrun the temporalPeriod list
+                            if (offsetIndex < temporalPeriod.TimeLine.Count &&
+                                offsetIndex >= 0)
+                            {
+                                offsetDate = temporalPeriod.TimeLine.Keys[offsetIndex];
+
+                                // Prevent overflowing the bounds of Time
+                                if (offsetDate < Time.EndOf) 
+                                {
+                                    result.AddState(offsetDate, val);
+                                }
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            
+            return result;
+        }
     }    
 }

@@ -2,7 +2,7 @@
 # Namespace:    USC.Tit29.Sec206
 # Summary:      Federal minimum wage laws
 # Source:       http://www.dol.gov/whd/minwage/chart.htm
-# Updated:      2012-06-25
+# Updated:      2012-10-01
 # Author:       Michael Poulshock
 
 
@@ -24,4 +24,9 @@ Tnum FedMinWage() =
 	endtemporal
 
 
-	
+Test: MinWage1
+- USC.Tit29.Sec206.FedMinWage().AsOf(2001-03-03).TestOutput =?= "Time.DawnOf 5.15 "
+
+Test: MinWage2
+- USC.Tit29.Sec206.FedMinWage().AsOf(1975-03-03).TestOutput =?= "Time.DawnOf Stub "
+

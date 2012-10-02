@@ -1082,5 +1082,60 @@ namespace Hammurabi.UnitTests.CoreFcns
             Assert.AreEqual("Time.DawnOf False 1/1/2000 12:00:00 AM True 1/1/2001 12:00:00 AM False ", tb1.IsUnstated.TestOutput);        
         }
 
+        // .Shift
+
+        [Test]
+        public void FT_Shift_1 ()
+        {
+            Tnum t = new Tnum(0);
+            t.AddState(Date(2010,1,1), 100);
+            t.AddState(Date(2011,1,1), 200);
+            Tnum actual = t.Shift(-1, TheYear);
+            string expected = "Time.DawnOf 0 1/1/2011 12:00:00 AM 100 1/1/2012 12:00:00 AM 200 ";
+            Assert.AreEqual(expected, actual.TestOutput);      
+        }
+
+        [Test]
+        public void FT_Shift_2 ()
+        {
+            Tnum t = new Tnum(0);
+            t.AddState(Date(2010,1,1), 100);
+            t.AddState(Date(2011,1,1), 200);
+            Tnum actual = t.Shift(0, TheYear);
+            string expected = "Time.DawnOf 0 1/1/2010 12:00:00 AM 100 1/1/2011 12:00:00 AM 200 ";
+            Assert.AreEqual(expected, actual.TestOutput);      
+        }
+
+        [Test]
+        public void FT_Shift_3 ()
+        {
+            Tnum t = new Tnum(0);
+            t.AddState(Date(2010,1,1), 100);
+            t.AddState(Date(2011,1,1), 200);
+            Tnum actual = t.Shift(2, TheYear);
+            string expected = "Time.DawnOf 0 1/1/2008 12:00:00 AM 100 1/1/2009 12:00:00 AM 200 ";
+            Assert.AreEqual(expected, actual.TestOutput);      
+        }
+
+        [Test]
+        public void FT_Shift_uncertain1 ()
+        {
+            Tnum t = new Tnum(Hstate.Stub);
+            Assert.AreEqual("Time.DawnOf Stub ", t.Shift(2, TheYear).TestOutput);      
+        }
+
+        [Test]
+        public void FT_Shift_uncertain2 ()
+        {
+            Tnum t = new Tnum(Hstate.Uncertain);
+            Assert.AreEqual("Time.DawnOf Uncertain ", t.Shift(-2, TheYear).TestOutput);      
+        }
+
+        [Test]
+        public void FT_Shift_uncertain3 ()
+        {
+            Tnum t = new Tnum(Hstate.Unstated);
+            Assert.AreEqual("Time.DawnOf Unstated ", t.Shift(0, TheYear).TestOutput);      
+        }
     }    
 }

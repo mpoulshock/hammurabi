@@ -150,7 +150,16 @@ namespace Hammurabi
             return this.AsOf<Tdate>(dt);
         }
 
-        
+        /// <summary>
+        /// Returns a Tdate in which the values are shifted in time relative to
+        /// the dates.
+        /// </summary>
+        public Tdate Shift(int offset, Tnum temporalPeriod)
+        {
+            return this.Shift<Tdate>(offset, temporalPeriod);
+        }
+
+
         // ********************************************************************
         // AddTimeInterval
         // ********************************************************************

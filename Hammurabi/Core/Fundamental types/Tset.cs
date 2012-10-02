@@ -184,6 +184,15 @@ namespace Hammurabi
         }
 
         /// <summary>
+        /// Returns a Tset in which the values are shifted in time relative to
+        /// the dates.
+        /// </summary>
+        public Tset Shift(int offset, Tnum temporalPeriod)
+        {
+            return this.Shift<Tset>(offset, temporalPeriod);
+        }
+
+        /// <summary>
         /// Displays a timeline indicating the members of the set at various
         /// points in time.
         /// </summary>

@@ -50,7 +50,12 @@ namespace Hammurabi
                 }
                 
                 TimeSpan time = this.TotalElapsedTime(period.IntervalValues.Keys[i], spanEnd);
-                result.AddState(period.IntervalValues.Keys[i], time.TotalDays);
+
+                // Add the state, but not if it's at the end of time
+                if (period.IntervalValues.Keys[i] < Time.EndOf)
+                {
+                    result.AddState(period.IntervalValues.Keys[i], time.TotalDays);
+                }
             }
             
             return result.Lean;

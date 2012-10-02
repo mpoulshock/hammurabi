@@ -85,6 +85,24 @@ Test: 416036083
 - Sandbox.AnotherMethod(p).TestOutput =?= "Time.DawnOf True "
 
 
+# TVAR.SHIFT
+
+Test: Shift1
+- Thing p
+- AnnualIncome(p) = {Time.DawnOf: 0; 2000-01-01: 100; 2001-01-01: 200}
+- Econ.AnnualIncome(p).Shift(-1,TheYear).TestOutput =?= "Time.DawnOf 0 1/1/2001 12:00:00 AM 100 1/1/2002 12:00:00 AM 200 "
+
+Test: Shift2
+- Thing p
+- AnnualIncome(p) = {Time.DawnOf: 0; 2000-01-01: 100; 2001-01-01: 200}
+- Econ.AnnualIncome(p).Shift(0,TheYear).TestOutput =?= "Time.DawnOf 0 1/1/2000 12:00:00 AM 100 1/1/2001 12:00:00 AM 200 "
+
+Test: Shift3
+- Thing p
+- AnnualIncome(p) = {Time.DawnOf: 0; 2000-01-01: 100; 2001-01-01: 200}
+- Econ.AnnualIncome(p).Shift(2,TheYear).TestOutput =?= "Time.DawnOf 0 1/1/1998 12:00:00 AM 100 1/1/1999 12:00:00 AM 200 "
+
+
 # DATE EQUALITY
 
 Tbool DateEquality1(Thing c) =

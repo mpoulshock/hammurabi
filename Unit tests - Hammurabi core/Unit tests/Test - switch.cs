@@ -235,26 +235,8 @@ namespace Hammurabi.UnitTests.CoreFcns
 
         // MergeTvars
 
-//        [Test]
-//        public void MergeTvars1a () // This fails due to an issue w/ MakeTnum
-//        {
-//            Hval unst = new Hval(Hstate.Unstated);
-//            Tnum tn1 = Tnum.MakeTnum(Time.DawnOf, unst,
-//                                     Date(2000,1,1), 1,
-//                                     Date(2001,1,1), unst,
-//                                     Date(2002,1,1), 3,
-//                                     Date(2003,1,1), unst);
-//            Tnum tn2 = Tnum.MakeTnum(Time.DawnOf, 0,
-//                                     Date(2000,1,1), unst,
-//                                     Date(2001,1,1), 2,
-//                                     Date(2002,1,1), unst,
-//                                     Date(2003,1,1), unst);
-//            Tnum result = MergeTvars<Tnum>(tn1,tn2);
-//            Assert.AreEqual("Time.DawnOf 0 1/1/2000 12:00:00 AM 1 1/1/2001 12:00:00 AM 2 1/1/2002 12:00:00 AM 3 1/1/2003 12:00:00 AM Unstated ", result.TestOutput);        
-//        }
-
         [Test]
-        public void MergeTvars1b ()
+        public void MergeTvars1 ()
         {
             Hval unst = new Hval(null,Hstate.Null);
 

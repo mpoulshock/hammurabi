@@ -280,10 +280,10 @@ namespace Hammurabi.UnitTests.CoreFcns
             Assert.AreEqual("Time.DawnOf 3 ", result.TestOutput);        
         } 
         
-        // Tvar constructors
+        // MakeTnum
         
         [Test]
-        public void Tvar_load_1 ()
+        public void Tvar_load_1()
         {
             Tnum t = Tnum.MakeTnum(Time.DawnOf, null,
                               Date(1961,01,01), 5.14,
@@ -294,7 +294,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         } 
         
         [Test]
-        public void Tvar_load_2 ()
+        public void Tvar_load_2()
         {
             Tnum t = Tnum.MakeTnum(
             Time.DawnOf,    null,
@@ -310,8 +310,16 @@ namespace Hammurabi.UnitTests.CoreFcns
             Date(2008,07,24), 6.55,
             Date(2009,07,24), 7.25,
             null);
+
             decimal? result = t.AsOf(Date(1991,1,1)).ToDecimal;
             Assert.AreEqual(3.80, result);        
         } 
+
+        [Test]
+        public void Tvar_load_3()
+        {
+            Tnum t = Tnum.MakeTnum(Time.DawnOf, 200);
+            Assert.AreEqual(200, t.AsOf(Date(2001,03,03)).Out);        
+        }
     }
 }   

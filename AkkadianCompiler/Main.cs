@@ -267,7 +267,7 @@ namespace Akkadian
             // Convert rules and dates
             line = ConvertRegularRules(line);
             line = ConvertRuleTables(line, currentRuleType, tableMatchLine, word);
-            
+
             // Facts.QueryTvar<Tvar>()
             line = TransformMethod.QueryTvarTransform(line);
     
@@ -319,9 +319,9 @@ namespace Akkadian
              
             // Temporal tables - must come before "rule tables"
             line = Regex.Replace(line.Replace("\t","    "), @"temporal:", ruleType + ".Make" + ruleType + "(");  
-            line = Regex.Replace(line, @"from (?<condition>"+word+") -> (?<value>"+word+")", "${condition}, ${value},");   
-            line = Regex.Replace(line, "endtemporal", "new " + ruleType + "(Hstate.Stub))");    
-    
+            line = Regex.Replace(line, @"from (?<condition>"+word+") -> (?<value>"+word+")", "${condition}, ${value},");  
+            line = Regex.Replace(line, "endtemporal", "new " + ruleType + "(Hstate.Stub))");    // Value here is filler; needed due to extra comma in previous line
+
             // Rule tables - must come before "dates"
             line = Regex.Replace(line, @"match "+word, "Switch<" + ruleType + ">(");    
             if (line.Contains("->")) line = Util.RuleTableMatch(matchLine, line);

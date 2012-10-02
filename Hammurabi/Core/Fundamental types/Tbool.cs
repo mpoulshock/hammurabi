@@ -109,6 +109,15 @@ namespace Hammurabi
         }
 
         /// <summary>
+        /// Returns a Tbool in which the values are shifted in time relative to
+        /// the dates.
+        /// </summary>
+        public Tbool Shift(int offset, Tnum temporalPeriod)
+        {
+            return this.Shift<Tbool>(offset, temporalPeriod);
+        }
+
+        /// <summary>
         /// Indicates whether the Tbool is always true.
         /// </summary>
         public Tbool IsAlwaysTrue()

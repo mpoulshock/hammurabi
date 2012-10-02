@@ -124,6 +124,15 @@ namespace Hammurabi
         }
 
         /// <summary>
+        /// Returns a Tstr in which the values are shifted in time relative to
+        /// the dates.
+        /// </summary>
+        public Tstr Shift(int offset, Tnum temporalPeriod)
+        {
+            return this.Shift<Tstr>(offset, temporalPeriod);
+        }
+
+        /// <summary>
         /// Returns true when two Tstrs are equal. 
         /// </summary>
         public static Tbool operator == (Tstr ts1, Tstr ts2)

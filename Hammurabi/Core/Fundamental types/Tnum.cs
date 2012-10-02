@@ -70,18 +70,23 @@ namespace Hammurabi
             {
                 try
                 {
-                    Hstate h = (Hstate)list[i+1];
-                    if (h != Hstate.Known)
+                    // Deal with Stubs (necessary b/c Hstate enums look like ints!)
+                    if (((Tnum)list[i+1]).FirstValue.IsStub)
                     {
                         result.AddState(Convert.ToDateTime(list[i]),
-                                    new Hval(null,h));
+                                        new Hval(null,Hstate.Stub));
                     }
+                    else
+                    {
+                        decimal d = Convert.ToDecimal(list[i+1]);
+                        result.AddState(Convert.ToDateTime(list[i]), new Hval(d));
+                    }
+
                 }
                 catch
                 {
                     decimal d = Convert.ToDecimal(list[i+1]);
-                    result.AddState(Convert.ToDateTime(list[i]),
-                                new Hval(d));
+                    result.AddState(Convert.ToDateTime(list[i]), new Hval(d));
                 }
             }
             return result;
@@ -177,6 +182,15 @@ namespace Hammurabi
         public Tnum AsOf(Tdate dt)
         {
             return this.AsOf<Tnum>(dt);
+        }
+
+        /// <summary>
+        /// Returns a Tnum in which the values are shifted in time relative to
+        /// the dates.
+        /// </summary>
+        public Tnum Shift(int offset, Tnum temporalPeriod)
+        {
+            return this.Shift<Tnum>(offset, temporalPeriod);
         }
 
 

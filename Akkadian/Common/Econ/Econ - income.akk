@@ -7,7 +7,7 @@
 # ANNUAL INCOME
 
 # Total annual income
-Tnum AnnualIncome(Thing p) =
+TnumIn AnnualIncome(Thing p) =
 	AnnualWages(p) +
 	AnnualSelfEmploymentIncome(p) +
 	AnnualSocialSecurityBenefits(p) +
