@@ -333,6 +333,21 @@ namespace Hammurabi
             return Auxiliary.IsMemberOfSet(e,this);
         }
 
+        /// <summary>
+        /// Returns the temporal union of two Tsets.
+        /// This is equivalent to a logical OR of two sets.
+        /// </summary>
+        /// <remarks>
+        /// This method provides a second operator denoting
+        /// the union of a set.  Though different than standard
+        /// programming usage, + reflects the common sense 
+        /// notion that you can add two sets together to get the
+        /// sum of the parts.
+        /// </remarks>            
+        public static Tset operator + (Tset set1, Tset set2)    
+        {
+            return set1 | set2;
+        }
         
         /// <summary>
         /// Returns the temporal union of two Tsets.

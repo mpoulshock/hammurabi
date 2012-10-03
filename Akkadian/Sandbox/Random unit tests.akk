@@ -85,6 +85,28 @@ Test: 416036083
 - Sandbox.AnotherMethod(p).TestOutput =?= "Time.DawnOf True "
 
 
+# USE OF HIGHER-ORDER FUNCTIONS
+
+# Turns out you can use a logical expression (and not just a function)
+# as an argument in a higher-order rule such as Filter, Sum, Exists.	
+Tnum LogicalExpressionInHigherOrderRule(Thing p) =
+	Fam.SpousesOf(p).Filter(Age(_) < 65).Count
+
+Test: 965821874
+- Thing jim
+- Things a
+- SpousesOf(jim) = [[a]]
+- DoB(a) = 1900-01-01
+- Hammurabi.Sandbox.LogicalExpressionInHigherOrderRule(jim).AsOf(2000-01-01).Out =?= 0
+
+Test: 825234342
+- Thing jim
+- Things a
+- SpousesOf(jim) = [[a]]
+- DoB(a) = 1979-01-01
+- Hammurabi.Sandbox.LogicalExpressionInHigherOrderRule(jim).AsOf(2000-01-01).Out =?= 1	
+	
+	
 # TVAR.SHIFT
 
 Test: Shift1

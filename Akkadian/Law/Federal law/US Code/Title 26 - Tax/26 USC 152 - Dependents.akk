@@ -14,6 +14,8 @@ Tbool IsDependentOf(Thing d, Thing tp) =
     &
     !CannotBeADependentOf(d, tp)
 
+
+# QUALIFYING CHILD
 	
 # Indicates whether one person is a "qualifying child" of another.
 Tbool IsQualifyingChildOf(Thing d, Thing tp) =    
@@ -55,6 +57,8 @@ Tbool QCAgeTest(Thing d, Thing tp, Tnum taxYear) =
     |
     Sec22.IsDisabledPT(d)
 
+
+# QUALIFYING RELATIVE
 	
 # Indicates whether one person is a "qualifying relative" of another.
 # Subsections d3 and d4 are omitted.
@@ -94,6 +98,8 @@ Tbool IsQualifyingRelativeOf(Thing d, Thing tp) =
     Tbool d4Test = 
 		if TboolIn AnotherTaxpayerProvidedSupportFor(d) then Stub()
 
+
+# EXCEPTIONS
 		
 # Exceptions to whether a person can be a dependent. 152(b).
 Tbool CannotBeADependentOf(Thing d, Thing tp) =
@@ -106,7 +112,7 @@ Tbool CannotBeADependentOf(Thing d, Thing tp) =
     # recursively leads to infinite loops and probably is a case of overengineering.
     Tbool depTest =
 		! TboolIn CanClaimSomeoneAsDependent(d) &
-		! TboolIn CanBeClaimedAsDependentBySomeone(tp)
+		! CanBeClaimedAsDependentBySomeone(tp)
             
     # b2 - potential dependent cannot be married filing jointly
     # See IRS Publication 501 (2010), page 10.
@@ -130,6 +136,16 @@ Tbool CannotBeADependentOf(Thing d, Thing tp) =
             IsUSCitizen(tp) | 
             Imm.IsUSNational(tp)
 
+
+# FIGURE OUT WHO CAN CLAIM A PERSON AS A DEPENDENT (RECURSIVE)			
+
+# >>Can someone claim {1} as a dependent?
+TboolIn? CanBeClaimedAsDependentBySomeone(Thing p) =
+	PeopleWhoMightClaimAsDependent(p).Exists(IsDependentOf(p,_))
+	
+# >>Who has financial or custodial responsibility for {1}?
+TsetIn PeopleWhoMightClaimAsDependent(Thing p)
+			
 			
 # UNIT TESTS
 

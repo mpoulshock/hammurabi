@@ -5,8 +5,8 @@
 # Author:       Michael Poulshock
 
 
-# Federal tax filing status
 # Status is asserted individually; for MFJ, see 26 USC 6013.
+# >>What is {1}'s federal tax filing status? (Options: Single, Married filing jointly, Married filing separately, Head of household, Qualifying widow(er))
 Tstr FilingStatus(Thing p) =
     TstrIn FedTaxFilingStatus(p)
 	
