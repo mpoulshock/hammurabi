@@ -1,32 +1,59 @@
 # Namespace:    IRS.Pub501
 # Summary:      IRS Publication 501 - Who must file a tax return
-# Updated:      2012-10-02
+# Updated:      2012-10-04
 # Author:       Michael Poulshock
 
-
+##
+TODO:
+- MFJ gross income problem 
+- Marital status on last day of tax year
+- Age on last day of tax year
+- Spouse at end of tax year
+- Gross income, defined
+##
 
 # RULES FOR TAX YEAR 2011
 
+Tbool MustFileTaxReturn(Thing p) =
+	set:
+	if IRS.Pub519.IsNonresidentAlien(p) -> Stub()
+	if HasIncomeFromUSPossession(p) -> Stub()
+	if IsDeceased(p) -> DeceasedPersonMustFile(p)
+	else CoreMustFileTest(p)
+
+Tbool CoreMustFileTest(Thing p) =
+	...
+		USC.Tit26.Sec152.CanBeClaimedAsDependentBySomeone(p) &
+		MustFilePerTable2(p)
+	|
+	...
+		! USC.Tit26.Sec152.CanBeClaimedAsDependentBySomeone(p) &
+		MustFilePerTable1(p)
+	|
+	MustFilePerTable3(p)
+
+	
 # TABLE 1 - MOST TAXPAYERS
 
 # Table 1 (page 3)
 Tbool MustFilePerTable1(Thing p) =
-	Table1Applies(status, TaxAge(p), GrossIncome(p), SpousesUnder65(p))
-	
+	Table1Applies(status, TaxAge(p), GrossIncome(p), SpousesUnder65(p), LivedWithSpouseForTaxPurposes(p))
+		
 	Tstr status = USC.Tit26.Sec2.FilingStatus(p) 
 
-Tbool Table1Applies(Tstr status, Tnum age, Tnum grossIncome, Tnum spousesUnder65) =
-	match status, age, grossIncome, spousesUnder65
-	Single, 					< 65,	>= 9500,		-> true
-	Single, 					>= 65,	>= 10950,		-> true
-	Head of household, 			< 65,	>= 12200,		-> true
-	Head of household, 			>= 65,	>= 13650,		-> true
-	Married filing jointly,,			>= 19000,   2	-> true
-	Married filing jointly,,			>= 20150,   1	-> true
-	Married filing jointly,,			>= 21300,   0	-> true
-	Married filing separately,,			>= 3700,		-> true
-	Qualifying widow(er), 		< 65,	>= 15300,		-> true
-	Qualifying widow(er), 		>= 65,	>= 16450,		-> true
+Tbool Table1Applies(Tstr status, Tnum age, Tnum grossIncome, Tnum spousesUnder65, Tbool livedWSpouse) =
+	match status, age, grossIncome, spousesUnder65, livedWSpouse
+	Single, 					< 65,	>= 9500,,				-> true
+	Single, 					>= 65,	>= 10950,,				-> true
+	Head of household, 			< 65,	>= 12200,,				-> true
+	Head of household, 			>= 65,	>= 13650,,				-> true
+	Married filing jointly,,,,							false 	-> true 
+	Married filing jointly,,			>= 19000,   2,			-> true
+	Married filing jointly,,			>= 20150,   1,			-> true
+	Married filing jointly,,			>= 21300,   0,			-> true
+	Married filing separately,,			>= 3700,,				-> true
+	Qualifying widow(er), 		< 65,	>= 15300,,				-> true
+	Qualifying widow(er), 		>= 65,	>= 16450,,				-> true
 	else false
 
 # Number of people (person/spouse) under age 65	
@@ -67,9 +94,6 @@ Tbool MustFilePerTable2Single(Thing p) =
 				UnearnedIncome(p) > 3850 |
 				EarnedIncome(p) > 8700 |
 				GrossIncome(p) > Max(3850, Min(EarnedIncome(p), 5500) + 3200)				
-		
-	Tbool claimable =
-		USC.Tit26.Sec152.CanBeClaimedAsDependentBySomeone(p)
 
 # Table 2 - married dependents
 Tbool MustFilePerTable2Married(Thing p) =
@@ -111,15 +135,58 @@ Tbool MeetsSpouseItemizingTest(Thing p) =
 	GrossIncome(p) > 5 & 
 	USC.Tit26.Sec2.FilingStatus(p) == "Married filing separately" &
 	Fam.SpousesOf(p).Exists(ItemizesDeductions(_))
-	
+
+
+# TABLE 3
+
+# Table 3 (page 5) - other situations when you must file
+Tbool MustFilePerTable3(Thing p) =
+	# >>Does/did {1} owe the alternative minimum tax (AMT)?
+	TboolIn OwesAlternativeMinimumTax(p) |
+	# >>Does/did {1} owe an additional tax on a qualified plan?
+	TboolIn OwesAdditionalTaxOnQualifiedPlan(p) |
+	# >>Does/did {1} owe Social Security or Medicare taxes on unreported tips or wages that were not withheld?
+	TboolIn OwesSocSecOrMedicareTaxes(p) |
+	# >>Does/did {1} owe write-in taxes?
+	TboolIn OwesWriteInTaxes(p) |
+	# >>Does/did {1} owe household employment taxes?
+	TboolIn OwesHouseholdEmploymentTaxes(p) |
+	# >>Does/did {1} owe recapture taxes?
+	TboolIn OwesRecaptureTaxes(p) |
+	# >>Does/did {1} (or their spouse if filing jointly) receive Archer MSA, Medicare Advantage MSA, or health savings account distributions?
+	TboolIn HadHSADistribution(p) |
+	NetEarningsFromSelfEmployment(p) >= 400 |
+	# >>Does/did {1} have over 108.28 in wages from a qualifying church-related organization?
+	TboolIn HadThresholdChurchWages(p) |
+	Stub()
+
+# >>What are/were {1}'s net earnings from self-employment?
+TnumIn NetEarningsFromSelfEmployment(Thing p)
+
+
+# TODO: Move these elsewhere...?
+
+# Deceased person's situation is analyzed as of their date of death
+Tbool DeceasedPersonMustFile(Thing p) =
+	CoreMustFileTest(p).AsOf(DateOfDeath(p))
 	
 # Age on the last day of the calendar year
 Tnum TaxAge(Thing p) =
 	Age(p)	# Not correct
 	
+Tbool LivedWithSpouseForTaxPurposes(Thing p) =
+	Stub()
+	# liveW.AsOf(criticalDate)
+	
+	# Tdate criticalDate =
+		# set:
+		# if IsDeceased(spouse) -> DateOfDeath(spouse)	# spouse?
+		# else endOfTaxYear								# defined how?
+	
+	# Tbool liveW =
+		# Fam.SpousesOf(p).Exists(Econ.LivesWith(_,p))
 
-# TODO: Move these elsewhere...
-
+# TODO: Gross income earned by an individual v. that attributable to a married person
 # >>What is {1}'s gross income?
 TnumIn? GrossIncome(Thing p) =
 	EarnedIncome(p) +
@@ -136,6 +203,9 @@ TnumIn UnearnedIncome(Thing p)
 
 # >>Does/did {1} itemize deductions?
 TboolIn ItemizesDeductions(Thing p)
+
+# >>Does/did {1} have income from a U.S. possession (Guam, N. Mariana Islands, American Samoa, or the U.S. Virgin Islands)?
+TboolIn HasIncomeFromUSPossession(Thing p)
 
 
 # UNIT TESTS
@@ -182,8 +252,4 @@ Test: 844051182
 - FedTaxFilingStatus(lonnie) = "Married filing separately"
 - GrossIncome(lonnie) = 9
 - IRS.Pub501.MustFilePerTable1(lonnie).TestOutput =?= "Time.DawnOf False "
-
-
-
-
 
