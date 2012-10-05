@@ -5,10 +5,10 @@
 
 ##
 TODO:
-- MFJ gross income problem 
 - Marital status on last day of tax year
 - Age on last day of tax year
-- Spouse at end of tax year
+- Last day of tax year, temporal
+- MFJ gross income problem 
 - Gross income, defined
 ##
 
@@ -173,18 +173,23 @@ Tbool DeceasedPersonMustFile(Thing p) =
 # Age on the last day of the calendar year
 Tnum TaxAge(Thing p) =
 	Age(p)	# Not correct
-	
-Tbool LivedWithSpouseForTaxPurposes(Thing p) =
+
+# Marital status for tax purposes (determined on last day of tax year)
+Tstr MaritalStatusForTaxPurposes(Thing p) =
 	Stub()
-	# liveW.AsOf(criticalDate)
 	
-	# Tdate criticalDate =
-		# set:
-		# if IsDeceased(spouse) -> DateOfDeath(spouse)	# spouse?
-		# else endOfTaxYear								# defined how?
+# Lived with spouse for tax purposes
+Tbool LivedWithSpouseForTaxPurposes(Thing p) =
+	Fam.SpousesOf(p).Exists(LivedTogetherForTaxPurposes(p,_))
 	
-	# Tbool liveW =
-		# Fam.SpousesOf(p).Exists(Econ.LivesWith(_,p))
+Tbool LivedTogetherForTaxPurposes(Thing spouse, Thing deceasedSpouse) =
+	Econ.LivesWith(spouse,deceasedSpouse).AsOf(criticalDate)
+	
+	Tdate criticalDate =
+		set:
+		if IsDeceased(deceasedSpouse) -> DateOfDeath(deceasedSpouse)
+		else 2011-12-31  # endOfTaxYear			# defined how?
+
 
 # TODO: Gross income earned by an individual v. that attributable to a married person
 # >>What is {1}'s gross income?
