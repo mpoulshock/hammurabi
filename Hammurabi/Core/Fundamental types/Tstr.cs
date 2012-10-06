@@ -133,6 +133,15 @@ namespace Hammurabi
         }
 
         /// <summary>
+        /// Returns a Tstr in which the last value in a time period is the
+        /// final value.
+        /// </summary>
+        public Tstr PeriodEndVal(Tnum temporalPeriod)
+        {
+            return this.PeriodEndVal<Tstr>(temporalPeriod).Lean;
+        }
+
+        /// <summary>
         /// Returns true when two Tstrs are equal. 
         /// </summary>
         public static Tbool operator == (Tstr ts1, Tstr ts2)

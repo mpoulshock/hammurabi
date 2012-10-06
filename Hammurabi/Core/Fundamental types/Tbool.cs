@@ -118,6 +118,15 @@ namespace Hammurabi
         }
 
         /// <summary>
+        /// Returns a Tbool in which the last value in a time period is the
+        /// final value.
+        /// </summary>
+        public Tbool PeriodEndVal(Tnum temporalPeriod)
+        {
+            return this.PeriodEndVal<Tbool>(temporalPeriod).Lean;
+        }
+
+        /// <summary>
         /// Indicates whether the Tbool is always true.
         /// </summary>
         public Tbool IsAlwaysTrue()

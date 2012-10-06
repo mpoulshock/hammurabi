@@ -524,5 +524,63 @@ namespace Hammurabi
             
             return result;
         }
+
+        /// <summary>
+        /// Given a base Tvar and a period, returns a Tvar where the value of each period
+        /// is the value of the base Tvar at the end of each period.
+        /// </summary>
+        /// <remarks>
+        /// Example: marital status for tax purposes is the status as of the last day
+        /// of the tax year.
+        /// </remarks>
+        /// <example>
+        ///              Tvar =  <------1---|-----------2----------->
+        ///              Year =  <-2010-|-2011-|-2012-|-2013-|-2014->
+        ///    Tvar.PEV(Year) =  <--1---|----------2---------------->
+        /// </example>            
+        public T PeriodEndVal<T>(Tnum temporalPeriod) where T : Tvar
+        {
+            T result = (T)Auxiliary.ReturnProperTvar<T>();
+            result.AddState(this.TimeLine.Keys[0], this.TimeLine.Values[0]);
+            
+            // No need to handle uncertainty b/c this method just reuses the values in
+            // the base Tvar.
+
+            // Iterate backwards through the timeline of the base Tvar
+            for(int i=this.TimeLine.Count-1; i>0; i--)
+            {
+                // If the date is not lined up with a time point in temporalPeriod
+                DateTime theDate = Convert.ToDateTime(this.TimeLine.Keys[i]);
+                if (temporalPeriod.TimeLine.Keys.Contains(theDate))
+                {
+                    // If result does not already contain the date, add it to result
+                    if (!result.TimeLine.Keys.Contains(theDate))
+                    {
+                        result.AddState(theDate, this.TimeLine.Values[i]);
+                    }
+                }
+                else
+                {
+                    // Get the date in temporalPeriod that is immediately prior to theDate
+                    // (i.e. the beginning of that period)
+                    for (int j=temporalPeriod.TimeLine.Count-1; j>0; j--)
+                    {
+                        DateTime periodDate = temporalPeriod.TimeLine.Keys[j];
+                        if (periodDate < theDate)
+                        {
+                            // If result does not already contain the new change date, add it to result
+                            if (!result.TimeLine.Keys.Contains(periodDate))
+                            {
+                                result.AddState(periodDate, this.TimeLine.Values[i]);
+                            }
+
+                            break;
+                        }
+                    }
+                }
+            }
+            
+            return result;
+        }
     }    
 }

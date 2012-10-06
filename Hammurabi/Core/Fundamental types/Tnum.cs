@@ -193,6 +193,15 @@ namespace Hammurabi
             return this.Shift<Tnum>(offset, temporalPeriod);
         }
 
+        /// <summary>
+        /// Returns a Tnum in which the last value in a time period is the
+        /// final value.
+        /// </summary>
+        public Tnum PeriodEndVal(Tnum temporalPeriod)
+        {
+            return this.PeriodEndVal<Tnum>(temporalPeriod).Lean;
+        }
+
 
         // *************************************************************
         // All-time min / max

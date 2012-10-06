@@ -1,6 +1,6 @@
 # Namespace:    Hammurabi.Sandbox
 # Summary:      A host of random unit tests
-# Updated:      2012-09-21
+# Updated:      2012-10-05
 # Author:       Michael Poulshock
 
 
@@ -83,6 +83,34 @@ Test: 416036083
 - Thing p
 - TestMethod101(p) = true
 - Sandbox.AnotherMethod(p).TestOutput =?= "Time.DawnOf True "
+
+
+# PERIOD END VALUE
+
+Test: PeriodEndVal1
+- Thing p
+- IsMarried(p) = {Time.DawnOf: false; 2012-05-02: true}
+- Fam.IsMarried(p).PeriodEndVal(TheYear).TestOutput =?= "Time.DawnOf False 1/1/2012 12:00:00 AM True "
+
+Test: PeriodEndVal2
+- Thing p
+- IsMarried(p) = true
+- Fam.IsMarried(p).PeriodEndVal(TheYear).TestOutput =?= "Time.DawnOf True "
+
+Test: PeriodEndVal3
+- Thing p
+- IsDeceased(p) = Tbool(?)
+- Fam.IsDeceased(p).PeriodEndVal(TheYear).TestOutput =?= "Time.DawnOf Uncertain "
+
+Test: PeriodEndVal4
+- Thing p
+- IsMarried(p) = {Time.DawnOf: false; 2012-03-11: true; 2012-05-02: false}
+- Fam.IsMarried(p).PeriodEndVal(TheYear).TestOutput =?= "Time.DawnOf False "
+
+Test: PeriodEndVal5
+- Thing p
+- IsMarried(p) = {Time.DawnOf: false; 2012-01-01: true}
+- Fam.IsMarried(p).PeriodEndVal(TheYear).TestOutput =?= "Time.DawnOf False 1/1/2012 12:00:00 AM True "
 
 
 # USE OF HIGHER-ORDER FUNCTIONS

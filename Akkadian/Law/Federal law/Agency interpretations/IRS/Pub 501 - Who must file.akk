@@ -1,13 +1,10 @@
 # Namespace:    IRS.Pub501
 # Summary:      IRS Publication 501 - Who must file a tax return
-# Updated:      2012-10-04
+# Updated:      2012-10-05
 # Author:       Michael Poulshock
 
 ##
 TODO:
-- Marital status on last day of tax year
-- Age on last day of tax year
-- Last day of tax year, temporal
 - MFJ gross income problem 
 - Gross income, defined
 ##
@@ -124,11 +121,11 @@ Tbool MustFilePerTable2Married(Thing p) =
 				GrossIncome(p) > Max(3250, Min(EarnedIncome(p), 5500) + 2600)	
 				
 Tbool Over65OrBlind(Thing p) =
-	Age(p) >= 65 |
+	TaxAge(p) >= 65 |
 	IsBlind(p)
 
 Tbool Over65AndBlind(Thing p) =
-	Age(p) >= 65 &
+	TaxAge(p) >= 65 &
 	IsBlind(p)
 
 Tbool MeetsSpouseItemizingTest(Thing p) =
@@ -157,8 +154,7 @@ Tbool MustFilePerTable3(Thing p) =
 	TboolIn HadHSADistribution(p) |
 	NetEarningsFromSelfEmployment(p) >= 400 |
 	# >>Does/did {1} have over 108.28 in wages from a qualifying church-related organization?
-	TboolIn HadThresholdChurchWages(p) |
-	Stub()
+	TboolIn HadThresholdChurchWages(p)
 
 # >>What are/were {1}'s net earnings from self-employment?
 TnumIn NetEarningsFromSelfEmployment(Thing p)
@@ -170,26 +166,37 @@ TnumIn NetEarningsFromSelfEmployment(Thing p)
 Tbool DeceasedPersonMustFile(Thing p) =
 	CoreMustFileTest(p).AsOf(DateOfDeath(p))
 	
-# Age on the last day of the calendar year
+# Age on the last day of the tax year
 Tnum TaxAge(Thing p) =
-	Age(p)	# Not correct
+	age.PeriodEndVal(year)
+	
+	Tnum year = USC.Tit26.Sec441.TaxYear(p)
 
+	Tnum age = Time.IntervalsSince(dob, dob.AddYears(110), Time.IntervalType.Year)
+		
+	Tdate dob = DoB(p).AddDays(-1)	# Jan. 1 is a freebie
+	
 # Marital status for tax purposes (determined on last day of tax year)
 Tstr MaritalStatusForTaxPurposes(Thing p) =
-	Stub()
+	Fam.MaritalStatus(p).PeriodEndVal(year)
+	
+	Tnum year = USC.Tit26.Sec441.TaxYear(p)
 	
 # Lived with spouse for tax purposes
 Tbool LivedWithSpouseForTaxPurposes(Thing p) =
 	Fam.SpousesOf(p).Exists(LivedTogetherForTaxPurposes(p,_))
 	
 Tbool LivedTogetherForTaxPurposes(Thing spouse, Thing deceasedSpouse) =
-	Econ.LivesWith(spouse,deceasedSpouse).AsOf(criticalDate)
+	...
+		IsDeceased(deceasedSpouse) &
+		Econ.LivesWith(spouse,deceasedSpouse).AsOf(death) &
+		TheTime.IsBefore(death.AddYears(1)).PeriodEndVal(year)	# ugly, but prevents eternal truth
+	|
+	Econ.LivesWith(spouse,deceasedSpouse).PeriodEndVal(year)
 	
-	Tdate criticalDate =
-		set:
-		if IsDeceased(deceasedSpouse) -> DateOfDeath(deceasedSpouse)
-		else 2011-12-31  # endOfTaxYear			# defined how?
-
+	Tdate death = DateOfDeath(deceasedSpouse)
+	
+	Tnum year = USC.Tit26.Sec441.TaxYear(spouse)
 
 # TODO: Gross income earned by an individual v. that attributable to a married person
 # >>What is {1}'s gross income?
@@ -214,6 +221,36 @@ TboolIn HasIncomeFromUSPossession(Thing p)
 
 
 # UNIT TESTS
+
+Test: LivedTogether1
+- Things mary, tony
+- IsDeceased(tony) = true
+- DateOfDeath(tony) = 2012-05-01
+- LivesWith(tony,mary) = {Time.DawnOf: true; 2012-05-02: false}
+- IRS.Pub501.LivedTogetherForTaxPurposes(mary, tony).TestOutput =?= "Time.DawnOf True 1/1/2013 12:00:00 AM False "
+
+Test: LivedTogether2
+- Things mary, tony
+- IsDeceased(tony) = false
+- LivesWith(tony,mary) = {Time.DawnOf: true; 2012-05-02: false}
+- IRS.Pub501.LivedTogetherForTaxPurposes(mary, tony).TestOutput =?= "Time.DawnOf True 1/1/2012 12:00:00 AM False "
+
+Test: TaxAge1
+- Thing mary
+- DoB(mary) = 1947-01-02
+- IsBlind(mary) = false
+- IRS.Pub501.Over65OrBlind(mary).TestOutput =?= "Time.DawnOf False 1/1/2012 12:00:00 AM True 1/1/2057 12:00:00 AM False "
+
+Test: TaxAge2
+- Thing mary
+- DoB(mary) = 1947-01-01
+- IsBlind(mary) = false
+- IRS.Pub501.Over65OrBlind(mary).TestOutput =?= "Time.DawnOf False 1/1/2011 12:00:00 AM True 1/1/2056 12:00:00 AM False "
+
+Test: TaxMaritalStatus
+- Thing jim
+- MaritalStatus(jim) = {Time.DawnOf: "Single"; 2012-05-02: "Married"}
+- IRS.Pub501.MaritalStatusForTaxPurposes(jim).TestOutput =?= "Time.DawnOf Single 1/1/2012 12:00:00 AM Married "
 
 Test: 738117373
 - Thing liam

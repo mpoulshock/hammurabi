@@ -193,6 +193,15 @@ namespace Hammurabi
         }
 
         /// <summary>
+        /// Returns a Tset in which the last value in a time period is the
+        /// final value.
+        /// </summary>
+        public Tset PeriodEndVal(Tnum temporalPeriod)
+        {
+            return this.PeriodEndVal<Tset>(temporalPeriod).Lean;
+        }
+
+        /// <summary>
         /// Displays a timeline indicating the members of the set at various
         /// points in time.
         /// </summary>

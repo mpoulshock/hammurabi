@@ -159,6 +159,15 @@ namespace Hammurabi
             return this.Shift<Tdate>(offset, temporalPeriod);
         }
 
+        /// <summary>
+        /// Returns a Tdate in which the last value in a time period is the
+        /// final value.
+        /// </summary>
+        public Tdate PeriodEndVal(Tnum temporalPeriod)
+        {
+            return this.PeriodEndVal<Tdate>(temporalPeriod).Lean;
+        }
+
 
         // ********************************************************************
         // AddTimeInterval
