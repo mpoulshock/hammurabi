@@ -1,26 +1,30 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="c:\Users\Michael\Documents\GitHub\hammurabi\Unit tests - Hammurabi core\Unit tests\Test - set - higher order.cs">
+    <Files>
+      <File FileName="c:\Users\Michael\Documents\GitHub\hammurabi\Unit tests - Hammurabi core\Unit tests\Test - set - higher order.cs" Line="111" Column="30" />
+    </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
-          <Node name="Hammurabi" expanded="True" selected="True">
-            <Node name="Core" expanded="True" />
-          </Node>
           <Node name="HammurabiInteractive" expanded="True">
+            <Node name="References" expanded="True" />
             <Node name="Interview" expanded="True" />
           </Node>
-          <Node name="Unit tests - Hammurabi core" expanded="True" />
+          <Node name="Unit tests - Hammurabi core" expanded="True" selected="True">
+            <Node name="References" expanded="True" />
+            <Node name="Unit tests" expanded="True" />
+          </Node>
         </State>
       </Pad>
       <Pad Id="ClassPad">
         <State selected="True" />
       </Pad>
-      <Pad Id="MonoDevelop.NUnit.TestPad">
-        <State expanded="True" selected="True" />
-      </Pad>
       <Pad Id="MonoDevelop.Debugger.WatchPad">
         <State />
+      </Pad>
+      <Pad Id="MonoDevelop.NUnit.TestPad">
+        <State expanded="True" selected="True" />
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>

@@ -9,7 +9,6 @@
     <OutputType>Library</OutputType>
     <RootNamespace>UnittestsHammurabicore</RootNamespace>
     <AssemblyName>Unit tests - Hammurabi core</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
@@ -40,6 +39,9 @@
     <Reference Include="nunit.framework">
       <HintPath>bin\Debug\nunit.framework.dll</HintPath>
     </Reference>
+    <Reference Include="Hammurabi">
+      <HintPath>..\Hammurabi\bin\Debug\Hammurabi.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
@@ -67,12 +69,6 @@
     <Compile Include="Unit tests\Test - time - continuously true.cs" />
     <Compile Include="Unit tests\Test - elapsed time - running.cs" />
     <Compile Include="Unit tests\Test - elapsed time - sliding window.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Hammurabi\Hammurabi.csproj">
-      <Project>{4397E5BA-44D6-4937-B66A-ED7CE580CE69}</Project>
-      <Name>Hammurabi</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
