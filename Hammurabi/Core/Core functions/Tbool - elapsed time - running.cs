@@ -28,6 +28,22 @@ namespace Hammurabi
         /// Provides a running count of how many years a Tbool has been true.  
         /// The count carries over from one true interval to the next.
         /// </summary>
+        /// <remarks>
+        /// This method has much better performance than RunningElapsedYears, which
+        /// should be used only if fractional years are relevant.
+        /// </remarks>            
+        public Tnum RunningElapsedWholeYears
+        {
+            get
+            {
+                return RunningElapsedTime(Time.IntervalType.Year);
+            }
+        }
+
+        /// <summary>
+        /// Provides a running count of how many years a Tbool has been true.  
+        /// The count carries over from one true interval to the next.
+        /// </summary>
         public Tnum RunningElapsedYears
         {
             get

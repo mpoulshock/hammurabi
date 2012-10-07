@@ -5,9 +5,7 @@
       <Pad Id="ProjectPad">
         <State expanded="True">
           <Node name="Hammurabi" expanded="True" selected="True">
-            <Node name="Core" expanded="True">
-              <Node name="Fundamental types" expanded="True" />
-            </Node>
+            <Node name="Core" expanded="True" />
           </Node>
           <Node name="HammurabiInteractive" expanded="True">
             <Node name="Interview" expanded="True" />

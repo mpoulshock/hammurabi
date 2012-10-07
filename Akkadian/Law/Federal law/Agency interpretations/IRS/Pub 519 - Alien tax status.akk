@@ -1,10 +1,10 @@
 # Namespace:    IRS.Pub519
 # Summary:      IRS Publication 519 - Alien Tax Status
-# Updated:      2012-10-01
+# Updated:      2012-10-06
 # Author:       Michael Poulshock
 
-# Determines a person's alien tax status: resident alien or
-# nonresident alien.  Resident aliens are generally taxed like 
+# Determines a person's alien tax status: resident alien, nonresident 
+# alien, or dual-status alien.  Resident aliens are generally taxed like 
 # U.S. citizens.
 
 
@@ -48,6 +48,7 @@ Tbool MeetsGreenCardTest(Thing p) =
 	
 # SUBSTANTIAL PRESENCE TEST
 
+# Substantial presence
 Tbool MeetsSubstantialPresenceTest(Thing p) =
 	MeetsBasicSubstantialPresenceTest(p) &
 	! HasCloserConnectionToForeignCountry(p)
@@ -72,12 +73,14 @@ Tnum ThreeYearWeightedTotal(Thing p) =
 
 Tnum DaysPresentPerYear(Thing p) =
 	PhysicallyPresent(p).TotalElapsedDaysPer(TheYear)
-		
+
+# Physical presence
 TboolIn PhysicallyPresent(Thing p) =
 	PresentInUS(p) &
 	! PresenceExempt(p) &
 	! ExemptIndividual(p)
 	
+# Exemptions
 Tbool PresenceExempt(Thing p) =
 	CommuteToUSRegularlyFromCanadaOrMexico(p) |
 	InTransitThroughUS(p) |
@@ -89,7 +92,8 @@ Tbool ExemptIndividual(Thing p) =
 	ExemptTeacherOrTrainee(p) |
 	ExemptStudent(p) |
 	ProfessionalAthleteTempInUSForCharity(p)
-	
+
+# Foreign official	
 Tbool ForeignGovtRelatedBusiness(Thing p) =
 	visa == "A-1" |
 	visa == "A-2" |
@@ -103,19 +107,80 @@ Tbool ForeignGovtRelatedBusiness(Thing p) =
 	Tstr visa =
 		Imm.NonimmigrantVisaType(p)
 	
+# Teacher/trainee
 Tbool ExemptTeacherOrTrainee(Thing p) =
-	Stub()
+	onTeacherTraineeVisa &
+	...
+		! twoYearTest |
+		threeYearTest
+		
+	# On J/Q visa for any part of 2 of 6 preceding calendar years
+	Tbool twoYearTest =
+		yearsInPrior6Years >= 2
 
+	Tbool threeYearTest =
+		yearsInPrior6Years <= 3 &
+		ForeignEmployerPaidAllIncome(p).AlwaysPer(TheYear) &
+		foreignEmpPaidTecherComp.AlwaysPer(TheYear).CountPastNIntervals(TheYear,6) == 6
+		
+	Tnum yearsInPrior6Years = onTeacherTraineeVisa.EverPer(TheYear).CountPastNIntervals(TheYear,6)
+	
+	Tbool foreignEmpPaidTecherComp =
+		if onTeacherTraineeVisa then ForeignEmployerPaidAllIncome(p)
+	
+	Tbool onTeacherTraineeVisa =
+		visa == "J-1" |
+		visa == "J-2" |
+		visa == "Q-1" |
+		visa == "Q-2" |
+		visa == "Q-3" 
+	
+	Tstr visa =
+		Imm.NonimmigrantVisaType(p)
+
+# Students
 Tbool ExemptStudent(Thing p) =
-	Stub()
+	onStudentVisa &
+	if fiveYearTest then exceptionTo5Yr
+	
+	Tbool exceptionTo5Yr =
+		! IntendToResidePermanentlyInUS(p) &
+		Imm.CompliedWithTermsOfVisa(p)
+	
+	Tbool fiveYearTest = onStudentVisa.EverPer(TheYear).RunningElapsedWholeYears >= 5
+	
+	Tbool onStudentVisa =
+		visa == "F-1" |
+		visa == "F-2" |
+		visa == "F-3" |
+		visa == "J-1" |
+		visa == "J-2" |
+		visa == "M-1" |
+		visa == "M-2" |
+		visa == "M-3" |
+		visa == "Q-1" |
+		visa == "Q-2" |
+		visa == "Q-3"
+	
+	Tstr visa =
+		Imm.NonimmigrantVisaType(p)
 
-	
-# Closer connection	
+# Closer connection (this rule could be more detailed...)
 Tbool HasCloserConnectionToForeignCountry(Thing p) =
-	Stub()
+	DaysPresentPerYear(p) < 183 &
+	(closerConnections.Count == 1).EverPer(TheYear) &
+	(closerConnections.Count < 2).AlwaysPer(TheYear)
 	
+	Tset closerConnections = TaxHomeCountries(p).Filter(CloserToForeignCountry(p,_))
+	
+Tbool CloserToForeignCountry(Thing person, Thing country) =
+	CloserConnectionThanWithUS(person, country) &
+	country.Id <> "United States"
+
 	
 # DUAL-STATUS
+# This is when a person is a resident and nonresident in the same year (e.g.
+# in their first and last year living in the U.S.)
 
 Tbool ChoosesResidentAlienStatus(Thing p) =
 	IsDualStatusAlien(p) &
@@ -125,6 +190,12 @@ Tbool ChoosesResidentAlienStatus(Thing p) =
 Tbool IsDualStatusAlien(Thing p) =
 	Stub()
 
+Tdate ResidencyStartingDate(Thing p) =
+	Stub()
+	
+Tdate ResidencyTerminationDate(Thing p) =
+	Stub()
+	
 
 # NONRESIDENT SPOUSE TREATED AS RESIDENT
 
@@ -176,19 +247,77 @@ TboolIn InUSAsCrewOnForeignVessel(Thing p)
 # >>Is/was {1} unable to leave the U.S. due to a medical problem that arose while you were in the U.S.?
 TboolIn UnableToLeaveUSDueToMedicalProblem(Thing p)
 
+# >>Does/did a foreign employer pay all of {1}'s compensation?
+TboolIn ForeignEmployerPaidAllIncome(Thing p)
+
+# >>Does/did {1} intend to reside permanently in the U.S.?
+TboolIn IntendToResidePermanentlyInUS(Thing p)
+
 # >>Is/was {1} a professional athlete temporarily in the U.S. to compete in a charitable sports event?
 TboolIn ProfessionalAthleteTempInUSForCharity(Thing p)
-	
-# >>What countries are/were {1}'s foreign tax homes?
-TsetIn ForeignTaxHomes(Thing p)
+
+# >>Does {1} have a 'closer connection' with {2} than with the U.S.?
+TboolIn CloserConnectionThanWithUS(Thing person, Thing country)	
+
+# >>In what countries does {1} have a tax home? (A tax home is a person's main place of business or employment, regardless of where they live.)
+TsetIn TaxHomeCountries(Thing p)
 
 # >>Does {1} choose to be treated as a resident alien for tax purposes?
 TboolIn ChoosesToBeTreatedAsResidentAlien(Thing p)
 
 
-
-
 # UNIT TESTS
+
+Test: 655270615
+- Thing marty
+- Things Japan,Russia
+- TaxHomeCountries(marty) = [[Japan, Russia]]
+- CloserConnectionThanWithUS(marty,Japan) = false
+- CloserConnectionThanWithUS(marty,Russia) = true
+- CountryLocation(marty) = "Russia"
+- IRS.Pub519.HasCloserConnectionToForeignCountry(marty).TestOutput =?= "Time.DawnOf True "
+
+Test: 47588400
+- Thing marty
+- Things Japan
+- TaxHomeCountries(marty) = [[Japan]]
+- CloserConnectionThanWithUS(marty,Japan) = true
+- CountryLocation(marty) = "Japan"
+- IRS.Pub519.HasCloserConnectionToForeignCountry(marty).TestOutput =?= "Time.DawnOf True "
+
+Test: Student1
+- Thing jamela
+- NonimmigrantVisaType(jamela) = {Time.DawnOf: "None"; 2002-05-02: "J-1"}
+- CompliedWithTermsOfVisa(jamela) = true
+- IntendToResidePermanentlyInUS(jamela) = false
+- IRS.Pub519.ExemptStudent(jamela).AsOf(2012-12-31).Out =?= true
+
+Test: Student2
+- Thing jamela
+- NonimmigrantVisaType(jamela) = {Time.DawnOf: "None"; 2011-05-02: "J-1"}
+- IRS.Pub519.ExemptStudent(jamela).AsOf(2012-12-31).Out =?= true
+
+Test: Teacher1
+- Thing marge
+- NonimmigrantVisaType(marge) = {Time.DawnOf: "None"; 2012-05-02: "J-1"}
+- ForeignEmployerPaidAllIncome(marge) = false
+- IRS.Pub519.ExemptTeacherOrTrainee(marge).AsOf(2012-12-31).Out =?= true
+	
+Test: Teacher2
+- Thing marge
+- NonimmigrantVisaType(marge) = {Time.DawnOf: "None"; 2008-01-01: "J-1"}
+- IRS.Pub519.ExemptTeacherOrTrainee(marge).AsOf(2012-12-31).Out =?= false
+
+Test: Teacher3
+- Thing marge
+- NonimmigrantVisaType(marge) = {Time.DawnOf: "None"; 2010-05-01: "J-1"}
+- ForeignEmployerPaidAllIncome(marge) = {Time.DawnOf: false; 2010-05-01: true}
+- IRS.Pub519.ExemptTeacherOrTrainee(marge).AsOf(2012-12-31).Out =?= true
+	
+Test: Teacher4
+- Thing marge
+- NonimmigrantVisaType(marge) = {Time.DawnOf: "None"}
+- IRS.Pub519.ExemptTeacherOrTrainee(marge).AsOf(2012-12-31).Out =?= false
 
 Test: SubsPresence_Pub519_Page4_Example1
 - Thing jed
@@ -225,5 +354,10 @@ Test: 397888975
 - USImmigrationStatus(sherry) = "U.S. citizen"
 - ChoosesToBeTreatedAsResidentAlien(jim) = true
 - IRS.Pub519.NonresidentSpousalElection(jim).TestOutput =?= "Time.DawnOf True "
+
+
+
+
+
 
 
