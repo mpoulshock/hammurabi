@@ -1,13 +1,17 @@
 # Citation:     26 U.S.C. 2 (2012)
 # Namespace:    USC.Tit26.Sec2
 # Summary:      Filing status definitions under the Internal Revenue Code.
-# Updated:      2012-05-29
+# Updated:      2012-10-08
 # Author:       Michael Poulshock
 
-
+	
 # Status is asserted individually; for MFJ, see 26 USC 6013.
-# >>What is {1}'s federal tax filing status? (Options: Single, Married filing jointly, Married filing separately, Head of household, Qualifying widow(er))
+# This rule merely does function name transformation.
 Tstr FilingStatus(Thing p) =
-    TstrIn FedTaxFilingStatus(p)
+    FedTaxFilingStatus(p)
+	
+# >>What is {1}'s federal tax filing status? (Options: Single, Married filing jointly, Married filing separately, Head of household, Qualifying widow(er))
+TstrIn? FedTaxFilingStatus(Thing p) =
+	IRS.Pub501.FilingStatusInferred(p)
 	
 	

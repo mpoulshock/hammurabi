@@ -1,9 +1,6 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="c:\Users\Michael\Documents\GitHub\hammurabi\Unit tests - Hammurabi core\Unit tests\Test - set - higher order.cs">
-    <Files>
-      <File FileName="c:\Users\Michael\Documents\GitHub\hammurabi\Unit tests - Hammurabi core\Unit tests\Test - set - higher order.cs" Line="111" Column="30" />
-    </Files>
+  <MonoDevelop.Ide.Workbench>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
