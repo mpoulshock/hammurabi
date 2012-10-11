@@ -7,6 +7,8 @@
 # alien, or dual-status alien.  Resident aliens are generally taxed like 
 # U.S. citizens.
 
+# TODO: TboolIn? AlienTaxStatus(Thing p) = 
+
 
 # RESIDENT V. NONRESIDENT ALIENS
 

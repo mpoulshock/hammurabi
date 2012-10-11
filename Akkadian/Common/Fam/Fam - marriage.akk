@@ -51,6 +51,7 @@ TstrIn MaritalStatus(Thing p)
 
 # AreMarried(1,2) assumes MaritalStatus(1) = "Married"
 # AreMarried(1,2) assumes MaritalStatus(2) = "Married"
+IsMarried(1) assumes MaritalStatus(1) = "Married"
 
 
 # GAY MARRIAGE
@@ -104,13 +105,12 @@ TboolIn HasMentalCapacityToMarry(Thing p)
 
 # UNIT TESTS
 
-Test: 482400415
-- Things t1, t2
+Test: IsMarried0
+- Things t1, jon
 - IsMarried(t1) = Tbool(?)
 - MaritalStatus(t1) = Tstr(?)
-- Things jon
 - SpousesOf(t1) = [[jon]]
-- Hammurabi.Fam.IsMarried(t1).TestOutput =?= "Time.DawnOf True "
+- Hammurabi.Fam.IsMarried(t1).Out =?= true
 
 Test: IsMarried1a
 - Thing p
@@ -155,6 +155,11 @@ Test: IsMarried7
 - Thing q
 - SpousesOf(p) = [[q]]
 - Fam.IsMarried(q).Out =?= true
+
+Test: IsMarried8
+- Thing p
+- MaritalStatus(p) = "Single"
+- Fam.IsMarried(p).Out =?= false
 
 Test: FamRel1
 - Thing p

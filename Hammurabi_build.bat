@@ -9,6 +9,7 @@ AkkadianCompiler.exe
 :: Note: You may have to change the file path to the MonoDevelop bin folder, 
 :: depending on where it is on your machine.
 cd C:\Program Files\MonoDevelop\bin
+::  cd C:\Program Files (x86)\MonoDevelop\bin
 mdtool build --f --buildfile:"%~dp0\Hammurabi\Hammurabi.csproj"
 
 :: Build Hammurabi Interactive

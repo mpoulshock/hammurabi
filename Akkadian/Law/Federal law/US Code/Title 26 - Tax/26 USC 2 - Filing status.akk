@@ -14,4 +14,6 @@ Tstr FilingStatus(Thing p) =
 TstrIn? FedTaxFilingStatus(Thing p) =
 	IRS.Pub501.FilingStatusInferred(p)
 	
-	
+FedTaxFilingStatus(1) = "Married filing jointly" assumes IsMarried(1)
+FedTaxFilingStatus(1) = "Married filing separately" assumes IsMarried(1)
+

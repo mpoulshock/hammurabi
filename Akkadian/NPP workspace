@@ -92,6 +92,7 @@
                 <Folder name="Agency interpretations">
                     <Folder name="IRS">
                         <File name="Law\Federal law\Agency interpretations\IRS\Pub 501 - Filing status.akk" />
+                        <File name="Law\Federal law\Agency interpretations\IRS\Pub 501 - Standard deduction.akk" />
                         <File name="Law\Federal law\Agency interpretations\IRS\Pub 501 - Who must file.akk" />
                         <File name="Law\Federal law\Agency interpretations\IRS\Pub 519 - Alien tax status.akk" />
                         <File name="Law\Federal law\Agency interpretations\IRS\Pub 901 - Tax treaties.akk" />

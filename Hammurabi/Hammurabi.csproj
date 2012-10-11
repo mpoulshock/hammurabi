@@ -154,6 +154,7 @@
     <Compile Include="Generated source\Pub 901 - Tax treaties.cs" />
     <Compile Include="Generated source\Pub 501 - Who must file.cs" />
     <Compile Include="Generated source\Pub 501 - Filing status.cs" />
+    <Compile Include="Generated source\Pub 501 - Standard deduction.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

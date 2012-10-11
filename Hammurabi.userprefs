@@ -4,14 +4,11 @@
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
-          <Node name="HammurabiInteractive" expanded="True">
-            <Node name="References" expanded="True" />
-            <Node name="Interview" expanded="True" />
+          <Node name="Hammurabi" expanded="True" selected="True">
+            <Node name="Generated source" expanded="True" />
           </Node>
-          <Node name="Unit tests - Hammurabi core" expanded="True" selected="True">
-            <Node name="References" expanded="True" />
-            <Node name="Unit tests" expanded="True" />
-          </Node>
+          <Node name="HammurabiInteractive" expanded="True" />
+          <Node name="Unit tests - Hammurabi core" expanded="True" />
         </State>
       </Pad>
       <Pad Id="ClassPad">
