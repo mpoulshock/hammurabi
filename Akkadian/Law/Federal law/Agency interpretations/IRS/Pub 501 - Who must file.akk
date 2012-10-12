@@ -3,11 +3,6 @@
 # Updated:      2012-10-05
 # Author:       Michael Poulshock
 
-##
-TODO:
-- MFJ gross income problem 
-- Gross income, defined
-##
 
 # RULES FOR TAX YEAR 2011
 
@@ -34,7 +29,7 @@ Tbool CoreMustFileTest(Thing p) =
 
 # Table 1 (page 3)
 Tbool MustFilePerTable1(Thing p) =
-	Table1Applies(status, TaxAge(p), GrossIncome(p), SpousesUnder65(p), LivedWithSpouseForTaxPurposes(p))
+	Table1Applies(status, TaxAge(p), GrossIncomeForFS(p), SpousesUnder65(p), LivedWithSpouseForTaxPurposes(p))
 		
 	Tstr status = USC.Tit26.Sec2.FilingStatus(p) 
 
@@ -55,10 +50,8 @@ Tbool Table1Applies(Tstr status, Tnum age, Tnum grossIncome, Tnum spousesUnder65
 
 # Number of people (person/spouse) under age 65	
 Tnum SpousesUnder65(Thing p) =
-	theSpouses.Filter(TaxAge(_) < 65).Count
-	
-	Tset theSpouses =
-		Fam.SpousesOf(p) + p
+	Fam.SelfAndSpouseIfMarried(p).Filter(TaxAge(_) < 65).Count
+
 
 # TABLE 2 - DEPENDENTS
 		
@@ -75,22 +68,22 @@ Tbool MustFilePerTable2Single(Thing p) =
 			! Over65OrBlind(p) &
 			...
 				UnearnedIncome(p) > 950 |
-				EarnedIncome(p) > 5800 |
-				GrossIncome(p) > Max(950, Min(EarnedIncome(p), 5500) + 300)
+				EarnedIncomeForFS(p) > 5800 |
+				GrossIncomeForFS(p) > Max(950, Min(EarnedIncomeForFS(p), 5500) + 300)
 		|
 		...
 			Over65OrBlind(p) & ! Over65AndBlind(p) & 	# either 65+ or blind, but not both
 			...
 				UnearnedIncome(p) > 2400 |
-				EarnedIncome(p) > 7250 |
-				GrossIncome(p) > Max(2400, Min(EarnedIncome(p), 5500) + 1750)
+				EarnedIncomeForFS(p) > 7250 |
+				GrossIncomeForFS(p) > Max(2400, Min(EarnedIncomeForFS(p), 5500) + 1750)
 		|
 		...
 			Over65AndBlind(p) &
 			...
 				UnearnedIncome(p) > 3850 |
-				EarnedIncome(p) > 8700 |
-				GrossIncome(p) > Max(3850, Min(EarnedIncome(p), 5500) + 3200)				
+				EarnedIncomeForFS(p) > 8700 |
+				GrossIncomeForFS(p) > Max(3850, Min(EarnedIncomeForFS(p), 5500) + 3200)				
 
 # Table 2 - married dependents
 Tbool MustFilePerTable2Married(Thing p) =
@@ -101,24 +94,24 @@ Tbool MustFilePerTable2Married(Thing p) =
 			...
 				MeetsSpouseItemizingTest(p) |
 				UnearnedIncome(p) > 950 |
-				EarnedIncome(p) > 5800 |
-				GrossIncome(p) > Max(950, Min(EarnedIncome(p), 5500) + 300)
+				EarnedIncomeForFS(p) > 5800 |
+				GrossIncomeForFS(p) > Max(950, Min(EarnedIncomeForFS(p), 5500) + 300)
 		|
 		...
 			Over65OrBlind(p) & ! Over65AndBlind(p) & 	# either 65+ or blind, but not both
 			...
 				MeetsSpouseItemizingTest(p) |
 				UnearnedIncome(p) > 2100 |
-				EarnedIncome(p) > 6950 |
-				GrossIncome(p) > Max(2100, Min(EarnedIncome(p), 5500) + 1450)
+				EarnedIncomeForFS(p) > 6950 |
+				GrossIncomeForFS(p) > Max(2100, Min(EarnedIncomeForFS(p), 5500) + 1450)
 		|
 		...
 			Over65AndBlind(p) &
 			...
 				MeetsSpouseItemizingTest(p) |
 				UnearnedIncome(p) > 3250 |
-				EarnedIncome(p) > 8100 |
-				GrossIncome(p) > Max(3250, Min(EarnedIncome(p), 5500) + 2600)	
+				EarnedIncomeForFS(p) > 8100 |
+				GrossIncomeForFS(p) > Max(3250, Min(EarnedIncomeForFS(p), 5500) + 2600)	
 				
 Tbool Over65OrBlind(Thing p) =
 	TaxAge(p) >= 65 |
@@ -129,7 +122,7 @@ Tbool Over65AndBlind(Thing p) =
 	IsBlind(p)
 
 Tbool MeetsSpouseItemizingTest(Thing p) =
-	GrossIncome(p) > 5 & 
+	GrossIncomeForFS(p) > 5 & 
 	USC.Tit26.Sec2.FilingStatus(p) == "Married filing separately" &
 	Fam.SpousesOf(p).Exists(ItemizesDeductions(_))
 
@@ -189,29 +182,17 @@ Tbool LivedWithSpouseForTaxPurposes(Thing p) =
 Tbool LivedTogetherForTaxPurposes(Thing spouse, Thing deceasedSpouse) =
 	...
 		IsDeceased(deceasedSpouse) &
-		Econ.LivesWith(spouse,deceasedSpouse).AsOf(death) &
-		TheTime.IsBefore(death.AddYears(1)).PeriodEndVal(year)	# ugly, but prevents eternal truth
+		Econ.LivesWith(spouse,deceasedSpouse).AsOf(DateOfDeath(deceasedSpouse)) &
+		TheTime.IsBefore(DateOfDeath(deceasedSpouse).AddYears(1)).PeriodEndVal(year)	# ugly, but prevents eternal truth
 	|
 	Econ.LivesWith(spouse,deceasedSpouse).PeriodEndVal(year)
 	
-	Tdate death = DateOfDeath(deceasedSpouse)
+	# Tdate death = DateOfDeath(deceasedSpouse)
 	
 	Tnum year = USC.Tit26.Sec441.TaxYear(spouse)
 
-# TODO: Gross income earned by an individual v. that attributable to a married person
-# >>What is {1}'s gross income?
-TnumIn? GrossIncome(Thing p) =
-	EarnedIncome(p) +
-	UnearnedIncome(p)
-
-# >>What is {1}'s earned income?
-TnumIn EarnedIncome(Thing p)	
-# = salaries, wages, tips, professional fees, taxable scholarship/fellowship grants (see Table 2)
-
-# >>What is {1}'s unearned income?
-TnumIn UnearnedIncome(Thing p)
-# = taxable interest, ordinary dividends, capital gain distributions, unemployment compensation, taxable
-# social security benefits, pensions, annuities, and distributions of unearned income from a trust (see Table 2)
+	
+# INPUTS
 
 # >>Does/did {1} itemize deductions?
 TboolIn ItemizesDeductions(Thing p)
@@ -221,6 +202,18 @@ TboolIn HasIncomeFromUSPossession(Thing p)
 
 
 # UNIT TESTS
+
+Test: 878841534
+- Thing ling
+- FedTaxFilingStatus(ling) = "Married filing jointly"
+- DoB(ling) = 1910-01-01
+- GrossIncomeForFS(ling) = 21000
+- Things bing
+- SpousesOf(ling) = [[bing]]
+- DoB(bing) = 1910-01-01
+- IsDeceased(bing) = false
+- LivesWith(bing,ling) = true
+- IRS.Pub501.MustFilePerTable1(ling).TestOutput =?= "Time.DawnOf True 1/1/1974 12:00:00 AM False 1/1/2019 12:00:00 AM True "
 
 Test: LivedTogether1
 - Things mary, tony
@@ -265,33 +258,24 @@ Test: 417756183
 - Thing ling
 - FedTaxFilingStatus(ling) = "Married filing jointly"
 - DoB(ling) = 1975-01-01
-- GrossIncome(ling) = 19001
+- GrossIncomeForFS(ling) = 19001
 - Things john
 - SpousesOf(ling) = [[john]]
 - DoB(john) = 1981-01-01
 - IRS.Pub501.MustFilePerTable1(ling).TestOutput =?= "Time.DawnOf True 1/1/2040 12:00:00 AM False 1/1/2091 12:00:00 AM True "
 
-Test: 363173663
-- Thing ling
-- FedTaxFilingStatus(ling) = "Married filing jointly"
-- DoB(ling) = 1910-01-01
-- GrossIncome(ling) = 21000
-- Things bing
-- SpousesOf(ling) = [[bing]]
-- DoB(bing) = 1910-01-01
-- IRS.Pub501.MustFilePerTable1(ling).TestOutput =?= "Time.DawnOf True 1/1/1975 12:00:00 AM False 1/1/2020 12:00:00 AM True "
-
 Test: 189988938
 - Thing jam
 - FedTaxFilingStatus(jam) = "Qualifying widow(er)"
 - DoB(jam) = 1980-02-02
-- GrossIncome(jam) = 16451
+- GrossIncomeForFS(jam) = 16451
 - IRS.Pub501.MustFilePerTable1(jam).TestOutput =?= "Time.DawnOf True "
 
 Test: 844051182
 - Thing lonnie
 - DoB(lonnie) = 1980-01-01
 - FedTaxFilingStatus(lonnie) = "Married filing separately"
-- GrossIncome(lonnie) = 9
+- GrossIncomeForFS(lonnie) = 9
 - IRS.Pub501.MustFilePerTable1(lonnie).TestOutput =?= "Time.DawnOf False "
+
 

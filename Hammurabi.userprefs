@@ -4,8 +4,8 @@
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
-          <Node name="Hammurabi" expanded="True" selected="True">
-            <Node name="Generated source" expanded="True" />
+          <Node name="Hammurabi" expanded="True">
+            <Node name="References" selected="True" />
           </Node>
           <Node name="HammurabiInteractive" expanded="True" />
           <Node name="Unit tests - Hammurabi core" expanded="True" />

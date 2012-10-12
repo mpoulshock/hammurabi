@@ -2,16 +2,10 @@
 # Summary:      IRS Publication 501 - Standard deduction
 # Updated:      2012-10-09
 # Author:       Michael Poulshock
+# Notes:		Decedents should be treated as if they were alive
 
 
 # RULES FOR TAX YEAR 2011
-
-##
-TODO:
-- Decedents
-- Earned income for standard deduction purposes
-- MFJ questions
-##
 
 # STANDARD DEDUCTION V. ITEMIZING DEDUCTIONS
 
@@ -25,7 +19,7 @@ Tbool IneligibleForStandardDeduction(Thing p) =
 		USC.Tit26.Sec2.FilingStatus(p) == "Married filing separately" &
 		MeetsSpouseItemizingTest(p)
 	|
-	FilingReturnForShortTaxYear(p) |		# MFJ?
+	FilingReturnForShortTaxYear(p) |	
 	IRS.Pub519.IsNonresidentAlien(p) |
 	IRS.Pub519.IsDualStatusAlien(p)
 		
@@ -116,21 +110,15 @@ Tnum Table8Amount(Thing p) =
 	
 	Tnum line5 = Max(line3, 950)
 	
-	Tnum line3 = EarnedIncome(p) + 300	# What if MFJ?
+	Tnum line3 = EarnedIncomeForFS(p) + 300	
 	
 	
-
 # Boxes checked on Table 7 or 8
 Tnum BoxesChecked(Thing p) = 
 	theSpouses.Filter(DoB(_) < 1947-01-02).Count +
 	theSpouses.Filter(IsBlind(_)).Count
 	
-	# Tset theSpouses = Fam.SpousesOf(p) + p	
-	
-	Tset theSpouses =
-		set:
-		if Fam.IsMarried(p) -> Fam.SpousesOf(p) + p
-		else new Tset(p)
+	Tset theSpouses = Fam.SelfAndSpouseIfMarried(p)
 
 
 # INPUTS
@@ -150,7 +138,7 @@ Test: Page22_Ex4_Column3
 - CanBeClaimedAsDependentBySomeone(Ed) = true
 - DoB(Ed) = 1990-01-01
 - IsBlind(Ed) = false
-- EarnedIncome(Ed) = 3726
+- EarnedIncomeForFS(Ed) = 3726
 - MaritalStatus(Ed) = "Single"	# Redundant question?
 - IRS.Pub501.Table6Amount(Ed).TestOutput =?= "Time.DawnOf 4026 "
 
@@ -160,7 +148,7 @@ Test: Page22_Ex3_Column3
 - CanBeClaimedAsDependentBySomeone(Amy) = true
 - DoB(Amy) = 1994-01-01
 - IsBlind(Amy) = true
-- EarnedIncome(Amy) = 2900
+- EarnedIncomeForFS(Amy) = 2900
 - MaritalStatus(Amy) = "Single"
 - IRS.Pub501.Table6Amount(Amy).TestOutput =?= "Time.DawnOf 4650 "
 
@@ -170,7 +158,7 @@ Test: Page22_Ex2_Column3
 - CanBeClaimedAsDependentBySomeone(Joe) = true
 - DoB(Joe) = 1990-01-01
 - IsBlind(Joe) = false
-- EarnedIncome(Joe) = 3800
+- EarnedIncomeForFS(Joe) = 3800
 - SpousesOf(Joe) = [[Mary]]
 - DoB(Mary) = 1990-01-01
 - IsBlind(Mary) = false
@@ -182,7 +170,7 @@ Test: Page22_Ex1_Column3
 - CanBeClaimedAsDependentBySomeone(michael) = true
 - DoB(michael) = 1995-01-01
 - IsBlind(michael) = false
-- EarnedIncome(michael) = 150
+- EarnedIncomeForFS(michael) = 150
 - MaritalStatus(michael) = "Single"
 - IRS.Pub501.Table6Amount(michael).TestOutput =?= "Time.DawnOf 950 "
 
@@ -226,7 +214,7 @@ Test: Page22_Ex1_Column2
 
 Test: 200595112
 - Thing jim
-- EarnedIncome(jim) = 100
+- EarnedIncomeForFS(jim) = 100
 - FedTaxFilingStatus(jim) = "Single"
 - MaritalStatus(jim) = "Single"
 - DoB(jim) = 1990-01-01

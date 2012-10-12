@@ -1,24 +1,41 @@
 # Namespace:    IRS.Pub519
 # Summary:      IRS Publication 519 - Alien Tax Status
-# Updated:      2012-10-06
+# Updated:      2012-10-11
 # Author:       Michael Poulshock
 
 # Determines a person's alien tax status: resident alien, nonresident 
 # alien, or dual-status alien.  Resident aliens are generally taxed like 
 # U.S. citizens.
 
-# TODO: TboolIn? AlienTaxStatus(Thing p) = 
+
+# ALIEN TAX STATUS
+# Use these functions, not the "inferred" ones below, in other rules
+
+Tbool IsResidentAlien(Thing p) =
+	Imm.IsAlien(p) &
+	AlienTaxStatus(p) == "Resident alien"
+	
+Tbool IsNonresidentAlien(Thing p) =
+	Imm.IsAlien(p) &
+	AlienTaxStatus(p) == "Nonresident alien"	
+
+Tbool IsDualStatusAlien(Thing p) =
+	Imm.IsAlien(p) &
+	AlienTaxStatus(p) == "Dual-status alien"
+
+# Interview stops here before descending...	
+# >>What is {1}'s alien tax status? (Options: Resident alien, Nonresident alien, Dual-status alien)
+TstrIn? AlienTaxStatus(Thing p) =
+	set:
+	# if IsDualStatusAlienInferred(p) -> "Dual-status alien"
+	if IsResidentAlienInferred(p) -> "Resident alien"
+	else "Nonresident alien"
 
 
-# RESIDENT V. NONRESIDENT ALIENS
-
-# Nonresident alien for tax purposes
-TboolIn IsNonresidentAlien(Thing person) =
-	Imm.IsAlien(person) &
-	! IsResidentAlien(person)
+# RESIDENT ALIEN, DEFINED
 
 # Is/was {1} a resident alien for tax purposes?
-TboolIn? IsResidentAlien(Thing p) =
+Tbool IsResidentAlienInferred(Thing p) =
 	set:
 	if IsBonaFideResidentOfPuertoRicoOrAmerSamoa(p) -> Stub()
 	else ResidentAlienTest(p)
@@ -185,11 +202,11 @@ Tbool CloserToForeignCountry(Thing person, Thing country) =
 # in their first and last year living in the U.S.)
 
 Tbool ChoosesResidentAlienStatus(Thing p) =
-	IsDualStatusAlien(p) &
+	IsDualStatusAlienInferred(p) &
 	Stub() &
 	ChoosesToBeTreatedAsResidentAlien(p)
 	
-Tbool IsDualStatusAlien(Thing p) =
+Tbool IsDualStatusAlienInferred(Thing p) =
 	Stub()
 
 Tdate ResidencyStartingDate(Thing p) =
@@ -356,10 +373,4 @@ Test: 397888975
 - USImmigrationStatus(sherry) = "U.S. citizen"
 - ChoosesToBeTreatedAsResidentAlien(jim) = true
 - IRS.Pub519.NonresidentSpousalElection(jim).TestOutput =?= "Time.DawnOf True "
-
-
-
-
-
-
 

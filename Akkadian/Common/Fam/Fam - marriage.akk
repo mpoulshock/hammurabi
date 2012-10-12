@@ -41,6 +41,13 @@ TsetIn? SpousesOf(Thing p) =
 	Tset spouses = 
 		Facts.EveryoneExcept(p).Filter(AreMarried(p,_))
 	
+# The person and, if married, their spouse
+Tset SelfAndSpouseIfMarried(Thing p) =
+	set:
+	if IsMarried(p) -> SpousesOf(p) + p
+	else new Tset(p)
+
+	
 # >>Is/was {1} married?
 TboolIn IsMarried(Thing p) =
 	MaritalStatus(p) == "Married" |
