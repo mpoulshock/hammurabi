@@ -29,7 +29,7 @@ HammurabiInteractive.exe
 :: 2. On the "cmd" program icon that appears (it looks like a DOS window), right click and select "Pin to task bar."
 :: 3. On the icon in the taskbar, right click, and then right click again on "Command Prompt."
 :: 4. Right click on "Properties."
-:: 6. Then paste the following line into the "Target" text box (replacing the "..." with the appropriate file path:
+:: 6. Then paste the following line into the "Target" text box (replacing the "..." with the appropriate file path):
 ::    %windir%\system32\cmd.exe /C "C:\Users\...\Hammurabi\Hammurabi_build.bat"
 
 

@@ -1,0 +1,121 @@
+# Namespace:    IRS.Pub501
+# Summary:      IRS Publication 501 - Exemptions
+# Updated:      2012-10-12
+# Author:       Michael Poulshock
+
+##
+TODO:
+- Marital status options and inferences...
+- Separated during the tax year
+- Death of spouse during tax year
+- Relationship to sec. 151, incl. phaseout?
+- Nonresident aliens - pub. 519; sec 873(b)(3)
+- Trusts and estates - see sec. 642(b)
+##
+
+
+# RULES FOR TAX YEAR 2011
+
+# Total amount that a person can deduct for exemptions
+Tnum ExemptionAmount(Thing p) =
+	set:
+	if certainResidentsIndiaKorea -> Stub()		# See Pub. 519
+	if status == "Dual-status alien" -> Stub()	#    " "
+	if certainNonresidentAliens -> OwnExemption(p) * 3700
+	else NumberOfExemptions(p) * 3700
+	
+	Tbool certainResidentsIndiaKorea =
+		CountryOfResidence(p) == "India" |
+		CountryOfResidence(p) == "Korea"
+	
+	Tbool certainNonresidentAliens =
+		status == "Nonresident alien" &
+		CountryOfResidence(p) <> "Canada" &
+		CountryOfResidence(p) <> "Mexico"
+	
+	Tstr status = IRS.Pub519.AlienTaxStatus(p)
+
+# Exemption amount per person
+Tnum ExemptionAmountPerPerson() =
+	Stub()
+	
+# Personal + dependency exemptions
+Tnum NumberOfExemptions(Thing p) =
+	PersonalExemptions(p) +
+	DependencyExemptions(p)
+		
+# Number of personal exemptions
+Tnum PersonalExemptions(Thing p) = 
+	OwnExemption(p) + SpouseExemption(p)
+	
+# Own exemption
+Tnum OwnExemption(Thing p) =
+	set:
+	if USC.Tit26.Sec152.CanBeClaimedAsDependentBySomeone(p) -> 0
+	else 1
+	
+# Spousal exemption
+Tnum SpouseExemption(Thing p) =
+	set:
+	if singleDivorcedSeparated				-> 0
+	if SpouseDiedDuringTaxYear(p) 			-> Stub()
+	if status == "Married filing jointly" 	-> 1
+	if meetsMFSorHoHTest 					-> 1
+	else 0
+	
+	Tbool meetsMFSorHoHTest =
+		...
+			status == "Married filing separately" |
+			status == "Head of household"
+		&
+		Fam.SpousesOf(p).ForAll(MeetsSpouseTest(_))
+	
+	Tstr status = USC.Tit26.Sec2.FilingStatus(p)
+	
+	# Divorced is subsumed by "single"
+	Tbool singleDivorcedSeparated =
+		Fam.MaritalStatus(p) == "Single" |
+		Fam.MaritalStatus(p) == "Legally separated" 	# Ever during the TY
+
+# Spouse test for MFS and HoH
+Tbool MeetsSpouseTest(Thing spouse) =
+	GrossIncome(spouse) == 0 &
+	USC.Tit26.Sec2.FilingStatus(spouse) == "Not filing" &
+	USC.Tit26.Sec152.CanBeClaimedAsDependentBySomeone(spouse)
+	
+# Spouse died during tax year
+Tbool SpouseDiedDuringTaxYear(Thing p) =
+	Fam.SpousesOf(p).Exists(DiedDuringTaxYear(_))
+	
+Tbool DiedDuringTaxYear(Thing p) =
+	IsDeceased(p).IsEverTrue() &
+	DateIsInPeriod(DateOfDeath(p), USC.Tit26.Sec441.TaxYear(p))
+
+
+
+	
+	
+# >>How many dependency exemptions does/did {1} claim?  (This is the number of people that {1} will claim as a dependent on their federal tax return.)
+TnumIn? DependencyExemptions(Thing p) =
+	possibleDeps.Filter(USC.Tit26.Sec152.IsDependentOf(p,_)).Count
+	
+	Tset possibleDeps = USC.Tit26.Sec152.PeopleWhoMightClaimAsDependent(p)
+	
+# TODO: Move elsewhere...
+# >>What is/was {1}'s annual gross income?
+TnumIn GrossIncome(Thing p)
+	
+
+# UNIT TESTS
+
+Test: DiedDuringTaxYear1
+- Thing jim
+- IsDeceased(jim) = true
+- DateOfDeath(jim) = 2010-04-04
+- IRS.Pub501.DiedDuringTaxYear(jim).TestOutput =?= "Time.DawnOf False 1/1/2010 12:00:00 AM True 1/1/2011 12:00:00 AM False "
+
+Test: DiedDuringTaxYear2
+- Thing jim
+- IsDeceased(jim) = false
+- IRS.Pub501.DiedDuringTaxYear(jim).TestOutput =?= "Time.DawnOf False "
+

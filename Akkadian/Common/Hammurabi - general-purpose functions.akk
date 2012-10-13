@@ -1,0 +1,34 @@
+# Namespace:    Hammurabi.H
+# Summary:      General-purpose functions that don't need to be in the Hammurabi core
+# Updated:      2012-10-13
+# Author:       Michael Poulshock
+
+
+# TEMPORAL DETERMINATIONS
+
+# Returns true in the period during which a given date falls
+# Example: DateIsInPeriod(2013-04-15, TheYear) is true for all of 2013, and otherwise false
+Tbool DateIsInPeriod(Tdate date, Tnum temporalPeriod) =
+	afterEvent.EverPer(temporalPeriod) &
+	afterEvent.CountPastNIntervals(temporalPeriod,1) == 0
+	
+	Tbool afterEvent = TheTime.IsAtOrAfter(date)
+
+	
+# ALL KNOWN PEOPLE
+
+# All known people (in user session)
+# Uses lower case to indicate uniqueness of function
+Tset people() =
+	Facts.AllKnownPeople()
+
+# All known people except a given person
+Tset peopleBut(Thing p1) =
+	Facts.AllKnownPeople() - p1
+
+# All known people except two given people
+Tset peopleBut(Thing p1, Thing p2) =
+	Facts.AllKnownPeople() - p1 - p2
+	
+	
+	

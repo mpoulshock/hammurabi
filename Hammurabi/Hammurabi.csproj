@@ -13,7 +13,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>True</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>False</Optimize>
+    <Optimize>True</Optimize>
     <OutputPath>bin\Debug</OutputPath>
     <DefineConstants>DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -156,6 +156,8 @@
     <Compile Include="Generated source\Pub 501 - Filing status.cs" />
     <Compile Include="Generated source\Pub 501 - Standard deduction.cs" />
     <Compile Include="Generated source\Pub 501 - Income for filing status and standard deduction.cs" />
+    <Compile Include="Generated source\Pub 501 - Exemptions.cs" />
+    <Compile Include="Generated source\Hammurabi - general-purpose functions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

@@ -1,6 +1,7 @@
 <NotepadPlus>
     <Project name="Hammurabi">
         <Folder name="Common">
+            <File name="Common\Hammurabi - general-purpose functions.akk" />
             <Folder name="Econ">
                 <File name="Common\Econ\Econ - employment.akk" />
                 <File name="Common\Econ\Econ - assets.akk" />
@@ -91,6 +92,7 @@
                 </Folder>
                 <Folder name="Agency interpretations">
                     <Folder name="IRS">
+                        <File name="Law\Federal law\Agency interpretations\IRS\Pub 501 - Exemptions.akk" />
                         <File name="Law\Federal law\Agency interpretations\IRS\Pub 501 - Filing status.akk" />
                         <File name="Law\Federal law\Agency interpretations\IRS\Pub 501 - Income for filing status and standard deduction.akk" />
                         <File name="Law\Federal law\Agency interpretations\IRS\Pub 501 - Standard deduction.akk" />

@@ -10,7 +10,7 @@
 Tstr FilingStatus(Thing p) =
     FedTaxFilingStatus(p)
 	
-# >>What is {1}'s federal tax filing status? (Options: Single, Married filing jointly, Married filing separately, Head of household, Qualifying widow(er))
+# >>What is {1}'s federal tax filing status? (Options: Single, Married filing jointly, Married filing separately, Head of household, Qualifying widow(er), Not filing)
 TstrIn? FedTaxFilingStatus(Thing p) =
 	IRS.Pub501.FilingStatusInferred(p)
 	

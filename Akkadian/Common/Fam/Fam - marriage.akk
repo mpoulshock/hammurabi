@@ -47,13 +47,21 @@ Tset SelfAndSpouseIfMarried(Thing p) =
 	if IsMarried(p) -> SpousesOf(p) + p
 	else new Tset(p)
 
-	
 # >>Is/was {1} married?
 TboolIn IsMarried(Thing p) =
 	MaritalStatus(p) == "Married" |
 	SpousesOf(p).Count > 0 
+
+# IsWidowed
+Tbool IsWidowed(Thing p) =
+	Stub()
+
+# Divorced
+Tbool IsDivorced(Thing p) =
+	Stub()
 	
-# >>What is/was {1}'s marital status?
+# Note: Divorce and widowhood can be inferred, so they're not options
+# >>What is/was {1}'s marital status?  (Options: Single, Married, Legally separated, Civil union, Domestic partnership)
 TstrIn MaritalStatus(Thing p)
 
 # AreMarried(1,2) assumes MaritalStatus(1) = "Married"

@@ -6,8 +6,8 @@
 # Author:       Michael Poulshock
 
 
-# Indicates whether one person (d) is a dependent of a taxpayer (tp)
-Tbool IsDependentOf(Thing d, Thing tp) =
+# >>Is/was {1} a dependent (for tax purposes) of {2}?
+TboolIn? IsDependentOf(Thing d, Thing tp) =
     ...
         IsQualifyingChildOf(d, tp) | 
         IsQualifyingRelativeOf(d, tp)
