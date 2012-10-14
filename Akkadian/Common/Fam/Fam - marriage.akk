@@ -49,12 +49,8 @@ Tset SelfAndSpouseIfMarried(Thing p) =
 
 # >>Is/was {1} married?
 TboolIn IsMarried(Thing p) =
-	MaritalStatus(p) == "Married" |
+	MaritalStatus(p) == "Married" |~
 	SpousesOf(p).Count > 0 
-
-# IsWidowed
-Tbool IsWidowed(Thing p) =
-	Stub()
 
 # Divorced
 Tbool IsDivorced(Thing p) =
@@ -121,11 +117,9 @@ TboolIn HasMentalCapacityToMarry(Thing p)
 # UNIT TESTS
 
 Test: IsMarried0
-- Things t1, jon
-- IsMarried(t1) = Tbool(?)
-- MaritalStatus(t1) = Tstr(?)
-- SpousesOf(t1) = [[jon]]
-- Hammurabi.Fam.IsMarried(t1).Out =?= true
+- Things mary, jon
+- SpousesOf(mary) = [[jon]]
+- Hammurabi.Fam.IsMarried(mary).Out =?= true
 
 Test: IsMarried1a
 - Thing p
@@ -175,6 +169,11 @@ Test: IsMarried8
 - Thing p
 - MaritalStatus(p) = "Single"
 - Fam.IsMarried(p).Out =?= false
+
+Test: IsMarried9	# time-varying
+- Thing jed
+- MaritalStatus(jed) = {Time.DawnOf: "Married"; 2011-03-04: "Single"}
+- Fam.IsMarried(jed).TestOutput =?= "Time.DawnOf True 3/4/2011 12:00:00 AM False "
 
 Test: FamRel1
 - Thing p

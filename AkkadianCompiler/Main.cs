@@ -275,7 +275,7 @@ namespace Akkadian
             line = Regex.Replace(line, @"if (?<txt>"+word+@") then (?<txt2>[-!\+\*/A-Za-z0-9\.;\(\),""'_<>= ]+)", "IfThen(${txt}, ${txt2})");  
 
             // Exists/ForAll/Filter
-            line = Regex.Replace(line, @"\.(?<quant>(Exists|ForAll|Filter|Sum|Min|Max))\((?<fcn>[a-zA-Z0-9\(\)\._, ]+)\)", ".${quant}( _ => ${fcn})");  
+            line = Regex.Replace(line, @"\.(?<quant>(Exists|ForAll|Filter|Sum|Min|Max))\((?<fcn>[a-zA-Z0-9\(\)\._,\! ]+)\)", ".${quant}( _ => ${fcn})");  
                 
             return line;
         }

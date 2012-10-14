@@ -1,44 +1,63 @@
 # Namespace:    IRS.Pub501
 # Summary:      IRS Publication 501 - Exemptions
-# Updated:      2012-10-12
+# Updated:      2012-10-13
 # Author:       Michael Poulshock
 
 ##
 TODO:
-- Marital status options and inferences...
-- Separated during the tax year
 - Death of spouse during tax year
-- Relationship to sec. 151, incl. phaseout?
-- Nonresident aliens - pub. 519; sec 873(b)(3)
 - Trusts and estates - see sec. 642(b)
 ##
 
 
-# RULES FOR TAX YEAR 2011
-
 # Total amount that a person can deduct for exemptions
 Tnum ExemptionAmount(Thing p) =
-	set:
-	if certainResidentsIndiaKorea -> Stub()		# See Pub. 519
-	if status == "Dual-status alien" -> Stub()	#    " "
-	if certainNonresidentAliens -> OwnExemption(p) * 3700
-	else NumberOfExemptions(p) * 3700
+    USC.Tit26.Sec151.ExemptionAmountAfterPhaseout(p)
+    
+# Exemption amount before the phaseout (which is calculated in USC.Tit26.Sec151)
+Tnum ExemptionAmountBeforePhaseout(Thing p) =
+    TotalClaimableExemptions(p) * ExemptionAmountPerPerson(p)
+
+# Total exemptions the person can claim on Form 1040, line 6d
+Tnum TotalClaimableExemptions(Thing p) =
+   	set:
+	if certainResidentsIndiaKorea       -> Stub()		# See Pub. 519; sec 873(b)(3)
+	if IRS.Pub519.IsDualStatusAlien(p)  -> Stub()	    #    " "
+	if CertainNonresidentAliens(p)      -> OwnExemption(p)
+	else NumberOfExemptions(p)
 	
 	Tbool certainResidentsIndiaKorea =
 		CountryOfResidence(p) == "India" |
-		CountryOfResidence(p) == "Korea"
-	
-	Tbool certainNonresidentAliens =
-		status == "Nonresident alien" &
-		CountryOfResidence(p) <> "Canada" &
-		CountryOfResidence(p) <> "Mexico"
-	
-	Tstr status = IRS.Pub519.AlienTaxStatus(p)
+		CountryOfResidence(p) == "Korea" 
+        
+# Is a NRA, unless from Canada or Mexico
+Tbool CertainNonresidentAliens(Thing p) =
+	IRS.Pub519.IsNonresidentAlien(p) &
+	CountryOfResidence(p) <> "Canada" &
+	CountryOfResidence(p) <> "Mexico"
 
-# Exemption amount per person
-Tnum ExemptionAmountPerPerson() =
-	Stub()
+# Exemption amount per person (varies by tax year)
+# Source: http://taxes.about.com/od/preparingyourtaxes/a/personal_exempt.htm
+Tnum ExemptionAmountPerPerson(Thing p) =
+	set:
+    if year == 2012 -> 3800
+	if year == 2011 -> 3700
+    if year == 2010 -> 3650
+    if year == 2009 -> 3650
+    if year == 2008 -> 3500
+    if year == 2007 -> 3400
+    if year == 2006 -> 3300
+    if year == 2005 -> 3200
+    if year == 2004 -> 3100
+    if year == 2003 -> 3050
+    if year == 2002 -> 3000
+    if year == 2001 -> 2900
+    if year == 2000 -> 2800
+    if year == 1999 -> 2750
+	else Stub()
 	
+    Tnum year = USC.Tit26.Sec441.TaxYear(p)
+    
 # Personal + dependency exemptions
 Tnum NumberOfExemptions(Thing p) =
 	PersonalExemptions(p) +
@@ -57,10 +76,10 @@ Tnum OwnExemption(Thing p) =
 # Spousal exemption
 Tnum SpouseExemption(Thing p) =
 	set:
-	if singleDivorcedSeparated				-> 0
-	if SpouseDiedDuringTaxYear(p) 			-> Stub()
-	if status == "Married filing jointly" 	-> 1
-	if meetsMFSorHoHTest 					-> 1
+	if singleDivorcedSeparated          -> 0
+	if SpouseDiedDuringTaxYear(p) 		-> Stub()
+	if MFJAndUnclaimedSpouse(p) 		-> 1
+	if meetsMFSorHoHTest 				-> 1
 	else 0
 	
 	Tbool meetsMFSorHoHTest =
@@ -72,11 +91,14 @@ Tnum SpouseExemption(Thing p) =
 	
 	Tstr status = USC.Tit26.Sec2.FilingStatus(p)
 	
-	# Divorced is subsumed by "single"
+	# Not married on last day of tax year (divorced is subsumed by "single")
 	Tbool singleDivorcedSeparated =
-		Fam.MaritalStatus(p) == "Single" |
-		Fam.MaritalStatus(p) == "Legally separated" 	# Ever during the TY
-
+		(! Fam.IsMarried(p)).PeriodEndVal(USC.Tit26.Sec441.TaxYear(p))
+    
+Tbool MFJAndUnclaimedSpouse(Thing p) =
+	USC.Tit26.Sec2.FilingStatus(p) == "Married filing jointly" &
+	Fam.SpousesOf(p).Exists(! USC.Tit26.Sec152.CanBeClaimedAsDependentBySomeone(_))
+		
 # Spouse test for MFS and HoH
 Tbool MeetsSpouseTest(Thing spouse) =
 	GrossIncome(spouse) == 0 &
@@ -87,13 +109,10 @@ Tbool MeetsSpouseTest(Thing spouse) =
 Tbool SpouseDiedDuringTaxYear(Thing p) =
 	Fam.SpousesOf(p).Exists(DiedDuringTaxYear(_))
 	
+# True during the tax year in which a person died
 Tbool DiedDuringTaxYear(Thing p) =
 	IsDeceased(p).IsEverTrue() &
 	DateIsInPeriod(DateOfDeath(p), USC.Tit26.Sec441.TaxYear(p))
-
-
-
-	
 	
 # >>How many dependency exemptions does/did {1} claim?  (This is the number of people that {1} will claim as a dependent on their federal tax return.)
 TnumIn? DependencyExemptions(Thing p) =
@@ -101,12 +120,57 @@ TnumIn? DependencyExemptions(Thing p) =
 	
 	Tset possibleDeps = USC.Tit26.Sec152.PeopleWhoMightClaimAsDependent(p)
 	
+	
 # TODO: Move elsewhere...
 # >>What is/was {1}'s annual gross income?
 TnumIn GrossIncome(Thing p)
 	
 
 # UNIT TESTS
+
+Test: USCitizenMFJ
+- Thing jed
+- CountryOfResidence(jed) = "United States"
+- USImmigrationStatus(jed) = "U.S. citizen"
+- CanBeClaimedAsDependentBySomeone(jed) = false
+- MaritalStatus(jed) = "Married"
+- FedTaxFilingStatus(jed) = "Married filing jointly"
+- Things tammy
+- SpousesOf(jed) = [[tammy]]
+- IsDeceased(tammy) = false
+- CanBeClaimedAsDependentBySomeone(tammy) = false
+- DependencyExemptions(jed) = 0
+- IRS.Pub501.ExemptionAmountBeforePhaseout(jed).AsOf(2011-12-31).TestOutput =?= "Time.DawnOf 7400 "
+
+Test: USCitizenSingle
+- Thing jimbo
+- CountryOfResidence(jimbo) = "United States"
+- USImmigrationStatus(jimbo) = "U.S. citizen"
+- CanBeClaimedAsDependentBySomeone(jimbo) = false
+- MaritalStatus(jimbo) = "Single"
+- FedTaxFilingStatus(jimbo) = "Single"
+- DependencyExemptions(jimbo) = 1
+- IRS.Pub501.ExemptionAmountBeforePhaseout(jimbo).AsOf(2011-12-31).TestOutput =?= "Time.DawnOf 7400 "
+
+Test: 631329891
+- Thing larry
+- CountryOfResidence(larry) = "Russia"
+- USImmigrationStatus(larry) = "Alien"
+- AlienTaxStatus(larry) = "Dual-status alien"
+- IRS.Pub501.ExemptionAmountBeforePhaseout(larry).TestOutput =?= "Time.DawnOf Stub "
+
+Test: 243734645
+- Thing larry
+- CountryOfResidence(larry) = "Japan"
+- USImmigrationStatus(larry) = "Alien"
+- AlienTaxStatus(larry) = "Nonresident alien"
+- CanBeClaimedAsDependentBySomeone(larry) = false
+- IRS.Pub501.ExemptionAmountBeforePhaseout(larry).AsOf(2011-12-31).TestOutput =?= "Time.DawnOf 3700 "
+
+Test: 385282068
+- Thing larry
+- CountryOfResidence(larry) = "India"
+- IRS.Pub501.ExemptionAmountBeforePhaseout(larry).TestOutput =?= "Time.DawnOf Stub "
 
 Test: DiedDuringTaxYear1
 - Thing jim
