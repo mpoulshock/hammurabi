@@ -71,8 +71,8 @@ Tbool IsQualifyingRelativeOf(Thing d, Thing tp) =
     # gen test
     Tbool genTest = 
         ...
-            Sec61.GrossIncome(d) == 0 |                         # shortcut
-            Sec61.GrossIncome(d) < IRS.Pub501.ExemptionAmount(d)	# per TY    # possible circularity b/c exemption amount depends upon no. of dependents
+            Sec61.GrossIncome(d) == 0 |                                         # shortcut
+            Sec61.GrossIncome(d) < IRS.Pub501.ExemptionAmountBeforePhaseout(d)  # See 26 USC 151(d)(3)(D)
         & 
 		! IsQualifyingChildOf(d, tp) &
 		TboolIn NotQualifyingChildOfAnyTaxpayer(d)

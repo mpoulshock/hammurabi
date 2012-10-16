@@ -108,28 +108,38 @@ namespace Interactive
                 }
                 else
                 {
-                    // Create a list of Things
-                    string[] items = val.Split(new char[] {';'});
-                    List<Thing> list = new List<Thing>();
-                    string thingList = "";
-                    foreach (string i in items)
+                    // Assert an empty set
+                    if (val == "[]")
                     {
-                        string name = i.Trim();
-//                        if (name != "t1" && name != "t2" && !Facts.ThingExists(name))
-//                        {
-                            list.Add(new Thing(name));
-                            thingList += name + ",";
-//                        }
+                        Tset result = new Tset();
+                        result.SetEternally();
+                        Facts.Assert(subj, rel, obj, result);
                     }
+                    else
+                    {
+                        // Create a list of Things
+                        string[] items = val.Split(new char[] {';'});
+                        List<Thing> list = new List<Thing>();
+                        string thingList = "";
+                        foreach (string i in items)
+                        {
+                            string name = i.Trim();
+    //                        if (name != "t1" && name != "t2" && !Facts.ThingExists(name))
+    //                        {
+                                list.Add(new Thing(name));
+                                thingList += name + ",";
+    //                        }
+                        }
 
-                    // Assert the Tset
-                    Tset result = new Tset(list);
-                    Facts.Assert(subj, rel, obj, result);
+                        // Assert the Tset
+                        Tset result = new Tset(list);
+                        Facts.Assert(subj, rel, obj, result);
 
-                    // Build the .akk unit test string
-                    AkkTest.testStr += "- Things " + thingList.TrimEnd(',') + "\r\n";
-                    AkkTest.testStr += AkkTest.assertedRelationship;
-                    AkkTest.testStr += "[[" + val.Replace(";",",") + "]]\r\n";
+                        // Build the .akk unit test string
+                        AkkTest.testStr += "- Things " + thingList.TrimEnd(',') + "\r\n";
+                        AkkTest.testStr += AkkTest.assertedRelationship;
+                        AkkTest.testStr += "[[" + val.Replace(";",",") + "]]\r\n";
+                    }
                 }
             }
         }

@@ -1,13 +1,7 @@
 # Namespace:    IRS.Pub501
-# Summary:      IRS Publication 501 - Exemptions
-# Updated:      2012-10-13
+# Summary:      IRS Publication 501 - Exemptions for individuals
+# Updated:      2012-10-15
 # Author:       Michael Poulshock
-
-##
-TODO:
-- Death of spouse during tax year
-- Trusts and estates - see sec. 642(b)
-##
 
 
 # Total amount that a person can deduct for exemptions
@@ -21,6 +15,7 @@ Tnum ExemptionAmountBeforePhaseout(Thing p) =
 # Total exemptions the person can claim on Form 1040, line 6d
 Tnum TotalClaimableExemptions(Thing p) =
    	set:
+    if IsDeceased(p)                    -> Stub()       # See "Death of spouse", p. 10
 	if certainResidentsIndiaKorea       -> Stub()		# See Pub. 519; sec 873(b)(3)
 	if IRS.Pub519.IsDualStatusAlien(p)  -> Stub()	    #    " "
 	if CertainNonresidentAliens(p)      -> OwnExemption(p)
@@ -73,46 +68,54 @@ Tnum OwnExemption(Thing p) =
 	if USC.Tit26.Sec152.CanBeClaimedAsDependentBySomeone(p) -> 0
 	else 1
 	
+# TODO: Test using temporal sets for SpouseOf()
 # Spousal exemption
 Tnum SpouseExemption(Thing p) =
 	set:
-	if singleDivorcedSeparated          -> 0
-	if SpouseDiedDuringTaxYear(p) 		-> Stub()
-	if MFJAndUnclaimedSpouse(p) 		-> 1
-	if meetsMFSorHoHTest 				-> 1
+    if SpouseDiedAndPersonDidNotRemarry(p)  -> 1
+	if ! MarriedAtEndOfTaxYear(p)           -> 0
+	if SpouseDiedDuringTaxYear(p) 		    -> 0    # Person remarried
+	if MFJAndUnclaimedSpouse(p) 		    -> 1    # Person and spouse alive
+	if MeetsMFSorHoHTest(p)				    -> 1    #   " "
 	else 0
-	
-	Tbool meetsMFSorHoHTest =
-		...
-			status == "Married filing separately" |
-			status == "Head of household"
-		&
-		Fam.SpousesOf(p).ForAll(MeetsSpouseTest(_))
-	
-	Tstr status = USC.Tit26.Sec2.FilingStatus(p)
-	
-	# Not married on last day of tax year (divorced is subsumed by "single")
-	Tbool singleDivorcedSeparated =
-		(! Fam.IsMarried(p)).PeriodEndVal(USC.Tit26.Sec441.TaxYear(p))
+
+# Spouse died and person remarried during tax year
+Tbool SpouseDiedAndPersonDidNotRemarry(Thing p) =
+    ! MarriedAtEndOfTaxYear(p) &
+    SpouseDiedDuringTaxYear(p)
     
+# Spouse died during tax year
+Tbool SpouseDiedDuringTaxYear(Thing p) =
+    MarriedAtEndOfTaxYear(p) &
+	Fam.SpousesOf(p).Exists(DiedDuringTaxYear(_))
+ 
+# True during the tax year in which a person died
+Tbool DiedDuringTaxYear(Thing p) =
+	IsDeceased(p).IsEverTrue() &
+	DateIsInPeriod(DateOfDeath(p), USC.Tit26.Sec441.TaxYear(p))
+    
+# Married on last day of tax year 
+Tbool MarriedAtEndOfTaxYear(Thing p) =
+	Fam.IsMarried(p).PeriodEndVal(USC.Tit26.Sec441.TaxYear(p))
+    
+# MFJ, no one can claim spouse    
 Tbool MFJAndUnclaimedSpouse(Thing p) =
 	USC.Tit26.Sec2.FilingStatus(p) == "Married filing jointly" &
 	Fam.SpousesOf(p).Exists(! USC.Tit26.Sec152.CanBeClaimedAsDependentBySomeone(_))
-		
+	
+# Test for married filing separately and head of household
+Tbool MeetsMFSorHoHTest(Thing p) =
+    ...
+        USC.Tit26.Sec2.FilingStatus(p) == "Married filing separately" |
+        USC.Tit26.Sec2.FilingStatus(p) == "Head of household"
+    &
+    Fam.SpousesOf(p).ForAll(MeetsSpouseTest(_))
+    
 # Spouse test for MFS and HoH
 Tbool MeetsSpouseTest(Thing spouse) =
 	GrossIncome(spouse) == 0 &
 	USC.Tit26.Sec2.FilingStatus(spouse) == "Not filing" &
 	USC.Tit26.Sec152.CanBeClaimedAsDependentBySomeone(spouse)
-	
-# Spouse died during tax year
-Tbool SpouseDiedDuringTaxYear(Thing p) =
-	Fam.SpousesOf(p).Exists(DiedDuringTaxYear(_))
-	
-# True during the tax year in which a person died
-Tbool DiedDuringTaxYear(Thing p) =
-	IsDeceased(p).IsEverTrue() &
-	DateIsInPeriod(DateOfDeath(p), USC.Tit26.Sec441.TaxYear(p))
 	
 # >>How many dependency exemptions does/did {1} claim?  (This is the number of people that {1} will claim as a dependent on their federal tax return.)
 TnumIn? DependencyExemptions(Thing p) =
@@ -130,6 +133,7 @@ TnumIn GrossIncome(Thing p)
 
 Test: USCitizenMFJ
 - Thing jed
+- IsDeceased(jed) = false
 - CountryOfResidence(jed) = "United States"
 - USImmigrationStatus(jed) = "U.S. citizen"
 - CanBeClaimedAsDependentBySomeone(jed) = false
@@ -144,6 +148,7 @@ Test: USCitizenMFJ
 
 Test: USCitizenSingle
 - Thing jimbo
+- IsDeceased(jimbo) = false
 - CountryOfResidence(jimbo) = "United States"
 - USImmigrationStatus(jimbo) = "U.S. citizen"
 - CanBeClaimedAsDependentBySomeone(jimbo) = false
@@ -154,6 +159,7 @@ Test: USCitizenSingle
 
 Test: 631329891
 - Thing larry
+- IsDeceased(larry) = false
 - CountryOfResidence(larry) = "Russia"
 - USImmigrationStatus(larry) = "Alien"
 - AlienTaxStatus(larry) = "Dual-status alien"
@@ -161,6 +167,7 @@ Test: 631329891
 
 Test: 243734645
 - Thing larry
+- IsDeceased(larry) = false
 - CountryOfResidence(larry) = "Japan"
 - USImmigrationStatus(larry) = "Alien"
 - AlienTaxStatus(larry) = "Nonresident alien"
@@ -169,6 +176,7 @@ Test: 243734645
 
 Test: 385282068
 - Thing larry
+- IsDeceased(larry) = false
 - CountryOfResidence(larry) = "India"
 - IRS.Pub501.ExemptionAmountBeforePhaseout(larry).TestOutput =?= "Time.DawnOf Stub "
 

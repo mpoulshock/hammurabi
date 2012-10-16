@@ -1,6 +1,6 @@
 # Namespace:    IRS.Pub501
 # Summary:      IRS Publication 501 - Filing status
-# Updated:      2012-10-08
+# Updated:      2012-10-16
 # Author:       Michael Poulshock
 
 
@@ -9,4 +9,24 @@
 Tstr FilingStatusInferred(Thing p) =
 	new Tstr(Hstate.Unstated)
 	
+    
+# COST OF KEEPING UP A HOME
+
+# >>Does/did {1} pay more than half the cost of keeping up a home in the tax year?
+TboolIn? PaidOverHalfCostKeepingUpHome(Thing p) =
+    CostOfKeepingUpHome(p) > CostOfKeepingUpHome(Econ.HouseholdOf(p))
+    
+# Itemized costs of keeping up a home
+Tnum CostOfKeepingUpHome(Thing p) =
+    Econ.AnnualPropertyTaxesPaid(p) +
+    Econ.AnnualMortgageInterestPaid(p) +
+    Econ.AnnualRentPaid(p) +
+    Econ.AnnualUtilityChargesPaid(p) +
+    Econ.AnnualHomeRepairMaintenanceCostsPaid(p) +
+    Econ.AnnualPropertyInsuranceCosts(p) +
+    Econ.AnnualCostOfFoodConsumedAtHome(p) +
+    AnnualOtherHouseholdExpenses(p) 
+
+# >>How much does/did {1} pay annually for other household expenses?
+TnumIn AnnualOtherHouseholdExpenses(Thing p) 
 

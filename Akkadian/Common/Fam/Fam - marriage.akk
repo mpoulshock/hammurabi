@@ -49,7 +49,7 @@ Tset SelfAndSpouseIfMarried(Thing p) =
 
 # >>Is/was {1} married?
 TboolIn IsMarried(Thing p) =
-	MaritalStatus(p) == "Married" |~
+	MaritalStatus(p) == "Married" |~    # TODO: Legally separated = married
 	SpousesOf(p).Count > 0 
 
 # Divorced
@@ -63,6 +63,20 @@ TstrIn MaritalStatus(Thing p)
 # AreMarried(1,2) assumes MaritalStatus(1) = "Married"
 # AreMarried(1,2) assumes MaritalStatus(2) = "Married"
 IsMarried(1) assumes MaritalStatus(1) = "Married"
+
+
+# DIVORCE & WIDOWHOOD
+
+
+# True after a person's first marriage ends, otherwise false
+# Tbool TheTimeIsAfterMarriage(Thing p) =
+    # TheTime.IsAtOrAfter(dateFirstMarried) &
+    # ! IsMarried(p)
+
+    # Tbool timeAfterSpouseDied =
+        # TheTime.IsAtOrAfter(
+    
+    # Tdate dateFirstMarried = IsMarried(p).DateFirstTrue
 
 
 # GAY MARRIAGE

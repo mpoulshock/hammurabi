@@ -14,7 +14,11 @@ Tnum HouseholdSize(Thing p) =
 # >>Who are/were the other members of {1}'s household?
 TsetIn HouseholdMembersOf(Thing person)
 
+# Person's household as a unit
+Thing HouseholdOf(Thing person) =
+    new Thing(person.Id + "'s household")   # Problem: instantiates a new thing every time it's invoked
 
+    
 # RELATIONSHIPS BETWEEN TWO PEOPLE
 	
 # Two people are members of the same household.
