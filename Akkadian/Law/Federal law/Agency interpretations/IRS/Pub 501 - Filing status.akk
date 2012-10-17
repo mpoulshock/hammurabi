@@ -64,7 +64,7 @@ TboolIn? IsQualifyingPersonForHoH(Thing otherPerson, Thing filer) =
         Sec152.IsRelativeWhoDoesNotNeedToLiveWith(otherPerson, filer) &
         Sec152.IsDependentOf(otherPerson, filer) &
         ! CanClaimExemptionForOnlyBecauseOfMultipleSupportAgreement(filer, otherPerson)
-    
+ 
 
 # >>Do/did {1} and {2} live together for over half of the tax year?
 TboolIn LivedTogetherForOverHalfTaxYear(Thing p1, Thing p2)    

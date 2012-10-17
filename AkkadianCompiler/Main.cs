@@ -33,6 +33,7 @@ namespace Akkadian
         private static bool cacheRule = false;          // Should method results be cached?
         private static string tableMatchLine = "";      // Rule input that must be matched in a table
         public static int totalRuleCount = 0;           // Total rules in project
+        public static int SlocCount = 0;                // Total Akkadian lines in project
         public static string unitTestNameSpace = "";    // Namespace of unit tests
         public static string docNameSpace = "";         // For question metadata
         public static string akkDoc = "";               // For question metadata
@@ -101,6 +102,7 @@ namespace Akkadian
             Console.WriteLine(" * Time:  " + duration);
             Console.WriteLine(" * Files: " + docCount);
             Console.WriteLine(" * Rules: " + totalRuleCount);
+            Console.WriteLine(" * SLOC:  " + SlocCount);
         }
      
         /// <summary>
@@ -226,6 +228,10 @@ namespace Akkadian
                     if (rulePart != "")
                         subrules.Add(rulePart);
                     rulePart = "";
+                }
+                else
+                {
+                    SlocCount++;
                 }
              
                 lastLineDepth = depth;
