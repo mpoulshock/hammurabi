@@ -66,6 +66,11 @@ namespace Hammurabi
                 Fact f = new Fact(rel, e1, e2, e3, val);
                 FactBase.Add(f);
 
+                // Add Things to the ThingBase
+                AddThing(e1);
+                AddThing(e2);
+                AddThing(e3);
+
                 // Look for additional inferences that can be drawn, based on assumptions.
                 Assumptions.TriggerInferences(rel, e1, e2, e3, val);
             }

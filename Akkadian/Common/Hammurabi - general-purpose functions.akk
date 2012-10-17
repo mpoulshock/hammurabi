@@ -14,7 +14,14 @@ Tbool DateIsInPeriod(Tdate date, Tnum temporalPeriod) =
 	
 	Tbool afterEvent = TheTime.IsAtOrAfter(date)
 
+
+# ADD THING (INSTANTIATE A NEW ONE)
+
+# Creates a new instance of a Thing (if it doesn't already exist)
+Thing AddThing(string thingID) =
+    Facts.AddThing(thingID)
 	
+    
 # ALL KNOWN PEOPLE
 
 # All known people (in user session)

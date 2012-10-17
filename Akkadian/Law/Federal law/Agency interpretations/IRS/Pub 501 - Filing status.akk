@@ -2,7 +2,7 @@
 # Summary:      IRS Publication 501 - Filing status
 # Updated:      2012-10-16
 # Author:       Michael Poulshock
-
+# References:   USC.Tit26
 
 # RULES FOR TAX YEAR 2011
 
@@ -14,10 +14,14 @@ Tstr FilingStatusInferred(Thing p) =
 
 # >>Does/did {1} pay more than half the cost of keeping up a home in the tax year?
 TboolIn? PaidOverHalfCostKeepingUpHome(Thing p) =
-    CostOfKeepingUpHome(p) > CostOfKeepingUpHome(Econ.HouseholdOf(p))
+    CostOfKeepingUpHome(p) > partPaidByOthers
+    
+    # TODO: Econ.HouseholdOf(p) correctly instantiates a Thing representing p's household,
+    # but it chokes when creating unit tests, which need to declare each Thing being used.
+    Tnum partPaidByOthers = CostOfKeepingUpHome(Econ.HouseholdOf(p)) - CostOfKeepingUpHome(p) 
     
 # Itemized costs of keeping up a home
-Tnum CostOfKeepingUpHome(Thing p) =
+TnumIn CostOfKeepingUpHome(Thing p) =
     Econ.AnnualPropertyTaxesPaid(p) +
     Econ.AnnualMortgageInterestPaid(p) +
     Econ.AnnualRentPaid(p) +
@@ -29,4 +33,78 @@ Tnum CostOfKeepingUpHome(Thing p) =
 
 # >>How much does/did {1} pay annually for other household expenses?
 TnumIn AnnualOtherHouseholdExpenses(Thing p) 
+
+
+# QUALIFYING PERSON FOR HEAD OF HOUSEHOLD
+
+# Table 4 (page 9)
+# >>Is {1} a person qualifying {2} to file as Head of Household?
+TboolIn? IsQualifyingPersonForHoH(Thing otherPerson, Thing filer) =
+    ...
+        Sec152.IsQualifyingChildOf(otherPerson, filer) &
+        ...
+            Fam.MaritalStatus(otherPerson) == "Single" |
+            ...
+                Fam.IsMarried(otherPerson) &
+                ...
+                    Sec152.IsDependentOf(otherPerson, filer) |  # TODO: Footnote 3
+                    OnlyReasonCantClaimExemptionIsBecauseClaimedAsDepBySomeoneElse(filer, otherPerson)
+    |
+    ...
+        Sec152.IsQualifyingRelativeOf(otherPerson, filer) &
+        Fam.IsParentOf(otherPerson, filer) &
+        Sec152.IsDependentOf(otherPerson, filer) &
+        ! CanClaimExemptionForOnlyBecauseOfMultipleSupportAgreement(filer, otherPerson)
+        # TODO: Add special rule for parent (page 8)
+    |
+    ...
+        Sec152.IsQualifyingRelativeOf(otherPerson, filer) &
+        ! Fam.IsParentOf(otherPerson, filer) &
+        LivedTogetherForOverHalfTaxYear(otherPerson, filer) &
+        Sec152.IsRelativeWhoDoesNotNeedToLiveWith(otherPerson, filer) &
+        Sec152.IsDependentOf(otherPerson, filer) &
+        ! CanClaimExemptionForOnlyBecauseOfMultipleSupportAgreement(filer, otherPerson)
+    
+
+# >>Do/did {1} and {2} live together for over half of the tax year?
+TboolIn LivedTogetherForOverHalfTaxYear(Thing p1, Thing p2)    
+  
+# >>Can/could {1} claim an exemption for {2} only because of a multiple support agreement?
+TboolIn CanClaimExemptionForOnlyBecauseOfMultipleSupportAgreement(Thing p1, Thing p2)
+
+# >>Is the only reason that {1} can't claim an exemption for {2} that {1} can be claimed as a dependent on someone else's return?
+TboolIn OnlyReasonCantClaimExemptionIsBecauseClaimedAsDepBySomeoneElse(Thing p1, Thing p2)
+
+
+# UNIT TESTS
+
+Test: Page8_Example4_GirlfriendsChild
+- Things girlfriendChild, filer
+- IsQualifyingChildOf(girlfriendChild,filer) = false
+- IsQualifyingRelativeOf(girlfriendChild,filer) = false
+- IRS.Pub501.IsQualifyingPersonForHoH(girlfriendChild, filer).TestOutput =?= "Time.DawnOf False "
+
+Test: Page8_Example3_Girlfriend
+- Things girlfriend, taxfiler
+- IsQualifyingChildOf(girlfriend,taxfiler) = false
+- IsQualifyingRelativeOf(girlfriend,taxfiler) = false
+- IRS.Pub501.IsQualifyingPersonForHoH(girlfriend, taxfiler).TestOutput =?= "Time.DawnOf False "
+
+Test: Page8_Example2_ChildNotQP
+- Things child, parent
+- IsQualifyingChildOf(child,parent) = false
+- IsQualifyingRelativeOf(child,parent) = false
+- IRS.Pub501.IsQualifyingPersonForHoH(child, parent).TestOutput =?= "Time.DawnOf False "
+
+Test: Page8_Example1_Child
+- Things child, parent
+- IsQualifyingChildOf(child,parent) = true
+- MaritalStatus(child) = "Single"
+- IRS.Pub501.IsQualifyingPersonForHoH(child, parent).TestOutput =?= "Time.DawnOf True "
+
+
+
+
+
+
 

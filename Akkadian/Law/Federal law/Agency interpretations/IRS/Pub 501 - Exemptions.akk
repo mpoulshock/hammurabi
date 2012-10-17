@@ -2,11 +2,12 @@
 # Summary:      IRS Publication 501 - Exemptions for individuals
 # Updated:      2012-10-15
 # Author:       Michael Poulshock
+# References:   USC.Tit26
 
 
 # Total amount that a person can deduct for exemptions
 Tnum ExemptionAmount(Thing p) =
-    USC.Tit26.Sec151.ExemptionAmountAfterPhaseout(p)
+    Sec151.ExemptionAmountAfterPhaseout(p)
     
 # Exemption amount before the phaseout (which is calculated in USC.Tit26.Sec151)
 Tnum ExemptionAmountBeforePhaseout(Thing p) =
@@ -51,7 +52,7 @@ Tnum ExemptionAmountPerPerson(Thing p) =
     if year == 1999 -> 2750
 	else Stub()
 	
-    Tnum year = USC.Tit26.Sec441.TaxYear(p)
+    Tnum year = Sec441.TaxYear(p)
     
 # Personal + dependency exemptions
 Tnum NumberOfExemptions(Thing p) =
@@ -65,7 +66,7 @@ Tnum PersonalExemptions(Thing p) =
 # Own exemption
 Tnum OwnExemption(Thing p) =
 	set:
-	if USC.Tit26.Sec152.CanBeClaimedAsDependentBySomeone(p) -> 0
+	if Sec152.CanBeClaimedAsDependentBySomeone(p) -> 0
 	else 1
 	
 # TODO: Test using temporal sets for SpouseOf()
@@ -92,36 +93,36 @@ Tbool SpouseDiedDuringTaxYear(Thing p) =
 # True during the tax year in which a person died
 Tbool DiedDuringTaxYear(Thing p) =
 	IsDeceased(p).IsEverTrue() &
-	DateIsInPeriod(DateOfDeath(p), USC.Tit26.Sec441.TaxYear(p))
+	DateIsInPeriod(DateOfDeath(p), Sec441.TaxYear(p))
     
 # Married on last day of tax year 
 Tbool MarriedAtEndOfTaxYear(Thing p) =
-	Fam.IsMarried(p).PeriodEndVal(USC.Tit26.Sec441.TaxYear(p))
+	Fam.IsMarried(p).PeriodEndVal(Sec441.TaxYear(p))
     
 # MFJ, no one can claim spouse    
 Tbool MFJAndUnclaimedSpouse(Thing p) =
-	USC.Tit26.Sec2.FilingStatus(p) == "Married filing jointly" &
-	Fam.SpousesOf(p).Exists(! USC.Tit26.Sec152.CanBeClaimedAsDependentBySomeone(_))
+	Sec2.FilingStatus(p) == "Married filing jointly" &
+	Fam.SpousesOf(p).Exists(! Sec152.CanBeClaimedAsDependentBySomeone(_))
 	
 # Test for married filing separately and head of household
 Tbool MeetsMFSorHoHTest(Thing p) =
     ...
-        USC.Tit26.Sec2.FilingStatus(p) == "Married filing separately" |
-        USC.Tit26.Sec2.FilingStatus(p) == "Head of household"
+        Sec2.FilingStatus(p) == "Married filing separately" |
+        Sec2.FilingStatus(p) == "Head of household"
     &
     Fam.SpousesOf(p).ForAll(MeetsSpouseTest(_))
     
 # Spouse test for MFS and HoH
 Tbool MeetsSpouseTest(Thing spouse) =
 	GrossIncome(spouse) == 0 &
-	USC.Tit26.Sec2.FilingStatus(spouse) == "Not filing" &
-	USC.Tit26.Sec152.CanBeClaimedAsDependentBySomeone(spouse)
+	Sec2.FilingStatus(spouse) == "Not filing" &
+	Sec152.CanBeClaimedAsDependentBySomeone(spouse)
 	
 # >>How many dependency exemptions does/did {1} claim?  (This is the number of people that {1} will claim as a dependent on their federal tax return.)
 TnumIn? DependencyExemptions(Thing p) =
-	possibleDeps.Filter(USC.Tit26.Sec152.IsDependentOf(p,_)).Count
+	possibleDeps.Filter(Sec152.IsDependentOf(p,_)).Count
 	
-	Tset possibleDeps = USC.Tit26.Sec152.PeopleWhoMightClaimAsDependent(p)
+	Tset possibleDeps = Sec152.PeopleWhoMightClaimAsDependent(p)
 	
 	
 # TODO: Move elsewhere...

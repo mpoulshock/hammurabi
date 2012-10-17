@@ -6,7 +6,7 @@
 # Author:       Michael Poulshock
 
 
-# >>Is/was {1} a dependent (for tax purposes) of {2}?
+# >>Can/did {2} claim {1} as a dependent (for tax purposes)?
 TboolIn? IsDependentOf(Thing d, Thing tp) =
     ...
         IsQualifyingChildOf(d, tp) | 
@@ -17,8 +17,8 @@ TboolIn? IsDependentOf(Thing d, Thing tp) =
 
 # QUALIFYING CHILD
 	
-# Indicates whether one person is a "qualifying child" of another.
-Tbool IsQualifyingChildOf(Thing d, Thing tp) =    
+# >>Is/was {1} a 'qualifying child' of {2} for dependency purposes?
+TboolIn? IsQualifyingChildOf(Thing d, Thing tp) =    
     QCGenTest(d, tp, taxYear) &
     QCRelationTest(d, tp) &
     QCAgeTest(d, tp, taxYear) &
@@ -60,9 +60,9 @@ Tbool QCAgeTest(Thing d, Thing tp, Tnum taxYear) =
 
 # QUALIFYING RELATIVE
 	
-# Indicates whether one person is a "qualifying relative" of another.
 # Subsections d3 and d4 are omitted.
-Tbool IsQualifyingRelativeOf(Thing d, Thing tp) =
+# >>Is/was {1} a 'qualifying relative' of {2} for dependency purposes?
+TboolIn? IsQualifyingRelativeOf(Thing d, Thing tp) =
     genTest & 
     relationTest & 
     d4Test
@@ -79,26 +79,31 @@ Tbool IsQualifyingRelativeOf(Thing d, Thing tp) =
 		
     # d2 - relationship test
     Tbool relationTest = 
-        Fam.IsParentOf(tp,d) |             # A
-        Fam.IsGrandparentOf(tp,d) |
-        Fam.IsGreatGrandparentOf(tp,d) |
-        Fam.AreSiblings(tp,d) |            # B
-        Fam.AreStepsiblings(tp,d) |
-        Fam.IsParentOf(d,tp) |             # C
-        Fam.IsGrandparentOf(d,tp) |
-        Fam.IsGreatGrandparentOf(d,tp) |
-        Fam.IsStepparentOf(d,tp) |         # D
-        Fam.IsAuntOrUncleOf(tp,d) |        # E
-        Fam.IsAuntOrUncleOf(d,tp) |        # F
+        IsRelativeWhoDoesNotNeedToLiveWith(d, tp) |     # A-F
         ...
             Econ.SharePrincipalAbode(tp,d) &
-            Econ.ShareHousehold(tp,d)     # H - and not spouse
+            Econ.ShareHousehold(tp,d)                   # H - and not spouse
             
     # d4 - multiple support agreements 
     Tbool d4Test = 
 		if TboolIn AnotherTaxpayerProvidedSupportFor(d) then Stub()
 
 
+# d2; see also Pub. 501, Qualifying Relative, "Relatives who do not need to live with you"
+Tbool IsRelativeWhoDoesNotNeedToLiveWith(Thing relative, Thing tp) =
+    Fam.IsParentOf(tp, relative) |             # A
+    Fam.IsGrandparentOf(tp, relative) |
+    Fam.IsGreatGrandparentOf(tp, relative) |
+    Fam.AreSiblings(tp, relative) |            # B
+    Fam.AreStepsiblings(tp, relative) |
+    Fam.IsParentOf(relative, tp) |             # C
+    Fam.IsGrandparentOf(relative, tp) |
+    Fam.IsGreatGrandparentOf(relative, tp) |
+    Fam.IsStepparentOf(relative, tp) |         # D
+    Fam.IsAuntOrUncleOf(tp, relative) |        # E
+    Fam.IsAuntOrUncleOf(relative, tp)          # F
+        
+        
 # EXCEPTIONS
 		
 # Exceptions to whether a person can be a dependent. 152(b).
