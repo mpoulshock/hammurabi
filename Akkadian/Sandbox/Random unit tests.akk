@@ -1,7 +1,42 @@
 # Namespace:    Hammurabi.Sandbox
 # Summary:      A host of random unit tests
-# Updated:      2012-10-05
+# Updated:      2012-10-19
 # Author:       Michael Poulshock
+
+
+# TEST OF DEPRECIATION RULES
+
+# Idea is that the value of some asset depreciates over time.  Given a
+# timeline of the depreciation percentage, what is the asset's value?
+
+# Applicable depreciate rate, given the date the property was acquired
+Tnum DepreciationRate(Tdate acquisitionDate) =
+    DepreciationPercentage(years)
+    
+    Tnum years = YearsSinceAcquisitionOfProperty(acquisitionDate)
+ 
+# Counts off the years since the date the property was acquired
+Tnum YearsSinceAcquisitionOfProperty(Tdate acquisitionDate) =
+    Time.IntervalsSince(acquisitionDate, acquisitionDate.AddYears(10), Time.IntervalType.Year)
+
+# Example is from the MARCS depreciation rate for 5-year property
+# using the half-year convention.    
+Tnum DepreciationPercentage(Tnum year) =
+    match year
+    1 -> 0.2000
+    2 -> 0.3200
+    3 -> 0.1920
+    4 -> 0.1152
+    5 -> 0.1152
+    6 -> 0.0576
+    else Stub()
+ 
+ 
+Test: Depreciation1
+- Hammurabi.Sandbox.DepreciationRate(1999-01-01).AsOf(2003-03-03).Out =?= 0.1152
+
+Test: Depreciation2
+- Hammurabi.Sandbox.DepreciationRate(1999-01-01).AsOf(2010-03-03).Out =?= "Stub"
 
 
 # ELAPSED TIME - PERFORMANCE ISSUES
@@ -151,6 +186,66 @@ Test: Shift3
 - Thing p
 - AnnualIncome(p) = {Time.DawnOf: 0; 2000-01-01: 100; 2001-01-01: 200}
 - Econ.AnnualIncome(p).Shift(2,TheYear).TestOutput =?= "Time.DawnOf 0 1/1/1998 12:00:00 AM 100 1/1/1999 12:00:00 AM 200 "
+
+    
+# UNIT TESTS FOR YEARDIFF, WEEKDIFF, DAYDIFF
+
+# YearDiff
+
+Test: YearDiff1
+- YearDiff(2001-01-01, 2003-01-01).Out =?= 2 
+
+Test: YearDiff2
+- YearDiff(2001-01-01, 2001-01-01).Out =?= 0
+
+Test: YearDiff3
+- YearDiff(2000-01-01, 2010-01-01).Out =?= 10 
+
+Test: YearDiff4
+- YearDiff(new Tdate(Hstate.Stub), 2010-01-01).Out =?= "Stub"
+
+Test: YearDiff5
+- YearDiff(2000-01-02, 2010-01-01).Out =?= 9.997
+
+Test: YearDiff6
+- YearDiff(2000-01-01, 2000-01-02).Out =?= 0.003
+
+Test: YearDiff7
+- YearDiff(2000-02-29, 2004-02-29).Out =?= 4 
+
+Test: YearDiff8
+- YearDiff(2000-02-29, 2004-02-28).Out =?= 4
+
+Test: YearDiff9
+- YearDiff(2004-02-29, 2004-02-29).Out =?= 0
+
+# WeekDiff
+
+Test: WeekDiff1
+- WeekDiff(2000-01-01, 2000-01-08).Out =?= 1
+
+Test: WeekDiff2
+- WeekDiff(2000-01-01, 2000-01-07).Out =?= 0.857
+
+Test: WeekDiff3
+- WeekDiff(2000-01-01, 2000-01-15).Out =?= 2
+    
+# DayDiff
+    
+Test: DayDiff1
+- DayDiff(2001-01-01, 2001-01-02).Out =?= 1
+
+Test: DayDiff2
+- DayDiff(2001-01-01, 2001-01-08).Out =?= 7
+
+Test: DayDiff3
+- DayDiff(2001-01-01, 2001-01-01).Out =?= 0
+
+Test: DayDiff4
+- DayDiff(2000-01-01, 2010-01-01).Out =?= 3653
+
+Test: DayDiff5
+- DayDiff(2010-01-01, new Tdate(Hstate.Uncertain)).Out =?= "Uncertain"
 
 
 # DATE EQUALITY

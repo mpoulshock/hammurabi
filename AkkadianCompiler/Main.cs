@@ -231,7 +231,7 @@ namespace Akkadian
                 }
                 else
                 {
-                    SlocCount++;
+                    SlocCount++;    // Doesn't count test case lines (by design)
                 }
              
                 lastLineDepth = depth;

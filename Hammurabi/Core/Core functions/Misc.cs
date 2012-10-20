@@ -108,6 +108,30 @@ namespace Hammurabi
         }
 
         /// <summary>
+        /// Returns the number of days between the DateTimes in two Tdates.
+        /// </summary>
+        public static Tnum DayDiff(Tdate td1, Tdate td2)
+        {
+            return Tdate.DayDifference(td1,td2);
+        }
+        
+        /// <summary>
+        /// Returns the number of weeks (accurate to three decimal places) between the DateTimes in two Tdates.
+        /// </summary>
+        public static Tnum WeekDiff(Tdate td1, Tdate td2)
+        {
+            return Tdate.WeekDifference(td1,td2);
+        }
+
+        /// <summary>
+        /// Returns the number of years (accurate to three decimal places) between the DateTimes in two Tdates.
+        /// </summary>
+        public static Tnum YearDiff(Tdate td1, Tdate td2)
+        {
+            return Tdate.YearDifference(td1,td2);
+        }
+
+        /// <summary>
         /// Adds preceding zeros to a string until it reaches a given length. 
         /// </summary>
         public static string AddPrecedingZeros(string s, int desiredLength)
@@ -116,7 +140,5 @@ namespace Hammurabi
 
             return AddPrecedingZeros("0" + s, desiredLength);
         }
-
-
     }
 }

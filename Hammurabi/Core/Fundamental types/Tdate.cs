@@ -328,7 +328,7 @@ namespace Hammurabi
         /// <summary>
         /// Returns the number of days between the DateTimes in two Tdates.
         /// </summary>
-        public static Tnum DayDiff(Tdate td1, Tdate td2)
+        public static Tnum DayDifference(Tdate td1, Tdate td2)
         {
             return ApplyDtFcnToTimeline((x,y) => TimeDiff(x,y), Time.IntervalType.Day, td1, td2);
         }
@@ -336,7 +336,7 @@ namespace Hammurabi
         /// <summary>
         /// Returns the number of weeks between the DateTimes in two Tdates.
         /// </summary>
-        public static Tnum WeekDiff(Tdate td1, Tdate td2)
+        public static Tnum WeekDifference(Tdate td1, Tdate td2)
         {
             return ApplyDtFcnToTimeline((x,y) => TimeDiff(x,y), Time.IntervalType.Week, td1, td2);
         }
@@ -346,57 +346,62 @@ namespace Hammurabi
         /// <summary>
         /// Returns the number of years between the DateTimes in two Tdates.
         /// </summary>
-        public static Tnum YearDiff(Tdate td1, Tdate td2)
+        public static Tnum YearDifference(Tdate td1, Tdate td2)
         {
             return ApplyDtFcnToTimeline((x,y) => TimeDiff(x,y), Time.IntervalType.Year, td1, td2);
         }
-        
+
+        /// <summary>
+        /// Times the diff.
+        /// </summary>
         private static decimal TimeDiff(Time.IntervalType t, List<Hval> list)
         {
             DateTime earlierDate = Convert.ToDateTime(list[0].Val);
             DateTime laterDate = Convert.ToDateTime(list[1].Val);
             TimeSpan s = laterDate - earlierDate;
+            double result = -1;
             
             if (t == Time.IntervalType.Day)
             {
-                return Convert.ToDecimal(s.TotalDays);
+                result = s.TotalDays;
             }
-            if (t == Time.IntervalType.Week)
+            else if (t == Time.IntervalType.Week)
             {
-                int weeks = Convert.ToInt32(s.TotalDays) / 7;
-                return Convert.ToDecimal(weeks);
+                result = Math.Round(s.TotalDays / 7, 3);
             }
-            if (t == Time.IntervalType.Year)
+            else if (t == Time.IntervalType.Year)
             {
-                int years = (int) (s.TotalDays / 365.2425);
-                return Convert.ToDecimal(years);
+                result = YearDiffRec(earlierDate, laterDate);
             }
             
-            return -1;
+            return Convert.ToDecimal(result);
         }
-//        private static decimal TimeDiff(Time.IntervalType t, List<object> list)
-//        {
-//            DateTime earlierDate = Convert.ToDateTime(list[0]);
-//            DateTime laterDate = Convert.ToDateTime(list[1]);
-//            TimeSpan s = laterDate - earlierDate;
-//            
-//            if (t == Time.IntervalType.Day)
-//            {
-//                return Convert.ToDecimal(s.TotalDays);
-//            }
-//            if (t == Time.IntervalType.Week)
-//            {
-//                int weeks = Convert.ToInt32(s.TotalDays) / 7;
-//                return Convert.ToDecimal(weeks);
-//            }
-//            if (t == Time.IntervalType.Year)
-//            {
-//                int years = (int) (s.TotalDays / 365.2425);
-//                return Convert.ToDecimal(years);
-//            }
-//            
-//            return -1;
-//        }
+
+        /// <summary>
+        /// Recursively determines the difference in years between two dates, to three decimal places.
+        /// </summary>
+        private static double YearDiffRec(DateTime date1, DateTime date2)
+        {
+            DateTime plus1 = date1.AddYears(1);
+            DateTime plus4 = date1.AddYears(4);
+
+            // Count off 4-year periods (in case date1 is on a leap day)
+            if (date2 >= plus4)
+            {
+                return 4 + YearDiffRec(plus4, date2);
+            }
+            // Full year
+            else if (date2 >= plus1)
+            {
+                return 1 + YearDiffRec(plus1, date2);
+            }
+            // Partial year
+            else
+            {
+                return Math.Round((date2 - date1).TotalDays / 365.2425, 3);
+            }
+        }
+
         
         // ********************************************************************
         // Apply a function to the values in a Tdate

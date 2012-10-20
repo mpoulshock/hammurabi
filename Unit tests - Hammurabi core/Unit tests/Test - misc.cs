@@ -64,8 +64,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         }
   
         // Recursion using Tvars - temporal
-        
-        
+
         [Test]
         public void Misc_TemporalRecursion1 ()
         {

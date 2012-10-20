@@ -477,6 +477,8 @@ namespace Hammurabi
         /// </example>            
         public T Shift<T>(int offset, Tnum temporalPeriod) where T : Tvar
         {
+            // TODO: Make "offset" a Tnum instead of an int
+
             T result = (T)Auxiliary.ReturnProperTvar<T>();
             result.AddState(this.TimeLine.Keys[0], this.TimeLine.Values[0]);
 

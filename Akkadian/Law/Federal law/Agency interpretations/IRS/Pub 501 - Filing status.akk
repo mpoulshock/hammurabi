@@ -4,8 +4,10 @@
 # Author:       Michael Poulshock
 # References:   USC.Tit26
 
+
 # RULES FOR TAX YEAR 2011
 
+# TODO: Order status to give user best result
 Tstr FilingStatusInferred(Thing p) =
 	new Tstr(Hstate.Unstated)
 	
@@ -37,6 +39,14 @@ TnumIn AnnualOtherHouseholdExpenses(Thing p)
 
 # QUALIFYING PERSON FOR HEAD OF HOUSEHOLD
 
+##
+TODO:
+- Special rule for parents
+- Death or birth
+- Temporary absences
+- Kidnapped children
+##
+
 # Table 4 (page 9)
 # >>Is {1} a person qualifying {2} to file as Head of Household?
 TboolIn? IsQualifyingPersonForHoH(Thing otherPerson, Thing filer) =
@@ -47,7 +57,7 @@ TboolIn? IsQualifyingPersonForHoH(Thing otherPerson, Thing filer) =
             ...
                 Fam.IsMarried(otherPerson) &
                 ...
-                    Sec152.IsDependentOf(otherPerson, filer) |  # TODO: Footnote 3
+                    Sec152.IsDependentOf(otherPerson, filer) | 
                     OnlyReasonCantClaimExemptionIsBecauseClaimedAsDepBySomeoneElse(filer, otherPerson)
     |
     ...
