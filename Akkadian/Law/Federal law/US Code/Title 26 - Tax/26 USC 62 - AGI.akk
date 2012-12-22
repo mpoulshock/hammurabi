@@ -7,5 +7,6 @@
 
 # Adjusted gross income
 Tnum AGI(Thing p) =
-	TnumIn AdjustedGrossIncome(p)
-	
+    TnumIn AdjustedGrossIncome(p)
+    
+

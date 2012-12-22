@@ -44,7 +44,7 @@ Tnum ApplicablePercentage(Thing p) =
         set:
         if Sec2.FilingStatus(p) == "Married filing separately" -> 1250
         else 2500
-	
+    
 # Subpara. (C) - Threshold amount
 Tnum ThresholdAmount(Thing p) =
     set:
@@ -59,15 +59,16 @@ Tnum ThresholdAmount(Thing p) =
     
 # Subpara. (E)(ii) - Applicable fraction
 Tnum ApplicableFraction(Thing p) =
-   	set:
+       set:
     if year == 2009 -> 0.33333
     if year == 2008 -> 0.33333
     if year == 2007 -> 0.66667
     if year == 2006 -> 0.66667
-	else Stub()
-	
+    else Stub()
+    
     Tnum year = USC.Tit26.Sec441.TaxYear(p)
     
 
 # UNIT TESTS
+
 

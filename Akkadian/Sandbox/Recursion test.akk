@@ -6,17 +6,17 @@
 
 # Recursive function 1
 Tnum Fibonacci(Tnum n) =
-	set:
-	if n <= 1 -> 1
-	else Fibonacci(n-1) + Fibonacci(n-2)
+    set:
+    if n <= 1 -> 1
+    else Fibonacci(n-1) + Fibonacci(n-2)
 
 # Recursive function 2
 Tnum Factorial(Tnum n) =
-	set:
-	if n <= 1 -> 1
-	else n * Factorial(n-1)	
+    set:
+    if n <= 1 -> 1
+    else n * Factorial(n-1)    
 
-	
+    
 # UNIT TESTS
 
 Test: Fib1
@@ -33,4 +33,5 @@ Test: Fac2
 
 Test: Fac3
 - Sandbox.Factorial(7).Out =?= 5040
+
 

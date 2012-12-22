@@ -6,16 +6,16 @@
 
 # Enrolled in high school (or its equivalent)
 Tbool IsEnrolledInHighSchool(Thing p) =
-	IsStudent(p) &
-	EnrolledIn(p) == "High school"
+    IsStudent(p) &
+    EnrolledIn(p) == "High school"
 
 # >>Did {1} graduate high school (or its equivalent)?
 TboolIn GraduatedHighSchool(Thing p) =
-	HighestLevelAttained(p) == "High school" |
-	HighestLevelAttained(p) == "College" |
-	HighestLevelAttained(p) == "Master's degree" |
-	HighestLevelAttained(p) == "Professional degree" |
-	HighestLevelAttained(p) == "Doctorate degree"
+    HighestLevelAttained(p) == "High school" |
+    HighestLevelAttained(p) == "College" |
+    HighestLevelAttained(p) == "Master's degree" |
+    HighestLevelAttained(p) == "Professional degree" |
+    HighestLevelAttained(p) == "Doctorate degree"
 
 # >>What is the highest educational degree that {1} earned? (Options: High school, College, Master's degree, Professional degree, Doctorate degree)
 TstrIn HighestLevelAttained(Thing p)
@@ -25,4 +25,5 @@ TstrIn EnrolledIn(Thing p)
 
 # >>Is/was {1} a student?
 TboolIn IsStudent(Thing p)
+
 

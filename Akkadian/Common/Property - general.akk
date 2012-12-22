@@ -19,4 +19,5 @@ TsetIn OwnersOf(Thing property)
 # >>Does/did {1} own {2}?
 TboolIn Owns(Thing person, Thing property)
 
-		
+        
+

@@ -8,31 +8,31 @@
 
 # (e)(1) - Date IRS Form 8300 is due.
 Tdate DateForm8300Due(Thing recipient, Thing p, Thing transaction) =
-	set:
-	if !due.IsEverTrue() -> null
-	else due.DateFirstTrue.AddDays(15)
-	
-	Tbool due = 
-		USC.Tit26.Sec6050I.Form8300Due(recipient, p, transaction)
-		
-		
+    set:
+    if !due.IsEverTrue() -> null
+    else due.DateFirstTrue.AddDays(15)
+    
+    Tbool due = 
+        USC.Tit26.Sec6050I.Form8300Due(recipient, p, transaction)
+        
+        
 # Does the recipient have to file IRS Form 8300 in relation to the other person,
 # given a transaction (series of transfers)?
 Tbool Form8300Due(Thing r, Thing p, Thing t) =
-	USC.Tit26.Sec7701.IsPerson(r)    
-	# course of trade or business
-	# Met10KThreshold(r,p,t)
+    USC.Tit26.Sec7701.IsPerson(r)    
+    # course of trade or business
+    # Met10KThreshold(r,p,t)
             
 
 # (b)(1),(2) - Initial payment > $10,000
 Tbool InitialPayment(Thing r, Thing t) =
-	TheTime.IsAtOrAfter(thresholdDate)
+    TheTime.IsAtOrAfter(thresholdDate)
 
-	DateTime thresholdDate = 
-		Time.EndOf
-			
-			## C#
-			decimal? total = 0;
+    DateTime thresholdDate = 
+        Time.EndOf
+            
+            ## C#
+            decimal? total = 0;
             foreach (Transfer transfer in t.Transfers)
             {
                 if (transfer.Date <= t.DateOfInitialPayment(r).AddYears(1) & IsCash(transfer, t))
@@ -46,97 +46,98 @@ Tbool InitialPayment(Thing r, Thing t) =
                     }
                 }
             }
-			##
+            ##
                         
 
 # (b)(3) - Subsequent payments
 # 10K total in 12-mo period
 Tbool SubsequentPayments(Thing t) =
-	true
+    true
 
         
 # (c)(1) - Cash, defined
 Tbool IsCash(Thing transfer, Thing t) =
-	type == "U.S. currency" |
-	type == "Foreign currency" |
-	...
-		...
-			type == "Cashier’s check" |
-			type == "Bank draft" |
-			type == "Traveler’s check"|
-			type == "Money order" 
-		&
-		IsDRT(t) &
-		Trans.PurposeOfTransaction(t) <> "Proceeds of bank loan" &		# Nature of the transaction
-		!CertainInstallmentSales(t) &
-		!IsExemptDownPaymentPlan(transfer,t)
-	
-	Tstr type = 
-		Stub()
-		
-		##
-		Prop.TypeOf(p)
-		
-	Thing p = 
-		Trans.ItemTransferred(transfer).ToThing
+    type == "U.S. currency" |
+    type == "Foreign currency" |
+    ...
+        ...
+            type == "Cashierï¿½s check" |
+            type == "Bank draft" |
+            type == "Travelerï¿½s check"|
+            type == "Money order" 
+        &
+        IsDRT(t) &
+        Trans.PurposeOfTransaction(t) <> "Proceeds of bank loan" &        # Nature of the transaction
+        !CertainInstallmentSales(t) &
+        !IsExemptDownPaymentPlan(transfer,t)
+    
+    Tstr type = 
+        Stub()
+        
         ##
-		
+        Prop.TypeOf(p)
+        
+    Thing p = 
+        Trans.ItemTransferred(transfer).ToThing
+        ##
+        
 # (c)(1)(iii) - Designated reporting transactions
 Tbool IsDRT(Thing t) =
-	Trans.PurposeOfTransaction(t) == "Retail sale" &
-	...
-		thingSold == "Consumer durable" |
-		USC.Tit26.Sec408.IsCollectible_m2A_D(thingSold) |
-		thingSold == "Travel or entertainment activity" 
+    Trans.PurposeOfTransaction(t) == "Retail sale" &
+    ...
+        thingSold == "Consumer durable" |
+        USC.Tit26.Sec408.IsCollectible_m2A_D(thingSold) |
+        thingSold == "Travel or entertainment activity" 
 
-		Tstr thingSold =
-			Trans.ThingSoldInTransaction(t)
-		
+        Tstr thingSold =
+            Trans.ThingSoldInTransaction(t)
+        
 # (c)(1)(v) - Exception for certain installment sales
 Tbool CertainInstallmentSales(Thing t) =
-	...
-		Trans.PurposeOfTransaction(t) == "Payment on installment sales contract" |
-		Trans.PurposeOfTransaction(t) == "Payment on a promissory note"
-	&
-	amtPaidAsOf60Days <= Trans.PurchasePrice(t) * 0.5
-				   
-	# How much has been paid after 60 days?
-	# TODO: Generalize in class temporal method?
-	Tnum amtPaidAsOf60Days = 
-		0
-		
-			## C#
+    ...
+        Trans.PurposeOfTransaction(t) == "Payment on installment sales contract" |
+        Trans.PurposeOfTransaction(t) == "Payment on a promissory note"
+    &
+    amtPaidAsOf60Days <= Trans.PurchasePrice(t) * 0.5
+                   
+    # How much has been paid after 60 days?
+    # TODO: Generalize in class temporal method?
+    Tnum amtPaidAsOf60Days = 
+        0
+        
+            ## C#
             foreach (Transfer transfer in t.Transfers)
             {
                 if (transfer.Date <= t.DateOfSale.AddDays(60))
                 {
                     amtPaidAsOf60Days += transfer.Item.ValueInDollars.ToDecimal;
                 }
-			}
-			##
+            }
+            ##
 
 # (c)(1)(vi) - Exception for certain down payment plans
 Tbool IsExemptDownPaymentPlan(Thing transfer, Thing t) =
-	Trans.PurposeOfTransaction(t) == "Down payment plan" &
-	...
-		...
-			thingSold <> "Travel or entertainment activity" &
-			dateBalanceDue <= dateOfSale &
-			Trans.DateOf(transfer) < dateOfSale.AddDays(-60)
-		|
-		...
-			thingSold == "Travel or entertainment activity" &
-			dateBalanceDue <= dateOfSale & 		# <= t.DateFirstItemFurnished
-			Trans.DateOf(transfer) < dateBalanceDue.AddDays(-60)
+    Trans.PurposeOfTransaction(t) == "Down payment plan" &
+    ...
+        ...
+            thingSold <> "Travel or entertainment activity" &
+            dateBalanceDue <= dateOfSale &
+            Trans.DateOf(transfer) < dateOfSale.AddDays(-60)
+        |
+        ...
+            thingSold == "Travel or entertainment activity" &
+            dateBalanceDue <= dateOfSale &         # <= t.DateFirstItemFurnished
+            Trans.DateOf(transfer) < dateBalanceDue.AddDays(-60)
             
 
-	Tdate dateOfSale =
-		Trans.DateOfSale(t)
-	
-	Tdate dateBalanceDue =
-		Trans.DateBalanceDue(t)
-		
-	Tstr thingSold =
-			Trans.ThingSoldInTransaction(t)
-			
-			
+    Tdate dateOfSale =
+        Trans.DateOfSale(t)
+    
+    Tdate dateBalanceDue =
+        Trans.DateBalanceDue(t)
+        
+    Tstr thingSold =
+            Trans.ThingSoldInTransaction(t)
+            
+            
+

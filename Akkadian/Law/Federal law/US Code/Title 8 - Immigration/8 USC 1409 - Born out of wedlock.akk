@@ -7,64 +7,64 @@
 
 # Subsection (a) - Legitimated children
 Tbool SubsecAApplies(Thing c) =
-	Fam.BornOutOfWedlock(c) &
-	Fam.ParentsOf(c).Exists(IsLegitimatingFatherSubsecA(_,c)) &
-	TheTime.IsAtOrAfter(DoB(c))
+    Fam.BornOutOfWedlock(c) &
+    Fam.ParentsOf(c).Exists(IsLegitimatingFatherSubsecA(_,c)) &
+    TheTime.IsAtOrAfter(DoB(c))
 
 # Paternity legitimated before child turns 21
 Tbool IsLegitimatingFatherSubsecA(Thing father, Thing child) =
-	legitimated.IsEverTrue() &
-	Fam.IsBiologicalParentOf(father, child) & 		# Established by clear and convincing evidence
-	Imm.IsUSNational(father).AsOf(DoB(child)) &		# Is this what "nationality of the U.S." means?
-	if IsAlive(father) then Fam.CommittedToFinanciallySupport(father, child)
-	
-	Tbool legitimated =
-		Fam.IsFatherOf(father,child) &
-		Age(child) < 18 &
-		...
-			Fam.IsLegitimatedByLaw(child) |		# Covers (4)(A) and (C)
-			Fam.Legitimated(father, child)
+    legitimated.IsEverTrue() &
+    Fam.IsBiologicalParentOf(father, child) &         # Established by clear and convincing evidence
+    Imm.IsUSNational(father).AsOf(DoB(child)) &        # Is this what "nationality of the U.S." means?
+    if IsAlive(father) then Fam.CommittedToFinanciallySupport(father, child)
+    
+    Tbool legitimated =
+        Fam.IsFatherOf(father,child) &
+        Age(child) < 18 &
+        ...
+            Fam.IsLegitimatedByLaw(child) |        # Covers (4)(A) and (C)
+            Fam.Legitimated(father, child)
 
-			
+            
 # Subsection (b) applies
 # Note: Section 405 pertains to rules in effect when Act was passed
 Tbool SubsecBApplies(Thing c) = 
-	Fam.BornOutOfWedlock(c) &
-	DoB(c) >= 1941-01-13 &
-	DoB(c) < 1952-12-24 &
-	Fam.ParentsOf(c).Exists(IsLegitimatingFatherSubsecB(_,c))
+    Fam.BornOutOfWedlock(c) &
+    DoB(c) >= 1941-01-13 &
+    DoB(c) < 1952-12-24 &
+    Fam.ParentsOf(c).Exists(IsLegitimatingFatherSubsecB(_,c))
 
 # Paternity legitimated before child turns 21
 Tbool IsLegitimatingFatherSubsecB(Thing father, Thing child) =
-	paternityLegitimated.IsEverTrue()
+    paternityLegitimated.IsEverTrue()
 
-	Tbool paternityLegitimated =
-		Fam.IsFatherOf(father,child) &
-		Fam.Legitimated(father, child) &
-		Age(child) < 21
+    Tbool paternityLegitimated =
+        Fam.IsFatherOf(father,child) &
+        Fam.Legitimated(father, child) &
+        Age(child) < 21
 
-	
+    
 # Child national if mother national
 Tbool IsUSNationalPerMother(Thing p) =
-	SubsecCApplies(p)
+    SubsecCApplies(p)
 
 # Subsection (c) applies
 Tbool SubsecCApplies(Thing c) = 
-	DoB(c) > 1952-12-23 &
-	! BornInTheUSA(c) & 
-	Fam.BornOutOfWedlock(c) &
-	Imm.IsUSNational(mom).AsOf(DoB(c)) &
-	momPresent.IsEverTrueBefore(DoB(c)) &
-	TheTime.IsAtOrAfter(DoB(c))
-		
-	# Physically present for a continuous period of one year
-	Tbool momPresent =
-		Sec1401.PresentInUSorOP(mom).YearsContinuouslyTrue >= 1
-	
-	Thing mom =
-		Sec1401.MotherOf(c)
-	
-	
+    DoB(c) > 1952-12-23 &
+    ! BornInTheUSA(c) & 
+    Fam.BornOutOfWedlock(c) &
+    Imm.IsUSNational(mom).AsOf(DoB(c)) &
+    momPresent.IsEverTrueBefore(DoB(c)) &
+    TheTime.IsAtOrAfter(DoB(c))
+        
+    # Physically present for a continuous period of one year
+    Tbool momPresent =
+        Sec1401.PresentInUSorOP(mom).YearsContinuouslyTrue >= 1
+    
+    Thing mom =
+        Sec1401.MotherOf(c)
+    
+    
 
 # UNIT TESTS
 
@@ -113,12 +113,13 @@ Test: SubsecC_UnnecessaryQuestion
 - Things jamie, mom, dad
 - DoB(jamie) = 1977-02-03
 - ParentsOf(jamie) = [[mom, dad]]
-# - ChildrenOf(mom) = [[jamie]]		# Asked unnecessarily b/c currently no look-ahead for |~ (IsParentOf)
+# - ChildrenOf(mom) = [[jamie]]        # Asked unnecessarily b/c currently no look-ahead for |~ (IsParentOf)
 - Gender(mom) = "Female"
 - Gender(dad) = "Male"
 - CountryLocation(mom) = "United States"
 - BirthCountry(jamie) = "United States"
 - USC.Tit8.Sec1409.SubsecCApplies(jamie).TestOutput =?= "Time.DawnOf False "
+
 
 
 

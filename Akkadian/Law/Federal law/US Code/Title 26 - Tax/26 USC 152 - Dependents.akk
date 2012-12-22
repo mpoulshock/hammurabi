@@ -16,24 +16,24 @@ TboolIn? IsDependentOf(Thing d, Thing tp) =
 
 
 # QUALIFYING CHILD
-	
+    
 # >>Is/was {1} a 'qualifying child' of {2} for dependency purposes?
 TboolIn? IsQualifyingChildOf(Thing d, Thing tp) =    
     QCGenTest(d, tp, taxYear) &
     QCRelationTest(d, tp) &
     QCAgeTest(d, tp, taxYear) &
-	if TboolIn CanBeClaimedAsQCByTwoTaxpayers(d) then Stub()
+    if TboolIn CanBeClaimedAsQCByTwoTaxpayers(d) then Stub()
 
     Tnum taxYear = Sec441.TaxYear(tp)
 
-	
+    
 # Qualifying child - c1 - general elements (excluding those in c2, c3, and c4)
 Tbool QCGenTest(Thing d, Thing tp, Tnum taxYear) =
     Econ.SharePrincipalAbode(d,tp).TotalElapsedDaysPer(taxYear) > 182.5 &
     Econ.PercentSelfSupport(d) < 50 &        # per TY
     ...
         !Sec6013.IsMFJ(d) | 
-		Sec6013.FilesMFJOnlyToClaimRefund(d)
+        Sec6013.FilesMFJOnlyToClaimRefund(d)
     
     
 # Qualifying child - c2 - relationship test
@@ -42,9 +42,9 @@ Tbool QCRelationTest(Thing d, Thing tp) =
     Fam.IsGrandparentOf(tp,d) |
     Fam.IsGreatGrandparentOf(tp,d) |
     Fam.AreSiblings(tp,d) |
-    Fam.AreStepsiblings(tp,d) 		# or descendant of sib or step-sib
+    Fam.AreStepsiblings(tp,d)         # or descendant of sib or step-sib
         
-		
+        
 # Qualifying child - c3 - age test
 Tbool QCAgeTest(Thing d, Thing tp, Tnum taxYear) =
     ...
@@ -59,7 +59,7 @@ Tbool QCAgeTest(Thing d, Thing tp, Tnum taxYear) =
 
 
 # QUALIFYING RELATIVE
-	
+    
 # Subsections d3 and d4 are omitted.
 # >>Is/was {1} a 'qualifying relative' of {2} for dependency purposes?
 TboolIn? IsQualifyingRelativeOf(Thing d, Thing tp) =
@@ -74,9 +74,9 @@ TboolIn? IsQualifyingRelativeOf(Thing d, Thing tp) =
             Sec61.GrossIncome(d) == 0 |                                         # shortcut
             Sec61.GrossIncome(d) < IRS.Pub501.ExemptionAmountBeforePhaseout(d)  # See 26 USC 151(d)(3)(D)
         & 
-		! IsQualifyingChildOf(d, tp) &
-		TboolIn NotQualifyingChildOfAnyTaxpayer(d)
-		
+        ! IsQualifyingChildOf(d, tp) &
+        TboolIn NotQualifyingChildOfAnyTaxpayer(d)
+        
     # d2 - relationship test
     Tbool relationTest = 
         IsRelativeWhoDoesNotNeedToLiveWith(d, tp) |     # A-F
@@ -86,7 +86,7 @@ TboolIn? IsQualifyingRelativeOf(Thing d, Thing tp) =
             
     # d4 - multiple support agreements 
     Tbool d4Test = 
-		if TboolIn AnotherTaxpayerProvidedSupportFor(d) then Stub()
+        if TboolIn AnotherTaxpayerProvidedSupportFor(d) then Stub()
 
 
 # d2; see also Pub. 501, Qualifying Relative, "Relatives who do not need to live with you"
@@ -105,7 +105,7 @@ Tbool IsRelativeWhoDoesNotNeedToLiveWith(Thing relative, Thing tp) =
         
         
 # EXCEPTIONS
-		
+        
 # Exceptions to whether a person can be a dependent. 152(b).
 Tbool CannotBeADependentOf(Thing d, Thing tp) =
     !depTest | 
@@ -116,8 +116,8 @@ Tbool CannotBeADependentOf(Thing d, Thing tp) =
     # Note: searching the fact base for possible dependents and defining this test
     # recursively leads to infinite loops and probably is a case of overengineering.
     Tbool depTest =
-		! TboolIn CanClaimSomeoneAsDependent(d) &
-		! CanBeClaimedAsDependentBySomeone(tp)
+        ! TboolIn CanClaimSomeoneAsDependent(d) &
+        ! CanBeClaimedAsDependentBySomeone(tp)
             
     # b2 - potential dependent cannot be married filing jointly
     # See IRS Publication 501 (2010), page 10.
@@ -132,7 +132,7 @@ Tbool CannotBeADependentOf(Thing d, Thing tp) =
         IsResidentOf(d, "Mexico") | 
         adoptionTest
 
-	# b3B - potential dependent must meet the citizenship test
+    # b3B - potential dependent must meet the citizenship test
     Tbool adoptionTest = 
         Fam.IsAdoptiveParentOf(tp,d) &
         Econ.SharePrincipalAbode(d,tp) &
@@ -142,25 +142,25 @@ Tbool CannotBeADependentOf(Thing d, Thing tp) =
             Imm.IsUSNational(tp)
 
 
-# FIGURE OUT WHO CAN CLAIM A PERSON AS A DEPENDENT (RECURSIVE)			
+# FIGURE OUT WHO CAN CLAIM A PERSON AS A DEPENDENT (RECURSIVE)            
 
 # >>Can someone claim {1} as a dependent?
 TboolIn? CanBeClaimedAsDependentBySomeone(Thing p) =
-	PeopleWhoMightClaimAsDependent(p).Exists(IsDependentOf(p,_))
-	
+    PeopleWhoMightClaimAsDependent(p).Exists(IsDependentOf(p,_))
+    
 # >>Who has financial or custodial responsibility for {1}?
 TsetIn PeopleWhoMightClaimAsDependent(Thing p)
-			
-			
+            
+            
 # UNIT TESTS
 
 Test: Pub501_Simple1
-- Thing c		# the child
-- Thing t		# the taxpayer
+- Thing c        # the child
+- Thing t        # the taxpayer
 - IsParentOf(t,c) = true
 - LivesWith(c,t) = true
 - DoB(c) = 2001-01-01
-- IsDeceased(c) = false 	#
+- IsDeceased(c) = false     #
 - IsUSCitizen(c) = true
 - CanBeClaimedAsQCByTwoTaxpayers(c) = false
 - PercentSelfSupport(c) = 0
@@ -172,13 +172,13 @@ Test: Pub501_Simple1
 
 ##
 Test: Pub501_Simple2
-- Thing c	
-- Thing t	
+- Thing c    
+- Thing t    
 - IsParentOf(t,c) = true
 - LivesWith(c,t) = true
 - DoB(c) = 2001-01-01
 - DoB(t) = 1970-01-01
-- IsDeceased(c) = false 	#
+- IsDeceased(c) = false     #
 - IsUSCitizen(c) = true
 - CanBeClaimedAsQCByTwoTaxpayers(c) = false
 - PercentSelfSupport(c) = 0
@@ -192,9 +192,9 @@ Test: Pub501_Simple2
 # IRS Pub. 501 (2010), Page 10, Example 1.
 # Cannot be a dependent because fails joint return test.
 Test: Pub501_1
-- Thing t		# Taxpayer
-- Thing d 		# T's daughter
-- Thing s		# T's son-in-law
+- Thing t        # Taxpayer
+- Thing d         # T's daughter
+- Thing s        # T's son-in-law
 - FamilyRelationship(d,s) = "Spouse"
 - FilesJointFedTaxReturnWith(d,s) = true
 - FilesMFJOnlyToClaimRefund(d) = false
@@ -207,9 +207,9 @@ Test: Pub501_1
 
 # IRS Pub. 501 (2010), Page 10, Example 2 (son).
 Test: Pub501_2a
-- Thing t		# Taxpayer
-- Thing d 		# T's daughter
-- Thing s		# T's son-in-law
+- Thing t        # Taxpayer
+- Thing d         # T's daughter
+- Thing s        # T's son-in-law
 - FamilyRelationship(d,s) = "Spouse"
 - FilesJointFedTaxReturnWith(d,s) = true
 - FilesMFJOnlyToClaimRefund(d) = true
@@ -223,9 +223,9 @@ Test: Pub501_2a
 
 # IRS Pub. 501 (2010), Page 10, Example 2 (daughter-in-law).
 Test: Pub501_2b
-- Thing t		# Taxpayer
-- Thing d 		# T's daughter-in-law
-- Thing s		# T's son
+- Thing t        # Taxpayer
+- Thing d         # T's daughter-in-law
+- Thing s        # T's son
 - FamilyRelationship(d,s) = "Spouse"
 - FilesJointFedTaxReturnWith(d,s) = true
 - FilesMFJOnlyToClaimRefund(d) = true
@@ -239,9 +239,9 @@ Test: Pub501_2b
 
 # IRS Pub. 501 (2010), Page 10, Example 3.
 Test: Pub501_3
-- Thing t		# Taxpayer
-- Thing s 		# Son
-- Thing d		# Daughter-in-law
+- Thing t        # Taxpayer
+- Thing s         # Son
+- Thing d        # Daughter-in-law
 - DoB(s) = 1992-01-01
 - DoB(d) = 1991-01-01
 - FamilyRelationship(d,s) = "Spouse"
@@ -254,8 +254,8 @@ Test: Pub501_3
 
 # IRS Pub. 501 (2010), Page 11, Unnumbered example.
 Test: Pub501_4
-- Thing t 		# Taxpayer
-- Thing s		# Son
+- Thing t         # Taxpayer
+- Thing s        # Son
 - DoB(s) = 1991-12-10
 - IsFullTimeStudent(s) = false
 - IsUSCitizen(s) = true
@@ -264,8 +264,8 @@ Test: Pub501_4
 
 # IRS Pub. 501 (2010), Page 11, Unnumbered example.
 Test: Pub501_5
-- Thing t 		# Taxpayer
-- Thing s		# Son
+- Thing t         # Taxpayer
+- Thing s        # Son
 - DoB(s) = 1991-12-10
 - IsFullTimeStudent(s) = true
 - IsUSCitizen(s) = true
@@ -274,8 +274,8 @@ Test: Pub501_5
 
 # IRS Pub. 501 (2010), Page 11, Unnumbered example.
 Test: Pub501_6
-- Thing t 		# Taxpayer
-- Thing s		# Son
+- Thing t         # Taxpayer
+- Thing s        # Son
 - DoB(s) = 1991-12-10
 - IsFullTimeStudent(s) = false
 - IsUSCitizen(s) = true
@@ -284,9 +284,9 @@ Test: Pub501_6
 
 # IRS Pub. 501 (2010), Page 11, Example 1.
 Test: Pub501_7
-- Thing t		# Taxpayer
-- Thing s		# T's spouse
-- Thing b		# T's brother
+- Thing t        # Taxpayer
+- Thing s        # T's spouse
+- Thing b        # T's brother
 - DoB(t) = 1989-01-01
 - DoB(s) = 1989-01-01
 - FamilyRelationship(t,s) = "Spouse"
@@ -301,9 +301,9 @@ Test: Pub501_7
 
 # IRS Pub. 501 (2010), Page 11, Example 2.
 Test: Pub501_8
-- Thing t		# Taxpayer
-- Thing s		# T's spouse
-- Thing b		# T's brother
+- Thing t        # Taxpayer
+- Thing s        # T's spouse
+- Thing b        # T's brother
 - DoB(t) = 1989-01-01
 - DoB(s) = 1985-01-01
 - FamilyRelationship(t,s) = "Spouse"
@@ -378,7 +378,7 @@ Test: QCGenTest_5
 - LivesWith(tp,d) = true
 - PercentSelfSupport(d) = 0
 - FedTaxFilingStatus(d) = "Married filing jointly" 
-- FilesMFJOnlyToClaimRefund(d) = false	
+- FilesMFJOnlyToClaimRefund(d) = false    
 - Sec152.QCGenTest(d,tp,Sec441.TaxYear(tp)).AsOf(DateTime.Now).Out =?= false
 
 Test: QCRelationship_1
@@ -404,5 +404,6 @@ Test: QCAge_2
 - IsStudent(d) = false
 - IsPermanentlyAndTotallyDisabled(d) = true
 - Sec152.QCAgeTest(d,tp,Sec441.TaxYear(tp)).AsOf(2012-03-03).Out =?= true
+
 
 

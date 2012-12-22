@@ -8,24 +8,24 @@
 # Citizenship of people born in Hawaii
 # Some obsolete nuances of the rule are omitted
 Tbool IsUSCitizenPerHawaii(Thing p) = 
-	ProngA(p) |
-	ProngB(p) |
-	ProngC(p)
-	
+    ProngA(p) |
+    ProngB(p) |
+    ProngC(p)
+    
 Tbool ProngA(Thing p) =
-	DoB(p) >= 1898-08-12 &
-	DoB(p) < 1900-04-30 &
-	BirthState(p) == "Hawaii" &		# At the time was called Republic of Hawaii
-	TheTime.IsAtOrAfter(1900-04-30)
-	
+    DoB(p) >= 1898-08-12 &
+    DoB(p) < 1900-04-30 &
+    BirthState(p) == "Hawaii" &        # At the time was called Republic of Hawaii
+    TheTime.IsAtOrAfter(1900-04-30)
+    
 Tbool ProngB(Thing p) =
-	DoB(p) >= 1900-04-30 &
-	BirthState(p) == "Hawaii" &
-	TheTime.IsAtOrAfter(DoB(p))    # Makes conclusion true from DoB onward
-	
+    DoB(p) >= 1900-04-30 &
+    BirthState(p) == "Hawaii" &
+    TheTime.IsAtOrAfter(DoB(p))    # Makes conclusion true from DoB onward
+    
 Tbool ProngC(Thing p) =
-	HawCitOn18980812(p)
-	
+    HawCitOn18980812(p)
+    
 # >>Was {1} a citizen of the Republic of Hawaii on August 12, 1898?
 TboolIn HawCitOn18980812(Thing p)
 
@@ -51,6 +51,7 @@ Test: 363859658
 - DoB(mel) = 1888-02-01
 - HawCitOn18980812(mel) = false
 - USC.Tit8.Sec1405.IsUSCitizenPerHawaii(mel).TestOutput =?= "Time.DawnOf False "
+
 
 
 

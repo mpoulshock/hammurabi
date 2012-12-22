@@ -12,7 +12,7 @@ Tdate DateForm8300Due(Thing recipient, Thing person, Thing transaction) =
 # (e) - Date by which the recipient must provide a statement to the other party.
 Tdate DateStatementDue(Thing r, Thing p, Thing t) =
     set:
-	if  !due.IsEverTrue() -> Stub()
+    if  !due.IsEverTrue() -> Stub()
     else Date(due.DateFirstTrue.ToDateTime.Year + 1, 1, 31)
 
     Tbool due = 
@@ -36,7 +36,8 @@ Tbool FormDueByCourtClerk(Thing r, Thing p, Thing t) =
     Tstr corpNature = 
         TstrIn NatureOrCorporatePurpose(r)
 
-	# p is the one who posted bond, not the offender but...
-	Tstr offense = 
-		TstrIn CriminalOffenseAtIssue(p)    
+    # p is the one who posted bond, not the offender but...
+    Tstr offense = 
+        TstrIn CriminalOffenseAtIssue(p)    
+
 

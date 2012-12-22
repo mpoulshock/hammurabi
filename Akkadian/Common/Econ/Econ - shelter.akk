@@ -37,17 +37,18 @@ TnumIn MonthlyRent(Thing p)
 
 # >>How much are/were {1}'s monthly mortgage costs?
 TnumIn MonthlyMortgageCosts(Thing p)
-	
+    
 # >>How much are/were {1}'s monthly property taxes?
 TnumIn MonthlyPropertyTaxes(Thing p)
-	
+    
 # >>How much is/was {1}'s monthly homeowners insurance premium?
 TnumIn MonthlyHomeOwnersInsurancePremium(Thing p) 
-	
+    
 # >>How much is/was {1}'s monthly renters insurance premium?
 TnumIn MonthlyRentersInsurancePremium(Thing p)
-	
+    
 # >>How much are/were {1}'s monthly utility costs?
 TnumIn MonthlyUtilities(Thing p) 
-	
-	
+    
+    
+

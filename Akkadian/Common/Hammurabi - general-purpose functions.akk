@@ -9,10 +9,10 @@
 # Returns true in the period during which a given date falls
 # Example: DateIsInPeriod(2013-04-15, TheYear) is true for all of 2013, and otherwise false
 Tbool DateIsInPeriod(Tdate date, Tnum temporalPeriod) =
-	afterEvent.EverPer(temporalPeriod) &
-	afterEvent.CountPastNIntervals(temporalPeriod,1) == 0
-	
-	Tbool afterEvent = TheTime.IsAtOrAfter(date)
+    afterEvent.EverPer(temporalPeriod) &
+    afterEvent.CountPastNIntervals(temporalPeriod,1) == 0
+    
+    Tbool afterEvent = TheTime.IsAtOrAfter(date)
 
 
 # ADD THING (INSTANTIATE A NEW ONE)
@@ -20,22 +20,23 @@ Tbool DateIsInPeriod(Tdate date, Tnum temporalPeriod) =
 # Creates a new instance of a Thing (if it doesn't already exist)
 Thing AddThing(string thingID) =
     Facts.AddThing(thingID)
-	
+    
     
 # ALL KNOWN PEOPLE
 
 # All known people (in user session)
 # Uses lower case to indicate uniqueness of function
 Tset people() =
-	Facts.AllKnownPeople()
+    Facts.AllKnownPeople()
 
 # All known people except a given person
 Tset peopleBut(Thing p1) =
-	Facts.AllKnownPeople() - p1
+    Facts.AllKnownPeople() - p1
 
 # All known people except two given people
 Tset peopleBut(Thing p1, Thing p2) =
-	Facts.AllKnownPeople() - p1 - p2
-	
-	
-	
+    Facts.AllKnownPeople() - p1 - p2
+    
+    
+    
+

@@ -7,11 +7,12 @@
 
 # (m)(2)(A)-(D) - Collectibles, defined
 Tbool IsCollectible_m2A_D(Tstr item) =
-	item == "Work of art" |
-	item == "Rug" |
-	item == "Antique" |
-	item == "Collectible metal" |
-	item == "Gem" |
-	item == "Stamp" |
-	item == "Coin"  
+    item == "Work of art" |
+    item == "Rug" |
+    item == "Antique" |
+    item == "Collectible metal" |
+    item == "Gem" |
+    item == "Stamp" |
+    item == "Coin"  
+
 

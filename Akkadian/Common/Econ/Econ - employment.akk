@@ -12,11 +12,11 @@ TboolIn IsEmployed(Thing p)
 # Indicates whether a person is employed by a particular employer (corporation).  
 # It is assumed that "employee" does not include independent contractors.
 Tbool IsEmployedBy(Thing p, Thing corp) =
-	EmploymentRelationship(p, corp) == "Employee" 
+    EmploymentRelationship(p, corp) == "Employee" 
 
 # Person is an independent contractor at an employer
 Tbool IsIndependentContractor(Thing p, Thing corp) =
-	EmploymentRelationship(p, corp) == "Independent contractor"
+    EmploymentRelationship(p, corp) == "Independent contractor"
 
 # >>What is/was {1}'s employment relationship with {2}? (Options: Employee, Independent contractor, Intern, None)
 TstrIn EmploymentRelationship(Thing person, Thing corp)
@@ -26,35 +26,35 @@ TdateIn DateStartedWorkAt(Thing p, Thing corp)
 
 # >>Is {1} a full-time employee at {2}?
 TboolIn IsFullTimeEmployee(Thing p, Thing corp) =
-	set:
-	if !IsEmployedBy(p, corp) -> false
-	if HoursWorkedPerWeek(p, corp) >= 35 -> true
-	if HoursWorkedPerWeek(p, corp) <= 30 -> false
-	else Stub()
+    set:
+    if !IsEmployedBy(p, corp) -> false
+    if HoursWorkedPerWeek(p, corp) >= 35 -> true
+    if HoursWorkedPerWeek(p, corp) <= 30 -> false
+    else Stub()
 
 # >>How many hours per week (on average) does {1} work at {2}?
 TnumIn HoursWorkedPerWeek(Thing p, Thing corp)
-	
+    
 # >>How long is/was {1}'s initial probationary period at {2} (in months)?
 TnumIn InitialProbationLength(Thing p, Thing corp)
 
 
 # UNEMPLOYMENT COMPENSATION
 # Source: http://www.twc.state.tx.us/news/efte/ui_law_qualification_issues.html#dq-layoffs
-	
+    
 # Disqualified from unemployment insurance
 Tbool DQFromUnemploymentInsurance(Thing p, Thing corp) =
-	TerminatedFrom(p, corp) |
-	ResignedFrom(p, corp) |
-	RefusesSuitableWorkWithoutGoodCause(p) |
-	IsOnStrikeFrom(p, corp) |
-	IsReceivingSeveranceFrom(p, corp).IsEverTrue() |
-	IsReceivingWorkersComp(p)
+    TerminatedFrom(p, corp) |
+    ResignedFrom(p, corp) |
+    RefusesSuitableWorkWithoutGoodCause(p) |
+    IsOnStrikeFrom(p, corp) |
+    IsReceivingSeveranceFrom(p, corp).IsEverTrue() |
+    IsReceivingWorkersComp(p)
 
-# >>Did {1} refuse suitable work without good cause?	
+# >>Did {1} refuse suitable work without good cause?    
 TboolIn RefusesSuitableWorkWithoutGoodCause(Thing p)
-	
-	
+    
+    
 # SEPARATION FROM AN EMPLOYER
 # Source: http://www.twc.state.tx.us/news/efte/types_of_work_separations.html
 
@@ -63,90 +63,90 @@ TboolIn RefusesSuitableWorkWithoutGoodCause(Thing p)
 
 # Voluntary separation
 Tbool VoluntarilySeparatedFrom(Thing p, Thing corp) =
-	ResignedFrom(p, corp) |
-	VoluntarilyRetiredFrom(p, corp) |
-	ConstructivelyDischargedFrom(p, corp) |
-	PresumptivelyResignedFrom(p, corp)
-	
+    ResignedFrom(p, corp) |
+    VoluntarilyRetiredFrom(p, corp) |
+    ConstructivelyDischargedFrom(p, corp) |
+    PresumptivelyResignedFrom(p, corp)
+    
 # Involuntary separation
 Tbool InvoluntarilySeparatedFrom(Thing p, Thing corp) =
-	TerminatedFrom(p, corp) |
-	ForciblyRetiredFrom(p, corp) |
-	ResignedInLieuOfDischargeFrom(p, corp) |
-	LaidOffFrom(p, corp) |
-	TempJobEndedAt(p, corp) |
-	MutuallyAgreedSeparationFrom(p, corp) |
-	PresumptivelyTerminatedFrom(p, corp)
-	
+    TerminatedFrom(p, corp) |
+    ForciblyRetiredFrom(p, corp) |
+    ResignedInLieuOfDischargeFrom(p, corp) |
+    LaidOffFrom(p, corp) |
+    TempJobEndedAt(p, corp) |
+    MutuallyAgreedSeparationFrom(p, corp) |
+    PresumptivelyTerminatedFrom(p, corp)
+    
 # Quit/resigned from an employer
 Tbool ResignedFrom(Thing p, Thing corp) =
-	NatureOfSeparation(p, corp) == "Resignation"
+    NatureOfSeparation(p, corp) == "Resignation"
 
 # Resignation in lieu of discharge
 Tbool ResignedInLieuOfDischargeFrom(Thing p, Thing corp) =
-	NatureOfSeparation(p, corp) == "Resignation in lieu of discharge"
+    NatureOfSeparation(p, corp) == "Resignation in lieu of discharge"
 
 # Discharge or termination for misconduct or "cause" 
 Tbool TerminatedFrom(Thing p, Thing corp) =
-	NatureOfSeparation(p, corp) == "Termination for misconduct or cause"
-	
+    NatureOfSeparation(p, corp) == "Termination for misconduct or cause"
+    
 # Laid off
 Tbool LaidOffFrom(Thing p, Thing corp) =
-	NatureOfSeparation(p, corp) == "Layoff, reduction in force, or downsizing"
-	
+    NatureOfSeparation(p, corp) == "Layoff, reduction in force, or downsizing"
+    
 # Retired from an employer
 Tbool RetiredFrom(Thing p, Thing corp) =
-	VoluntarilyRetiredFrom(p, corp) |
-	ForciblyRetiredFrom(p, corp)
+    VoluntarilyRetiredFrom(p, corp) |
+    ForciblyRetiredFrom(p, corp)
 
 # Temporary job comes to an end
 Tbool TempJobEndedAt(Thing p, Thing corp) =
-	NatureOfSeparation(p, corp) == "Temporary job ended"
-	
+    NatureOfSeparation(p, corp) == "Temporary job ended"
+    
 # Voluntarily retired from an employer
 Tbool VoluntarilyRetiredFrom(Thing p, Thing corp) =
-	NatureOfSeparation(p, corp) == "Voluntary retirement"
+    NatureOfSeparation(p, corp) == "Voluntary retirement"
 
 # Forced to retire from an employer
 Tbool ForciblyRetiredFrom(Thing p, Thing corp) =
-	NatureOfSeparation(p, corp) == "Forced retirement"
+    NatureOfSeparation(p, corp) == "Forced retirement"
 
 # Working conditions so intolerable that a reasonable employee would feel forced to resign
 Tbool ConstructivelyDischargedFrom(Thing p, Thing corp) =
-	NatureOfSeparation(p, corp) == "Constructive discharge"
+    NatureOfSeparation(p, corp) == "Constructive discharge"
 
 # Separated from an employer based on mutual agreement
 Tbool MutuallyAgreedSeparationFrom(Thing p, Thing corp) =
-	NatureOfSeparation(p, corp) == "Mutual agreement"
+    NatureOfSeparation(p, corp) == "Mutual agreement"
 
 # Presumptively resigned from an employer
 Tbool PresumptivelyTerminatedFrom(Thing p, Thing corp) =
-	NatureOfSeparation(p, corp) == "Failed to return following unpaid suspension" &
-	LengthOfSuspensionFrom(p, corp) >= 4		# May vary by jurisdiction!
-	
+    NatureOfSeparation(p, corp) == "Failed to return following unpaid suspension" &
+    LengthOfSuspensionFrom(p, corp) >= 4        # May vary by jurisdiction!
+    
 # Presumptively resigned from an employer
 Tbool PresumptivelyResignedFrom(Thing p, Thing corp) =
-	NatureOfSeparation(p, corp) == "Failed to return following unpaid suspension" &
-	LengthOfSuspensionFrom(p, corp) < 3		# May vary by jurisdiction!
-	
+    NatureOfSeparation(p, corp) == "Failed to return following unpaid suspension" &
+    LengthOfSuspensionFrom(p, corp) < 3        # May vary by jurisdiction!
+    
 # >>How long (in days) was {1}'s unpaid suspension from {2}?
 TnumIn LengthOfSuspensionFrom(Thing p, Thing corp) 
-	
+    
 # >>What was the nature of {1}'s separation from {2}? (Options: Resignation; Resignation in lieu of discharge; Termination for misconduct or cause; Layoff, reduction in force, or downsizing; Temporary job ended; Voluntary retirement; Forced retirement; Constructive discharge; Mutual agreement; Failed to return following unpaid suspension)
 TstrIn NatureOfSeparation(Thing p, Thing corp)
 
-	
-# OTHER	
+    
+# OTHER    
 
 # >>Is/was {1} receiving severance pay or wages from {2} in lieu of notice?
 TboolIn IsReceivingSeveranceFrom(Thing p, Thing corp)
 
 # >>Is/was {1} receiving worker's compensation?
 TboolIn IsReceivingWorkersComp(Thing p) 
-	
+    
 # >>Is {1} on strike from {2}?
 TboolIn IsOnStrikeFrom(Thing p, Thing corp) 
-	
+    
 # >>Is {1} on strike from any employer?
 TboolIn IsOnStrike(Thing p) 
 
@@ -235,13 +235,14 @@ Test: TboolIn1
 - Thing p
 - Thing c
 - IsFullTimeEmployee(p,c) = true
-- Econ.IsFullTimeEmployee(p,c).Out =?= true		
+- Econ.IsFullTimeEmployee(p,c).Out =?= true        
 
 Test: Employ
 - Thing p
 - Thing c
 - EmploymentRelationship(p,c) = "None"
-- Econ.IsEmployedBy(p,c).Out =?= false	
+- Econ.IsEmployedBy(p,c).Out =?= false    
+
 
 
 

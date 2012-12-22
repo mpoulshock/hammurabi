@@ -8,66 +8,66 @@
 
 # Total annual income
 TnumIn AnnualIncome(Thing p) =
-	AnnualWages(p) +
-	AnnualSelfEmploymentIncome(p) +
-	AnnualSocialSecurityBenefits(p) +
-	AnnualSupplementalSecurityIncome(p) +
-	AnnualVeteransBenefits(p) +
-	AnnualChildSupportIncome(p) +
-	AnnualUnemploymentCompensation(p)
-	
+    AnnualWages(p) +
+    AnnualSelfEmploymentIncome(p) +
+    AnnualSocialSecurityBenefits(p) +
+    AnnualSupplementalSecurityIncome(p) +
+    AnnualVeteransBenefits(p) +
+    AnnualChildSupportIncome(p) +
+    AnnualUnemploymentCompensation(p)
+    
 # Wages
 # TODO: Reconsider multiplying average wages by 12...
 Tnum AnnualWages(Thing p) =
-	MonthlyWages(p) * 12
+    MonthlyWages(p) * 12
 
 # Self-employment income
 Tnum AnnualSelfEmploymentIncome(Thing p) =
-	MonthlySelfEmploymentIncome(p) * 12
-	
+    MonthlySelfEmploymentIncome(p) * 12
+    
 # Commissions
 Tnum AnnualCommissions(Thing p) =
-	MonthlyCommissions(p) * 12
+    MonthlyCommissions(p) * 12
 
 # Social Security benefits
 Tnum AnnualSocialSecurityBenefits(Thing p) =
-	MonthlySocialSecurityBenefits(p) * 12
+    MonthlySocialSecurityBenefits(p) * 12
 
 # Supplemental Security Income (SSI)
 Tnum AnnualSupplementalSecurityIncome(Thing p) =
-	MonthlySupplementalSecurityIncome(p) * 12
+    MonthlySupplementalSecurityIncome(p) * 12
 
 # Veterans benefits
 Tnum AnnualVeteransBenefits(Thing p) =
-	MonthlyVeteransBenefits(p) * 12
+    MonthlyVeteransBenefits(p) * 12
 
 # Child support income
 Tnum AnnualChildSupportIncome(Thing p) =
-	MonthlyChildSupportIncome(p) * 12
+    MonthlyChildSupportIncome(p) * 12
 
 # Unemployment compensation
 Tnum AnnualUnemploymentCompensation(Thing p) =
-	MonthlyUnemploymentCompensation(p) * 12
+    MonthlyUnemploymentCompensation(p) * 12
 
 
 # MONTHLY INCOME
 
 # Total monthly income
 Tnum MonthlyIncome(Thing p) =
-	MonthlyWages(p) +
-	MonthlySelfEmploymentIncome(p) +
-	MonthlySocialSecurityBenefits(p) +
-	MonthlySupplementalSecurityIncome(p) +
-	MonthlyVeteransBenefits(p) +
-	MonthlyChildSupportIncome(p) +
-	MonthlyUnemploymentCompensation(p)
+    MonthlyWages(p) +
+    MonthlySelfEmploymentIncome(p) +
+    MonthlySocialSecurityBenefits(p) +
+    MonthlySupplementalSecurityIncome(p) +
+    MonthlyVeteransBenefits(p) +
+    MonthlyChildSupportIncome(p) +
+    MonthlyUnemploymentCompensation(p)
 
 # >>What are/were {1}'s monthly wages?
 TnumIn MonthlyWages(Thing p) 
 
 # >>What is/was {1}'s monthly self-employment income?
 TnumIn MonthlySelfEmploymentIncome(Thing p)
-	
+    
 # >>What are/were {1}'s monthly commissions?
 TnumIn MonthlyCommissions(Thing p) 
 
@@ -85,8 +85,8 @@ TnumIn MonthlyChildSupportIncome(Thing p)
 
 # >>What is/was {1}'s monthly unemployment compensation?
 TnumIn MonthlyUnemploymentCompensation(Thing p) 
-	
-	
+    
+    
 
 # UNIT TESTS
 
@@ -100,4 +100,5 @@ Test: 708567851
 - MonthlyChildSupportIncome(t1) = 3
 - MonthlyUnemploymentCompensation(t1) = 0
 - Hammurabi.Econ.AnnualIncome(t1).TestOutput =?= "Time.DawnOf 9672 "
+
 

@@ -7,29 +7,29 @@
 
 # Citizenship of people born in Puerto Rico
 TboolIn IsUSCitizenPerPuertoRico(Thing p) = 
-	IsUSCitizenPerPuertoRico1941(p) |
-	IsUSCitizenAtBirthPerPuertoRico(p)
-	
+    IsUSCitizenPerPuertoRico1941(p) |
+    IsUSCitizenAtBirthPerPuertoRico(p)
+    
 # Citizenship (1941) of people born in Puerto Rico
 Tbool IsUSCitizenPerPuertoRico1941(Thing p) = 
-	BirthState(p) == "Puerto Rico" &
-	DoB(p) >= 1899-04-11 &
-	DoB(p) < 1941-01-13 &
-	IsSubjectToUSJurisdiction(p) &
-	...
-		IsResidentOf(p, "Puerto Rico").AsOf(1941-01-13) |  # Resides in PR as of 1941-01-13 or
-		Stub()  # Resides in other sovereign U.S. territory
-	&
-	TheTime.IsAtOrAfter(1941-01-13)    # Makes conclusion true from DoB onward
+    BirthState(p) == "Puerto Rico" &
+    DoB(p) >= 1899-04-11 &
+    DoB(p) < 1941-01-13 &
+    IsSubjectToUSJurisdiction(p) &
+    ...
+        IsResidentOf(p, "Puerto Rico").AsOf(1941-01-13) |  # Resides in PR as of 1941-01-13 or
+        Stub()  # Resides in other sovereign U.S. territory
+    &
+    TheTime.IsAtOrAfter(1941-01-13)    # Makes conclusion true from DoB onward
 
 # Citizenship (at birth) of people born in Puerto Rico
 Tbool IsUSCitizenAtBirthPerPuertoRico(Thing p) = 
-	BirthState(p) == "Puerto Rico" &
-	DoB(p) >= 1941-01-13 &
-	IsSubjectToUSJurisdiction(p) &
-	TheTime.IsAtOrAfter(DoB(p))    # Makes conclusion true from DoB onward
-	
-	
+    BirthState(p) == "Puerto Rico" &
+    DoB(p) >= 1941-01-13 &
+    IsSubjectToUSJurisdiction(p) &
+    TheTime.IsAtOrAfter(DoB(p))    # Makes conclusion true from DoB onward
+    
+    
 # UNIT TESTS
 
 Test: 528276149
@@ -53,6 +53,7 @@ Test: 762460209
 - IsSubjectToUSJurisdiction(mary) = true
 - CountryOfResidence(mary) = "Puerto Rico"
 - USC.Tit8.Sec1402.IsUSCitizenPerPuertoRico(mary).TestOutput =?= "Time.DawnOf False 1/13/1941 12:00:00 AM True "
+
 
 
 

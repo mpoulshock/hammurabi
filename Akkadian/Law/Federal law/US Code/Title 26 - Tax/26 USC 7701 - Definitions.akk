@@ -7,36 +7,37 @@
 
 # (a)(1) - Person, defined
 Tbool IsPerson(Thing e) =
-	Stub()
-	
-	##
-	e.EntityType == "Person" |         # "Individual"
-	...
-		e.EntityType == "Corporation" &
-		...
-			corpType == "Trust" |
-			corpType == "Estate" |
-			IsPartnership(corpType) |
-			corpType == "Association" |
-			corpType == "Company" |
-			IsCorporation(corpType)
-					  
-	# Get type of corporate entity, if Corp
-	Tstr corpType = 
-		Org.TypeOfCorporateEntity((Corp)e)
-	##
+    Stub()
+    
+    ##
+    e.EntityType == "Person" |         # "Individual"
+    ...
+        e.EntityType == "Corporation" &
+        ...
+            corpType == "Trust" |
+            corpType == "Estate" |
+            IsPartnership(corpType) |
+            corpType == "Association" |
+            corpType == "Company" |
+            IsCorporation(corpType)
+                      
+    # Get type of corporate entity, if Corp
+    Tstr corpType = 
+        Org.TypeOfCorporateEntity((Corp)e)
+    ##
 
 # (a)(2) - Partnership, defined
 Tbool IsPartnership(Tstr type) =
-	type == "Partnership" |
-	type == "Syndicate" |
-	type == "Joint venture"  
+    type == "Partnership" |
+    type == "Syndicate" |
+    type == "Joint venture"  
 
         
 # (a)(3) - Corporation, defined
 Tbool IsCorporation(Tstr type) =
-	type == "Corporation" |
-	type == "Association" |
-	type == "Joint-stock company" |
-	type == "Insurance company"   
+    type == "Corporation" |
+    type == "Association" |
+    type == "Joint-stock company" |
+    type == "Insurance company"   
+
 

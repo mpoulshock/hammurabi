@@ -10,5 +10,6 @@
 # days declared a holiday by the President or Congress and holidays in the state 
 # where the district court is located.
 DateTime DueDate(int days, DateTime triggerDate) =
-	triggerDate.Date.AddDays(days).CurrentOrNextBusinessDay()
+    triggerDate.Date.AddDays(days).CurrentOrNextBusinessDay()
+
 

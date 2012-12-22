@@ -4,16 +4,17 @@
 # Updated:      2012-10-08
 # Author:       Michael Poulshock
 
-	
+    
 # Status is asserted individually; for MFJ, see 26 USC 6013.
 # This rule merely does function name transformation.
 Tstr FilingStatus(Thing p) =
     FedTaxFilingStatus(p)
-	
+    
 # >>What is {1}'s federal tax filing status? (Options: Single, Married filing jointly, Married filing separately, Head of household, Qualifying widow(er), Not filing)
 TstrIn? FedTaxFilingStatus(Thing p) =
-	IRS.Pub501.FilingStatusInferred(p)
-	
+    IRS.Pub501.FilingStatusInferred(p)
+    
 FedTaxFilingStatus(1) = "Married filing jointly" assumes IsMarried(1)
 FedTaxFilingStatus(1) = "Married filing separately" assumes IsMarried(1)
+
 

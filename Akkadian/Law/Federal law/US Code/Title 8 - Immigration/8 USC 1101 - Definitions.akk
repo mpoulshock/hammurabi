@@ -7,6 +7,7 @@
 
 # (a)(29) - "outlying possessions" of the U.S.
 Tbool IsUSOutlyingPossession(Tstr jur) =
-	jur == "American Samoa" |
-	jur == "Swains Island"
+    jur == "American Samoa" |
+    jur == "Swains Island"
+
 

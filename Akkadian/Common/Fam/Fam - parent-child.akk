@@ -10,90 +10,90 @@
 TsetIn ParentsOf(Thing p)
 
 # >>Who are {1}'s children?
-TsetIn ChildrenOf(Thing p)	
+TsetIn ChildrenOf(Thing p)    
 
 # >>Is {1} {2}'s parent?
 TboolIn IsParentOf(Thing p1, Thing p2) =
-	ChildrenOf(p1).Contains(p2) |~
-	ParentsOf(p2).Contains(p1) |~
-	...
-		IsBiologicalParentOf(p1, p2) |
-		IsAdoptiveParentOf(p1, p2) |
-		IsFosterParentOf(p1, p2) |
-		IsStepparentOf(p1, p2)
-	
+    ChildrenOf(p1).Contains(p2) |~
+    ParentsOf(p2).Contains(p1) |~
+    ...
+        IsBiologicalParentOf(p1, p2) |
+        IsAdoptiveParentOf(p1, p2) |
+        IsFosterParentOf(p1, p2) |
+        IsStepparentOf(p1, p2)
+    
 
 # PARENT-CHILD RELATIONSHIPS: DERIVED RULES
 
 # Parents married on a particular date
 Tbool ParentsMarriedAsOf(Thing p, Tdate date) =
-	Fam.AreMarried(mom,dad).AsOf(date)
-	
-	Thing mom =
-		MotherAsOf(p, date)
-	
-	Thing dad =
-		FatherAsOf(p, date)
+    Fam.AreMarried(mom,dad).AsOf(date)
+    
+    Thing mom =
+        MotherAsOf(p, date)
+    
+    Thing dad =
+        FatherAsOf(p, date)
 
 # Birth mother
 Thing BirthMother(Thing p) =
-	Fam.MotherAsOf(p, DoB(p))
-	
+    Fam.MotherAsOf(p, DoB(p))
+    
 # Mother on a particular date
 # Warning: returns null if more than one mother
 Thing MotherAsOf(Thing p, Tdate date) =
-	ParentsOf(p).AsOf(date).Filter(IsMotherOf(_,p)).ToThing
-	
+    ParentsOf(p).AsOf(date).Filter(IsMotherOf(_,p)).ToThing
+    
 # Is mother of
 Tbool IsMotherOf(Thing p1, Thing p2) =
-	IsFemale(p1) &
-	IsParentOf(p1,p2)
+    IsFemale(p1) &
+    IsParentOf(p1,p2)
 
 # Birth father
 Thing BirthFather(Thing p) =
-	Fam.FatherAsOf(p, DoB(p))
-	
+    Fam.FatherAsOf(p, DoB(p))
+    
 # Father on a particular date
 # Warning: returns null if more than one father
 Thing FatherAsOf(Thing p, Tdate date) =
-	ParentsOf(p).AsOf(date).Filter(IsFatherOf(_,p)).ToThing
-	
+    ParentsOf(p).AsOf(date).Filter(IsFatherOf(_,p)).ToThing
+    
 # Is father of
 Tbool IsFatherOf(Thing p1, Thing p2) =
-	IsMale(p1) &
-	IsParentOf(p1,p2)
-	
+    IsMale(p1) &
+    IsParentOf(p1,p2)
+    
 # Experimental
 Tset ParentsOfInferred(Thing p) =
-	peopleBut(p).Filter(IsParentOf(_,p))
-	
+    peopleBut(p).Filter(IsParentOf(_,p))
+    
 # Not strictly necessary but aids readability
 Tbool IsChildOf(Thing p1, Thing p2) =
-	IsParentOf(p2,p1)
+    IsParentOf(p2,p1)
             
 # Biological parent
 Tbool IsBiologicalParentOf(Thing p1, Thing p2) =
     Relationship(p1,p2) == "Biological parent" |~
-	Relationship(p2,p1) == "Biological child"
+    Relationship(p2,p1) == "Biological child"
 
 # Causes rule above to short-circuit in interview
 # Deeper fix: make Tvars into Func<Tvar>
 FamilyRelationship(1,2) = "Biological parent" assumes FamilyRelationship(2,1) = "Biological child"
-	
+    
 # Adoptive parent
 Tbool IsAdoptiveParentOf(Thing p1, Thing p2) =
-	Relationship(p1,p2) == "Adoptive parent" |~
-	Relationship(p2,p1) == "Adopted child"
+    Relationship(p1,p2) == "Adoptive parent" |~
+    Relationship(p2,p1) == "Adopted child"
 
 # Foster parent
 Tbool IsFosterParentOf(Thing p1, Thing p2) =
-	Relationship(p1,p2) == "Foster parent" |~
-	Relationship(p2,p1) == "Foster child"
+    Relationship(p1,p2) == "Foster parent" |~
+    Relationship(p2,p1) == "Foster child"
 
 # Stepparent
 Tbool IsStepparentOf(Thing p1, Thing p2) =
-	Relationship(p1,p2) == "Stepparent" |~
-	Relationship(p2,p1) == "Stepchild"
+    Relationship(p1,p2) == "Stepparent" |~
+    Relationship(p2,p1) == "Stepchild"
 
 # >>Is/was {1} pregnant?
 TboolIn IsPregnant(Thing p)
@@ -112,47 +112,47 @@ TboolIn IsOfUnknownParentage(Thing p)
 
 # >> Was {1}'s paternity of {2} established?
 Tbool PaternityEstablishedFor(Thing parent, Thing child) =
-	IsMale(parent) &
-	Age(parent) - Age(child) >= 12 &
-	TboolIn PaternityEstablishedFor(parent,child) &
-	TheTime.IsAtOrAfter(DatePaternityEstablishedFor(parent,child))
-	
+    IsMale(parent) &
+    Age(parent) - Age(child) >= 12 &
+    TboolIn PaternityEstablishedFor(parent,child) &
+    TheTime.IsAtOrAfter(DatePaternityEstablishedFor(parent,child))
+    
 # >>When was {1}'s paternity of {2} established?
 TdateIn DatePaternityEstablishedFor(Thing parent, Thing child)
 
 # Born "out of wedlock"
 Tbool BornOutOfWedlock(Thing p) =
-	IsIllegitimate(p)
-		
+    IsIllegitimate(p)
+        
 # >>Was {1} an illegitimate child?
 TboolIn IsIllegitimate(Thing p) =
-	!ParentsMarriedAsOf(p, DoB(p))
-	# unless child is born shortly after the parents' divorce
-	# ...married as of date of conception?
+    !ParentsMarriedAsOf(p, DoB(p))
+    # unless child is born shortly after the parents' divorce
+    # ...married as of date of conception?
 
 # Assumption: could be done by either statute, court, or both
 # >>Is/was {1} legitimated (under the law of {1}'s domicile)?
 TboolIn IsLegitimatedByLaw(Thing child)
-	
+    
 # Legitimated by father (he acknowledged parental responsibility)
 # Example of temporal value built from threshold facts and an event
 # >>Does/did {1} legitimate {2}?
 Tbool Legitimated(Thing parent, Thing child) =
-	IsFatherOf(parent, child) &
-	IsIllegitimate(child) &
-	TboolIn Legitimated(parent,child) &
-	TheTime.IsAtOrAfter(DateLegitimated(parent,child))
+    IsFatherOf(parent, child) &
+    IsIllegitimate(child) &
+    TboolIn Legitimated(parent,child) &
+    TheTime.IsAtOrAfter(DateLegitimated(parent,child))
 
 # >>When did {1} legitimate {2}?
 TdateIn DateLegitimated(Thing parent, Thing child)
-	
+    
 # >>Is/was {1} legally committed to financially supporting {2}?
 Tbool CommittedToFinanciallySupport(Thing p1, Thing p2) =
-	TboolIn CommittedToFinanciallySupport(p1,p2) &
-	TheTime.IsAtOrAfter(DateCommittedToFinanciallySupport(p1,p2))
-	
+    TboolIn CommittedToFinanciallySupport(p1,p2) &
+    TheTime.IsAtOrAfter(DateCommittedToFinanciallySupport(p1,p2))
+    
 # >>When was {1} first legally committed to financially supporting {2}?
-TdateIn DateCommittedToFinanciallySupport(Thing parent, Thing child)		
+TdateIn DateCommittedToFinanciallySupport(Thing parent, Thing child)        
 
 
 # UNIT TESTS
@@ -180,4 +180,5 @@ Test: IsParentOf5
 - Things kid, parent
 - ParentsOf(kid) = [[parent]]
 - Hammurabi.Fam.IsParentOf(parent,kid).TestOutput =?= "Time.DawnOf True "
+
 

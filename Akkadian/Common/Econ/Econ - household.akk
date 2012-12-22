@@ -8,7 +8,7 @@
 
 # Household size
 Tnum HouseholdSize(Thing p) =
-	HouseholdMembersOf(p).Count
+    HouseholdMembersOf(p).Count
 
 # TODO: This currently does not include the person!
 # >>Who are/were the other members of {1}'s household?
@@ -21,14 +21,14 @@ Thing HouseholdOf(Thing person) =
 
     
 # RELATIONSHIPS BETWEEN TWO PEOPLE
-	
+    
 # Two people are members of the same household.
 Tbool ShareHousehold(Thing p1, Thing p2) =
-	LivesWith(p1, p2) 	# simplifying assumption
-				 
+    LivesWith(p1, p2)     # simplifying assumption
+                 
 # >>Do/did {1} and {2} share a principal abode?
 TboolInSym SharePrincipalAbode(Thing p1, Thing p2) =
-	LivesWith(p1, p2) 	# simplifying assumption
+    LivesWith(p1, p2)     # simplifying assumption
 
 # >>Do/did {1} and {2} live together?
 TboolInSym LivesWith(Thing p1, Thing p2)
@@ -79,4 +79,5 @@ Test: LivesWith2
 - Thing b
 - LivesWith(a,b) = true
 - Econ.LivesWith(b,a).Out =?= true
+
 

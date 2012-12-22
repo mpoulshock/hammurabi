@@ -12,8 +12,8 @@ TstrIn CountryOfCitizenship(Thing p)
 
 IsUSCitizen(1) assumes CountryOfCitizenship(1) = "United States"
 USImmigrationStatus(1) = "U.S. citizen" assumes CountryOfCitizenship(1) = "United States"
-	
-	
+    
+    
 # U.S. IMMIGRATION STATUS
 
 # These rules consolidate all facts pertaining to immigration status
@@ -27,35 +27,35 @@ USImmigrationStatus(1) = "U.S. citizen" assumes CountryOfCitizenship(1) = "Unite
 
 # U.S. national (without U.S. citizenship)
 Tbool IsUSNational(Thing p) =
-	Status(p) == "U.S. national"
-	
+    Status(p) == "U.S. national"
+    
 # Alien
 Tbool IsAlien(Thing p) =
-	! IsUSCitizen(p) &
-	! IsUSNational(p)
-	
+    ! IsUSCitizen(p) &
+    ! IsUSNational(p)
+    
 # Legal permanent resident
 Tbool IsLPR(Thing p) =
-	Status(p) == "Legal permanent resident"
+    Status(p) == "Legal permanent resident"
 
 # Lawful non-immigrant
 Tbool IsLawfulNonImmigrant(Thing p) =
-	Stub()
+    Stub()
 
 
 # CORE IMMIGRATION STATUS RULES
 
 # This rule is for brevity (Imm.Status instead of Imm.USImmigrationStatus)
 Tstr Status(Thing p) = 
-	USImmigrationStatus(p)
+    USImmigrationStatus(p)
 
 # Stopping point before descending into citizenship law
 # >>What is/was {1}'s U.S. immigration status? (Options: U.S. citizen, U.S. national, Legal permanent resident, Refugee, Temporary visitor, Undocumented immigrant)
 TstrIn? USImmigrationStatus(Thing p) = 
-	set:
-	if USC.Tit8.Gen.IsUSCitizenInferred(p) -> "U.S. citizen"
-	if USC.Tit8.Gen.IsUSNationalInferred(p) -> "U.S. national"
-	else AssignedStatus(p)
+    set:
+    if USC.Tit8.Gen.IsUSCitizenInferred(p) -> "U.S. citizen"
+    if USC.Tit8.Gen.IsUSNationalInferred(p) -> "U.S. national"
+    else AssignedStatus(p)
 
 # >>What immigration status was {1} assigned by the Department of Homeland Security?
 TstrIn AssignedStatus(Thing p)
@@ -77,10 +77,11 @@ TboolIn IsNaturalizedCitizen(Thing p)
 
 # >>Did {1} enter the U.S. without inspection?
 TboolIn EnteredUSWithoutInspection(Thing p) =
-	Stub()
+    Stub()
 
 # >>Was {1} paroled into the U.S.?
 TboolIn ParoledIntoUS(Thing p) =
-	Stub()
+    Stub()
 
-	
+    
+

@@ -7,23 +7,23 @@
 
 # Citizenship - Guam
 Tbool IsUSCitizenPerGuam(Thing p) = 
-	ModernTest(p) |
-	Catchall(p)
-	
+    ModernTest(p) |
+    Catchall(p)
+    
 # Current test for citizenship
 Tbool ModernTest(Thing p) =
-	DoB(p) >= 1899-04-11 &
-	BirthCountry(p) == "Guam" &
-	IsSubjectToUSJurisdiction(p) &
-	if DoB(p) < 1950-08-01 then !TookStepsToPreserveForeignNationality(p) &		# Proviso
-	TheTime.IsAtOrAfter(DoB(p))				# Presumed
-	
+    DoB(p) >= 1899-04-11 &
+    BirthCountry(p) == "Guam" &
+    IsSubjectToUSJurisdiction(p) &
+    if DoB(p) < 1950-08-01 then !TookStepsToPreserveForeignNationality(p) &        # Proviso
+    TheTime.IsAtOrAfter(DoB(p))                # Presumed
+    
 # Stub if DoB is before 1899-04-11
 Tbool Catchall(Thing p) =
-	DoB(p) < 1899-04-11 &
-	BirthCountry(p) == "Guam" &
-	Stub()
-	
+    DoB(p) < 1899-04-11 &
+    BirthCountry(p) == "Guam" &
+    Stub()
+    
 # >>Did {1} take affirmative steps to preserve or acquire foreign nationality?
 TboolIn TookStepsToPreserveForeignNationality(Thing p)
 
@@ -50,6 +50,7 @@ Test: 65134483
 - DoB(murray) = 1890-01-01
 - BirthCountry(murray) = "Guam"
 - USC.Tit8.Sec1407.IsUSCitizenPerGuam(murray).TestOutput =?= "Time.DawnOf Stub "
+
 
 
 

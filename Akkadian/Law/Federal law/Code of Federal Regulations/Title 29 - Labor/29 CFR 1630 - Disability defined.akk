@@ -9,6 +9,7 @@
 # A physical or mental impairment that substantially limits one
 # or more of the major life activities of such individual
 Tbool IsDisabled(Thing p) =
-	TboolIn IsDisabled(p)
+    TboolIn IsDisabled(p)
+
 
 

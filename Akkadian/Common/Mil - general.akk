@@ -20,28 +20,28 @@ TboolIn OnActiveDuty(Thing p)
 
 
 # BRANCH OF ARMED FORCES
-	
+    
 # Person serves (actively) in the Armed Forces.
 Tbool InActiveArmedForces(Thing p) =
-	InArmedForces(p) &
-	...
-		BranchOfArmedForces(p) == "Army" |
-		BranchOfArmedForces(p) == "Navy" |
-		BranchOfArmedForces(p) == "Air Force" |
-		BranchOfArmedForces(p) == "Marine Corps" |
-		BranchOfArmedForces(p) == "Coast Guard"
+    InArmedForces(p) &
+    ...
+        BranchOfArmedForces(p) == "Army" |
+        BranchOfArmedForces(p) == "Navy" |
+        BranchOfArmedForces(p) == "Air Force" |
+        BranchOfArmedForces(p) == "Marine Corps" |
+        BranchOfArmedForces(p) == "Coast Guard"
             
 # Person serves in reserve component of the Armed Forces (including National Guard).
 Tbool InReserveArmedForces(Thing p) =
-	InArmedForces(p) &
-	...
-		BranchOfArmedForces(p) == "Army National Guard" |
-		BranchOfArmedForces(p) == "Army Reserve" |
-		BranchOfArmedForces(p) == "Air National Guard" |
-		BranchOfArmedForces(p) == "Navy Reserve" |
-		BranchOfArmedForces(p) == "Air Force Reserve" |
-		BranchOfArmedForces(p) == "Marine Corps Reserve" |
-		BranchOfArmedForces(p) == "Coast Guard Reserve"
+    InArmedForces(p) &
+    ...
+        BranchOfArmedForces(p) == "Army National Guard" |
+        BranchOfArmedForces(p) == "Army Reserve" |
+        BranchOfArmedForces(p) == "Air National Guard" |
+        BranchOfArmedForces(p) == "Navy Reserve" |
+        BranchOfArmedForces(p) == "Air Force Reserve" |
+        BranchOfArmedForces(p) == "Marine Corps Reserve" |
+        BranchOfArmedForces(p) == "Coast Guard Reserve"
 
 # >>What branch of the U.S. Armed Forces does/did {1} serve in? (Options: Army, Navy, Air Force, Marine Corps, Coast Guard, Army National Guard, Army Reserve, Air National Guard, Navy Reserve, Air Force Reserve, Marine Corps Reserve, Coast Guard Reserve.)
 TstrIn BranchOfArmedForces(Thing person)
@@ -54,11 +54,11 @@ TboolIn ServiceConnectedInjury(Thing p)
 
 
 # DISCHARGE
-		
+        
 # Dishonorable discharge
 Tbool DishonorablyDischarged(Thing p) =
-	NatureOfDischarge(p) == "Dishonorable discharge"
-	
+    NatureOfDischarge(p) == "Dishonorable discharge"
+    
 # >>What is the nature of {1}'s discharge from the U.S. Armed Forces?
 TstrIn NatureOfDischarge(Thing p)
 
@@ -98,4 +98,5 @@ Test: 108379812
 - Things t1, t2
 - InArmedForces(t1) = false
 - Hammurabi.Mil.InArmedForces(t1).TestOutput =?= "Time.DawnOf False "
+
 

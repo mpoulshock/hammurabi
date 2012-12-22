@@ -9,21 +9,22 @@
 # Order of precedence based on relationship
 # Lower number takes precedence
 Tnum NextOfKinPrecedence(Thing p, Thing dec) =
-	set:
-	if IsChildOf(p,dec)                 -> 1
-	if IsParentOf(p,dec) 				-> 2
-	if IsGrandparentOf(dec,p) 			-> 3
-	if AreSiblings(p,dec) 				-> 4
-	if IsGrandparentOf(p,dec) 			-> 5
-	if IsGreatGrandparentOf(dec,p) 		-> 6
-	if IsAuntOrUncleOf(dec,p) 			-> 7
-	if IsAuntOrUncleOf(p,dec) 			-> 8
-	if IsGreatGrandparentOf(p,dec) 		-> 9
-	if IsGreatAuntOrUncleOf(dec,p) 		-> 10
-	if IsGreatGreatGrandparentOf(dec,p) -> 11
-	if IsFirstCousinOf(p,dec) 			-> 12
-	if IsGreatAuntOrUncleOf(p,dec) 		-> 13
-	if IsGreatGreatGrandparentOf(p,dec) -> 14
-	else Stub()
+    set:
+    if IsChildOf(p,dec)                 -> 1
+    if IsParentOf(p,dec)                 -> 2
+    if IsGrandparentOf(dec,p)             -> 3
+    if AreSiblings(p,dec)                 -> 4
+    if IsGrandparentOf(p,dec)             -> 5
+    if IsGreatGrandparentOf(dec,p)         -> 6
+    if IsAuntOrUncleOf(dec,p)             -> 7
+    if IsAuntOrUncleOf(p,dec)             -> 8
+    if IsGreatGrandparentOf(p,dec)         -> 9
+    if IsGreatAuntOrUncleOf(dec,p)         -> 10
+    if IsGreatGreatGrandparentOf(dec,p) -> 11
+    if IsFirstCousinOf(p,dec)             -> 12
+    if IsGreatAuntOrUncleOf(p,dec)         -> 13
+    if IsGreatGreatGrandparentOf(p,dec) -> 14
+    else Stub()
+
 
 

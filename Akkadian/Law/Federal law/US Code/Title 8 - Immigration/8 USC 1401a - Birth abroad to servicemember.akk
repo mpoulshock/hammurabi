@@ -7,19 +7,19 @@
 
 # Birth abroad before 1952 to service parent
 Tbool Sec1401gAppliesTo(Thing c) =
-	! Sec1401.BornInUSorOP(c) &
-	DoB(c) > 1941-01-12 &
-	DoB(c) < 1952-12-24 &
-	parents.Exists(IsQualifyingServicemember(_))
-	
-	Tset parents =
-		Sec1401.BirthParents(c)		# Assumes two parents
-		
+    ! Sec1401.BornInUSorOP(c) &
+    DoB(c) > 1941-01-12 &
+    DoB(c) < 1952-12-24 &
+    parents.Exists(IsQualifyingServicemember(_))
+    
+    Tset parents =
+        Sec1401.BirthParents(c)        # Assumes two parents
+        
 # Qualifying parent
 Tbool IsQualifyingServicemember(Thing p) =
-	IsUSCitizen(p) &
-	Mil.InArmedForces(p).IsEverTrue(1946-12-31, 1952-12-24) &
-	Stub()  # case does not come within section 201(g) or (i) of the Nationality Act of 1940.
+    IsUSCitizen(p) &
+    Mil.InArmedForces(p).IsEverTrue(1946-12-31, 1952-12-24) &
+    Stub()  # case does not come within section 201(g) or (i) of the Nationality Act of 1940.
 
 
 # UNIT TESTS
@@ -76,6 +76,7 @@ Test: NoEligParent
 - IsUSCitizen(dad) = false
 - InArmedForces(mom) = false
 - USC.Tit8.Sec1401a.Sec1401gAppliesTo(child).Out =?= false
+
 
 
 

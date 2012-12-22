@@ -8,27 +8,28 @@
 # 1501(4) - Is a "period of war"
 # Mexican border period and WWI omitted for practical purposes.
 Tbool IsPeriodOfWar() =
-	IsWorldWarII() |
-	IsKoreanConflict() |
-	IsVietnamEra() |
-	IsPersianGulfWar()
+    IsWorldWarII() |
+    IsKoreanConflict() |
+    IsVietnamEra() |
+    IsPersianGulfWar()
 
 # Tentative source: Nolo Press, "Soc. Sec., Medicare, & Gov't Pensions" (2010)
 Tbool IsWorldWarII() =
-	TheTime.IsAtOrAfter(1941-12-07) &
-	TheTime.IsBefore(1947-01-01)
+    TheTime.IsAtOrAfter(1941-12-07) &
+    TheTime.IsBefore(1947-01-01)
 
 # Source: Nolo
 Tbool IsKoreanConflict() = 
-	TheTime.IsAtOrAfter(1950-06-27) &
-	TheTime.IsBefore(1955-02-01)
+    TheTime.IsAtOrAfter(1950-06-27) &
+    TheTime.IsBefore(1955-02-01)
 
 # Source: Nolo
 Tbool IsVietnamEra() =
-	TheTime.IsAtOrAfter(1964-08-05) &
-	TheTime.IsBefore(1975-05-08)
+    TheTime.IsAtOrAfter(1964-08-05) &
+    TheTime.IsBefore(1975-05-08)
 
 # Source: Nolo
 Tbool IsPersianGulfWar() =
-	TheTime.IsAtOrAfter(1990-08-02)
-	
+    TheTime.IsAtOrAfter(1990-08-02)
+    
+

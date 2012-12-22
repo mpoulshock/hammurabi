@@ -7,99 +7,99 @@
 
 # 2611(2) - Indicates whether a person (p) is an eligible employee under the FMLA.
 Tbool IsEligibleEmployee(Thing p, Thing corp) =
-	Econ.IsEmployedBy(p, corp) &
-	prongAi &
-	prongAii &
-	prongB &
-	prongD
+    Econ.IsEmployedBy(p, corp) &
+    prongAi &
+    prongAii &
+    prongB &
+    prongD
 
-	# 2Ai - employed for at least 12 months as of the date leave is to begin
-	#
-	#   7 year gap: If the person doesn't meet 12 months in the last seven 
-	#   years, but they were employed more than seven years ago, return 
-	#   unknown (stub). See 29 CFR 825.110(b).
-	#
-	#   364 day threshold: see 29 CFR 825.110(b)(3) (12 months = 52 weeks = 364 days).           
-	Tbool prongAi = 
-		set:
-		if TwelveMoInLast7Yrs -> true
-		if Employed7YrsAgo -> Stub()
-		else true
+    # 2Ai - employed for at least 12 months as of the date leave is to begin
+    #
+    #   7 year gap: If the person doesn't meet 12 months in the last seven 
+    #   years, but they were employed more than seven years ago, return 
+    #   unknown (stub). See 29 CFR 825.110(b).
+    #
+    #   364 day threshold: see 29 CFR 825.110(b)(3) (12 months = 52 weeks = 364 days).           
+    Tbool prongAi = 
+        set:
+        if TwelveMoInLast7Yrs -> true
+        if Employed7YrsAgo -> Stub()
+        else true
 
-	Tbool TwelveMoInLast7Yrs = 
-		Econ.IsEmployedBy(p, corp).TotalElapsedDays(d.AddYears(-7),d) > 364
-		
-	Tbool Employed7YrsAgo = 
-		Econ.IsEmployedBy(p, corp).TotalElapsedDays(Time.DawnOf,d.AddYears(-7)) > 0
-	
-	Tdate d = 
-		DateLeaveBegins(p, corp)
-		
-	Tbool prongAii = 
-		HoursInLast12Mo(p, corp) >= 1250
+    Tbool TwelveMoInLast7Yrs = 
+        Econ.IsEmployedBy(p, corp).TotalElapsedDays(d.AddYears(-7),d) > 364
+        
+    Tbool Employed7YrsAgo = 
+        Econ.IsEmployedBy(p, corp).TotalElapsedDays(Time.DawnOf,d.AddYears(-7)) > 0
+    
+    Tdate d = 
+        DateLeaveBegins(p, corp)
+        
+    Tbool prongAii = 
+        HoursInLast12Mo(p, corp) >= 1250
             
-	Tbool prongB = 
-		!Tit5.Sec6301.IsEmployee(p) &
-		...
-			! TboolIn LessThan50EmployeesWithin75MilesOfWorksite(p, corp) |
-			TboolIn LessThan50EmployeesAtWorksite(p, corp)
-			
-	Tbool prongD = 
-		set:
-		if Econ.IsAirlineFlightCrew(p, corp) -> Stub()
-		else true
+    Tbool prongB = 
+        !Tit5.Sec6301.IsEmployee(p) &
+        ...
+            ! TboolIn LessThan50EmployeesWithin75MilesOfWorksite(p, corp) |
+            TboolIn LessThan50EmployeesAtWorksite(p, corp)
+            
+    Tbool prongD = 
+        set:
+        if Econ.IsAirlineFlightCrew(p, corp) -> Stub()
+        else true
 
 
 # Indicates whether a person has worked 1,250 hours in the 12-month period
 # leading up to the family leave start date.
 # HACK: Need to create a Tnum.SumOver(interval,start,end) function to implement this correctly...
 Tnum HoursInLast12Mo(Thing p, Thing c) =
-	(avgHours / 7) * employed.TotalElapsedDays(Time.DawnOf, start)
-	
-	Tnum avgHours = 
-		Econ.HoursWorkedPerWeek(p,c)
-		
-	Tbool employed = 
-		last12Mo & Econ.IsEmployedBy(p,c)
+    (avgHours / 7) * employed.TotalElapsedDays(Time.DawnOf, start)
+    
+    Tnum avgHours = 
+        Econ.HoursWorkedPerWeek(p,c)
+        
+    Tbool employed = 
+        last12Mo & Econ.IsEmployedBy(p,c)
 
-	Tbool last12Mo = 
-		TheTime.IsBetween(start.AddMonths(-12), start)
+    Tbool last12Mo = 
+        TheTime.IsBetween(start.AddMonths(-12), start)
 
-	Tdate start = 
-		DateLeaveBegins(p,c)       
+    Tdate start = 
+        DateLeaveBegins(p,c)       
 
-	
+    
 # 2611(4) - Indicates whether a corporation (c) is covered by the FMLA.
 # Subsection (4)(A)(ii) is not modeled.
 # The "engaged in commerce" test is subsumed by the "number of employees" test. See 29 CFR 825.104(b).
 # Does not handle situations where one corp has an ownership interest in another.
 Tbool IsCoveredEmployer(Thing c) =
-	meetsThreshold | 
-	Org.IsGovtAgency(c)
+    meetsThreshold | 
+    Org.IsGovtAgency(c)
 
-	# 50 employees/20 workweeks threshold - "employs 50 or more employees for 
-	# each working day during each of 20 or more calendar workweeks in the 
-	# current or preceding calendar year."
-	# The employer remains covered until it reaches a future point where it no 
-	# longer has employed 50 employees for 20 (nonconsecutive) workweeks in the 
-	# current and preceding calendar year.  29 CFR 825.105(f).
-	Tbool meetsThreshold = 
-		(weeks > 20).CountPastNIntervals(TheYear, 2) >= 1
+    # 50 employees/20 workweeks threshold - "employs 50 or more employees for 
+    # each working day during each of 20 or more calendar workweeks in the 
+    # current or preceding calendar year."
+    # The employer remains covered until it reaches a future point where it no 
+    # longer has employed 50 employees for 20 (nonconsecutive) workweeks in the 
+    # current and preceding calendar year.  29 CFR 825.105(f).
+    Tbool meetsThreshold = 
+        (weeks > 20).CountPastNIntervals(TheYear, 2) >= 1
 
-	Tnum weeks = 
-		(Org.NumberOfEmployees(c) > 50).AlwaysPer(TheCalendarWeek).CountPer(TheYear)
+    Tnum weeks = 
+        (Org.NumberOfEmployees(c) > 50).AlwaysPer(TheCalendarWeek).CountPer(TheYear)
 
 
 # 2611(7) - Indicates whether one person is considered the "parent" of another under the FMLA.
 Tbool IsParentOf(Thing p1, Thing p2) =
-	Fam.IsBiologicalParentOf(p1,p2) |
-	Fam.IsAdoptiveParentOf(p1,p2) |      # assumed
-	Fam.IsFosterParentOf(p1,p2) |        # assumed
-	Fam.IsStepparentOf(p1,p2) |          # assumed
-	Fam.IsLegalGuardianOf(p1,p2) |       # assumed
-	ActsInLocoParentisOf(p1,p2)
+    Fam.IsBiologicalParentOf(p1,p2) |
+    Fam.IsAdoptiveParentOf(p1,p2) |      # assumed
+    Fam.IsFosterParentOf(p1,p2) |        # assumed
+    Fam.IsStepparentOf(p1,p2) |          # assumed
+    Fam.IsLegalGuardianOf(p1,p2) |       # assumed
+    ActsInLocoParentisOf(p1,p2)
       
-	  
+      
 # 2611(11) - Indicates whether a person (p) has a "serious health condition."
 TboolIn HasSeriousHealthCondition(Thing p)
 
@@ -108,30 +108,30 @@ TboolIn HasSeriousHealthCondition(Thing p)
 # The statute uses the terms "son" and "daughter" but because gender
 # has no bearing on the legal conclusions, "child" is used here.
 Tbool IsChildOf(Thing p1, Thing p2) =
-	...
-		Fam.IsBiologicalParentOf(p2,p1) |
-		Fam.IsAdoptiveParentOf(p2,p1) |
-		Fam.IsFosterParentOf(p2,p1) |
-		Fam.IsStepparentOf(p2,p1) |
-		Fam.IsLegalGuardianOf(p2,p1) |
-		ActsInLocoParentisOf(p2,p1)
-	&
-	Age(p1) < 18 |
-	...
-		CFR.Tit29.Part1630.IsDisabled(p1) &   # see 29 CFR 825.122 
-		IsIncapableOfSelfCare(p1)
+    ...
+        Fam.IsBiologicalParentOf(p2,p1) |
+        Fam.IsAdoptiveParentOf(p2,p1) |
+        Fam.IsFosterParentOf(p2,p1) |
+        Fam.IsStepparentOf(p2,p1) |
+        Fam.IsLegalGuardianOf(p2,p1) |
+        ActsInLocoParentisOf(p2,p1)
+    &
+    Age(p1) < 18 |
+    ...
+        CFR.Tit29.Part1630.IsDisabled(p1) &   # see 29 CFR 825.122 
+        IsIncapableOfSelfCare(p1)
         
 
 # Indicates the date the person started or intends to start FMLA leave.
 Tdate DateLeaveBegins(Thing p, Thing c) =
-	TdateIn DateFamilyLeaveBegins(p,c)
+    TdateIn DateFamilyLeaveBegins(p,c)
   
 
 # Indicates whether one person acts in loco parentis of another.
 # See 29 CFR 825.122
 Tbool ActsInLocoParentisOf(Thing p1, Thing p2) =
-	Fam.HasDayToDayResponsibilityFor(p1,p2) &
-	Econ.ProvidesSupportFor(p1,p2)
+    Fam.HasDayToDayResponsibilityFor(p1,p2) &
+    Econ.ProvidesSupportFor(p1,p2)
   
 
 # UNIT TESTS
@@ -187,7 +187,7 @@ Test: Eligible_Employee_4
 - DateFamilyLeaveBegins(e,c) = 2011-04-15
 - Sec2611.IsEligibleEmployee(e,c).AsOf(2011-04-15).Out =?= true
 
-Test: Eligible_Employee_5	# Airline flight crew
+Test: Eligible_Employee_5    # Airline flight crew
 - Thing e
 - Thing c
 - EmploymentRelationship(e,c) = "Employee"
@@ -224,4 +224,5 @@ Test: Time_1
 
 Test: Time_2
 - (new Tbool(true)).CountPastNIntervals(TheYear, 2).AsOf(2012-01-15).Out =?= 2
+
 

@@ -7,23 +7,23 @@
 
 # Citizenship - Virgin Islands
 Tbool IsUSCitizenPerVI(Thing p) = 
-	ModernTest(p) |
-	Catchall(p)
-	
+    ModernTest(p) |
+    Catchall(p)
+    
 # Current test for citizenship
 Tbool ModernTest(Thing p) =
-	DoB(p) >= 1927-02-25 &
-	BirthCountry(p) == "Virgin Islands" &
-	IsSubjectToUSJurisdiction(p) &
-	TheTime.IsAtOrAfter(DoB(p))
-	
+    DoB(p) >= 1927-02-25 &
+    BirthCountry(p) == "Virgin Islands" &
+    IsSubjectToUSJurisdiction(p) &
+    TheTime.IsAtOrAfter(DoB(p))
+    
 # Stub if DoB is before 1927-02-25
 Tbool Catchall(Thing p) =
-	DoB(p) < 1927-02-25 &
-	BirthCountry(p) == "Virgin Islands" &
-	Stub()
-	
-	
+    DoB(p) < 1927-02-25 &
+    BirthCountry(p) == "Virgin Islands" &
+    Stub()
+    
+    
 
 # UNIT TESTS
 
@@ -39,5 +39,6 @@ Test: 99021694
 - DoB(lana) = 1903-02-03
 - BirthCountry(lana) = "Virgin Islands"
 - USC.Tit8.Sec1406.IsUSCitizenPerVI(lana).TestOutput =?= "Time.DawnOf Stub "
+
 
 

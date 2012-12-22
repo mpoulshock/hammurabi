@@ -64,7 +64,7 @@ Test: Assumption2d
 - IsPregnant2(p) = false
 - Hammurabi.Sandbox.IsMale2(p).Out =?= "Unstated"
 
-Test: Assumption2e	# fails b/c AreMarried2(_,2) doesn't match wildcards
+Test: Assumption2e    # fails b/c AreMarried2(_,2) doesn't match wildcards
 - Things a, b
 - IsMarried2(b) = false
 - Hammurabi.Sandbox.AreMarried2(a,b).Out =?= false
@@ -120,6 +120,7 @@ Test: Assumption1g
 - Things a, b
 - AreMarried2(a,b) = true
 - Hammurabi.Sandbox.LikeEachOther2(b,a).Out =?= true
+
 
 
 

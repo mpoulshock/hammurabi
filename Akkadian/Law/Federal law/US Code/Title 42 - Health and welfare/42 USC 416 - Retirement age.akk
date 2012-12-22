@@ -9,61 +9,61 @@
 
 # 416(l)(1) - Reached retirement age
 Tbool ReachedRetirementAge(Thing p) =
-	AgeInMonths(p) >= RetirementAgeInMonths(p)
+    AgeInMonths(p) >= RetirementAgeInMonths(p)
 
 # 416(l)(1) - Retirement age
 Tnum RetirementAgeInMonths(Thing p) =
-	set:
-	if ret < 2000-01-01 -> 65 * 12
-	if ret < 2005-01-01 -> (65 * 12) + AgeIncreaseFactor(p)
-	if ret < 2017-01-01 -> (66 * 12)
-	if ret < 2022-01-01 -> (66 * 12) + AgeIncreaseFactor(p)
-	else 67 * 12
-	
-	Tdate ret =
-		EarlyRetirementDate(p)
+    set:
+    if ret < 2000-01-01 -> 65 * 12
+    if ret < 2005-01-01 -> (65 * 12) + AgeIncreaseFactor(p)
+    if ret < 2017-01-01 -> (66 * 12)
+    if ret < 2022-01-01 -> (66 * 12) + AgeIncreaseFactor(p)
+    else 67 * 12
+    
+    Tdate ret =
+        EarlyRetirementDate(p)
 
 # 416(l)(3) - Age increase factor
 Tnum AgeIncreaseFactor(Thing p) =
-	set:
-	if retYear >= 2000 & retYear <= 2004 -> 2 * (retYear - 2000 + 1)
-	if retYear >= 2017 & retYear <= 2021 -> 2 * (retYear - 2017 + 1)
-	else 0
-	
-	# Note: (2/12) * ((retYear - 2000 + 1) * 12) = 2 * (retYear - 2000 + 1)
-	
-	Tnum retYear = 
-		EarlyRetirementDate(p).Year
-		
+    set:
+    if retYear >= 2000 & retYear <= 2004 -> 2 * (retYear - 2000 + 1)
+    if retYear >= 2017 & retYear <= 2021 -> 2 * (retYear - 2017 + 1)
+    else 0
+    
+    # Note: (2/12) * ((retYear - 2000 + 1) * 12) = 2 * (retYear - 2000 + 1)
+    
+    Tnum retYear = 
+        EarlyRetirementDate(p).Year
+        
 # Early retirement date
 Tdate EarlyRetirementDate(Thing p) =
-	ReachedEarlyRetirement(p).DateFirstTrue
+    ReachedEarlyRetirement(p).DateFirstTrue
 
 # Reached early retirement
 Tbool ReachedEarlyRetirement(Thing p) =
-	SSAAge(p) >= EarlyRetirementAge(p)
-	
+    SSAAge(p) >= EarlyRetirementAge(p)
+    
 # 416(l)(2) - Early retirement age
 Tnum EarlyRetirementAge(Thing p) =
-	set:
-	if Fam.IsWidowed(p) -> 60
-	else 62
+    set:
+    if Fam.IsWidowed(p) -> 60
+    else 62
 
 # SSA age
 Tnum SSAAge(Thing p) =
-	Time.IntervalsSince(dob, dob.AddYears(110), Time.IntervalType.Year)
-	
-	Tdate dob =
-		SSADateOfBirth(p)
-		
+    Time.IntervalsSince(dob, dob.AddYears(110), Time.IntervalType.Year)
+    
+    Tdate dob =
+        SSADateOfBirth(p)
+        
 # SSA date of birth
 # If born on Jan. 1, use previous year
 # If born on first of month, use previous month
-# See www.ssa.gov/oact/ProgData/nra.html		
+# See www.ssa.gov/oact/ProgData/nra.html        
 Tdate SSADateOfBirth(Thing p) =
-	set:
-	if DoB(p).Day == 1 -> DoB(p).AddDays(-1)
-	else DoB(p)
+    set:
+    if DoB(p).Day == 1 -> DoB(p).AddDays(-1)
+    else DoB(p)
 
 
 # CALCULATIONS PER SSA WEBSITE
@@ -72,26 +72,26 @@ Tdate SSADateOfBirth(Thing p) =
 # Retirement age according to SSA website
 # http://www.ssa.gov/oact/ProgData/nra.html
 Tnum SSARetirementAgeInMonths(Thing p) =
-	set:
-	if birthYear <= 1937 -> 65 * 12
-	if birthYear <= 1938 -> (65 * 12) + 2
-	if birthYear <= 1939 -> (65 * 12) + 4
-	if birthYear <= 1940 -> (65 * 12) + 6
-	if birthYear <= 1941 -> (65 * 12) + 8
-	if birthYear <= 1942 -> (65 * 12) + 10
-	if birthYear <= 1954 -> 66 * 12
-	if birthYear <= 1955 -> (66 * 12) + 2
-	if birthYear <= 1956 -> (66 * 12) + 4
-	if birthYear <= 1957 -> (66 * 12) + 6
-	if birthYear <= 1958 -> (66 * 12) + 8
-	if birthYear <= 1959 -> (66 * 12) + 10
-	else 67 * 12
+    set:
+    if birthYear <= 1937 -> 65 * 12
+    if birthYear <= 1938 -> (65 * 12) + 2
+    if birthYear <= 1939 -> (65 * 12) + 4
+    if birthYear <= 1940 -> (65 * 12) + 6
+    if birthYear <= 1941 -> (65 * 12) + 8
+    if birthYear <= 1942 -> (65 * 12) + 10
+    if birthYear <= 1954 -> 66 * 12
+    if birthYear <= 1955 -> (66 * 12) + 2
+    if birthYear <= 1956 -> (66 * 12) + 4
+    if birthYear <= 1957 -> (66 * 12) + 6
+    if birthYear <= 1958 -> (66 * 12) + 8
+    if birthYear <= 1959 -> (66 * 12) + 10
+    else 67 * 12
 
-	Tnum birthYear =
-		SSADateOfBirth(p).Year
+    Tnum birthYear =
+        SSADateOfBirth(p).Year
 
-		
-		
+        
+        
 # UNIT TESTS
 
 
@@ -211,3 +211,4 @@ Test: DoB2
 - Thing p
 - DoB(p) = 1940-01-02
 - Sec416.SSADateOfBirth(p).Out =?= 1940-01-02
+

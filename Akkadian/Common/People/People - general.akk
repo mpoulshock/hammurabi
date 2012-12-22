@@ -3,7 +3,7 @@
 # Updated:      2012-09-08
 # Author:       Michael Poulshock
 
-	
+    
 # BIRTH, LIFE, AND DEATH
 
 # >>What is {1}'s date of birth?
@@ -17,38 +17,38 @@ TboolIn IsDeceased(Thing p)
 
 # Age (in years)
 Tnum Age(Thing p) =
-	Time.IntervalsSince(DoB(p),
-	                    DoB(p).AddYears(110),
-						Time.IntervalType.Year)
-						
+    Time.IntervalsSince(DoB(p),
+                        DoB(p).AddYears(110),
+                        Time.IntervalType.Year)
+                        
 # Alive
 Tbool IsAlive(Thing p) =
-	...
-		!IsDeceased(p) &
-		TheTime.IsBetween(DoB(p), DoB(p).AddYears(120))		# TODO: Reconsider...
-	|
-	...
-		IsDeceased(p) &
-		TheTime.IsBetween(DoB(p), DateOfDeath(p))
-		
+    ...
+        !IsDeceased(p) &
+        TheTime.IsBetween(DoB(p), DoB(p).AddYears(120))        # TODO: Reconsider...
+    |
+    ...
+        IsDeceased(p) &
+        TheTime.IsBetween(DoB(p), DateOfDeath(p))
+        
 # Age in months (temporal)
 Tnum AgeInMonths(Thing p) =
-	Time.IntervalsSince(DoB(p), DoB(p).AddYears(110), Time.IntervalType.Month)
+    Time.IntervalsSince(DoB(p), DoB(p).AddYears(110), Time.IntervalType.Month)
 
-		
+        
 # GENDER
 
 # Female
 Tbool IsFemale(Thing p) =
-	Gender(p) == "Female"
+    Gender(p) == "Female"
 
 # Male
 Tbool IsMale(Thing p) =
-	Gender(p) == "Male"
+    Gender(p) == "Male"
 
 # Transgendered
 Tbool IsTransgendered(Thing p) =
-	Gender(p) == "Transgendered"		
+    Gender(p) == "Transgendered"        
 
 # >>What is {1}'s gender? (Options: Male, Female, Transgendered)
 TstrIn Gender(Thing p)
@@ -67,7 +67,7 @@ TboolIn IsNativeAmerican(Thing p)
 
 # >>Does/did {1} have a valid Social Security Number?
 TboolIn HasSSN(Thing p) 
-	
+    
 # >>Has {1} applied for (but not yet received) a Social Security Number?
 TboolIn AppliedForSSN(Thing p) 
 
@@ -92,8 +92,8 @@ TboolIn InFosterCare(Thing p)
 
 # >>Is/was {1} in a drug or alcohol treatment program?
 TboolIn InDrugOrAlcoholTreatmentProg(Thing p) 
-	
-	
+    
+    
 # UNIT TESTS
 
 Test: 193653325
@@ -123,7 +123,7 @@ Test: TotalSanity
 - Thing p
 - DoB(p) = 1940-01-02
 - DoB(p).Out =?= 1940-01-02
-							
+                            
 Test: Alive1
 - Thing p
 - IsAlive(p).Out =?= "Unstated"
@@ -166,4 +166,5 @@ Test: Alive3c
 - DateOfDeath(p) = 2090-01-01
 - IsDeceased(p) = true
 - IsAlive(p).AsOf(1999-01-01).Out =?= false
+
 

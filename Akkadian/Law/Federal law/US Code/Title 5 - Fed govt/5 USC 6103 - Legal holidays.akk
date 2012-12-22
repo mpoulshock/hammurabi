@@ -8,79 +8,79 @@
 
 # Legal holiday
 bool IsLegalHoliday(DateTime d) =
-	IsNewYearsDayObserved(d) |
-	d == MLKDay(d.Year) |
-	d == WashingtonsBirthday(d.Year) |
-	d == MemorialDay(d.Year) |
-	d == IndependenceDayObserved(d.Year) |
-	d == LaborDay(d.Year) |
-	d == ColumbusDay(d.Year) |
-	d == VeteransDayObserved(d.Year) |
-	d == ThanksgivingDay(d.Year) |
-	d == ChristmasDayObserved(d.Year);	
-	
+    IsNewYearsDayObserved(d) |
+    d == MLKDay(d.Year) |
+    d == WashingtonsBirthday(d.Year) |
+    d == MemorialDay(d.Year) |
+    d == IndependenceDayObserved(d.Year) |
+    d == LaborDay(d.Year) |
+    d == ColumbusDay(d.Year) |
+    d == VeteransDayObserved(d.Year) |
+    d == ThanksgivingDay(d.Year) |
+    d == ChristmasDayObserved(d.Year);    
+    
 # New Year's - January 1st.
 DateTime NewYearsDay(int year) =
-	new DateTime(year,1,1)
+    new DateTime(year,1,1)
         
 DateTime NewYearsDayObserved(int year) =
-	NewYearsDay(year).CurrentOrAdjacentWeekday()    
+    NewYearsDay(year).CurrentOrAdjacentWeekday()    
         
 bool IsNewYearsDayObserved(DateTime d) =
-	# New years day can be observed in the previous year,
-	# for example, if it falls on a Saturday
-	d == NewYearsDayObserved(d.Year-1) |
-	d == NewYearsDayObserved(d.Year) |
-	d == NewYearsDayObserved(d.Year+1) 
-	# d.AddDays(-1) == NewYearsDayObserved(d.Year)    	
+    # New years day can be observed in the previous year,
+    # for example, if it falls on a Saturday
+    d == NewYearsDayObserved(d.Year-1) |
+    d == NewYearsDayObserved(d.Year) |
+    d == NewYearsDayObserved(d.Year+1) 
+    # d.AddDays(-1) == NewYearsDayObserved(d.Year)        
         
 # MLK Day - third Monday in January.
 DateTime MLKDay(int year) =
-	Time.NthDayOfWeekMonthYear(3,DayOfWeek.Monday,1,year)
+    Time.NthDayOfWeekMonthYear(3,DayOfWeek.Monday,1,year)
         
 # Washington's Birthday - third Monday in February.
 DateTime WashingtonsBirthday(int year) =
-	Time.NthDayOfWeekMonthYear(3,DayOfWeek.Monday,2,year)
+    Time.NthDayOfWeekMonthYear(3,DayOfWeek.Monday,2,year)
 
 # Memorial Day - last Monday in May.
 DateTime MemorialDay(int year) =
-	Time.LastDayOfWeekMonthYear(DayOfWeek.Monday, 5, year)
+    Time.LastDayOfWeekMonthYear(DayOfWeek.Monday, 5, year)
 
 # July 4th.
 DateTime IndependenceDay(int year) =
-	new DateTime(year,7,4)
+    new DateTime(year,7,4)
         
 DateTime IndependenceDayObserved(int year) =
-	IndependenceDay(year).CurrentOrAdjacentWeekday()
+    IndependenceDay(year).CurrentOrAdjacentWeekday()
 
 # Labor Day - first Monday in September.
 DateTime LaborDay(int year) =
-	Time.NthDayOfWeekMonthYear(1,DayOfWeek.Monday,9,year)
+    Time.NthDayOfWeekMonthYear(1,DayOfWeek.Monday,9,year)
         
 # Columbus Day - second Monday in October.
 DateTime ColumbusDay(int year) =
-	Time.NthDayOfWeekMonthYear(2,DayOfWeek.Monday,10,year)
+    Time.NthDayOfWeekMonthYear(2,DayOfWeek.Monday,10,year)
         
 # Veteran's Day - November 11th.
 DateTime VeteransDay(int year) =
-	new DateTime(year,11,11)
+    new DateTime(year,11,11)
         
 DateTime VeteransDayObserved(int year) =
-	VeteransDay(year).CurrentOrAdjacentWeekday()
+    VeteransDay(year).CurrentOrAdjacentWeekday()
         
 # Thanksgiving - fourth Thursday in November.
 DateTime ThanksgivingDay(int year) =
-	Time.NthDayOfWeekMonthYear(4,DayOfWeek.Thursday,11,year)
+    Time.NthDayOfWeekMonthYear(4,DayOfWeek.Thursday,11,year)
         
 # Christmas - December 25th.
 DateTime ChristmasDay(int year) =
-	new DateTime(year,12,25)
+    new DateTime(year,12,25)
         
 DateTime ChristmasDayObserved(int year) =
-	ChristmasDay(year).CurrentOrAdjacentWeekday()
-	
-	
-	
+    ChristmasDay(year).CurrentOrAdjacentWeekday()
+    
+    
+    
 # UNIT TESTS
 
 Test: 1
@@ -145,4 +145,5 @@ Test: 20
 
 Test: 21
 - Sec6103.IsLegalHoliday(2013-01-01) =?= true
+
 

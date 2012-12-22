@@ -9,26 +9,27 @@
 
 # Likely to become a public charge...
 Tbool PublicCharge(Thing p) =
-	set:
-	if PublicChargeReqApplies -> false
-	# if Gen.VisaType(p) == 
-	else Stub()
-	
-	Tbool PublicChargeReqApplies = 
-		Stub()
+    set:
+    if PublicChargeReqApplies -> false
+    # if Gen.VisaType(p) == 
+    else Stub()
+    
+    Tbool PublicChargeReqApplies = 
+        Stub()
 
 # Sponsor earns enough to pass 125% poverty threshold
 Tbool SponsorMeetsPovThreshold(Thing imm, Thing sponsor) =
-	wealth >= threshold
+    wealth >= threshold
 
-	Tnum wealth =
-		Econ.AnnualIncome(sponsor) +
-		Econ.TotalAssets(sponsor)		
-		
-	Tnum threshold =
-		Tit42.Sec9902.FPG125(size, StateOfResidence(sponsor))
+    Tnum wealth =
+        Econ.AnnualIncome(sponsor) +
+        Econ.TotalAssets(sponsor)        
+        
+    Tnum threshold =
+        Tit42.Sec9902.FPG125(size, StateOfResidence(sponsor))
 
-	Tnum size =
-		Econ.HouseholdSize(sponsor) + Econ.HouseholdSize(imm)
-		
-		
+    Tnum size =
+        Econ.HouseholdSize(sponsor) + Econ.HouseholdSize(imm)
+        
+        
+

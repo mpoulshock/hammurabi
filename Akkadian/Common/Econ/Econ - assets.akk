@@ -9,22 +9,22 @@
 
 # Total household assets
 Tnum TotalHouseholdAssets(Tset household) =
-	household.Sum(TotalAssets(_))
+    household.Sum(TotalAssets(_))
 
 # Total assets
 Tnum TotalAssets(Thing p) =
-	BankAssets(p) + 
-	RealPropEquity(p) + 
-	Stub()
+    BankAssets(p) + 
+    RealPropEquity(p) + 
+    Stub()
 
 # Household liquid assets
 Tnum LiquidHouseholdAssets(Tset household) =
-	household.Sum(LiquidAssets(_))	
+    household.Sum(LiquidAssets(_))    
 
 # Liquid assets (cash, checking, saving ...)
 Tnum LiquidAssets(Thing p) =
-	Stub()
-	
+    Stub()
+    
 # Bank account assets
 TnumIn BankAssets(Thing p)
 
@@ -33,27 +33,28 @@ TnumIn BankAssets(Thing p)
 
 # Total home equity
 Tnum RealPropEquity(Thing p) =
-	Stub()
-	# AllProperty.Sum(EquityIn(p,_))
+    Stub()
+    # AllProperty.Sum(EquityIn(p,_))
 
 # What amount of equity does {1} have in {2}?  (Express the answer in percentage points.)
 TnumIn EquityIn(Thing person, Thing property)
 
 # All real property of a given person
 TsetIn RealPropertyOf(Thing p)
-	# PropertyOf(p).Filter(IsRealProperty(_))
+    # PropertyOf(p).Filter(IsRealProperty(_))
 
 # All property of a given person
 TsetIn PropertyOf(Thing p)
-	# AllProperty.Filter(Owns(p,_))
-	
+    # AllProperty.Filter(Owns(p,_))
+    
 # >>Does {1} own {2}?
 TboolIn Owns(Thing person, Thing property)
 
 # Real property
 Tbool IsRealProperty(Thing r) =
-	PropType(r) == "Real property"
+    PropType(r) == "Real property"
 
 # >>What type of property is {1}?
 TstrIn PropType(Thing r)
+
 

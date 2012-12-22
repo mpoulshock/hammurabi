@@ -8,17 +8,17 @@
 # Common law marriage
 # TODO: Tie this into AreMarried(p1,p2) somehow
 TboolInSym InCommonLawMarriage(Thing p1, Thing p2) =
-	IsResidentOf(p1, "Kansas") &		# Jurisdiction...
-	IsResidentOf(p2, "Kansas") &
-	Fam.OneManOneWoman(p1, p2) &		# Assumed
-	Econ.LivesWith(p1, p2) &				# Tentatively assumed
-	Age(p1) >= 18 & 					# KSA 23-2502...
-	Age(p2) >= 18 &
-	Fam.HasMentalCapacityToMarry(p1) &	# Case law (need cite)...
-	Fam.HasMentalCapacityToMarry(p2) &
-	Fam.HaveMarriageAgreement(p1, p2) &
-	Fam.HeldOutAsSpouses(p2, p2)
-	# Or, have common law marriage from another state
+    IsResidentOf(p1, "Kansas") &        # Jurisdiction...
+    IsResidentOf(p2, "Kansas") &
+    Fam.OneManOneWoman(p1, p2) &        # Assumed
+    Econ.LivesWith(p1, p2) &                # Tentatively assumed
+    Age(p1) >= 18 &                     # KSA 23-2502...
+    Age(p2) >= 18 &
+    Fam.HasMentalCapacityToMarry(p1) &    # Case law (need cite)...
+    Fam.HasMentalCapacityToMarry(p2) &
+    Fam.HaveMarriageAgreement(p1, p2) &
+    Fam.HeldOutAsSpouses(p2, p2)
+    # Or, have common law marriage from another state
 
 
 # UNIT TESTS
@@ -29,5 +29,6 @@ Test: KansasCLM1
 - Gender(p1) = "Female"
 - Gender(p2) = "Female"
 - KSA.Tit23.Sec2502.InCommonLawMarriage(p1,p2).Out =?= false
+
 
 

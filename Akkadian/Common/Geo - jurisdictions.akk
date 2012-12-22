@@ -6,110 +6,111 @@
 
 # Is U.S. state or Washington D.C.
 Tbool IsUSStateOrDC(Tstr jur) =
-	IsUSState(jur) |
-	jur == "District of Columbia"
+    IsUSState(jur) |
+    jur == "District of Columbia"
 
 # One of the 48 contiguous states
 Tbool Among48ContiguousStates(Tstr jur) =
-	IsUSState(jur) &
-	jur <> "Alaska" &
-	jur <> "Hawaii"
+    IsUSState(jur) &
+    jur <> "Alaska" &
+    jur <> "Hawaii"
 
 # Is U.S. state
 Tbool IsUSState(Tstr jur) =
-	match jur
-	Alabama -> true
-	Alaska -> true
-	Arizona -> true
-	Arkansas -> true
-	California -> true
-	Colorado -> true
-	Connecticut -> true
-	Delaware -> true
-	Florida -> true
-	Georgia -> true
-	Hawaii -> true
-	Idaho -> true
-	Illinois -> true
-	Indiana -> true
-	Iowa -> true
-	Kansas -> true
-	Kentucky -> true
-	Louisiana -> true
-	Maine -> true
-	Maryland -> true
-	Massachusetts -> true
-	Michigan -> true
-	Minnesota -> true
-	Mississippi -> true
-	Missouri -> true
-	Montana -> true
-	Nebraska -> true
-	Nevada -> true
-	New Hampshire -> true
-	New Jersey -> true
-	New Mexico -> true
-	New York -> true
-	North Carolina -> true
-	North Dakota -> true
-	Ohio -> true
-	Oklahoma -> true
-	Oregon -> true
-	Pennsylvania -> true
-	Rhode Island -> true
-	South Carolina -> true
-	South Dakota -> true
-	Tennessee -> true
-	Texas -> true
-	Utah -> true
-	Vermont -> true
-	Virginia -> true
-	Washington -> true
-	West Virginia -> true
-	Wisconsin -> true
-	Wyoming -> true
-	else false
+    match jur
+    Alabama -> true
+    Alaska -> true
+    Arizona -> true
+    Arkansas -> true
+    California -> true
+    Colorado -> true
+    Connecticut -> true
+    Delaware -> true
+    Florida -> true
+    Georgia -> true
+    Hawaii -> true
+    Idaho -> true
+    Illinois -> true
+    Indiana -> true
+    Iowa -> true
+    Kansas -> true
+    Kentucky -> true
+    Louisiana -> true
+    Maine -> true
+    Maryland -> true
+    Massachusetts -> true
+    Michigan -> true
+    Minnesota -> true
+    Mississippi -> true
+    Missouri -> true
+    Montana -> true
+    Nebraska -> true
+    Nevada -> true
+    New Hampshire -> true
+    New Jersey -> true
+    New Mexico -> true
+    New York -> true
+    North Carolina -> true
+    North Dakota -> true
+    Ohio -> true
+    Oklahoma -> true
+    Oregon -> true
+    Pennsylvania -> true
+    Rhode Island -> true
+    South Carolina -> true
+    South Dakota -> true
+    Tennessee -> true
+    Texas -> true
+    Utah -> true
+    Vermont -> true
+    Virginia -> true
+    Washington -> true
+    West Virginia -> true
+    Wisconsin -> true
+    Wyoming -> true
+    else false
 
 # Unincorporated U.S. territory or possession
 Tbool IsUSTerritory(Tstr jur) =
-	match jur
-	American Samoa -> true
-	Guam -> true
-	Northern Mariana Islands -> true
-	Puerto Rico -> true
-	U.S. Virgin Islands	-> true	
-	else false
+    match jur
+    American Samoa -> true
+    Guam -> true
+    Northern Mariana Islands -> true
+    Puerto Rico -> true
+    U.S. Virgin Islands    -> true    
+    else false
 
 # U.S. minor outlying island
 # Source: http://en.wikipedia.org/wiki/US_Minor_Outlying_Islands
 Tbool IsUSMinorOutlyingIsland(Tstr jur) =
-	match jur
-	Baker Island -> true
-	Howland Island -> true
-	Jarvis Island -> true
-	Johnston Atoll -> true
-	Kingman Reef -> true
-	Midway Islands -> true
-	Palmyra Atoll -> true
-	Wake Island -> true
-	Navassa Island -> true
-	Bajo Nuevo Bank -> Stub()  # disputed
-	Serranilla Bank -> Stub()  # disputed
-	else false
-	
+    match jur
+    Baker Island -> true
+    Howland Island -> true
+    Jarvis Island -> true
+    Johnston Atoll -> true
+    Kingman Reef -> true
+    Midway Islands -> true
+    Palmyra Atoll -> true
+    Wake Island -> true
+    Navassa Island -> true
+    Bajo Nuevo Bank -> Stub()  # disputed
+    Serranilla Bank -> Stub()  # disputed
+    else false
+    
 # Freely associated states (Compact of Free Association)
 # Source: http://en.wikipedia.org/wiki/Compact_of_Free_Association
 Tbool IsFreelyAssociatedState(Tstr jur) =
-	match jur
-	Marshall Islands -> true
-	Federated States of Micronesia -> true
-	Palau -> true
-	else false
+    match jur
+    Marshall Islands -> true
+    Federated States of Micronesia -> true
+    Palau -> true
+    else false
 
 
 ##  Other jurisdictions that have to be handled:
-	* Guantanamo Bay Naval Base
-	* Native American reservations...
-##	
+    * Guantanamo Bay Naval Base
+    * Native American reservations...
+##    
 
-		
+        
+

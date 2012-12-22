@@ -8,19 +8,19 @@
 
 # U.S. resident
 TboolIn IsUSResident(Thing p) =
-	CountryOfResidence(p) == "United States" |
-	ResidesInUSState(p)
-	
+    CountryOfResidence(p) == "United States" |
+    ResidesInUSState(p)
+    
 ResidesInUSState(1) assumes CountryOfResidence(1) == "United States"
 
 # Resides in U.S. state
 TboolIn ResidesInUSState(Thing p) =
-	Geo.IsUSState(StateOfResidence(p))
-	
+    Geo.IsUSState(StateOfResidence(p))
+    
 # Resident of a given state or country
 Tbool IsResidentOf(Thing p, string jur) =
-	CountryOfResidence(p) == jur |
-	StateOfResidence(p) == jur
+    CountryOfResidence(p) == jur |
+    StateOfResidence(p) == jur
 
 # >>In which country or territory does/did {1} reside?
 TstrIn CountryOfResidence(Thing p)
@@ -33,7 +33,7 @@ TstrIn StateOfResidence(Thing p)
 
 # U.S. citizen
 TboolIn IsUSCitizen(Thing p) =
-	Imm.Status(p) == "U.S. citizen" 	
+    Imm.Status(p) == "U.S. citizen"     
 
 # >>Is {1} subject to U.S. jurisdiction?
 TboolIn IsSubjectToUSJurisdiction(Thing p)
@@ -43,7 +43,7 @@ TboolIn IsSubjectToUSJurisdiction(Thing p)
 
 # Born in U.S.
 Tbool BornInTheUSA(Thing p) =
-	BirthCountry(p) == "United States"
+    BirthCountry(p) == "United States"
 
 # >>In what country was {1} born?
 TstrIn BirthCountry(Thing p)
@@ -56,8 +56,8 @@ TstrIn BirthState(Thing p)
 
 # Physically present in U.S.
 Tbool PresentInUS(Thing p) =
-	CountryLocation(p) == "United States"
-	
+    CountryLocation(p) == "United States"
+    
 # >>In what country or territory is/was {1} physically located?
 TstrIn CountryLocation(Thing p)
 
@@ -78,5 +78,6 @@ Test: 909943867
 - Thing jane
 - CountryOfResidence(jane) = "United States"
 - Hammurabi.H.IsUSResident(jane).TestOutput =?= "Time.DawnOf True "
+
 
 

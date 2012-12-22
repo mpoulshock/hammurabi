@@ -43,12 +43,12 @@ Test: Depreciation2
 
 # Extremely poor performance
 Tbool TimeError1(Thing t) =
-	(new Tbool(true)).RunningElapsedYears >= 5
+    (new Tbool(true)).RunningElapsedYears >= 5
 
-# Poor performance	
+# Poor performance    
 Tbool TimeError2(Thing t) =
-	(new Tbool(true)).ElapsedYearsInSlidingWindow(10, "Year") >= 7
-	
+    (new Tbool(true)).ElapsedYearsInSlidingWindow(10, "Year") >= 7
+    
 
 # INTERVIEW SEQUENCE WITH |~ OPERATOR - NOT WORKING
 
@@ -69,24 +69,24 @@ lazily.
 # Sequence fails - conclusions correct
 # Only asks FamRel reverse if first FamRel test is true!
 Tbool Test917d(Thing a, Thing b) =
-	Fam.IsBiologicalParentOf(a,b) &
-	Imm.IsUSNational(a)				# Adding this condition causes interview to ask FamRel in both directions!
-	
+    Fam.IsBiologicalParentOf(a,b) &
+    Imm.IsUSNational(a)                # Adding this condition causes interview to ask FamRel in both directions!
+    
 # Interview sequence fails - conclusions correct
 # Asks 918b when 918a has already been asked (unless rule has been proven)
 Tbool Test918a(Thing a) =
-	...
-		TboolIn TestMethod918a(a) |~
-		TboolIn TestMethod918b(a)
-	&	# Same problem when this is |
-	Imm.IsUSNational(a)
+    ...
+        TboolIn TestMethod918a(a) |~
+        TboolIn TestMethod918b(a)
+    &    # Same problem when this is |
+    Imm.IsUSNational(a)
 
 
 # INTERVIEW SEQUENCE WITH |~ OPERATOR - WORKING
-	
+    
 Tbool AnotherMethod(Thing p) =
-	TboolIn TestMethod101(p) |~
-	TboolIn TestMethod102(p)
+    TboolIn TestMethod101(p) |~
+    TboolIn TestMethod102(p)
 
 # Note: These tests validate the logic, not the interview sequence. But
 #       that sequence was tested and is also working properly (2012-08-11).
@@ -151,9 +151,9 @@ Test: PeriodEndVal5
 # USE OF HIGHER-ORDER FUNCTIONS
 
 # Turns out you can use a logical expression (and not just a function)
-# as an argument in a higher-order rule such as Filter, Sum, Exists.	
+# as an argument in a higher-order rule such as Filter, Sum, Exists.    
 Tnum LogicalExpressionInHigherOrderRule(Thing p) =
-	Fam.SpousesOf(p).Filter(Age(_) < 65).Count
+    Fam.SpousesOf(p).Filter(Age(_) < 65).Count
 
 Test: 965821874
 - Thing jim
@@ -167,9 +167,9 @@ Test: 825234342
 - Things a
 - SpousesOf(jim) = [[a]]
 - DoB(a) = 1979-01-01
-- Hammurabi.Sandbox.LogicalExpressionInHigherOrderRule(jim).AsOf(2000-01-01).Out =?= 1	
-	
-	
+- Hammurabi.Sandbox.LogicalExpressionInHigherOrderRule(jim).AsOf(2000-01-01).Out =?= 1    
+    
+    
 # TVAR.SHIFT
 
 Test: Shift1
@@ -251,8 +251,8 @@ Test: DayDiff5
 # DATE EQUALITY
 
 Tbool DateEquality1(Thing c) =
-	DoB(c) == 2000-01-01
-	
+    DoB(c) == 2000-01-01
+    
 Test: DateEquality1a
 - Thing b
 - DoB(b) = 2000-01-01
@@ -264,8 +264,8 @@ Test: DateEquality1b
 - Hammurabi.Sandbox.DateEquality1(b).Out =?= false
 
 Tbool DateEquality2(Thing c) =
-	DoB(c) <> 2000-01-01
-	
+    DoB(c) <> 2000-01-01
+    
 Test: DateEquality2a
 - Thing b
 - DoB(b) = 2000-01-01
@@ -277,7 +277,7 @@ Test: DateEquality2b
 - Hammurabi.Sandbox.DateEquality2(b).Out =?= true
 
 Tbool DateEquality3(Thing c) =
-	DoB(c) < 2000-01-01
+    DoB(c) < 2000-01-01
 
 Test: DateEquality3a
 - Thing b
@@ -295,8 +295,8 @@ Test: DateEquality3c
 - Hammurabi.Sandbox.DateEquality3(b).Out =?= true
 
 Tbool DateEquality4(Thing c) =
-	DoB(c) <= 2000-01-01
-	
+    DoB(c) <= 2000-01-01
+    
 Test: DateEquality4a
 - Thing b
 - DoB(b) = 2000-01-01
@@ -313,7 +313,7 @@ Test: DateEquality4c
 - Hammurabi.Sandbox.DateEquality4(b).Out =?= true
 
 Tbool DateEquality5(Thing c) =
-	DoB(c) > 2000-01-01
+    DoB(c) > 2000-01-01
 
 Test: DateEquality5a
 - Thing b
@@ -331,7 +331,7 @@ Test: DateEquality5c
 - Hammurabi.Sandbox.DateEquality5(b).Out =?= false
 
 Tbool DateEquality6(Thing c) =
-	DoB(c) >= 2000-01-01
+    DoB(c) >= 2000-01-01
 
 Test: DateEquality6a
 - Thing b
@@ -352,7 +352,7 @@ Test: DateEquality6c
 # TSET.CONTAINS
 
 Tbool SetContainsThing(Thing p1, Thing p2) =
-	Fam.ChildrenOf(p1).Contains(p2)
+    Fam.ChildrenOf(p1).Contains(p2)
 
 Test: 85594484
 - Things t1, t2
@@ -363,34 +363,34 @@ Test: 85594484
 # ASK INTERMEDIATE QUESTION BEFORE DESCENDING TREE
 
 TboolIn Test9(Thing p) =
-	set.Exists(IsUSCitizen(_))
-	
-	Tset set =
-		TsetIn SomeRandomPeople(p)
+    set.Exists(IsUSCitizen(_))
+    
+    Tset set =
+        TsetIn SomeRandomPeople(p)
 
 Tbool MeetsSomeCriteria(Thing p) =
-	MeetsCriteria1(p) &
-	TboolIn MeetsCriteria2(p)
+    MeetsCriteria1(p) &
+    TboolIn MeetsCriteria2(p)
 
 TboolIn? MeetsCriteria1(Thing p) = 
-	TboolIn Meets1a(p) &
-	TboolIn Meets1b(p)
-	
-	
+    TboolIn Meets1a(p) &
+    TboolIn Meets1b(p)
+    
+    
 # UNKNOWN THINGS
 
 Tbool SomeMethod(Thing t1, Thing t2) =
-	true
+    true
 
 Thing StubThing() =
-	new Thing(Hstate.Stub)
+    new Thing(Hstate.Stub)
 
 Thing UnstatedThing() =
-	new Thing(Hstate.Unstated)
+    new Thing(Hstate.Unstated)
 
 Thing UncertainThing() =
-	new Thing(Hstate.Uncertain)
-	
+    new Thing(Hstate.Uncertain)
+    
 Test: UncertainThing1
 - Thing p
 - Thing q
@@ -422,16 +422,16 @@ Test: UncertainThing7
 
 # Recursive rule that looks for unknown people
 TboolIn IsCitizen(Thing p) =
-	# >> Is {1} a citizen by law?
-	TboolIn IsCitizenByLaw(p) |
-	IsCitizen(TheMotherOf(p))
+    # >> Is {1} a citizen by law?
+    TboolIn IsCitizenByLaw(p) |
+    IsCitizen(TheMotherOf(p))
 
 # >>What's the name of {1}'s mother?
 Thing TheMotherOf(Thing p) =
-	# >>What's the name of {1}'s mother?
-	TsetIn MotherOf(p).ToThing
-	
-	
+    # >>What's the name of {1}'s mother?
+    TsetIn MotherOf(p).ToThing
+    
+    
 Test: Loop1
 - Thing p
 - Sandbox.IsCitizen(p).Out =?= "Unstated"
@@ -486,7 +486,7 @@ Test: 864022057
 # TSET INPUTS
 
 Tnum TestTsetCount(Thing p) =
-	TestTset(p).Count
+    TestTset(p).Count
 
 # >>What items are in {1}'s set?
 TsetIn TestTset(Thing p)
@@ -525,11 +525,11 @@ Test: Tset5  # fail b/c doesn't output Tset data
 # METHODS WITH THREE PARAMETERS
 
 Tbool Another3ParamTest(Thing a, Thing b, Thing c) =
-	TboolIn ABC(a,b,c)
+    TboolIn ABC(a,b,c)
 
 TboolIn IsABC(Thing a, Thing b, Thing c) =
-	Stub() |
-	IsXYZ(a,b,c)
+    Stub() |
+    IsXYZ(a,b,c)
 
 TboolIn IsXYZ(Thing x, Thing y, Thing z)
 
@@ -575,18 +575,18 @@ Test: Param3_2c
 
 
 # TIME-VARYING BOOLEANS
-	
+    
 # Time-varying boolean subrule
 Tbool SomeTemporalBooleanSubrule() =
-	rule
-	
-	Tbool rule =
-		temporal:
-		from Time.DawnOf -> false
-		from 2000-01-01 -> true
-		from 2001-01-01 -> false
-		endtemporal
-	
+    rule
+    
+    Tbool rule =
+        temporal:
+        from Time.DawnOf -> false
+        from 2000-01-01 -> true
+        from 2001-01-01 -> false
+        endtemporal
+    
 Test: TimeVaryingBooleanSub1
 - Sandbox.SomeTemporalBooleanSubrule().AsOf(1999-03-09).Out =?= false
 
@@ -594,17 +594,17 @@ Test: TimeVaryingBooleanSub2
 - Sandbox.SomeTemporalBooleanSubrule().AsOf(2000-03-09).Out =?= true
 
 Test: TimeVaryingBooleanSub3
-- Sandbox.SomeTemporalBooleanSubrule().AsOf(2002-03-09).Out =?= false		
-	
-	
+- Sandbox.SomeTemporalBooleanSubrule().AsOf(2002-03-09).Out =?= false        
+    
+    
 # Time-varying boolean
 Tbool SomeTemporalBoolean() =
-	temporal:
-	from Time.DawnOf -> false
-	from 2000-01-01 -> true
-	from 2001-01-01 -> false
-	endtemporal
-		
+    temporal:
+    from Time.DawnOf -> false
+    from 2000-01-01 -> true
+    from 2001-01-01 -> false
+    endtemporal
+        
 Test: TimeVaryingBoolean1
 - Sandbox.SomeTemporalBoolean().AsOf(1999-03-09).Out =?= false
 
@@ -612,7 +612,8 @@ Test: TimeVaryingBoolean2
 - Sandbox.SomeTemporalBoolean().AsOf(2000-03-09).Out =?= true
 
 Test: TimeVaryingBoolean3
-- Sandbox.SomeTemporalBoolean().AsOf(2002-03-09).Out =?= false		
+- Sandbox.SomeTemporalBoolean().AsOf(2002-03-09).Out =?= false        
+
 
 
 
