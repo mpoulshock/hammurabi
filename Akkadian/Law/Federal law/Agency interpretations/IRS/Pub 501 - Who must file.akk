@@ -34,18 +34,18 @@ Tbool MustFilePerTable1(Thing p) =
     Tstr status = USC.Tit26.Sec2.FilingStatus(p) 
 
 Tbool Table1Applies(Tstr status, Tnum age, Tnum grossIncome, Tnum spousesUnder65, Tbool livedWSpouse) =
-    match status, age, grossIncome, spousesUnder65, livedWSpouse
-    Single,                     < 65,    >= 9500,,                -> true
-    Single,                     >= 65,    >= 10950,,                -> true
-    Head of household,             < 65,    >= 12200,,                -> true
-    Head of household,             >= 65,    >= 13650,,                -> true
-    Married filing jointly,,,,                            false     -> true 
-    Married filing jointly,,            >= 19000,   2,            -> true
-    Married filing jointly,,            >= 20150,   1,            -> true
-    Married filing jointly,,            >= 21300,   0,            -> true
-    Married filing separately,,            >= 3700,,                -> true
-    Qualifying widow(er),         < 65,    >= 15300,,                -> true
-    Qualifying widow(er),         >= 65,    >= 16450,,                -> true
+    match status,               age,        grossIncome,    spousesUnder65, livedWSpouse
+    Single,                     < 65,       >= 9500,,                                       -> true
+    Single,                     >= 65,      >= 10950,,                                      -> true
+    Head of household,          < 65,       >= 12200,,                                      -> true
+    Head of household,          >= 65,      >= 13650,,                                      -> true
+    Married filing jointly,,,,                                              false           -> true 
+    Married filing jointly,,    >= 19000,                   2,                              -> true
+    Married filing jointly,,    >= 20150,                   1,                              -> true
+    Married filing jointly,,    >= 21300,                   0,                              -> true
+    Married filing separately,, >= 3700,,                                                   -> true
+    Qualifying widow(er),       < 65,       >= 15300,,                                      -> true
+    Qualifying widow(er),       >= 65,      >= 16450,,                                      -> true
     else false
 
 # Number of people (person/spouse) under age 65    

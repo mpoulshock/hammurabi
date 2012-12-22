@@ -35,12 +35,12 @@ Tnum StandardDeduction(Thing p) =
 # Table 6 (page 24)
 Tnum Table6Amount(Thing p) =
     set:
-    if claimableAsDep        -> Table8Amount(p)
-    if agedOrBlind            -> Table7Amount(p)
-    if status == "Single"                         ->  5800
-    if status == "Married filing separately"     ->  5800
-    if status == "Married filing jointly"         -> 11600
-    if status == "Qualifying widow(er)"            -> 11600
+    if claimableAsDep                           -> Table8Amount(p)
+    if agedOrBlind                              -> Table7Amount(p)
+    if status == "Single"                       ->  5800
+    if status == "Married filing separately"    ->  5800
+    if status == "Married filing jointly"       -> 11600
+    if status == "Qualifying widow(er)"         -> 11600
     if status == "Head of household"            ->  8500
     else Stub()
 
@@ -66,21 +66,21 @@ Tnum Table7Amount(Thing p) =
 Tnum Table7CoreAmount(Tstr status, Tnum boxesChecked) =
     match status, boxesChecked
     Single,                     1 ->  7250
-    Single,                        2 ->  8700
-    Married filing jointly,        1 -> 12750
-    Married filing jointly,        2 -> 13900
-    Married filing jointly,        3 -> 15050
-    Married filing jointly,        4 -> 16200
-    Qualifying widow(er),        1 -> 12750
-    Qualifying widow(er),        2 -> 13900
-    Qualifying widow(er),        3 -> 15050
-    Qualifying widow(er),        4 -> 16200
-    Married filing separately,    1 ->  6950
-    Married filing separately,    2 ->  8100
-    Married filing separately,    3 ->  9250
-    Married filing separately,    4 -> 10400
-    Head of household,            1 ->  9950
-    Head of household,            2 -> 11400
+    Single,                     2 ->  8700
+    Married filing jointly,     1 -> 12750
+    Married filing jointly,     2 -> 13900
+    Married filing jointly,     3 -> 15050
+    Married filing jointly,     4 -> 16200
+    Qualifying widow(er),       1 -> 12750
+    Qualifying widow(er),       2 -> 13900
+    Qualifying widow(er),       3 -> 15050
+    Qualifying widow(er),       4 -> 16200
+    Married filing separately,  1 ->  6950
+    Married filing separately,  2 ->  8100
+    Married filing separately,  3 ->  9250
+    Married filing separately,  4 -> 10400
+    Head of household,          1 ->  9950
+    Head of household,          2 -> 11400
     else Stub()
 
 # Table 8 (page 24)
@@ -100,9 +100,9 @@ Tnum Table8Amount(Thing p) =
     
     Tnum line6 =
         set:
-        if status == "Single"                         ->  5800
-        if status == "Married filing separately"     ->  5800
-        if status == "Married filing jointly"        -> 11600
+        if status == "Single"                       ->  5800
+        if status == "Married filing separately"    ->  5800
+        if status == "Married filing jointly"       -> 11600
         if status == "Head of household"            ->  8500
         else Stub()
     
