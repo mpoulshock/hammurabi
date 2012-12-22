@@ -12,240 +12,240 @@
 # Use these functions, not the "inferred" ones below, in other rules
 
 Tbool IsResidentAlien(Thing p) =
-	Imm.IsAlien(p) &
-	AlienTaxStatus(p) == "Resident alien"
-	
+    Imm.IsAlien(p) &
+    AlienTaxStatus(p) == "Resident alien"
+    
 Tbool IsNonresidentAlien(Thing p) =
-	Imm.IsAlien(p) &
-	AlienTaxStatus(p) == "Nonresident alien"	
+    Imm.IsAlien(p) &
+    AlienTaxStatus(p) == "Nonresident alien"    
 
 Tbool IsDualStatusAlien(Thing p) =
-	Imm.IsAlien(p) &
-	AlienTaxStatus(p) == "Dual-status alien"
+    Imm.IsAlien(p) &
+    AlienTaxStatus(p) == "Dual-status alien"
 
-# Interview stops here before descending...	
+# Interview stops here before descending...    
 # >>What is {1}'s alien tax status? (Options: Resident alien, Nonresident alien, Dual-status alien)
 TstrIn? AlienTaxStatus(Thing p) =
-	set:
-	# if IsDualStatusAlienInferred(p) -> "Dual-status alien"
-	if IsResidentAlienInferred(p) -> "Resident alien"
-	else "Nonresident alien"
+    set:
+    # if IsDualStatusAlienInferred(p) -> "Dual-status alien"
+    if IsResidentAlienInferred(p) -> "Resident alien"
+    else "Nonresident alien"
 
 
 # RESIDENT ALIEN, DEFINED
 
 # Is/was {1} a resident alien for tax purposes?
 Tbool IsResidentAlienInferred(Thing p) =
-	set:
-	if IsBonaFideResidentOfPuertoRicoOrAmerSamoa(p) -> Stub()
-	else ResidentAlienTest(p)
+    set:
+    if IsBonaFideResidentOfPuertoRicoOrAmerSamoa(p) -> Stub()
+    else ResidentAlienTest(p)
 
 Tbool ResidentAlienTest(Thing p) =
-	MeetsCoreResidentAlienTest(p) |		
-	NonresidentSpousalElection(p)
+    MeetsCoreResidentAlienTest(p) |        
+    NonresidentSpousalElection(p)
 
 # Factored out to prevent infinite loop when analyzing the nonresident spousal election
 TboolIn MeetsCoreResidentAlienTest(Thing p) =
-	Imm.IsAlien(p) &
-	...
-		...
-			! IRS.Pub901.IsResidentOfForeignCountryUnderTaxTreaty(p) &		# Pub 519, p. 8
-			...
-				MeetsGreenCardTest(p) |
-				MeetsSubstantialPresenceTest(p) 
-		|
-		ChoosesResidentAlienStatus(p)  
-		
-		
+    Imm.IsAlien(p) &
+    ...
+        ...
+            ! IRS.Pub901.IsResidentOfForeignCountryUnderTaxTreaty(p) &        # Pub 519, p. 8
+            ...
+                MeetsGreenCardTest(p) |
+                MeetsSubstantialPresenceTest(p) 
+        |
+        ChoosesResidentAlienStatus(p)  
+        
+        
 # GREEN CARD TEST
 
 # Green card test
 # Note: status revocation or abandonment reflected in the temporal fact IsLPR()
 Tbool MeetsGreenCardTest(Thing p) = 
-	Imm.IsLPR(p).EverPer(TheYear)
+    Imm.IsLPR(p).EverPer(TheYear)
 
-	
+    
 # SUBSTANTIAL PRESENCE TEST
 
 # Substantial presence
 Tbool MeetsSubstantialPresenceTest(Thing p) =
-	MeetsBasicSubstantialPresenceTest(p) &
-	! HasCloserConnectionToForeignCountry(p)
+    MeetsBasicSubstantialPresenceTest(p) &
+    ! HasCloserConnectionToForeignCountry(p)
 
 Tbool MeetsBasicSubstantialPresenceTest(Thing p) =
-	DaysPresentPerYear(p) >= 31 &
-	ThreeYearWeightedTotal(p) >= 183
+    DaysPresentPerYear(p) >= 31 &
+    ThreeYearWeightedTotal(p) >= 183
 
 Tnum ThreeYearWeightedTotal(Thing p) =
-	daysPresentPerYear +
-	(daysPresentPriorYear / 3) +
-	(daysPresent2YearsPrior / 6)
-		
-	Tnum daysPresentPriorYear =
-		daysPresentPerYear.Shift(-1,TheYear)
-	
-	Tnum daysPresent2YearsPrior =
-		daysPresentPerYear.Shift(-2,TheYear)
-	
-	Tnum daysPresentPerYear =	# prevents recomputation
-		DaysPresentPerYear(p)   
+    daysPresentPerYear +
+    (daysPresentPriorYear / 3) +
+    (daysPresent2YearsPrior / 6)
+        
+    Tnum daysPresentPriorYear =
+        daysPresentPerYear.Shift(-1,TheYear)
+    
+    Tnum daysPresent2YearsPrior =
+        daysPresentPerYear.Shift(-2,TheYear)
+    
+    Tnum daysPresentPerYear =    # prevents recomputation
+        DaysPresentPerYear(p)   
 
 Tnum DaysPresentPerYear(Thing p) =
-	PhysicallyPresent(p).TotalElapsedDaysPer(TheYear)
+    PhysicallyPresent(p).TotalElapsedDaysPer(TheYear)
 
 # Physical presence
 TboolIn PhysicallyPresent(Thing p) =
-	PresentInUS(p) &
-	! PresenceExempt(p) &
-	! ExemptIndividual(p)
-	
+    PresentInUS(p) &
+    ! PresenceExempt(p) &
+    ! ExemptIndividual(p)
+    
 # Exemptions
 Tbool PresenceExempt(Thing p) =
-	CommuteToUSRegularlyFromCanadaOrMexico(p) |
-	InTransitThroughUS(p) |
-	InUSAsCrewOnForeignVessel(p) |
-	UnableToLeaveUSDueToMedicalProblem(p)
-	
+    CommuteToUSRegularlyFromCanadaOrMexico(p) |
+    InTransitThroughUS(p) |
+    InUSAsCrewOnForeignVessel(p) |
+    UnableToLeaveUSDueToMedicalProblem(p)
+    
 Tbool ExemptIndividual(Thing p) =
-	ForeignGovtRelatedBusiness(p) |
-	ExemptTeacherOrTrainee(p) |
-	ExemptStudent(p) |
-	ProfessionalAthleteTempInUSForCharity(p)
+    ForeignGovtRelatedBusiness(p) |
+    ExemptTeacherOrTrainee(p) |
+    ExemptStudent(p) |
+    ProfessionalAthleteTempInUSForCharity(p)
 
-# Foreign official	
+# Foreign official    
 Tbool ForeignGovtRelatedBusiness(Thing p) =
-	visa == "A-1" |
-	visa == "A-2" |
-	visa == "A-3" |
-	visa == "G-1" |
-	visa == "G-2" |
-	visa == "G-3" |
-	visa == "G-4" |
-	visa == "G-5"
-	
-	Tstr visa =
-		Imm.NonimmigrantVisaType(p)
-	
+    visa == "A-1" |
+    visa == "A-2" |
+    visa == "A-3" |
+    visa == "G-1" |
+    visa == "G-2" |
+    visa == "G-3" |
+    visa == "G-4" |
+    visa == "G-5"
+    
+    Tstr visa =
+        Imm.NonimmigrantVisaType(p)
+    
 # Teacher/trainee
 Tbool ExemptTeacherOrTrainee(Thing p) =
-	onTeacherTraineeVisa &
-	...
-		! twoYearTest |
-		threeYearTest
-		
-	# On J/Q visa for any part of 2 of 6 preceding calendar years
-	Tbool twoYearTest =
-		yearsInPrior6Years >= 2
+    onTeacherTraineeVisa &
+    ...
+        ! twoYearTest |
+        threeYearTest
+        
+    # On J/Q visa for any part of 2 of 6 preceding calendar years
+    Tbool twoYearTest =
+        yearsInPrior6Years >= 2
 
-	Tbool threeYearTest =
-		yearsInPrior6Years <= 3 &
-		ForeignEmployerPaidAllIncome(p).AlwaysPer(TheYear) &
-		foreignEmpPaidTecherComp.AlwaysPer(TheYear).CountPastNIntervals(TheYear,6) == 6
-		
-	Tnum yearsInPrior6Years = onTeacherTraineeVisa.EverPer(TheYear).CountPastNIntervals(TheYear,6)
-	
-	Tbool foreignEmpPaidTecherComp =
-		if onTeacherTraineeVisa then ForeignEmployerPaidAllIncome(p)
-	
-	Tbool onTeacherTraineeVisa =
-		visa == "J-1" |
-		visa == "J-2" |
-		visa == "Q-1" |
-		visa == "Q-2" |
-		visa == "Q-3" 
-	
-	Tstr visa =
-		Imm.NonimmigrantVisaType(p)
+    Tbool threeYearTest =
+        yearsInPrior6Years <= 3 &
+        ForeignEmployerPaidAllIncome(p).AlwaysPer(TheYear) &
+        foreignEmpPaidTecherComp.AlwaysPer(TheYear).CountPastNIntervals(TheYear,6) == 6
+        
+    Tnum yearsInPrior6Years = onTeacherTraineeVisa.EverPer(TheYear).CountPastNIntervals(TheYear,6)
+    
+    Tbool foreignEmpPaidTecherComp =
+        if onTeacherTraineeVisa then ForeignEmployerPaidAllIncome(p)
+    
+    Tbool onTeacherTraineeVisa =
+        visa == "J-1" |
+        visa == "J-2" |
+        visa == "Q-1" |
+        visa == "Q-2" |
+        visa == "Q-3" 
+    
+    Tstr visa =
+        Imm.NonimmigrantVisaType(p)
 
 # Students
 Tbool ExemptStudent(Thing p) =
-	onStudentVisa &
-	if fiveYearTest then exceptionTo5Yr
-	
-	Tbool exceptionTo5Yr =
-		! IntendToResidePermanentlyInUS(p) &
-		Imm.CompliedWithTermsOfVisa(p)
-	
-	Tbool fiveYearTest = onStudentVisa.EverPer(TheYear).RunningElapsedWholeYears >= 5
-	
-	Tbool onStudentVisa =
-		visa == "F-1" |
-		visa == "F-2" |
-		visa == "F-3" |
-		visa == "J-1" |
-		visa == "J-2" |
-		visa == "M-1" |
-		visa == "M-2" |
-		visa == "M-3" |
-		visa == "Q-1" |
-		visa == "Q-2" |
-		visa == "Q-3"
-	
-	Tstr visa =
-		Imm.NonimmigrantVisaType(p)
+    onStudentVisa &
+    if fiveYearTest then exceptionTo5Yr
+    
+    Tbool exceptionTo5Yr =
+        ! IntendToResidePermanentlyInUS(p) &
+        Imm.CompliedWithTermsOfVisa(p)
+    
+    Tbool fiveYearTest = onStudentVisa.EverPer(TheYear).RunningElapsedWholeYears >= 5
+    
+    Tbool onStudentVisa =
+        visa == "F-1" |
+        visa == "F-2" |
+        visa == "F-3" |
+        visa == "J-1" |
+        visa == "J-2" |
+        visa == "M-1" |
+        visa == "M-2" |
+        visa == "M-3" |
+        visa == "Q-1" |
+        visa == "Q-2" |
+        visa == "Q-3"
+    
+    Tstr visa =
+        Imm.NonimmigrantVisaType(p)
 
 # Closer connection (this rule could be more detailed...)
 Tbool HasCloserConnectionToForeignCountry(Thing p) =
-	DaysPresentPerYear(p) < 183 &
-	(closerConnections.Count == 1).EverPer(TheYear) &
-	(closerConnections.Count < 2).AlwaysPer(TheYear)
-	
-	Tset closerConnections = TaxHomeCountries(p).Filter(CloserToForeignCountry(p,_))
-	
+    DaysPresentPerYear(p) < 183 &
+    (closerConnections.Count == 1).EverPer(TheYear) &
+    (closerConnections.Count < 2).AlwaysPer(TheYear)
+    
+    Tset closerConnections = TaxHomeCountries(p).Filter(CloserToForeignCountry(p,_))
+    
 Tbool CloserToForeignCountry(Thing person, Thing country) =
-	CloserConnectionThanWithUS(person, country) &
-	country.Id <> "United States"
+    CloserConnectionThanWithUS(person, country) &
+    country.Id <> "United States"
 
-	
+    
 # DUAL-STATUS
 # This is when a person is a resident and nonresident in the same year (e.g.
 # in their first and last year living in the U.S.)
 
 Tbool ChoosesResidentAlienStatus(Thing p) =
-	IsDualStatusAlienInferred(p) &
-	Stub() &
-	ChoosesToBeTreatedAsResidentAlien(p)
-	
+    IsDualStatusAlienInferred(p) &
+    Stub() &
+    ChoosesToBeTreatedAsResidentAlien(p)
+    
 Tbool IsDualStatusAlienInferred(Thing p) =
-	Stub()
+    Stub()
 
 Tdate ResidencyStartingDate(Thing p) =
-	Stub()
-	
+    Stub()
+    
 Tdate ResidencyTerminationDate(Thing p) =
-	Stub()
-	
+    Stub()
+    
 
 # NONRESIDENT SPOUSE TREATED AS RESIDENT
 
 # Spouse of citizen/resident elects residency status
 Tbool NonresidentSpousalElection(Thing p) =
-	Imm.IsAlien(p) &
-	Fam.IsMarried(p) &
-	! MeetsCoreResidentAlienTest(p) &
-	Fam.SpousesOf(p).Exists(IsCitizenOrRA(_)) &
-	ChoosesToBeTreatedAsResidentAlien(p)
+    Imm.IsAlien(p) &
+    Fam.IsMarried(p) &
+    ! MeetsCoreResidentAlienTest(p) &
+    Fam.SpousesOf(p).Exists(IsCitizenOrRA(_)) &
+    ChoosesToBeTreatedAsResidentAlien(p)
 
 # Citizen or resident alien
 Tbool IsCitizenOrRA(Thing p) =
-	IsUSCitizen(p) |
-	MeetsCoreResidentAlienTest(p)
+    IsUSCitizen(p) |
+    MeetsCoreResidentAlienTest(p)
 
-	
+    
 # ALIENS FROM AMERICAN SAMOA OR PUERTO RICO
 
 Tbool IsBonaFideResidentOfPuertoRicoOrAmerSamoa(Thing p) =
-	Imm.IsAlien(p) &
-	...
-		...
-			CountryOfResidence(p) == "Puerto Rico" &
-			IsBonaFideResidentOfPuertoRico(p)
-		|
-		...
-			CountryOfResidence(p) == "American Samoa" &
-			IsBonaFideResidentOfAmericanSamoa(p)
-	
-	
+    Imm.IsAlien(p) &
+    ...
+        ...
+            CountryOfResidence(p) == "Puerto Rico" &
+            IsBonaFideResidentOfPuertoRico(p)
+        |
+        ...
+            CountryOfResidence(p) == "American Samoa" &
+            IsBonaFideResidentOfAmericanSamoa(p)
+    
+    
 # INPUTS
 
 # >>Is/was {1} a bona fide resident of American Samoa?
@@ -276,7 +276,7 @@ TboolIn IntendToResidePermanentlyInUS(Thing p)
 TboolIn ProfessionalAthleteTempInUSForCharity(Thing p)
 
 # >>Does {1} have a 'closer connection' with {2} than with the U.S.?
-TboolIn CloserConnectionThanWithUS(Thing person, Thing country)	
+TboolIn CloserConnectionThanWithUS(Thing person, Thing country)    
 
 # >>In what countries does {1} have a tax home? (A tax home is a person's main place of business or employment, regardless of where they live.)
 TsetIn TaxHomeCountries(Thing p)
@@ -321,7 +321,7 @@ Test: Teacher1
 - NonimmigrantVisaType(marge) = {Time.DawnOf: "None"; 2012-05-02: "J-1"}
 - ForeignEmployerPaidAllIncome(marge) = false
 - IRS.Pub519.ExemptTeacherOrTrainee(marge).AsOf(2012-12-31).Out =?= true
-	
+    
 Test: Teacher2
 - Thing marge
 - NonimmigrantVisaType(marge) = {Time.DawnOf: "None"; 2008-01-01: "J-1"}
@@ -332,7 +332,7 @@ Test: Teacher3
 - NonimmigrantVisaType(marge) = {Time.DawnOf: "None"; 2010-05-01: "J-1"}
 - ForeignEmployerPaidAllIncome(marge) = {Time.DawnOf: false; 2010-05-01: true}
 - IRS.Pub519.ExemptTeacherOrTrainee(marge).AsOf(2012-12-31).Out =?= true
-	
+    
 Test: Teacher4
 - Thing marge
 - NonimmigrantVisaType(marge) = {Time.DawnOf: "None"}
@@ -341,17 +341,17 @@ Test: Teacher4
 Test: SubsPresence_Pub519_Page4_Example1
 - Thing jed
 - PhysicallyPresent(jed) = {Time.DawnOf: false; 2009-01-01: true; 2009-04-30: false; 2010-01-01: true; 2010-04-30: false; 2011-01-01: true; 2011-04-30: false}
-- IRS.Pub519.MeetsBasicSubstantialPresenceTest(jed).TestOutput =?= "Time.DawnOf False "		# Comes to 180 days
+- IRS.Pub519.MeetsBasicSubstantialPresenceTest(jed).TestOutput =?= "Time.DawnOf False "        # Comes to 180 days
 
 Test: SubsPresence2
 - Thing jed
 - PhysicallyPresent(jed) = {Time.DawnOf: false; 2009-01-01: true; 2009-01-21: false; 2010-01-01: true; 2010-02-10: false; 2011-01-01: true; 2011-05-01: false}
-- IRS.Pub519.MeetsBasicSubstantialPresenceTest(jed).TestOutput =?= "Time.DawnOf False "	
+- IRS.Pub519.MeetsBasicSubstantialPresenceTest(jed).TestOutput =?= "Time.DawnOf False "    
 
 Test: SubsPresence3
 - Thing jed
 - PhysicallyPresent(jed) = {Time.DawnOf: false; 2009-01-01: true; 2009-05-01: false; 2010-01-01: true; 2010-05-01: false; 2011-01-01: true; 2011-05-04: false}
-- IRS.Pub519.MeetsBasicSubstantialPresenceTest(jed).TestOutput =?= "Time.DawnOf False 1/1/2011 12:00:00 AM True 1/1/2012 12:00:00 AM False "		# 183 days in 2011
+- IRS.Pub519.MeetsBasicSubstantialPresenceTest(jed).TestOutput =?= "Time.DawnOf False 1/1/2011 12:00:00 AM True 1/1/2012 12:00:00 AM False "        # 183 days in 2011
 
 Test: ThreeYearWeightedTotal
 - Thing jed
@@ -373,4 +373,5 @@ Test: 397888975
 - USImmigrationStatus(sherry) = "U.S. citizen"
 - ChoosesToBeTreatedAsResidentAlien(jim) = true
 - IRS.Pub519.NonresidentSpousalElection(jim).TestOutput =?= "Time.DawnOf True "
+
 

@@ -2,7 +2,7 @@
 # Summary:      IRS Publication 501 - Standard deduction
 # Updated:      2012-10-09
 # Author:       Michael Poulshock
-# Notes:		Decedents should be treated as if they were alive
+# Notes:        Decedents should be treated as if they were alive
 
 
 # RULES FOR TAX YEAR 2011
@@ -11,114 +11,114 @@
 
 # Taxpayer should itemize instead of claiming standard deduction
 Tbool ShouldItemize(Thing p) =
-	TotalItemizedDeductions(p) > StandardDeduction(p)
+    TotalItemizedDeductions(p) > StandardDeduction(p)
 
 # Not eligible for standard deduction
 Tbool IneligibleForStandardDeduction(Thing p) =
-	...
-		USC.Tit26.Sec2.FilingStatus(p) == "Married filing separately" &
-		MeetsSpouseItemizingTest(p)
-	|
-	FilingReturnForShortTaxYear(p) |	
-	IRS.Pub519.IsNonresidentAlien(p) |
-	IRS.Pub519.IsDualStatusAlien(p)
-		
+    ...
+        USC.Tit26.Sec2.FilingStatus(p) == "Married filing separately" &
+        MeetsSpouseItemizingTest(p)
+    |
+    FilingReturnForShortTaxYear(p) |    
+    IRS.Pub519.IsNonresidentAlien(p) |
+    IRS.Pub519.IsDualStatusAlien(p)
+        
 
 # STANDARD DEDUCTION AMOUNT
 
 # Standard deduction amount (2011)
 Tnum StandardDeduction(Thing p) =
-	set:
-	if IneligibleForStandardDeduction(p) -> 0
-	else Table6Amount(p)		# incorporates other tables
-	
+    set:
+    if IneligibleForStandardDeduction(p) -> 0
+    else Table6Amount(p)        # incorporates other tables
+    
 # Table 6 (page 24)
 Tnum Table6Amount(Thing p) =
-	set:
-	if claimableAsDep		-> Table8Amount(p)
-	if agedOrBlind			-> Table7Amount(p)
-	if status == "Single" 						->  5800
-	if status == "Married filing separately" 	->  5800
-	if status == "Married filing jointly" 		-> 11600
-	if status == "Qualifying widow(er)"			-> 11600
-	if status == "Head of household"			->  8500
-	else Stub()
+    set:
+    if claimableAsDep        -> Table8Amount(p)
+    if agedOrBlind            -> Table7Amount(p)
+    if status == "Single"                         ->  5800
+    if status == "Married filing separately"     ->  5800
+    if status == "Married filing jointly"         -> 11600
+    if status == "Qualifying widow(er)"            -> 11600
+    if status == "Head of household"            ->  8500
+    else Stub()
 
-	Tbool agedOrBlind =
-		DoB(p) < 1947-01-02 |
-		IsBlind(p) |
-		...
-			status == "Married filing jointly" &
-			Fam.SpousesOf(p).Exists(DoB(_) < 1947-01-02 | IsBlind(_))
-		
-	Tbool claimableAsDep =
-		USC.Tit26.Sec152.CanBeClaimedAsDependentBySomeone(p) |
-		...
-			status == "Married filing jointly" &
-			Fam.SpousesOf(p).Exists(USC.Tit26.Sec152.CanBeClaimedAsDependentBySomeone(_))
-		
-	Tstr status = USC.Tit26.Sec2.FilingStatus(p)
-	
+    Tbool agedOrBlind =
+        DoB(p) < 1947-01-02 |
+        IsBlind(p) |
+        ...
+            status == "Married filing jointly" &
+            Fam.SpousesOf(p).Exists(DoB(_) < 1947-01-02 | IsBlind(_))
+        
+    Tbool claimableAsDep =
+        USC.Tit26.Sec152.CanBeClaimedAsDependentBySomeone(p) |
+        ...
+            status == "Married filing jointly" &
+            Fam.SpousesOf(p).Exists(USC.Tit26.Sec152.CanBeClaimedAsDependentBySomeone(_))
+        
+    Tstr status = USC.Tit26.Sec2.FilingStatus(p)
+    
 # Table 7 (page 24)
 Tnum Table7Amount(Thing p) =
-	Table7CoreAmount(USC.Tit26.Sec2.FilingStatus(p), BoxesChecked(p))
+    Table7CoreAmount(USC.Tit26.Sec2.FilingStatus(p), BoxesChecked(p))
 
 Tnum Table7CoreAmount(Tstr status, Tnum boxesChecked) =
-	match status, boxesChecked
-	Single, 					1 ->  7250
-	Single,						2 ->  8700
-	Married filing jointly,		1 -> 12750
-	Married filing jointly,		2 -> 13900
-	Married filing jointly,		3 -> 15050
-	Married filing jointly,		4 -> 16200
-	Qualifying widow(er),		1 -> 12750
-	Qualifying widow(er),		2 -> 13900
-	Qualifying widow(er),		3 -> 15050
-	Qualifying widow(er),		4 -> 16200
-	Married filing separately,	1 ->  6950
-	Married filing separately,	2 ->  8100
-	Married filing separately,	3 ->  9250
-	Married filing separately,	4 -> 10400
-	Head of household,			1 ->  9950
-	Head of household,			2 -> 11400
-	else Stub()
+    match status, boxesChecked
+    Single,                     1 ->  7250
+    Single,                        2 ->  8700
+    Married filing jointly,        1 -> 12750
+    Married filing jointly,        2 -> 13900
+    Married filing jointly,        3 -> 15050
+    Married filing jointly,        4 -> 16200
+    Qualifying widow(er),        1 -> 12750
+    Qualifying widow(er),        2 -> 13900
+    Qualifying widow(er),        3 -> 15050
+    Qualifying widow(er),        4 -> 16200
+    Married filing separately,    1 ->  6950
+    Married filing separately,    2 ->  8100
+    Married filing separately,    3 ->  9250
+    Married filing separately,    4 -> 10400
+    Head of household,            1 ->  9950
+    Head of household,            2 -> 11400
+    else Stub()
 
 # Table 8 (page 24)
 Tnum Table8Amount(Thing p) =
-	set:
-	if BoxesChecked(p) == 0 -> line7a
-	else line7c
-	
-	Tnum line7c = line7a + line7b
-	
-	Tnum line7b = 
-		set:
-		if Fam.IsMarried(p) -> BoxesChecked(p) * 1150
-		else BoxesChecked(p) * 1450
-	
-	Tnum line7a = Min(line5, line6)
-	
-	Tnum line6 =
-		set:
-		if status == "Single" 						->  5800
-		if status == "Married filing separately" 	->  5800
-		if status == "Married filing jointly"		-> 11600
-		if status == "Head of household"			->  8500
-		else Stub()
-	
-	Tstr status = USC.Tit26.Sec2.FilingStatus(p)
-	
-	Tnum line5 = Max(line3, 950)
-	
-	Tnum line3 = EarnedIncomeForFS(p) + 300	
-	
-	
+    set:
+    if BoxesChecked(p) == 0 -> line7a
+    else line7c
+    
+    Tnum line7c = line7a + line7b
+    
+    Tnum line7b = 
+        set:
+        if Fam.IsMarried(p) -> BoxesChecked(p) * 1150
+        else BoxesChecked(p) * 1450
+    
+    Tnum line7a = Min(line5, line6)
+    
+    Tnum line6 =
+        set:
+        if status == "Single"                         ->  5800
+        if status == "Married filing separately"     ->  5800
+        if status == "Married filing jointly"        -> 11600
+        if status == "Head of household"            ->  8500
+        else Stub()
+    
+    Tstr status = USC.Tit26.Sec2.FilingStatus(p)
+    
+    Tnum line5 = Max(line3, 950)
+    
+    Tnum line3 = EarnedIncomeForFS(p) + 300    
+    
+    
 # Boxes checked on Table 7 or 8
 Tnum BoxesChecked(Thing p) = 
-	theSpouses.Filter(DoB(_) < 1947-01-02).Count +
-	theSpouses.Filter(IsBlind(_)).Count
-	
-	Tset theSpouses = Fam.SelfAndSpouseIfMarried(p)
+    theSpouses.Filter(DoB(_) < 1947-01-02).Count +
+    theSpouses.Filter(IsBlind(_)).Count
+    
+    Tset theSpouses = Fam.SelfAndSpouseIfMarried(p)
 
 
 # INPUTS
@@ -128,8 +128,8 @@ TnumIn TotalItemizedDeductions(Thing p)
 
 # >>Is/was {1} filing a tax return for a short tax year due to a change in their annual accounting period?
 TboolIn FilingReturnForShortTaxYear(Thing p)
-	
-		
+    
+        
 # UNIT TESTS
 
 Test: Page22_Ex4_Column3
@@ -139,7 +139,7 @@ Test: Page22_Ex4_Column3
 - DoB(Ed) = 1990-01-01
 - IsBlind(Ed) = false
 - EarnedIncomeForFS(Ed) = 3726
-- MaritalStatus(Ed) = "Single"	# Redundant question?
+- MaritalStatus(Ed) = "Single"    # Redundant question?
 - IRS.Pub501.Table6Amount(Ed).TestOutput =?= "Time.DawnOf 4026 "
 
 Test: Page22_Ex3_Column3
@@ -244,4 +244,5 @@ Test: 25881624
 - IsBlind(jim) = true
 - FedTaxFilingStatus(jim) = "Married filing jointly"
 - IRS.Pub501.Table7Amount(jim).TestOutput =?= "Time.DawnOf 15050 "
+
 

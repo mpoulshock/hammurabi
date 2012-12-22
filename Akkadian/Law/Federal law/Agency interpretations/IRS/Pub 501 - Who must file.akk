@@ -7,147 +7,147 @@
 # RULES FOR TAX YEAR 2011
 
 Tbool MustFileTaxReturn(Thing p) =
-	set:
-	if IRS.Pub519.IsNonresidentAlien(p) -> Stub()
-	if HasIncomeFromUSPossession(p) -> Stub()
-	if IsDeceased(p) -> DeceasedPersonMustFile(p)
-	else CoreMustFileTest(p)
+    set:
+    if IRS.Pub519.IsNonresidentAlien(p) -> Stub()
+    if HasIncomeFromUSPossession(p) -> Stub()
+    if IsDeceased(p) -> DeceasedPersonMustFile(p)
+    else CoreMustFileTest(p)
 
 Tbool CoreMustFileTest(Thing p) =
-	...
-		USC.Tit26.Sec152.CanBeClaimedAsDependentBySomeone(p) &
-		MustFilePerTable2(p)
-	|
-	...
-		! USC.Tit26.Sec152.CanBeClaimedAsDependentBySomeone(p) &
-		MustFilePerTable1(p)
-	|
-	MustFilePerTable3(p)
+    ...
+        USC.Tit26.Sec152.CanBeClaimedAsDependentBySomeone(p) &
+        MustFilePerTable2(p)
+    |
+    ...
+        ! USC.Tit26.Sec152.CanBeClaimedAsDependentBySomeone(p) &
+        MustFilePerTable1(p)
+    |
+    MustFilePerTable3(p)
 
-	
+    
 # TABLE 1 - MOST TAXPAYERS
 
 # Table 1 (page 3)
 Tbool MustFilePerTable1(Thing p) =
-	Table1Applies(status, TaxAge(p), GrossIncomeForFS(p), SpousesUnder65(p), LivedWithSpouseForTaxPurposes(p))
-		
-	Tstr status = USC.Tit26.Sec2.FilingStatus(p) 
+    Table1Applies(status, TaxAge(p), GrossIncomeForFS(p), SpousesUnder65(p), LivedWithSpouseForTaxPurposes(p))
+        
+    Tstr status = USC.Tit26.Sec2.FilingStatus(p) 
 
 Tbool Table1Applies(Tstr status, Tnum age, Tnum grossIncome, Tnum spousesUnder65, Tbool livedWSpouse) =
-	match status, age, grossIncome, spousesUnder65, livedWSpouse
-	Single, 					< 65,	>= 9500,,				-> true
-	Single, 					>= 65,	>= 10950,,				-> true
-	Head of household, 			< 65,	>= 12200,,				-> true
-	Head of household, 			>= 65,	>= 13650,,				-> true
-	Married filing jointly,,,,							false 	-> true 
-	Married filing jointly,,			>= 19000,   2,			-> true
-	Married filing jointly,,			>= 20150,   1,			-> true
-	Married filing jointly,,			>= 21300,   0,			-> true
-	Married filing separately,,			>= 3700,,				-> true
-	Qualifying widow(er), 		< 65,	>= 15300,,				-> true
-	Qualifying widow(er), 		>= 65,	>= 16450,,				-> true
-	else false
+    match status, age, grossIncome, spousesUnder65, livedWSpouse
+    Single,                     < 65,    >= 9500,,                -> true
+    Single,                     >= 65,    >= 10950,,                -> true
+    Head of household,             < 65,    >= 12200,,                -> true
+    Head of household,             >= 65,    >= 13650,,                -> true
+    Married filing jointly,,,,                            false     -> true 
+    Married filing jointly,,            >= 19000,   2,            -> true
+    Married filing jointly,,            >= 20150,   1,            -> true
+    Married filing jointly,,            >= 21300,   0,            -> true
+    Married filing separately,,            >= 3700,,                -> true
+    Qualifying widow(er),         < 65,    >= 15300,,                -> true
+    Qualifying widow(er),         >= 65,    >= 16450,,                -> true
+    else false
 
-# Number of people (person/spouse) under age 65	
+# Number of people (person/spouse) under age 65    
 Tnum SpousesUnder65(Thing p) =
-	Fam.SelfAndSpouseIfMarried(p).Filter(TaxAge(_) < 65).Count
+    Fam.SelfAndSpouseIfMarried(p).Filter(TaxAge(_) < 65).Count
 
 
 # TABLE 2 - DEPENDENTS
-		
+        
 # Table 2 (page 4) - filing requirements for dependents
 Tbool MustFilePerTable2(Thing p) =
-	MustFilePerTable2Single(p) |
-	MustFilePerTable2Married(p)
-	
+    MustFilePerTable2Single(p) |
+    MustFilePerTable2Married(p)
+    
 # Table 2 - single dependents
 Tbool MustFilePerTable2Single(Thing p) =
-	Fam.MaritalStatus(p) == "Single" &
-	...
-		...
-			! Over65OrBlind(p) &
-			...
-				UnearnedIncome(p) > 950 |
-				EarnedIncomeForFS(p) > 5800 |
-				GrossIncomeForFS(p) > Max(950, Min(EarnedIncomeForFS(p), 5500) + 300)
-		|
-		...
-			Over65OrBlind(p) & ! Over65AndBlind(p) & 	# either 65+ or blind, but not both
-			...
-				UnearnedIncome(p) > 2400 |
-				EarnedIncomeForFS(p) > 7250 |
-				GrossIncomeForFS(p) > Max(2400, Min(EarnedIncomeForFS(p), 5500) + 1750)
-		|
-		...
-			Over65AndBlind(p) &
-			...
-				UnearnedIncome(p) > 3850 |
-				EarnedIncomeForFS(p) > 8700 |
-				GrossIncomeForFS(p) > Max(3850, Min(EarnedIncomeForFS(p), 5500) + 3200)				
+    Fam.MaritalStatus(p) == "Single" &
+    ...
+        ...
+            ! Over65OrBlind(p) &
+            ...
+                UnearnedIncome(p) > 950 |
+                EarnedIncomeForFS(p) > 5800 |
+                GrossIncomeForFS(p) > Max(950, Min(EarnedIncomeForFS(p), 5500) + 300)
+        |
+        ...
+            Over65OrBlind(p) & ! Over65AndBlind(p) &     # either 65+ or blind, but not both
+            ...
+                UnearnedIncome(p) > 2400 |
+                EarnedIncomeForFS(p) > 7250 |
+                GrossIncomeForFS(p) > Max(2400, Min(EarnedIncomeForFS(p), 5500) + 1750)
+        |
+        ...
+            Over65AndBlind(p) &
+            ...
+                UnearnedIncome(p) > 3850 |
+                EarnedIncomeForFS(p) > 8700 |
+                GrossIncomeForFS(p) > Max(3850, Min(EarnedIncomeForFS(p), 5500) + 3200)                
 
 # Table 2 - married dependents
 Tbool MustFilePerTable2Married(Thing p) =
-	Fam.MaritalStatus(p) == "Married" &
-	...
-		...
-			! Over65OrBlind(p) &
-			...
-				MeetsSpouseItemizingTest(p) |
-				UnearnedIncome(p) > 950 |
-				EarnedIncomeForFS(p) > 5800 |
-				GrossIncomeForFS(p) > Max(950, Min(EarnedIncomeForFS(p), 5500) + 300)
-		|
-		...
-			Over65OrBlind(p) & ! Over65AndBlind(p) & 	# either 65+ or blind, but not both
-			...
-				MeetsSpouseItemizingTest(p) |
-				UnearnedIncome(p) > 2100 |
-				EarnedIncomeForFS(p) > 6950 |
-				GrossIncomeForFS(p) > Max(2100, Min(EarnedIncomeForFS(p), 5500) + 1450)
-		|
-		...
-			Over65AndBlind(p) &
-			...
-				MeetsSpouseItemizingTest(p) |
-				UnearnedIncome(p) > 3250 |
-				EarnedIncomeForFS(p) > 8100 |
-				GrossIncomeForFS(p) > Max(3250, Min(EarnedIncomeForFS(p), 5500) + 2600)	
-				
+    Fam.MaritalStatus(p) == "Married" &
+    ...
+        ...
+            ! Over65OrBlind(p) &
+            ...
+                MeetsSpouseItemizingTest(p) |
+                UnearnedIncome(p) > 950 |
+                EarnedIncomeForFS(p) > 5800 |
+                GrossIncomeForFS(p) > Max(950, Min(EarnedIncomeForFS(p), 5500) + 300)
+        |
+        ...
+            Over65OrBlind(p) & ! Over65AndBlind(p) &     # either 65+ or blind, but not both
+            ...
+                MeetsSpouseItemizingTest(p) |
+                UnearnedIncome(p) > 2100 |
+                EarnedIncomeForFS(p) > 6950 |
+                GrossIncomeForFS(p) > Max(2100, Min(EarnedIncomeForFS(p), 5500) + 1450)
+        |
+        ...
+            Over65AndBlind(p) &
+            ...
+                MeetsSpouseItemizingTest(p) |
+                UnearnedIncome(p) > 3250 |
+                EarnedIncomeForFS(p) > 8100 |
+                GrossIncomeForFS(p) > Max(3250, Min(EarnedIncomeForFS(p), 5500) + 2600)    
+                
 Tbool Over65OrBlind(Thing p) =
-	TaxAge(p) >= 65 |
-	IsBlind(p)
+    TaxAge(p) >= 65 |
+    IsBlind(p)
 
 Tbool Over65AndBlind(Thing p) =
-	TaxAge(p) >= 65 &
-	IsBlind(p)
+    TaxAge(p) >= 65 &
+    IsBlind(p)
 
 Tbool MeetsSpouseItemizingTest(Thing p) =
-	GrossIncomeForFS(p) > 5 & 
-	USC.Tit26.Sec2.FilingStatus(p) == "Married filing separately" &
-	Fam.SpousesOf(p).Exists(ItemizesDeductions(_))
+    GrossIncomeForFS(p) > 5 & 
+    USC.Tit26.Sec2.FilingStatus(p) == "Married filing separately" &
+    Fam.SpousesOf(p).Exists(ItemizesDeductions(_))
 
 
 # TABLE 3
 
 # Table 3 (page 5) - other situations when you must file
 Tbool MustFilePerTable3(Thing p) =
-	# >>Does/did {1} owe the alternative minimum tax (AMT)?
-	TboolIn OwesAlternativeMinimumTax(p) |
-	# >>Does/did {1} owe an additional tax on a qualified plan?
-	TboolIn OwesAdditionalTaxOnQualifiedPlan(p) |
-	# >>Does/did {1} owe Social Security or Medicare taxes on unreported tips or wages that were not withheld?
-	TboolIn OwesSocSecOrMedicareTaxes(p) |
-	# >>Does/did {1} owe write-in taxes?
-	TboolIn OwesWriteInTaxes(p) |
-	# >>Does/did {1} owe household employment taxes?
-	TboolIn OwesHouseholdEmploymentTaxes(p) |
-	# >>Does/did {1} owe recapture taxes?
-	TboolIn OwesRecaptureTaxes(p) |
-	# >>Does/did {1} (or their spouse if filing jointly) receive Archer MSA, Medicare Advantage MSA, or health savings account distributions?
-	TboolIn HadHSADistribution(p) |
-	NetEarningsFromSelfEmployment(p) >= 400 |
-	# >>Does/did {1} have over 108.28 in wages from a qualifying church-related organization?
-	TboolIn HadThresholdChurchWages(p)
+    # >>Does/did {1} owe the alternative minimum tax (AMT)?
+    TboolIn OwesAlternativeMinimumTax(p) |
+    # >>Does/did {1} owe an additional tax on a qualified plan?
+    TboolIn OwesAdditionalTaxOnQualifiedPlan(p) |
+    # >>Does/did {1} owe Social Security or Medicare taxes on unreported tips or wages that were not withheld?
+    TboolIn OwesSocSecOrMedicareTaxes(p) |
+    # >>Does/did {1} owe write-in taxes?
+    TboolIn OwesWriteInTaxes(p) |
+    # >>Does/did {1} owe household employment taxes?
+    TboolIn OwesHouseholdEmploymentTaxes(p) |
+    # >>Does/did {1} owe recapture taxes?
+    TboolIn OwesRecaptureTaxes(p) |
+    # >>Does/did {1} (or their spouse if filing jointly) receive Archer MSA, Medicare Advantage MSA, or health savings account distributions?
+    TboolIn HadHSADistribution(p) |
+    NetEarningsFromSelfEmployment(p) >= 400 |
+    # >>Does/did {1} have over 108.28 in wages from a qualifying church-related organization?
+    TboolIn HadThresholdChurchWages(p)
 
 # >>What are/were {1}'s net earnings from self-employment?
 TnumIn NetEarningsFromSelfEmployment(Thing p)
@@ -157,41 +157,41 @@ TnumIn NetEarningsFromSelfEmployment(Thing p)
 
 # Deceased person's situation is analyzed as of their date of death
 Tbool DeceasedPersonMustFile(Thing p) =
-	CoreMustFileTest(p).AsOf(DateOfDeath(p))
-	
+    CoreMustFileTest(p).AsOf(DateOfDeath(p))
+    
 # Age on the last day of the tax year
 Tnum TaxAge(Thing p) =
-	age.PeriodEndVal(year)
-	
-	Tnum year = USC.Tit26.Sec441.TaxYear(p)
+    age.PeriodEndVal(year)
+    
+    Tnum year = USC.Tit26.Sec441.TaxYear(p)
 
-	Tnum age = Time.IntervalsSince(dob, dob.AddYears(110), Time.IntervalType.Year)
-		
-	Tdate dob = DoB(p).AddDays(-1)	# Jan. 1 is a freebie
-	
+    Tnum age = Time.IntervalsSince(dob, dob.AddYears(110), Time.IntervalType.Year)
+        
+    Tdate dob = DoB(p).AddDays(-1)    # Jan. 1 is a freebie
+    
 # Marital status for tax purposes (determined on last day of tax year)
 Tstr MaritalStatusForTaxPurposes(Thing p) =
-	Fam.MaritalStatus(p).PeriodEndVal(year)
-	
-	Tnum year = USC.Tit26.Sec441.TaxYear(p)
-	
+    Fam.MaritalStatus(p).PeriodEndVal(year)
+    
+    Tnum year = USC.Tit26.Sec441.TaxYear(p)
+    
 # Lived with spouse for tax purposes
 Tbool LivedWithSpouseForTaxPurposes(Thing p) =
-	Fam.SpousesOf(p).Exists(LivedTogetherForTaxPurposes(p,_))
-	
+    Fam.SpousesOf(p).Exists(LivedTogetherForTaxPurposes(p,_))
+    
 Tbool LivedTogetherForTaxPurposes(Thing spouse, Thing deceasedSpouse) =
-	...
-		IsDeceased(deceasedSpouse) &
-		Econ.LivesWith(spouse,deceasedSpouse).AsOf(DateOfDeath(deceasedSpouse)) &
-		TheTime.IsBefore(DateOfDeath(deceasedSpouse).AddYears(1)).PeriodEndVal(year)	# ugly, but prevents eternal truth
-	|
-	Econ.LivesWith(spouse,deceasedSpouse).PeriodEndVal(year)
-	
-	# Tdate death = DateOfDeath(deceasedSpouse)
-	
-	Tnum year = USC.Tit26.Sec441.TaxYear(spouse)
+    ...
+        IsDeceased(deceasedSpouse) &
+        Econ.LivesWith(spouse,deceasedSpouse).AsOf(DateOfDeath(deceasedSpouse)) &
+        TheTime.IsBefore(DateOfDeath(deceasedSpouse).AddYears(1)).PeriodEndVal(year)    # ugly, but prevents eternal truth
+    |
+    Econ.LivesWith(spouse,deceasedSpouse).PeriodEndVal(year)
+    
+    # Tdate death = DateOfDeath(deceasedSpouse)
+    
+    Tnum year = USC.Tit26.Sec441.TaxYear(spouse)
 
-	
+    
 # INPUTS
 
 # >>Does/did {1} itemize deductions?
@@ -277,5 +277,6 @@ Test: 844051182
 - FedTaxFilingStatus(lonnie) = "Married filing separately"
 - GrossIncomeForFS(lonnie) = 9
 - IRS.Pub501.MustFilePerTable1(lonnie).TestOutput =?= "Time.DawnOf False "
+
 
 

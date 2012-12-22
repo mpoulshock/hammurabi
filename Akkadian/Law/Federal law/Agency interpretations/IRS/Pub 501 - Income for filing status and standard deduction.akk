@@ -9,50 +9,50 @@
 # Includes income earned or received abroad...
 # >>What is {1}'s annual gross income (for purposes of determining filing status and standard deduction)?  (Note: if married filing jointly, include {1}'s spouse's gross income.)
 TnumIn? GrossIncomeForFS(Thing p) =
-	EarnedIncomeForFS(p) +
-	UnearnedIncome(p)
+    EarnedIncomeForFS(p) +
+    UnearnedIncome(p)
 
-	
+    
 # EARNED INCOME FOR FS/SD
 
 # See Table 2 (page 4)
 # >>What is {1}'s earned income (for purposes of determining filing status and standard deduction)?  (Note: if married filing jointly, include {1}'s spouse's earned income.)
 TnumIn? EarnedIncomeForFS(Thing p) =
-	Fam.SelfAndSpouseIfMarried(p).Sum(IndividualEarnedIncomeForFS(_))
+    Fam.SelfAndSpouseIfMarried(p).Sum(IndividualEarnedIncomeForFS(_))
 
 TnumIn IndividualEarnedIncomeForFS(Thing p) =
-	set:
-	if HasIncomeFromUSPossession(p) -> Stub()	# See Pub. 570
-	else earnedIncome
-	
-	# TODO: Handle business income (gain/loss - see the note to Table 1 on page 3)?
-	Tnum earnedIncome =
-		AnnualSalaryWageIncome(p) +
-		AnnualTipIncome(p) +
-		AnnualScholarshipIncome(p)
-		- ExcludableIncomeFromPuertoRico(p)
-	
+    set:
+    if HasIncomeFromUSPossession(p) -> Stub()    # See Pub. 570
+    else earnedIncome
+    
+    # TODO: Handle business income (gain/loss - see the note to Table 1 on page 3)?
+    Tnum earnedIncome =
+        AnnualSalaryWageIncome(p) +
+        AnnualTipIncome(p) +
+        AnnualScholarshipIncome(p)
+        - ExcludableIncomeFromPuertoRico(p)
+    
 # TODO: Link this to the rules from Pub. 570
 Tnum ExcludableIncomeFromPuertoRico(Thing p) =
-	set:
-	if ! IRS.Pub519.IsBonaFideResidentOfPuertoRico(p) -> 0
-	else AnnualIncomeFromPuertoRico(p) - AnnualFederalIncomeFromPuertoRico(p)
-	
-	
+    set:
+    if ! IRS.Pub519.IsBonaFideResidentOfPuertoRico(p) -> 0
+    else AnnualIncomeFromPuertoRico(p) - AnnualFederalIncomeFromPuertoRico(p)
+    
+    
 # UNEARNED INCOME FOR FS/SD
 
 # >>What is {1}'s unearned income?  (Note: if married filing jointly, include {1}'s spouse's earned income.)
 TnumIn? UnearnedIncome(Thing p) =
-	Fam.SelfAndSpouseIfMarried(p).Sum(IndividualUnearnedIncomeForFS(_))
-	
+    Fam.SelfAndSpouseIfMarried(p).Sum(IndividualUnearnedIncomeForFS(_))
+    
 # See Tables 1 and 2
 TnumIn IndividualUnearnedIncomeForFS(Thing p) =
-	AnnualTaxableInterestIncome(p) +
-	AnnualOrdinaryDividendIncome(p) +
-	AnnualCapitalGainIncome(p) +
-	AnnualUnemploymentIncome(p) + 
-	AnnualTaxableSocialSecurityBenefits(p) + 
-	AnnualPensionAnnuityTrustIncome(p)
+    AnnualTaxableInterestIncome(p) +
+    AnnualOrdinaryDividendIncome(p) +
+    AnnualCapitalGainIncome(p) +
+    AnnualUnemploymentIncome(p) + 
+    AnnualTaxableSocialSecurityBenefits(p) + 
+    AnnualPensionAnnuityTrustIncome(p)
 
 
 # INPUTS
@@ -135,6 +135,7 @@ Test: 474480858
 - AnnualScholarshipIncome(tony) = 0
 - HasIncomeFromUSPossession(tony) = false
 - IRS.Pub501.EarnedIncomeForFS(tony).TestOutput =?= "Time.DawnOf 300 "
+
 
 
 

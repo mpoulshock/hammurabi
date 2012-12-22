@@ -15,29 +15,29 @@ Tnum ExemptionAmountBeforePhaseout(Thing p) =
 
 # Total exemptions the person can claim on Form 1040, line 6d
 Tnum TotalClaimableExemptions(Thing p) =
-   	set:
+       set:
     if IsDeceased(p)                    -> Stub()       # See "Death of spouse", p. 10
-	if certainResidentsIndiaKorea       -> Stub()		# See Pub. 519; sec 873(b)(3)
-	if IRS.Pub519.IsDualStatusAlien(p)  -> Stub()	    #    " "
-	if CertainNonresidentAliens(p)      -> OwnExemption(p)
-	else NumberOfExemptions(p)
-	
-	Tbool certainResidentsIndiaKorea =
-		CountryOfResidence(p) == "India" |
-		CountryOfResidence(p) == "Korea" 
+    if certainResidentsIndiaKorea       -> Stub()        # See Pub. 519; sec 873(b)(3)
+    if IRS.Pub519.IsDualStatusAlien(p)  -> Stub()        #    " "
+    if CertainNonresidentAliens(p)      -> OwnExemption(p)
+    else NumberOfExemptions(p)
+    
+    Tbool certainResidentsIndiaKorea =
+        CountryOfResidence(p) == "India" |
+        CountryOfResidence(p) == "Korea" 
         
 # Is a NRA, unless from Canada or Mexico
 Tbool CertainNonresidentAliens(Thing p) =
-	IRS.Pub519.IsNonresidentAlien(p) &
-	CountryOfResidence(p) <> "Canada" &
-	CountryOfResidence(p) <> "Mexico"
+    IRS.Pub519.IsNonresidentAlien(p) &
+    CountryOfResidence(p) <> "Canada" &
+    CountryOfResidence(p) <> "Mexico"
 
 # Exemption amount per person (varies by tax year)
 # Source: http://taxes.about.com/od/preparingyourtaxes/a/personal_exempt.htm
 Tnum ExemptionAmountPerPerson(Thing p) =
-	set:
+    set:
     if year == 2012 -> 3800
-	if year == 2011 -> 3700
+    if year == 2011 -> 3700
     if year == 2010 -> 3650
     if year == 2009 -> 3650
     if year == 2008 -> 3500
@@ -50,35 +50,35 @@ Tnum ExemptionAmountPerPerson(Thing p) =
     if year == 2001 -> 2900
     if year == 2000 -> 2800
     if year == 1999 -> 2750
-	else Stub()
-	
+    else Stub()
+    
     Tnum year = Sec441.TaxYear(p)
     
 # Personal + dependency exemptions
 Tnum NumberOfExemptions(Thing p) =
-	PersonalExemptions(p) +
-	DependencyExemptions(p)
-		
+    PersonalExemptions(p) +
+    DependencyExemptions(p)
+        
 # Number of personal exemptions
 Tnum PersonalExemptions(Thing p) = 
-	OwnExemption(p) + SpouseExemption(p)
-	
+    OwnExemption(p) + SpouseExemption(p)
+    
 # Own exemption
 Tnum OwnExemption(Thing p) =
-	set:
-	if Sec152.CanBeClaimedAsDependentBySomeone(p) -> 0
-	else 1
-	
+    set:
+    if Sec152.CanBeClaimedAsDependentBySomeone(p) -> 0
+    else 1
+    
 # TODO: Test using temporal sets for SpouseOf()
 # Spousal exemption
 Tnum SpouseExemption(Thing p) =
-	set:
+    set:
     if SpouseDiedAndPersonDidNotRemarry(p)  -> 1
-	if ! MarriedAtEndOfTaxYear(p)           -> 0
-	if SpouseDiedDuringTaxYear(p) 		    -> 0    # Person remarried
-	if MFJAndUnclaimedSpouse(p) 		    -> 1    # Person and spouse alive
-	if MeetsMFSorHoHTest(p)				    -> 1    #   " "
-	else 0
+    if ! MarriedAtEndOfTaxYear(p)           -> 0
+    if SpouseDiedDuringTaxYear(p)             -> 0    # Person remarried
+    if MFJAndUnclaimedSpouse(p)             -> 1    # Person and spouse alive
+    if MeetsMFSorHoHTest(p)                    -> 1    #   " "
+    else 0
 
 # Spouse died and person remarried during tax year
 Tbool SpouseDiedAndPersonDidNotRemarry(Thing p) =
@@ -88,22 +88,22 @@ Tbool SpouseDiedAndPersonDidNotRemarry(Thing p) =
 # Spouse died during tax year
 Tbool SpouseDiedDuringTaxYear(Thing p) =
     MarriedAtEndOfTaxYear(p) &
-	Fam.SpousesOf(p).Exists(DiedDuringTaxYear(_))
+    Fam.SpousesOf(p).Exists(DiedDuringTaxYear(_))
  
 # True during the tax year in which a person died
 Tbool DiedDuringTaxYear(Thing p) =
-	IsDeceased(p).IsEverTrue() &
-	DateIsInPeriod(DateOfDeath(p), Sec441.TaxYear(p))
+    IsDeceased(p).IsEverTrue() &
+    DateIsInPeriod(DateOfDeath(p), Sec441.TaxYear(p))
     
 # Married on last day of tax year 
 Tbool MarriedAtEndOfTaxYear(Thing p) =
-	Fam.IsMarried(p).PeriodEndVal(Sec441.TaxYear(p))
+    Fam.IsMarried(p).PeriodEndVal(Sec441.TaxYear(p))
     
 # MFJ, no one can claim spouse    
 Tbool MFJAndUnclaimedSpouse(Thing p) =
-	Sec2.FilingStatus(p) == "Married filing jointly" &
-	Fam.SpousesOf(p).Exists(! Sec152.CanBeClaimedAsDependentBySomeone(_))
-	
+    Sec2.FilingStatus(p) == "Married filing jointly" &
+    Fam.SpousesOf(p).Exists(! Sec152.CanBeClaimedAsDependentBySomeone(_))
+    
 # Test for married filing separately and head of household
 Tbool MeetsMFSorHoHTest(Thing p) =
     ...
@@ -114,21 +114,21 @@ Tbool MeetsMFSorHoHTest(Thing p) =
     
 # Spouse test for MFS and HoH
 Tbool MeetsSpouseTest(Thing spouse) =
-	GrossIncome(spouse) == 0 &
-	Sec2.FilingStatus(spouse) == "Not filing" &
-	Sec152.CanBeClaimedAsDependentBySomeone(spouse)
-	
+    GrossIncome(spouse) == 0 &
+    Sec2.FilingStatus(spouse) == "Not filing" &
+    Sec152.CanBeClaimedAsDependentBySomeone(spouse)
+    
 # >>How many dependency exemptions does/did {1} claim?  (This is the number of people that {1} will claim as a dependent on their federal tax return.)
 TnumIn? DependencyExemptions(Thing p) =
-	possibleDeps.Filter(Sec152.IsDependentOf(p,_)).Count
-	
-	Tset possibleDeps = Sec152.PeopleWhoMightClaimAsDependent(p)
-	
-	
+    possibleDeps.Filter(Sec152.IsDependentOf(p,_)).Count
+    
+    Tset possibleDeps = Sec152.PeopleWhoMightClaimAsDependent(p)
+    
+    
 # TODO: Move elsewhere...
 # >>What is/was {1}'s annual gross income?
 TnumIn GrossIncome(Thing p)
-	
+    
 
 # UNIT TESTS
 
@@ -191,4 +191,5 @@ Test: DiedDuringTaxYear2
 - Thing jim
 - IsDeceased(jim) = false
 - IRS.Pub501.DiedDuringTaxYear(jim).TestOutput =?= "Time.DawnOf False "
+
 

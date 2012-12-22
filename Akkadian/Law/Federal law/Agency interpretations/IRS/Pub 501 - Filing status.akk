@@ -9,8 +9,8 @@
 
 # TODO: Order status to give user best result
 Tstr FilingStatusInferred(Thing p) =
-	new Tstr(Hstate.Unstated)
-	
+    new Tstr(Hstate.Unstated)
+    
     
 # COST OF KEEPING UP A HOME
 
@@ -111,6 +111,7 @@ Test: Page8_Example1_Child
 - IsQualifyingChildOf(child,parent) = true
 - MaritalStatus(child) = "Single"
 - IRS.Pub501.IsQualifyingPersonForHoH(child, parent).TestOutput =?= "Time.DawnOf True "
+
 
 
 
