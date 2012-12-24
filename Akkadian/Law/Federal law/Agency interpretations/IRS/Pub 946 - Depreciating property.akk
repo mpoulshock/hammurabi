@@ -21,6 +21,10 @@ Tbool MeetsOwnershipTest(Thing person, Thing property) =
     
 # COMPUTING THE DEPRECIATION DEDUCTION W/O USING THE TABLES
 
+# 
+Tnum DepreciationDeduction(Thing property, Tdate datePlacedInService, Tdate dateTakenOutOfService, Tnum unadjustedBasis, Tstr method, Tstr convention) = 
+    Stub()
+
 # Basis, adjusted annually for depreciation deductions taken
 Tnum AdjustedBasis(Thing property, Tnum year) =
     set:
@@ -31,14 +35,16 @@ Tnum AdjustedBasis(Thing property, Tnum year) =
 Tnum Deduction(Thing property, Tnum year) = 
     set:
     if year == 1 -> ApplicableConventionAmount(property)
-    # else AdjustedBasis(property, year) * Max(DecliningBalanceRate(pClass), StraightLineRate(yearsRemaining))
-    if year < switchYear -> AdjustedBasis(property, year) * DecliningBalanceRate(pClass)
-    if year <= pClass -> AdjustedBasis(property, year) * StraightLineRate(pClass - switchYear)
+    if year < switchYear -> (AdjustedBasis(property, year) * DecliningBalanceRate(pClass)).RoundToNearest(1)
+    if year <= pClass + 1 -> (AdjustedBasis(property, year) * StraightLineRate(yearsLeftInRecoveryPeriod)).RoundToNearest(1)
     else 0
     
     Tnum switchYear = MethodSwitchYear(pClass)
     
-    Tnum pClass = 5
+    Tnum yearsLeftInRecoveryPeriod = 
+        pClass - year + 2 - FirstYearPercentage(ApplicableFirstYearConvention(property), 0)
+    
+    Tnum pClass = PropertyClass(property)
     
 # Depreciation rate using the declining balance method
 Tnum DecliningBalanceRate(Tnum propertyClass) =
@@ -64,14 +70,37 @@ Tnum MethodSwitchYear(Tnum propertyClass) =
     
 # Depreciation rate using the straight line method
 Tnum StraightLineRate(Tnum yearsRemaining) =
-    1 / yearsRemaining
+    set:
+    if yearsRemaining < 1 -> 1.00
+    else 1 / yearsRemaining
 
+# First-year deduction, based on the applicable convention and
+# the number of the quarter or month the property was placed in
+# service.
+Tnum FirstYearPercentage(Tstr convention, Tnum periodNumber) =
+    set:
+    if convention == "Half-year" -> 0.50
+    if convention == "Mid-quarter" & periodNumber == 1 -> 0.875
+    if convention == "Mid-quarter" & periodNumber == 2 -> 0.625
+    if convention == "Mid-quarter" & periodNumber == 3 -> 0.375
+    if convention == "Mid-quarter" & periodNumber == 4 -> 0.125
+    if convention == "Mid-month" -> (12 - periodNumber + 0.50) / 12
+    else Stub()
+
+TstrIn ApplicableFirstYearConvention(Thing property)
+    
 TnumIn ApplicableConventionAmount(Thing property)
 
-TnumIn UnadjustedBasis(Thing property) 
+TnumIn UnadjustedBasis(Thing property)
+
+TnumIn PropertyClass(Thing property)
+
     
 Test: DBRate1
 - IRS.Pub946.DecliningBalanceRate(3).Out =?= 0.66667
+
+Test: FirstYearPercentage1
+- IRS.Pub946.FirstYearPercentage("Mid-month", 8).Out =?= 0.375
 
 Test: AdjustedBasis_sanity
 - Thing prop
@@ -82,56 +111,56 @@ Test: ComputedRate_Pub946_Page49_Ex1_Year1
 - Thing prop
 - UnadjustedBasis(prop) = 1000
 - ApplicableConventionAmount(prop) = 200
-# - RecoveryPeriod(prop) = 5
-# - ApplicableConvention(prop) = "Half-year"
+- PropertyClass(prop) = 5
+- ApplicableFirstYearConvention(prop) = "Half-year"
 - IRS.Pub946.Deduction(prop, 1).Out =?= 200
 
 Test: ComputedRate_Pub946_Page49_Ex1_Year2_AdjustedBasis
 - Thing prop
 - UnadjustedBasis(prop) = 1000
 - ApplicableConventionAmount(prop) = 200
-# - RecoveryPeriod(prop) = 5
-# - ApplicableConvention(prop) = "Half-year"
+- PropertyClass(prop) = 5
+- ApplicableFirstYearConvention(prop) = "Half-year"
 - IRS.Pub946.AdjustedBasis(prop, 2).Out =?= 800
 
 Test: ComputedRate_Pub946_Page49_Ex1_Year2
 - Thing prop
 - UnadjustedBasis(prop) = 1000
 - ApplicableConventionAmount(prop) = 200
-# - RecoveryPeriod(prop) = 5
-# - ApplicableConvention(prop) = "Half-year"
+- PropertyClass(prop) = 5
+- ApplicableFirstYearConvention(prop) = "Half-year"
 - IRS.Pub946.Deduction(prop, 2).Out =?= 320
 
 Test: ComputedRate_Pub946_Page49_Ex1_Year3
 - Thing prop
 - UnadjustedBasis(prop) = 1000
 - ApplicableConventionAmount(prop) = 200
-# - RecoveryPeriod(prop) = 5
-# - ApplicableConvention(prop) = "Half-year"
+- PropertyClass(prop) = 5
+- ApplicableFirstYearConvention(prop) = "Half-year"
 - IRS.Pub946.Deduction(prop, 3).Out =?= 192
 
 Test: ComputedRate_Pub946_Page49_Ex1_Year4
 - Thing prop
 - UnadjustedBasis(prop) = 1000
 - ApplicableConventionAmount(prop) = 200
-# - RecoveryPeriod(prop) = 5
-# - ApplicableConvention(prop) = "Half-year"
+- PropertyClass(prop) = 5
+- ApplicableFirstYearConvention(prop) = "Half-year"
 - IRS.Pub946.Deduction(prop, 4).Out =?= 115
 
 Test: ComputedRate_Pub946_Page49_Ex1_Year5
 - Thing prop
 - UnadjustedBasis(prop) = 1000
 - ApplicableConventionAmount(prop) = 200
-# - RecoveryPeriod(prop) = 5
-# - ApplicableConvention(prop) = "Half-year"
+- PropertyClass(prop) = 5
+- ApplicableFirstYearConvention(prop) = "Half-year"
 - IRS.Pub946.Deduction(prop, 5).Out =?= 115
 
 Test: ComputedRate_Pub946_Page49_Ex1_Year6
 - Thing prop
 - UnadjustedBasis(prop) = 1000
 - ApplicableConventionAmount(prop) = 200
-# - RecoveryPeriod(prop) = 5
-# - ApplicableConvention(prop) = "Half-year"
+- PropertyClass(prop) = 5
+- ApplicableFirstYearConvention(prop) = "Half-year"
 - IRS.Pub946.Deduction(prop, 6).Out =?= 58
 
 
