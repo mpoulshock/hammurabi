@@ -4,6 +4,13 @@
 # Author:       Michael Poulshock
 
 
+# TEMPORAL MAP FUNCTION
+
+# Given a Tnum function, map it along a timeline, starting at a given date
+# and continuing for a given number of intervals.
+Tnum TemporalMap(Func<Tnum,Tnum> fcn, Tdate startDate, Tnum intervalCount, Time.IntervalType intervalType) = 
+    fcn(Time.IntervalsSince(startDate, startDate.AddYears(intervalCount), intervalType))
+    
 # TEST OF DEPRECIATION RULES
 
 # Idea is that the value of some asset depreciates over time.  Given a
@@ -11,14 +18,8 @@
 
 # Applicable depreciate rate, given the date the property was acquired
 Tnum DepreciationRate(Tdate acquisitionDate) =
-    DepreciationPercentage(years)
+    TemporalMap(n => DepreciationPercentage(n), acquisitionDate, 10, Time.IntervalType.Year)
     
-    Tnum years = YearsSinceAcquisitionOfProperty(acquisitionDate)
- 
-# Counts off the years since the date the property was acquired
-Tnum YearsSinceAcquisitionOfProperty(Tdate acquisitionDate) =
-    Time.IntervalsSince(acquisitionDate, acquisitionDate.AddYears(10), Time.IntervalType.Year)
-
 # Example is from the MARCS depreciation rate for 5-year property
 # using the half-year convention.    
 Tnum DepreciationPercentage(Tnum year) =

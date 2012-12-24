@@ -22,7 +22,7 @@ Tbool MeetsOwnershipTest(Thing person, Thing property) =
 # COMPUTING THE DEPRECIATION DEDUCTION W/O USING THE TABLES
 
 # 
-Tnum DepreciationDeduction(Thing property, Tdate datePlacedInService, Tdate dateTakenOutOfService, Tnum unadjustedBasis, Tstr method, Tstr convention) = 
+Tnum DepreciationDeduction(Thing property, Tnum taxYear, Tdate datePlacedInService, Tdate dateTakenOutOfService, Tnum unadjustedBasis, Tstr method, Tstr convention) = 
     Stub()
 
 # Basis, adjusted annually for depreciation deductions taken
