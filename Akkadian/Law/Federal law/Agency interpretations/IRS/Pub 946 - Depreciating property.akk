@@ -1,0 +1,182 @@
+# Namespace:    IRS.Pub946
+# Summary:      IRS Publication 946 - Depreciating Property
+# Updated:      2012-12-23
+# Author:       Michael Poulshock
+
+
+# WHAT PROPERTY CAN BE DEPRECIATED?
+
+# >> Can {1} depreciate {2}?
+TboolIn CanDepreciateProperty(Thing person, Thing property) =
+    MeetsOwnershipTest(person, property) &
+    TboolIn UsesPropertyInBusiness(person, property) &
+    TboolIn HasDeterminableUsefulLife(property) &
+    TboolIn ExpectedLifeOfMoreThanOneYear(property)
+    
+    
+Tbool MeetsOwnershipTest(Thing person, Thing property) =
+    Prop.Owns(person, property) |
+    Stub() # lease + incidents of ownership
+
+    
+# COMPUTING THE DEPRECIATION DEDUCTION W/O USING THE TABLES
+
+# Basis, adjusted annually for depreciation deductions taken
+Tnum AdjustedBasis(Thing property, Tnum year) =
+    set:
+    if year == 1 -> UnadjustedBasis(property)
+    else AdjustedBasis(property, year-1) - Deduction(property, year-1)
+ 
+# Computed depreciation deduction amount
+Tnum Deduction(Thing property, Tnum year) = 
+    set:
+    if year == 1 -> ApplicableConventionAmount(property)
+    # else AdjustedBasis(property, year) * Max(DecliningBalanceRate(pClass), StraightLineRate(yearsRemaining))
+    if year < switchYear -> AdjustedBasis(property, year) * DecliningBalanceRate(pClass)
+    if year <= pClass -> AdjustedBasis(property, year) * StraightLineRate(pClass - switchYear)
+    else 0
+    
+    Tnum switchYear = MethodSwitchYear(pClass)
+    
+    Tnum pClass = 5
+    
+# Depreciation rate using the declining balance method
+Tnum DecliningBalanceRate(Tnum propertyClass) =
+    match propertyClass
+    3   -> 0.66667
+    5   -> 0.400
+    7   -> 0.28571
+    10  -> 0.200
+    15  -> 0.100
+    20  -> 0.075
+    else Stub()
+
+# Year in which you switch from declining balance to straight line method
+Tnum MethodSwitchYear(Tnum propertyClass) =
+    match propertyClass
+    3   -> 3
+    5   -> 4
+    7   -> 5
+    10  -> 7
+    15  -> 7
+    20  -> 9
+    else Stub()
+    
+# Depreciation rate using the straight line method
+Tnum StraightLineRate(Tnum yearsRemaining) =
+    1 / yearsRemaining
+
+TnumIn ApplicableConventionAmount(Thing property)
+
+TnumIn UnadjustedBasis(Thing property) 
+    
+Test: DBRate1
+- IRS.Pub946.DecliningBalanceRate(3).Out =?= 0.66667
+
+Test: AdjustedBasis_sanity
+- Thing prop
+- UnadjustedBasis(prop) = 1000
+- IRS.Pub946.AdjustedBasis(prop, 1).Out =?= 1000
+
+Test: ComputedRate_Pub946_Page49_Ex1_Year1
+- Thing prop
+- UnadjustedBasis(prop) = 1000
+- ApplicableConventionAmount(prop) = 200
+# - RecoveryPeriod(prop) = 5
+# - ApplicableConvention(prop) = "Half-year"
+- IRS.Pub946.Deduction(prop, 1).Out =?= 200
+
+Test: ComputedRate_Pub946_Page49_Ex1_Year2_AdjustedBasis
+- Thing prop
+- UnadjustedBasis(prop) = 1000
+- ApplicableConventionAmount(prop) = 200
+# - RecoveryPeriod(prop) = 5
+# - ApplicableConvention(prop) = "Half-year"
+- IRS.Pub946.AdjustedBasis(prop, 2).Out =?= 800
+
+Test: ComputedRate_Pub946_Page49_Ex1_Year2
+- Thing prop
+- UnadjustedBasis(prop) = 1000
+- ApplicableConventionAmount(prop) = 200
+# - RecoveryPeriod(prop) = 5
+# - ApplicableConvention(prop) = "Half-year"
+- IRS.Pub946.Deduction(prop, 2).Out =?= 320
+
+Test: ComputedRate_Pub946_Page49_Ex1_Year3
+- Thing prop
+- UnadjustedBasis(prop) = 1000
+- ApplicableConventionAmount(prop) = 200
+# - RecoveryPeriod(prop) = 5
+# - ApplicableConvention(prop) = "Half-year"
+- IRS.Pub946.Deduction(prop, 3).Out =?= 192
+
+Test: ComputedRate_Pub946_Page49_Ex1_Year4
+- Thing prop
+- UnadjustedBasis(prop) = 1000
+- ApplicableConventionAmount(prop) = 200
+# - RecoveryPeriod(prop) = 5
+# - ApplicableConvention(prop) = "Half-year"
+- IRS.Pub946.Deduction(prop, 4).Out =?= 115
+
+Test: ComputedRate_Pub946_Page49_Ex1_Year5
+- Thing prop
+- UnadjustedBasis(prop) = 1000
+- ApplicableConventionAmount(prop) = 200
+# - RecoveryPeriod(prop) = 5
+# - ApplicableConvention(prop) = "Half-year"
+- IRS.Pub946.Deduction(prop, 5).Out =?= 115
+
+Test: ComputedRate_Pub946_Page49_Ex1_Year6
+- Thing prop
+- UnadjustedBasis(prop) = 1000
+- ApplicableConventionAmount(prop) = 200
+# - RecoveryPeriod(prop) = 5
+# - ApplicableConvention(prop) = "Half-year"
+- IRS.Pub946.Deduction(prop, 6).Out =?= 58
+
+
+# APPENDIX A: DEPRECIATION TABLES
+
+# Returns the applicable depreciation percentage, as a time-varying percentage
+Tnum DepreciationPercentage(Tbool isQIRP, Tstr system, Tstr method, Tnum recoveryPeriod, Tstr convention, Tstr assetClass, Tnum servicePeriodNumber) =
+    set:
+    if isQIRP -> DepreciationPercentageTablesA21ToA24(table, convention, servicePeriodNumber)
+    else DepreciationPercentageTablesA1ToA18(table, recoveryPeriod)
+    
+    Tnum table = 
+        ApplicableDepreciationTable(system, method, recoveryPeriod, convention, assetClass, servicePeriodNumber)    
+
+# Charts 1 & 2, Appendix A, p. 75.
+Tnum ApplicableDepreciationTable(Tstr system, Tstr method, Tnum recoveryPeriod, Tstr convention, Tstr assetClass, Tnum serviceQtr) =
+    Stub()
+
+# Returns a time-varying depreciation percentage, given the applicable
+# table in Pub. 946 and the recovery period in years.
+# See Pub. 946, Tables A-1 to A-18, pages 76-99.
+Tnum DepreciationPercentageTablesA1ToA18(Tnum table, Tnum recoveryPeriod) =
+    Stub()
+
+# Returns a time-varying income inclusion percentage, given the applicable
+# table in Pub. 946 and the first tax year during lease in which business
+# use is 50% or less.
+# See Tables A-19, A-20, p.100. 
+Tnum IncomeInclusionRateTablesA19ToA20(Tnum table, Tnum yearNumber) =
+    Stub()
+    
+# Returns a time-varying depreciation percentage, given the applicable
+# table in Pub. 946, the convention used, and the period number the property
+# was placed in service.
+# Conventions: Half-year, Mid-quarter, Mid-month
+# See Qualified Indian Reservation Property tables, A-21 to A-24, pages 101-102.
+Tnum DepreciationPercentageTablesA21ToA24(Tnum table, Tstr convention, Tnum servicePeriodNumber) =
+    Stub()
+
+    
+# APPENDIX B: ASSET CLASSES
+
+# Data from Tables B-1 and B2, pages 103-113.
+# Column names: Asset class, Class life, GDS recovery period, ADS recovery period
+Tnum TableBValue(Tstr assetDescription, Tstr columnName) =
+    Stub()
+    
+    

@@ -159,6 +159,7 @@
     <Compile Include="Generated source\Pub 501 - Exemptions.cs" />
     <Compile Include="Generated source\Hammurabi - general-purpose functions.cs" />
     <Compile Include="Core\Facts\ThingBase.cs" />
+    <Compile Include="Generated source\Pub 946 - Depreciating property.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

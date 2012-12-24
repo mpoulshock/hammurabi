@@ -52,19 +52,17 @@ Tbool TimeError2(Thing t) =
 
 # INTERVIEW SEQUENCE WITH |~ OPERATOR - NOT WORKING
 
-##
-Diagnosis: The |~ operator (^ in C#) does not short-circuit like
-&& and ||.  Those operators cause AND and OR to ignore irrelevant
-interview branches.  With |~ however, both Tbool inputs to that 
-function are evaluated before the logic within the function is
-applied.
+# Diagnosis: The |~ operator (^ in C#) does not short-circuit like
+# && and ||.  Those operators cause AND and OR to ignore irrelevant
+# interview branches.  With |~ however, both Tbool inputs to that 
+# function are evaluated before the logic within the function is
+# applied.
 
-Temporary fix: Use assumption rules where possible to stave off
-investigations into irrelevant branches.
+# Temporary fix: Use assumption rules where possible to stave off
+# investigations into irrelevant branches.
 
-Needed long-term fix: Make Tvars into Func<Tvar> so they are invoked
-lazily.
-##
+# Needed long-term fix: Make Tvars into Func<Tvar> so they are invoked
+# lazily.
 
 # Sequence fails - conclusions correct
 # Only asks FamRel reverse if first FamRel test is true!
