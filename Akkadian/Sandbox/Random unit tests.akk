@@ -3,13 +3,6 @@
 # Updated:      2012-10-19
 # Author:       Michael Poulshock
 
-
-# TEMPORAL MAP FUNCTION
-
-# Given a Tnum function, map it along a timeline, starting at a given date
-# and continuing for a given number of intervals.
-Tnum TemporalMap(Func<Tnum,Tnum> fcn, Tdate startDate, Tnum intervalCount, Time.IntervalType intervalType) = 
-    fcn(Time.IntervalsSince(startDate, startDate.AddYears(intervalCount), intervalType))
     
 # TEST OF DEPRECIATION RULES
 

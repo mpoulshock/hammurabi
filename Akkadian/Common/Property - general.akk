@@ -1,6 +1,6 @@
 # Namespace:    Hammurabi.Prop
 # Summary:      Facts related to property.
-# Updated:      2012-07-26
+# Updated:      2012-12-25
 # Author:       Michael Poulshock
 
 
@@ -9,6 +9,9 @@
 
 # >>What's the nature of {1}?  (Options: Currency, Real estate.)
 TstrIn TypeOf(Thing property)
+
+# >>Is {1} tangible property?
+TboolIn IsTangibleProperty(Thing property)
 
 # >>What is/was the value of the property (in dollars)?
 TnumIn ValueInDollars(Thing property)
@@ -19,5 +22,10 @@ TsetIn OwnersOf(Thing property)
 # >>Does/did {1} own {2}?
 TboolIn Owns(Thing person, Thing property)
 
-        
+# >>Was {1} imported from outside the U.S.?
+TboolIn IsImported(Thing property)
+
+# >>From what country was {1} imported?
+TstrIn CountryOfImportation(Thing property)
+
 

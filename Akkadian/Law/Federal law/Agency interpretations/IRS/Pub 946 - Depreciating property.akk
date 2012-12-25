@@ -18,33 +18,97 @@ Tbool MeetsOwnershipTest(Thing person, Thing property) =
     Prop.Owns(person, property) |
     Stub() # lease + incidents of ownership
 
+
+# WHICH DEPRECIATION SYSTEM (GDS OR ADS) APPLIES?
+
+# Required to use the ADS depreciation system
+Tbool MustUseADS(Thing person, Thing property) =
+    ...
+        IsListedProperty(person, property) &
+        TnumIn PercentageQualifiedBusinessUse(person, property) <= 50
+    |
+    ...
+        Prop.IsTangibleProperty(property) &
+        TnumIn PercentageUseOutsideUS(person, property) > 50
+    |
+    TboolIn IsTaxExemptUseProperty(property) |
+    TboolIn IsTaxExemptBondFinancedProperty(property) |
+    ...
+        TnumIn PercentageUseInFarming(person, property) > 50 &
+        TboolIn PlacedInServiceWhenElectedNotToApplyUniformCapitalizationRules(person, property)
+    |
+    ...
+        Prop.IsImported(property) &
+        TboolIn ImportedFromCountryWithEOTradeRestrictions(property)
+        
+
+# >>Does/did {1} elect to use the ADS depreciation system?  (See IRS Pub. 946, p. 36 for conditions.)
+TboolIn ElectsToUseADS(Thing person, Thing property)        
+
+
+# WHICH GDS PROPERTY CLASS APPLIES?
+
+# Applicable GDS property class
+Tstr GDSPropertyClass(Thing person, Thing prop) =
+    set:
+    if TboolIn Is3YearProperty(person, prop) -> "3-year property"
+    if TboolIn Is5YearProperty(person, prop) -> "5-year property"
+    if TboolIn Is7YearProperty(person, prop) -> "7-year property"
+    if TboolIn Is10YearProperty(person, prop) -> "10-year property"
+    if TboolIn Is15YearProperty(person, prop) -> "15-year property"
+    if TboolIn Is20YearProperty(person, prop) -> "20-year property"
+    if TboolIn Is25YearProperty(person, prop) -> "25-year property"
+    if TboolIn IsResidentialRentalProperty(person, prop) -> "Residential rental property"
+    if TboolIn IsNonresidentialRealProperty(person, prop) -> "Nonresidential real property"
+    else Stub()
+    
+    
+    
+# Column names: Asset class, Class life, GDS recovery period, ADS recovery period
+# Tnum TableBValue(Tstr assetDescription, Tstr columnName) =
+    # Stub()
+
+# WHICH DEPRECIATION METHOD APPLIES?
+
+Tstr DepreciationMethod(Thing person, Thing property) =
+    Stub()
+    
     
 # COMPUTING THE DEPRECIATION DEDUCTION W/O USING THE TABLES
 
 # 
-Tnum DepreciationDeduction(Thing property, Tnum taxYear, Tdate datePlacedInService, Tdate dateTakenOutOfService, Tnum unadjustedBasis, Tstr method, Tstr convention) = 
+# Method: DB or SL
+Tnum DepreciationDeduction(Thing property, Tnum taxYear, Tdate datePlacedInService, Tnum unadjustedBasis, Tnum recoveryPeriod, Tstr method, Tstr convention) = 
     Stub()
 
+# The following two functions are mutually recursive:    
+    
 # Basis, adjusted annually for depreciation deductions taken
-Tnum AdjustedBasis(Thing property, Tnum year) =
+Tnum AdjustedBasis(Thing prop, Tnum year, Tstr method) =
     set:
-    if year == 1 -> UnadjustedBasis(property)
-    else AdjustedBasis(property, year-1) - Deduction(property, year-1)
+    if year == 1 -> UnadjustedBasis(prop)
+    else AdjustedBasis(prop, year-1, method) - Deduction(prop, year-1, method)
  
 # Computed depreciation deduction amount
-Tnum Deduction(Thing property, Tnum year) = 
+Tnum Deduction(Thing prop, Tnum year, Tstr method) = 
     set:
-    if year == 1 -> ApplicableConventionAmount(property)
-    if year < switchYear -> (AdjustedBasis(property, year) * DecliningBalanceRate(pClass)).RoundToNearest(1)
-    if year <= pClass + 1 -> (AdjustedBasis(property, year) * StraightLineRate(yearsLeftInRecoveryPeriod)).RoundToNearest(1)
+    if method == "DB" & year < MethodSwitchYear(recPeriod) -> (basis * DecliningBalanceRate(recPeriod) * fractionalYear).RoundToNearest(1)
+    if year <= recPeriod + 1 -> (basis * StraightLineRate(yearsLeftInRecoveryPeriod) * fractionalYear).RoundToNearest(1)
     else 0
     
-    Tnum switchYear = MethodSwitchYear(pClass)
+    Tnum basis = AdjustedBasis(prop, year, method)
     
     Tnum yearsLeftInRecoveryPeriod = 
-        pClass - year + 2 - FirstYearPercentage(ApplicableFirstYearConvention(property), 0)
+        recPeriod - year + 2 - firstYearPercentage
     
-    Tnum pClass = PropertyClass(property)
+    Tnum fractionalYear =
+        set: 
+        if year == 1 -> firstYearPercentage
+        else 1
+        
+    Tnum firstYearPercentage = FirstYearPercentage(ApplicableFirstYearConvention(prop), 0)
+
+    Tnum recPeriod = RecoveryPeriod(prop)
     
 # Depreciation rate using the declining balance method
 Tnum DecliningBalanceRate(Tnum propertyClass) =
@@ -95,6 +159,7 @@ TnumIn UnadjustedBasis(Thing property)
 
 TnumIn PropertyClass(Thing property)
 
+TnumIn RecoveryPeriod(Thing property)
     
 Test: DBRate1
 - IRS.Pub946.DecliningBalanceRate(3).Out =?= 0.66667
@@ -105,63 +170,84 @@ Test: FirstYearPercentage1
 Test: AdjustedBasis_sanity
 - Thing prop
 - UnadjustedBasis(prop) = 1000
-- IRS.Pub946.AdjustedBasis(prop, 1).Out =?= 1000
+- IRS.Pub946.AdjustedBasis(prop, 1, "DB").Out =?= 1000
 
 Test: ComputedRate_Pub946_Page49_Ex1_Year1
 - Thing prop
 - UnadjustedBasis(prop) = 1000
-- ApplicableConventionAmount(prop) = 200
-- PropertyClass(prop) = 5
+- RecoveryPeriod(prop) = 5
 - ApplicableFirstYearConvention(prop) = "Half-year"
-- IRS.Pub946.Deduction(prop, 1).Out =?= 200
+- IRS.Pub946.Deduction(prop, 1, "DB").Out =?= 200
 
 Test: ComputedRate_Pub946_Page49_Ex1_Year2_AdjustedBasis
 - Thing prop
 - UnadjustedBasis(prop) = 1000
-- ApplicableConventionAmount(prop) = 200
-- PropertyClass(prop) = 5
+- RecoveryPeriod(prop) = 5
 - ApplicableFirstYearConvention(prop) = "Half-year"
-- IRS.Pub946.AdjustedBasis(prop, 2).Out =?= 800
+- IRS.Pub946.AdjustedBasis(prop, 2, "DB").Out =?= 800
 
 Test: ComputedRate_Pub946_Page49_Ex1_Year2
 - Thing prop
 - UnadjustedBasis(prop) = 1000
-- ApplicableConventionAmount(prop) = 200
-- PropertyClass(prop) = 5
+- RecoveryPeriod(prop) = 5
 - ApplicableFirstYearConvention(prop) = "Half-year"
-- IRS.Pub946.Deduction(prop, 2).Out =?= 320
+- IRS.Pub946.Deduction(prop, 2, "DB").Out =?= 320
 
 Test: ComputedRate_Pub946_Page49_Ex1_Year3
 - Thing prop
 - UnadjustedBasis(prop) = 1000
-- ApplicableConventionAmount(prop) = 200
-- PropertyClass(prop) = 5
+- RecoveryPeriod(prop) = 5
 - ApplicableFirstYearConvention(prop) = "Half-year"
-- IRS.Pub946.Deduction(prop, 3).Out =?= 192
+- IRS.Pub946.Deduction(prop, 3, "DB").Out =?= 192
 
 Test: ComputedRate_Pub946_Page49_Ex1_Year4
 - Thing prop
 - UnadjustedBasis(prop) = 1000
-- ApplicableConventionAmount(prop) = 200
-- PropertyClass(prop) = 5
+- RecoveryPeriod(prop) = 5
 - ApplicableFirstYearConvention(prop) = "Half-year"
-- IRS.Pub946.Deduction(prop, 4).Out =?= 115
+- IRS.Pub946.Deduction(prop, 4, "DB").Out =?= 115
 
 Test: ComputedRate_Pub946_Page49_Ex1_Year5
 - Thing prop
 - UnadjustedBasis(prop) = 1000
-- ApplicableConventionAmount(prop) = 200
-- PropertyClass(prop) = 5
+- RecoveryPeriod(prop) = 5
 - ApplicableFirstYearConvention(prop) = "Half-year"
-- IRS.Pub946.Deduction(prop, 5).Out =?= 115
+- IRS.Pub946.Deduction(prop, 5, "DB").Out =?= 115
 
 Test: ComputedRate_Pub946_Page49_Ex1_Year6
 - Thing prop
 - UnadjustedBasis(prop) = 1000
-- ApplicableConventionAmount(prop) = 200
-- PropertyClass(prop) = 5
+- RecoveryPeriod(prop) = 5
 - ApplicableFirstYearConvention(prop) = "Half-year"
-- IRS.Pub946.Deduction(prop, 6).Out =?= 58
+- IRS.Pub946.Deduction(prop, 6, "DB").Out =?= 58
+
+Test: ComputedRate_Pub946_Page50_Ex2_Year1
+- Thing prop
+- UnadjustedBasis(prop) = 100000
+- RecoveryPeriod(prop) = 39
+- ApplicableFirstYearConvention(prop) = "Mid-month"
+- IRS.Pub946.Deduction(prop, 1, "SL").Out =?= 2456 
+
+Test: ComputedRate_Pub946_Page50_Ex2_Year2
+- Thing prop
+- UnadjustedBasis(prop) = 100000
+- ApplicableConventionAmount(prop) = 2456
+- RecoveryPeriod(prop) = 39
+- ApplicableFirstYearConvention(prop) = "Mid-month"
+- IRS.Pub946.Deduction(prop, 2, "SL").Out =?= 2564
+
+Test: ComputedRate_Pub946_Page50_Ex2_Year3
+- Thing prop
+- UnadjustedBasis(prop) = 100000
+- ApplicableConventionAmount(prop) = 2456
+- RecoveryPeriod(prop) = 39
+- ApplicableFirstYearConvention(prop) = "Mid-month"
+- IRS.Pub946.Deduction(prop, 3, "SL").Out =?= 2564
+
+
+# LISTED PROPERTY
+  
+TboolIn IsListedProperty(Thing person, Thing property)
 
 
 # APPENDIX A: DEPRECIATION TABLES
