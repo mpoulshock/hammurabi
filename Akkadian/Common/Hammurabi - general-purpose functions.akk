@@ -4,6 +4,18 @@
 # Author:       Michael Poulshock
 
 
+# GET QUARTER
+
+# For a given date, determine what calendar quarter it's in.
+# TODO: Handle fiscal years that don't start in January.
+Tnum GetQuarter(Tdate date) =
+    set:
+    if date.Month <= 3 -> 1
+    if date.Month <= 6 -> 2
+    if date.Month <= 9 -> 3
+    else 4
+    
+    
 # TEMPORAL MAP FUNCTION
 
 # Given a Tnum function, map it along a timeline, starting at a given date

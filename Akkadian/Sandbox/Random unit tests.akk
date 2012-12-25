@@ -9,7 +9,7 @@
 # Idea is that the value of some asset depreciates over time.  Given a
 # timeline of the depreciation percentage, what is the asset's value?
 
-# Applicable depreciate rate, given the date the property was acquired
+# Applicable depreciation rate, given the date the property was acquired
 Tnum DepreciationRate(Tdate acquisitionDate) =
     TemporalMap(n => DepreciationPercentage(n), acquisitionDate, 10, Time.IntervalType.Year)
     

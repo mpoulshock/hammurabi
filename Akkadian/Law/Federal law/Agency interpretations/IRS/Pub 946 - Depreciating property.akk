@@ -76,9 +76,13 @@ Tstr DepreciationMethod(Thing person, Thing property) =
     
 # COMPUTING THE DEPRECIATION DEDUCTION W/O USING THE TABLES
 
-# 
+# Applicable depreciate rate, given the date the property was acquired
+# Tnum DepreciationDeduction(Tdate acquisitionDate) =
+    # TemporalMap(n => DepreciationPercentage(n), acquisitionDate, 10, Time.IntervalType.Year)
+    
+# Provides a wrapper for the two recursive functions below.
 # Method: DB or SL
-Tnum DepreciationDeduction(Thing property, Tnum taxYear, Tdate datePlacedInService, Tnum unadjustedBasis, Tnum recoveryPeriod, Tstr method, Tstr convention) = 
+Tnum DepreciationDeductionByYear(Thing property, Tnum taxYear, Tdate datePlacedInService, Tnum unadjustedBasis, Tnum recoveryPeriod, Tstr method, Tstr convention) = 
     Stub()
 
 # The following two functions are mutually recursive:    
@@ -99,14 +103,17 @@ Tnum Deduction(Thing prop, Tnum year, Tstr method) =
     Tnum basis = AdjustedBasis(prop, year, method)
     
     Tnum yearsLeftInRecoveryPeriod = 
-        recPeriod - year + 2 - firstYearPercentage
+        set:
+        if year == 1 -> recPeriod
+        else recPeriod - year + 2 - firstYearPercentage
     
     Tnum fractionalYear =
         set: 
         if year == 1 -> firstYearPercentage
         else 1
         
-    Tnum firstYearPercentage = FirstYearPercentage(ApplicableFirstYearConvention(prop), 0)
+    Tnum firstYearPercentage = 
+        FirstYearPercentage(ApplicableFirstYearConvention(prop), DatePlacedInService(prop))
 
     Tnum recPeriod = RecoveryPeriod(prop)
     
@@ -135,25 +142,29 @@ Tnum MethodSwitchYear(Tnum propertyClass) =
 # Depreciation rate using the straight line method
 Tnum StraightLineRate(Tnum yearsRemaining) =
     set:
+    if yearsRemaining <= 0 -> 0
     if yearsRemaining < 1 -> 1.00
-    else 1 / yearsRemaining
+    else (1 / yearsRemaining).RoundToNearest(0.00001)
 
-# First-year deduction, based on the applicable convention and
-# the number of the quarter or month the property was placed in
-# service.
-Tnum FirstYearPercentage(Tstr convention, Tnum periodNumber) =
+# Percentage of first-year credited towards deduction, based 
+# on the applicable convention and the date the property was 
+# placed in service.
+Tnum FirstYearPercentage(Tstr convention, Tdate datePlacedInService) =
     set:
     if convention == "Half-year" -> 0.50
-    if convention == "Mid-quarter" & periodNumber == 1 -> 0.875
-    if convention == "Mid-quarter" & periodNumber == 2 -> 0.625
-    if convention == "Mid-quarter" & periodNumber == 3 -> 0.375
-    if convention == "Mid-quarter" & periodNumber == 4 -> 0.125
-    if convention == "Mid-month" -> (12 - periodNumber + 0.50) / 12
+    if convention == "Mid-quarter" & serviceQuarter == 1 -> 0.875
+    if convention == "Mid-quarter" & serviceQuarter == 2 -> 0.625
+    if convention == "Mid-quarter" & serviceQuarter == 3 -> 0.375
+    if convention == "Mid-quarter" & serviceQuarter == 4 -> 0.125
+    if convention == "Mid-month" -> ((12 - datePlacedInService.Month + 0.50) / 12).RoundToNearest(0.001)
     else Stub()
-
-TstrIn ApplicableFirstYearConvention(Thing property)
     
-TnumIn ApplicableConventionAmount(Thing property)
+    Tnum serviceQuarter = GetQuarter(datePlacedInService)
+
+ 
+TdateIn DatePlacedInService(Thing property) 
+ 
+TstrIn ApplicableFirstYearConvention(Thing property)
 
 TnumIn UnadjustedBasis(Thing property)
 
@@ -161,11 +172,67 @@ TnumIn PropertyClass(Thing property)
 
 TnumIn RecoveryPeriod(Thing property)
     
+    
+# LISTED PROPERTY
+  
+TboolIn IsListedProperty(Thing person, Thing property)
+
+
+# APPENDIX A: DEPRECIATION TABLES
+
+# Returns the applicable depreciation percentage, as a time-varying percentage
+Tnum DepreciationPercentage(Tbool isQIRP, Tstr system, Tstr method, Tnum recoveryPeriod, Tstr convention, Tstr assetClass, Tnum servicePeriodNumber) =
+    set:
+    if isQIRP -> DepreciationPercentageTablesA21ToA24(table, convention, servicePeriodNumber)
+    else DepreciationPercentageTablesA1ToA18(table, recoveryPeriod)
+    
+    Tnum table = 
+        ApplicableDepreciationTable(system, method, recoveryPeriod, convention, assetClass, servicePeriodNumber)    
+
+# Charts 1 & 2, Appendix A, p. 75.
+Tnum ApplicableDepreciationTable(Tstr system, Tstr method, Tnum recoveryPeriod, Tstr convention, Tstr assetClass, Tnum serviceQtr) =
+    Stub()
+
+# Returns a time-varying depreciation percentage, given the applicable
+# table in Pub. 946 and the recovery period in years.
+# See Pub. 946, Tables A-1 to A-18, pages 76-99.
+Tnum DepreciationPercentageTablesA1ToA18(Tnum table, Tnum recoveryPeriod) =
+    Stub()
+
+# Returns a time-varying income inclusion percentage, given the applicable
+# table in Pub. 946 and the first tax year during lease in which business
+# use is 50% or less.
+# See Tables A-19, A-20, p.100. 
+Tnum IncomeInclusionRateTablesA19ToA20(Tnum table, Tnum yearNumber) =
+    Stub()
+    
+# Returns a time-varying depreciation percentage, given the applicable
+# table in Pub. 946, the convention used, and the period number the property
+# was placed in service.
+# Conventions: Half-year, Mid-quarter, Mid-month
+# See Qualified Indian Reservation Property tables, A-21 to A-24, pages 101-102.
+Tnum DepreciationPercentageTablesA21ToA24(Tnum table, Tstr convention, Tnum servicePeriodNumber) =
+    Stub()
+
+    
+# APPENDIX B: ASSET CLASSES
+
+# Data from Tables B-1 and B2, pages 103-113.
+# Column names: Asset class, Class life, GDS recovery period, ADS recovery period
+Tnum TableBValue(Tstr assetDescription, Tstr columnName) =
+    Stub()
+    
+    
+# UNIT TESTS
+
 Test: DBRate1
 - IRS.Pub946.DecliningBalanceRate(3).Out =?= 0.66667
 
 Test: FirstYearPercentage1
-- IRS.Pub946.FirstYearPercentage("Mid-month", 8).Out =?= 0.375
+- IRS.Pub946.FirstYearPercentage("Mid-month", 2011-08-04).Out =?= 0.375
+
+Test: StraightLineRate1
+- IRS.Pub946.StraightLineRate(39).Out =?= (decimal)0.02564
 
 Test: AdjustedBasis_sanity
 - Thing prop
@@ -221,77 +288,87 @@ Test: ComputedRate_Pub946_Page49_Ex1_Year6
 - ApplicableFirstYearConvention(prop) = "Half-year"
 - IRS.Pub946.Deduction(prop, 6, "DB").Out =?= 58
 
+Test: ComputedRate_Pub946_Page50_Ex2_Year1_FYP
+- IRS.Pub946.FirstYearPercentage("Mid-month", 2011-01-02).Out =?= (decimal)0.958
+
 Test: ComputedRate_Pub946_Page50_Ex2_Year1
 - Thing prop
 - UnadjustedBasis(prop) = 100000
 - RecoveryPeriod(prop) = 39
+- DatePlacedInService(prop) = 2011-01-02
 - ApplicableFirstYearConvention(prop) = "Mid-month"
 - IRS.Pub946.Deduction(prop, 1, "SL").Out =?= 2456 
 
 Test: ComputedRate_Pub946_Page50_Ex2_Year2
 - Thing prop
 - UnadjustedBasis(prop) = 100000
-- ApplicableConventionAmount(prop) = 2456
 - RecoveryPeriod(prop) = 39
+- DatePlacedInService(prop) = 2011-01-02
 - ApplicableFirstYearConvention(prop) = "Mid-month"
 - IRS.Pub946.Deduction(prop, 2, "SL").Out =?= 2564
 
 Test: ComputedRate_Pub946_Page50_Ex2_Year3
 - Thing prop
 - UnadjustedBasis(prop) = 100000
-- ApplicableConventionAmount(prop) = 2456
 - RecoveryPeriod(prop) = 39
+- DatePlacedInService(prop) = 2011-01-02
 - ApplicableFirstYearConvention(prop) = "Mid-month"
 - IRS.Pub946.Deduction(prop, 3, "SL").Out =?= 2564
 
+Test: ComputedRate_Pub946_Page50_Ex3_Safe_Year1
+- Thing prop
+- UnadjustedBasis(prop) = 4000
+- RecoveryPeriod(prop) = 7
+- DatePlacedInService(prop) = 2011-01-02
+- ApplicableFirstYearConvention(prop) = "Mid-quarter"
+- IRS.Pub946.Deduction(prop, 1, "DB").Out =?= 1000
 
-# LISTED PROPERTY
-  
-TboolIn IsListedProperty(Thing person, Thing property)
+Test: ComputedRate_Pub946_Page50_Ex3_Safe_Year2
+- Thing prop
+- UnadjustedBasis(prop) = 4000
+- RecoveryPeriod(prop) = 7
+- DatePlacedInService(prop) = 2011-01-02
+- ApplicableFirstYearConvention(prop) = "Mid-quarter"
+- IRS.Pub946.Deduction(prop, 2, "DB").Out =?= 857
 
+Test: ComputedRate_Pub946_Page50_Ex3_Furniture_Year1
+- Thing prop
+- UnadjustedBasis(prop) = 1000
+- RecoveryPeriod(prop) = 7
+- DatePlacedInService(prop) = 2011-09-02
+- ApplicableFirstYearConvention(prop) = "Mid-quarter"
+- IRS.Pub946.Deduction(prop, 1, "DB").Out =?= 107
 
-# APPENDIX A: DEPRECIATION TABLES
+Test: ComputedRate_Pub946_Page50_Ex3_Furniture_Year2
+- Thing prop
+- UnadjustedBasis(prop) = 1000
+- RecoveryPeriod(prop) = 7
+- DatePlacedInService(prop) = 2011-09-02
+- ApplicableFirstYearConvention(prop) = "Mid-quarter"
+- IRS.Pub946.Deduction(prop, 2, "DB").Out =?= 255
 
-# Returns the applicable depreciation percentage, as a time-varying percentage
-Tnum DepreciationPercentage(Tbool isQIRP, Tstr system, Tstr method, Tnum recoveryPeriod, Tstr convention, Tstr assetClass, Tnum servicePeriodNumber) =
-    set:
-    if isQIRP -> DepreciationPercentageTablesA21ToA24(table, convention, servicePeriodNumber)
-    else DepreciationPercentageTablesA1ToA18(table, recoveryPeriod)
-    
-    Tnum table = 
-        ApplicableDepreciationTable(system, method, recoveryPeriod, convention, assetClass, servicePeriodNumber)    
+Test: ComputedRate_Pub946_Page50_Ex3_Computer_Year1
+- Thing prop
+- UnadjustedBasis(prop) = 5000
+- RecoveryPeriod(prop) = 5
+- DatePlacedInService(prop) = 2011-10-02
+- ApplicableFirstYearConvention(prop) = "Mid-quarter"
+- IRS.Pub946.Deduction(prop, 1, "DB").Out =?= 250
 
-# Charts 1 & 2, Appendix A, p. 75.
-Tnum ApplicableDepreciationTable(Tstr system, Tstr method, Tnum recoveryPeriod, Tstr convention, Tstr assetClass, Tnum serviceQtr) =
-    Stub()
+Test: ComputedRate_Pub946_Page50_Ex3_Computer_Year2
+- Thing prop
+- UnadjustedBasis(prop) = 5000
+- RecoveryPeriod(prop) = 5
+- DatePlacedInService(prop) = 2011-10-02
+- ApplicableFirstYearConvention(prop) = "Mid-quarter"
+- IRS.Pub946.Deduction(prop, 2, "DB").Out =?= 1900
 
-# Returns a time-varying depreciation percentage, given the applicable
-# table in Pub. 946 and the recovery period in years.
-# See Pub. 946, Tables A-1 to A-18, pages 76-99.
-Tnum DepreciationPercentageTablesA1ToA18(Tnum table, Tnum recoveryPeriod) =
-    Stub()
-
-# Returns a time-varying income inclusion percentage, given the applicable
-# table in Pub. 946 and the first tax year during lease in which business
-# use is 50% or less.
-# See Tables A-19, A-20, p.100. 
-Tnum IncomeInclusionRateTablesA19ToA20(Tnum table, Tnum yearNumber) =
-    Stub()
-    
-# Returns a time-varying depreciation percentage, given the applicable
-# table in Pub. 946, the convention used, and the period number the property
-# was placed in service.
-# Conventions: Half-year, Mid-quarter, Mid-month
-# See Qualified Indian Reservation Property tables, A-21 to A-24, pages 101-102.
-Tnum DepreciationPercentageTablesA21ToA24(Tnum table, Tstr convention, Tnum servicePeriodNumber) =
-    Stub()
-
-    
-# APPENDIX B: ASSET CLASSES
-
-# Data from Tables B-1 and B2, pages 103-113.
-# Column names: Asset class, Class life, GDS recovery period, ADS recovery period
-Tnum TableBValue(Tstr assetDescription, Tstr columnName) =
-    Stub()
+Test: ComputedRate_Pub946_Page51_Ex4_Year1
+- Thing prop
+- UnadjustedBasis(prop) = 7500
+- RecoveryPeriod(prop) = 7
+- DatePlacedInService(prop) = 2011-07-02
+- ApplicableFirstYearConvention(prop) = "Half-year"
+- IRS.Pub946.Deduction(prop, 1, "DB").Out =?= 1071  # $1 diff b/c example uses tables
     
     
