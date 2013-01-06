@@ -66,35 +66,34 @@ Tstr GDSPropertyClass(Thing person, Thing prop) =
 # WHICH DEPRECIATION METHOD APPLIES?
 
 # >>What method is {1} using to depreciate {2}? (Options: DB or SL)
-Tstr DepreciationMethod(Thing person, Thing property) =
-    Stub()
+TstrIn DepreciationMethod(Thing person, Thing property)
     
     
 # COMPUTING THE DEPRECIATION DEDUCTION W/O USING THE TABLES
 
 # Applicable depreciate rate, given the date the property was acquired
 # Returns a timeline expressing the amount of the depreciation deduction over time
-Tnum DepreciationDeduction(Thing prop) =
-    TemporalMap(n => Deduction(prop,n), serviceDate, 10, Time.IntervalType.Year)
+Tnum DepreciationDeduction(Thing person, Thing prop) =
+    TemporalMap(n => Deduction(person, prop,n), serviceDate, 10, Time.IntervalType.Year)
     
-    Tdate serviceDate = DatePlacedInService(prop)
+    Tdate serviceDate = DatePlacedInService(person, prop)
    
 # The following two functions are mutually recursive:    
     
 # Basis, adjusted annually for depreciation deductions taken
-Tnum AdjustedBasis(Thing prop, Tnum year) =
+Tnum AdjustedBasis(Thing person, Thing prop, Tnum year) =
     set:
-    if year == 1 -> UnadjustedBasis(prop)
-    else AdjustedBasis(prop, year-1) - Deduction(prop, year-1)
+    if year == 1 -> UnadjustedBasis(person, prop)
+    else AdjustedBasis(person, prop, year-1) - Deduction(person, prop, year-1)
  
 # Computed depreciation deduction amount
-Tnum Deduction(Thing prop, Tnum year) = 
+Tnum Deduction(Thing person, Thing prop, Tnum year) = 
     set:
-    if DepreciationMethod(prop) == "DB" & year < MethodSwitchYear(recPeriod) -> (basis * DecliningBalanceRate(recPeriod) * fractionalYear).RoundToNearest(1)
+    if DepreciationMethod(person, prop) == "DB" & year < MethodSwitchYear(recPeriod) -> (basis * DecliningBalanceRate(recPeriod) * fractionalYear).RoundToNearest(1)
     if year <= recPeriod + 1 -> (basis * StraightLineRate(yearsLeftInRecoveryPeriod) * fractionalYear).RoundToNearest(1)
     else 0
     
-    Tnum basis = AdjustedBasis(prop, year)
+    Tnum basis = AdjustedBasis(person, prop, year)
     
     Tnum yearsLeftInRecoveryPeriod = 
         set:
@@ -107,9 +106,9 @@ Tnum Deduction(Thing prop, Tnum year) =
         else 1
         
     Tnum firstYearPercentage = 
-        FirstYearPercentage(ApplicableFirstYearConvention(prop), DatePlacedInService(prop))
+        FirstYearPercentage(ApplicableFirstYearConvention(person, prop), DatePlacedInService(person, prop))
 
-    Tnum recPeriod = RecoveryPeriod(prop)
+    Tnum recPeriod = RecoveryPeriod(person, prop)
     
 # Depreciation rate using the declining balance method
 Tnum DecliningBalanceRate(Tnum propertyClass) =
@@ -158,19 +157,16 @@ Tnum FirstYearPercentage(Tstr convention, Tdate datePlacedInService) =
  
 # INPUTS
 
-# >>When was {1} placed in service?
-TdateIn DatePlacedInService(Thing property) 
+# >>When did {1} place {2} into service?
+TdateIn DatePlacedInService(Thing person, Thing property) 
  
-TstrIn ApplicableFirstYearConvention(Thing property)
+TstrIn ApplicableFirstYearConvention(Thing person, Thing property)
 
-TnumIn UnadjustedBasis(Thing property)
+TnumIn UnadjustedBasis(Thing person, Thing property)
 
-TnumIn PropertyClass(Thing property)
+TnumIn PropertyClass(Thing person, Thing property)
 
-TnumIn RecoveryPeriod(Thing property)
-
-# >>What method is being used to depreciate {1}? (Options: DB or SL)
-TstrIn DepreciationMethod(Thing property)
+TnumIn RecoveryPeriod(Thing person, Thing property)
 
     
 # LISTED PROPERTY
@@ -236,157 +232,174 @@ Test: StraightLineRate1
 
 Test: AdjustedBasis_sanity
 - Thing prop
-- UnadjustedBasis(prop) = 1000
-- DepreciationMethod(prop) = "DB"
-- IRS.Pub946.AdjustedBasis(prop, 1).Out =?= 1000
+- Thing person
+- UnadjustedBasis(person, prop) = 1000
+- DepreciationMethod(person, prop) = "DB"
+- IRS.Pub946.AdjustedBasis(person, prop, 1).Out =?= 1000
 
 Test: ComputedRate_Pub946_Page49_Ex1_Year1
 - Thing prop
-- UnadjustedBasis(prop) = 1000
-- RecoveryPeriod(prop) = 5
-- ApplicableFirstYearConvention(prop) = "Half-year"
-- DepreciationMethod(prop) = "DB"
-- IRS.Pub946.Deduction(prop, 1).Out =?= 200
+- Thing person
+- UnadjustedBasis(person, prop) = 1000
+- RecoveryPeriod(person, prop) = 5
+- ApplicableFirstYearConvention(person, prop) = "Half-year"
+- DepreciationMethod(person, prop) = "DB"
+- IRS.Pub946.Deduction(person, prop, 1).Out =?= 200
 
 Test: ComputedRate_Pub946_Page49_Ex1_Year2_AdjustedBasis
 - Thing prop
-- UnadjustedBasis(prop) = 1000
-- RecoveryPeriod(prop) = 5
-- ApplicableFirstYearConvention(prop) = "Half-year"
-- DepreciationMethod(prop) = "DB"
-- IRS.Pub946.AdjustedBasis(prop, 2).Out =?= 800
+- Thing person
+- UnadjustedBasis(person, prop) = 1000
+- RecoveryPeriod(person, prop) = 5
+- ApplicableFirstYearConvention(person, prop) = "Half-year"
+- DepreciationMethod(person, prop) = "DB"
+- IRS.Pub946.AdjustedBasis(person, prop, 2).Out =?= 800
 
 Test: ComputedRate_Pub946_Page49_Ex1_Year2
 - Thing prop
-- UnadjustedBasis(prop) = 1000
-- RecoveryPeriod(prop) = 5
-- ApplicableFirstYearConvention(prop) = "Half-year"
-- DepreciationMethod(prop) = "DB"
-- IRS.Pub946.Deduction(prop, 2).Out =?= 320
+- Thing person
+- UnadjustedBasis(person, prop) = 1000
+- RecoveryPeriod(person, prop) = 5
+- ApplicableFirstYearConvention(person, prop) = "Half-year"
+- DepreciationMethod(person, prop) = "DB"
+- IRS.Pub946.Deduction(person, prop, 2).Out =?= 320
 
 Test: ComputedRate_Pub946_Page49_Ex1_Year3
 - Thing prop
-- UnadjustedBasis(prop) = 1000
-- RecoveryPeriod(prop) = 5
-- ApplicableFirstYearConvention(prop) = "Half-year"
-- DepreciationMethod(prop) = "DB"
-- IRS.Pub946.Deduction(prop, 3).Out =?= 192
+- Thing person
+- UnadjustedBasis(person, prop) = 1000
+- RecoveryPeriod(person, prop) = 5
+- ApplicableFirstYearConvention(person, prop) = "Half-year"
+- DepreciationMethod(person, prop) = "DB"
+- IRS.Pub946.Deduction(person, prop, 3).Out =?= 192
 
 Test: ComputedRate_Pub946_Page49_Ex1_Year4
 - Thing prop
-- UnadjustedBasis(prop) = 1000
-- RecoveryPeriod(prop) = 5
-- ApplicableFirstYearConvention(prop) = "Half-year"
-- DepreciationMethod(prop) = "DB"
-- IRS.Pub946.Deduction(prop, 4).Out =?= 115
+- Thing person
+- UnadjustedBasis(person, prop) = 1000
+- RecoveryPeriod(person, prop) = 5
+- ApplicableFirstYearConvention(person, prop) = "Half-year"
+- DepreciationMethod(person, prop) = "DB"
+- IRS.Pub946.Deduction(person, prop, 4).Out =?= 115
 
 Test: ComputedRate_Pub946_Page49_Ex1_Year5
 - Thing prop
-- UnadjustedBasis(prop) = 1000
-- RecoveryPeriod(prop) = 5
-- ApplicableFirstYearConvention(prop) = "Half-year"
-- DepreciationMethod(prop) = "DB"
-- IRS.Pub946.Deduction(prop, 5).Out =?= 115
+- Thing person
+- UnadjustedBasis(person, prop) = 1000
+- RecoveryPeriod(person, prop) = 5
+- ApplicableFirstYearConvention(person, prop) = "Half-year"
+- DepreciationMethod(person, prop) = "DB"
+- IRS.Pub946.Deduction(person, prop, 5).Out =?= 115
 
 Test: ComputedRate_Pub946_Page49_Ex1_Year6
 - Thing prop
-- UnadjustedBasis(prop) = 1000
-- RecoveryPeriod(prop) = 5
-- ApplicableFirstYearConvention(prop) = "Half-year"
-- DepreciationMethod(prop) = "DB"
-- IRS.Pub946.Deduction(prop, 6).Out =?= 58
+- Thing person
+- UnadjustedBasis(person, prop) = 1000
+- RecoveryPeriod(person, prop) = 5
+- ApplicableFirstYearConvention(person, prop) = "Half-year"
+- DepreciationMethod(person, prop) = "DB"
+- IRS.Pub946.Deduction(person, prop, 6).Out =?= 58
 
 Test: ComputedRate_Pub946_Page50_Ex2_Year1_FYP
 - IRS.Pub946.FirstYearPercentage("Mid-month", 2011-01-02).Out =?= (decimal)0.958
 
 Test: ComputedRate_Pub946_Page50_Ex2_Year1
 - Thing prop
-- UnadjustedBasis(prop) = 100000
-- RecoveryPeriod(prop) = 39
-- DatePlacedInService(prop) = 2011-01-02
-- ApplicableFirstYearConvention(prop) = "Mid-month"
-- DepreciationMethod(prop) = "SL"
-- IRS.Pub946.Deduction(prop, 1).Out =?= 2456 
+- Thing person
+- UnadjustedBasis(person, prop) = 100000
+- RecoveryPeriod(person, prop) = 39
+- DatePlacedInService(person, prop) = 2011-01-02
+- ApplicableFirstYearConvention(person, prop) = "Mid-month"
+- DepreciationMethod(person, prop) = "SL"
+- IRS.Pub946.Deduction(person, prop, 1).Out =?= 2456 
 
 Test: ComputedRate_Pub946_Page50_Ex2_Year2
 - Thing prop
-- UnadjustedBasis(prop) = 100000
-- RecoveryPeriod(prop) = 39
-- DatePlacedInService(prop) = 2011-01-02
-- ApplicableFirstYearConvention(prop) = "Mid-month"
-- DepreciationMethod(prop) = "SL"
-- IRS.Pub946.Deduction(prop, 2).Out =?= 2564
+- Thing person
+- UnadjustedBasis(person, prop) = 100000
+- RecoveryPeriod(person, prop) = 39
+- DatePlacedInService(person, prop) = 2011-01-02
+- ApplicableFirstYearConvention(person, prop) = "Mid-month"
+- DepreciationMethod(person, prop) = "SL"
+- IRS.Pub946.Deduction(person, prop, 2).Out =?= 2564
 
 Test: ComputedRate_Pub946_Page50_Ex2_Year3
 - Thing prop
-- UnadjustedBasis(prop) = 100000
-- RecoveryPeriod(prop) = 39
-- DatePlacedInService(prop) = 2011-01-02
-- ApplicableFirstYearConvention(prop) = "Mid-month"
-- DepreciationMethod(prop) = "SL"
-- IRS.Pub946.Deduction(prop, 3).Out =?= 2564
+- Thing person
+- UnadjustedBasis(person, prop) = 100000
+- RecoveryPeriod(person, prop) = 39
+- DatePlacedInService(person, prop) = 2011-01-02
+- ApplicableFirstYearConvention(person, prop) = "Mid-month"
+- DepreciationMethod(person, prop) = "SL"
+- IRS.Pub946.Deduction(person, prop, 3).Out =?= 2564
 
 Test: ComputedRate_Pub946_Page50_Ex3_Safe_Year1
 - Thing prop
-- UnadjustedBasis(prop) = 4000
-- RecoveryPeriod(prop) = 7
-- DatePlacedInService(prop) = 2011-01-02
-- ApplicableFirstYearConvention(prop) = "Mid-quarter"
-- DepreciationMethod(prop) = "DB"
-- IRS.Pub946.Deduction(prop, 1).Out =?= 1000
+- Thing person
+- UnadjustedBasis(person, prop) = 4000
+- RecoveryPeriod(person, prop) = 7
+- DatePlacedInService(person, prop) = 2011-01-02
+- ApplicableFirstYearConvention(person, prop) = "Mid-quarter"
+- DepreciationMethod(person, prop) = "DB"
+- IRS.Pub946.Deduction(person, prop, 1).Out =?= 1000
 
 Test: ComputedRate_Pub946_Page50_Ex3_Safe_Year2
 - Thing prop
-- UnadjustedBasis(prop) = 4000
-- RecoveryPeriod(prop) = 7
-- DatePlacedInService(prop) = 2011-01-02
-- ApplicableFirstYearConvention(prop) = "Mid-quarter"
-- DepreciationMethod(prop) = "DB"
-- IRS.Pub946.Deduction(prop, 2).Out =?= 857
+- Thing person
+- UnadjustedBasis(person, prop) = 4000
+- RecoveryPeriod(person, prop) = 7
+- DatePlacedInService(person, prop) = 2011-01-02
+- ApplicableFirstYearConvention(person, prop) = "Mid-quarter"
+- DepreciationMethod(person, prop) = "DB"
+- IRS.Pub946.Deduction(person, prop, 2).Out =?= 857
 
 Test: ComputedRate_Pub946_Page50_Ex3_Furniture_Year1
 - Thing prop
-- UnadjustedBasis(prop) = 1000
-- RecoveryPeriod(prop) = 7
-- DatePlacedInService(prop) = 2011-09-02
-- ApplicableFirstYearConvention(prop) = "Mid-quarter"
-- DepreciationMethod(prop) = "DB"
-- IRS.Pub946.Deduction(prop, 1).Out =?= 107
+- Thing person
+- UnadjustedBasis(person, prop) = 1000
+- RecoveryPeriod(person, prop) = 7
+- DatePlacedInService(person, prop) = 2011-09-02
+- ApplicableFirstYearConvention(person, prop) = "Mid-quarter"
+- DepreciationMethod(person, prop) = "DB"
+- IRS.Pub946.Deduction(person, prop, 1).Out =?= 107
 
 Test: ComputedRate_Pub946_Page50_Ex3_Furniture_Year2
 - Thing prop
-- UnadjustedBasis(prop) = 1000
-- RecoveryPeriod(prop) = 7
-- DatePlacedInService(prop) = 2011-09-02
-- ApplicableFirstYearConvention(prop) = "Mid-quarter"
-- DepreciationMethod(prop) = "DB"
-- IRS.Pub946.Deduction(prop, 2).Out =?= 255
+- Thing person
+- UnadjustedBasis(person, prop) = 1000
+- RecoveryPeriod(person, prop) = 7
+- DatePlacedInService(person, prop) = 2011-09-02
+- ApplicableFirstYearConvention(person, prop) = "Mid-quarter"
+- DepreciationMethod(person, prop) = "DB"
+- IRS.Pub946.Deduction(person, prop, 2).Out =?= 255
 
 Test: ComputedRate_Pub946_Page50_Ex3_Computer_Year1
 - Thing prop
-- UnadjustedBasis(prop) = 5000
-- RecoveryPeriod(prop) = 5
-- DatePlacedInService(prop) = 2011-10-02
-- ApplicableFirstYearConvention(prop) = "Mid-quarter"
-- DepreciationMethod(prop) = "DB"
-- IRS.Pub946.Deduction(prop, 1).Out =?= 250
+- Thing person
+- UnadjustedBasis(person, prop) = 5000
+- RecoveryPeriod(person, prop) = 5
+- DatePlacedInService(person, prop) = 2011-10-02
+- ApplicableFirstYearConvention(person, prop) = "Mid-quarter"
+- DepreciationMethod(person, prop) = "DB"
+- IRS.Pub946.Deduction(person, prop, 1).Out =?= 250
 
 Test: ComputedRate_Pub946_Page50_Ex3_Computer_Year2
 - Thing prop
-- UnadjustedBasis(prop) = 5000
-- RecoveryPeriod(prop) = 5
-- DatePlacedInService(prop) = 2011-10-02
-- ApplicableFirstYearConvention(prop) = "Mid-quarter"
-- DepreciationMethod(prop) = "DB"
-- IRS.Pub946.Deduction(prop, 2).Out =?= 1900
+- Thing person
+- UnadjustedBasis(person, prop) = 5000
+- RecoveryPeriod(person, prop) = 5
+- DatePlacedInService(person, prop) = 2011-10-02
+- ApplicableFirstYearConvention(person, prop) = "Mid-quarter"
+- DepreciationMethod(person, prop) = "DB"
+- IRS.Pub946.Deduction(person, prop, 2).Out =?= 1900
 
 Test: ComputedRate_Pub946_Page51_Ex4_Year1
 - Thing prop
-- UnadjustedBasis(prop) = 7500
-- RecoveryPeriod(prop) = 7
-- DatePlacedInService(prop) = 2011-07-02
-- ApplicableFirstYearConvention(prop) = "Half-year"
-- DepreciationMethod(prop) = "DB"
-- IRS.Pub946.Deduction(prop, 1).Out =?= 1071  # $1 diff b/c example uses tables
-    
+- Thing person
+- UnadjustedBasis(person, prop) = 7500
+- RecoveryPeriod(person, prop) = 7
+- DatePlacedInService(person, prop) = 2011-07-02
+- ApplicableFirstYearConvention(person, prop) = "Half-year"
+- DepreciationMethod(person, prop) = "DB"
+- IRS.Pub946.Deduction(person, prop, 1).Out =?= 1071  # $1 diff b/c example uses tables
     
