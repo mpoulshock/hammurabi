@@ -1,5 +1,6 @@
-:: This script converts Akkadian (.akk) files to C# (.cs) files
-:: and then compiles the C# project in MonoDevelop.
+:: This script converts Akkadian (.akk) files to C# (.cs) files,
+:: compiles the C# project in MonoDevelop, and then starts a
+:: Hammurabi Interactive session.
 
 :: Convert the .akk files to .cs
 cd %~dp0\AkkadianCompiler\bin\Debug
@@ -11,6 +12,16 @@ AkkadianCompiler.exe
 :: cd C:\Program Files\MonoDevelop\bin
 cd C:\Program Files (x86)\MonoDevelop\bin
 mdtool  -v build --f --buildfile:"%~dp0\Hammurabi\Hammurabi.csproj"
+
+:: Build Hammurabi Interactive
+mdtool build --f --buildfile:"%~dp0\HammurabiInteractive\HammurabiInteractive.csproj"
+
+:: Start the interactive test interview
+cd %~dp0\HammurabiInteractive\bin\Debug
+HammurabiInteractive.exe
+
+:: Leave the DOS window open so user can see if there are any compilation errors
+:: pause
 
 
 :: NOTE: To pin this .bat file to the Windows 7 taskbar:
