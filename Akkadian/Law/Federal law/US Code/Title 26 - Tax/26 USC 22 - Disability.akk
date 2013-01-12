@@ -6,6 +6,7 @@
 
 
 # Permanently and totally disabled
+# >>Is {1} permanently and totally disabled?
 Tbool IsDisabledPT(Thing p) =
     TboolIn IsPermanentlyAndTotallyDisabled(p)
 

@@ -814,21 +814,21 @@ namespace Hammurabi.UnitTests.CoreFcns
         [Test]
         public void FT_CountPastNIntervals_1 ()
         {
-            // This test case will break in 2012 due to the use of TheTime.Year
+            // This test case will break every year due to the use of TheTime.Year
             Tbool t = new Tbool(true);
-            t.AddState(Date(2011,1,1), false);
+            t.AddState(Date(2012,1,1), false);
             Tnum actual = t.CountPastNIntervals(TheTime.Year(2), 2);
-            string expected = "Time.DawnOf 0 1/1/2010 12:00:00 AM 2 1/1/2011 12:00:00 AM 1 1/1/2012 12:00:00 AM 0 ";
+            string expected = "Time.DawnOf 0 1/1/2011 12:00:00 AM 2 1/1/2012 12:00:00 AM 1 1/1/2013 12:00:00 AM 0 ";
             Assert.AreEqual(expected, actual.TestOutput);      
         }
         
         [Test]
         public void FT_CountPastNIntervals_2 ()
         {
-            // This test case will break in 2012 due to the use of TheTime.Year
+            // This test case will break every year due to the use of TheTime.Year
             Tbool t = new Tbool(true);
             Tnum actual = t.CountPastNIntervals(TheTime.Year(2), 2);
-            string expected = "Time.DawnOf 0 1/1/2010 12:00:00 AM 2 ";
+            string expected = "Time.DawnOf 0 1/1/2011 12:00:00 AM 2 ";
             Assert.AreEqual(expected, actual.TestOutput);      
         }
         

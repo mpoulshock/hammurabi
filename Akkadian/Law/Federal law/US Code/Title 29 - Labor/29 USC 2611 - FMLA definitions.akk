@@ -100,7 +100,8 @@ Tbool IsParentOf(Thing p1, Thing p2) =
     ActsInLocoParentisOf(p1,p2)
       
       
-# 2611(11) - Indicates whether a person (p) has a "serious health condition."
+# 2611(11)
+# >>Does/did {1} have a 'serious health condition' (one that involves inpatient care or continuing treatment by a health care provider)?
 TboolIn HasSeriousHealthCondition(Thing p)
 
         
@@ -123,6 +124,7 @@ Tbool IsChildOf(Thing p1, Thing p2) =
         
 
 # Indicates the date the person started or intends to start FMLA leave.
+# >>When does {1} want to go on leave?
 Tdate DateLeaveBegins(Thing p, Thing c) =
     TdateIn DateFamilyLeaveBegins(p,c)
   
@@ -134,6 +136,15 @@ Tbool ActsInLocoParentisOf(Thing p1, Thing p2) =
     Econ.ProvidesSupportFor(p1,p2)
   
 
+# INPUTS
+
+# >>Does/did {2} have fewer than 50 employees within 75 miles of {1}'s worksite?
+TboolIn LessThan50EmployeesWithin75MilesOfWorksite(Thing p, Thing corp)
+
+# >>Are/were there fewer than 50 employees at {1}'s worksite at {2}?
+TboolIn LessThan50EmployeesAtWorksite(Thing p, Thing corp)
+        
+        
 # UNIT TESTS
 
 

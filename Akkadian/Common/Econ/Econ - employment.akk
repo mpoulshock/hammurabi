@@ -18,7 +18,7 @@ Tbool IsEmployedBy(Thing p, Thing corp) =
 Tbool IsIndependentContractor(Thing p, Thing corp) =
     EmploymentRelationship(p, corp) == "Independent contractor"
 
-# >>What is/was {1}'s employment relationship with {2}? (Options: Employee, Independent contractor, Intern, None)
+# >>What is/was {1}'s employment relationship with {2}? (Options: Employee, Independent contractor, Intern, Other, None)
 TstrIn EmploymentRelationship(Thing person, Thing corp)
     
 # >>When did {1} start working at {2}?

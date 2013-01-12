@@ -22,7 +22,7 @@ TboolIn? IsQualifyingChildOf(Thing d, Thing tp) =
     QCGenTest(d, tp, taxYear) &
     QCRelationTest(d, tp) &
     QCAgeTest(d, tp, taxYear) &
-    if TboolIn CanBeClaimedAsQCByTwoTaxpayers(d) then Stub()
+    if CanBeClaimedAsQCByTwoTaxpayers(d) then Stub()
 
     Tnum taxYear = Sec441.TaxYear(tp)
 
@@ -150,7 +150,9 @@ TboolIn? CanBeClaimedAsDependentBySomeone(Thing p) =
     
 # >>Who has financial or custodial responsibility for {1}?
 TsetIn PeopleWhoMightClaimAsDependent(Thing p)
-            
+ 
+# >>Can {1} be claimed as a qualifying child by more than one taxpayer?
+TboolIn CanBeClaimedAsQCByTwoTaxpayers(Thing p) 
             
 # UNIT TESTS
 

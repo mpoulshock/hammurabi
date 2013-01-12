@@ -121,7 +121,7 @@ TboolIn IsAncestorAsserted(Thing p1, Thing p2) =
 Tbool IsDescendantOf(Thing p1, Thing p2) =
     IsAncestorOf(p2,p1)
     
-# >>What is/was {1}'s family relationship to {2} (if any)?
+# >>What is/was {1}'s family relationship to {2}? (Options: Spouse, Partner by civil union, Domestic partner, Former spouse, -, Biological parent, Stepparent, Adoptive parent, Foster parent, -, Biological child, Stepchild, Adopted child, Foster child, -, Sibling, Half sibling, Stepsibling, -, Grandparent, Great-grandparent, Great-great-grandparent, -, Grandchild, Great-grandchild, Great-great-grandchild, -, Aunt or uncle, Great aunt or uncle, Great-great aunt or uncle, -, Niece or nephew, Grand niece or nephew, Great-grand niece or nephew, -, First cousin, Other cousin, -, Other family relation, No family relation)
 Tstr Relationship(Thing p1, Thing p2) =
     TstrIn FamilyRelationship(p1,p2)
     

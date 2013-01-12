@@ -140,7 +140,7 @@ namespace Hammurabi.UnitTests.CoreFcns
 		{	
 			// This test will break every new calendar year (b/c the time frame of TheYear is determined by the system clock)
 			// Last updated: 4/28/12
-            Assert.AreEqual("Time.DawnOf 0 1/1/2010 12:00:00 AM 2010 1/1/2011 12:00:00 AM 2011 1/1/2012 12:00:00 AM 2012 1/1/2013 12:00:00 AM 2013 1/1/2014 12:00:00 AM 0 ", TheTime.Year(2).TestOutput);		
+            Assert.AreEqual("Time.DawnOf 0 1/1/2011 12:00:00 AM 2011 1/1/2012 12:00:00 AM 2012 1/1/2013 12:00:00 AM 2013 1/1/2014 12:00:00 AM 2014 1/1/2015 12:00:00 AM 0 ", TheTime.Year(2).TestOutput);		
 		}
 		
 		[Test]

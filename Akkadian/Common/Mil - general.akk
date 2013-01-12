@@ -43,7 +43,7 @@ Tbool InReserveArmedForces(Thing p) =
         BranchOfArmedForces(p) == "Marine Corps Reserve" |
         BranchOfArmedForces(p) == "Coast Guard Reserve"
 
-# >>What branch of the U.S. Armed Forces does/did {1} serve in? (Options: Army, Navy, Air Force, Marine Corps, Coast Guard, Army National Guard, Army Reserve, Air National Guard, Navy Reserve, Air Force Reserve, Marine Corps Reserve, Coast Guard Reserve.)
+# >>What branch of the U.S. Armed Forces does/did {1} serve in? (Options: Army, Navy, Air Force, Marine Corps, Coast Guard, Army National Guard, Army Reserve, Air National Guard, Navy Reserve, Air Force Reserve, Marine Corps Reserve, Coast Guard Reserve, None of the above.)
 TstrIn BranchOfArmedForces(Thing person)
 
 

@@ -33,16 +33,9 @@ Tnum TemporalTaxYear(Tnum monthTaxYearBegins) =
             
         
 # Month a person's tax year begins (defaults to January). 
-Tnum MonthTaxYearBegins(Thing p) =
+# >>In what month (1-12) does/did {1}'s tax year begin?
+TnumIn MonthTaxYearBegins(Thing p) =
     1
-    ##
-    set:
-    if month.IsUnknown -> 1
-    else month
-            
-    Tnum month = 
-        TnumIn MonthTaxYearBegins(p) 
-    ##
 
     
 # UNIT TESTS

@@ -80,6 +80,7 @@ Tbool IsEntitledToServiceLeaveFrom(Thing e, Thing c) =
         Fam.IsNextOfKinOf(e,SickFam(e))
                 
 # Returns a person's reason for requesting family leave from an employer.
+# >>Why does/did {1} want to take leave from {2}? (Options: Maternity or paternity, To adopt a child, To become a foster parent, To care for family member with a health condition, Employee cannot work due to health condition, To care for a family member in the Armed Forces, Other need arising due to family member serving in Armed Forces, Other)
 Tstr ReasonForLeave(Thing e, Thing c) =
     TstrIn ReasonForRequestingLeaveFrom(e,c)
     
