@@ -100,6 +100,7 @@
                         <File name="Law\Federal law\Agency interpretations\IRS\Pub 519 - Alien tax status.akk" />
                         <File name="Law\Federal law\Agency interpretations\IRS\Pub 901 - Tax treaties.akk" />
                         <File name="Law\Federal law\Agency interpretations\IRS\Pub 946 - Depreciating property.akk" />
+                        <File name="Sandbox\Mileage.akk" />
                     </Folder>
                 </Folder>
             </Folder>
@@ -134,6 +135,7 @@
             <Folder name="Tabular data" />
         </Folder>
         <Folder name="Sandbox">
+            <File name="Sandbox\Newbies.akk" />
             <File name="Sandbox\Assumption rules.akk" />
             <File name="Sandbox\Random unit tests.akk" />
             <File name="Sandbox\Recursion test.akk" />

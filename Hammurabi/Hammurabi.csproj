@@ -161,6 +161,7 @@
     <Compile Include="Core\Facts\ThingBase.cs" />
     <Compile Include="Generated source\Pub 946 - Depreciating property.cs" />
     <Compile Include="Generated source\Newbies.cs" />
+    <Compile Include="Generated source\Mileage.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

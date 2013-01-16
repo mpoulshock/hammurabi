@@ -1,0 +1,53 @@
+# Namespace:    IRS.Mileage
+# Summary:      IRS mileage rates
+# Updated:      2013-01-15
+# Author:       Michael Poulshock
+ 
+# These rates are used to calculate the deductible costs of 
+# operating an automobile for business, charitable, medical 
+# or moving purposes.
+# Source: http://www.irs.gov/pub/irs-drop/n-12-72.pdf
+
+
+# Reimbursement rate (dollars/mile)
+Tnum Rate(Tstr activityType) =
+    match activityType
+    Business                -> BusinessRate()
+    Medical or moving       -> MedicalMovingRate()
+    Charitable organization -> CharitableRate()
+    else 0
+
+# Rate for business purposes
+Tnum BusinessRate() =
+    temporal:
+    from Time.DawnOf -> Stub()
+    from 2012-01-01  -> 0.555
+    from 2013-01-01  -> 0.565
+    from 2014-01-01  -> Stub()
+    endtemporal
+
+# Rate for medical or moving purposes
+Tnum MedicalMovingRate() =
+    temporal:
+    from Time.DawnOf -> Stub()
+    from 2012-01-01  -> 0.23
+    from 2013-01-01  -> 0.24
+    from 2014-01-01  -> Stub()
+    endtemporal
+    
+# Rate for mileage in service of a charitable organization
+Tnum CharitableRate() =
+    temporal:
+    from Time.DawnOf -> Stub()
+    from 2013-01-01  -> 0.14
+    from 2014-01-01  -> Stub()
+    endtemporal
+    
+
+# UNIT TESTS
+
+Test: IRS_rate_1
+- IRS.Mileage.Rate("Business").AsOf(2013-04-04).Out =?= 0.565
+
+
+ 
