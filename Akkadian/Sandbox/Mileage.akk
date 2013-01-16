@@ -12,9 +12,10 @@
 # Reimbursement rate (dollars/mile)
 Tnum Rate(Tstr activityType) =
     match activityType
-    Business                -> BusinessRate()
-    Medical or moving       -> MedicalMovingRate()
-    Charitable organization -> CharitableRate()
+    Business   -> BusinessRate()
+    Medical    -> MedicalMovingRate()
+    Moving     -> MedicalMovingRate()
+    Charitable -> CharitableRate()
     else 0
 
 # Rate for business purposes
