@@ -1,8 +1,18 @@
-﻿
-namespace HService
+﻿using System;
+using System.ServiceModel;
+using System.ServiceModel.Web;
+
+namespace HammurabiWebService
 {
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single, IncludeExceptionDetailInFaults = true)]
     public class WebService : IWebService
     {
+        // Equivalent of "hello, world"
+        public HammurabiResponse HammurabiAssessTemp()
+        {
+            return new HammurabiResponse(2);
+        }
+
         public HammurabiResponse HammurabiAssess(HammurabiRequest request)
         {
             // Assert facts

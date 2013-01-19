@@ -3,13 +3,12 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>10.0.0</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{8651E5E6-B6F2-4B7B-8C36-4BF923EC740F}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <RootNamespace>HammurabiWebService</RootNamespace>
-    <AssemblyName>HammurabiWebService</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <ProjectGuid>{2CDFC242-E702-4FCE-B20C-BB688A97AB24}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>HammurabiWebServiceHost</RootNamespace>
+    <AssemblyName>HammurabiWebServiceHost</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>True</DebugSymbols>
@@ -33,21 +32,14 @@
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <Compile Include="Hammurabi.cs" />
-    <Compile Include="IService1.cs" />
-    <Compile Include="Request.cs" />
-    <Compile Include="Response.cs" />
-    <Compile Include="Service.svc.cs" />
+    <Compile Include="Program.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Web.config" />
-    <None Include="Service.svc" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System.Web.Services" />
     <Reference Include="System.ServiceModel" />
-    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System" />
     <Reference Include="System.ServiceModel.Web" />
+    <Reference Include="HammurabiWebService">
+      <HintPath>..\HammurabiWebService\HammurabiWebService\bin\Debug\HammurabiWebService.dll</HintPath>
+    </Reference>
   </ItemGroup>
 </Project>

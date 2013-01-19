@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
-namespace HService
+namespace HammurabiWebService
 {
     // Hammurabi web service response object
 

@@ -1,21 +1,20 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="HammurabiWebService\HammurabiWebService\Service1.svc.cs">
+    <Files>
+      <File FileName="HammurabiWebService\HammurabiWebService\IService1.cs" Line="1" Column="1" />
+      <File FileName="HammurabiWebServiceHost\Program.cs" Line="2" Column="25" />
+      <File FileName="HammurabiWebService\HammurabiWebService\Service1.svc.cs" Line="9" Column="10" />
+      <File FileName="HammurabiWebService\HammurabiWebService\Request.cs" Line="1" Column="1" />
+      <File FileName="HammurabiWebService\HammurabiWebService\Response.cs" Line="1" Column="1" />
+      <File FileName="HammurabiWebService\HammurabiWebService\Hammurabi.cs" Line="47" Column="16" />
+    </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
-          <Node name="Hammurabi" expanded="True" selected="True">
-            <Node name="Core" expanded="True">
-              <Node name="Core functions" expanded="True" />
-            </Node>
-            <Node name="Generated source" expanded="True" />
-          </Node>
-          <Node name="HammurabiInteractive" expanded="True">
+          <Node name="HammurabiWebService" expanded="True" />
+          <Node name="HammurabiWebServiceHost" expanded="True" selected="True">
             <Node name="References" expanded="True" />
-          </Node>
-          <Node name="Unit tests - Hammurabi core" expanded="True">
-            <Node name="References" expanded="True" />
-            <Node name="Unit tests" expanded="True" />
           </Node>
         </State>
       </Pad>
@@ -35,15 +34,7 @@
         <State />
       </Pad>
       <Pad Id="MonoDevelop.NUnit.TestPad">
-        <State expanded="True" selected="True">
-          <Node name="Hammurabi" expanded="True">
-            <Node name="Hammurabi" expanded="True">
-              <Node name="UnitTests" expanded="True">
-                <Node name="Test_IRSMileage" expanded="True" />
-              </Node>
-            </Node>
-          </Node>
-        </State>
+        <State expanded="True" selected="True" />
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>

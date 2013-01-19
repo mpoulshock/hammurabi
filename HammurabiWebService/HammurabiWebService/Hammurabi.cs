@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
-namespace HService
+namespace HammurabiWebService
 {
     [DataContract]
     public class Goal
