@@ -44,6 +44,16 @@ namespace HammurabiWebService
     public class Tvar
     {
         [DataMember]
-        public SortedList<DateTime?, string> TimeLine;  // SortedList?
+        public List<DateValuePair> TimeLine;
+    }
+
+    [DataContract]
+    public class DateValuePair
+    {
+        [DataMember]
+        public DateTime Date;
+
+        [DataMember]
+        public string Value;
     }
 }

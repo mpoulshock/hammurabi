@@ -8,12 +8,12 @@ namespace HammurabiWebService
     public class WebService : IWebService
     {
         // Equivalent of "hello, world"
-        public Response HammurabiAssessTemp()
+        public Response AssessTest()
         {
             return new Response(2);
         }
 
-        public Response HammurabiAssess(Request request)
+        public Response Assess(Request request)
         {
             // Assert facts
 

@@ -6,12 +6,13 @@ namespace HammurabiWebService
     [ServiceContract]
     public interface IWebService
     {
-        // http://localhost:8000/HammurabiAssessTemp
+        // http://localhost:8000/AssessTest (for testing purposes)
         [OperationContract]
-        [WebGet(UriTemplate = "/HammurabiAssessTemp")]
-        Response HammurabiAssessTemp();
+        [WebGet(UriTemplate = "/AssessTest")]
+        Response AssessTest();
 
+        // http://localhost:8000/Assess
         [OperationContract]
-        Response HammurabiAssess(Request request);
+        Response Assess(Request request);
     }
 }
