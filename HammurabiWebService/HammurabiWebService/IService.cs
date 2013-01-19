@@ -9,9 +9,9 @@ namespace HammurabiWebService
         // http://localhost:8000/HammurabiAssessTemp
         [OperationContract]
         [WebGet(UriTemplate = "/HammurabiAssessTemp")]
-        HammurabiResponse HammurabiAssessTemp();
+        Response HammurabiAssessTemp();
 
         [OperationContract]
-        HammurabiResponse HammurabiAssess(HammurabiRequest request);
+        Response HammurabiAssess(Request request);
     }
 }

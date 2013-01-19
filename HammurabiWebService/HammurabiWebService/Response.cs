@@ -7,7 +7,7 @@ namespace HammurabiWebService
     // Hammurabi web service response object
 
     [DataContract]
-    public class HammurabiResponse
+    public class Response
     {
         // Calculated value of the goals sought by the user
         [DataMember]
@@ -23,7 +23,7 @@ namespace HammurabiWebService
 
 
         // Constructs the web service response
-        public HammurabiResponse(int result)
+        public Response(int result)
         {
             PercentageComplete = result;
         }

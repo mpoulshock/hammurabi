@@ -8,12 +8,12 @@ namespace HammurabiWebService
     public class WebService : IWebService
     {
         // Equivalent of "hello, world"
-        public HammurabiResponse HammurabiAssessTemp()
+        public Response HammurabiAssessTemp()
         {
-            return new HammurabiResponse(2);
+            return new Response(2);
         }
 
-        public HammurabiResponse HammurabiAssess(HammurabiRequest request)
+        public Response HammurabiAssess(Request request)
         {
             // Assert facts
 
@@ -24,7 +24,7 @@ namespace HammurabiWebService
             // Convert engine response into web service response
 
             // Create response (here, a dummy one)
-            return new HammurabiResponse(request.Goals.Count);
+            return new Response(request.Goals.Count);
         }
     }
 }

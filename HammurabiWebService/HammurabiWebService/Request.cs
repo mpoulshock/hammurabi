@@ -7,7 +7,7 @@ namespace HammurabiWebService
     // Hammurabi web service request object
 
     [DataContract]
-    public class HammurabiRequest
+    public class Request
     {
         // Goals, or answers, sought by the user
         [DataMember]
