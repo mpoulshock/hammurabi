@@ -34,10 +34,10 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Compile Include="Hammurabi.cs" />
-    <Compile Include="IService1.cs" />
     <Compile Include="Request.cs" />
     <Compile Include="Response.cs" />
     <Compile Include="Service.svc.cs" />
+    <Compile Include="IService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Web.config" />
