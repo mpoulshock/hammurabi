@@ -45,12 +45,11 @@ namespace HammurabiWebService
                 // Determine type and convert
 
                 // Convert TempVal to Tvar
-                Tstr tv = new Tstr(f.TemporalValue.TimeLine[0].Value);
+                Tstr tv = new Tstr(Convert.ToString(f.TemporalValue.TimeLine[0].Value));
 
                 // Assert
                 Thing t = Facts.AddThing(f.Factlet.Thing1);
                 Facts.Assert(t,f.Factlet.Relationship,tv);
-//                Facts.Assert (t,"F
             }
 
             // Assemble goals into goal list and send list to Hammurabi engine

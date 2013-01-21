@@ -112,7 +112,10 @@ namespace HammurabiWebService
         public DateTime Date;
 
         [DataMember]
-        public string Value;
+        public string Value2;
+
+        [DataMember]
+        public object Value;   // ???
 
         // Constructor (eternal value)
         public DateValuePair(string value)

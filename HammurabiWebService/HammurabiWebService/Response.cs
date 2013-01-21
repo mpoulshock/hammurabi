@@ -28,12 +28,6 @@ namespace HammurabiWebService
             NeededFacts = neededFacts;
             PercentageComplete = percentageComplete;
         }
-
-        // Test constructor
-        public Response(int result)
-        {
-            PercentageComplete = result;
-        }
     }
 
     [DataContract]
