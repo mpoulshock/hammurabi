@@ -1,21 +1,21 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="HammurabiWebService\HammurabiWebService\Service1.svc.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="HammurabiWebService\HammurabiWebService\Service.svc.cs">
     <Files>
-      <File FileName="HammurabiWebService\HammurabiWebService\IService1.cs" Line="1" Column="1" />
-      <File FileName="HammurabiWebServiceHost\Program.cs" Line="2" Column="25" />
-      <File FileName="HammurabiWebService\HammurabiWebService\Service1.svc.cs" Line="9" Column="10" />
-      <File FileName="HammurabiWebService\HammurabiWebService\Request.cs" Line="1" Column="1" />
-      <File FileName="HammurabiWebService\HammurabiWebService\Response.cs" Line="1" Column="1" />
-      <File FileName="HammurabiWebService\HammurabiWebService\Hammurabi.cs" Line="47" Column="16" />
+      <File FileName="HammurabiWebService\HammurabiWebService\Service.svc.cs" Line="49" Column="17" />
+      <File FileName="HammurabiWebService\HammurabiWebService\Request.cs" Line="27" Column="9" />
+      <File FileName="HammurabiWebService\HammurabiWebService\Response.cs" Line="87" Column="1" />
+      <File FileName="HammurabiWebService\HammurabiWebService\Hammurabi objects.cs" Line="100" Column="33" />
+      <File FileName="HammurabiInteractive\Interview\Interview - main.cs" Line="22" Column="34" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
-          <Node name="HammurabiWebService" expanded="True" />
-          <Node name="HammurabiWebServiceHost" expanded="True" selected="True">
-            <Node name="References" expanded="True" />
+          <Node name="Hammurabi" expanded="True" />
+          <Node name="HammurabiInteractive" expanded="True">
+            <Node name="Interview" expanded="True" />
           </Node>
+          <Node name="HammurabiWebService" expanded="True" selected="True" />
         </State>
       </Pad>
       <Pad Id="ClassPad">

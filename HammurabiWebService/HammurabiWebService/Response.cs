@@ -21,8 +21,15 @@ namespace HammurabiWebService
         [DataMember]
         public int PercentageComplete;
 
+        // Constructor
+        public Response(List<RequestedGoal> requestedGoals, List<NeededFact> neededFacts, int percentageComplete)
+        {
+            RequestedGoals = requestedGoals;
+            NeededFacts = neededFacts;
+            PercentageComplete = percentageComplete;
+        }
 
-        // Constructs the web service response
+        // Test constructor
         public Response(int result)
         {
             PercentageComplete = result;
@@ -43,6 +50,14 @@ namespace HammurabiWebService
 
         [DataMember]
         public bool IsDetermined;
+
+        // Constructor
+        public RequestedGoal(Factlet factlet, Tvar temporalValue, bool isDetermined)
+        {
+            Factlet = factlet;
+            TemporalValue = temporalValue;
+            IsDetermined = isDetermined;
+        }
     }
 
     [DataContract]
@@ -61,5 +76,14 @@ namespace HammurabiWebService
         public string HelpText;
 
         // Data validation constraints?
+
+        // Constructor
+        public NeededFact(Factlet factlet, string questionType, string questionText, string helpText)
+        {
+            Factlet = factlet;
+            QuestionType = questionType;
+            QuestionText = questionText;
+            HelpText = helpText;
+        }
     }
 }

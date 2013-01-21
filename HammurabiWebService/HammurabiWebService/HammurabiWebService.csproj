@@ -9,7 +9,6 @@
     <OutputType>Library</OutputType>
     <RootNamespace>HammurabiWebService</RootNamespace>
     <AssemblyName>HammurabiWebService</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>True</DebugSymbols>
@@ -49,5 +48,8 @@
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System" />
     <Reference Include="System.ServiceModel.Web" />
+    <Reference Include="Hammurabi">
+      <HintPath>..\..\Hammurabi\bin\Debug\Hammurabi.dll</HintPath>
+    </Reference>
   </ItemGroup>
 </Project>

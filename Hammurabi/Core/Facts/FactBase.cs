@@ -72,6 +72,7 @@ namespace Hammurabi
 		public static void Clear()
 		{
 			FactBase.Clear();
+            ThingBase.Clear();
 		}
         
         /// <summary>

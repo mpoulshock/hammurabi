@@ -24,5 +24,12 @@ namespace HammurabiWebService
         // Level of detail, in the web service response, about the unknown facts (Concise, Top, Screen, All)
         [DataMember]
         public string UnknownFactsLevelOfDetail = "Concise";
+
+        // Constructor
+        public Request(List<Goal> goals, List<Fact> facts)
+        {
+            Goals = goals;
+            Facts = facts;
+        }
     }
 }
