@@ -37,6 +37,7 @@
     <Compile Include="Service.svc.cs" />
     <Compile Include="IService.cs" />
     <Compile Include="Hammurabi objects.cs" />
+    <Compile Include="Packet.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Web.config" />

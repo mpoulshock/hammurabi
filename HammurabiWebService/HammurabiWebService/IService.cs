@@ -9,10 +9,10 @@ namespace HammurabiWebService
         // http://localhost:8000/AssessTest (for testing purposes)
         [OperationContract]
         [WebGet(UriTemplate = "/AssessTest")]
-        Response AssessTest();
+        Packet AssessTest();
 
         // http://localhost:8000/Assess
         [OperationContract]
-        Response Assess(Request request);
+        Packet Assess(Packet request);
     }
 }
