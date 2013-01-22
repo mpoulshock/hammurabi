@@ -53,29 +53,27 @@ namespace HammurabiWebService
             }
 
             // Assemble goals into goal list and send list to Hammurabi engine
-            List<Func<Hammurabi.Tvar>> goals = new List<Func<Hammurabi.Tvar>>();
+            List<GoalBlob> goalblobs = new List<GoalBlob>();
             foreach(Goal g in request.Goals)
             {
-                // Set the goal's Things
-                Engine.Thing1 = Facts.AddThing(g.Factlet.Thing1);
-                Engine.Thing2 = Facts.AddThing(g.Factlet.Thing2);
-                Engine.Thing3 = Facts.AddThing(g.Factlet.Thing3);
+                Thing t1 = Facts.AddThing(g.Factlet.Thing1);
+                Thing t2 = Facts.AddThing(g.Factlet.Thing2);
+                Thing t3 = Facts.AddThing(g.Factlet.Thing3);
 
-                // Get the goal's template function and load it onto the goals list
-                Func<Hammurabi.Tvar> seedGoal = Interactive.Templates.GetQ(g.Factlet.Relationship).theFunc;
-                goals.Add(seedGoal);
+                GoalBlob gb = new GoalBlob(g.Factlet.Relationship, t1, t2, t3);
+                goalblobs.Add(gb);
             }
 
             // Invoke Hammurabi's determination
-            Engine.Response response = Engine.Investigate(goals);
+            Engine.Response response = Engine.Investigate(goalblobs);
 
             // Convert engine response into web service response
 
             // Get values of goals
             List<RequestedGoal> requestedGoals = new List<RequestedGoal>();
-            foreach (Func<Hammurabi.Tvar> g in goals)
+            foreach (GoalBlob g in response.Goals)
             {
-                RequestedGoal rg = new RequestedGoal(new Factlet("ThresholdAmount","Jim"), new Tvar(g.Invoke().TestOutput),true);
+                RequestedGoal rg = new RequestedGoal(new Factlet(g.Relationship, g.Thing1.Id), new Tvar(g.Value().TestOutput), true);
                 requestedGoals.Add(rg);
             }
 

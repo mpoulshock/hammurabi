@@ -35,24 +35,13 @@ namespace Interactive
         /// </summary>
         public static void ProcessRequest(string request) 
         {
-            string goalText = ParseRequest(request);
-
+            GoalBlob goalblob = ParseRequest(request);
             InitializeSession();
-
-            // Given a relationship name, get the goal as a function
-            Func<Tvar> seedGoal = Interactive.Templates.GetQ(goalText).theFunc;
-
-            // Load the goals to be investigated (onto the goals list)
-            List<Func<Tvar>> goals = new List<Func<Tvar>>();
-            goals.Add(seedGoal);
-
-//            goals.Add(()=> Hammurabi.Sandbox.AnotherMethod(p));
-//            goals.Add(()=> USC.Tit8.Sec1401a.IsQualifyingServicemember(p));
 
             while (true)
             {
                 // Get the response object from the interview engine
-                Engine.Response response = Engine.Investigate(goals);
+                Engine.Response response = Engine.Investigate(new List<GoalBlob>(){goalblob});
 
                 // Ask the current question, or display the results
                 if (!response.InvestigationComplete)
@@ -65,7 +54,7 @@ namespace Interactive
                 } 
                 else
                 {
-                    DisplayResults(goals, goalText);
+                    DisplayResults(goalblob);
                     break;
                 }
             }
@@ -77,19 +66,22 @@ namespace Interactive
         /// <summary>
         /// Parses the interview goal request.
         /// </summary>
-        private static string ParseRequest(string request)
+        private static GoalBlob ParseRequest(string request)
         {
             // Request format: <goal> <Thing1> <Thing2>? <Thing3>?
             // Example: IsUSCitizen Jane
             string[] req = request.Split(' ');
-            
-            // Set values for the initial Things
-            Engine.Thing1 = new Thing(req.Length > 1 ? req[1] : "");
-            Engine.Thing2 = new Thing(req.Length > 2 ? req[2] : "");
-            Engine.Thing3 = new Thing(req.Length > 3 ? req[3] : "");
+            string t1 = req.Length > 1 ? req[1] : "";
+            string t2 = req.Length > 2 ? req[2] : "";
+            string t3 = req.Length > 3 ? req[3] : "";
 
-            // Return the goal name
-            return req[0];
+            // Set values for the initial Things
+            // This is necessary for test case generation
+            Engine.Thing1 = new Thing(t1);
+            Engine.Thing2 = new Thing(t2);
+            Engine.Thing3 = new Thing(t3);
+
+            return new GoalBlob(req[0], t1, t2, t3);
         }
 
         /// <summary>
@@ -189,29 +181,24 @@ namespace Interactive
         /// <summary>
         /// Displays the engine's results of the interview session.
         /// </summary>
-        private static void DisplayResults(List<Func<Tvar>> goals, string goalText)
+        private static void DisplayResults(GoalBlob goal)
         {
             Console.WriteLine("\nResults: \n");
-            Console.WriteLine(ResultsText(goals, goalText));
+            Console.WriteLine(ResultsText(goal));
         }
 
         /// <summary>
         /// Displays the results of each goal.
         /// </summary>
-        private static string ResultsText(List<Func<Tvar>> goals, string goalText)
+        private static string ResultsText(GoalBlob goal)
         {
-            string result = "";
-
             // TODO: Does not correctly display Tset.TestOutput
-            foreach (Func<Tvar> g in goals)
-            {
-                result += g.Invoke().TestOutput + "\n";
-            }
-
+            string result = goal.ValueAsString() + "\n";
+            
             // Add result to test case
-            Tvar testResult = goals[0].Invoke();
-            AkkTest.CloseUnitTest(testResult, goalText);
-
+            Tvar testResult = goal.GetFunction().Invoke();
+            AkkTest.CloseUnitTest(testResult, goal.Relationship);
+            
             return result;
         }
 

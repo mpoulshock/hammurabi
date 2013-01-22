@@ -54,36 +54,38 @@ namespace Interactive
             public bool InvestigationComplete;
             public Facts.Factlet NextFact;
             public int PercentComplete;
+            public List<GoalBlob> Goals;
 
             /// <summary>
             /// General response constructor.
             /// </summary>
-            public Response(bool done, Facts.Factlet next, int percent)
+            public Response(bool done, Facts.Factlet next, int percent, List<GoalBlob> goals)
             {
                 InvestigationComplete = done;
                 NextFact = next;
                 PercentComplete = percent;
+                Goals = goals;
             }
         }
 
         /// <summary>
         /// Asks the next question or displays the interview results.
         /// </summary>  
-        public static Response Investigate(List<Func<Tvar>> goals)
+        public static Response Investigate(List<GoalBlob> goals)
         {
             // Default outputs
             bool allDone = true;
             int percent = 0;
             Facts.Factlet theNextFact = new Facts.Factlet("", null, null, null);
-
+            
             // Prepare to look for unknown facts
             Facts.GetUnknowns = true;
             Facts.Unknowns.Clear();
-
+            
             // Iterate through each goal
-            foreach (Func<Tvar> g in goals)
+            foreach (GoalBlob g in goals)
             {
-                if (!g.Invoke().HasBeenDetermined)
+                if (!g.Value().HasBeenDetermined)
                 {
                     allDone = false;
                 }
@@ -96,8 +98,8 @@ namespace Interactive
                 theNextFact = Facts.Unknowns[0];
                 percent = ProgressPercentage(Facts.Count(), Facts.Unknowns.Count);
             }
-
-            return new Engine.Response(allDone, theNextFact, percent);
+            
+            return new Engine.Response(allDone, theNextFact, percent, goals);
         }
 
         /// <summary>
@@ -107,6 +109,67 @@ namespace Interactive
         {
             double percent = (answered / (answered + unknown)) * 100;
             return Convert.ToInt32(Math.Round(percent, 0));
+        }
+    }
+
+    /// <summary>
+    /// Bundle of things that are passed into the engine, representing a goal.
+    /// </summary>
+    public class GoalBlob
+    {
+        public string Relationship;
+        public Thing Thing1;
+        public Thing Thing2;
+        public Thing Thing3;
+
+        public GoalBlob(string relationship, Thing thing1, Thing thing2, Thing thing3)
+        {
+            Relationship = relationship;
+            Thing1 = thing1;
+            Thing2 = thing2;
+            Thing3 = thing3;
+        }
+
+        public GoalBlob(string relationship, string thing1, string thing2, string thing3)
+        {
+            Relationship = relationship;
+            Thing1 = Facts.AddThing(thing1);
+            Thing2 = Facts.AddThing(thing2);
+            Thing3 = Facts.AddThing(thing3);
+        }
+
+        public Tvar Value()
+        {
+            // Consider implementing caching
+            return this.GetFunction().Invoke();
+        }
+
+        public Func<Tvar> GetFunction()
+        {
+            // Set the goal's Things
+            Engine.Thing1 = Facts.AddThing(Thing1);
+            Engine.Thing2 = Facts.AddThing(Thing2);
+            Engine.Thing3 = Facts.AddThing(Thing3);
+
+            // Get the lambda function
+            return Interactive.Templates.GetQ(Relationship).theFunc;
+        }
+
+        public string ValueAsString()
+        {
+            return this.QuestionText() + " " + Value().TestOutput;
+        }
+
+        public string QuestionText()
+        {
+            // Embed the names of the Things into the question
+            string result = Interactive.Templates.GetQ(Relationship).questionText;
+
+            result = result.Replace("{1}", Thing1.Id);
+            result = result.Replace("{2}", Thing2.Id);
+            result = result.Replace("{3}", Thing3.Id);
+            
+            return result;
         }
     }
 }
