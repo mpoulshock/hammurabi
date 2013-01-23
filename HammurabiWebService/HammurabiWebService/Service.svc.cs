@@ -21,7 +21,8 @@ namespace HammurabiWebService
             // Define goals to be sought, and combine them into a list
             Fact goal1 = new Fact("ThresholdAmount","Jim","","");
             Fact goal2 = new Fact("ApplicablePercentage","Jim","","");
-            List<Fact> goals = new List<Fact>(){goal1,goal2};
+            Fact goal3 = new Fact("IsDependentOf","Kid","Dad","");
+            List<Fact> goals = new List<Fact>(){goal1,goal2,goal3};
 
             // Assemble a mock request to the web service
             Packet mockPacket = new Packet(goals, facts);
@@ -35,6 +36,9 @@ namespace HammurabiWebService
         /// </summary>
         public Packet Assess(Packet request)
         {
+            // Start timer 
+            DateTime startTime = DateTime.Now;
+
             // Start a fresh session
             Facts.Clear();
             
@@ -74,18 +78,28 @@ namespace HammurabiWebService
             {
                 foreach (Fact f in request.Goals)
                 {
-                    if (AreEqual(g,f))
+//                    Tnum tn = new Tnum(8);
+//                    tn.AddState(DateTime.Now,12);
+//                    f.Timeline = ToTimeline(tn);
+
+                    if (true) //AreEqual(g,f))
                     {
-                        f.Timeline = ToTimeline(g.Value());
+                        f.Timeline = ToTimeline(g.Value());  
                         break;
                     }
                 }
             }
 
+
             request.PercentageComplete = response.PercentComplete;
-            
+
+            // Add elapsed time to response object
+            request.ResponseTimeInMs = Convert.ToDecimal((DateTime.Now - startTime).TotalMilliseconds);
+
             return request;
         }
+
+
 
         private static bool AreEqual(GoalBlob b, Fact f)
         {
@@ -95,7 +109,7 @@ namespace HammurabiWebService
         private static List<TemporalValue> ToTimeline(Hammurabi.Tvar tv)
         {
             List<TemporalValue> result = new List<TemporalValue>();
-            for (int i=0; i < tv.IntervalValues.Count-1; i++ ) 
+            for (int i=0; i < tv.IntervalValues.Count; i++ ) 
             {
                 result.Add(new TemporalValue(tv.IntervalValues.Keys[i], tv.IntervalValues.Values[i].Val));
             }

@@ -9,6 +9,10 @@ namespace HammurabiWebService
     [DataContract]
     public class Packet
     {
+        // Web service response time (in milliseconds)
+        [DataMember]
+        public decimal ResponseTimeInMs;
+
         // Goals, or answers, sought by the user
         [DataMember]
         public List<Fact> Goals;
