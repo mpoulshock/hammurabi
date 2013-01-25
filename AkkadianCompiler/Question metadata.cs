@@ -68,7 +68,10 @@ namespace Akkadian
             // Use a regex to identify the function parts
             string wrd = @"[a-zA-Z0-9_]+";
             Match match = Regex.Match(line, 
-                @"(Tbool|Tnum|Tdate|Tstr|Tset)(In)?(Sym)?\?? (?<fcn>"+wrd+@")\((?<p1>"+wrd+@" ?)(?<a1>"+wrd+@")?(?<c1>, ?)?(?<p2>Thing )?(?<a2>"+wrd+@")?(?<c2>, ?)?(?<p3>Thing )?(?<a3>"+wrd+@")?\)");
+                // In the following regex, <p#> = param, <c#> = comma, <a#> = arg
+//                @"(Tbool|Tnum|Tdate|Tstr|Tset)(In)?(Sym)?\?? (?<fcn>"+wrd+@")\((?<p1>"+wrd+@" ?)(?<a1>"+wrd+@")?(?<c1>, ?)?(?<p2>Thing )?(?<a2>"+wrd+@")?(?<c2>, ?)?(?<p3>Thing )?(?<a3>"+wrd+@")?\)");
+//              @"(Tbool|Tnum|Tdate|Tstr|Tset)(In)?(Sym)?\?? (?<fcn>"+wrd+@")\((?<p1>"+wrd+@" ?)(?<a1>"+wrd+@")?(?<c1>, ?)?(?<p2>"+wrd+@" )?(?<a2>"+wrd+@")?(?<c2>, ?)?(?<p3>"+wrd+@" )?(?<a3>"+wrd+@")?\)");
+            @"(Tbool|Tnum|Tdate|Tstr|Tset)(In)?(Sym)?\?? (?<fcn>"+wrd+@")\((?<p1>"+wrd+@" ?)?(?<a1>"+wrd+@")?(?<c1>, ?)?(?<p2>"+wrd+@" )?(?<a2>"+wrd+@")?(?<c2>, ?)?(?<p3>"+wrd+@" )?(?<a3>"+wrd+@")?\)");
 
             if (match.Success)
             {
@@ -90,7 +93,7 @@ namespace Akkadian
 
                 // Only get method-related data if it's a main rule and all parameters are Things.
                 // This is because only rule conclusions will be used as interview starting points.
-                if (Util.IsMainRule(line) && AllParamsAreThings(param1, param2, param3))
+                if (Util.IsMainRule(line))
                 {
                     // Details captured for the purpose of interview goals
                     string method = MainClass.docNameSpace + "." + rel;
@@ -106,16 +109,6 @@ namespace Akkadian
                     questionData.Add(new Qdata(rel, type, questionText, null, null, null, null, null));
                 }
             }
-        }
-
-        /// <summary>
-        /// Determine if all of the input parameter types are Things (or blank).
-        /// </summary>
-        private static bool AllParamsAreThings(string p1, string p2, string p3)
-        {
-            return (p1 == "Thing" || p1 == "") &&
-                   (p2 == "Thing" || p2 == "") &&
-                   (p3 == "Thing" || p3 == "");
         }
 
         /// <summary>
@@ -164,9 +157,10 @@ namespace Akkadian
             // If no method is provided, don't create a '()=>Fcn' string
             if (q.fullMethod == null) return ", null";
 
-            string result = ",()=>" + q.fullMethod + "(Engine.Thing1";
-            if (q.param2Type != "") result += ",Engine.Thing2";
-            if (q.param3Type != "") result += ",Engine.Thing3";
+            string result = ",()=>" + q.fullMethod + "(";
+            if (q.param1Type != "") result += "Engine." + q.param1Type + "1";
+            if (q.param2Type != "") result += ",Engine." + q.param2Type + "2";
+            if (q.param3Type != "") result += ",Engine." + q.param3Type + "3";
             return result + ")";
         }
     }

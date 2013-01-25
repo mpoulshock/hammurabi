@@ -4,6 +4,18 @@
 # Author:       Michael Poulshock
 
     
+# TEST OF AKKADIAN COMPILER - METHOD SIGNATURES
+
+# Fail:
+Tbool FcnWithNoArgs() =
+    true
+    
+# Pass:
+Tbool FcnWithTwoTstrArgs(Tstr s1, Tstr s2) =
+    true
+
+
+
 # TEST OF DEPRECIATION RULES
 
 # Idea is that the value of some asset depreciates over time.  Given a
