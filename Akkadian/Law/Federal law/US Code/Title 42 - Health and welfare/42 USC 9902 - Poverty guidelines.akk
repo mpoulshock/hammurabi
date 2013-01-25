@@ -29,7 +29,7 @@ Tnum FedPovertyGuideline(Tnum familySize, Tstr jur) =
         if jur == "District of Columbia" -> ContigRate2012(familySize)
         if jur == "Alaska" -> AKRate2012(familySize)
         if jur == "Hawaii" -> HIRate2012(familySize)
-        else null
+        else Stub()
         
     Tnum RateFor2011 =
         set:
@@ -37,7 +37,7 @@ Tnum FedPovertyGuideline(Tnum familySize, Tstr jur) =
         if jur == "District of Columbia" -> ContigRate2011(familySize)
         if jur == "Alaska" -> AKRate2011(familySize)
         if jur == "Hawaii" -> HIRate2011(familySize)
-        else null
+        else Stub()
 
         
 # 2012

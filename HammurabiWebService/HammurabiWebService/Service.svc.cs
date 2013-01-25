@@ -59,11 +59,7 @@ namespace HammurabiWebService
             List<GoalBlob> goalblobs = new List<GoalBlob>();
             foreach(Fact g in request.Goals)
             {
-                Thing t1 = Facts.AddThing(g.Thing1);
-                Thing t2 = Facts.AddThing(g.Thing2);
-                Thing t3 = Facts.AddThing(g.Thing3);
-                
-                GoalBlob gb = new GoalBlob(g.Relationship, t1, t2, t3);
+                GoalBlob gb = new GoalBlob(g.Relationship, g.Thing1, g.Thing2, g.Thing3);
                 goalblobs.Add(gb);
             }
             

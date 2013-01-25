@@ -43,38 +43,47 @@ namespace Interactive
             // Main loop - runs the interview multiple times
             while (true)
             {
-                // Run the interview
-                Interview.ProcessRequest(goal);
-
-                // Next action
-                Console.WriteLine("Repeat?    r");
-                Console.WriteLine("Save?      s");
-                Console.WriteLine("New topic? n");
-                string next = Console.ReadLine();
-
-                // Save interview as an .akk test
-                if (next == "s") 
+                // If invalid goal, prompt for new goal
+                try
                 {
-                    string file = Interactive.Templates.GetQ(goal.Split(' ')[0]).filePath;
-                    AkkTest.WriteToFile(file);
+                    // Run the interview
+                    Interview.ProcessRequest(goal);
 
                     // Next action
-                    Console.WriteLine("\nTest case saved.\n");
                     Console.WriteLine("Repeat?    r");
+                    Console.WriteLine("Save?      s");
                     Console.WriteLine("New topic? n");
-                    next = Console.ReadLine();
-                }
+                    string next = Console.ReadLine();
 
-                // Switch to a new interview topic
-                if (next == "n")
+                    // Save interview as an .akk test
+                    if (next == "s") 
+                    {
+                        string file = Interactive.Templates.GetQ(goal.Split(' ')[0]).filePath;
+                        AkkTest.WriteToFile(file);
+
+                        // Next action
+                        Console.WriteLine("\nTest case saved.\n");
+                        Console.WriteLine("Repeat?    r");
+                        Console.WriteLine("New topic? n");
+                        next = Console.ReadLine();
+                    }
+
+                    // Switch to a new interview topic
+                    if (next == "n")
+                    {
+                        Console.WriteLine("\nEnter goal:");
+                        goal = Console.ReadLine();
+                    }
+
+                    // Continue session or quit
+                    if (next == "r" || next == "n") {}
+                    else break;
+                }
+                catch
                 {
-                    Console.WriteLine("\nEnter goal:");
+                    Console.WriteLine("\nInvalid request. Enter goal:");
                     goal = Console.ReadLine();
                 }
-
-                // Continue session or quit
-                if (next == "r" || next == "n") {}
-                else break;
             }
         }
     }

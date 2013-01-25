@@ -118,24 +118,16 @@ namespace Interactive
     public class GoalBlob
     {
         public string Relationship;
-        public Thing Thing1;
-        public Thing Thing2;
-        public Thing Thing3;
+        public object Arg1;
+        public object Arg2;
+        public object Arg3;
 
-        public GoalBlob(string relationship, Thing thing1, Thing thing2, Thing thing3)
+        public GoalBlob(string relationship, object arg1, object arg2, object arg3)
         {
             Relationship = relationship;
-            Thing1 = thing1;
-            Thing2 = thing2;
-            Thing3 = thing3;
-        }
-
-        public GoalBlob(string relationship, string thing1, string thing2, string thing3)
-        {
-            Relationship = relationship;
-            Thing1 = Facts.AddThing(thing1);
-            Thing2 = Facts.AddThing(thing2);
-            Thing3 = Facts.AddThing(thing3);
+            Arg1 = arg1;
+            Arg2 = arg2;
+            Arg3 = arg3;
         }
 
         public Tvar Value()
@@ -146,12 +138,36 @@ namespace Interactive
 
         public Func<Tvar> GetFunction()
         {
-            // Set the goal's Things
-            Engine.Thing1 = Facts.AddThing(Thing1);
-            Engine.Thing2 = Facts.AddThing(Thing2);
-            Engine.Thing3 = Facts.AddThing(Thing3);
+            // Get the template for the function, based on the relationship
+            Question q = Interactive.Templates.GetQ(Relationship);
 
-            // Get the lambda function
+            // Set the function's arguments before invoking it
+
+            // Convert first argument from string to proper type
+            if (q.arg1Type == "Thing") Engine.Thing1 = Facts.AddThing(Convert.ToString(Arg1));
+            else if (q.arg1Type == "Tbool") Engine.Tbool1 = Convert.ToBoolean(Arg1);
+            else if (q.arg1Type == "Tnum")  Engine.Tnum1 = Convert.ToDecimal(Arg1);
+            else if (q.arg1Type == "Tstr")  Engine.Tstr1 = Convert.ToString(Arg1);
+            else if (q.arg1Type == "Tdate") Engine.Tdate1 = Convert.ToDateTime(Arg1);
+            else if (q.arg1Type == "Tset")  Engine.Tset1 = (Tset)Arg1;   // ?
+
+            // Second argument
+            if (q.arg2Type == "Thing") Engine.Thing2 = Facts.AddThing(Convert.ToString(Arg2));
+            else if (q.arg2Type == "Tbool") Engine.Tbool2 = Convert.ToBoolean(Arg2);
+            else if (q.arg2Type == "Tnum")  Engine.Tnum2 = Convert.ToDecimal(Arg2);
+            else if (q.arg2Type == "Tstr")  Engine.Tstr2 = Convert.ToString(Arg2);
+            else if (q.arg2Type == "Tdate") Engine.Tdate2 = Convert.ToDateTime(Arg2);
+            else if (q.arg2Type == "Tset")  Engine.Tset2 = (Tset)Arg2;
+
+            // Third argument
+            if (q.arg3Type == "Thing") Engine.Thing3 = Facts.AddThing(Convert.ToString(Arg3));
+            else if (q.arg3Type == "Tbool") Engine.Tbool3 = Convert.ToBoolean(Arg3);
+            else if (q.arg3Type == "Tnum")  Engine.Tnum3 = Convert.ToDecimal(Arg3);
+            else if (q.arg3Type == "Tstr")  Engine.Tstr3 = Convert.ToString(Arg3);
+            else if (q.arg3Type == "Tdate") Engine.Tdate3 = Convert.ToDateTime(Arg3);
+            else if (q.arg3Type == "Tset")  Engine.Tset3 = (Tset)Arg3;
+
+            // Return the lambda function
             return Interactive.Templates.GetQ(Relationship).theFunc;
         }
 
@@ -165,11 +181,9 @@ namespace Interactive
             // Embed the names of the Things into the question
             string result = Interactive.Templates.GetQ(Relationship).questionText;
 
-            result = result.Replace("{1}", Thing1.Id);
-            result = result.Replace("{2}", Thing2.Id);
-            result = result.Replace("{3}", Thing3.Id);
-            
-            return result;
+            return result.Replace("{1}", Convert.ToString(Arg1))
+                         .Replace("{2}", Convert.ToString(Arg2))
+                         .Replace("{3}", Convert.ToString(Arg3));
         }
     }
 }

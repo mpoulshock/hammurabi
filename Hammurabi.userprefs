@@ -2,24 +2,27 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
   <MonoDevelop.Ide.Workbench ActiveDocument="HammurabiWebService\HammurabiWebService\Service.svc.cs">
     <Files>
-      <File FileName="HammurabiWebService\HammurabiWebService\Service.svc.cs" Line="96" Column="51" />
+      <File FileName="HammurabiWebService\HammurabiWebService\Service.svc.cs" Line="62" Column="55" />
       <File FileName="HammurabiWebService\HammurabiWebService\Packet.cs" Line="14" Column="40" />
-      <File FileName="Hammurabi\Core\Fundamental types\Tvar.cs" Line="41" Column="43" />
+      <File FileName="Hammurabi\Core\Engine\Interview - things.cs" Line="35" Column="48" />
+      <File FileName="HammurabiInteractive\Interview\Interview - main.cs" Line="77" Column="13" />
+      <File FileName="Hammurabi\Core\Engine\Engine.cs" Line="135" Column="41" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
+          <Node name="AkkadianCompiler" expanded="True" />
           <Node name="Hammurabi" expanded="True">
             <Node name="Core" expanded="True">
               <Node name="Engine" expanded="True" />
-              <Node name="Fundamental types" expanded="True" />
+              <Node name="Fundamental types" expanded="True" selected="True" />
             </Node>
           </Node>
           <Node name="HammurabiInteractive" expanded="True">
             <Node name="Interview" expanded="True" />
           </Node>
           <Node name="HammurabiWebService" expanded="True" />
-          <Node name="HammurabiWebServiceHost" expanded="True" selected="True" />
+          <Node name="HammurabiWebServiceHost" expanded="True" />
         </State>
       </Pad>
       <Pad Id="ClassPad">
@@ -38,7 +41,9 @@
     </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
+    <BreakpointStore>
+      <Breakpoint file="C:\Users\Michael\Documents\GitHub\hammurabi\Hammurabi\Generated source\Question metadata.cs" line="60" />
+    </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
 </Properties>

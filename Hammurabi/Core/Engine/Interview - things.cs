@@ -28,12 +28,13 @@ namespace Interactive
         // for argument values in first-order functions.  
         // These are used in Hammurabi Interactive and Web Service.
         public static Thing Thing1, Thing2, Thing3;
-        public static Tbool Tbool1, Tbool2, bool3;
+        public static Tbool Tbool1, Tbool2, Tbool3;
         public static Tnum Tnum1, Tnum2,Tnum3;
         public static Tstr Tstr1, Tstr2, Tstr3;
         public static Tdate Tdate1, Tdate2, Tdate3;
         public static Tset Tset1, Tset2, Tset3;
 
+        // Extend to C# types?
         public static string string1, string2, string3;
     }
 }

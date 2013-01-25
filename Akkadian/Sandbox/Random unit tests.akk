@@ -12,7 +12,7 @@ Tbool FcnWithNoArgs() =
     
 # Pass:
 Tbool FcnWithTwoTstrArgs(Tstr s1, Tstr s2) =
-    true
+    s1 == "a"
 
 
 
