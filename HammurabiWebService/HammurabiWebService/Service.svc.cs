@@ -26,7 +26,7 @@ namespace HammurabiWebService
 
             // Assemble a mock request to the web service
             Packet mockPacket = new Packet(goals, facts);
-            
+
             // Assess the request
             return Assess(mockPacket);
         }
@@ -45,56 +45,57 @@ namespace HammurabiWebService
             // Assert facts into a Hammurabi session
             foreach(Fact f in request.AssertedFacts)
             {
-                // Determine type and convert
-                
-                // Convert TempVal to Tvar
-                Tstr tv = new Tstr(Convert.ToString(f.Timeline[0].Value));
-                
-                // Assert
-                Thing t = Facts.AddThing(f.Thing1);
-                Facts.Assert(t, f.Relationship, tv);
+                AssertFact(f); 
             }
-            
+
             // Assemble goals into goal list and send list to Hammurabi engine
             List<GoalBlob> goalblobs = new List<GoalBlob>();
             foreach(Fact g in request.Goals)
             {
-                GoalBlob gb = new GoalBlob(g.Relationship, g.Thing1, g.Thing2, g.Thing3);
+                GoalBlob gb = new GoalBlob(g.Relationship, g.Arg1, g.Arg2, g.Arg3);
                 goalblobs.Add(gb);
             }
             
             // Invoke Hammurabi's determination
             // TODO: Just pass engine Facts
-            Engine.Response response = Engine.Investigate(goalblobs);
+            Engine.Response engineResponse = Engine.Investigate(goalblobs);
             
             // Convert engine response into web service response
             
             // Get values of goals
-            foreach (GoalBlob g in response.Goals)
+            foreach (GoalBlob g in engineResponse.Goals)
             {
                 foreach (Fact f in request.Goals)
                 {
-//                    Tnum tn = new Tnum(8);
-//                    tn.AddState(DateTime.Now,12);
-//                    f.Timeline = ToTimeline(tn);
-
-                    if (true) //AreEqual(g,f))
+                    if (true) //AreEqual(g,f))              // TODO
                     {
-                        f.Timeline = ToTimeline(g.Value());  
+//                        f.Timeline = ToTimeline(g.Value());   // TODO
                         break;
                     }
                 }
             }
 
-
-            request.PercentageComplete = response.PercentComplete;
+            request.PercentageComplete = engineResponse.PercentComplete;
 
             // Add elapsed time to response object
             request.ResponseTimeInMs = Convert.ToDecimal((DateTime.Now - startTime).TotalMilliseconds);
 
+            // error here
+
             return request;
         }
 
+        private static void AssertFact(Fact f)
+        {
+            // Determine type and convert
+            
+            // Convert TempVal to Tvar
+            Tstr tv = new Tstr(Convert.ToString(f.Timeline[0].Value));  // TODO
+            
+            // Assert
+            Thing t = Facts.AddThing(f.Thing1);
+            Facts.Assert(t, f.Relationship, tv);       // TODO
+        }
 
 
         private static bool AreEqual(GoalBlob b, Fact f)

@@ -54,15 +54,24 @@ namespace HammurabiWebService
     {
         [DataMember]
         public string Relationship;
+
+        [DataMember]
+        public object Arg1;
+
+        [DataMember]
+        public object Arg2;
+
+        [DataMember]
+        public object Arg3;
+
+        [DataMember]
+        public string Thing1; //
         
         [DataMember]
-        public string Thing1;
+        public string Thing2; //
         
         [DataMember]
-        public string Thing2;
-        
-        [DataMember]
-        public string Thing3;
+        public string Thing3; //
 
         [DataMember]
         public List<TemporalValue> Timeline;
@@ -86,22 +95,39 @@ namespace HammurabiWebService
         {
         }
 
-        public Fact(string relationship, string thing1, string thing2, string thing3)
+        public Fact(string relationship, object arg1, object arg2, object arg3)
         {
             Relationship = relationship;
-            Thing1 = thing1;
-            Thing2 = thing2;
-            Thing3 = thing3;
+            Arg1 = arg1;
+            Arg2 = arg2;
+            Arg3 = arg3;
         }
 
-        public Fact(string relationship, string thing1, string thing2, string thing3, List<TemporalValue> timeline)
+        public Fact(string relationship, object arg1, object arg2, object arg3, List<TemporalValue> timeline)
         {
             Relationship = relationship;
-            Thing1 = thing1;
-            Thing2 = thing2;
-            Thing3 = thing3;
+            Arg1 = arg1;
+            Arg2 = arg2;
+            Arg3 = arg3;
             Timeline = timeline;
         }
+
+//        public Fact(string relationship, string thing1, string thing2, string thing3)
+//        {
+//            Relationship = relationship;
+//            Thing1 = thing1;
+//            Thing2 = thing2;
+//            Thing3 = thing3;
+//        }
+//
+//        public Fact(string relationship, string thing1, string thing2, string thing3, List<TemporalValue> timeline)
+//        {
+//            Relationship = relationship;
+//            Thing1 = thing1;
+//            Thing2 = thing2;
+//            Thing3 = thing3;
+//            Timeline = timeline;
+//        }
     }
 
     [DataContract]
