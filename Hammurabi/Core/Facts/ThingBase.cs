@@ -58,23 +58,7 @@ namespace Hammurabi
         new public static Thing AddThing (string thingName)
         {
             Thing thing = new Thing(thingName);
-
-            // If a Thing with that name exists, return it
-            foreach (Thing t in ThingBase) 
-            {
-                if (IsAddable(thing) && t.Id == thingName) 
-                {
-                    return t;
-                }
-            }
-
-            // Else, if thing does not exist, create and assert a new one
-
-            if (IsAddable(thing)) 
-            {
-                ThingBase.Add (thing);
-            }
-            return thing;
+            return AddThing(thing);
         }
 
         /// <summary>
@@ -102,5 +86,23 @@ namespace Hammurabi
         {
             return ThingBase.Count;
         }
+        
+        /// <summary>
+        /// Determine whether a Thing has been referenced in any fact.
+        /// </summary>
+        //        public static bool ThingExists(string name)
+        //        {
+        //            foreach (Fact f in FactBase)
+        //            {
+        //                if (f.subject.Id == name ||
+        //                    f.directObject1.Id == name ||
+        //                    f.directObject2.Id == name)
+        //                {
+        //                    return true;
+        //                }
+        //            }
+        //
+        //            return false;
+        //        }
     }
 }

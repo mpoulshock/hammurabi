@@ -53,16 +53,16 @@ namespace Hammurabi
             
             foreach (Fact f in FactBase)
             {
-                if (!theThings.Contains(f.subject))
-                    theThings.Add(f.subject);
-
-                if(f.directObject1 != null)
-                    if (!theThings.Contains(f.directObject1))
-                        theThings.Add(f.directObject1);
-
-                if(f.directObject2 != null)
-                    if (!theThings.Contains(f.directObject1))
-                        theThings.Add(f.directObject2);
+                if (!theThings.Contains((Thing)f.Arg1))
+                    theThings.Add((Thing)f.Arg1);
+                
+                if(f.Arg2 != null)
+                    if (!theThings.Contains((Thing)f.Arg2))
+                        theThings.Add((Thing)f.Arg2);
+                
+                if(f.Arg3 != null)
+                    if (!theThings.Contains((Thing)f.Arg3))
+                        theThings.Add((Thing)f.Arg3);
             }
             
             result.AddState(Time.DawnOf,new Hval(theThings));

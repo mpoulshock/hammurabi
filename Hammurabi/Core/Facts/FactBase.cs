@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Hammurabi
 {
@@ -40,20 +41,20 @@ namespace Hammurabi
 		private class Fact
 		{
             public string relationship;
-			public Thing subject;
-			public Thing directObject1;
-            public Thing directObject2;
+            public object Arg1;
+            public object Arg2;
+            public object Arg3;
 			public Tvar v;
 
             /// <summary>
             /// Sets a Tvar fact that establishes a relation between legal entities.
             /// </summary>
-            public Fact(string rel, Thing subj, Thing obj1, Thing obj2, Tvar val)
+            public Fact(string rel, object arg1, object arg2, object arg3, Tvar val)
             {
                 relationship = rel;
-                subject = subj;
-                directObject1 = obj1;
-                directObject2 = obj2;
+                Arg1 = arg1;
+                Arg2 = arg2;
+                Arg3 = arg3;
                 v = val;
             }
 		}
@@ -88,43 +89,43 @@ namespace Hammurabi
         /// <summary>
         /// Returns true if a symmetrical fact has been assserted.
         /// </summary>
-        public static bool HasBeenAssertedSym(Thing e1, string rel, Thing e2)
+        public static bool HasBeenAssertedSym(object e1, string rel, object e2)
         {
             return HasBeenAsserted(rel, e1, e2) ||
-                   HasBeenAsserted(rel, e2, e1);
+                HasBeenAsserted(rel, e2, e1);
         }
 
         /// <summary>
         /// Returns true if a fact has been assserted - 1 entity.
         /// </summary>
-        public static bool HasBeenAsserted(string rel, Thing e1)
+        public static bool HasBeenAsserted(string rel, object e1)
         {
             return HasBeenAsserted(rel, e1, null, null);
         }
-
+        
         /// <summary>
         /// Returns true if a fact has been assserted - 2 entities.
         /// </summary>
-        public static bool HasBeenAsserted(string rel, Thing e1, Thing e2)
+        public static bool HasBeenAsserted(string rel, object e1, object e2)
         {
             return HasBeenAsserted(rel, e1, e2, null);
         }
-
+        
         /// <summary>
         /// Returns true if a fact has been assserted - 3 entities.
         /// </summary>
-        public static bool HasBeenAsserted(string rel, Thing e1, Thing e2, Thing e3)
+        public static bool HasBeenAsserted(string rel, object e1, object e2, object e3)
         {
             // Look up fact in table of facts
             foreach (Fact f in FactBase)
             {
-                if (f.subject == e1 && f.relationship == rel && 
-                    f.directObject1 == e2 && f.directObject2 == e3)
+                if (f.Arg1 == e1 && f.relationship == rel && 
+                    f.Arg2 == e2 && f.Arg3 == e3)
                 {
                     return true;
                 }
             }
-
+            
             // If fact is not found...
             return false;
         }
@@ -139,33 +140,15 @@ namespace Hammurabi
 
             foreach (Fact f in FactBase)
             {
-                result += f.subject.Id + " " + f.relationship;
+                result += ((Thing)f.Arg1).Id + " " + f.relationship;
 
-                if (f.directObject1 != null)
-                    result += " " + f.directObject1.Id;
+                if ((Thing)f.Arg2 != null)
+                    result += " " + ((Thing)f.Arg2).Id;
 
                 result += " = " + f.v.TestOutput + "\n";
             }
 
             return result;
-        }
-
-        /// <summary>
-        /// Determine whether a Thing has been referenced in any fact.
-        /// </summary>
-        public static bool ThingExists(string name)
-        {
-            foreach (Fact f in FactBase)
-            {
-                if (f.subject.Id == name ||
-                    f.directObject1.Id == name ||
-                    f.directObject2.Id == name)
-                {
-                    return true;
-                }
-            }
-
-            return false;
         }
 	}
 }

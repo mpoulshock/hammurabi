@@ -25,6 +25,27 @@ namespace Hammurabi
     public partial class Facts
     {
         /// <summary>
+        /// Returns a symmetrical input boolean fact.  
+        /// For example, A is married to B if B is married to A.
+        /// </summary>
+        /// <remarks>
+        /// See unit tests for the truth table, which ensures that the existence
+        /// of one false causes a false to be returned.
+        /// Note that the Sym() functions are also designed to add facts to the
+        /// Facts.Unknowns list in the proper order and with proper short-
+        /// circuiting.
+        /// </remarks>
+        public static Tbool Sym(Thing subj, string rel, Thing directObj)
+        {
+            if (Facts.HasBeenAsserted(rel, subj, directObj))
+            {
+                return QueryTvar<Tbool>(rel, subj, directObj);
+            }
+            
+            return QueryTvar<Tbool>(rel, directObj, subj);
+        }  
+
+        /// <summary>
         /// Queries the fact base - 1 entity.
         /// </summary>
         public static T QueryTvar<T>(string rel, Thing e1) where T : Tvar
@@ -62,10 +83,14 @@ namespace Hammurabi
             // Look up fact in table of facts
             foreach (Fact f in FactBase)
             {
-                if (f.subject == e1 && f.relationship == rel && f.directObject1 == e2 && f.directObject2 == e3)
+                if (f.Arg1 == e1 && f.relationship == rel && f.Arg2 == e2 && f.Arg3 == e3)
                 {
                     return (T)f.v;
                 }
+//                if (f.subject == e1 && f.relationship == rel && f.directObject1 == e2 && f.directObject2 == e3)
+//                {
+//                    return (T)f.v;
+//                }
             }
 
             // Add the fact to the list of unknown facts
