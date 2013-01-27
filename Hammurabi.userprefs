@@ -1,16 +1,24 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="c:\Users\Michael\Documents\GitHub\hammurabi\HammurabiWebServiceHost\Program.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="HammurabiWebService\HammurabiWebService\Service.svc.cs">
     <Files>
-      <File FileName="HammurabiWebService\HammurabiWebService\Service.svc.cs" Line="28" Column="7" />
-      <File FileName="c:\Users\Michael\Documents\GitHub\hammurabi\HammurabiWebServiceHost\Program.cs" Line="2" Column="7" />
+      <File FileName="HammurabiWebService\HammurabiWebService\Service.svc.cs" Line="99" Column="14" />
+      <File FileName="Hammurabi\Core\Facts\Set-assert.cs" Line="22" Column="1" />
+      <File FileName="Hammurabi\Core\Facts\FactBase.cs" Line="151" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
-          <Node name="HammurabiInteractive" expanded="True" />
+          <Node name="Hammurabi" expanded="True">
+            <Node name="Core" expanded="True">
+              <Node name="Facts" expanded="True" />
+            </Node>
+          </Node>
+          <Node name="HammurabiInteractive" expanded="True">
+            <Node name="Interview" expanded="True" />
+          </Node>
           <Node name="HammurabiWebService" expanded="True" />
-          <Node name="HammurabiWebServiceHost" expanded="True" selected="True" />
+          <Node name="HammurabiWebServiceHost" selected="True" />
         </State>
       </Pad>
       <Pad Id="ClassPad">
@@ -24,9 +32,7 @@
         <State />
       </Pad>
       <Pad Id="MonoDevelop.NUnit.TestPad">
-        <State expanded="True">
-          <Node name="Hammurabi" selected="True" />
-        </State>
+        <State expanded="True" selected="True" />
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>

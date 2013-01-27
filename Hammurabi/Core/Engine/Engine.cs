@@ -105,7 +105,7 @@ namespace Interactive
         /// <summary>
         /// Calculates how much of the interview has been completed.
         /// </summary>
-        private static int ProgressPercentage(double answered, double unknown)
+        public static int ProgressPercentage(double answered, double unknown)
         {
             double percent = (answered / (answered + unknown)) * 100;
             return Convert.ToInt32(Math.Round(percent, 0));

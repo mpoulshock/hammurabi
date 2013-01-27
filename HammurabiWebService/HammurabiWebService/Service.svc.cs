@@ -15,13 +15,13 @@ namespace HammurabiWebService
         {
             // Assert facts and combine them into a list
             TemporalValue v1 = new TemporalValue("Single");
-            Fact fact1 = new Fact("FedTaxFilingStatus","Jim","","",new List<TemporalValue>(){v1});
+            Fact fact1 = new Fact("Tstr","FedTaxFilingStatus","Jim","","",new List<TemporalValue>(){v1});
             List<Fact> facts = new List<Fact>(){fact1};
 
             // Define goals to be sought, and combine them into a list
-            Fact goal1 = new Fact("ThresholdAmount","Jim","","");
-            Fact goal2 = new Fact("ApplicablePercentage","Jim","","");
-            Fact goal3 = new Fact("IsDependentOf","Kid","Dad","");
+            Fact goal1 = new Fact("Tnum","ThresholdAmount","Jim","","");
+            Fact goal2 = new Fact("Tnum","ApplicablePercentage","Jim","","");
+            Fact goal3 = new Fact("Tbool","IsDependentOf","Kid","Dad","");
             List<Fact> goals = new List<Fact>(){goal1,goal2,goal3};
 
             // Assemble a mock request to the web service
@@ -41,6 +41,10 @@ namespace HammurabiWebService
 
             // Start a fresh session
             Facts.Clear();
+            Facts.GetUnknowns = true;
+            Facts.Unknowns.Clear();
+            bool allDone = true;
+            int percent = 100;
             
             // Assert facts into a Hammurabi session
             foreach(Fact f in request.AssertedFacts)
@@ -48,69 +52,113 @@ namespace HammurabiWebService
                 AssertFact(f); 
             }
 
-            // Assemble goals into goal list and send list to Hammurabi engine
-            List<GoalBlob> goalblobs = new List<GoalBlob>();
+            // Iterate through each goal
             foreach(Fact g in request.Goals)
             {
                 GoalBlob gb = new GoalBlob(g.Relationship, g.Arg1, g.Arg2, g.Arg3);
-                goalblobs.Add(gb);
-            }
-            
-            // Invoke Hammurabi's determination
-            // TODO: Just pass engine Facts
-            Engine.Response engineResponse = Engine.Investigate(goalblobs);
-            
-            // Convert engine response into web service response
-            
-            // Get values of goals
-            foreach (GoalBlob g in engineResponse.Goals)
-            {
-                foreach (Fact f in request.Goals)
+
+                // Assign to a variable so it's only evaluated once
+                Tvar gbVal = gb.Value();
+
+                // Convert Tvar to timeline object
+                g.Timeline = TvarToTimeline(gbVal);
+
+                // All goals resolved?
+                if (!gbVal.HasBeenDetermined)
                 {
-                    if (true) //AreEqual(g,f))              // TODO
-                    {
-//                        f.Timeline = ToTimeline(g.Value());   // TODO
-                        break;
-                    }
+                    allDone = false;
                 }
             }
 
-            request.PercentageComplete = engineResponse.PercentComplete;
+            // Stop looking for unknown facts
+            Facts.GetUnknowns = false;
+
+            // Determine the next fact and the percent complete
+            if (!allDone)
+            {
+                // TODO: Get list of needed facts (Facts.Unknowns)
+                percent = Interactive.Engine.ProgressPercentage(Facts.Count(), Facts.Unknowns.Count);
+            }
+
+            request.PercentageComplete = percent;
 
             // Add elapsed time to response object
             request.ResponseTimeInMs = Convert.ToDecimal((DateTime.Now - startTime).TotalMilliseconds);
 
-            // error here
-
             return request;
         }
-
-        private static void AssertFact(Fact f)
-        {
-            // Determine type and convert
-            
-            // Convert TempVal to Tvar
-            Tstr tv = new Tstr(Convert.ToString(f.Timeline[0].Value));  // TODO
-            
-            // Assert
-            Thing t = Facts.AddThing(f.Thing1);
-            Facts.Assert(t, f.Relationship, tv);       // TODO
-        }
-
-
-        private static bool AreEqual(GoalBlob b, Fact f)
-        {
-            return b.Relationship == f.Relationship;  // TODO: Enhance
-        }
-
-        private static List<TemporalValue> ToTimeline(Hammurabi.Tvar tv)
+         
+        /// <summary>
+        /// Converts Tvar object to Timeline object.
+        /// </summary>
+        private static List<TemporalValue> TvarToTimeline(Hammurabi.Tvar tv)
         {
             List<TemporalValue> result = new List<TemporalValue>();
+            
             for (int i=0; i < tv.IntervalValues.Count; i++ ) 
             {
-                result.Add(new TemporalValue(tv.IntervalValues.Keys[i], tv.IntervalValues.Values[i].Val));
+                // TODO: This only handles strings right now...(b/c Unstated is an unrecognized object)
+                result.Add(new TemporalValue(tv.IntervalValues.Keys[i], tv.IntervalValues.Values[i].Val.ToString()));
             }
             return result;
+        }
+
+        /// <summary>
+        /// Asserts a given fact (of the proper Tvar type)
+        /// </summary>
+        private static void AssertFact(Fact f)
+        {
+            // Instantiate relevant Things
+            Thing t1 = f.Arg1.ToString() != "" ? Facts.AddThing(f.Arg1.ToString()) : null;
+            Thing t2 = f.Arg2.ToString() != "" ? Facts.AddThing(f.Arg2.ToString()) : null;
+            Thing t3 = f.Arg3.ToString() != "" ? Facts.AddThing(f.Arg3.ToString()) : null;
+
+            // Sometimes I have my doubts about static typing...
+            if (f.FactType == "Tbool")
+            {
+                Tbool val = new Tbool();  
+                foreach (TemporalValue v in f.Timeline)
+                {
+                    val.AddState(v.Date, new Hval(v.Value));
+                }
+                Facts.Assert(t1, f.Relationship, t2, t3, val);
+            } 
+            else if (f.FactType == "Tnum")
+            {
+                Tnum val = new Tnum();  
+                foreach (TemporalValue v in f.Timeline)
+                {
+                    val.AddState(v.Date, new Hval(v.Value));
+                }
+                Facts.Assert(t1, f.Relationship, t2, t3, val);
+            }
+            else if (f.FactType == "Tstr")
+            {
+                Tstr val = new Tstr();  
+                foreach (TemporalValue v in f.Timeline)
+                {
+                    val.AddState(v.Date, new Hval(v.Value));
+                }
+                Facts.Assert(t1, f.Relationship, t2, t3, val);
+            }
+            else if (f.FactType == "Tdate")
+            {
+                Tdate val = new Tdate();  
+                foreach (TemporalValue v in f.Timeline)
+                {
+                    val.AddState(v.Date, new Hval(v.Value));
+                }
+                Facts.Assert(t1, f.Relationship, t2, t3, val);
+            }
+            else if (f.FactType == "Tset")
+            {
+                Tset val = new Tset();  
+                foreach (TemporalValue v in f.Timeline)
+                {
+                    val.AddState(v.Date, new Hval(v.Value));
+                }
+                Facts.Assert(t1, f.Relationship, t2, t3, val);
+            }
         }
     }
 }

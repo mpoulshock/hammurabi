@@ -10,36 +10,32 @@ namespace HammurabiWebService
     public class Packet
     {
         // Web service response time (in milliseconds)
-        [DataMember]
+        [DataMember (Order=1)]
         public decimal ResponseTimeInMs;
+        
+        // Interview progress
+        [DataMember (Order=2)]
+        public int PercentageComplete;
 
         // Goals, or answers, sought by the user
-        [DataMember]
+        [DataMember (Order=3)]
         public List<Fact> Goals;
 
-        // Facts asserted by the user
-        [DataMember]
-        public List<Fact> AssertedFacts;
-
         // Facts still needed in order to solve goals
-        [DataMember]
+        [DataMember (Order=4)]
         public List<Fact> NeededFacts;
 
+        // Facts asserted by the user
+        [DataMember (Order=5)]
+        public List<Fact> AssertedFacts;
+
         // When true, the web service parrots back the facts in the response
-        [DataMember]
+        [DataMember (Order=6)]
         public bool Echo = false;
 
         // Level of detail, in the web service response, about the unknown facts (Concise, Top, Screen, All)
-        [DataMember]
+        [DataMember (Order=7)]
         public string UnknownFactsLevelOfDetail = "Concise";
-
-        // Interview progress
-        [DataMember]
-        public int PercentageComplete;
-
-        public Packet()
-        {
-        }
 
         // Constructor
         public Packet(List<Fact> goals, List<Fact> assertedFacts)
@@ -52,59 +48,52 @@ namespace HammurabiWebService
     [DataContract]
     public class Fact
     {
-        [DataMember]
+        [DataMember (Order=1)]
         public string Relationship;
 
-        [DataMember]
+        [DataMember (Order=2)]
         public object Arg1;
 
-        [DataMember]
+        [DataMember (Order=3)]
         public object Arg2;
 
-        [DataMember]
+        [DataMember (Order=4)]
         public object Arg3;
 
-        [DataMember]
-        public string Thing1; //
-        
-        [DataMember]
-        public string Thing2; //
-        
-        [DataMember]
-        public string Thing3; //
-
-        [DataMember]
+        [DataMember (Order=5)]
         public List<TemporalValue> Timeline;
 
-        [DataMember]
+        [DataMember (Order=6)]
         public DateTime AsOfDate;
 
-        [DataMember]
+        [DataMember (Order=7)]
         public bool IsDetermined;
 
-        [DataMember]
+        [DataMember (Order=8)]
         public string FactType;
         
-        [DataMember]
+        [DataMember (Order=9)]
         public string QuestionText;
         
-        [DataMember]
+        [DataMember (Order=10)]
         public string HelpText;
 
         public Fact()
         {
         }
 
-        public Fact(string relationship, object arg1, object arg2, object arg3)
+        public Fact(string factType, string relationship, object arg1, object arg2, object arg3)
         {
+            FactType = factType;
             Relationship = relationship;
             Arg1 = arg1;
             Arg2 = arg2;
             Arg3 = arg3;
         }
 
-        public Fact(string relationship, object arg1, object arg2, object arg3, List<TemporalValue> timeline)
+        public Fact(string factType, string relationship, object arg1, object arg2, object arg3, List<TemporalValue> timeline)
         {
+            FactType = factType;
             Relationship = relationship;
             Arg1 = arg1;
             Arg2 = arg2;
@@ -112,31 +101,15 @@ namespace HammurabiWebService
             Timeline = timeline;
         }
 
-//        public Fact(string relationship, string thing1, string thing2, string thing3)
-//        {
-//            Relationship = relationship;
-//            Thing1 = thing1;
-//            Thing2 = thing2;
-//            Thing3 = thing3;
-//        }
-//
-//        public Fact(string relationship, string thing1, string thing2, string thing3, List<TemporalValue> timeline)
-//        {
-//            Relationship = relationship;
-//            Thing1 = thing1;
-//            Thing2 = thing2;
-//            Thing3 = thing3;
-//            Timeline = timeline;
-//        }
     }
 
     [DataContract]
     public class TemporalValue
     {
-        [DataMember]
+        [DataMember (Order=1)]
         public DateTime Date;
 
-        [DataMember]
+        [DataMember (Order=2)]
         public object Value;
         
         // Constructor (eternal value)
