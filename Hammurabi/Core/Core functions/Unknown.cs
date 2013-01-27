@@ -43,7 +43,7 @@ namespace Hammurabi
         /// <summary>
         /// Determines whether the rule should short-circuit before firing the actual rule logic.
         /// </summary>
-        public static RulePreCheckResponse ShortCircuitValue<T>(string rel, string symIndicator, string questionIndicator, params Thing[] argList) where T : Tvar
+        public static RulePreCheckResponse ShortCircuitValue<T>(string rel, string symIndicator, string questionIndicator, params object[] argList) where T : Tvar
         {
             // First, determine whether any of the Things are unknown.
             Hstate h = EntityArgIsUnknown(argList);
@@ -54,9 +54,9 @@ namespace Hammurabi
             }
 
             // Extract argument parameters from argList
-            Thing param1 = argList[0];
-            Thing param2 = argList.Length > 1 ? argList[1] : null;
-            Thing param3 = argList.Length > 2 ? argList[2] : null;
+            object param1 = argList[0];
+            object param2 = argList.Length > 1 ? argList[1] : null;
+            object param3 = argList.Length > 2 ? argList[2] : null;
 
             // Handle symmetrical facts
             if (symIndicator == "Sym")

@@ -61,11 +61,11 @@ namespace Interactive
         /// <summary>
         /// Adds the assertion relationship to the .akk unit test text.
         /// </summary>
-        public static string AddUnitTestAssertRel(Facts.Factlet theF, Question theQ)
+        public static string AddUnitTestAssertRel(Facts.Fact theF, Question theQ)
         {
-            string result = "- " + theQ.relationship + "(" + theF.subject.Id;
+            string result = "- " + theQ.relationship + "(" + ((Thing)theF.Arg1).Id;
 
-            if (theF.object1 == null)
+            if (theF.Arg2 == null)
             {
                 // e.g. Rel(p) =
                 result += ") = ";
@@ -73,7 +73,7 @@ namespace Interactive
             else
             {
                 // e.g. Rel(p,q) =
-                result += "," + theF.object1.Id + ") = ";
+                result += "," + ((Thing)theF.Arg2).Id + ") = ";
             }
 
             return result;

@@ -52,14 +52,14 @@ namespace Interactive
         public class Response
         {
             public bool InvestigationComplete;
-            public Facts.Factlet NextFact;
+            public Facts.Fact NextFact;
             public int PercentComplete;
             public List<GoalBlob> Goals;
 
             /// <summary>
             /// General response constructor.
             /// </summary>
-            public Response(bool done, Facts.Factlet next, int percent, List<GoalBlob> goals)
+            public Response(bool done, Facts.Fact next, int percent, List<GoalBlob> goals)
             {
                 InvestigationComplete = done;
                 NextFact = next;
@@ -76,7 +76,7 @@ namespace Interactive
             // Default outputs
             bool allDone = true;
             int percent = 0;
-            Facts.Factlet theNextFact = new Facts.Factlet("", null, null, null);
+            Facts.Fact theNextFact = new Facts.Fact("", null, null, null);
             
             // Prepare to look for unknown facts
             Facts.GetUnknowns = true;

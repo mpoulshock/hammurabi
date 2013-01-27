@@ -58,7 +58,23 @@ namespace Hammurabi
         new public static Thing AddThing (string thingName)
         {
             Thing thing = new Thing(thingName);
-            return AddThing(thing);
+            
+            // If a Thing with that name exists, return it
+            foreach (Thing t in ThingBase) 
+            {
+                if (IsAddable(thing) && t.Id == thingName) 
+                {
+                    return t;
+                }
+            }
+            
+            // Else, if thing does not exist, create and assert a new one
+            
+            if (IsAddable(thing)) 
+            {
+                ThingBase.Add (thing);
+            }
+            return thing;
         }
 
         /// <summary>

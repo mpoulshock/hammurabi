@@ -35,7 +35,7 @@ namespace Hammurabi
         /// Facts.Unknowns list in the proper order and with proper short-
         /// circuiting.
         /// </remarks>
-        public static Tbool Sym(Thing subj, string rel, Thing directObj)
+        public static Tbool Sym(object subj, string rel, object directObj)
         {
             if (Facts.HasBeenAsserted(rel, subj, directObj))
             {
@@ -44,41 +44,41 @@ namespace Hammurabi
             
             return QueryTvar<Tbool>(rel, directObj, subj);
         }  
-
+        
         /// <summary>
         /// Queries the fact base - 1 entity.
         /// </summary>
-        public static T QueryTvar<T>(string rel, Thing e1) where T : Tvar
+        public static T QueryTvar<T>(string rel, object e1) where T : Tvar
         {
             T defaultVal = (T)Auxiliary.ReturnProperTvar<T>(Hstate.Unstated);
-
+            
             return (T)QueryTvar<T>(rel, e1, null, null, defaultVal);
         }
-
+        
         /// <summary>
         /// Queries the fact base - 2 entities.
         /// </summary>
-        public static T QueryTvar<T>(string rel, Thing e1, Thing e2) where T : Tvar
+        public static T QueryTvar<T>(string rel, object e1, object e2) where T : Tvar
         {
             T defaultVal = (T)Auxiliary.ReturnProperTvar<T>(Hstate.Unstated);
-
+            
             return QueryTvar<T>(rel, e1, e2, null, defaultVal);
         }
-
+        
         /// <summary>
         /// Queries the fact base - 3 entities.
         /// </summary>
-        public static T QueryTvar<T>(string rel, Thing e1, Thing e2, Thing e3) where T : Tvar
+        public static T QueryTvar<T>(string rel, object e1, object e2, object e3) where T : Tvar
         {
             T defaultVal = (T)Auxiliary.ReturnProperTvar<T>(Hstate.Unstated);
-
+            
             return QueryTvar<T>(rel, e1, e2, e3, defaultVal);
         }
-
+        
         /// <summary>
         /// Queries the fact base for a temporal relationship (fact) among three legal entities.
         /// </summary>
-        public static T QueryTvar<T>(string rel, Thing e1, Thing e2, Thing e3, T defaultValue) where T : Tvar
+        public static T QueryTvar<T>(string rel, object e1, object e2, object e3, T defaultValue) where T : Tvar
         {
             // Look up fact in table of facts
             foreach (Fact f in FactBase)
@@ -87,18 +87,14 @@ namespace Hammurabi
                 {
                     return (T)f.v;
                 }
-//                if (f.subject == e1 && f.relationship == rel && f.directObject1 == e2 && f.directObject2 == e3)
-//                {
-//                    return (T)f.v;
-//                }
             }
-
+            
             // Add the fact to the list of unknown facts
             if (GetUnknowns)
             {
                 AddUnknown(rel, e1, e2, e3);
             }
-
+            
             // If fact is not found, return a default value (usually "unstated")
             return defaultValue;
         }

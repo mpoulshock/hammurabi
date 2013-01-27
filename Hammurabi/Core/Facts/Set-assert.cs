@@ -29,7 +29,7 @@ namespace Hammurabi
         /// <summary>
         /// Assert a temporal relation between legal entities (3)
         /// </summary>
-        public static void Assert(Thing e1, string rel, Thing e2, Thing e3, Tvar val)
+        public static void Assert(object e1, string rel, object e2, object e3, Tvar val)
         { 
             CoreAssert(rel, e1, e2, e3, val);
         }
@@ -37,19 +37,15 @@ namespace Hammurabi
         /// <summary>
         /// Assert a temporal relation between legal entities (2)
         /// </summary>
-        public static void Assert(Thing e1, string rel, Thing e2, Tvar val)
+        public static void Assert(object e1, string rel, object e2, Tvar val)
         { 
             CoreAssert(rel, e1, e2, null, val);
-        }
-        public static void Assert(Thing e1, string rel, Thing e2)
-        {
-            CoreAssert(rel, e1, e2, null, new Tbool(true));;
         }
 
         /// <summary>
         /// Assert a temporal property of one legal entity
         /// </summary>
-        public static void Assert(Thing e1, string rel, Tvar val)
+        public static void Assert(object e1, string rel, Tvar val)
         {
             CoreAssert(rel, e1, null, null, val);
         }
@@ -57,7 +53,7 @@ namespace Hammurabi
         /// <summary>
         /// Assert a fact to the FactBase.
         /// </summary>
-        private static void CoreAssert(string rel, Thing e1, Thing e2, Thing e3, Tvar val)
+        private static void CoreAssert(string rel, object e1, object e2, object e3, Tvar val)
         {
             // Don't assert a fact that's already been asserted
             if (!HasBeenAsserted(rel, e1, e2, e3))
@@ -67,12 +63,12 @@ namespace Hammurabi
                 FactBase.Add(f);
 
                 // Add Things to the ThingBase
-                AddThing(e1);
-                AddThing(e2);
-                AddThing(e3);
+                AddThing((Thing)e1);
+                AddThing((Thing)e2);
+                AddThing((Thing)e3);
 
                 // Look for additional inferences that can be drawn, based on assumptions.
-                Assumptions.TriggerInferences(rel, e1, e2, e3, val);
+                Assumptions.TriggerInferences(rel, (Thing)e1, (Thing)e2, (Thing)e3, val);
             }
         }
     }

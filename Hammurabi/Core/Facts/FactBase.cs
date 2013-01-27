@@ -38,7 +38,7 @@ namespace Hammurabi
 		/// A Fact object represents a fact that is stored in the knowledge
 		/// base.
 		/// </summary>
-		private class Fact
+		public class Fact
 		{
             public string relationship;
             public object Arg1;
@@ -56,6 +56,15 @@ namespace Hammurabi
                 Arg2 = arg2;
                 Arg3 = arg3;
                 v = val;
+            }
+
+            public Fact(string rel, object arg1, object arg2, object arg3)
+            {
+                relationship = rel;
+                Arg1 = arg1;
+                Arg2 = arg2;
+                Arg3 = arg3;
+                v = null;
             }
 		}
 		
@@ -119,8 +128,7 @@ namespace Hammurabi
             // Look up fact in table of facts
             foreach (Fact f in FactBase)
             {
-                if (f.Arg1 == e1 && f.relationship == rel && 
-                    f.Arg2 == e2 && f.Arg3 == e3)
+                if (f.relationship == rel && f.Arg1 == e1 && f.Arg2 == e2 && f.Arg3 == e3)
                 {
                     return true;
                 }
@@ -143,7 +151,9 @@ namespace Hammurabi
                 result += ((Thing)f.Arg1).Id + " " + f.relationship;
 
                 if ((Thing)f.Arg2 != null)
+                {
                     result += " " + ((Thing)f.Arg2).Id;
+                }
 
                 result += " = " + f.v.TestOutput + "\n";
             }

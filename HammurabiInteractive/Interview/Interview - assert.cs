@@ -36,8 +36,8 @@ namespace Interactive
         public static void AssertAnswer(Engine.Response response, string val)
         {
             // Get the data pertaining to the current question
-            Thing subj = response.NextFact.subject;
-            Thing obj = response.NextFact.object1;
+            Thing subj = (Thing)response.NextFact.Arg1;
+            Thing obj = (Thing)response.NextFact.Arg2;
             string rel = response.NextFact.relationship;
             string qType = Templates.GetQ(rel).questionType;
 

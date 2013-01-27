@@ -85,13 +85,13 @@ namespace Hammurabi.UnitTests.CoreFcns
 
         /// <summary>
         /// Returns a string showing all relationships in Facts.Unknowns.
-        /// Used to test the order in which factlets are added to that list.
+        /// Used to test the order in which factls are added to that list.
         /// </summary>
         private static string ShowUnknownTest()
         {
             string result = "";
             
-            foreach (Facts.Factlet f in Facts.Unknowns)
+            foreach (Facts.Fact f in Facts.Unknowns)
             {
                 result += f.relationship + " ";
             }
@@ -304,7 +304,7 @@ namespace Hammurabi.UnitTests.CoreFcns
 
             Facts.Reset();
             Facts.GetUnknowns = true;
-            Facts.Assert(p1, "A", p2);
+            Facts.Assert(p1, "A", p2, true);
             Tnum theRule = Switch<Tnum>(()=> A(), ()=> X(),
                                   ()=> B(), ()=> Y(),
                                   ()=> u);
@@ -335,7 +335,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Facts.Reset();
             Facts.GetUnknowns = true;
             Facts.Assert(p1, "A", p2, false);
-            Facts.Assert(p1, "B", p2);
+            Facts.Assert(p1, "B", p2, true);
             Tnum theRule = Switch<Tnum>(()=> A(), ()=> X(),
                                   ()=> B(), ()=> Y(),
                                   ()=> u);

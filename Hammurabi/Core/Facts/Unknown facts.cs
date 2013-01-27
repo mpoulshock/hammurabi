@@ -29,7 +29,7 @@ namespace Hammurabi
         /// List of facts that are unknown and needed to resolve a goal (method)
         /// that has been called.
         /// </summary>
-        public static List<Factlet> Unknowns = new List<Factlet>();
+        public static List<Fact> Unknowns = new List<Fact>();
         
         /// <summary>
         /// When true, allows facts to be added to UnknownFacts.
@@ -40,7 +40,7 @@ namespace Hammurabi
         /// <summary>
         /// Add a factlet to UnknownFacts.
         /// </summary>
-        public static void AddUnknown(string rel, Thing e1, Thing e2, Thing e3)
+        public static void AddUnknown(string rel, object e1, object e2, object e3)
         {
             // Keep list from devouring the entire universe
             if (Unknowns.Count < 500)
@@ -48,25 +48,22 @@ namespace Hammurabi
                 // Ignore duplicates
                 if (!IsUnknown(rel, e1, e2, e3))
                 { 
-                    Unknowns.Add(new Factlet(rel, e1, e2, e3));
+                    Unknowns.Add(new Fact(rel, e1, e2, e3));
                 }
             }
         }
 
         /// <summary>
-        /// Indicates whether Facts.Unknowns contains a given factlet.
+        /// Indicates whether Facts.Unknowns contains a given fact.
         /// </summary>
         /// <remarks>
         /// Note that this is distinct from whether a fact HasBeenAsserted.
         /// </remarks>
-        public static bool IsUnknown(string rel, Thing e1, Thing e2, Thing e3)
+        public static bool IsUnknown(string rel, object e1, object e2, object e3)
         {
-            foreach (Factlet t in Unknowns)
+            foreach (Fact t in Unknowns)
             {
-                if (t.relationship == rel &&
-                    t.subject == e1 &&
-                    t.object1 == e2 &&
-                    t.object2 == e3)
+                if (t.relationship == rel && t.Arg1 == e1 && t.Arg2 == e2 && t.Arg3 == e3)
                 {
                     return true;
                 }
@@ -75,52 +72,29 @@ namespace Hammurabi
         }
         
         /// <summary>
-        /// Returns a string showing all factlets in Facts.Unknowns.
+        /// Returns a string showing all facts in Facts.Unknowns.
         /// </summary>
         public static string ShowUnknowns()
         {
             string result = "";
             
-            foreach (Facts.Factlet f in Facts.Unknowns)
+            foreach (Facts.Fact f in Facts.Unknowns)
             {
-                if (f.object2 != null)
-                {
-                    result += f.subject.Id + " " + f.relationship + " " + f.object1.Id + " " + f.object2.Id+ "\n";
-                }
-                else if (f.object1 != null)
-                {
-                    result += f.subject.Id + " " + f.relationship + " " + f.object1.Id + "\n";
-                }
-                else
-                {
-                    result += f.subject.Id + " " + f.relationship + "\n";
-                }
+//                if (f.object2 != null)
+//                {
+//                    result += f.subject.Id + " " + f.relationship + " " + f.object1.Id + " " + f.object2.Id+ "\n";
+//                }
+//                else if (f.object1 != null)
+//                {
+//                    result += f.subject.Id + " " + f.relationship + " " + f.object1.Id + "\n";
+//                }
+//                else
+//                {
+//                    result += f.subject.Id + " " + f.relationship + "\n";
+//                }
             }
             
             return result;
-        }
-
-        /// <summary>
-        /// A Factlet object represents a fact that has no value because it
-        /// is needed (unstated).
-        /// </summary>
-        public class Factlet
-        {
-            public string relationship;
-            public Thing subject;
-            public Thing object1;
-            public Thing object2;
-
-            /// <summary>
-            /// Factlet that relates to two legal entities.  
-            /// </summary>
-            public Factlet(string rel, Thing subj, Thing obj1, Thing obj2)
-            {
-                subject = subj;
-                relationship = rel;
-                object1 = obj1;
-                object2 = obj2;
-            }
         }
     }
 }

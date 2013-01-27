@@ -113,7 +113,7 @@ namespace Interactive
         private static void DisplayQuestion(Engine.Response response)  
         {
             // Get data about the next question
-            Facts.Factlet theFact = response.NextFact;
+            Facts.Fact theFact = response.NextFact;
             Question theQ = Templates.GetQ(theFact.relationship);
 
             // TODO: Display appropriate question control (using theQ.questionType)
@@ -139,15 +139,15 @@ namespace Interactive
         /// <summary>
         /// Returns the text of the question that should be displayed.
         /// </summary>
-        public static string QuestionText(Facts.Factlet theF, Question theQ)
+        public static string QuestionText(Facts.Fact theF, Question theQ)
         {
             // Embed the names of the Things into the question
-            string qText = theQ.questionText.Replace("{1}", theF.subject.Id);
+            string qText = theQ.questionText.Replace("{1}", ((Thing)theF.Arg1).Id);
 
             // If there is a direct object, embed its name into the question
-            if (theF.object1 != null)
+            if (theF.Arg2 != null)
             {
-                qText = qText.Replace("{2}", theF.object1.Id);
+                qText = qText.Replace("{2}", ((Thing)theF.Arg2).Id);
             }
 
             return qText;
