@@ -159,36 +159,35 @@ TboolIn CanBeClaimedAsQCByTwoTaxpayers(Thing p)
 Test: Pub501_Simple1
 - Thing c        # the child
 - Thing t        # the taxpayer
-- IsParentOf(t,c) = true
-- LivesWith(c,t) = true
+- Fam.IsParentOf(t,c) = true
+- Econ.LivesWith(c,t) = true
 - DoB(c) = 2001-01-01
 - IsDeceased(c) = false     #
 - IsUSCitizen(c) = true
-- CanBeClaimedAsQCByTwoTaxpayers(c) = false
-- PercentSelfSupport(c) = 0
-- CanClaimSomeoneAsDependent(c) = false
-- CanBeClaimedAsDependentBySomeone(t) = false
-- AnotherTaxpayerProvidedSupportFor(c) = false
-- GrossIncome(c) = 0
+- USC.Tit26.Sec152.CanBeClaimedAsQCByTwoTaxpayers(c) = false
+- Econ.PercentSelfSupport(c) = 0
+- USC.Tit26.Sec152.CanClaimSomeoneAsDependent(c) = false
+- USC.Tit26.Sec152.CanBeClaimedAsDependentBySomeone(t) = false
+- USC.Tit26.Sec152.AnotherTaxpayerProvidedSupportFor(c) = false
+- IRS.Pub501.GrossIncome(c) = 0
 - Sec152.IsDependentOf(c,t).AsOf(2010-12-31).Out =?= "Unstated"
 
 ##
 Test: Pub501_Simple2
-- Thing c    
-- Thing t    
-- IsParentOf(t,c) = true
-- LivesWith(c,t) = true
+- Things c, t    
+- Fam.IsParentOf(t,c) = true
+- Econ.LivesWith(c,t) = true
 - DoB(c) = 2001-01-01
 - DoB(t) = 1970-01-01
 - IsDeceased(c) = false     #
 - IsUSCitizen(c) = true
-- CanBeClaimedAsQCByTwoTaxpayers(c) = false
-- PercentSelfSupport(c) = 0
-- CanClaimSomeoneAsDependent(c) = false
-- CanBeClaimedAsDependentBySomeone(t) = false
+- USC.Tit26.Sec152.CanBeClaimedAsQCByTwoTaxpayers(c) = false
+- Econ.PercentSelfSupport(c) = 0
+- USC.Tit26.Sec152.CanClaimSomeoneAsDependent(c) = false
+- USC.Tit26.Sec152.CanBeClaimedAsDependentBySomeone(t) = false
 - AnotherTaxpayerProvidedSupportFor(c) = false
-- FedTaxFilingStatus(t) = "Single"
-- GrossIncome(c) = 0
+- USC.Tit26.Sec2.FedTaxFilingStatus(t) = "Single"
+- IRS.Pub501.GrossIncome(c) = 0
 - Sec152.IsDependentOf(c,t).AsOf(2010-12-31).Out =?= true
 
 # IRS Pub. 501 (2010), Page 10, Example 1.
@@ -197,13 +196,13 @@ Test: Pub501_1
 - Thing t        # Taxpayer
 - Thing d         # T's daughter
 - Thing s        # T's son-in-law
-- FamilyRelationship(d,s) = "Spouse"
+- Fam.FamilyRelationship(d,s) = "Spouse"
 - FilesJointFedTaxReturnWith(d,s) = true
 - FilesMFJOnlyToClaimRefund(d) = false
-- IsParentOf(t,d) = true
-- LivesWith(t,d) = true
+- Fam.IsParentOf(t,d) = true
+- Econ.LivesWith(t,d) = true
 - DoB(d) = 1992-01-01
-- InArmedForces(s) = true
+- Mil.InArmedForces(s) = true
 - IsUSCitizen(d) = true
 - Sec152.IsDependentOf(d,t).AsOf(2010-12-31).Out =?= false
 
@@ -321,93 +320,77 @@ Test: Pub501_8
 ##
 
 Test: Basic_1
-- Thing tp
-- Thing d
-- LivesWith(tp,d) = true
+- Things tp, d
+- Econ.LivesWith(tp,d) = true
 - (Econ.SharePrincipalAbode(d,tp).TotalElapsedDaysPer(Sec441.TaxYear(tp)) > 182.5).AsOf(2012-01-01).Out =?= true
 
 Test: Basic_2
-- Thing tp
-- Thing d
-- LivesWith(tp,d) = false
+- Things tp, d
+- Econ.LivesWith(tp,d) = false
 - (Econ.SharePrincipalAbode(d,tp).TotalElapsedDaysPer(Sec441.TaxYear(tp)) > 182.5).AsOf(2012-01-01).Out =?= false
 
 Test: QCGenTest_1
-- Thing tp
-- Thing d
-- LivesWith(tp,d) = false
+- Things tp, d
+- Econ.LivesWith(tp,d) = false
 - Sec152.QCGenTest(d,tp,Sec441.TaxYear(tp)).AsOf(DateTime.Now).Out =?= false
 
 Test: QCGenTest_1a
-- Thing tp
-- Thing d
-- LivesWith(tp,d) = false
+- Things tp, d
+- Econ.LivesWith(tp,d) = false
 - Econ.SharePrincipalAbode(d,tp).AsOf(2012-05-29).Out =?= false
 
 Test: ShareHousehold
-- Thing a
-- Thing b
-- LivesWith(a,b) = true
+- Things a, b
+- Econ.LivesWith(a,b) = true
 - Econ.SharePrincipalAbode(a,b).Out =?= true
 
 Test: QCGenTest_2
-- Thing tp
-- Thing d
-- LivesWith(tp,d) = true
-- PercentSelfSupport(d) = 100
+- Things tp, d
+- Econ.LivesWith(tp,d) = true
+- Econ.PercentSelfSupport(d) = 100
 - Sec152.QCGenTest(d,tp,Sec441.TaxYear(tp)).AsOf(DateTime.Now).Out =?= false
 
 Test: QCGenTest_3
-- Thing tp
-- Thing d
-- LivesWith(tp,d) = true
-- PercentSelfSupport(d) = 0
-- FedTaxFilingStatus(d) = "not Married filing jointly"
+- Things tp, d
+- Econ.LivesWith(tp,d) = true
+- Econ.PercentSelfSupport(d) = 0
+- USC.Tit26.Sec2.FedTaxFilingStatus(d) = "not Married filing jointly"
 - Sec152.QCGenTest(d,tp,Sec441.TaxYear(tp)).AsOf(DateTime.Now).Out =?= true
 
 Test: QCGenTest_4
-- Thing tp
-- Thing d
-- LivesWith(tp,d) = true
-- PercentSelfSupport(d) = 0
-- FedTaxFilingStatus(d) = "Married filing jointly"
-- FilesMFJOnlyToClaimRefund(d) = true
+- Things tp, d
+- Econ.LivesWith(tp,d) = true
+- Econ.PercentSelfSupport(d) = 0
+- USC.Tit26.Sec2.FedTaxFilingStatus(d) = "Married filing jointly"
+- USC.Tit26.Sec6013.FilesMFJOnlyToClaimRefund(d) = true
 - Sec152.QCGenTest(d,tp,Sec441.TaxYear(tp)).AsOf(DateTime.Now).Out =?= true
 
 Test: QCGenTest_5
-- Thing tp
-- Thing d
-- LivesWith(tp,d) = true
-- PercentSelfSupport(d) = 0
-- FedTaxFilingStatus(d) = "Married filing jointly" 
-- FilesMFJOnlyToClaimRefund(d) = false    
+- Things tp, d
+- Econ.LivesWith(tp,d) = true
+- Econ.PercentSelfSupport(d) = 0
+- USC.Tit26.Sec2.FedTaxFilingStatus(d) = "Married filing jointly" 
+- USC.Tit26.Sec6013.FilesMFJOnlyToClaimRefund(d) = false    
 - Sec152.QCGenTest(d,tp,Sec441.TaxYear(tp)).AsOf(DateTime.Now).Out =?= false
 
 Test: QCRelationship_1
-- Thing tp
-- Thing d
-- FamilyRelationship(tp,d) = "Biological parent"
+- Things tp, d
+- Fam.FamilyRelationship(tp,d) = "Biological parent"
 - Sec152.QCRelationTest(d,tp).AsOf(DateTime.Now).Out =?= true
 
 Test: QCAge_1
-- Thing tp
-- Thing d
+- Things tp, d
 - DoB(tp) = 1975-01-01
 - DoB(d) = 2005-01-01
 - IsStudent(d) = false
-- IsPermanentlyAndTotallyDisabled(d) = false
+- USC.Tit26.Sec22.IsPermanentlyAndTotallyDisabled(d) = false
 - Sec152.QCAgeTest(d,tp,Sec441.TaxYear(tp)).AsOf(2012-03-03).Out =?= true
 
 Test: QCAge_2
-- Thing tp
-- Thing d
+- Things tp, d
 - DoB(tp) = 1975-01-01
 - DoB(d) = 1940-01-01
 - IsStudent(d) = false
-- IsPermanentlyAndTotallyDisabled(d) = true
+- USC.Tit26.Sec22.IsPermanentlyAndTotallyDisabled(d) = true
 - Sec152.QCAgeTest(d,tp,Sec441.TaxYear(tp)).AsOf(2012-03-03).Out =?= true
-
-
-
-
 

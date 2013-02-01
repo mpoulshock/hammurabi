@@ -21,6 +21,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Interactive;
 
 namespace Hammurabi
 {
@@ -40,7 +41,7 @@ namespace Hammurabi
 		/// </summary>
 		public class Fact
 		{
-            public string relationship;
+            public string Relationship;
             public object Arg1;
             public object Arg2;
             public object Arg3;
@@ -51,7 +52,7 @@ namespace Hammurabi
             /// </summary>
             public Fact(string rel, object arg1, object arg2, object arg3, Tvar val)
             {
-                relationship = rel;
+                Relationship = rel;
                 Arg1 = arg1;
                 Arg2 = arg2;
                 Arg3 = arg3;
@@ -60,11 +61,79 @@ namespace Hammurabi
 
             public Fact(string rel, object arg1, object arg2, object arg3)
             {
-                relationship = rel;
+                Relationship = rel;
                 Arg1 = arg1;
                 Arg2 = arg2;
                 Arg3 = arg3;
                 v = null;
+            }
+
+            /// <summary>
+            /// Returns the value of the fact by invoking the function.
+            /// </summary>
+            public Tvar Value()
+            {
+                // Consider implementing caching
+                return this.GetFunction().Invoke();
+            }
+
+            /// <summary>
+            /// Returns a function representing the fact.
+            /// </summary>
+            public Func<Tvar> GetFunction()
+            {
+                // Get the template for the function, based on the relationship
+                Question q = Interactive.Templates.GetQ(Relationship);
+                
+                // Set the function's arguments before invoking it
+                
+                // Convert first argument from string to proper type
+                if (q.arg1Type == "Thing") Engine.Thing1 = Facts.AddThing(Convert.ToString(Arg1));
+                else if (q.arg1Type == "Tbool") Engine.Tbool1 = Convert.ToBoolean(Arg1);
+                else if (q.arg1Type == "Tnum")  Engine.Tnum1 = Convert.ToDecimal(Arg1);
+                else if (q.arg1Type == "Tstr")  Engine.Tstr1 = Convert.ToString(Arg1);
+                else if (q.arg1Type == "Tdate") Engine.Tdate1 = Convert.ToDateTime(Arg1);
+                else if (q.arg1Type == "Tset")  Engine.Tset1 = (Tset)Arg1;   // ?
+                
+                // Second argument
+                if (q.arg2Type == "Thing") Engine.Thing2 = Facts.AddThing(Convert.ToString(Arg2));
+                else if (q.arg2Type == "Tbool") Engine.Tbool2 = Convert.ToBoolean(Arg2);
+                else if (q.arg2Type == "Tnum")  Engine.Tnum2 = Convert.ToDecimal(Arg2);
+                else if (q.arg2Type == "Tstr")  Engine.Tstr2 = Convert.ToString(Arg2);
+                else if (q.arg2Type == "Tdate") Engine.Tdate2 = Convert.ToDateTime(Arg2);
+                else if (q.arg2Type == "Tset")  Engine.Tset2 = (Tset)Arg2;
+                
+                // Third argument
+                if (q.arg3Type == "Thing") Engine.Thing3 = Facts.AddThing(Convert.ToString(Arg3));
+                else if (q.arg3Type == "Tbool") Engine.Tbool3 = Convert.ToBoolean(Arg3);
+                else if (q.arg3Type == "Tnum")  Engine.Tnum3 = Convert.ToDecimal(Arg3);
+                else if (q.arg3Type == "Tstr")  Engine.Tstr3 = Convert.ToString(Arg3);
+                else if (q.arg3Type == "Tdate") Engine.Tdate3 = Convert.ToDateTime(Arg3);
+                else if (q.arg3Type == "Tset")  Engine.Tset3 = (Tset)Arg3;
+                
+                // Return the lambda function
+                return Interactive.Templates.GetQ(Relationship).theFunc;
+            }
+
+            /// <summary>
+            /// Returns the value of the fact, as a string.
+            /// </summary>
+            public string ValueAsString()
+            {
+                return this.QuestionText() + "\n" + Value().Timeline;
+            }
+
+            /// <summary>
+            /// Returns the fact's question text.
+            /// </summary>
+            public string QuestionText()
+            {
+                // Embed the names of the Things into the question
+                string result = Interactive.Templates.GetQ(Relationship).questionText;
+                
+                return result.Replace("{1}", Convert.ToString(Arg1))
+                    .Replace("{2}", Convert.ToString(Arg2))
+                        .Replace("{3}", Convert.ToString(Arg3));
             }
 		}
 		
@@ -128,7 +197,7 @@ namespace Hammurabi
             // Look up fact in table of facts
             foreach (Fact f in FactBase)
             {
-                if (f.relationship == rel && f.Arg1 == e1 && f.Arg2 == e2 && f.Arg3 == e3)
+                if (f.Relationship == rel && f.Arg1 == e1 && f.Arg2 == e2 && f.Arg3 == e3)
                 {
                     return true;
                 }
@@ -148,7 +217,7 @@ namespace Hammurabi
 
             foreach (Fact f in FactBase)
             {
-                result += ((Thing)f.Arg1).Id + " " + f.relationship;
+                result += ((Thing)f.Arg1).Id + " " + f.Relationship;
 
                 if ((Thing)f.Arg2 != null)
                 {

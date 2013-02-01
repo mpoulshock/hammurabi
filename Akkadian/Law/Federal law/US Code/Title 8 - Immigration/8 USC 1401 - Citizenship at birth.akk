@@ -257,12 +257,12 @@ Test: 574277777
 - Thing a
 - DoB(a) = 1950-02-02
 - Things jini,barka
-- ParentsOf(a) = [[jini, barka]]
+- Fam.ParentsOf(a) = [[jini, barka]]
 - Gender(jini) = "Male"
 - Gender(barka) = "Female"
-- FamilyRelationship(jini,barka) = "Spouse"
-- USImmigrationStatus(jini) = "Legal permanent resident"
-- USImmigrationStatus(barka) = "U.S. citizen"
+- Fam.FamilyRelationship(jini,barka) = "Spouse"
+- Imm.USImmigrationStatus(jini) = "Legal permanent resident"
+- Imm.USImmigrationStatus(barka) = "U.S. citizen"
 - CountryOfResidence(barka) = "United States"
 - USC.Tit8.Sec1401.SubsecH(a).TestOutput =?= "Time.DawnOf True "
 
@@ -281,10 +281,10 @@ Test: 717543211
 - BirthCountry(a) = "New Zealand"
 - DoB(a) = 1980-02-03
 - Things jim,pam
-- ParentsOf(a) = [[jim, pam]]
+- Fam.ParentsOf(a) = [[jim, pam]]
 - Gender(jim) = "Male"
 - Gender(pam) = "Female"
-- FamilyRelationship(jim,pam) = "Spouse"
+- Fam.FamilyRelationship(jim,pam) = "Spouse"
 - IsUSCitizen(jim) = true
 - IsUSCitizen(pam) = true
 - CountryOfResidence(jim) = "United States"
@@ -294,13 +294,4 @@ Test: 350267835
 - Thing a
 - BirthCountry(a) = "United States"
 - USC.Tit8.Sec1401.AcquiredCitizenshipAtBirth(a).TestOutput =?= "Time.DawnOf True "
-
-
-
-
-
-
-
-
-
 

@@ -31,33 +31,35 @@ namespace Akkadian
         /// <summary>
         /// Handles fact inputs
         /// </summary>
-        public static string QueryTvarTransform(string line)
+        public static string QueryTvarTransform(string line, string space)
         {
+            space = Util.NamespaceConvert(space);
+
             // Rule conclusion line - no conditions in rule
             if (Util.IsInputRule(line))  // Starts w/ TvarIn at indent 0...
             {
                 // TboolInSym (always has two arguments)
                 line = Regex.Replace(line, 
-                          @"TboolInSym (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@"), ?(?<argtyp2>"+wrd+@" )(?<arg2>"+wrd+@")\)",
-                          "        public static Tbool ${fcn}(${argtyp1} ${arg1}, ${argtyp2} ${arg2})\r\n        {\r\n            return Facts.Sym(${arg1}, \"${fcn}\", ${arg2});");  
-    
+                                     @"TboolInSym (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@"), ?(?<argtyp2>"+wrd+@" )(?<arg2>"+wrd+@")\)",
+                                     "        public static Tbool ${fcn}(${argtyp1} ${arg1}, ${argtyp2} ${arg2})\r\n        {\r\n            return Facts.Sym(${arg1}, \""+space+"${fcn}\", ${arg2});");  
+                
                 // Functions with 1-3 arguments
                 line = Regex.Replace(line, 
-                          @"(?<type>"+typs+@")In (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@")(?<comma1>, ?)?(?<argtyp2>"+wrd+@" )?(?<arg2>"+wrd+@")?(?<comma2>, ?)?(?<argtyp3>"+wrd+@" )?(?<arg3>"+wrd+@")?\)",
-                          "        public static ${type} ${fcn}(${argtyp1} ${arg1}${comma1}${argtyp2} ${arg2}${comma2}${argtyp3} ${arg3})\r\n        {\r\n" +
-                          "        return Facts.QueryTvar<${type}>(\"${fcn}\", ${arg1}${comma1}${arg2}${comma2}${arg3});");  
+                                     @"(?<type>"+typs+@")In (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@")(?<comma1>, ?)?(?<argtyp2>"+wrd+@" )?(?<arg2>"+wrd+@")?(?<comma2>, ?)?(?<argtyp3>"+wrd+@" )?(?<arg3>"+wrd+@")?\)",
+                                     "        public static ${type} ${fcn}(${argtyp1} ${arg1}${comma1}${argtyp2} ${arg2}${comma2}${argtyp3} ${arg3})\r\n        {\r\n" +
+                                     "        return Facts.QueryTvar<${type}>(\""+space+"${fcn}\", ${arg1}${comma1}${arg2}${comma2}${arg3});");  
             }
-
+            
             // Is rule condition line, not rule conclusion
             else                
             {
                 // TboolInSym (always has two arguments)
                 line = Regex.Replace(line, @"TboolInSym (?<fcn>"+wrd+@")\((?<arg1>"+wrd+@"),(?<arg2>"+wrd+@")\)", 
-                                     "Facts.Sym(${arg1}, \"${fcn}\", ${arg2})");  
-
+                                     "Facts.Sym(${arg1}, \""+space+"${fcn}\", ${arg2})");  
+                
                 // Functions with 1-3 arguments
                 line = Regex.Replace(line, @"(?<type>"+typs+@")In (?<fcn>"+wrd+@")\((?<arg1>"+wrd+@")(?<comma1>, ?)?(?<arg2>"+wrd+@")?(?<comma2>, ?)?(?<arg3>"+wrd+@")?\)", 
-                                     "Facts.QueryTvar<${type}>(\"${fcn}\", ${arg1}${comma1}${arg2}${comma2}${arg3})"); 
+                                     "Facts.QueryTvar<${type}>(\""+space+"${fcn}\", ${arg1}${comma1}${arg2}${comma2}${arg3})"); 
             }
             
             return line;
@@ -66,25 +68,29 @@ namespace Akkadian
         /// <summary>
         /// Handles intermediate facts (facts asserted mid-tree)
         /// </summary>
-        public static string CreateIntermediateAssertion(string line)
+        public static string CreateIntermediateAssertion(string line, string space)
         {
+            space = Util.NamespaceConvert(space);
+
             return Regex.Replace(line, 
                 @"(?<typ>"+typs+@")In(?<sym>Sym)?(?<quest>\?)? (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@")(?<comma1>, ?)?(?<argtyp2>"+wrd+@" )?(?<arg2>"+wrd+@")?(?<comma2>, ?)?(?<argtyp3>"+wrd+@" )?(?<arg3>"+wrd+@")?\) =",
                 "        public static ${typ} ${fcn}(${argtyp1} ${arg1}${comma1} ${argtyp2} ${arg2}${comma2} ${argtyp3} ${arg3})\r\n" +
                 "        {\r\n" +
-                "            RulePreCheckResponse r = ShortCircuitValue<${typ}>(\"${fcn}\",\"${sym}\",\"${quest}\",${arg1}${comma1} ${arg2}${comma2} ${arg3});\r\n" +
+                "            RulePreCheckResponse r = ShortCircuitValue<${typ}>(\""+space+"${fcn}\",\"${sym}\",\"${quest}\",${arg1}${comma1} ${arg2}${comma2} ${arg3});\r\n" +
                 "            if (r.shouldShortCircuit) return (${typ})r.val;\r\n\r\n");
         }
-        
+
         /// <summary>
         /// Generates the c# line that caches the result of the method.
         /// </summary>
-        public static string MethodCacheLine(string line)
+        public static string MethodCacheLine(string line, string space)
         {
+            space = Util.NamespaceConvert(space);
+
             return Regex.Replace(line, 
-                @"(?<typ>"+typs+@")In(?<sym>Sym)?(?<quest>\?)? (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@")(?<comma1>, ?)?(?<argtyp2>"+wrd+@" )?(?<arg2>"+wrd+@")?(?<comma2>, ?)?(?<argtyp3>"+wrd+@" )?(?<arg3>"+wrd+@")?\) =",
-                 "            if (!RESULT.IsEverUnstated) Facts.Assert" +
-                 "(${arg1}, \"${fcn}\"${comma1}${arg2}${comma2}${arg3}, RESULT);\r\n");
+                                 @"(?<typ>"+typs+@")In(?<sym>Sym)?(?<quest>\?)? (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@")(?<comma1>, ?)?(?<argtyp2>"+wrd+@" )?(?<arg2>"+wrd+@")?(?<comma2>, ?)?(?<argtyp3>"+wrd+@" )?(?<arg3>"+wrd+@")?\) =",
+                                 "            if (!RESULT.IsEverUnstated) Facts.Assert" +
+                                 "(${arg1}, \""+space+"${fcn}\"${comma1}${arg2}${comma2}${arg3}, RESULT);\r\n");
         }
 
         /// <summary>
@@ -106,23 +112,6 @@ namespace Akkadian
                                       "        public static ${dec}\r\n        {\r\n");  
 
             return line;
-        }
-
-        /// <summary>
-        /// Determines whether a string is a valid number
-        /// </summary>
-        public static bool IsNumber(string s)
-        {
-            try
-            {
-                double.Parse(s);
-                return true;
-            }
-            catch
-            {
-            }
-
-            return false;
         }
     }
 }

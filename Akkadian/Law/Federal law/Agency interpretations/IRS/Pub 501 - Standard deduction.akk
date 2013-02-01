@@ -134,54 +134,54 @@ TboolIn FilingReturnForShortTaxYear(Thing p)
 
 Test: Page22_Ex4_Column3
 - Thing Ed
-- FedTaxFilingStatus(Ed) = "Single"
-- CanBeClaimedAsDependentBySomeone(Ed) = true
+- USC.Tit26.Sec2.FedTaxFilingStatus(Ed) = "Single"
+- USC.Tit26.Sec152.CanBeClaimedAsDependentBySomeone(Ed) = true
 - DoB(Ed) = 1990-01-01
 - IsBlind(Ed) = false
-- EarnedIncomeForFS(Ed) = 3726
-- MaritalStatus(Ed) = "Single"    # Redundant question?
+- IRS.Pub501.EarnedIncomeForFS(Ed) = 3726
+- Fam.MaritalStatus(Ed) = "Single"    # Redundant question?
 - IRS.Pub501.Table6Amount(Ed).TestOutput =?= "Time.DawnOf 4026 "
 
 Test: Page22_Ex3_Column3
 - Thing Amy
-- FedTaxFilingStatus(Amy) = "Single"
-- CanBeClaimedAsDependentBySomeone(Amy) = true
+- USC.Tit26.Sec2.FedTaxFilingStatus(Amy) = "Single"
+- USC.Tit26.Sec152.CanBeClaimedAsDependentBySomeone(Amy) = true
 - DoB(Amy) = 1994-01-01
 - IsBlind(Amy) = true
-- EarnedIncomeForFS(Amy) = 2900
-- MaritalStatus(Amy) = "Single"
+- IRS.Pub501.EarnedIncomeForFS(Amy) = 2900
+- Fam.MaritalStatus(Amy) = "Single"
 - IRS.Pub501.Table6Amount(Amy).TestOutput =?= "Time.DawnOf 4650 "
 
 Test: Page22_Ex2_Column3
 - Things Joe, Mary
-- FedTaxFilingStatus(Joe) = "Married filing separately"
-- CanBeClaimedAsDependentBySomeone(Joe) = true
+- USC.Tit26.Sec2.FedTaxFilingStatus(Joe) = "Married filing separately"
+- USC.Tit26.Sec152.CanBeClaimedAsDependentBySomeone(Joe) = true
 - DoB(Joe) = 1990-01-01
 - IsBlind(Joe) = false
-- EarnedIncomeForFS(Joe) = 3800
-- SpousesOf(Joe) = [[Mary]]
+- IRS.Pub501.EarnedIncomeForFS(Joe) = 3800
+- Fam.SpousesOf(Joe) = [[Mary]]
 - DoB(Mary) = 1990-01-01
 - IsBlind(Mary) = false
 - IRS.Pub501.Table6Amount(Joe).TestOutput =?= "Time.DawnOf 4100 "
 
 Test: Page22_Ex1_Column3
 - Thing michael
-- FedTaxFilingStatus(michael) = "Single"
-- CanBeClaimedAsDependentBySomeone(michael) = true
+- USC.Tit26.Sec2.FedTaxFilingStatus(michael) = "Single"
+- USC.Tit26.Sec152.CanBeClaimedAsDependentBySomeone(michael) = true
 - DoB(michael) = 1995-01-01
 - IsBlind(michael) = false
-- EarnedIncomeForFS(michael) = 150
-- MaritalStatus(michael) = "Single"
+- IRS.Pub501.EarnedIncomeForFS(michael) = 150
+- Fam.MaritalStatus(michael) = "Single"
 - IRS.Pub501.Table6Amount(michael).TestOutput =?= "Time.DawnOf 950 "
 
 Test: Page22_Ex3_Column2
 - Things bill, lisa
-- FedTaxFilingStatus(bill) = "Married filing jointly"
-- CanBeClaimedAsDependentBySomeone(bill) = false
-- SpousesOf(bill) = [[lisa]]
-- CanBeClaimedAsDependentBySomeone(lisa) = false
+- USC.Tit26.Sec2.FedTaxFilingStatus(bill) = "Married filing jointly"
+- USC.Tit26.Sec152.CanBeClaimedAsDependentBySomeone(bill) = false
+- Fam.SpousesOf(bill) = [[lisa]]
+- USC.Tit26.Sec152.CanBeClaimedAsDependentBySomeone(lisa) = false
 - DoB(bill) = 1930-01-01
-- MaritalStatus(bill) = "Married"
+- Fam.MaritalStatus(bill) = "Married"
 - DoB(lisa) = 1930-01-01
 - IsBlind(lisa) = false
 - IsBlind(bill) = false
@@ -189,23 +189,23 @@ Test: Page22_Ex3_Column2
 
 Test: Page22_Ex2_Column2
 - Things larry, donna
-- FedTaxFilingStatus(larry) = "Married filing jointly"
-- CanBeClaimedAsDependentBySomeone(larry) = false
-- SpousesOf(larry) = [[donna]]
-- CanBeClaimedAsDependentBySomeone(donna) = false
+- USC.Tit26.Sec2.FedTaxFilingStatus(larry) = "Married filing jointly"
+- USC.Tit26.Sec152.CanBeClaimedAsDependentBySomeone(larry) = false
+- Fam.SpousesOf(larry) = [[donna]]
+- USC.Tit26.Sec152.CanBeClaimedAsDependentBySomeone(donna) = false
 - DoB(larry) = 1966-01-01
 - IsBlind(larry) = true
-- MaritalStatus(larry) = "Married"
+- Fam.MaritalStatus(larry) = "Married"
 - DoB(donna) = 1979-01-01
 - IsBlind(donna) = false
 - IRS.Pub501.Table6Amount(larry).TestOutput =?= "Time.DawnOf 12750 "
 
 Test: Page22_Ex1_Column2
 - Things larry, donna
-- FedTaxFilingStatus(larry) = "Married filing jointly"
-- CanBeClaimedAsDependentBySomeone(larry) = false
-- SpousesOf(larry) = [[donna]]
-- CanBeClaimedAsDependentBySomeone(donna) = false
+- USC.Tit26.Sec2.FedTaxFilingStatus(larry) = "Married filing jointly"
+- USC.Tit26.Sec152.CanBeClaimedAsDependentBySomeone(larry) = false
+- Fam.SpousesOf(larry) = [[donna]]
+- USC.Tit26.Sec152.CanBeClaimedAsDependentBySomeone(donna) = false
 - DoB(larry) = 1966-01-01
 - IsBlind(larry) = false
 - DoB(donna) = 1979-01-01
@@ -214,36 +214,32 @@ Test: Page22_Ex1_Column2
 
 Test: 200595112
 - Thing jim
-- EarnedIncomeForFS(jim) = 100
-- FedTaxFilingStatus(jim) = "Single"
-- MaritalStatus(jim) = "Single"
+- IRS.Pub501.EarnedIncomeForFS(jim) = 100
+- USC.Tit26.Sec2.FedTaxFilingStatus(jim) = "Single"
+- Fam.MaritalStatus(jim) = "Single"
 - DoB(jim) = 1990-01-01
 - IsBlind(jim) = false
 - IRS.Pub501.Table8Amount(jim).TestOutput =?= "Time.DawnOf 950 "
 
 Test: 784536694
-- Thing jon
-- FedTaxFilingStatus(jon) = "Married filing jointly"
+- Things jon, sally
+- USC.Tit26.Sec2.FedTaxFilingStatus(jon) = "Married filing jointly"
 - DoB(jon) = 1960-01-01
 - IsBlind(jon) = false
-- CanBeClaimedAsDependentBySomeone(jon) = false
-- Things sally
-- SpousesOf(jon) = [[sally]]
-- CanBeClaimedAsDependentBySomeone(sally) = false
+- USC.Tit26.Sec152.CanBeClaimedAsDependentBySomeone(jon) = false
+- Fam.SpousesOf(jon) = [[sally]]
+- USC.Tit26.Sec152.CanBeClaimedAsDependentBySomeone(sally) = false
 - DoB(sally) = 1960-01-01
 - IsBlind(sally) = false
 - IRS.Pub501.Table6Amount(jon).TestOutput =?= "Time.DawnOf 11600 "
 
 Test: 25881624
-- Thing jim
-- Things jane
-- SpousesOf(jim) = [[jane]]
+- Things jim, jane
+- Fam.SpousesOf(jim) = [[jane]]
 - DoB(jane) = 1900-01-01
 - IsBlind(jane) = true
 - DoB(jim) = 1980-01-01
 - IsBlind(jim) = true
-- FedTaxFilingStatus(jim) = "Married filing jointly"
+- USC.Tit26.Sec2.FedTaxFilingStatus(jim) = "Married filing jointly"
 - IRS.Pub501.Table7Amount(jim).TestOutput =?= "Time.DawnOf 15050 "
-
-
 

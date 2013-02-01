@@ -15,14 +15,14 @@ namespace HammurabiWebService
         {
             // Assert facts and combine them into a list
             TemporalValue v1 = new TemporalValue("Single");
-            Fact fact1 = new Fact("Tstr","FedTaxFilingStatus","Jim","","",new List<TemporalValue>(){v1});
-            List<Fact> facts = new List<Fact>(){fact1};
+            Factoid fact1 = new Factoid("Tstr","FedTaxFilingStatus","Jim","","",new List<TemporalValue>(){v1});
+            List<Factoid> facts = new List<Factoid>(){fact1};
 
             // Define goals to be sought, and combine them into a list
-            Fact goal1 = new Fact("Tnum","ThresholdAmount","Jim","","");
-            Fact goal2 = new Fact("Tnum","ApplicablePercentage","Jim","","");
-            Fact goal3 = new Fact("Tbool","IsDependentOf","Kid","Dad","");
-            List<Fact> goals = new List<Fact>(){goal1,goal2,goal3};
+            Factoid goal1 = new Factoid("Tnum","ThresholdAmount","Jim","","");
+            Factoid goal2 = new Factoid("Tnum","ApplicablePercentage","Jim","","");
+            Factoid goal3 = new Factoid("Tbool","IsDependentOf","Kid","Dad","");
+            List<Factoid> goals = new List<Factoid>(){goal1,goal2,goal3};
 
             // Assemble a mock request to the web service
             Packet mockPacket = new Packet(goals, facts);
@@ -47,15 +47,15 @@ namespace HammurabiWebService
             int percent = 100;
             
             // Assert facts into a Hammurabi session
-            foreach(Fact f in request.AssertedFacts)
+            foreach(Factoid f in request.AssertedFacts)
             {
                 AssertFact(f); 
             }
 
             // Iterate through each goal
-            foreach(Fact g in request.Goals)
+            foreach(Factoid g in request.Goals)
             {
-                GoalBlob gb = new GoalBlob(g.Relationship, g.Arg1, g.Arg2, g.Arg3);
+                Facts.Fact gb = new Facts.Fact(g.Relationship, g.Arg1, g.Arg2, g.Arg3);
 
                 // Assign to a variable so it's only evaluated once
                 Tvar gbVal = gb.Value();
@@ -106,7 +106,7 @@ namespace HammurabiWebService
         /// <summary>
         /// Asserts a given fact (of the proper Tvar type)
         /// </summary>
-        private static void AssertFact(Fact f)
+        private static void AssertFact(Factoid f)
         {
             // Instantiate relevant Things
             Thing t1 = f.Arg1.ToString() != "" ? Facts.AddThing(f.Arg1.ToString()) : null;

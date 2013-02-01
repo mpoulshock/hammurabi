@@ -42,7 +42,7 @@ Test: 904438779
 - DoB(murray) = 1904-01-02
 - BirthCountry(murray) = "Guam"
 - IsSubjectToUSJurisdiction(murray) = true
-- TookStepsToPreserveForeignNationality(murray) = false
+- USC.Tit8.Sec1407.TookStepsToPreserveForeignNationality(murray) = false
 - USC.Tit8.Sec1407.IsUSCitizenPerGuam(murray).TestOutput =?= "Time.DawnOf False 1/2/1904 12:00:00 AM True "
 
 Test: 65134483
@@ -50,7 +50,4 @@ Test: 65134483
 - DoB(murray) = 1890-01-01
 - BirthCountry(murray) = "Guam"
 - USC.Tit8.Sec1407.IsUSCitizenPerGuam(murray).TestOutput =?= "Time.DawnOf Stub "
-
-
-
 

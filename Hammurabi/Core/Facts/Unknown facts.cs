@@ -63,7 +63,7 @@ namespace Hammurabi
         {
             foreach (Fact t in Unknowns)
             {
-                if (t.relationship == rel && t.Arg1 == e1 && t.Arg2 == e2 && t.Arg3 == e3)
+                if (t.Relationship == rel && t.Arg1 == e1 && t.Arg2 == e2 && t.Arg3 == e3)
                 {
                     return true;
                 }

@@ -463,7 +463,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Facts.Clear();
             Thing c = new Thing("corp");
             Thing p = new Thing("p");
-            Facts.Assert(p, "EmploymentRelationship", c, "Employee");
+            Facts.Assert(p, "Econ.EmploymentRelationship", c, "Employee");
             Tbool result = SomeoneWorksAt(c, new Tset(p));
             Assert.AreEqual("Time.DawnOf True ", result.TestOutput);        
         }
@@ -474,7 +474,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Facts.Clear();
             Thing c = new Thing("corp");
             Thing p = new Thing("p");
-            Facts.Assert(p, "EmploymentRelationship", c, "Intern");
+            Facts.Assert(p, "Econ.EmploymentRelationship", c, "Intern");
             Tbool result = SomeoneWorksAt(c, new Tset(p));
             Assert.AreEqual("Time.DawnOf False ", result.TestOutput);        
         }
@@ -486,7 +486,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Thing p = new Thing("p");
             Thing c = new Thing("c");
             Thing c2 = new Thing("c2");
-            Facts.Assert(p, "EmploymentRelationship", c2, "Employee");
+            Facts.Assert(p, "Econ.EmploymentRelationship", c2, "Employee");
             Tbool result = Econ.IsEmployedBy(p,c2);
             Assert.AreEqual("Time.DawnOf True ", result.TestOutput);        
         }
@@ -498,8 +498,8 @@ namespace Hammurabi.UnitTests.CoreFcns
             Thing p = new Thing("person");
             Thing c = new Thing("c");
             Thing c2 = new Thing("c2");
-            Facts.Assert(p, "EmploymentRelationship", c2, "Employee");
-            Facts.Assert(p, "EmploymentRelationship", c, "Intern");
+            Facts.Assert(p, "Econ.EmploymentRelationship", c2, "Employee");
+            Facts.Assert(p, "Econ.EmploymentRelationship", c, "Intern");
             Tbool result = SomeoneWorksAt(c, new Tset(p));  
             Assert.AreEqual("Time.DawnOf False ", result.TestOutput);        
         }

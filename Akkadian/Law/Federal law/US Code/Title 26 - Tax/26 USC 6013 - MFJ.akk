@@ -33,68 +33,60 @@ TboolIn FilesMFJOnlyToClaimRefund(Thing p) =
 # UNIT TESTS
 
 Test: IsMFJ_1a 
-- Thing a
-- Thing b
-- FamilyRelationship(a,b) = "Spouse"
-- FedTaxFilingStatus(a) = "Married filing jointly"
+- Things a, b
+- Fam.FamilyRelationship(a,b) = "Spouse"
+- USC.Tit26.Sec2.FedTaxFilingStatus(a) = "Married filing jointly"
 - Sec6013.IsMFJ(a).Out =?= true
 
 Test: IsMFJ_1b
-- Thing a
-- Thing b
-- FamilyRelationship(a,b) = "Spouse"
-- FedTaxFilingStatus(a) = "Married filing jointly"
+- Things a, b
+- Fam.FamilyRelationship(a,b) = "Spouse"
+- USC.Tit26.Sec2.FedTaxFilingStatus(a) = "Married filing jointly"
 - Sec6013.IsMFJ(b).Out =?= true
 
 Test: IsMFJ_1c 
-- Thing a
-- Thing b
-- FamilyRelationship(a,b) = "Spouse"
-- FedTaxFilingStatus(a) = "not Married filing jointly"
+- Things a, b
+- Fam.FamilyRelationship(a,b) = "Spouse"
+- USC.Tit26.Sec2.FedTaxFilingStatus(a) = "not Married filing jointly"
 - Sec6013.IsMFJ(a).Out =?= false
 
 Test: IsMFJ_1d
-- Thing a
-- Thing b
-- FamilyRelationship(a,b) = "Spouse"
-- FedTaxFilingStatus(a) = "not Married filing jointly"
+- Things a, b
+- Fam.FamilyRelationship(a,b) = "Spouse"
+- USC.Tit26.Sec2.FedTaxFilingStatus(a) = "not Married filing jointly"
 - Sec6013.IsMFJ(b).Out =?= false
-
 
 Test: IsMFJ_2a
 - Thing p
-- FedTaxFilingStatus(p) = "not Married filing jointly"
+- USC.Tit26.Sec2.FedTaxFilingStatus(p) = "not Married filing jointly"
 - Sec6013.IsMFJ(p).Out =?= false
 
 Test: IsMFJ_2b
 - Thing p
-- FedTaxFilingStatus(p) = "Married filing jointly"
+- USC.Tit26.Sec2.FedTaxFilingStatus(p) = "Married filing jointly"
 - Sec6013.IsMFJ(p).Out =?= true
 
 Test: IsMFJ_3
 - Thing p
-- FedTaxFilingStatus(p) = "Single"
+- USC.Tit26.Sec2.FedTaxFilingStatus(p) = "Single"
 - Sec6013.IsMFJ(p).Out =?= false
 
 Test: AreMFJ_1 
-- Thing a
-- Thing b
-- FamilyRelationship(a,b) = "Spouse"
-- FedTaxFilingStatus(a) = "Married filing jointly"
+- Things a, b
+- Fam.FamilyRelationship(a,b) = "Spouse"
+- USC.Tit26.Sec2.FedTaxFilingStatus(a) = "Married filing jointly"
 - Sec6013.AreMFJ(a,b).Out =?= true
 
 Test: AreMFJ_2
-- Thing a
-- Thing b
-- FamilyRelationship(a,b) = "Siblings"
-- FedTaxFilingStatus(a) = "Married filing jointly"
+- Things a, b
+- Fam.FamilyRelationship(a,b) = "Siblings"
+- USC.Tit26.Sec2.FedTaxFilingStatus(a) = "Married filing jointly"
 - Sec6013.AreMFJ(a,b).Out =?= false
 
 Test: AreMFJ_3
-- Thing a
-- Thing b
-- FamilyRelationship(a,b) = "Spouse"
-- FedTaxFilingStatus(a) = "Head of household"
+- Things a, b
+- Fam.FamilyRelationship(a,b) = "Spouse"
+- USC.Tit26.Sec2.FedTaxFilingStatus(a) = "Head of household"
 - Sec6013.AreMFJ(a,b).Out =?= false
 
 

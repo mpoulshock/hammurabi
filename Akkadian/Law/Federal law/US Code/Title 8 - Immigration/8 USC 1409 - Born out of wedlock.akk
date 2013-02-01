@@ -71,48 +71,48 @@ Tbool SubsecCApplies(Thing c) =
 Test: 348118400
 - Things tom, mom, dad
 - DoB(tom) = 1980-01-01
-- ParentsOf(tom) = [[mom, dad]]
+- Fam.ParentsOf(tom) = [[mom, dad]]
 - Gender(mom) = "Female"
 - Gender(dad) = "Male"
-- FamilyRelationship(mom,dad) = "None"
-- IsLegitimatedByLaw(tom) = false
-- Legitimated(dad,tom) = true
-- DateLegitimated(dad,tom) = 1985-01-01
-- FamilyRelationship(dad,tom) = "Biological parent"
-- USImmigrationStatus(dad) = "U.S. national"
+- Fam.FamilyRelationship(mom,dad) = "None"
+- Fam.IsLegitimatedByLaw(tom) = false
+- Fam.Legitimated(dad,tom) = true
+- Fam.DateLegitimated(dad,tom) = 1985-01-01
+- Fam.FamilyRelationship(dad,tom) = "Biological parent"
+- Imm.USImmigrationStatus(dad) = "U.S. national"
 - IsDeceased(dad) = false
 - DoB(dad) = 1955-01-01
-- CommittedToFinanciallySupport(dad,tom) = true
-- DateCommittedToFinanciallySupport(dad,tom) = 1985-01-01
+- Fam.CommittedToFinanciallySupport(dad,tom) = true
+- Fam.DateCommittedToFinanciallySupport(dad,tom) = 1985-01-01
 - USC.Tit8.Sec1409.SubsecAApplies(tom).TestOutput =?= "Time.DawnOf False 1/1/1985 12:00:00 AM True "
 
 Test: 225658686
 - Things roy, mom, dad
 - DoB(roy) = 1950-02-02
-- ParentsOf(roy) = [[mom, dad]]
+- Fam.ParentsOf(roy) = [[mom, dad]]
 - Gender(mom) = "Female"
 - Gender(dad) = "Male"
-- FamilyRelationship(mom,dad) = "None"
-- Legitimated(dad,roy) = true
-- DateLegitimated(dad,roy) = 1960-02-02
+- Fam.FamilyRelationship(mom,dad) = "None"
+- Fam.Legitimated(dad,roy) = true
+- Fam.DateLegitimated(dad,roy) = 1960-02-02
 - USC.Tit8.Sec1409.SubsecBApplies(roy).TestOutput =?= "Time.DawnOf True "
 
 Test: 380775793
 - Things ramsey, mom, dad
 - DoB(ramsey) = 1988-03-03
-- ParentsOf(ramsey) = [[mom, dad]]
+- Fam.ParentsOf(ramsey) = [[mom, dad]]
 - Gender(mom) = "Female"
 - Gender(dad) = "Male"
 - CountryLocation(mom) = "United States"
 - BirthCountry(ramsey) = "Japan"
-- FamilyRelationship(mom,dad) = "None"
-- USImmigrationStatus(mom) = "U.S. national"
+- Fam.FamilyRelationship(mom,dad) = "None"
+- Imm.USImmigrationStatus(mom) = "U.S. national"
 - USC.Tit8.Sec1409.SubsecCApplies(ramsey).TestOutput =?= "Time.DawnOf False 3/3/1988 12:00:00 AM True "
 
 Test: SubsecC_UnnecessaryQuestion
 - Things jamie, mom, dad
 - DoB(jamie) = 1977-02-03
-- ParentsOf(jamie) = [[mom, dad]]
+- Fam.ParentsOf(jamie) = [[mom, dad]]
 # - ChildrenOf(mom) = [[jamie]]        # Asked unnecessarily b/c currently no look-ahead for |~ (IsParentOf)
 - Gender(mom) = "Female"
 - Gender(dad) = "Male"

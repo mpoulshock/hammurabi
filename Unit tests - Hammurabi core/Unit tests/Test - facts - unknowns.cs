@@ -93,7 +93,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             
             foreach (Facts.Fact f in Facts.Unknowns)
             {
-                result += f.relationship + " ";
+                result += f.Relationship + " ";
             }
             
             return result.Trim();

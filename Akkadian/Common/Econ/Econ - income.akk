@@ -92,13 +92,13 @@ TnumIn MonthlyUnemploymentCompensation(Thing p)
 
 Test: 708567851
 - Things t1, t2
-- MonthlyWages(t1) = 800
-- MonthlySelfEmploymentIncome(t1) = 0
-- MonthlySocialSecurityBenefits(t1) = 1
-- MonthlySupplementalSecurityIncome(t1) = 2
-- MonthlyVeteransBenefits(t1) = 0
-- MonthlyChildSupportIncome(t1) = 3
-- MonthlyUnemploymentCompensation(t1) = 0
-- Hammurabi.Econ.AnnualIncome(t1).TestOutput =?= "Time.DawnOf 9672 "
+- Econ.MonthlyWages(t1) = 800
+- Econ.MonthlySelfEmploymentIncome(t1) = 0
+- Econ.MonthlySocialSecurityBenefits(t1) = 1
+- Econ.MonthlySupplementalSecurityIncome(t1) = 2
+- Econ.MonthlyVeteransBenefits(t1) = 0
+- Econ.MonthlyChildSupportIncome(t1) = 3
+- Econ.MonthlyUnemploymentCompensation(t1) = 0
+- Econ.AnnualIncome(t1).TestOutput =?= "Time.DawnOf 9672 "
 
 

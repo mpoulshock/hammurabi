@@ -1,36 +1,37 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="HammurabiWebService\HammurabiWebService\Service.svc.cs">
-    <Files>
-      <File FileName="HammurabiWebService\HammurabiWebService\Service.svc.cs" Line="55" Column="31" />
-    </Files>
+  <MonoDevelop.Ide.Workbench>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
-          <Node name="Hammurabi" expanded="True">
-            <Node name="Core" expanded="True">
-              <Node name="Core functions" expanded="True" />
-              <Node name="Engine" expanded="True" />
-              <Node name="Facts" expanded="True" />
-            </Node>
-          </Node>
-          <Node name="HammurabiWebService" expanded="True">
-            <Node name="Service.svc.cs" selected="True" />
-          </Node>
+          <Node name="HammurabiInteractive" selected="True" />
         </State>
       </Pad>
       <Pad Id="ClassPad">
-        <State expanded="True" selected="True">
+        <State expanded="True">
+          <Node name="Hammurabi" expanded="True">
+            <Node name="Hammurabi" expanded="True">
+              <Node name="Hammurabi.H" expanded="True">
+                <Node name="AddThing" selected="True" />
+              </Node>
+            </Node>
+          </Node>
           <Node name="HammurabiWebService" expanded="True">
             <Node name="HammurabiWebService" expanded="True" />
           </Node>
         </State>
       </Pad>
+      <Pad Id="MonoDevelop.NUnit.TestPad">
+        <State expanded="True" selected="True">
+          <Node name="Hammurabi" expanded="True">
+            <Node name="Hammurabi" expanded="True">
+              <Node name="UnitTests" expanded="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
       <Pad Id="MonoDevelop.Debugger.WatchPad">
         <State />
-      </Pad>
-      <Pad Id="MonoDevelop.NUnit.TestPad">
-        <State expanded="True" selected="True" />
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>

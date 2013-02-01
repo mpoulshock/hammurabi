@@ -89,6 +89,9 @@ namespace Akkadian
                 string param2 = match.Groups[8].Value.Trim();
                 string param3 = match.Groups[11].Value.Trim();
 
+                // Get the name of the appropriate namespace
+                string relName = Util.NamespaceConvert(MainClass.docNameSpace) + rel;
+
                 // Only get method-related data if it's a main rule and all parameters are Things.
                 // This is because only rule conclusions will be used as interview starting points.
                 if (Util.IsMainRule(line))
@@ -98,13 +101,13 @@ namespace Akkadian
                     string file = MainClass.akkDoc;
 
                     // Add metadata to the question list
-                    questionData.Add(new Qdata(rel, type, questionText, file, method, param1, param2, param3));
+                    questionData.Add(new Qdata(relName, type, questionText, file, method, param1, param2, param3));
                 }
                 // Capture metadata from embedded TvarIn statement
                 else if (match.Groups[2].Value == "In")
                 {
                     // Add metadata to the question list
-                    questionData.Add(new Qdata(rel, type, questionText, null, null, null, null, null));
+                    questionData.Add(new Qdata(relName, type, questionText, null, null, null, null, null));
                 }
             }
         }

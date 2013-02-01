@@ -108,7 +108,7 @@ namespace Akkadian
         /// </summary>
         public static string ConvertFact(string fact)
         {
-            string wrd = @"[a-zA-Z0-9]+";
+            string wrd = @"[a-zA-Z0-9\.]+";
 
             // Convert a temporal fact to the proper C# expression
             if (fact.Contains("{") && fact.Contains("}"))
@@ -125,7 +125,7 @@ namespace Akkadian
                 "            Facts.Assert(${arg1}, \"${fcn}\"${comma1}${arg2}${comma2}${arg3}, ${val});");  
 
             // Convert lists of Tset members to C#
-            fact = Regex.Replace(fact, @"\[\[(?<list>[a-zA-Z0-9, ]+)\]\]", @"new Tset(new List<Thing>(){${list}})");
+            fact = Regex.Replace(fact, @"\[\[(?<list>[a-zA-Z0-9,\. ]+)\]\]", @"new Tset(new List<Thing>(){${list}})");
 
 
             return fact;

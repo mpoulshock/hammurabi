@@ -268,14 +268,14 @@ namespace Akkadian
 
             // Process question-related metadata and declared assumptions
             Questions.GatherMetadata(line, previousLine);
-            line = Assumptions.Process(line);
+            line = Assumptions.Process(line, docNameSpace);
 
             // Convert rules and dates
-            line = ConvertRegularRules(line);
+            line = ConvertRegularRules(line, docNameSpace);
             line = ConvertRuleTables(line, currentRuleType, tableMatchLine, word);
 
             // Facts.QueryTvar<Tvar>()
-            line = TransformMethod.QueryTvarTransform(line);
+            line = TransformMethod.QueryTvarTransform(line, docNameSpace);
     
             // IfThen() 
             line = Regex.Replace(line, @"if (?<txt>"+word+@") then (?<txt2>[-!\+\*/A-Za-z0-9\.;\(\),""'_<>= ]+)", "IfThen(${txt}, ${txt2})");  
@@ -292,17 +292,17 @@ namespace Akkadian
         /// <remarks>
         /// This method must come before the conversion to Facts.QueryTvar<Tvar>().
         /// </remarks>
-        private static string ConvertRegularRules(string line)
+        private static string ConvertRegularRules(string line, string space)
         {
             // First, look for rules that require intermediate assertion checks
             if (Util.IsInputRule(line) && line.TrimEnd().EndsWith("="))
             {
                 // Note: These set class-level variables!
                 cacheRule = true;
-                methodCacheLine = TransformMethod.MethodCacheLine(line); 
+                methodCacheLine = TransformMethod.MethodCacheLine(line, space);
 
                 // Do the conversion
-                line = TransformMethod.CreateIntermediateAssertion(line);  
+                line = TransformMethod.CreateIntermediateAssertion(line, space);  // TODO: send in via param  
             }
             // Else, process all other rules
             else if (Util.IsMainRule(line))

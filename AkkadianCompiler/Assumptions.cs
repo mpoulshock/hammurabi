@@ -35,7 +35,7 @@ namespace Akkadian
         /// <summary>
         /// Converts any assumptions on the specified line to C#.
         /// </summary>
-        public static string Process(string line)
+        public static string Process(string line, string space)
         {
             if (line.Contains(" assumes "))
             {
@@ -45,8 +45,8 @@ namespace Akkadian
                 if (match.Success)
                 {
                     // Create the C# line defining the pair of assumption points
-                    string leftNode = NodeString(match.Groups[1].Value.Trim());
-                    string rightNode = NodeString(match.Groups[2].Value.Trim());
+                    string leftNode = NodeString(space, match.Groups[1].Value.Trim());
+                    string rightNode = NodeString(space, match.Groups[2].Value.Trim());
                     AccumulatedAssumptions += "            , new Pair(" + leftNode + ", " + rightNode + ")\r\n";
 
                     MainClass.totalRuleCount++;
@@ -65,7 +65,7 @@ namespace Akkadian
         /// <summary>
         /// For a given relationship, returns a C# string declaring an AssumptionPoint.
         /// </summary>
-        private static string NodeString(string node)
+        private static string NodeString(string nspace, string node)
         {
             string result = "";
             string quote = "\"";
@@ -75,7 +75,7 @@ namespace Akkadian
             if (match.Success)
             {
                 // Get the relationship and the arguments
-                string rel = match.Groups[1].Value.Trim();
+                string rel = Util.NamespaceConvert(nspace) + match.Groups[1].Value.Trim();
                 string arg1 = match.Groups[2].Value != "" ? match.Groups[2].Value : "0";
                 string arg2 = match.Groups[3].Value != "" ? match.Groups[3].Value : "0";
                 string arg3 = match.Groups[4].Value != "" ? match.Groups[4].Value : "0";

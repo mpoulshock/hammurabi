@@ -47,37 +47,37 @@ PurchaseAndPrepareMealsTogether(1,2) assumes LivesWith(1,2)
 Test: 714127497
 - Things t1, t2
 - Things moe, harry, larry
-- HouseholdMembersOf(t1) = [[moe, harry, larry]]
-- Hammurabi.Econ.HouseholdSize(t1).TestOutput =?= "Time.DawnOf 3 "
+- Econ.HouseholdMembersOf(t1) = [[moe, harry, larry]]
+- Econ.HouseholdSize(t1).TestOutput =?= "Time.DawnOf 3 "
 
 Test: TboolInSym1
 - Thing a
 - Thing b
-- SharePrincipalAbode(a,b) = true
+- Econ.SharePrincipalAbode(a,b) = true
 - Econ.SharePrincipalAbode(a,b).Out =?= true
 
 Test: TboolInSym2
 - Thing a
 - Thing b
-- SharePrincipalAbode(a,b) = true
+- Econ.SharePrincipalAbode(a,b) = true
 - Econ.SharePrincipalAbode(b,a).Out =?= true
 
 Test: ShareAbode
 - Thing a
 - Thing b
-- LivesWith(a,b) = true
+- Econ.LivesWith(a,b) = true
 - Econ.SharePrincipalAbode(b,a).Out =?= true
 
 Test: LivesWith1
 - Thing a
 - Thing b
-- LivesWith(a,b) = true
+- Econ.LivesWith(a,b) = true
 - Econ.LivesWith(a,b).Out =?= true
 
 Test: LivesWith2
 - Thing a
 - Thing b
-- LivesWith(a,b) = true
+- Econ.LivesWith(a,b) = true
 - Econ.LivesWith(b,a).Out =?= true
 
 

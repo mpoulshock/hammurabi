@@ -83,7 +83,7 @@ namespace Hammurabi
             // Look up fact in table of facts
             foreach (Fact f in FactBase)
             {
-                if (f.Arg1 == e1 && f.relationship == rel && f.Arg2 == e2 && f.Arg3 == e3)
+                if (f.Arg1 == e1 && f.Relationship == rel && f.Arg2 == e2 && f.Arg3 == e3)
                 {
                     return (T)f.v;
                 }

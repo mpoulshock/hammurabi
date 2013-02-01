@@ -200,53 +200,46 @@ IsPanamaRailroadEmployee(1) assumes IsEmployed(1)
 
 Test: 257940961
 - Things t1, t2
-- PercentSelfSupport(t1) = 20
-- Hammurabi.Econ.ManagesOwnAffairs(t1).TestOutput =?= "Time.DawnOf Unstated "
+- Econ.PercentSelfSupport(t1) = 20
+- Econ.ManagesOwnAffairs(t1).TestOutput =?= "Time.DawnOf Unstated "
 
 Test: 87584116
 - Things t1, t2
-- IsFullTimeEmployee(t1,t2) = Tbool(?)
-- HoursWorkedPerWeek(t1,t2) = 45
-- EmploymentRelationship(t1,t2) = "Intern"
-- Hammurabi.Econ.IsFullTimeEmployee(t1, t2).TestOutput =?= "Time.DawnOf False "
+- Econ.IsFullTimeEmployee(t1,t2) = Tbool(?)
+- Econ.HoursWorkedPerWeek(t1,t2) = 45
+- Econ.EmploymentRelationship(t1,t2) = "Intern"
+- Econ.IsFullTimeEmployee(t1, t2).TestOutput =?= "Time.DawnOf False "
 
 Test: 202197433
 - Things t1, t2
-- IsFullTimeEmployee(t1,t2) = Tbool(?)
-- HoursWorkedPerWeek(t1,t2) = 33
-- EmploymentRelationship(t1,t2) = "Employee"
-- Hammurabi.Econ.IsFullTimeEmployee(t1, t2).TestOutput =?= "Time.DawnOf Stub "
+- Econ.IsFullTimeEmployee(t1,t2) = Tbool(?)
+- Econ.HoursWorkedPerWeek(t1,t2) = 33
+- Econ.EmploymentRelationship(t1,t2) = "Employee"
+- Econ.IsFullTimeEmployee(t1, t2).TestOutput =?= "Time.DawnOf Stub "
 
 Test: 936674161
 - Things t1, t2
-- IsFullTimeEmployee(t1,t2) = Tbool(?)
-- HoursWorkedPerWeek(t1,t2) = 39
-- EmploymentRelationship(t1,t2) = "Employee"
-- Hammurabi.Econ.IsFullTimeEmployee(t1, t2).TestOutput =?= "Time.DawnOf True "
+- Econ.IsFullTimeEmployee(t1,t2) = Tbool(?)
+- Econ.HoursWorkedPerWeek(t1,t2) = 39
+- Econ.EmploymentRelationship(t1,t2) = "Employee"
+- Econ.IsFullTimeEmployee(t1, t2).TestOutput =?= "Time.DawnOf True "
 
 Test: 526288678
 - Things t1, t2
-- IsFullTimeEmployee(t1,t2) = Tbool(?)
-- HoursWorkedPerWeek(t1,t2) = 10
-- EmploymentRelationship(t1,t2) = "Employee"
-- Hammurabi.Econ.IsFullTimeEmployee(t1, t2).TestOutput =?= "Time.DawnOf False "
+- Econ.IsFullTimeEmployee(t1,t2) = Tbool(?)
+- Econ.HoursWorkedPerWeek(t1,t2) = 10
+- Econ.EmploymentRelationship(t1,t2) = "Employee"
+- Econ.IsFullTimeEmployee(t1, t2).TestOutput =?= "Time.DawnOf False "
 
 Test: TboolIn1
 - Thing p
 - Thing c
-- IsFullTimeEmployee(p,c) = true
+- Econ.IsFullTimeEmployee(p,c) = true
 - Econ.IsFullTimeEmployee(p,c).Out =?= true        
 
 Test: Employ
 - Thing p
 - Thing c
-- EmploymentRelationship(p,c) = "None"
+- Econ.EmploymentRelationship(p,c) = "None"
 - Econ.IsEmployedBy(p,c).Out =?= false    
-
-
-
-
-
-
-
 

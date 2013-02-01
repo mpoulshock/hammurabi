@@ -136,43 +136,43 @@ Test: USCitizenMFJ
 - Thing jed
 - IsDeceased(jed) = false
 - CountryOfResidence(jed) = "United States"
-- USImmigrationStatus(jed) = "U.S. citizen"
-- CanBeClaimedAsDependentBySomeone(jed) = false
-- MaritalStatus(jed) = "Married"
-- FedTaxFilingStatus(jed) = "Married filing jointly"
+- Imm.USImmigrationStatus(jed) = "U.S. citizen"
+- USC.Tit26.Sec152.CanBeClaimedAsDependentBySomeone(jed) = false
+- Fam.MaritalStatus(jed) = "Married"
+- USC.Tit26.Sec2.FedTaxFilingStatus(jed) = "Married filing jointly"
 - Things tammy
-- SpousesOf(jed) = [[tammy]]
+- Fam.SpousesOf(jed) = [[tammy]]
 - IsDeceased(tammy) = false
-- CanBeClaimedAsDependentBySomeone(tammy) = false
-- DependencyExemptions(jed) = 0
+- USC.Tit26.Sec152.CanBeClaimedAsDependentBySomeone(tammy) = false
+- IRS.Pub501.DependencyExemptions(jed) = 0
 - IRS.Pub501.ExemptionAmountBeforePhaseout(jed).AsOf(2011-12-31).TestOutput =?= "Time.DawnOf 7400 "
 
 Test: USCitizenSingle
 - Thing jimbo
 - IsDeceased(jimbo) = false
 - CountryOfResidence(jimbo) = "United States"
-- USImmigrationStatus(jimbo) = "U.S. citizen"
-- CanBeClaimedAsDependentBySomeone(jimbo) = false
-- MaritalStatus(jimbo) = "Single"
-- FedTaxFilingStatus(jimbo) = "Single"
-- DependencyExemptions(jimbo) = 1
+- Imm.USImmigrationStatus(jimbo) = "U.S. citizen"
+- USC.Tit26.Sec152.CanBeClaimedAsDependentBySomeone(jimbo) = false
+- Fam.MaritalStatus(jimbo) = "Single"
+- USC.Tit26.Sec2.FedTaxFilingStatus(jimbo) = "Single"
+- IRS.Pub501.DependencyExemptions(jimbo) = 1
 - IRS.Pub501.ExemptionAmountBeforePhaseout(jimbo).AsOf(2011-12-31).TestOutput =?= "Time.DawnOf 7400 "
 
 Test: 631329891
 - Thing larry
 - IsDeceased(larry) = false
 - CountryOfResidence(larry) = "Russia"
-- USImmigrationStatus(larry) = "Alien"
-- AlienTaxStatus(larry) = "Dual-status alien"
+- Imm.USImmigrationStatus(larry) = "Alien"
+- IRS.Pub519.AlienTaxStatus(larry) = "Dual-status alien"
 - IRS.Pub501.ExemptionAmountBeforePhaseout(larry).TestOutput =?= "Time.DawnOf Stub "
 
 Test: 243734645
 - Thing larry
 - IsDeceased(larry) = false
 - CountryOfResidence(larry) = "Japan"
-- USImmigrationStatus(larry) = "Alien"
-- AlienTaxStatus(larry) = "Nonresident alien"
-- CanBeClaimedAsDependentBySomeone(larry) = false
+- Imm.USImmigrationStatus(larry) = "Alien"
+- IRS.Pub519.AlienTaxStatus(larry) = "Nonresident alien"
+- USC.Tit26.Sec152.CanBeClaimedAsDependentBySomeone(larry) = false
 - IRS.Pub501.ExemptionAmountBeforePhaseout(larry).AsOf(2011-12-31).TestOutput =?= "Time.DawnOf 3700 "
 
 Test: 385282068
@@ -191,6 +191,4 @@ Test: DiedDuringTaxYear2
 - Thing jim
 - IsDeceased(jim) = false
 - IRS.Pub501.DiedDuringTaxYear(jim).TestOutput =?= "Time.DawnOf False "
-
-
 

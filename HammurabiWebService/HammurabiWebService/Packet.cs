@@ -19,15 +19,15 @@ namespace HammurabiWebService
 
         // Goals, or answers, sought by the user
         [DataMember (Order=3)]
-        public List<Fact> Goals;
+        public List<Factoid> Goals;
 
         // Facts still needed in order to solve goals
         [DataMember (Order=4)]
-        public List<Fact> NeededFacts;
+        public List<Factoid> NeededFacts;
 
         // Facts asserted by the user
         [DataMember (Order=5)]
-        public List<Fact> AssertedFacts;
+        public List<Factoid> AssertedFacts;
 
         // When true, the web service parrots back the facts in the response
         [DataMember (Order=6)]
@@ -38,7 +38,7 @@ namespace HammurabiWebService
         public string UnknownFactsLevelOfDetail = "Concise";
 
         // Constructor
-        public Packet(List<Fact> goals, List<Fact> assertedFacts)
+        public Packet(List<Factoid> goals, List<Factoid> assertedFacts)
         {
             Goals = goals;
             AssertedFacts = assertedFacts;
@@ -46,7 +46,7 @@ namespace HammurabiWebService
     }
 
     [DataContract]
-    public class Fact
+    public class Factoid
     {
         [DataMember (Order=1)]
         public string Relationship;
@@ -78,11 +78,11 @@ namespace HammurabiWebService
         [DataMember (Order=10)]
         public string HelpText;
 
-        public Fact()
+        public Factoid()
         {
         }
 
-        public Fact(string factType, string relationship, object arg1, object arg2, object arg3)
+        public Factoid(string factType, string relationship, object arg1, object arg2, object arg3)
         {
             FactType = factType;
             Relationship = relationship;
@@ -91,7 +91,7 @@ namespace HammurabiWebService
             Arg3 = arg3;
         }
 
-        public Fact(string factType, string relationship, object arg1, object arg2, object arg3, List<TemporalValue> timeline)
+        public Factoid(string factType, string relationship, object arg1, object arg2, object arg3, List<TemporalValue> timeline)
         {
             FactType = factType;
             Relationship = relationship;

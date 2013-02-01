@@ -95,48 +95,44 @@ TnumIn AnnualPensionAnnuityTrustIncome(Thing p)
 
 Test: 58209548
 - Things jed, lara
-- UnearnedIncome(jed) = Tnum(?)
-- MaritalStatus(jed) = "Married"
-- SpousesOf(jed) = [[lara]]
-- AnnualTaxableInterestIncome(lara) = 0
-- AnnualOrdinaryDividendIncome(lara) = 0
-- AnnualCapitalGainIncome(lara) = 0
-- AnnualUnemploymentIncome(lara) = 0
-- AnnualTaxableSocialSecurityBenefits(lara) = 0
-- AnnualPensionAnnuityTrustIncome(lara) = 0
-- AnnualTaxableInterestIncome(jed) = 9
-- AnnualOrdinaryDividendIncome(jed) = 9
-- AnnualCapitalGainIncome(jed) = 0
-- AnnualUnemploymentIncome(jed) = 0
-- AnnualTaxableSocialSecurityBenefits(jed) = 0
-- AnnualPensionAnnuityTrustIncome(jed) = 0
+- IRS.Pub501.UnearnedIncome(jed) = Tnum(?)
+- Fam.MaritalStatus(jed) = "Married"
+- Fam.SpousesOf(jed) = [[lara]]
+- IRS.Pub501.AnnualTaxableInterestIncome(lara) = 0
+- IRS.Pub501.AnnualOrdinaryDividendIncome(lara) = 0
+- IRS.Pub501.AnnualCapitalGainIncome(lara) = 0
+- IRS.Pub501.AnnualUnemploymentIncome(lara) = 0
+- IRS.Pub501.AnnualTaxableSocialSecurityBenefits(lara) = 0
+- IRS.Pub501.AnnualPensionAnnuityTrustIncome(lara) = 0
+- IRS.Pub501.AnnualTaxableInterestIncome(jed) = 9
+- IRS.Pub501.AnnualOrdinaryDividendIncome(jed) = 9
+- IRS.Pub501.AnnualCapitalGainIncome(jed) = 0
+- IRS.Pub501.AnnualUnemploymentIncome(jed) = 0
+- IRS.Pub501.AnnualTaxableSocialSecurityBenefits(jed) = 0
+- IRS.Pub501.AnnualPensionAnnuityTrustIncome(jed) = 0
 - IRS.Pub501.UnearnedIncome(jed).TestOutput =?= "Time.DawnOf 18 "
 
 Test: 200206942
 - Thing jon
-- AnnualSalaryWageIncome(jon) = 900
-- AnnualTipIncome(jon) = 0
-- AnnualScholarshipIncome(jon) = 0
-- IsBonaFideResidentOfPuertoRico(jon) = true
-- AnnualIncomeFromPuertoRico(jon) = 900
-- AnnualFederalIncomeFromPuertoRico(jon) = 900
-- HasIncomeFromUSPossession(jon) = false
+- IRS.Pub501.AnnualSalaryWageIncome(jon) = 900
+- IRS.Pub501.AnnualTipIncome(jon) = 0
+- IRS.Pub501.AnnualScholarshipIncome(jon) = 0
+- IRS.Pub519.IsBonaFideResidentOfPuertoRico(jon) = true
+- IRS.Pub501.AnnualIncomeFromPuertoRico(jon) = 900
+- IRS.Pub501.AnnualFederalIncomeFromPuertoRico(jon) = 900
+- IRS.Pub501.HasIncomeFromUSPossession(jon) = false
 - IRS.Pub501.IndividualEarnedIncomeForFS(jon).TestOutput =?= "Time.DawnOf 900 "
 
 Test: 474480858
 - Things tony, jane
-- MaritalStatus(tony) = "Married"
-- SpousesOf(tony) = [[jane]]
-- AnnualSalaryWageIncome(jane) = 100
-- AnnualTipIncome(jane) = 0
-- AnnualScholarshipIncome(jane) = 0
-- AnnualSalaryWageIncome(tony) = 200
-- AnnualTipIncome(tony) = 0
-- AnnualScholarshipIncome(tony) = 0
-- HasIncomeFromUSPossession(tony) = false
+- Fam.MaritalStatus(tony) = "Married"
+- Fam.SpousesOf(tony) = [[jane]]
+- IRS.Pub501.AnnualSalaryWageIncome(jane) = 100
+- IRS.Pub501.AnnualTipIncome(jane) = 0
+- IRS.Pub501.AnnualScholarshipIncome(jane) = 0
+- IRS.Pub501.AnnualSalaryWageIncome(tony) = 200
+- IRS.Pub501.AnnualTipIncome(tony) = 0
+- IRS.Pub501.AnnualScholarshipIncome(tony) = 0
+- IRS.Pub501.HasIncomeFromUSPossession(tony) = false
 - IRS.Pub501.EarnedIncomeForFS(tony).TestOutput =?= "Time.DawnOf 300 "
-
-
-
-
 

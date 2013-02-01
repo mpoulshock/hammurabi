@@ -205,27 +205,27 @@ TboolIn HasIncomeFromUSPossession(Thing p)
 
 Test: 878841534
 - Thing ling
-- FedTaxFilingStatus(ling) = "Married filing jointly"
+- USC.Tit26.Sec2.FedTaxFilingStatus(ling) = "Married filing jointly"
 - DoB(ling) = 1910-01-01
-- GrossIncomeForFS(ling) = 21000
+- IRS.Pub501.GrossIncomeForFS(ling) = 21000
 - Things bing
-- SpousesOf(ling) = [[bing]]
+- Fam.SpousesOf(ling) = [[bing]]
 - DoB(bing) = 1910-01-01
 - IsDeceased(bing) = false
-- LivesWith(bing,ling) = true
+- Econ.LivesWith(bing,ling) = true
 - IRS.Pub501.MustFilePerTable1(ling).TestOutput =?= "Time.DawnOf True 1/1/1974 12:00:00 AM False 1/1/2019 12:00:00 AM True "
 
 Test: LivedTogether1
 - Things mary, tony
 - IsDeceased(tony) = true
 - DateOfDeath(tony) = 2012-05-01
-- LivesWith(tony,mary) = {Time.DawnOf: true; 2012-05-02: false}
+- Econ.LivesWith(tony,mary) = {Time.DawnOf: true; 2012-05-02: false}
 - IRS.Pub501.LivedTogetherForTaxPurposes(mary, tony).TestOutput =?= "Time.DawnOf True 1/1/2013 12:00:00 AM False "
 
 Test: LivedTogether2
 - Things mary, tony
 - IsDeceased(tony) = false
-- LivesWith(tony,mary) = {Time.DawnOf: true; 2012-05-02: false}
+- Econ.LivesWith(tony,mary) = {Time.DawnOf: true; 2012-05-02: false}
 - IRS.Pub501.LivedTogetherForTaxPurposes(mary, tony).TestOutput =?= "Time.DawnOf True 1/1/2012 12:00:00 AM False "
 
 Test: TaxAge1
@@ -242,42 +242,38 @@ Test: TaxAge2
 
 Test: TaxMaritalStatus
 - Thing jim
-- MaritalStatus(jim) = {Time.DawnOf: "Single"; 2012-05-02: "Married"}
+- Fam.MaritalStatus(jim) = {Time.DawnOf: "Single"; 2012-05-02: "Married"}
 - IRS.Pub501.MaritalStatusForTaxPurposes(jim).TestOutput =?= "Time.DawnOf Single 1/1/2012 12:00:00 AM Married "
 
 Test: 738117373
 - Thing liam
-- CanBeClaimedAsDependentBySomeone(liam) = true
-- MaritalStatus(liam) = "Single"
+- USC.Tit26.Sec152.CanBeClaimedAsDependentBySomeone(liam) = true
+- Fam.MaritalStatus(liam) = "Single"
 - DoB(liam) = 1975-01-01
 - IsBlind(liam) = false
-- UnearnedIncome(liam) = 2450
+- IRS.Pub501.UnearnedIncome(liam) = 2450
 - IRS.Pub501.MustFilePerTable2(liam).TestOutput =?= "Time.DawnOf True "
 
 Test: 417756183
-- Thing ling
-- FedTaxFilingStatus(ling) = "Married filing jointly"
+- Things ling, john
+- USC.Tit26.Sec2.FedTaxFilingStatus(ling) = "Married filing jointly"
 - DoB(ling) = 1975-01-01
-- GrossIncomeForFS(ling) = 19001
-- Things john
-- SpousesOf(ling) = [[john]]
+- IRS.Pub501.GrossIncomeForFS(ling) = 19001
+- Fam.SpousesOf(ling) = [[john]]
 - DoB(john) = 1981-01-01
 - IRS.Pub501.MustFilePerTable1(ling).TestOutput =?= "Time.DawnOf True 1/1/2040 12:00:00 AM False 1/1/2091 12:00:00 AM True "
 
 Test: 189988938
 - Thing jam
-- FedTaxFilingStatus(jam) = "Qualifying widow(er)"
+- USC.Tit26.Sec2.FedTaxFilingStatus(jam) = "Qualifying widow(er)"
 - DoB(jam) = 1980-02-02
-- GrossIncomeForFS(jam) = 16451
+- IRS.Pub501.GrossIncomeForFS(jam) = 16451
 - IRS.Pub501.MustFilePerTable1(jam).TestOutput =?= "Time.DawnOf True "
 
 Test: 844051182
 - Thing lonnie
 - DoB(lonnie) = 1980-01-01
-- FedTaxFilingStatus(lonnie) = "Married filing separately"
-- GrossIncomeForFS(lonnie) = 9
+- USC.Tit26.Sec2.FedTaxFilingStatus(lonnie) = "Married filing separately"
+- IRS.Pub501.GrossIncomeForFS(lonnie) = 9
 - IRS.Pub501.MustFilePerTable1(lonnie).TestOutput =?= "Time.DawnOf False "
-
-
-
 

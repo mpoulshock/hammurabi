@@ -283,6 +283,15 @@ namespace Akkadian
             // Else assumed to be string literal
             else return " == \"" + val + "\"";
         }
+
+        /// <summary>
+        /// Returns the appropriate namespace to be used in asserted facts.
+        /// </summary>
+        public static string NamespaceConvert(string space)
+        {
+            if (space == "Hammurabi.H") return "";
+            return space.Replace("Hammurabi.","") + ".";
+        }
      
         /// <summary>
         /// Determines whether a string is a valid number

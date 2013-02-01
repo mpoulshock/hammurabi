@@ -93,112 +93,97 @@ Thing SickFam(Thing e) =
 
 Test: 54153730
 - Things t1, t2
-- IsAirlineFlightCrew(t1,t2) = false
-- IsEmployeeUnder5USC6301(t1) = false
-- LessThan50EmployeesWithin75MilesOfWorksite(t1,t2) = false
-- DateFamilyLeaveBegins(t1,t2) = 2010-01-02
-- EmploymentRelationship(t1,t2) = "None"
+- Econ.IsAirlineFlightCrew(t1,t2) = false
+- USC.Tit5.Sec6301.IsEmployeeUnder5USC6301(t1) = false
+- USC.Tit29.Sec2611.LessThan50EmployeesWithin75MilesOfWorksite(t1,t2) = false
+- USC.Tit29.Sec2611.DateFamilyLeaveBegins(t1,t2) = 2010-01-02
+- Econ.EmploymentRelationship(t1,t2) = "None"
 - USC.Tit29.Sec2612.IsEntitledToLeaveFrom(t1, t2).TestOutput =?= "Time.DawnOf False "
 
 Test: Test1
-- Thing e
-- Thing c
+- Things e, c
 - Sec2612.IsEntitledToRegLeaveFrom(e,c).AsOf(2011-04-15).Out =?= "Unstated"
 
 Test: Test2
-- Thing e
-- Thing c
-- ReasonForRequestingLeaveFrom(e,c) = "Other"
+- Things e, c
+- USC.Tit29.Sec2612.ReasonForRequestingLeaveFrom(e,c) = "Other"
 - Sec2612.IsEntitledToRegLeaveFrom(e,c).AsOf(2011-04-15).Out =?= false
 
 Test: Test3
-- Thing e
-- Thing c
-- EmploymentRelationship(e,c) = "None"
+- Things e, c
+- Econ.EmploymentRelationship(e,c) = "None"
 - Sec2612.IsEntitledToRegLeaveFrom(e,c).Out =?= false
 
 Test: Test4
-- Thing e
-- Thing c
-- NumberOfEmployees(c) = 2000
-- EmploymentRelationship(e,c) = "Employee"
-- HoursWorkedPerWeek(e,c) = 40
-- IsEmployeeUnder5USC6301(e) = false
-- LessThan50EmployeesWithin75MilesOfWorksite(e,c) = false
-- IsAirlineFlightCrew(e,c) = false
-- ReasonForRequestingLeaveFrom(e,c) = "Other"
+- Things e, c
+- Org.NumberOfEmployees(c) = 2000
+- Econ.EmploymentRelationship(e,c) = "Employee"
+- Econ.HoursWorkedPerWeek(e,c) = 40
+- USC.Tit5.Sec6301.IsEmployeeUnder5USC6301(e) = false
+- USC.Tit29.Sec2611.LessThan50EmployeesWithin75MilesOfWorksite(e,c) = false
+- Econ.IsAirlineFlightCrew(e,c) = false
+- USC.Tit29.Sec2612.ReasonForRequestingLeaveFrom(e,c) = "Other"
 - Sec2612.IsEntitledToRegLeaveFrom(e,c).AsOf(2011-04-15).Out =?= false
 
 Test: Test5
-- Thing e
-- Thing c
-- NumberOfEmployees(c) = 2000
-- EmploymentRelationship(e,c) = "Employee"
-- HoursWorkedPerWeek(e,c) = 40
-- IsEmployeeUnder5USC6301(e) = false
-- LessThan50EmployeesWithin75MilesOfWorksite(e,c) = false
-- IsAirlineFlightCrew(e,c) = false
-- ReasonForRequestingLeaveFrom(e,c) = "To adopt a child"
+- Things e, c
+- Org.NumberOfEmployees(c) = 2000
+- Econ.EmploymentRelationship(e,c) = "Employee"
+- Econ.HoursWorkedPerWeek(e,c) = 40
+- USC.Tit5.Sec6301.IsEmployeeUnder5USC6301(e) = false
+- USC.Tit29.Sec2611.LessThan50EmployeesWithin75MilesOfWorksite(e,c) = false
+- Econ.IsAirlineFlightCrew(e,c) = false
+- USC.Tit29.Sec2612.ReasonForRequestingLeaveFrom(e,c) = "To adopt a child"
 - Sec2612.IsEntitledToRegLeaveFrom(e,c).AsOf(2011-04-15).Out =?= "Unstated"
 
 Test: Test6
-- Thing e
-- Thing c
-- NumberOfEmployees(c) = 2000
-- EmploymentRelationship(e,c) = "Employee"
-- HoursWorkedPerWeek(e,c) = 40
-- IsEmployeeUnder5USC6301(e) = false
-- LessThan50EmployeesWithin75MilesOfWorksite(e,c) = false
-- IsAirlineFlightCrew(e,c) = false
-- ReasonForRequestingLeaveFrom(e,c) = "To adopt a child"
-- DateFamilyLeaveBegins(e,c) = 2014-01-01
+- Things e, c
+- Org.NumberOfEmployees(c) = 2000
+- Econ.EmploymentRelationship(e,c) = "Employee"
+- Econ.HoursWorkedPerWeek(e,c) = 40
+- USC.Tit5.Sec6301.IsEmployeeUnder5USC6301(e) = false
+- USC.Tit29.Sec2611.LessThan50EmployeesWithin75MilesOfWorksite(e,c) = false
+- Econ.IsAirlineFlightCrew(e,c) = false
+- USC.Tit29.Sec2612.ReasonForRequestingLeaveFrom(e,c) = "To adopt a child"
+- USC.Tit29.Sec2611.DateFamilyLeaveBegins(e,c) = 2014-01-01
 - Sec2612.IsEntitledToRegLeaveFrom(e,c).AsOf(2011-04-15).Out =?= true
 
 Test: Test7_FlightCrew
-- Thing e
-- Thing c
-- NumberOfEmployees(c) = 2000
-- EmploymentRelationship(e,c) = "Employee"
-- HoursWorkedPerWeek(e,c) = 40
-- IsEmployeeUnder5USC6301(e) = false
-- LessThan50EmployeesWithin75MilesOfWorksite(e,c) = false
-- IsAirlineFlightCrew(e,c) = true
-- ReasonForRequestingLeaveFrom(e,c) = "To adopt a child"
-- DateFamilyLeaveBegins(e,c) = 2014-01-01
+- Things e, c
+- Org.NumberOfEmployees(c) = 2000
+- Econ.EmploymentRelationship(e,c) = "Employee"
+- Econ.HoursWorkedPerWeek(e,c) = 40
+- USC.Tit5.Sec6301.IsEmployeeUnder5USC6301(e) = false
+- USC.Tit29.Sec2611.LessThan50EmployeesWithin75MilesOfWorksite(e,c) = false
+- Econ.IsAirlineFlightCrew(e,c) = true
+- USC.Tit29.Sec2612.ReasonForRequestingLeaveFrom(e,c) = "To adopt a child"
+- USC.Tit29.Sec2611.DateFamilyLeaveBegins(e,c) = 2014-01-01
 - Sec2612.IsEntitledToRegLeaveFrom(e,c).AsOf(2011-04-15).Out =?= "Stub"
 
 Test: Test8_2612aC1_1
-- Thing e
-- Thing c
-- NumberOfEmployees(c) = 2000
-- EmploymentRelationship(e,c) = "Employee"
-- HoursWorkedPerWeek(e,c) = 40
-- IsEmployeeUnder5USC6301(e) = false
-- LessThan50EmployeesWithin75MilesOfWorksite(e,c) = false
-- IsAirlineFlightCrew(e,c) = false
-- ReasonForRequestingLeaveFrom(e,c) = "To care for family member with a health condition"
-- DateFamilyLeaveBegins(e,c) = 2014-01-01
+- Things e, c
+- Org.NumberOfEmployees(c) = 2000
+- Econ.EmploymentRelationship(e,c) = "Employee"
+- Econ.HoursWorkedPerWeek(e,c) = 40
+- USC.Tit5.Sec6301.IsEmployeeUnder5USC6301(e) = false
+- USC.Tit29.Sec2611.LessThan50EmployeesWithin75MilesOfWorksite(e,c) = false
+- Econ.IsAirlineFlightCrew(e,c) = false
+- USC.Tit29.Sec2612.ReasonForRequestingLeaveFrom(e,c) = "To care for family member with a health condition"
+- USC.Tit29.Sec2611.DateFamilyLeaveBegins(e,c) = 2014-01-01
 - Sec2612.IsEntitledToRegLeaveFrom(e,c).AsOf(2011-04-15).Out =?= "Unstated"
 
 Test: Test8_2612aC1_2
-- Thing e
-- Thing f
-- Thing c
-- NumberOfEmployees(c) = 2000
-- EmploymentRelationship(e,c) = "Employee"
-- HoursWorkedPerWeek(e,c) = 40
-- IsEmployeeUnder5USC6301(e) = false
-- LessThan50EmployeesWithin75MilesOfWorksite(e,c) = false
-- IsAirlineFlightCrew(e,c) = false
-- ReasonForRequestingLeaveFrom(e,c) = "To care for family member with a health condition"
-- DateFamilyLeaveBegins(e,c) = 2014-01-01
-- NeedsLeaveToProvideCareFor(e) = [[f]]
-- AreMarried(e,f) = true
-- HasSeriousHealthCondition(f) = true
+- Things e, c, f
+- Org.NumberOfEmployees(c) = 2000
+- Econ.EmploymentRelationship(e,c) = "Employee"
+- Econ.HoursWorkedPerWeek(e,c) = 40
+- USC.Tit5.Sec6301.IsEmployeeUnder5USC6301(e) = false
+- USC.Tit29.Sec2611.LessThan50EmployeesWithin75MilesOfWorksite(e,c) = false
+- Econ.IsAirlineFlightCrew(e,c) = false
+- USC.Tit29.Sec2612.ReasonForRequestingLeaveFrom(e,c) = "To care for family member with a health condition"
+- USC.Tit29.Sec2611.DateFamilyLeaveBegins(e,c) = 2014-01-01
+- USC.Tit29.Sec2612.NeedsLeaveToProvideCareFor(e) = [[f]]
+- Fam.AreMarried(e,f) = true
+- USC.Tit29.Sec2611.HasSeriousHealthCondition(f) = true
 - Sec2612.IsEntitledToRegLeaveFrom(e,c).AsOf(2011-04-15).Out =?= true
-
-
-
-
-
 

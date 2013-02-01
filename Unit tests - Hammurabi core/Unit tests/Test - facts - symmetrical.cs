@@ -95,7 +95,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void Either_Result_1 ()
         {
             Facts.Clear();
-            Facts.Assert(p1, "FamilyRelationship", p2, "Biological parent");
+            Facts.Assert(p1, "Fam.FamilyRelationship", p2, "Biological parent");
             Tbool result = Fam.IsBiologicalParentOf(p1, p2);
             Assert.AreEqual("Time.DawnOf True ", result.TestOutput);       
         }
@@ -104,7 +104,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void Either_Result_2 ()
         {
             Facts.Clear();
-            Facts.Assert(p2, "FamilyRelationship", p1, "Biological child");
+            Facts.Assert(p2, "Fam.FamilyRelationship", p1, "Biological child");
             Tbool result = Fam.IsBiologicalParentOf(p1, p2);
             Assert.AreEqual("Time.DawnOf True ", result.TestOutput);       
         }
@@ -123,7 +123,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void Fam_1 ()
         {
             Facts.Reset();
-            Facts.Assert(p1, "FamilyRelationship", p2, "Partner by civil union");
+            Facts.Assert(p1, "Fam.FamilyRelationship", p2, "Partner by civil union");
             bool result = Fam.InCivilUnion(p1, p2).IsTrue;
             Assert.AreEqual(true, result);       
         }
@@ -132,7 +132,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void Fam_2 ()
         {
             Facts.Reset();
-            Facts.Assert(p2, "FamilyRelationship", p1, "Partner by civil union");
+            Facts.Assert(p2, "Fam.FamilyRelationship", p1, "Partner by civil union");
             bool result = Fam.InCivilUnion(p1, p2).IsTrue;
             Assert.AreEqual(true, result);       
         }
@@ -141,7 +141,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void Fam_3 ()
         {
             Facts.Reset();
-            Facts.Assert(p1, "FamilyRelationship", p2, "Something other than civil union...");
+            Facts.Assert(p1, "Fam.FamilyRelationship", p2, "Something other than civil union...");
             bool result = Fam.InCivilUnion(p1, p2).IsTrue;
             Assert.AreEqual(false, result);       
         }
@@ -150,7 +150,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void Fam_4 ()
         {
             Facts.Reset();
-            Facts.Assert(p2, "FamilyRelationship", p1, "Something other than civil union...");
+            Facts.Assert(p2, "Fam.FamilyRelationship", p1, "Something other than civil union...");
             bool result = Fam.InCivilUnion(p1, p2).IsTrue;
             Assert.AreEqual(false, result);       
         }

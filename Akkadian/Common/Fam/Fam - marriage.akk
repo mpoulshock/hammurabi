@@ -24,10 +24,10 @@ information be at the bottom of the pile)?
 # >>Are/were {1} and {2} legally married?
 TboolInSym AreMarried(Thing p1, Thing p2) =
     set: 
-    if Facts.HasBeenAsserted("IsMarried",p1) & !IsMarried(p1) -> false
-    if Facts.HasBeenAsserted("IsMarried",p2) & !IsMarried(p2) -> false
-    if Facts.HasBeenAsserted("SpousesOf",p1) -> SpousesOf(p1).Contains(p2)
-    if Facts.HasBeenAsserted("SpousesOf",p2) -> SpousesOf(p2).Contains(p1)
+    if Facts.HasBeenAsserted("Fam.IsMarried",p1) & !IsMarried(p1) -> false
+    if Facts.HasBeenAsserted("Fam.IsMarried",p2) & !IsMarried(p2) -> false
+    if Facts.HasBeenAsserted("Fam.SpousesOf",p1) -> SpousesOf(p1).Contains(p2)
+    if Facts.HasBeenAsserted("Fam.SpousesOf",p2) -> SpousesOf(p2).Contains(p1)
     else Relationship(p1,p2) == "Spouse"
 
 FamilyRelationship(1,2) = "Spouse" assumes FamilyRelationship(2,1) = "Spouse"
@@ -132,25 +132,22 @@ TboolIn HasMentalCapacityToMarry(Thing p)
 
 Test: IsMarried0
 - Things mary, jon
-- SpousesOf(mary) = [[jon]]
-- Hammurabi.Fam.IsMarried(mary).Out =?= true
+- Fam.SpousesOf(mary) = [[jon]]
+- Fam.IsMarried(mary).Out =?= true
 
 Test: IsMarried1a
-- Thing p
-- Thing q
-- AreMarried(p,q) = true
+- Things p, q
+- Fam.AreMarried(p,q) = true
 - Fam.IsMarried(p).Out =?= true
 
 Test: IsMarried1b
-- Thing p
-- Thing q
-- AreMarried(q,p) = true
+- Things p, q
+- Fam.AreMarried(q,p) = true
 - Fam.IsMarried(p).Out =?= true
 
 Test: IsMarried2
-- Thing p
-- Thing q
-- AreMarried(p,q) = false
+- Things p, q
+- Fam.AreMarried(p,q) = false
 - Fam.IsMarried(p).Out =?= "Unstated"
 
 Test: IsMarried3
@@ -159,117 +156,101 @@ Test: IsMarried3
 
 Test: IsMarried4
 - Thing p
-- IsMarried(p) = false
+- Fam.IsMarried(p) = false
 - Fam.IsMarried(p).Out =?= false
 
 Test: IsMarried5
 - Thing p
-- IsMarried(p) = true
+- Fam.IsMarried(p) = true
 - Fam.IsMarried(p).Out =?= true
 
 Test: IsMarried6    # fail
-- Thing p
-- Thing q
-- SpousesOf(p) = [[q]]
+- Things p, q
+- Fam.SpousesOf(p) = [[q]]
 - Fam.IsMarried(p).Out =?= true
 
 Test: IsMarried7
-- Thing p
-- Thing q
-- SpousesOf(p) = [[q]]
+- Things p, q
+- Fam.SpousesOf(p) = [[q]]
 - Fam.IsMarried(q).Out =?= true
 
 Test: IsMarried8
 - Thing p
-- MaritalStatus(p) = "Single"
+- Fam.MaritalStatus(p) = "Single"
 - Fam.IsMarried(p).Out =?= false
 
 Test: IsMarried9    # time-varying
 - Thing jed
-- MaritalStatus(jed) = {Time.DawnOf: "Married"; 2011-03-04: "Single"}
+- Fam.MaritalStatus(jed) = {Time.DawnOf: "Married"; 2011-03-04: "Single"}
 - Fam.IsMarried(jed).TestOutput =?= "Time.DawnOf True 3/4/2011 12:00:00 AM False "
 
 Test: FamRel1
-- Thing p
-- Thing q
-- FamilyRelationship(p,q) = "Spouse"
+- Things p, q
+- Fam.FamilyRelationship(p,q) = "Spouse"
 - Fam.AreMarried(p,q).Out =?= true
 
 Test: FamRel2
-- Thing p
-- Thing q
-- FamilyRelationship(p,q) = "Spouse"
+- Things p, q
+- Fam.FamilyRelationship(p,q) = "Spouse"
 - Fam.AreMarried(q,p).Out =?= true
 
 Test: FamRel3
-- Thing p
-- Thing q
-- FamilyRelationship(p,q) = "Parent"
+- Things p, q
+- Fam.FamilyRelationship(p,q) = "Parent"
 - Fam.AreMarried(p,q).Out =?= false
 
 Test: FamRel4
-- Thing p
-- Thing q
+- Things p, q
 - Fam.AreMarried(p,q).Out =?= "Unstated"
 
 Test: AreMarried1
-- Thing p
-- Thing q
-- IsMarried(p) = false
+- Things p, q
+- Fam.IsMarried(p) = false
 - Fam.AreMarried(p,q).Out =?= false
 
 Test: AreMarried2
-- Thing p
-- Thing q
-- IsMarried(p) = true
+- Things p, q
+- Fam.IsMarried(p) = true
 - Fam.AreMarried(p,q).Out =?= "Unstated"
 
 Test: AreMarried3a
-- Thing p
-- Thing q
-- AreMarried(p,q) = true
+- Things p, q
+- Fam.AreMarried(p,q) = true
 - Fam.AreMarried(p,q).Out =?= true
 
 Test: AreMarried3b
-- Thing p
-- Thing q
-- AreMarried(p,q) = true
+- Things p, q
+- Fam.AreMarried(p,q) = true
 - Fam.AreMarried(q,p).Out =?= true
 
 Test: AreMarried4
-- Thing p
-- Thing q
-- AreMarried(p,q) = false
+- Things p, q
+- Fam.AreMarried(p,q) = false
 - Fam.AreMarried(p,q).Out =?= false
 
 Test: AreMarried5
-- Thing p
-- Thing q
+- Things p, q
 - Fam.AreMarried(p,q).Out =?= "Unstated"
 
 Test: AreMarried6
-- Thing p
-- Thing q
-- SpousesOf(p) = [[q]]
+- Things p, q
+- Fam.SpousesOf(p) = [[q]]
 - Fam.AreMarried(p,q).Out =?= true
 
 Test: AreMarried7
-- Thing p
-- Thing q
-- SpousesOf(p) = [[q]]
+- Things p, q
+- Fam.SpousesOf(p) = [[q]]
 - Fam.AreMarried(q,p).Out =?= true
 
 Test: AreMarried8
-- Thing p
-- Thing q
-- SpousesOf(p) = [[ ]]
+- Things p, q
+- Fam.SpousesOf(p) = [[ ]]
 - Fam.AreMarried(p,q).Out =?= false
 
 Test: AreMarried9
-- Thing p
-- Thing q
+- Things p, q
 - Thing r
-- SpousesOf(p) = [[r]]
+- Fam.SpousesOf(p) = [[r]]
 - Fam.AreMarried(p,q).Out =?= false
 
 Test: SpousesOf1
@@ -278,46 +259,36 @@ Test: SpousesOf1
 
 Test: SpousesOf2
 - Thing p
-- SpousesOf(p) = [[ ]]
+- Fam.SpousesOf(p) = [[ ]]
 - Fam.SpousesOf(p).Count.Out =?= 0
 
 Test: SpousesOf3
-- Thing p
-- Thing q
-- SpousesOf(p) = [[q]]
+- Things p, q
+- Fam.SpousesOf(p) = [[q]]
 - Fam.SpousesOf(p).Count.Out =?= 1
 
 Test: SpousesOf4
-- Thing p
-- Thing q
-- Thing r
-- SpousesOf(p) = [[q,r]]
+- Things p, q, r
+- Fam.SpousesOf(p) = [[q,r]]
 - Fam.SpousesOf(p).Count.Out =?= 2
 
 Test: SpousesOf5
-- Thing p
-- Thing q
-- AreMarried(p,q) = true   
+- Things p, q
+- Fam.AreMarried(p,q) = true   
 - Fam.SpousesOf(p).Count.Out =?= 1    # Note: doesn't return Unstated here
 
 Test: SpousesOf6
-- Thing p
-- Thing q
-- SpousesOf(p) = [[q]]
+- Things p, q
+- Fam.SpousesOf(p) = [[q]]
 - Fam.SpousesOf(q).Count.Out =?= 1     # Note: returns 1 even though q could have other spouses
 
 Test: SpousesOf7a
-- Thing p
-- Thing q
-- FamilyRelationship(p,q) = "Spouse"
+- Things p, q
+- Fam.FamilyRelationship(p,q) = "Spouse"
 - Fam.SpousesOf(p).Count.Out =?= 1
 
 Test: SpousesOf7b
-- Thing p
-- Thing q
-- FamilyRelationship(p,q) = "Spouse"
+- Things p, q
+- Fam.FamilyRelationship(p,q) = "Spouse"
 - Fam.SpousesOf(q).Count.Out =?= 1
-
-
-
 

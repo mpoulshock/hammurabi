@@ -38,7 +38,7 @@ namespace Interactive
             // Get the data pertaining to the current question
             Thing subj = (Thing)response.NextFact.Arg1;
             Thing obj = (Thing)response.NextFact.Arg2;
-            string rel = response.NextFact.relationship;
+            string rel = response.NextFact.Relationship;
             string qType = Templates.GetQ(rel).questionType;
 
             // Create the fact/relationship text for the .akk unit test

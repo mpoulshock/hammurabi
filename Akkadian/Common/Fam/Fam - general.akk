@@ -220,8 +220,8 @@ TboolIn CaresForIncapacitatedPerson(Thing p)
 
 Test: Ancestor1
 - Things person, parent, grandparent
-- FamilyRelationship(parent,person) = "Biological parent"
-- FamilyRelationship(grandparent,parent) = "Biological parent"
+- Fam.FamilyRelationship(parent,person) = "Biological parent"
+- Fam.FamilyRelationship(grandparent,parent) = "Biological parent"
 - Fam.IsAncestorOf(grandparent,person).Out =?= true
 
 Test: Ancestor2
@@ -230,121 +230,118 @@ Test: Ancestor2
 
 Test: Ancestor3
 - Things person, parent
-- FamilyRelationship(parent,person) = "Biological parent"
+- Fam.FamilyRelationship(parent,person) = "Biological parent"
 - Fam.IsAncestorOf(parent,person).Out =?= true
 
 Test: Ancestor4
 - Things person, cousin
-- FamilyRelationship(person,cousin) = "First cousin"
+- Fam.FamilyRelationship(person,cousin) = "First cousin"
 - Fam.IsAncestorOf(person,cousin).Out =?= false
 
 Test: AuntUncleInferred1
 - Things person, parent, aunt
-- IsParentOf(parent,person) = true
-- AreSiblings(parent,aunt) = true
-- Hammurabi.Fam.IsAuntOrUncleOf(aunt,person).Out =?= true
+- Fam.IsParentOf(parent,person) = true
+- Fam.AreSiblings(parent,aunt) = true
+- Fam.IsAuntOrUncleOf(aunt,person).Out =?= true
 
 Test: AuntUncleInferred2
 - Things person, parent, aunt
-- AreSiblings(parent,aunt) = true
-- Hammurabi.Fam.IsAuntOrUncleOf(aunt,person).Out =?= "Unstated"
+- Fam.AreSiblings(parent,aunt) = true
+- Fam.IsAuntOrUncleOf(aunt,person).Out =?= "Unstated"
 
 Test: AuntUncleInferred3
 - Things t1, t2
-- FamilyRelationship(t1,t2) = "Aunt or uncle"
-- Hammurabi.Fam.IsAuntOrUncleOf(t1,t2).Out =?= true
+- Fam.FamilyRelationship(t1,t2) = "Aunt or uncle"
+- Fam.IsAuntOrUncleOf(t1,t2).Out =?= true
 
 Test: AuntUncleInferred4
 - Things t1, t2
-- FamilyRelationship(t1,t2) = "Biological parent"
-- Hammurabi.Fam.IsAuntOrUncleOf(t1,t2).Out =?= false
+- Fam.FamilyRelationship(t1,t2) = "Biological parent"
+- Fam.IsAuntOrUncleOf(t1,t2).Out =?= false
 
 Test: Grandparent1
 - Things t1, t2
-- FamilyRelationship(t1,t2) = "Grandparent"
-- Hammurabi.Fam.IsGrandparentOf(t1,t2).Out =?= true
+- Fam.FamilyRelationship(t1,t2) = "Grandparent"
+- Fam.IsGrandparentOf(t1,t2).Out =?= true
 
 Test: Grandparent2
 - Things t1, t2
-- FamilyRelationship(t2,t1) = "Grandchild"
-- Hammurabi.Fam.IsGrandparentOf(t1,t2).Out =?= true
+- Fam.FamilyRelationship(t2,t1) = "Grandchild"
+- Fam.IsGrandparentOf(t1,t2).Out =?= true
 
 Test: Grandparent3
 - Things t1, t2
-- FamilyRelationship(t1,t2) = "Sibling"
-- Hammurabi.Fam.IsGrandparentOf(t1,t2).Out =?= false
+- Fam.FamilyRelationship(t1,t2) = "Sibling"
+- Fam.IsGrandparentOf(t1,t2).Out =?= false
 
 Test: Grandparent4
 - Things t1, t2
-- FamilyRelationship(t2,t1) = "Sibling"
-- Hammurabi.Fam.IsGrandparentOf(t1,t2).Out =?= false
+- Fam.FamilyRelationship(t2,t1) = "Sibling"
+- Fam.IsGrandparentOf(t1,t2).Out =?= false
 
 Test: Grandparent5
 - Things t1, t2
-- Hammurabi.Fam.IsGrandparentOf(t1,t2).Out =?= "Unstated"
+- Fam.IsGrandparentOf(t1,t2).Out =?= "Unstated"
 
 Test: Grandparent6
 - Things person, parent, grandparent
-- IsParentOf(parent, person) = true
-- IsParentOf(grandparent, parent) = true
+- Fam.IsParentOf(parent, person) = true
+- Fam.IsParentOf(grandparent, parent) = true
 - Fam.IsGrandparentOf(grandparent,person).Out =?= true
 
 Test: Grandparent7
 - Things person, parent, grandparent
-- IsParentOf(grandparent, parent) = true
+- Fam.IsParentOf(grandparent, parent) = true
 - Fam.IsGrandparentOf(grandparent,person).Out =?= "Unstated"
 
 Test: 49171719
 - Things t1, t2
 - Things sam, john
-- HouseholdMembersOf(t1) = [[sam, john]]
-- LivesWith(sam,t1) = true
-- IsParentOf(sam,t1) = false
-- HasCustodyOf(sam,t1) = false
-- IsLegalGuardianOf(sam,t1) = true
-- LivesWith(john,t1) = false
-- Hammurabi.Fam.LivesWithPCG(t1).TestOutput =?= "Time.DawnOf True "
+- Econ.HouseholdMembersOf(t1) = [[sam, john]]
+- Econ.LivesWith(sam,t1) = true
+- Fam.IsParentOf(sam,t1) = false
+- Fam.HasCustodyOf(sam,t1) = false
+- Fam.IsLegalGuardianOf(sam,t1) = true
+- Econ.LivesWith(john,t1) = false
+- Fam.LivesWithPCG(t1).TestOutput =?= "Time.DawnOf True "
 
 Test: 135354455
 - Things t1, t2
-- FamilyRelationship(t2,t1) = "First cousin"
-- Hammurabi.Fam.IsCousinOf(t1, t2).TestOutput =?= "Time.DawnOf True "
+- Fam.FamilyRelationship(t2,t1) = "First cousin"
+- Fam.IsCousinOf(t1, t2).TestOutput =?= "Time.DawnOf True "
 
 Test: Sanity1a    
 - Thing a
 - Thing b
-- IsParentOf(a,b) = true
+- Fam.IsParentOf(a,b) = true
 - Fam.IsParentOf(a,b).Out =?= true
 
 Test: Sanity1b    
 - Thing a
 - Thing b
-- IsParentOf(a,b) = true
+- Fam.IsParentOf(a,b) = true
 - Fam.IsChildOf(b,a).Out =?= true
 
 Test: Sanity2
 - Thing p
-- IsMarried(p) = true
+- Fam.IsMarried(p) = true
 - Fam.IsMarried(p).Out =?= true
 
 Test: ShortCircuit1
 - Thing p1
 - Thing p2
-- ActsInLocoParentisOf(p1,p2) = true
+- Fam.ActsInLocoParentisOf(p1,p2) = true
 - Fam.ActsInLocoParentisOf(p1,p2).Out =?= true
 
 Test: ShortCircuit2
 - Thing p1
 - Thing p2
-- ActsInLocoParentisOf(p1,p2) = false
+- Fam.ActsInLocoParentisOf(p1,p2) = false
 - Fam.ActsInLocoParentisOf(p1,p2).Out =?= false
 
 Test: ShortCircuit3
 - Thing p1
 - Thing p2
-- IsParentOf(p2,p1) = true
+- Fam.IsParentOf(p2,p1) = true
 - Fam.ActsInLocoParentisOf(p1,p2).Out =?= false
-
-
-
 

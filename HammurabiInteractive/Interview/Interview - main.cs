@@ -35,13 +35,13 @@ namespace Interactive
         /// </summary>
         public static void ProcessRequest(string request) 
         {
-            GoalBlob goalblob = ParseRequest(request);
+            Facts.Fact goalblob = ParseRequest(request);
             InitializeSession();
 
             while (true)
             {
                 // Get the response object from the interview engine
-                Engine.Response response = Engine.Investigate(new List<GoalBlob>(){goalblob});
+                Engine.Response response = Engine.Investigate(new List<Facts.Fact>(){goalblob});
 
                 // Ask the current question, or display the results
                 if (!response.InvestigationComplete)
@@ -66,7 +66,7 @@ namespace Interactive
         /// <summary>
         /// Parses the interview goal request.
         /// </summary>
-        private static GoalBlob ParseRequest(string request)
+        private static Facts.Fact ParseRequest(string request)
         {
             // Request format: <goal> <Thing1> <Thing2>? <Thing3>?
             // Example: IsUSCitizen Jane
@@ -81,7 +81,7 @@ namespace Interactive
             Engine.Thing2 = new Thing(t2);
             Engine.Thing3 = new Thing(t3);
 
-            return new GoalBlob(req[0], t1, t2, t3);
+            return new Facts.Fact(req[0], t1, t2, t3);
         }
 
         /// <summary>
@@ -114,7 +114,7 @@ namespace Interactive
         {
             // Get data about the next question
             Facts.Fact theFact = response.NextFact;
-            Question theQ = Templates.GetQ(theFact.relationship);
+            Question theQ = Templates.GetQ(theFact.Relationship);
 
             // TODO: Display appropriate question control (using theQ.questionType)
 
@@ -159,7 +159,7 @@ namespace Interactive
         private static void GetAndParseAnswer(Engine.Response response)
         {
             // Get data pertaining to the current question
-            string currentRel = response.NextFact.relationship;
+            string currentRel = response.NextFact.Relationship;
             Question currentQuestion = Templates.GetQ(currentRel);
             string currentQType = currentQuestion.questionType;
 
@@ -181,7 +181,7 @@ namespace Interactive
         /// <summary>
         /// Displays the engine's results of the interview session.
         /// </summary>
-        private static void DisplayResults(GoalBlob goal)
+        private static void DisplayResults(Facts.Fact goal)
         {
             Console.WriteLine("\nResults: \n");
             Console.WriteLine(ResultsText(goal));
@@ -190,7 +190,7 @@ namespace Interactive
         /// <summary>
         /// Displays the results of each goal.
         /// </summary>
-        private static string ResultsText(GoalBlob goal)
+        private static string ResultsText(Facts.Fact goal)
         {
             // TODO: Does not correctly display Tset.TestOutput
             string result = goal.ValueAsString() + "\n";

@@ -149,8 +149,7 @@ TboolIn LessThan50EmployeesAtWorksite(Thing p, Thing corp)
 
 
 Test: No_Facts_Asserted_1
-- Thing e
-- Thing c
+- Things e, c
 - Sec2611.IsEligibleEmployee(e,c).AsOf(2011-04-15).Out =?= "Unstated"
 
 Test: No_Facts_Asserted_2
@@ -158,76 +157,71 @@ Test: No_Facts_Asserted_2
 - Sec2611.IsCoveredEmployer(c).AsOf(2011-04-15).Out =?= "Unstated"
 
 Test: Eligible_Employee_1
-- Thing e
-- Thing c
-- EmploymentRelationship(e,c) = "None"
+- Things e, c
+- Econ.EmploymentRelationship(e,c) = "None"
 - Sec2611.IsEligibleEmployee(e,c).AsOf(2011-04-15).Out =?= false
 
 Test: Eligible_Employee_2
-- Thing e
-- Thing c
-- NumberOfEmployees(c) = 2000
-- EmploymentRelationship(e,c) = "Employee"
-- HoursWorkedPerWeek(e,c) = 40
-- IsEmployeeUnder5USC6301(e) = false
-- LessThan50EmployeesWithin75MilesOfWorksite(e,c) = false
-- IsAirlineFlightCrew(e,c) = false
-- ReasonForRequestingLeaveFrom(e,c) = "To adopt a child"
-- DateFamilyLeaveBegins(e,c) = 2011-04-15
+- Things e, c
+- Org.NumberOfEmployees(c) = 2000
+- Econ.EmploymentRelationship(e,c) = "Employee"
+- Econ.HoursWorkedPerWeek(e,c) = 40
+- USC.Tit5.Sec6301.IsEmployeeUnder5USC6301(e) = false
+- USC.Tit29.Sec2611.LessThan50EmployeesWithin75MilesOfWorksite(e,c) = false
+- Econ.IsAirlineFlightCrew(e,c) = false
+- USC.Tit29.Sec2612.ReasonForRequestingLeaveFrom(e,c) = "To adopt a child"
+- USC.Tit29.Sec2611.DateFamilyLeaveBegins(e,c) = 2011-04-15
 - Sec2611.IsEligibleEmployee(e,c).AsOf(2011-04-15).Out =?= true
 
 Test: Eligible_Employee_3
-- Thing e
-- Thing c
-- EmploymentRelationship(e,c) = "Employee"
-- HoursWorkedPerWeek(e,c) = 1
-- IsEmployeeUnder5USC6301(e) = false
-- LessThan50EmployeesWithin75MilesOfWorksite(e,c) = false
-- IsAirlineFlightCrew(e,c) = false
-- DateFamilyLeaveBegins(e,c) = 2011-04-15
+- Things e, c
+- Econ.EmploymentRelationship(e,c) = "Employee"
+- Econ.HoursWorkedPerWeek(e,c) = 1
+- USC.Tit5.Sec6301.IsEmployeeUnder5USC6301(e) = false
+- USC.Tit29.Sec2611.LessThan50EmployeesWithin75MilesOfWorksite(e,c) = false
+- Econ.IsAirlineFlightCrew(e,c) = false
+- USC.Tit29.Sec2611.DateFamilyLeaveBegins(e,c) = 2011-04-15
 - Sec2611.IsEligibleEmployee(e,c).AsOf(2011-04-15).Out =?= false
 
 Test: Eligible_Employee_4
-- Thing e
-- Thing c
-- EmploymentRelationship(e,c) = "Employee"
-- HoursWorkedPerWeek(e,c) = 40
-- IsEmployeeUnder5USC6301(e) = false
-- LessThan50EmployeesWithin75MilesOfWorksite(e,c) = false
-- IsAirlineFlightCrew(e,c) = false
-- DateFamilyLeaveBegins(e,c) = 2011-04-15
+- Things e, c
+- Econ.EmploymentRelationship(e,c) = "Employee"
+- Econ.HoursWorkedPerWeek(e,c) = 40
+- USC.Tit5.Sec6301.IsEmployeeUnder5USC6301(e) = false
+- USC.Tit29.Sec2611.LessThan50EmployeesWithin75MilesOfWorksite(e,c) = false
+- Econ.IsAirlineFlightCrew(e,c) = false
+- USC.Tit29.Sec2611.DateFamilyLeaveBegins(e,c) = 2011-04-15
 - Sec2611.IsEligibleEmployee(e,c).AsOf(2011-04-15).Out =?= true
 
 Test: Eligible_Employee_5    # Airline flight crew
-- Thing e
-- Thing c
-- EmploymentRelationship(e,c) = "Employee"
-- HoursWorkedPerWeek(e,c) = 40
-- IsEmployeeUnder5USC6301(e) = false
-- LessThan50EmployeesWithin75MilesOfWorksite(e,c) = false
-- IsAirlineFlightCrew(e,c) = true
-- DateFamilyLeaveBegins(e,c) = 2011-04-15
+- Things e, c
+- Econ.EmploymentRelationship(e,c) = "Employee"
+- Econ.HoursWorkedPerWeek(e,c) = 40
+- USC.Tit5.Sec6301.IsEmployeeUnder5USC6301(e) = false
+- USC.Tit29.Sec2611.LessThan50EmployeesWithin75MilesOfWorksite(e,c) = false
+- Econ.IsAirlineFlightCrew(e,c) = true
+- USC.Tit29.Sec2611.DateFamilyLeaveBegins(e,c) = 2011-04-15
 - Sec2611.IsEligibleEmployee(e,c).AsOf(2011-04-15).Out =?= "Stub"
 
 Test: Covered_Employer_1
 - Thing c
-- NumberOfEmployees(c) = 2000
+- Org.NumberOfEmployees(c) = 2000
 - Sec2611.IsCoveredEmployer(c).AsOf(2011-04-15).Out =?= true
 
 Test: Covered_Employer_1a
 - Thing c
-- NumberOfEmployees(c) = 2000
+- Org.NumberOfEmployees(c) = 2000
 - Sec2611.IsCoveredEmployer(c).IsEverTrue().Out =?= true
 
 Test: Covered_Employer_2
 - Thing c
-- NumberOfEmployees(c) = 1
+- Org.NumberOfEmployees(c) = 1
 - Sec2611.IsCoveredEmployer(c).AsOf(2011-04-15).Out =?= "Unstated"
 
 Test: Covered_Employer_3
 - Thing c
-- NumberOfEmployees(c) = 1
-- IsGovtAgency(c) = false
+- Org.NumberOfEmployees(c) = 1
+- Org.IsGovtAgency(c) = false
 - Sec2611.IsCoveredEmployer(c).AsOf(2011-04-15).Out =?= false
 
 Test: Time_1
@@ -235,5 +229,4 @@ Test: Time_1
 
 Test: Time_2
 - (new Tbool(true)).CountPastNIntervals(TheYear, 2).AsOf(2012-01-15).Out =?= 2
-
 

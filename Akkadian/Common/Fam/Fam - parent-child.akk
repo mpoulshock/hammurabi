@@ -159,26 +159,25 @@ TdateIn DateCommittedToFinanciallySupport(Thing parent, Thing child)
 
 Test: IsParentOf1
 - Things kid, parent
-- ChildrenOf(parent) = [[kid]]
-- Hammurabi.Fam.IsParentOf(parent,kid).TestOutput =?= "Time.DawnOf True "
+- Fam.ChildrenOf(parent) = [[kid]]
+- Fam.IsParentOf(parent,kid).TestOutput =?= "Time.DawnOf True "
 
 Test: IsParentOf2
 - Things kid, parent
-- FamilyRelationship(parent,kid) = "Biological parent"
-- Hammurabi.Fam.IsParentOf(parent,kid).TestOutput =?= "Time.DawnOf True "
+- Fam.FamilyRelationship(parent,kid) = "Biological parent"
+- Fam.IsParentOf(parent,kid).TestOutput =?= "Time.DawnOf True "
 
 Test: IsParentOf3
 - Things kid, aunt
-- FamilyRelationship(aunt,kid) = "Aunt or uncle"
-- Hammurabi.Fam.IsParentOf(aunt,kid).TestOutput =?= "Time.DawnOf False "
+- Fam.FamilyRelationship(aunt,kid) = "Aunt or uncle"
+- Fam.IsParentOf(aunt,kid).TestOutput =?= "Time.DawnOf False "
 
 Test: IsParentOf4
 - Things kid, parent
-- Hammurabi.Fam.IsParentOf(parent,kid).TestOutput =?= "Time.DawnOf Unstated "
+- Fam.IsParentOf(parent,kid).TestOutput =?= "Time.DawnOf Unstated "
 
 Test: IsParentOf5
 - Things kid, parent
-- ParentsOf(kid) = [[parent]]
-- Hammurabi.Fam.IsParentOf(parent,kid).TestOutput =?= "Time.DawnOf True "
-
+- Fam.ParentsOf(kid) = [[parent]]
+- Fam.IsParentOf(parent,kid).TestOutput =?= "Time.DawnOf True "
 

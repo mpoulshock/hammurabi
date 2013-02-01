@@ -28,7 +28,7 @@ Test: Majority1
 Test: Majority2
 - Thing p
 - DoB(p) = 2000-01-02
-- IsMarried(p) = false
+- Fam.IsMarried(p) = false
 - Ala.Code.Tit26.Sec1_1.ReachedAgeOfMajority(p).AsOf(2019-01-01).Out =?= false
 
 

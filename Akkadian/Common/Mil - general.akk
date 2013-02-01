@@ -96,7 +96,7 @@ InReserveArmedForces(1) assumes InArmedForces(1)
 
 Test: 108379812
 - Things t1, t2
-- InArmedForces(t1) = false
-- Hammurabi.Mil.InArmedForces(t1).TestOutput =?= "Time.DawnOf False "
+- Mil.InArmedForces(t1) = false
+- Mil.InArmedForces(t1).TestOutput =?= "Time.DawnOf False "
 
 
