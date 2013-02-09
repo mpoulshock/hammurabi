@@ -27,18 +27,18 @@ Tbool AreSiblingsInferred(Thing kid1, Thing kid2, Thing parent1, Thing parent2) 
 ##
     
 # Half-siblings
-Tbool AreHalfSiblings(Thing p1, Thing p2) =
+TboolIn AreHalfSiblings(Thing p1, Thing p2) =
     Relationship(p1,p2) == "Half sibling" |~
     Relationship(p2,p1) == "Half sibling"
     # or, share one parent
 
 # Step-siblings
-Tbool AreStepsiblings(Thing p1, Thing p2) =
+TboolIn AreStepsiblings(Thing p1, Thing p2) =
     Relationship(p1,p2) == "Stepsibling" |~
     Relationship(p2,p1) == "Stepsibling"
     
 # Grandparent
-Tbool IsGrandparentOf(Thing p1, Thing p2) =
+TboolIn IsGrandparentOf(Thing p1, Thing p2) =
     peopleBut(p1,p2).Exists(IsGrandparentInferred(p1,_,p2)) |
     Relationship(p1,p2) == "Grandparent" |~
     Relationship(p2,p1) == "Grandchild"
@@ -48,7 +48,7 @@ Tbool IsGrandparentInferred(Thing grandparent, Thing parent, Thing person) =
     IsParentOf(grandparent,parent)
 
 # Great-grandparent
-Tbool IsGreatGrandparentOf(Thing p1, Thing p2) =
+TboolIn IsGreatGrandparentOf(Thing p1, Thing p2) =
     peopleBut(p1,p2).Exists(IsGreatGrandparentInferred(p1,_,p2)) |
     Relationship(p1,p2) == "Great-grandparent" |~
     Relationship(p2,p1) == "Great-grandchild"
@@ -58,12 +58,12 @@ Tbool IsGreatGrandparentInferred(Thing ggparent, Thing parent, Thing person) =
     IsGrandparentOf(ggparent,parent)
     
 # Great-great-grandparent
-Tbool IsGreatGreatGrandparentOf(Thing p1, Thing p2) =
+TboolIn IsGreatGreatGrandparentOf(Thing p1, Thing p2) =
     Relationship(p1,p2) == "Great-great-grandparent" |~
     Relationship(p2,p1) == "Great-great-grandchild"
         
 # Aunt or uncle
-Tbool IsAuntOrUncleOf(Thing p1, Thing p2) =
+TboolIn IsAuntOrUncleOf(Thing p1, Thing p2) =
     peopleBut(p1,p2).Exists(IsAuntUncleInferred(p1,_,p2)) |
     Relationship(p1,p2) == "Aunt or uncle" |~
     Relationship(p2,p1) == "Niece or nephew"
@@ -73,7 +73,7 @@ Tbool IsAuntUncleInferred(Thing auntUncle, Thing parent, Thing person) =
     AreSiblings(parent,auntUncle)
 
 # Great aunt or uncle
-Tbool IsGreatAuntOrUncleOf(Thing p1, Thing p2) =
+TboolIn IsGreatAuntOrUncleOf(Thing p1, Thing p2) =
     peopleBut(p1,p2).Exists(IsGreatAuntUncleInferred(p1,_,p2)) |
     Relationship(p1,p2) == "Great aunt or uncle" |~
     Relationship(p2,p1) == "Grand niece or nephew"
@@ -83,7 +83,7 @@ Tbool IsGreatAuntUncleInferred(Thing auntUncle, Thing parent, Thing person) =
     IsAuntOrUncleOf(auntUncle,parent)
 
 # Great-great aunt or uncle
-Tbool IsGreatGreatAuntOrUncleOf(Thing p1, Thing p2) =
+TboolIn IsGreatGreatAuntOrUncleOf(Thing p1, Thing p2) =
     Relationship(p1,p2) == "Great-great aunt or uncle" |~
     Relationship(p2,p1) == "Great-grand niece or nephew"
         
@@ -93,12 +93,12 @@ Tbool IsCousinOf(Thing p1, Thing p2) =
     IsNonFirstCousinOf(p1, p2)
         
 # First cousins
-Tbool IsFirstCousinOf(Thing p1, Thing p2) =
+TboolIn IsFirstCousinOf(Thing p1, Thing p2) =
     Relationship(p1,p2) == "First cousin" |~
     Relationship(p2,p1) == "First cousin"
         
 # Cousins, but not first cousins
-Tbool IsNonFirstCousinOf(Thing p1, Thing p2) =
+TboolIn IsNonFirstCousinOf(Thing p1, Thing p2) =
     Relationship(p1,p2) == "Other cousin" |~
     Relationship(p2,p1) == "Other cousin"
         

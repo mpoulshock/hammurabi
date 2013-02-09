@@ -33,7 +33,7 @@ namespace Hammurabi
         /// <summary>
         /// Adds a thing to the ThingBase, if it's not already there.  Returns the Thing itself.
         /// </summary>
-        public static Thing AddThing (Thing thing)
+        public static Thing AddThing(Thing thing)
         {
             // If a Thing with that name exists, return it
             foreach (Thing t in ThingBase) 
@@ -47,7 +47,7 @@ namespace Hammurabi
             // Else (if thing does not exist), add and return it
             if (IsAddable(thing)) 
             {
-                ThingBase.Add (thing);
+                ThingBase.Add(thing);
             }
             return thing;
         }
@@ -55,7 +55,7 @@ namespace Hammurabi
         /// <summary>
         /// Adds a thing to the ThingBase, based on the uniqueness of its name.  Returns the Thing itself.
         /// </summary>
-        new public static Thing AddThing (string thingName)
+        new public static Thing AddThing(string thingName)
         {
             Thing thing = new Thing(thingName);
             
@@ -72,7 +72,7 @@ namespace Hammurabi
             
             if (IsAddable(thing)) 
             {
-                ThingBase.Add (thing);
+                ThingBase.Add(thing);
             }
             return thing;
         }
@@ -102,23 +102,5 @@ namespace Hammurabi
         {
             return ThingBase.Count;
         }
-        
-        /// <summary>
-        /// Determine whether a Thing has been referenced in any fact.
-        /// </summary>
-        //        public static bool ThingExists(string name)
-        //        {
-        //            foreach (Fact f in FactBase)
-        //            {
-        //                if (f.subject.Id == name ||
-        //                    f.directObject1.Id == name ||
-        //                    f.directObject2.Id == name)
-        //                {
-        //                    return true;
-        //                }
-        //            }
-        //
-        //            return false;
-        //        }
     }
 }

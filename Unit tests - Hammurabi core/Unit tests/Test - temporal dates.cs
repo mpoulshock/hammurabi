@@ -183,7 +183,19 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tdate result = td.AddYears(-3);
             Assert.AreEqual("Time.DawnOf 1/1/1997 12:00:00 AM ", result.TestOutput);        
         }
+
+        // DayDiff
+        // When the earlier date is put after the prior date, DayDiff returns a negative number.
         
+        [Test]
+        public void Tdate_DayDiff_2 ()
+        {
+            Tdate td1 = new Tdate(2010,1,1);
+            Tdate td2 = new Tdate(2000,1,1);
+            Tnum result = Tdate.DayDiff(td1,td2);
+            Assert.AreEqual("Time.DawnOf -3653 ", result.TestOutput);        
+        }
+
         // MakeTnum
         
         [Test]

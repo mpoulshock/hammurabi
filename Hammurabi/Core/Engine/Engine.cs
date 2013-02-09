@@ -77,7 +77,23 @@ namespace Interactive
             bool allDone = true;
             int percent = 0;
             Facts.Fact theNextFact = new Facts.Fact("", null, null, null);
-            
+
+            // Pre-evaluate each goal in order to cache the results of 
+            // each evaluted function in the FactBase.  This will make 
+            // look-ahead short-circuiting work in the interview.
+            // There will obviously be performance implications to
+            // evaluating each goal twice.  However, a four-line fix 
+            // to a vexing problem feels delightful.  And the caching
+            // may end up making things tolerable after all.
+            //
+            // But note that the look-ahead short-circuiting issue is not
+            // completely solved: it will still fail in large rules where
+            // the intermediate conditions are not checked/pre-evaluated.
+            foreach (Facts.Fact g in goals)
+            {
+                g.Value();
+            }
+
             // Prepare to look for unknown facts
             Facts.GetUnknowns = true;
             Facts.Unknowns.Clear();

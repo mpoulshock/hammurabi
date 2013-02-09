@@ -105,6 +105,8 @@ namespace Interactive
         {
             // Put any facts to be asserted here, like this:
             // Facts.Assert(e, r.HoursWorkedPerWeek, 44);
+//            Thing A = Facts.AddThing("A");
+//            Facts.Assert(A,"Sandbox.LookAheadProngB2",true);
         }
         
         /// <summary>

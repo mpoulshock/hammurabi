@@ -15,13 +15,13 @@ namespace HammurabiWebService
         {
             // Assert facts and combine them into a list
             TemporalValue v1 = new TemporalValue("Single");
-            Factoid fact1 = new Factoid("Tstr","FedTaxFilingStatus","Jim","","",new List<TemporalValue>(){v1});
+            Factoid fact1 = new Factoid("Tstr","USC.Tit26.Sec2.FedTaxFilingStatus","Jim","","",new List<TemporalValue>(){v1});
             List<Factoid> facts = new List<Factoid>(){fact1};
 
             // Define goals to be sought, and combine them into a list
-            Factoid goal1 = new Factoid("Tnum","ThresholdAmount","Jim","","");
-            Factoid goal2 = new Factoid("Tnum","ApplicablePercentage","Jim","","");
-            Factoid goal3 = new Factoid("Tbool","IsDependentOf","Kid","Dad","");
+            Factoid goal1 = new Factoid("Tnum","USC.Tit26.Sec151.ThresholdAmount","Jim","","");
+            Factoid goal2 = new Factoid("Tnum","USC.Tit26.Sec151.ApplicablePercentage","Jim","","");
+            Factoid goal3 = new Factoid("Tbool","USC.Tit26.Sec152.IsDependentOf","Kid","Dad","");
             List<Factoid> goals = new List<Factoid>(){goal1,goal2,goal3};
 
             // Assemble a mock request to the web service
@@ -38,6 +38,14 @@ namespace HammurabiWebService
         {
             // Start timer 
             DateTime startTime = DateTime.Now;
+
+            // Pre-evaluate each goal to enable look-ahead short circuiting.
+            // See Hammurabi | Core | Engine.cs, line ~81, for an explanation.
+            foreach (Factoid g in request.Goals)
+            {
+                Facts.Fact gb = new Facts.Fact(g.Relationship, g.Arg1, g.Arg2, g.Arg3);
+                gb.Value();
+            }
 
             // Start a fresh session
             Facts.Clear();

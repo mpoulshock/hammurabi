@@ -30,46 +30,37 @@ namespace Hammurabi.UnitTests.CoreFcns
         // Fact default assumption issue
         // Should some facts be assumed false?  Not doing so requires a host of 
         // facts to be asserted in order to make the situation explicit...
-  
-        [Test]
-        public void AllXThat2 ()
-        {
-            Facts.Clear();
-            
-            Thing P1 = new Thing("P1");
-            Thing P3 = new Thing("P3");
-            Thing P4 = new Thing("P4");
-            
-            Facts.Assert(P1, "IsParentOf", P3);
-            Facts.Assert(P1, "IsParentOf", P4);
-//            Facts.Assert(P1, "IsParentOf", P1, false);  // Test fails when this is toggled out!!!
-
-            Tset people = new Tset(P1,P3,P4);
-            Tset result = people.Filter( _ => IsParentOf(P1,_));
-            
-            Assert.AreEqual("Time.DawnOf P3, P4 ", 
-                            result.TestOutput);
-        }
-        
-        private static Tbool IsParentOf(Thing p1, Thing p2)
-        {
-            return Facts.QueryTvar<Tbool>("IsParentOf", p1, p2);
-        }
+        // This is no longer an issue, because you can avoid the problem by 
+        // specifying the set you'd like to evaluate.  But I'm keeping the 
+        // scenario here to record my train of thought.
+//  
+//        [Test]
+//        public void AllXThat2 ()
+//        {
+//            Facts.Clear();
+//            
+//            Thing P1 = new Thing("P1");
+//            Thing P3 = new Thing("P3");
+//            Thing P4 = new Thing("P4");
+//            
+//            Facts.Assert(P1, "IsParentOf", P3);
+//            Facts.Assert(P1, "IsParentOf", P4);
+////            Facts.Assert(P1, "IsParentOf", P1, false);  // Test fails when this is toggled out!!!
+//
+//            Tset people = new Tset(P1,P3,P4);
+//            Tset result = people.Filter( _ => IsParentOf(P1,_));
+//            
+//            Assert.AreEqual("Time.DawnOf P3, P4 ", 
+//                            result.TestOutput);
+//        }
+//        
+//        private static Tbool IsParentOf(Thing p1, Thing p2)
+//        {
+//            return Facts.QueryTvar<Tbool>("IsParentOf", p1, p2);
+//        }
         
         // Fact default assumption issue - another example...
-        
-        [Test]
-        public void UnknownEmploymentRelationship () 
-        {
-            Facts.Clear();
-            Thing p = new Thing("p");
-            Thing c = new Thing("c");
-            Thing c2 = new Thing("c2");
-            Facts.Assert(p, "EmploymentRelationship", c2, "Employee");
-            Tbool result = Econ.IsEmployedBy(p,c);  // returns Unknown b/c this relationship has not been asserted
-            Assert.AreEqual("Time.DawnOf False ", result.TestOutput);        
-        }
-        
+                
         [Test]
         public void UnknownExistenceDueToUnknownFact ()  
         {
@@ -86,17 +77,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         {
             return theSet.Exists( _ => Econ.IsEmployedBy(_,c));
         }
-        
-        // When the earlier date is put after the prior date, should DayDiff return a negative number?
-        
-        [Test]
-        public void Tdate_DayDiff_2 ()
-        {
-            Tdate td1 = new Tdate(2010,1,1);
-            Tdate td2 = new Tdate(2000,1,1);
-            Tnum result = Tdate.DayDiff(td1,td2);
-            Assert.AreEqual("Time.DawnOf 3653 ", result.TestOutput);        
-        }
+
         
         // When making a running count of the true subintervals with in (say) a year, 
         // what to do with the last subinterval before a new year starts...?

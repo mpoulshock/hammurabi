@@ -113,14 +113,9 @@ Test: SubsecC_UnnecessaryQuestion
 - Things jamie, mom, dad
 - DoB(jamie) = 1977-02-03
 - Fam.ParentsOf(jamie) = [[mom, dad]]
-# - ChildrenOf(mom) = [[jamie]]        # Asked unnecessarily b/c currently no look-ahead for |~ (IsParentOf)
 - Gender(mom) = "Female"
 - Gender(dad) = "Male"
 - CountryLocation(mom) = "United States"
 - BirthCountry(jamie) = "United States"
 - USC.Tit8.Sec1409.SubsecCApplies(jamie).TestOutput =?= "Time.DawnOf False "
-
-
-
-
 

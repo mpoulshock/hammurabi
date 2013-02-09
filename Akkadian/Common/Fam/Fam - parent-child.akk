@@ -72,7 +72,7 @@ Tbool IsChildOf(Thing p1, Thing p2) =
     IsParentOf(p2,p1)
             
 # Biological parent
-Tbool IsBiologicalParentOf(Thing p1, Thing p2) =
+TboolIn IsBiologicalParentOf(Thing p1, Thing p2) =
     Relationship(p1,p2) == "Biological parent" |~
     Relationship(p2,p1) == "Biological child"
 
@@ -81,17 +81,17 @@ Tbool IsBiologicalParentOf(Thing p1, Thing p2) =
 FamilyRelationship(1,2) = "Biological parent" assumes FamilyRelationship(2,1) = "Biological child"
     
 # Adoptive parent
-Tbool IsAdoptiveParentOf(Thing p1, Thing p2) =
+TboolIn IsAdoptiveParentOf(Thing p1, Thing p2) =
     Relationship(p1,p2) == "Adoptive parent" |~
     Relationship(p2,p1) == "Adopted child"
 
 # Foster parent
-Tbool IsFosterParentOf(Thing p1, Thing p2) =
+TboolIn IsFosterParentOf(Thing p1, Thing p2) =
     Relationship(p1,p2) == "Foster parent" |~
     Relationship(p2,p1) == "Foster child"
 
 # Stepparent
-Tbool IsStepparentOf(Thing p1, Thing p2) =
+TboolIn IsStepparentOf(Thing p1, Thing p2) =
     Relationship(p1,p2) == "Stepparent" |~
     Relationship(p2,p1) == "Stepchild"
 

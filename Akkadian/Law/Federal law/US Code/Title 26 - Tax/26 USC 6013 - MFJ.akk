@@ -8,14 +8,14 @@
 # MARRIED FILING JOINTLY
 
 # Two married taxpayers are filing a joint return.
-Tbool AreMFJ(Thing p1, Thing p2) =
+TboolIn AreMFJ(Thing p1, Thing p2) =
     Fam.AreMarried(p1,p2) &
     ...
         Sec2.FilingStatus(p1) == "Married filing jointly" |~
         Sec2.FilingStatus(p2) == "Married filing jointly"
 
 # Person is married filing jointly
-Tbool IsMFJ(Thing p) =
+TboolIn IsMFJ(Thing p) =
     Sec2.FilingStatus(p) == "Married filing jointly" |~        # Person indicated MFJ
     Fam.SpousesOf(p).Exists(AreMFJ(p,_))                        # Spouse indicated MFJ
 

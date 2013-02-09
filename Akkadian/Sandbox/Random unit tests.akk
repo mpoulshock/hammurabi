@@ -1,9 +1,101 @@
 # Namespace:    Hammurabi.Sandbox
 # Summary:      A host of random unit tests
-# Updated:      2012-10-19
+# Updated:      2013-02-03
 # Author:       Michael Poulshock
 
+
+# INTERACTIVE TEST OF LOOK-AHEAD SHORT-CIRCUITING
+
+# To determine whether the technique of (1) caching function results and 
+# (2) computing goals while Facts.GetUnknowns = false, will effectively
+# implement look-ahead short-circuiting for &&, ||, and |~.
+
+# Currently, look-ahead short-circuiting works when the rule conclusion is
+# declared by TvarIn, because this caches the function value in the FactBase.
+
+# TODO: Consider caching the result of all function calls to mitigate the 
+# look-ahead short-circuit issue.  (It won't solve it completely because 
+# large rules can still fail to short-circuit.)
+
+# Test of & and |
+TboolIn LookAheadShortCircuit1(Thing A) =
+	LookAheadProngB(A) &
+	TboolIn LookAheadProngA(A) &
+	TboolIn LookAheadProngC(A)
+	
+TboolIn LookAheadProngB(Thing A) =		# TboolIn -> short-circuits;  Tbool -> doesn't
+	TboolIn LookAheadProngB1(A) |
+	TboolIn LookAheadProngB2(A)
+
+# Test of |~
+TboolIn LookAheadShortCircuit2(Thing A, Thing B) =
+	IsBioParOf(A,B) |
+	TboolIn LookAheadProngA(A)
+	
+TboolIn IsBioParOf(Thing p1, Thing p2) =	# TboolIn -> short-circuits;  Tbool -> doesn't
+    Fam.Relationship(p1,p2) == "Parent" |~
+    Fam.Relationship(p2,p1) == "Child"
     
+
+# INTERVIEW SEQUENCE WITH |~ OPERATOR - NOT WORKING
+
+# Diagnosis: The |~ operator (^ in C#) does not short-circuit like
+# && and ||.  Those operators cause AND and OR to ignore irrelevant
+# interview branches.  With |~ however, both Tbool inputs to that 
+# function are evaluated before the logic within the function is
+# applied.
+
+# PARTIAL FIX: Use small rules and TvarIn to mitigate the look-ahead
+# short-circuit issue.
+
+# Interview sequence fails - conclusions correct
+# Asks 918b when 918a has already been asked (unless rule has been proven)
+Tbool Test918a(Thing a) =
+    ...
+        TboolIn TestMethod918a(a) |~
+        TboolIn TestMethod918b(a)
+    & 
+    Imm.IsUSNational(a)
+
+
+# INTERVIEW SEQUENCE WITH |~ OPERATOR - WORKING
+    
+Tbool AnotherMethod(Thing p) =
+    TboolIn TestMethod101(p) |~
+    TboolIn TestMethod102(p)
+
+# Note: These tests validate the logic, not the interview sequence. But
+#       that sequence was tested and is also working properly (2012-08-11).
+
+Test: 171824320
+- Thing p
+- Sandbox.TestMethod101(p) = new Tbool(Hstate.Unstated)
+- Sandbox.TestMethod102(p) = false
+- Sandbox.AnotherMethod(p).TestOutput =?= "Time.DawnOf False "
+
+Test: 580982293
+- Thing p
+- Sandbox.TestMethod101(p) = new Tbool(Hstate.Unstated)
+- Sandbox.TestMethod102(p) = true
+- Sandbox.AnotherMethod(p).TestOutput =?= "Time.DawnOf True "
+
+Test: 288489417
+- Thing p
+- Sandbox.TestMethod101(p) = Tbool(?)
+- Sandbox.TestMethod102(p) = Tbool(?)
+- Sandbox.AnotherMethod(p).TestOutput =?= "Time.DawnOf Uncertain "
+
+Test: 798236451
+- Thing p
+- Sandbox.TestMethod101(p) = false
+- Sandbox.AnotherMethod(p).TestOutput =?= "Time.DawnOf False "
+
+Test: 416036083
+- Thing p
+- Sandbox.TestMethod101(p) = true
+- Sandbox.AnotherMethod(p).TestOutput =?= "Time.DawnOf True "
+
+
 # TEST OF AKKADIAN COMPILER - METHOD SIGNATURES
 
 # Fail:
@@ -54,76 +146,8 @@ Tbool TimeError1(Thing t) =
 # Poor performance    
 Tbool TimeError2(Thing t) =
     (new Tbool(true)).ElapsedYearsInSlidingWindow(10, "Year") >= 7
-    
 
-# INTERVIEW SEQUENCE WITH |~ OPERATOR - NOT WORKING
-
-# Diagnosis: The |~ operator (^ in C#) does not short-circuit like
-# && and ||.  Those operators cause AND and OR to ignore irrelevant
-# interview branches.  With |~ however, both Tbool inputs to that 
-# function are evaluated before the logic within the function is
-# applied.
-
-# Temporary fix: Use assumption rules where possible to stave off
-# investigations into irrelevant branches.
-
-# Needed long-term fix: Make Tvars into Func<Tvar> so they are invoked
-# lazily.
-
-# Sequence fails - conclusions correct
-# Only asks FamRel reverse if first FamRel test is true!
-Tbool Test917d(Thing a, Thing b) =
-    Fam.IsBiologicalParentOf(a,b) &
-    Imm.IsUSNational(a)                # Adding this condition causes interview to ask FamRel in both directions!
-    
-# Interview sequence fails - conclusions correct
-# Asks 918b when 918a has already been asked (unless rule has been proven)
-Tbool Test918a(Thing a) =
-    ...
-        TboolIn TestMethod918a(a) |~
-        TboolIn TestMethod918b(a)
-    &    # Same problem when this is |
-    Imm.IsUSNational(a)
-
-
-# INTERVIEW SEQUENCE WITH |~ OPERATOR - WORKING
-    
-Tbool AnotherMethod(Thing p) =
-    TboolIn TestMethod101(p) |~
-    TboolIn TestMethod102(p)
-
-# Note: These tests validate the logic, not the interview sequence. But
-#       that sequence was tested and is also working properly (2012-08-11).
-
-Test: 171824320
-- Thing p
-- Sandbox.TestMethod101(p) = new Tbool(Hstate.Unstated)
-- Sandbox.TestMethod102(p) = false
-- Sandbox.AnotherMethod(p).TestOutput =?= "Time.DawnOf False "
-
-Test: 580982293
-- Thing p
-- Sandbox.TestMethod101(p) = new Tbool(Hstate.Unstated)
-- Sandbox.TestMethod102(p) = true
-- Sandbox.AnotherMethod(p).TestOutput =?= "Time.DawnOf True "
-
-Test: 288489417
-- Thing p
-- Sandbox.TestMethod101(p) = Tbool(?)
-- Sandbox.TestMethod102(p) = Tbool(?)
-- Sandbox.AnotherMethod(p).TestOutput =?= "Time.DawnOf Uncertain "
-
-Test: 798236451
-- Thing p
-- Sandbox.TestMethod101(p) = false
-- Sandbox.AnotherMethod(p).TestOutput =?= "Time.DawnOf False "
-
-Test: 416036083
-- Thing p
-- Sandbox.TestMethod101(p) = true
-- Sandbox.AnotherMethod(p).TestOutput =?= "Time.DawnOf True "
-
-
+	
 # PERIOD END VALUE
 
 Test: PeriodEndVal1

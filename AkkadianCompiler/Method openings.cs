@@ -41,7 +41,9 @@ namespace Akkadian
                 // TboolInSym (always has two arguments)
                 line = Regex.Replace(line, 
                                      @"TboolInSym (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@"), ?(?<argtyp2>"+wrd+@" )(?<arg2>"+wrd+@")\)",
-                                     "        public static Tbool ${fcn}(${argtyp1} ${arg1}, ${argtyp2} ${arg2})\r\n        {\r\n            return Facts.Sym(${arg1}, \""+space+"${fcn}\", ${arg2});");  
+                                     "        public static Tbool ${fcn}(${argtyp1} ${arg1}, ${argtyp2} ${arg2})\r\n" +
+                                     "        {\r\n" +
+                                     "            return Facts.Sym(${arg1}, \""+space+"${fcn}\", ${arg2});");  
                 
                 // Functions with 1-3 arguments
                 line = Regex.Replace(line, 
@@ -49,7 +51,8 @@ namespace Akkadian
                                      "        public static ${type} ${fcn}(${argtyp1} ${arg1}${comma1}${argtyp2} ${arg2}${comma2}${argtyp3} ${arg3})\r\n        {\r\n" +
                                      "        return Facts.QueryTvar<${type}>(\""+space+"${fcn}\", ${arg1}${comma1}${arg2}${comma2}${arg3});");  
             }
-            
+
+            // TODO: Delete. Inputs to be declared only on separate line, not w/in a rule.
             // Is rule condition line, not rule conclusion
             else                
             {
@@ -71,24 +74,36 @@ namespace Akkadian
         public static string CreateIntermediateAssertion(string line, string space)
         {
             space = Util.NamespaceConvert(space);
-
+            
             return Regex.Replace(line, 
-                @"(?<typ>"+typs+@")In(?<sym>Sym)?(?<quest>\?)? (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@")(?<comma1>, ?)?(?<argtyp2>"+wrd+@" )?(?<arg2>"+wrd+@")?(?<comma2>, ?)?(?<argtyp3>"+wrd+@" )?(?<arg3>"+wrd+@")?\) =",
-                "        public static ${typ} ${fcn}(${argtyp1} ${arg1}${comma1} ${argtyp2} ${arg2}${comma2} ${argtyp3} ${arg3})\r\n" +
-                "        {\r\n" +
-                "            RulePreCheckResponse r = ShortCircuitValue<${typ}>(\""+space+"${fcn}\",\"${sym}\",\"${quest}\",${arg1}${comma1} ${arg2}${comma2} ${arg3});\r\n" +
-                "            if (r.shouldShortCircuit) return (${typ})r.val;\r\n\r\n");
+                                 @"(?<typ>"+typs+@")(In)?(?<sym>Sym)?(?<quest>\?)? (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@")(?<comma1>, ?)?(?<argtyp2>"+wrd+@" )?(?<arg2>"+wrd+@")?(?<comma2>, ?)?(?<argtyp3>"+wrd+@" )?(?<arg3>"+wrd+@")?\) =",
+                                 "        public static ${typ} ${fcn}(${argtyp1} ${arg1}${comma1} ${argtyp2} ${arg2}${comma2} ${argtyp3} ${arg3})\r\n" +
+                                 "        {\r\n" +
+                                 "            RulePreCheckResponse r = ShortCircuitValue<${typ}>(\""+space+"${fcn}\",\"${sym}\",\"${quest}\",${arg1}${comma1} ${arg2}${comma2} ${arg3});\r\n" +
+                                 "            if (r.shouldShortCircuit) return (${typ})r.val;\r\n\r\n");
+
+//            return Regex.Replace(line, 
+//                @"(?<typ>"+typs+@")In(?<sym>Sym)?(?<quest>\?)? (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@")(?<comma1>, ?)?(?<argtyp2>"+wrd+@" )?(?<arg2>"+wrd+@")?(?<comma2>, ?)?(?<argtyp3>"+wrd+@" )?(?<arg3>"+wrd+@")?\) =",
+//                "        public static ${typ} ${fcn}(${argtyp1} ${arg1}${comma1} ${argtyp2} ${arg2}${comma2} ${argtyp3} ${arg3})\r\n" +
+//                "        {\r\n" +
+//                "            RulePreCheckResponse r = ShortCircuitValue<${typ}>(\""+space+"${fcn}\",\"${sym}\",\"${quest}\",${arg1}${comma1} ${arg2}${comma2} ${arg3});\r\n" +
+//                "            if (r.shouldShortCircuit) return (${typ})r.val;\r\n\r\n");
         }
 
         /// <summary>
-        /// Generates the c# line that caches the result of the method.
+        /// Generates the c# line that caches the result of the method (comes at the end of the method).
         /// </summary>
         public static string MethodCacheLine(string line, string space)
         {
             space = Util.NamespaceConvert(space);
 
+//            return Regex.Replace(line, 
+//                                 @"(?<typ>"+typs+@")In(?<sym>Sym)?(?<quest>\?)? (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@")(?<comma1>, ?)?(?<argtyp2>"+wrd+@" )?(?<arg2>"+wrd+@")?(?<comma2>, ?)?(?<argtyp3>"+wrd+@" )?(?<arg3>"+wrd+@")?\) =",
+//                                 "            if (!RESULT.IsEverUnstated) Facts.Assert" +
+//                                 "(${arg1}, \""+space+"${fcn}\"${comma1}${arg2}${comma2}${arg3}, RESULT);\r\n");
+     
             return Regex.Replace(line, 
-                                 @"(?<typ>"+typs+@")In(?<sym>Sym)?(?<quest>\?)? (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@")(?<comma1>, ?)?(?<argtyp2>"+wrd+@" )?(?<arg2>"+wrd+@")?(?<comma2>, ?)?(?<argtyp3>"+wrd+@" )?(?<arg3>"+wrd+@")?\) =",
+                                 @"(?<typ>"+typs+@")(In)?(?<sym>Sym)?(?<quest>\?)? (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@")(?<comma1>, ?)?(?<argtyp2>"+wrd+@" )?(?<arg2>"+wrd+@")?(?<comma2>, ?)?(?<argtyp3>"+wrd+@" )?(?<arg3>"+wrd+@")?\) =",
                                  "            if (!RESULT.IsEverUnstated) Facts.Assert" +
                                  "(${arg1}, \""+space+"${fcn}\"${comma1}${arg2}${comma2}${arg3}, RESULT);\r\n");
         }

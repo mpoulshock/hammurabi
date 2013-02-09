@@ -296,13 +296,18 @@ namespace Akkadian
         {
             // First, look for rules that require intermediate assertion checks
             if (Util.IsInputRule(line) && line.TrimEnd().EndsWith("="))
+//            if (Util.Depth(line) == 0 && 
+//                Util.StartsWithAny(line, "Tbool","Tnum","Tstr","Tset","Tdate") != "" && 
+//                line.TrimEnd().EndsWith("="))
+                // if you toggle the above lines in, it no longer makes fcns for rules w/ 0 params
+                // b/c it doesn't get to CreateMainRule()
             {
                 // Note: These set class-level variables!
                 cacheRule = true;
                 methodCacheLine = TransformMethod.MethodCacheLine(line, space);
 
                 // Do the conversion
-                line = TransformMethod.CreateIntermediateAssertion(line, space);  // TODO: send in via param  
+                line = TransformMethod.CreateIntermediateAssertion(line, space);
             }
             // Else, process all other rules
             else if (Util.IsMainRule(line))
