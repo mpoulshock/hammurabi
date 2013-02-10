@@ -34,10 +34,14 @@ Tbool FormDueByCourtClerk(Thing r, Thing p, Thing t) =
         offense == "Racketeering"
 
     Tstr corpNature = 
-        TstrIn NatureOrCorporatePurpose(r)
+        NatureOrCorporatePurpose(r)
 
     # p is the one who posted bond, not the offender but...
     Tstr offense = 
-        TstrIn CriminalOffenseAtIssue(p)    
+        CriminalOffenseAtIssue(p)    
 
+		
+TstrIn NatureOrCorporatePurpose(Thing r)
+
+TstrIn CriminalOffenseAtIssue(Thing p)
 

@@ -39,12 +39,18 @@ TdateIn DateOf(Thing transfer)
 
 # Transferor (giver)
 Thing Transferor(Thing transfer) =
-    TsetIn Transferors(transfer).ToThing
+    Transferors(transfer).ToThing
+
+# Set of transferors
+TsetIn Transferors(Thing transfer)
 
 # Transferee (receiver)
 Thing Transferee(Thing transfer) =
-    TsetIn Transferees(transfer).ToThing
+    Transferees(transfer).ToThing
 
+# Set of transferees
+TsetIn Transferees(Thing transfer)
+	
 # How the item was transferred
 TstrIn TransferMethod(Thing transfer)
 

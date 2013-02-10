@@ -6,8 +6,5 @@
 
 
 # Gross income
-Tnum GrossIncome(Thing p) =
-    TnumIn GrossIncome(p)
-
-    
+TnumIn GrossIncome(Thing p)    
 

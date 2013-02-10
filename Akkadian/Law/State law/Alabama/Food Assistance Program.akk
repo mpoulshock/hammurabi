@@ -59,7 +59,7 @@ Tbool MeetsWorkReqs(Thing p, Tset householdMembers) =
         Econ.MentallyUnfitForEmployment(p) |
         Fam.IsPregnant(p) |
         householdMembers.Exists(CaresForAsDependent(p,_)) |  
-        TboolIn ComplyingWithJOBSOrUCB(p) |
+        # ComplyingWithJOBSOrUCB(p) |
         Fam.CaresForIncapacitatedPerson(p) |
         Edu.IsStudent(p) |
         InDrugOrAlcoholTreatmentProg(p) |
@@ -67,7 +67,7 @@ Tbool MeetsWorkReqs(Thing p, Tset householdMembers) =
         Age(p) > 50
     
     Tbool meetsReqs =
-        TboolIn RegisteredForWorkInAlabama(p) &
+        # RegisteredForWorkInAlabama(p) &
         if !Econ.IsEmployed(p) then noFaultUnemployed &
         !hasReachedAssistanceLimit
         

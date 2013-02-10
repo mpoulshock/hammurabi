@@ -52,19 +52,6 @@ namespace Akkadian
                                      "        return Facts.QueryTvar<${type}>(\""+space+"${fcn}\", ${arg1}${comma1}${arg2}${comma2}${arg3});");  
             }
 
-            // TODO: Delete. Inputs to be declared only on separate line, not w/in a rule.
-            // Is rule condition line, not rule conclusion
-            else                
-            {
-                // TboolInSym (always has two arguments)
-                line = Regex.Replace(line, @"TboolInSym (?<fcn>"+wrd+@")\((?<arg1>"+wrd+@"),(?<arg2>"+wrd+@")\)", 
-                                     "Facts.Sym(${arg1}, \""+space+"${fcn}\", ${arg2})");  
-                
-                // Functions with 1-3 arguments
-                line = Regex.Replace(line, @"(?<type>"+typs+@")In (?<fcn>"+wrd+@")\((?<arg1>"+wrd+@")(?<comma1>, ?)?(?<arg2>"+wrd+@")?(?<comma2>, ?)?(?<arg3>"+wrd+@")?\)", 
-                                     "Facts.QueryTvar<${type}>(\""+space+"${fcn}\", ${arg1}${comma1}${arg2}${comma2}${arg3})"); 
-            }
-            
             return line;
         }
 

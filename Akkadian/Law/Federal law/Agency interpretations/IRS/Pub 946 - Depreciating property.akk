@@ -9,10 +9,18 @@
 # >> Can {1} depreciate {2}?
 TboolIn CanDepreciateProperty(Thing person, Thing property) =
     MeetsOwnershipTest(person, property) &
-    TboolIn UsesPropertyInBusiness(person, property) &
-    TboolIn HasDeterminableUsefulLife(property) &
-    TboolIn ExpectedLifeOfMoreThanOneYear(property)
-    
+    UsesPropertyInBusiness(person, property) &
+    HasDeterminableUsefulLife(property) &
+    ExpectedLifeOfMoreThanOneYear(property)
+
+# >>Does {1} expect to use {2} in the course of business?
+TboolIn UsesPropertyInBusiness(Thing person, Thing property)
+
+# >>Does {1} have a determinable useful life?
+TboolIn HasDeterminableUsefulLife(Thing property)
+
+# >>Does {1} have an expected life of more than one year?
+TboolIn ExpectedLifeOfMoreThanOneYear(Thing property)   
     
 Tbool MeetsOwnershipTest(Thing person, Thing property) =
     Prop.Owns(person, property) |
@@ -25,21 +33,21 @@ Tbool MeetsOwnershipTest(Thing person, Thing property) =
 Tbool MustUseADS(Thing person, Thing property) =
     ...
         IsListedProperty(person, property) &
-        TnumIn PercentageQualifiedBusinessUse(person, property) <= 50
+        PercentageQualifiedBusinessUse(person, property) <= 50
     |
     ...
         Prop.IsTangibleProperty(property) &
-        TnumIn PercentageUseOutsideUS(person, property) > 50
+        PercentageUseOutsideUS(person, property) > 50
     |
-    TboolIn IsTaxExemptUseProperty(property) |
-    TboolIn IsTaxExemptBondFinancedProperty(property) |
+    IsTaxExemptUseProperty(property) |
+    IsTaxExemptBondFinancedProperty(property) |
     ...
-        TnumIn PercentageUseInFarming(person, property) > 50 &
-        TboolIn PlacedInServiceWhenElectedNotToApplyUniformCapitalizationRules(person, property)
+        PercentageUseInFarming(person, property) > 50 &
+        PlacedInServiceWhenElectedNotToApplyUniformCapitalizationRules(person, property)
     |
     ...
         Prop.IsImported(property) &
-        TboolIn ImportedFromCountryWithEOTradeRestrictions(property)
+        ImportedFromCountryWithEOTradeRestrictions(property)
         
 
 # >>Does/did {1} elect to use the ADS depreciation system?  (See IRS Pub. 946, p. 36 for conditions.)
@@ -48,6 +56,7 @@ TboolIn ElectsToUseADS(Thing person, Thing property)
 
 # WHICH GDS PROPERTY CLASS APPLIES?
 
+##
 # Applicable GDS property class
 Tstr GDSPropertyClass(Thing person, Thing prop) =
     set:
@@ -61,7 +70,7 @@ Tstr GDSPropertyClass(Thing person, Thing prop) =
     if TboolIn IsResidentialRentalProperty(person, prop) -> "Residential rental property"
     if TboolIn IsNonresidentialRealProperty(person, prop) -> "Nonresidential real property"
     else Stub()
-    
+ ##   
     
 # WHICH DEPRECIATION METHOD APPLIES?
 
@@ -167,6 +176,20 @@ TnumIn UnadjustedBasis(Thing person, Thing property)
 TnumIn PropertyClass(Thing person, Thing property)
 
 TnumIn RecoveryPeriod(Thing person, Thing property)
+
+TnumIn PercentageQualifiedBusinessUse(Thing person, Thing property)
+
+TnumIn PercentageUseOutsideUS(Thing person, Thing property)
+
+TboolIn IsTaxExemptUseProperty(Thing property)
+
+TboolIn IsTaxExemptBondFinancedProperty(Thing property)
+
+TnumIn PercentageUseInFarming(Thing person, Thing property)
+
+TboolIn PlacedInServiceWhenElectedNotToApplyUniformCapitalizationRules(Thing person, Thing property)
+
+TboolIn ImportedFromCountryWithEOTradeRestrictions(Thing property)
 
     
 # LISTED PROPERTY

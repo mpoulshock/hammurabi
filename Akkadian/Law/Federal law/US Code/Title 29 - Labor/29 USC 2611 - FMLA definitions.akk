@@ -41,8 +41,8 @@ Tbool IsEligibleEmployee(Thing p, Thing corp) =
     Tbool prongB = 
         !Tit5.Sec6301.IsEmployee(p) &
         ...
-            ! TboolIn LessThan50EmployeesWithin75MilesOfWorksite(p, corp) |
-            TboolIn LessThan50EmployeesAtWorksite(p, corp)
+            ! LessThan50EmployeesWithin75MilesOfWorksite(p, corp) |
+            LessThan50EmployeesAtWorksite(p, corp)
             
     Tbool prongD = 
         set:
@@ -125,8 +125,7 @@ Tbool IsChildOf(Thing p1, Thing p2) =
 
 # Indicates the date the person started or intends to start FMLA leave.
 # >>When does {1} want to go on leave?
-Tdate DateLeaveBegins(Thing p, Thing c) =
-    TdateIn DateFamilyLeaveBegins(p,c)
+TdateIn DateLeaveBegins(Thing p, Thing c)
   
 
 # Indicates whether one person acts in loco parentis of another.
@@ -166,41 +165,41 @@ Test: Eligible_Employee_2
 - Org.NumberOfEmployees(c) = 2000
 - Econ.EmploymentRelationship(e,c) = "Employee"
 - Econ.HoursWorkedPerWeek(e,c) = 40
-- USC.Tit5.Sec6301.IsEmployeeUnder5USC6301(e) = false
+- USC.Tit5.Sec6301.IsEmployee(e) = false
 - USC.Tit29.Sec2611.LessThan50EmployeesWithin75MilesOfWorksite(e,c) = false
 - Econ.IsAirlineFlightCrew(e,c) = false
-- USC.Tit29.Sec2612.ReasonForRequestingLeaveFrom(e,c) = "To adopt a child"
-- USC.Tit29.Sec2611.DateFamilyLeaveBegins(e,c) = 2011-04-15
+- USC.Tit29.Sec2612.ReasonForLeave(e,c) = "To adopt a child"
+- USC.Tit29.Sec2611.DateLeaveBegins(e,c) = 2011-04-15
 - Sec2611.IsEligibleEmployee(e,c).AsOf(2011-04-15).Out =?= true
 
 Test: Eligible_Employee_3
 - Things e, c
 - Econ.EmploymentRelationship(e,c) = "Employee"
 - Econ.HoursWorkedPerWeek(e,c) = 1
-- USC.Tit5.Sec6301.IsEmployeeUnder5USC6301(e) = false
+- USC.Tit5.Sec6301.IsEmployee(e) = false
 - USC.Tit29.Sec2611.LessThan50EmployeesWithin75MilesOfWorksite(e,c) = false
 - Econ.IsAirlineFlightCrew(e,c) = false
-- USC.Tit29.Sec2611.DateFamilyLeaveBegins(e,c) = 2011-04-15
+- USC.Tit29.Sec2611.DateLeaveBegins(e,c) = 2011-04-15
 - Sec2611.IsEligibleEmployee(e,c).AsOf(2011-04-15).Out =?= false
 
 Test: Eligible_Employee_4
 - Things e, c
 - Econ.EmploymentRelationship(e,c) = "Employee"
 - Econ.HoursWorkedPerWeek(e,c) = 40
-- USC.Tit5.Sec6301.IsEmployeeUnder5USC6301(e) = false
+- USC.Tit5.Sec6301.IsEmployee(e) = false
 - USC.Tit29.Sec2611.LessThan50EmployeesWithin75MilesOfWorksite(e,c) = false
 - Econ.IsAirlineFlightCrew(e,c) = false
-- USC.Tit29.Sec2611.DateFamilyLeaveBegins(e,c) = 2011-04-15
+- USC.Tit29.Sec2611.DateLeaveBegins(e,c) = 2011-04-15
 - Sec2611.IsEligibleEmployee(e,c).AsOf(2011-04-15).Out =?= true
 
 Test: Eligible_Employee_5    # Airline flight crew
 - Things e, c
 - Econ.EmploymentRelationship(e,c) = "Employee"
 - Econ.HoursWorkedPerWeek(e,c) = 40
-- USC.Tit5.Sec6301.IsEmployeeUnder5USC6301(e) = false
+- USC.Tit5.Sec6301.IsEmployee(e) = false
 - USC.Tit29.Sec2611.LessThan50EmployeesWithin75MilesOfWorksite(e,c) = false
 - Econ.IsAirlineFlightCrew(e,c) = true
-- USC.Tit29.Sec2611.DateFamilyLeaveBegins(e,c) = 2011-04-15
+- USC.Tit29.Sec2611.DateLeaveBegins(e,c) = 2011-04-15
 - Sec2611.IsEligibleEmployee(e,c).AsOf(2011-04-15).Out =?= "Stub"
 
 Test: Covered_Employer_1

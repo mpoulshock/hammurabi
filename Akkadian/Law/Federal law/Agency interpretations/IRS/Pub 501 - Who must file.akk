@@ -131,24 +131,40 @@ Tbool MeetsSpouseItemizingTest(Thing p) =
 
 # Table 3 (page 5) - other situations when you must file
 Tbool MustFilePerTable3(Thing p) =
-    # >>Does/did {1} owe the alternative minimum tax (AMT)?
-    TboolIn OwesAlternativeMinimumTax(p) |
-    # >>Does/did {1} owe an additional tax on a qualified plan?
-    TboolIn OwesAdditionalTaxOnQualifiedPlan(p) |
-    # >>Does/did {1} owe Social Security or Medicare taxes on unreported tips or wages that were not withheld?
-    TboolIn OwesSocSecOrMedicareTaxes(p) |
-    # >>Does/did {1} owe write-in taxes?
-    TboolIn OwesWriteInTaxes(p) |
-    # >>Does/did {1} owe household employment taxes?
-    TboolIn OwesHouseholdEmploymentTaxes(p) |
-    # >>Does/did {1} owe recapture taxes?
-    TboolIn OwesRecaptureTaxes(p) |
-    # >>Does/did {1} (or their spouse if filing jointly) receive Archer MSA, Medicare Advantage MSA, or health savings account distributions?
-    TboolIn HadHSADistribution(p) |
+    OwesAlternativeMinimumTax(p) |
+    OwesAdditionalTaxOnQualifiedPlan(p) |
+    OwesSocSecOrMedicareTaxes(p) |
+    OwesWriteInTaxes(p) |
+    OwesHouseholdEmploymentTaxes(p) |
+    OwesRecaptureTaxes(p) |
+    HadHSADistribution(p) |
     NetEarningsFromSelfEmployment(p) >= 400 |
-    # >>Does/did {1} have over 108.28 in wages from a qualifying church-related organization?
-    TboolIn HadThresholdChurchWages(p)
+    HadThresholdChurchWages(p)
 
+# >>Does/did {1} owe the alternative minimum tax (AMT)?
+TboolIn OwesAlternativeMinimumTax(Thing p)
+
+# >>Does/did {1} owe an additional tax on a qualified plan?
+TboolIn OwesAdditionalTaxOnQualifiedPlan(Thing p)
+
+# >>Does/did {1} owe Social Security or Medicare taxes on unreported tips or wages that were not withheld?
+TboolIn OwesSocSecOrMedicareTaxes(Thing p)
+
+# >>Does/did {1} owe write-in taxes?
+TboolIn OwesWriteInTaxes(Thing p)
+
+# >>Does/did {1} owe household employment taxes?
+TboolIn OwesHouseholdEmploymentTaxes(Thing p)
+
+# >>Does/did {1} owe recapture taxes?
+TboolIn OwesRecaptureTaxes(Thing p)
+
+# >>Does/did {1} (or their spouse if filing jointly) receive Archer MSA, Medicare Advantage MSA, or health savings account distributions?
+TboolIn HadHSADistribution(Thing p)
+
+# >>Does/did {1} have over 108.28 in wages from a qualifying church-related organization?
+TboolIn HadThresholdChurchWages(Thing p)
+	
 # >>What are/were {1}'s net earnings from self-employment?
 TnumIn NetEarningsFromSelfEmployment(Thing p)
 

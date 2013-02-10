@@ -55,7 +55,7 @@ Tbool QCAgeTest(Thing d, Thing tp, Tnum taxYear) =
                 Edu.IsStudent(d) &
                 (Age(d) < 24).AlwaysPer(taxYear)
     |
-    Sec22.IsDisabledPT(d)
+    Sec22.IsPermanentlyAndTotallyDisabled(d)
 
 
 # QUALIFYING RELATIVE
@@ -75,7 +75,7 @@ TboolIn? IsQualifyingRelativeOf(Thing d, Thing tp) =
             Sec61.GrossIncome(d) < IRS.Pub501.ExemptionAmountBeforePhaseout(d)  # See 26 USC 151(d)(3)(D)
         & 
         ! IsQualifyingChildOf(d, tp) &
-        TboolIn NotQualifyingChildOfAnyTaxpayer(d)
+        NotQualifyingChildOfAnyTaxpayer(d)
         
     # d2 - relationship test
     Tbool relationTest = 
@@ -86,7 +86,7 @@ TboolIn? IsQualifyingRelativeOf(Thing d, Thing tp) =
             
     # d4 - multiple support agreements 
     Tbool d4Test = 
-        if TboolIn AnotherTaxpayerProvidedSupportFor(d) then Stub()
+        if AnotherTaxpayerProvidedSupportFor(d) then Stub()
 
 
 # d2; see also Pub. 501, Qualifying Relative, "Relatives who do not need to live with you"
@@ -116,13 +116,13 @@ Tbool CannotBeADependentOf(Thing d, Thing tp) =
     # Note: searching the fact base for possible dependents and defining this test
     # recursively leads to infinite loops and probably is a case of overengineering.
     Tbool depTest =
-        ! TboolIn CanClaimSomeoneAsDependent(d) &
+        ! CanClaimSomeoneAsDependent(d) &
         ! CanBeClaimedAsDependentBySomeone(tp)
             
     # b2 - potential dependent cannot be married filing jointly
     # See IRS Publication 501 (2010), page 10.
     Tbool jointReturnTest = 
-        if Sec6013.IsMFJ(d) then TboolIn MFJOnlyForRefund(d)
+        if Sec6013.IsMFJ(d) then MFJOnlyForRefund(d)
             
     # b3A - citizenship status
     Tbool citizenshipTest = 
@@ -153,7 +153,19 @@ TsetIn PeopleWhoMightClaimAsDependent(Thing p)
  
 # >>Can {1} be claimed as a qualifying child by more than one taxpayer?
 TboolIn CanBeClaimedAsQCByTwoTaxpayers(Thing p) 
-            
+       
+
+# INPUTS
+
+TboolIn NotQualifyingChildOfAnyTaxpayer(Thing d)
+
+TboolIn AnotherTaxpayerProvidedSupportFor(Thing d)
+ 
+TboolIn CanClaimSomeoneAsDependent(Thing d)
+
+TboolIn MFJOnlyForRefund(Thing d)
+
+ 
 # UNIT TESTS
 
 Test: Pub501_Simple1

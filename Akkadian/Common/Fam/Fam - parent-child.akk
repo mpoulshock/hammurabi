@@ -110,13 +110,16 @@ TboolIn IsOfUnknownParentage(Thing p)
 
 # PATERNITY, LEGITIMATION, ETC.
 
-# >> Was {1}'s paternity of {2} established?
+# Paternity established
 Tbool PaternityEstablishedFor(Thing parent, Thing child) =
     IsMale(parent) &
     Age(parent) - Age(child) >= 12 &
-    TboolIn PaternityEstablishedFor(parent,child) &
+    PaternityEstablishedForQ(parent,child) &
     TheTime.IsAtOrAfter(DatePaternityEstablishedFor(parent,child))
-    
+
+# >> Was {1}'s paternity of {2} established?
+TboolIn PaternityEstablishedForQ(Thing parent, Thing child)
+
 # >>When was {1}'s paternity of {2} established?
 TdateIn DatePaternityEstablishedFor(Thing parent, Thing child)
 

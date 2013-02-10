@@ -8,8 +8,7 @@
 # 1630.2 - Whether a person is "disabled."
 # A physical or mental impairment that substantially limits one
 # or more of the major life activities of such individual
-Tbool IsDisabled(Thing p) =
-    TboolIn IsDisabled(p)
+TboolIn IsDisabled(Thing p)
 
 
 

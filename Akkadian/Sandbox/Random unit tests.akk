@@ -20,22 +20,30 @@
 # Test of & and |
 TboolIn LookAheadShortCircuit1(Thing A) =
 	LookAheadProngB(A) &
-	TboolIn LookAheadProngA(A) &
-	TboolIn LookAheadProngC(A)
+	LookAheadProngA(A) &
+	LookAheadProngC(A)
 	
 TboolIn LookAheadProngB(Thing A) =		# TboolIn -> short-circuits;  Tbool -> doesn't
-	TboolIn LookAheadProngB1(A) |
-	TboolIn LookAheadProngB2(A)
+	LookAheadProngB1(A) |
+	LookAheadProngB2(A)
 
 # Test of |~
 TboolIn LookAheadShortCircuit2(Thing A, Thing B) =
 	IsBioParOf(A,B) |
-	TboolIn LookAheadProngA(A)
+	LookAheadProngA(A)
 	
 TboolIn IsBioParOf(Thing p1, Thing p2) =	# TboolIn -> short-circuits;  Tbool -> doesn't
     Fam.Relationship(p1,p2) == "Parent" |~
     Fam.Relationship(p2,p1) == "Child"
     
+TboolIn LookAheadProngA(Thing A)
+
+TboolIn LookAheadProngB1(Thing A)
+
+TboolIn LookAheadProngB2(Thing A)
+
+TboolIn LookAheadProngC(Thing A)
+
 
 # INTERVIEW SEQUENCE WITH |~ OPERATOR - NOT WORKING
 
@@ -52,47 +60,51 @@ TboolIn IsBioParOf(Thing p1, Thing p2) =	# TboolIn -> short-circuits;  Tbool -> 
 # Asks 918b when 918a has already been asked (unless rule has been proven)
 Tbool Test918a(Thing a) =
     ...
-        TboolIn TestMethod918a(a) |~
-        TboolIn TestMethod918b(a)
+        TestMethod918a(a) |~
+        TestMethod918b(a)
     & 
     Imm.IsUSNational(a)
+
+TboolIn TestMethod918a(Thing a)
+
+TboolIn TestMethod918b(Thing a)
 
 
 # INTERVIEW SEQUENCE WITH |~ OPERATOR - WORKING
     
 Tbool AnotherMethod(Thing p) =
-    TboolIn TestMethod101(p) |~
-    TboolIn TestMethod102(p)
+    TestMethod918a(p) |~
+    TestMethod918b(p)
 
 # Note: These tests validate the logic, not the interview sequence. But
 #       that sequence was tested and is also working properly (2012-08-11).
 
 Test: 171824320
 - Thing p
-- Sandbox.TestMethod101(p) = new Tbool(Hstate.Unstated)
-- Sandbox.TestMethod102(p) = false
+- Sandbox.TestMethod918a(p) = new Tbool(Hstate.Unstated)
+- Sandbox.TestMethod918b(p) = false
 - Sandbox.AnotherMethod(p).TestOutput =?= "Time.DawnOf False "
 
 Test: 580982293
 - Thing p
-- Sandbox.TestMethod101(p) = new Tbool(Hstate.Unstated)
-- Sandbox.TestMethod102(p) = true
+- Sandbox.TestMethod918a(p) = new Tbool(Hstate.Unstated)
+- Sandbox.TestMethod918b(p) = true
 - Sandbox.AnotherMethod(p).TestOutput =?= "Time.DawnOf True "
 
 Test: 288489417
 - Thing p
-- Sandbox.TestMethod101(p) = Tbool(?)
-- Sandbox.TestMethod102(p) = Tbool(?)
+- Sandbox.TestMethod918a(p) = Tbool(?)
+- Sandbox.TestMethod918b(p) = Tbool(?)
 - Sandbox.AnotherMethod(p).TestOutput =?= "Time.DawnOf Uncertain "
 
 Test: 798236451
 - Thing p
-- Sandbox.TestMethod101(p) = false
+- Sandbox.TestMethod918a(p) = false
 - Sandbox.AnotherMethod(p).TestOutput =?= "Time.DawnOf False "
 
 Test: 416036083
 - Thing p
-- Sandbox.TestMethod101(p) = true
+- Sandbox.TestMethod918a(p) = true
 - Sandbox.AnotherMethod(p).TestOutput =?= "Time.DawnOf True "
 
 
@@ -392,15 +404,19 @@ TboolIn Test9(Thing p) =
     set.Exists(IsUSCitizen(_))
     
     Tset set =
-        TsetIn SomeRandomPeople(p)
+        SomeRandomPeople(p)
+
+TsetIn SomeRandomPeople(Thing p)
 
 Tbool MeetsSomeCriteria(Thing p) =
     MeetsCriteria1(p) &
-    TboolIn MeetsCriteria2(p)
+    MeetsCriteria2(p)
+
+TboolIn MeetsCriteria2(Thing p) 
 
 TboolIn? MeetsCriteria1(Thing p) = 
-    TboolIn Meets1a(p) &
-    TboolIn Meets1b(p)
+    TestMethod918a(p) &
+    TestMethod918a(p)
     
     
 # UNKNOWN THINGS
@@ -447,16 +463,19 @@ Test: UncertainThing7
 
 # Recursive rule that looks for unknown people
 TboolIn IsCitizen(Thing p) =
-    # >> Is {1} a citizen by law?
-    TboolIn IsCitizenByLaw(p) |
+    IsCitizenByLaw(p) |
     IsCitizen(TheMotherOf(p))
 
 # >>What's the name of {1}'s mother?
 Thing TheMotherOf(Thing p) =
-    # >>What's the name of {1}'s mother?
-    TsetIn MotherOf(p).ToThing
-    
-    
+    MotherOf(p).ToThing
+ 
+# >> Is {1} a citizen by law?
+TboolIn IsCitizenByLaw(Thing p) 
+  
+# >>What's the name of {1}'s mother?
+TsetIn MotherOf(Thing p)
+	
 Test: Loop1
 - Thing p
 - Sandbox.IsCitizen(p).Out =?= "Unstated"
@@ -548,7 +567,7 @@ Test: Tset5  # fail b/c doesn't output Tset data
 # METHODS WITH THREE PARAMETERS
 
 Tbool Another3ParamTest(Thing a, Thing b, Thing c) =
-    TboolIn ABC(a,b,c)
+    IsXYZ(a,b,c)
 
 TboolIn IsABC(Thing a, Thing b, Thing c) =
     Stub() |
@@ -572,12 +591,12 @@ Test: Param3_1c
 
 Test: Param3_2a
 - Things a, b, c
-- Sandbox.ABC(a,b,c) = true
+- Sandbox.IsXYZ(a,b,c) = true
 - Sandbox.Another3ParamTest(a,b,c).Out =?= true
 
 Test: Param3_2b
 - Things a, b, c
-- Sandbox.ABC(a,b,c) = false
+- Sandbox.IsXYZ(a,b,c) = false
 - Sandbox.Another3ParamTest(a,b,c).Out =?= false
 
 Test: Param3_2c

@@ -7,7 +7,6 @@
 
 # Subsec. 2 - Indicates whether a person (p) is an "employee"
 # >>Is/was {1} a federal employee subject to 5 U.S.C. § 6301?
-Tbool IsEmployee(Thing p) =
-    TboolIn IsEmployeeUnder5USC6301(p)
+TboolIn IsEmployee(Thing p)
 
 
