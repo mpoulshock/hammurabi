@@ -25,7 +25,7 @@ Tbool Catchall(Thing p) =
     Stub()
     
 # >>Did {1} take affirmative steps to preserve or acquire foreign nationality?
-TboolIn TookStepsToPreserveForeignNationality(Thing p)
+Tbool TookStepsToPreserveForeignNationality(Thing p)
 
 
 # UNIT TESTS

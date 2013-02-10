@@ -36,7 +36,7 @@ Tbool TestC(Thing p) =
 
 # Not entirely sure what this is intended to mean...
 # >>Is {1} a 'noncitizen Indian' (as that term is used in 8 U.S.C. 1404)?
-TboolIn IsNoncitizenIndian(Thing p) =
+Tbool IsNoncitizenIndian(Thing p) =
     IsNativeAmerican(p)
 
 

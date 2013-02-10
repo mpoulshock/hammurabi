@@ -27,7 +27,7 @@ Tbool ProngC(Thing p) =
     HawCitOn18980812(p)
     
 # >>Was {1} a citizen of the Republic of Hawaii on August 12, 1898?
-TboolIn HawCitOn18980812(Thing p)
+Tbool HawCitOn18980812(Thing p)
 
 
 # UNIT TESTS

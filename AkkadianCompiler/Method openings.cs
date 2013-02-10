@@ -33,23 +33,28 @@ namespace Akkadian
         /// </summary>
         public static string QueryTvarTransform(string line, string space)
         {
-            space = Util.NamespaceConvert(space);
-
             // Rule conclusion line - no conditions in rule
-            if (Util.IsInputRule(line))  // Starts w/ TvarIn at indent 0...
+            if (line.StartsWith("T"))
             {
-                // TboolInSym (always has two arguments)
-                line = Regex.Replace(line, 
-                                     @"TboolInSym (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@"), ?(?<argtyp2>"+wrd+@" )(?<arg2>"+wrd+@")\)",
+                space = Util.NamespaceConvert(space);
+
+                if (line.StartsWith("TboolSym"))    // this check included for performance reasons
+                {
+                    // TboolInSym (always has two arguments)
+                    line = Regex.Replace(line, 
+                                     @"TboolSym (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@"), ?(?<argtyp2>"+wrd+@" )(?<arg2>"+wrd+@")\)",
                                      "        public static Tbool ${fcn}(${argtyp1} ${arg1}, ${argtyp2} ${arg2})\r\n" +
                                      "        {\r\n" +
                                      "            return Facts.Sym(${arg1}, \""+space+"${fcn}\", ${arg2});");  
-                
-                // Functions with 1-3 arguments
-                line = Regex.Replace(line, 
-                                     @"(?<type>"+typs+@")In (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@")(?<comma1>, ?)?(?<argtyp2>"+wrd+@" )?(?<arg2>"+wrd+@")?(?<comma2>, ?)?(?<argtyp3>"+wrd+@" )?(?<arg3>"+wrd+@")?\)",
+                }
+                else
+                {
+                    // Functions with 1-3 arguments
+                    line = Regex.Replace(line, 
+                                     @"(?<type>"+typs+@") (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@")(?<comma1>, ?)?(?<argtyp2>"+wrd+@" )?(?<arg2>"+wrd+@")?(?<comma2>, ?)?(?<argtyp3>"+wrd+@" )?(?<arg3>"+wrd+@")?\)",
                                      "        public static ${type} ${fcn}(${argtyp1} ${arg1}${comma1}${argtyp2} ${arg2}${comma2}${argtyp3} ${arg3})\r\n        {\r\n" +
                                      "        return Facts.QueryTvar<${type}>(\""+space+"${fcn}\", ${arg1}${comma1}${arg2}${comma2}${arg3});");  
+                }
             }
 
             return line;
@@ -63,7 +68,7 @@ namespace Akkadian
             space = Util.NamespaceConvert(space).Replace("..","."); // .Replace 
 
             return Regex.Replace(line, 
-                                 @"(?<typ>"+typs+@")(In)?(?<sym>Sym)?(?<quest>\?)? (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@")(?<comma1>, ?)?(?<argtyp2>"+wrd+@" )?(?<arg2>"+wrd+@")?(?<comma2>, ?)?(?<argtyp3>"+wrd+@" )?(?<arg3>"+wrd+@")?\) =",
+                                 @"(?<typ>"+typs+@")(?<sym>Sym)?(?<quest>\?)? (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@")(?<comma1>, ?)?(?<argtyp2>"+wrd+@" )?(?<arg2>"+wrd+@")?(?<comma2>, ?)?(?<argtyp3>"+wrd+@" )?(?<arg3>"+wrd+@")?\) =",
                                  "            if (!RESULT.IsEverUnstated) Facts.Assert" +
                                  "(${arg1}, \""+space+"${fcn}\"${comma1}${arg2}${comma2}${arg3}, RESULT);\r\n");
         }
@@ -77,7 +82,7 @@ namespace Akkadian
         
             // Functions with 1-3 arguments
             string lineafter = Regex.Replace(line, 
-                                 @"(?<typ>"+typs+@")(In)?(?<sym>Sym)?(?<quest>\?)? (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@")(?<comma1>, ?)?(?<argtyp2>"+wrd+@" )?(?<arg2>"+wrd+@")?(?<comma2>, ?)?(?<argtyp3>"+wrd+@" )?(?<arg3>"+wrd+@")?\) =",
+                                 @"(?<typ>"+typs+@")(?<sym>Sym)?(?<quest>\?)? (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@")(?<comma1>, ?)?(?<argtyp2>"+wrd+@" )?(?<arg2>"+wrd+@")?(?<comma2>, ?)?(?<argtyp3>"+wrd+@" )?(?<arg3>"+wrd+@")?\) =",
                                  "        public static ${typ} ${fcn}(${argtyp1} ${arg1}${comma1} ${argtyp2} ${arg2}${comma2} ${argtyp3} ${arg3})\r\n" +
                                  "        {\r\n" +
                                  "            RulePreCheckResponse RESPONSE = ShortCircuitValue<${typ}>(\""+space+"${fcn}\",\"${sym}\",\"${quest}\",${arg1}${comma1} ${arg2}${comma2} ${arg3});\r\n" +

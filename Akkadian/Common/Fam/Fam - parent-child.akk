@@ -7,13 +7,13 @@
 # PARENT-CHILD RELATIONSHIPS: CORE INPUTS
 
 # >>Who are {1}'s parents?
-TsetIn ParentsOf(Thing p)
+Tset ParentsOf(Thing p)
 
 # >>Who are {1}'s children?
-TsetIn ChildrenOf(Thing p)    
+Tset ChildrenOf(Thing p)    
 
 # >>Is {1} {2}'s parent?
-TboolIn IsParentOf(Thing p1, Thing p2) =
+Tbool IsParentOf(Thing p1, Thing p2) =
     ChildrenOf(p1).Contains(p2) |~
     ParentsOf(p2).Contains(p1) |~
     ...
@@ -72,7 +72,7 @@ Tbool IsChildOf(Thing p1, Thing p2) =
     IsParentOf(p2,p1)
             
 # Biological parent
-TboolIn IsBiologicalParentOf(Thing p1, Thing p2) =
+Tbool IsBiologicalParentOf(Thing p1, Thing p2) =
     Relationship(p1,p2) == "Biological parent" |~
     Relationship(p2,p1) == "Biological child"
 
@@ -81,31 +81,31 @@ TboolIn IsBiologicalParentOf(Thing p1, Thing p2) =
 FamilyRelationship(1,2) = "Biological parent" assumes FamilyRelationship(2,1) = "Biological child"
     
 # Adoptive parent
-TboolIn IsAdoptiveParentOf(Thing p1, Thing p2) =
+Tbool IsAdoptiveParentOf(Thing p1, Thing p2) =
     Relationship(p1,p2) == "Adoptive parent" |~
     Relationship(p2,p1) == "Adopted child"
 
 # Foster parent
-TboolIn IsFosterParentOf(Thing p1, Thing p2) =
+Tbool IsFosterParentOf(Thing p1, Thing p2) =
     Relationship(p1,p2) == "Foster parent" |~
     Relationship(p2,p1) == "Foster child"
 
 # Stepparent
-TboolIn IsStepparentOf(Thing p1, Thing p2) =
+Tbool IsStepparentOf(Thing p1, Thing p2) =
     Relationship(p1,p2) == "Stepparent" |~
     Relationship(p2,p1) == "Stepchild"
 
 # >>Is/was {1} pregnant?
-TboolIn IsPregnant(Thing p)
+Tbool IsPregnant(Thing p)
 
 IsPregnant(1) assumes Gender(1) = "Female"
 
 # >>Is {1} unborn (i.e. a fetus)?
-TboolIn IsUnborn(Thing p)
+Tbool IsUnborn(Thing p)
 
 # TODO: Prove...
 # >>Is/was {1} of unknown parentage?
-TboolIn IsOfUnknownParentage(Thing p)
+Tbool IsOfUnknownParentage(Thing p)
 
 
 # PATERNITY, LEGITIMATION, ETC.
@@ -118,24 +118,24 @@ Tbool PaternityEstablishedFor(Thing parent, Thing child) =
     TheTime.IsAtOrAfter(DatePaternityEstablishedFor(parent,child))
 
 # >> Was {1}'s paternity of {2} established?
-TboolIn PaternityEstablishedForQ(Thing parent, Thing child)
+Tbool PaternityEstablishedForQ(Thing parent, Thing child)
 
 # >>When was {1}'s paternity of {2} established?
-TdateIn DatePaternityEstablishedFor(Thing parent, Thing child)
+Tdate DatePaternityEstablishedFor(Thing parent, Thing child)
 
 # Born "out of wedlock"
 Tbool BornOutOfWedlock(Thing p) =
     IsIllegitimate(p)
         
 # >>Was {1} an illegitimate child?
-TboolIn IsIllegitimate(Thing p) =
+Tbool IsIllegitimate(Thing p) =
     !ParentsMarriedAsOf(p, DoB(p))
     # unless child is born shortly after the parents' divorce
     # ...married as of date of conception?
 
 # Assumption: could be done by either statute, court, or both
 # >>Is/was {1} legitimated (under the law of {1}'s domicile)?
-TboolIn IsLegitimatedByLaw(Thing child)
+Tbool IsLegitimatedByLaw(Thing child)
     
 # Legitimated by father (he acknowledged parental responsibility)
 # Example of temporal value built from threshold facts and an event
@@ -146,10 +146,10 @@ Tbool Legitimated(Thing parent, Thing child) =
     TheTime.IsAtOrAfter(DateLegitimated(parent,child))
 
 # >>Does/did {1} legitimate {2}?
-TboolIn LegitimatedQ(Thing parent, Thing child) 
+Tbool LegitimatedQ(Thing parent, Thing child) 
 	
 # >>When did {1} legitimate {2}?
-TdateIn DateLegitimated(Thing parent, Thing child)
+Tdate DateLegitimated(Thing parent, Thing child)
     
 # Legally committed to financially supporting 
 Tbool CommittedToFinanciallySupport(Thing p1, Thing p2) =
@@ -157,10 +157,10 @@ Tbool CommittedToFinanciallySupport(Thing p1, Thing p2) =
     TheTime.IsAtOrAfter(DateCommittedToFinanciallySupport(p1,p2))
 
 # >>Is/was {1} legally committed to financially supporting {2}?	
-TboolIn CommittedToFinanciallySupportQ(Thing p1, Thing p2)
+Tbool CommittedToFinanciallySupportQ(Thing p1, Thing p2)
     
 # >>When was {1} first legally committed to financially supporting {2}?
-TdateIn DateCommittedToFinanciallySupport(Thing parent, Thing child)        
+Tdate DateCommittedToFinanciallySupport(Thing parent, Thing child)        
 
 
 # UNIT TESTS

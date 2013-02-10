@@ -7,6 +7,6 @@
 
 # Permanently and totally disabled
 # >>Is {1} permanently and totally disabled?
-TboolIn IsPermanentlyAndTotallyDisabled(Thing p)
+Tbool IsPermanentlyAndTotallyDisabled(Thing p)
 
 

@@ -40,17 +40,17 @@ Tbool MatchTable(Tstr jur) =
 # INPUTS
 
 # >> Is {1} an A?
-TboolIn BoolA(Thing p)
+Tbool BoolA(Thing p)
 
 # >> Is {1} an B?
-TboolIn BoolB(Thing p)
+Tbool BoolB(Thing p)
 
 # >> Is {1} an C?
-TboolIn BoolC(Thing p)
+Tbool BoolC(Thing p)
 
 # >> Is {1} an D?
-TboolIn BoolD(Thing p)
+Tbool BoolD(Thing p)
 
-TstrIn StrA(Thing p)
+Tstr StrA(Thing p)
 	  
 

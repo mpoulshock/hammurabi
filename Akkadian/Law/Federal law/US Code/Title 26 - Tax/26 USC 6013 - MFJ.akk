@@ -8,14 +8,14 @@
 # MARRIED FILING JOINTLY
 
 # Two married taxpayers are filing a joint return.
-TboolIn AreMFJ(Thing p1, Thing p2) =
+Tbool AreMFJ(Thing p1, Thing p2) =
     Fam.AreMarried(p1,p2) &
     ...
         Sec2.FilingStatus(p1) == "Married filing jointly" |~
         Sec2.FilingStatus(p2) == "Married filing jointly"
 
 # Person is married filing jointly
-TboolIn IsMFJ(Thing p) =
+Tbool IsMFJ(Thing p) =
     Sec2.FilingStatus(p) == "Married filing jointly" |~        # Person indicated MFJ
     Fam.SpousesOf(p).Exists(AreMFJ(p,_))                        # Spouse indicated MFJ
 
@@ -23,10 +23,10 @@ TboolIn IsMFJ(Thing p) =
 # JOINT RETURN TO CLAIM A REFUND
 
 # >>Are/were {1} and {2} filing a joint tax return only to claim a refund?
-TboolInSym FileMFJOnlyToClaimRefund(Thing p1, Thing p2)
+TboolSym FileMFJOnlyToClaimRefund(Thing p1, Thing p2)
 
 # >>Is/did {1} file a joint tax return?
-TboolIn FilesMFJOnlyToClaimRefund(Thing p) =
+Tbool FilesMFJOnlyToClaimRefund(Thing p) =
     Fam.SpousesOf(p).Exists(FileMFJOnlyToClaimRefund(p,_))
 
         

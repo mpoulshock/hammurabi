@@ -7,7 +7,7 @@
 # ANNUAL INCOME
 
 # Total annual income
-TnumIn AnnualIncome(Thing p) =
+Tnum AnnualIncome(Thing p) =
     AnnualWages(p) +
     AnnualSelfEmploymentIncome(p) +
     AnnualSocialSecurityBenefits(p) +
@@ -63,28 +63,28 @@ Tnum MonthlyIncome(Thing p) =
     MonthlyUnemploymentCompensation(p)
 
 # >>What are/were {1}'s monthly wages?
-TnumIn MonthlyWages(Thing p) 
+Tnum MonthlyWages(Thing p) 
 
 # >>What is/was {1}'s monthly self-employment income?
-TnumIn MonthlySelfEmploymentIncome(Thing p)
+Tnum MonthlySelfEmploymentIncome(Thing p)
     
 # >>What are/were {1}'s monthly commissions?
-TnumIn MonthlyCommissions(Thing p) 
+Tnum MonthlyCommissions(Thing p) 
 
 # >>What are/were {1}'s monthly Social Security benefits?
-TnumIn MonthlySocialSecurityBenefits(Thing p) 
+Tnum MonthlySocialSecurityBenefits(Thing p) 
 
 # >>What is/was {1}'s monthly Supplemental Security Income (SSI)?
-TnumIn MonthlySupplementalSecurityIncome(Thing p) 
+Tnum MonthlySupplementalSecurityIncome(Thing p) 
 
 # >>What are/were {1}'s monthly veterans benefits?
-TnumIn MonthlyVeteransBenefits(Thing p) 
+Tnum MonthlyVeteransBenefits(Thing p) 
 
 # >>What is/was {1}'s monthly child support income?
-TnumIn MonthlyChildSupportIncome(Thing p)
+Tnum MonthlyChildSupportIncome(Thing p)
 
 # >>What is/was {1}'s monthly unemployment compensation?
-TnumIn MonthlyUnemploymentCompensation(Thing p) 
+Tnum MonthlyUnemploymentCompensation(Thing p) 
     
     
 

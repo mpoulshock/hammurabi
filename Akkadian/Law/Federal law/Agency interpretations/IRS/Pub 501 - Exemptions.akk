@@ -119,7 +119,7 @@ Tbool MeetsSpouseTest(Thing spouse) =
     Sec152.CanBeClaimedAsDependentBySomeone(spouse)
     
 # >>How many dependency exemptions does/did {1} claim?  (This is the number of people that {1} will claim as a dependent on their federal tax return.)
-TnumIn? DependencyExemptions(Thing p) =
+Tnum? DependencyExemptions(Thing p) =
     possibleDeps.Filter(Sec152.IsDependentOf(p,_)).Count
     
     Tset possibleDeps = Sec152.PeopleWhoMightClaimAsDependent(p)
@@ -127,7 +127,7 @@ TnumIn? DependencyExemptions(Thing p) =
     
 # TODO: Move elsewhere...
 # >>What is/was {1}'s annual gross income?
-TnumIn GrossIncome(Thing p)
+Tnum GrossIncome(Thing p)
     
 
 # UNIT TESTS

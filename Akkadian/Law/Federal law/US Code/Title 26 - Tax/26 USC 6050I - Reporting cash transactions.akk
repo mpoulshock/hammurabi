@@ -41,7 +41,7 @@ Tbool FormDueByCourtClerk(Thing r, Thing p, Thing t) =
         CriminalOffenseAtIssue(p)    
 
 		
-TstrIn NatureOrCorporatePurpose(Thing r)
+Tstr NatureOrCorporatePurpose(Thing r)
 
-TstrIn CriminalOffenseAtIssue(Thing p)
+Tstr CriminalOffenseAtIssue(Thing p)
 

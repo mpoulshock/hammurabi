@@ -8,24 +8,24 @@
 
 
 # >>What's the nature of {1}?  (Options: Currency, Real estate.)
-TstrIn TypeOf(Thing property)
+Tstr TypeOf(Thing property)
 
 # >>Is {1} tangible property?
-TboolIn IsTangibleProperty(Thing property)
+Tbool IsTangibleProperty(Thing property)
 
 # >>What is/was the value of the property (in dollars)?
-TnumIn ValueInDollars(Thing property)
+Tnum ValueInDollars(Thing property)
 
 # >>Who owns/owned the property?
-TsetIn OwnersOf(Thing property)
+Tset OwnersOf(Thing property)
 
 # >>Does/did {1} own {2}?
-TboolIn Owns(Thing person, Thing property)
+Tbool Owns(Thing person, Thing property)
 
 # >>Was {1} imported from outside the U.S.?
-TboolIn IsImported(Thing property)
+Tbool IsImported(Thing property)
 
 # >>From what country was {1} imported?
-TstrIn CountryOfImportation(Thing property)
+Tstr CountryOfImportation(Thing property)
 
 

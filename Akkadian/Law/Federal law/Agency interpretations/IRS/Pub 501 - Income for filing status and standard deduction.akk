@@ -8,7 +8,7 @@
 
 # Includes income earned or received abroad...
 # >>What is {1}'s annual gross income (for purposes of determining filing status and standard deduction)?  (Note: if married filing jointly, include {1}'s spouse's gross income.)
-TnumIn? GrossIncomeForFS(Thing p) =
+Tnum? GrossIncomeForFS(Thing p) =
     EarnedIncomeForFS(p) +
     UnearnedIncome(p)
 
@@ -17,10 +17,10 @@ TnumIn? GrossIncomeForFS(Thing p) =
 
 # See Table 2 (page 4)
 # >>What is {1}'s earned income (for purposes of determining filing status and standard deduction)?  (Note: if married filing jointly, include {1}'s spouse's earned income.)
-TnumIn? EarnedIncomeForFS(Thing p) =
+Tnum? EarnedIncomeForFS(Thing p) =
     Fam.SelfAndSpouseIfMarried(p).Sum(IndividualEarnedIncomeForFS(_))
 
-TnumIn IndividualEarnedIncomeForFS(Thing p) =
+Tnum IndividualEarnedIncomeForFS(Thing p) =
     set:
     if HasIncomeFromUSPossession(p) -> Stub()    # See Pub. 570
     else earnedIncome
@@ -42,11 +42,11 @@ Tnum ExcludableIncomeFromPuertoRico(Thing p) =
 # UNEARNED INCOME FOR FS/SD
 
 # >>What is {1}'s unearned income?  (Note: if married filing jointly, include {1}'s spouse's earned income.)
-TnumIn? UnearnedIncome(Thing p) =
+Tnum? UnearnedIncome(Thing p) =
     Fam.SelfAndSpouseIfMarried(p).Sum(IndividualUnearnedIncomeForFS(_))
     
 # See Tables 1 and 2
-TnumIn IndividualUnearnedIncomeForFS(Thing p) =
+Tnum IndividualUnearnedIncomeForFS(Thing p) =
     AnnualTaxableInterestIncome(p) +
     AnnualOrdinaryDividendIncome(p) +
     AnnualCapitalGainIncome(p) +
@@ -58,37 +58,37 @@ TnumIn IndividualUnearnedIncomeForFS(Thing p) =
 # INPUTS
 
 # >>How much annual income does/did {1} have from salaries, wages, and professional fees?
-TnumIn AnnualSalaryWageIncome(Thing p)
+Tnum AnnualSalaryWageIncome(Thing p)
 
 # >>How much annual tip income does/did {1} have?
-TnumIn AnnualTipIncome(Thing p)
+Tnum AnnualTipIncome(Thing p)
 
 # >>How much annual income does/did {1} have from taxable scholarship or fellowship grants?
-TnumIn AnnualScholarshipIncome(Thing p)
+Tnum AnnualScholarshipIncome(Thing p)
 
 # >>How much annual income does/did {1} have from sources within Puerto Rico?
-TnumIn AnnualIncomeFromPuertoRico(Thing p)
+Tnum AnnualIncomeFromPuertoRico(Thing p)
 
 # >>How much annual income does/did {1} receive for services as an employee of the United States working in Puerto Rico?
-TnumIn AnnualFederalIncomeFromPuertoRico(Thing p)
+Tnum AnnualFederalIncomeFromPuertoRico(Thing p)
 
 # >>How much annual taxable interest income does/did {1} receive?
-TnumIn AnnualTaxableInterestIncome(Thing p)
+Tnum AnnualTaxableInterestIncome(Thing p)
 
 # >>How much annual income does/did {1} receive from ordinary dividends?
-TnumIn AnnualOrdinaryDividendIncome(Thing p)
+Tnum AnnualOrdinaryDividendIncome(Thing p)
 
 # >>How much annual capital gain income does/did {1} receive?
-TnumIn AnnualCapitalGainIncome(Thing p)
+Tnum AnnualCapitalGainIncome(Thing p)
 
 # >>How much annual unemployment compensation does/did {1} receive?
-TnumIn AnnualUnemploymentIncome(Thing p)
+Tnum AnnualUnemploymentIncome(Thing p)
 
 # >>How much are/were {1}'s annual taxable Social Security benefits?
-TnumIn AnnualTaxableSocialSecurityBenefits(Thing p)
+Tnum AnnualTaxableSocialSecurityBenefits(Thing p)
 
 # >>How much annual income does/did {1} receive from pensions, annuities, and trusts?
-TnumIn AnnualPensionAnnuityTrustIncome(Thing p)
+Tnum AnnualPensionAnnuityTrustIncome(Thing p)
 
 
 # UNIT TESTS

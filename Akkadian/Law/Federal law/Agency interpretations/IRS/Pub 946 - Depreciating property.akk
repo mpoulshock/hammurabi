@@ -7,20 +7,20 @@
 # WHAT PROPERTY CAN BE DEPRECIATED?
 
 # >> Can {1} depreciate {2}?
-TboolIn CanDepreciateProperty(Thing person, Thing property) =
+Tbool CanDepreciateProperty(Thing person, Thing property) =
     MeetsOwnershipTest(person, property) &
     UsesPropertyInBusiness(person, property) &
     HasDeterminableUsefulLife(property) &
     ExpectedLifeOfMoreThanOneYear(property)
 
 # >>Does {1} expect to use {2} in the course of business?
-TboolIn UsesPropertyInBusiness(Thing person, Thing property)
+Tbool UsesPropertyInBusiness(Thing person, Thing property)
 
 # >>Does {1} have a determinable useful life?
-TboolIn HasDeterminableUsefulLife(Thing property)
+Tbool HasDeterminableUsefulLife(Thing property)
 
 # >>Does {1} have an expected life of more than one year?
-TboolIn ExpectedLifeOfMoreThanOneYear(Thing property)   
+Tbool ExpectedLifeOfMoreThanOneYear(Thing property)   
     
 Tbool MeetsOwnershipTest(Thing person, Thing property) =
     Prop.Owns(person, property) |
@@ -51,7 +51,7 @@ Tbool MustUseADS(Thing person, Thing property) =
         
 
 # >>Does/did {1} elect to use the ADS depreciation system?  (See IRS Pub. 946, p. 36 for conditions.)
-TboolIn ElectsToUseADS(Thing person, Thing property)        
+Tbool ElectsToUseADS(Thing person, Thing property)        
 
 
 # WHICH GDS PROPERTY CLASS APPLIES?
@@ -60,22 +60,22 @@ TboolIn ElectsToUseADS(Thing person, Thing property)
 # Applicable GDS property class
 Tstr GDSPropertyClass(Thing person, Thing prop) =
     set:
-    if TboolIn Is3YearProperty(person, prop) -> "3-year property"
-    if TboolIn Is5YearProperty(person, prop) -> "5-year property"
-    if TboolIn Is7YearProperty(person, prop) -> "7-year property"
-    if TboolIn Is10YearProperty(person, prop) -> "10-year property"
-    if TboolIn Is15YearProperty(person, prop) -> "15-year property"
-    if TboolIn Is20YearProperty(person, prop) -> "20-year property"
-    if TboolIn Is25YearProperty(person, prop) -> "25-year property"
-    if TboolIn IsResidentialRentalProperty(person, prop) -> "Residential rental property"
-    if TboolIn IsNonresidentialRealProperty(person, prop) -> "Nonresidential real property"
+    if Tbool Is3YearProperty(person, prop) -> "3-year property"
+    if Tbool Is5YearProperty(person, prop) -> "5-year property"
+    if Tbool Is7YearProperty(person, prop) -> "7-year property"
+    if Tbool Is10YearProperty(person, prop) -> "10-year property"
+    if Tbool Is15YearProperty(person, prop) -> "15-year property"
+    if Tbool Is20YearProperty(person, prop) -> "20-year property"
+    if Tbool Is25YearProperty(person, prop) -> "25-year property"
+    if Tbool IsResidentialRentalProperty(person, prop) -> "Residential rental property"
+    if Tbool IsNonresidentialRealProperty(person, prop) -> "Nonresidential real property"
     else Stub()
  ##   
     
 # WHICH DEPRECIATION METHOD APPLIES?
 
 # >>What method is {1} using to depreciate {2}? (Options: DB or SL)
-TstrIn DepreciationMethod(Thing person, Thing property)
+Tstr DepreciationMethod(Thing person, Thing property)
     
     
 # COMPUTING THE DEPRECIATION DEDUCTION W/O USING THE TABLES
@@ -167,34 +167,34 @@ Tnum FirstYearPercentage(Tstr convention, Tdate datePlacedInService) =
 # INPUTS
 
 # >>When did {1} place {2} into service?
-TdateIn DatePlacedInService(Thing person, Thing property) 
+Tdate DatePlacedInService(Thing person, Thing property) 
  
-TstrIn ApplicableFirstYearConvention(Thing person, Thing property)
+Tstr ApplicableFirstYearConvention(Thing person, Thing property)
 
-TnumIn UnadjustedBasis(Thing person, Thing property)
+Tnum UnadjustedBasis(Thing person, Thing property)
 
-TnumIn PropertyClass(Thing person, Thing property)
+Tnum PropertyClass(Thing person, Thing property)
 
-TnumIn RecoveryPeriod(Thing person, Thing property)
+Tnum RecoveryPeriod(Thing person, Thing property)
 
-TnumIn PercentageQualifiedBusinessUse(Thing person, Thing property)
+Tnum PercentageQualifiedBusinessUse(Thing person, Thing property)
 
-TnumIn PercentageUseOutsideUS(Thing person, Thing property)
+Tnum PercentageUseOutsideUS(Thing person, Thing property)
 
-TboolIn IsTaxExemptUseProperty(Thing property)
+Tbool IsTaxExemptUseProperty(Thing property)
 
-TboolIn IsTaxExemptBondFinancedProperty(Thing property)
+Tbool IsTaxExemptBondFinancedProperty(Thing property)
 
-TnumIn PercentageUseInFarming(Thing person, Thing property)
+Tnum PercentageUseInFarming(Thing person, Thing property)
 
-TboolIn PlacedInServiceWhenElectedNotToApplyUniformCapitalizationRules(Thing person, Thing property)
+Tbool PlacedInServiceWhenElectedNotToApplyUniformCapitalizationRules(Thing person, Thing property)
 
-TboolIn ImportedFromCountryWithEOTradeRestrictions(Thing property)
+Tbool ImportedFromCountryWithEOTradeRestrictions(Thing property)
 
     
 # LISTED PROPERTY
   
-TboolIn IsListedProperty(Thing person, Thing property)
+Tbool IsListedProperty(Thing person, Thing property)
 
 
 # APPENDIX A: DEPRECIATION TABLES

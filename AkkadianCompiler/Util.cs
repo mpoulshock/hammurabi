@@ -115,16 +115,6 @@ namespace Akkadian
         {
             return StartsWithAny(line.TrimStart(), RuleTypes) != "";
         }
-  
-        /// <summary>
-        /// Determines whether a line requires the rule to first look for the
-        /// fact in the factbase.
-        /// </summary>
-        public static bool IsInputRule(string line)
-        {
-            return Depth(line) == 0 &&
-                   StartsWithAny(line, "TboolIn","TnumIn","TstrIn","TsetIn","TdateIn") != "";
-        }
 
         /// <summary>
         /// Determines the type of rule.

@@ -194,7 +194,7 @@ Tbool IsCitizenPresentInUSorOPNYearsBefore(Thing p, Tnum years, Tdate date) =
         PresentInUSorOP(p).YearsContinuouslyTrue >= years    # Terrible performance
 
 # >>Was {1} physically present in the U.S. or one of its outlying possessions?
-TboolIn PresentInUSorOP(Thing p) =
+Tbool PresentInUSorOP(Thing p) =
     PresentInUS(p) |
     Sec1101.IsUSOutlyingPossession(loc)
     
@@ -234,7 +234,7 @@ Tbool OneNationalOneAlienParent(Thing c) =
 
 # Parents married as of child's date of birth
 # TODO: Connect to 8 U.S.C. 1409
-TboolIn ParentsMarried(Thing c) =
+Tbool ParentsMarried(Thing c) =
     Fam.AreMarried(FatherOf(c), MotherOf(c)).AsOf(DoB(c))
     # ! Fam.IsAdopted(c)
     

@@ -6,7 +6,7 @@
 
 
 # Citizenship of people born in Puerto Rico
-TboolIn IsUSCitizenPerPuertoRico(Thing p) = 
+Tbool IsUSCitizenPerPuertoRico(Thing p) = 
     IsUSCitizenPerPuertoRico1941(p) |
     IsUSCitizenAtBirthPerPuertoRico(p)
     
@@ -53,8 +53,4 @@ Test: 762460209
 - IsSubjectToUSJurisdiction(mary) = true
 - CountryOfResidence(mary) = "Puerto Rico"
 - USC.Tit8.Sec1402.IsUSCitizenPerPuertoRico(mary).TestOutput =?= "Time.DawnOf False 1/13/1941 12:00:00 AM True "
-
-
-
-
 

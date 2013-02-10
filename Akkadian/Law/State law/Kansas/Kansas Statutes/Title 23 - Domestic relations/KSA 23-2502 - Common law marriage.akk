@@ -7,7 +7,7 @@
 
 # Common law marriage
 # TODO: Tie this into AreMarried(p1,p2) somehow
-TboolInSym InCommonLawMarriage(Thing p1, Thing p2) =
+TboolSym InCommonLawMarriage(Thing p1, Thing p2) =
     IsResidentOf(p1, "Kansas") &        # Jurisdiction...
     IsResidentOf(p2, "Kansas") &
     Fam.OneManOneWoman(p1, p2) &        # Assumed

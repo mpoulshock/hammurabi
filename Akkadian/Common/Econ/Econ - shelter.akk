@@ -9,46 +9,46 @@
 # ANNUAL AMOUNTS
 
 # >>How much does/did {1} pay in annual property taxes?
-TnumIn AnnualPropertyTaxesPaid(Thing p)    
+Tnum AnnualPropertyTaxesPaid(Thing p)    
 
 # >>How much does/did {1} pay in annual mortgage interest?
-TnumIn AnnualMortgageInterestPaid(Thing p) 
+Tnum AnnualMortgageInterestPaid(Thing p) 
 
 # >>How much does/did {1} pay in rent annually?
-TnumIn AnnualRentPaid(Thing p) 
+Tnum AnnualRentPaid(Thing p) 
 
 # >>How much does/did {1} pay for utilities annually?
-TnumIn AnnualUtilityChargesPaid(Thing p) 
+Tnum AnnualUtilityChargesPaid(Thing p) 
 
 # >>How much does/did {1} pay annually for home repair and maintenance?
-TnumIn AnnualHomeRepairMaintenanceCostsPaid(Thing p) 
+Tnum AnnualHomeRepairMaintenanceCostsPaid(Thing p) 
 
 # >>How much does/did {1} pay annually for property insurance?
-TnumIn AnnualPropertyInsuranceCosts(Thing p)
+Tnum AnnualPropertyInsuranceCosts(Thing p)
 
 # >>How much does/did {1} pay annually for food consumed at home?
-TnumIn AnnualCostOfFoodConsumedAtHome(Thing p) 
+Tnum AnnualCostOfFoodConsumedAtHome(Thing p) 
 
 
 # MONTHLY AMOUNTS
 
 # >>How much is/was {1}'s monthly rent?
-TnumIn MonthlyRent(Thing p) 
+Tnum MonthlyRent(Thing p) 
 
 # >>How much are/were {1}'s monthly mortgage costs?
-TnumIn MonthlyMortgageCosts(Thing p)
+Tnum MonthlyMortgageCosts(Thing p)
     
 # >>How much are/were {1}'s monthly property taxes?
-TnumIn MonthlyPropertyTaxes(Thing p)
+Tnum MonthlyPropertyTaxes(Thing p)
     
 # >>How much is/was {1}'s monthly homeowners insurance premium?
-TnumIn MonthlyHomeOwnersInsurancePremium(Thing p) 
+Tnum MonthlyHomeOwnersInsurancePremium(Thing p) 
     
 # >>How much is/was {1}'s monthly renters insurance premium?
-TnumIn MonthlyRentersInsurancePremium(Thing p)
+Tnum MonthlyRentersInsurancePremium(Thing p)
     
 # >>How much are/were {1}'s monthly utility costs?
-TnumIn MonthlyUtilities(Thing p) 
+Tnum MonthlyUtilities(Thing p) 
     
     
 

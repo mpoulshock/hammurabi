@@ -64,20 +64,20 @@ Tbool a3(Thing c) =
 
         
 # Number of general, not agricultural or domestic, employees
-TnumIn NumberOfGeneralEmployees(Thing c)
+Tnum NumberOfGeneralEmployees(Thing c)
 
 # Number of agricultural employees.
-TnumIn NumberOfAgEmployees(Thing c)
+Tnum NumberOfAgEmployees(Thing c)
         
 # Wages paid for general, not agricultural or domestic, employment.
 # This is a Tnum that varies quarterly.
-TnumIn QuarterlyGeneralWagesPaid(Thing c)
+Tnum QuarterlyGeneralWagesPaid(Thing c)
             
 # Wages paid for agricultural employment.
 # This is a Tnum that varies quarterly.
-TnumIn QuarterlyAgWagesPaid(Thing c)
+Tnum QuarterlyAgWagesPaid(Thing c)
         
 # Wages paid for domestic employment.
 # This is a Tnum that varies quarterly.
-TnumIn QuarterlyDomesticWagesPaid(Thing c)
+Tnum QuarterlyDomesticWagesPaid(Thing c)
 

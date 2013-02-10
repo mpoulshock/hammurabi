@@ -6,5 +6,5 @@
 
 
 # Adjusted gross income
-TnumIn AGI(Thing p)
+Tnum AGI(Thing p)
     

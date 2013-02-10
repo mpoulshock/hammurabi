@@ -34,7 +34,7 @@ Tnum TemporalTaxYear(Tnum monthTaxYearBegins) =
         
 # Month a person's tax year begins (defaults to January). 
 # >>In what month (1-12) does/did {1}'s tax year begin?
-TnumIn MonthTaxYearBegins(Thing p) =
+Tnum MonthTaxYearBegins(Thing p) =
     1
 
     

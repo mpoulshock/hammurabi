@@ -18,31 +18,31 @@
 # large rules can still fail to short-circuit.)
 
 # Test of & and |
-TboolIn LookAheadShortCircuit1(Thing A) =
+Tbool LookAheadShortCircuit1(Thing A) =
 	LookAheadProngB(A) &
 	LookAheadProngA(A) &
 	LookAheadProngC(A)
 	
-TboolIn LookAheadProngB(Thing A) =		# TboolIn -> short-circuits;  Tbool -> doesn't
+Tbool LookAheadProngB(Thing A) =		# Tbool -> short-circuits;  Tbool -> doesn't
 	LookAheadProngB1(A) |
 	LookAheadProngB2(A)
 
 # Test of |~
-TboolIn LookAheadShortCircuit2(Thing A, Thing B) =
+Tbool LookAheadShortCircuit2(Thing A, Thing B) =
 	IsBioParOf(A,B) |
 	LookAheadProngA(A)
 	
-TboolIn IsBioParOf(Thing p1, Thing p2) =	# TboolIn -> short-circuits;  Tbool -> doesn't
+Tbool IsBioParOf(Thing p1, Thing p2) =	# Tbool -> short-circuits;  Tbool -> doesn't
     Fam.Relationship(p1,p2) == "Parent" |~
     Fam.Relationship(p2,p1) == "Child"
     
-TboolIn LookAheadProngA(Thing A)
+Tbool LookAheadProngA(Thing A)
 
-TboolIn LookAheadProngB1(Thing A)
+Tbool LookAheadProngB1(Thing A)
 
-TboolIn LookAheadProngB2(Thing A)
+Tbool LookAheadProngB2(Thing A)
 
-TboolIn LookAheadProngC(Thing A)
+Tbool LookAheadProngC(Thing A)
 
 
 # INTERVIEW SEQUENCE WITH |~ OPERATOR - NOT WORKING
@@ -65,9 +65,9 @@ Tbool Test918a(Thing a) =
     & 
     Imm.IsUSNational(a)
 
-TboolIn TestMethod918a(Thing a)
+Tbool TestMethod918a(Thing a)
 
-TboolIn TestMethod918b(Thing a)
+Tbool TestMethod918b(Thing a)
 
 
 # INTERVIEW SEQUENCE WITH |~ OPERATOR - WORKING
@@ -400,21 +400,21 @@ Test: 85594484
 
 # ASK INTERMEDIATE QUESTION BEFORE DESCENDING TREE
 
-TboolIn Test9(Thing p) =
+Tbool Test9(Thing p) =
     set.Exists(IsUSCitizen(_))
     
     Tset set =
         SomeRandomPeople(p)
 
-TsetIn SomeRandomPeople(Thing p)
+Tset SomeRandomPeople(Thing p)
 
 Tbool MeetsSomeCriteria(Thing p) =
     MeetsCriteria1(p) &
     MeetsCriteria2(p)
 
-TboolIn MeetsCriteria2(Thing p) 
+Tbool MeetsCriteria2(Thing p) 
 
-TboolIn? MeetsCriteria1(Thing p) = 
+Tbool? MeetsCriteria1(Thing p) = 
     TestMethod918a(p) &
     TestMethod918a(p)
     
@@ -462,7 +462,7 @@ Test: UncertainThing7
 # INFINITE LOOPS
 
 # Recursive rule that looks for unknown people
-TboolIn IsCitizen(Thing p) =
+Tbool IsCitizen(Thing p) =
     IsCitizenByLaw(p) |
     IsCitizen(TheMotherOf(p))
 
@@ -471,10 +471,10 @@ Thing TheMotherOf(Thing p) =
     MotherOf(p).ToThing
  
 # >> Is {1} a citizen by law?
-TboolIn IsCitizenByLaw(Thing p) 
+Tbool IsCitizenByLaw(Thing p) 
   
 # >>What's the name of {1}'s mother?
-TsetIn MotherOf(Thing p)
+Tset MotherOf(Thing p)
 	
 Test: Loop1
 - Thing p
@@ -531,7 +531,7 @@ Tnum TestTsetCount(Thing p) =
     TestTset(p).Count
 
 # >>What items are in {1}'s set?
-TsetIn TestTset(Thing p)
+Tset TestTset(Thing p)
 
 
 Test: Tset1
@@ -569,11 +569,11 @@ Test: Tset5  # fail b/c doesn't output Tset data
 Tbool Another3ParamTest(Thing a, Thing b, Thing c) =
     IsXYZ(a,b,c)
 
-TboolIn IsABC(Thing a, Thing b, Thing c) =
+Tbool IsABC(Thing a, Thing b, Thing c) =
     Stub() |
     IsXYZ(a,b,c)
 
-TboolIn IsXYZ(Thing x, Thing y, Thing z)
+Tbool IsXYZ(Thing x, Thing y, Thing z)
 
 Test: Param3_1a
 - Things x, y, z

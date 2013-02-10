@@ -7,13 +7,13 @@
 # BIRTH, LIFE, AND DEATH
 
 # >>What is {1}'s date of birth?
-TdateIn DoB(Thing p)
+Tdate DoB(Thing p)
 
 # >>What is {1}'s date of death?
-TdateIn DateOfDeath(Thing p)
+Tdate DateOfDeath(Thing p)
 
 # >>Is {1} deceased?
-TboolIn IsDeceased(Thing p)
+Tbool IsDeceased(Thing p)
 
 # Age (in years)
 Tnum Age(Thing p) =
@@ -51,7 +51,7 @@ Tbool IsTransgendered(Thing p) =
     Gender(p) == "Transgendered"        
 
 # >>What is {1}'s gender? (Options: Male, Female, Transgendered)
-TstrIn Gender(Thing p)
+Tstr Gender(Thing p)
 
 
 # ETHNICITY
@@ -60,38 +60,38 @@ TstrIn Gender(Thing p)
 # Includes Alaska Natives and Native Hawaiians
 # Note: Most legal sources use "Indian" or "American Indian"
 # >> Is {1} a member of a Native American, Native Hawaiian, or Alaska Native tribe?
-TboolIn IsNativeAmerican(Thing p)
+Tbool IsNativeAmerican(Thing p)
 
 
 # MISCELLANEOUS
 
 # >>Does/did {1} have a valid Social Security Number?
-TboolIn HasSSN(Thing p) 
+Tbool HasSSN(Thing p) 
     
 # >>Has {1} applied for (but not yet received) a Social Security Number?
-TboolIn AppliedForSSN(Thing p) 
+Tbool AppliedForSSN(Thing p) 
 
 # See 42 USC 416(i)(1)(B).
 # >>Is/was {1} legally blind?
-TboolIn IsBlind(Thing p)
+Tbool IsBlind(Thing p)
 
 # >>Does/did {1} have a physical or mental impairment that substantially limits one or more major life activities (see 42 USC 12102)?
-TboolIn IsDisabled(Thing p)
+Tbool IsDisabled(Thing p)
 
 # >>Is/was {1} incapable of self-care?
-TboolIn IsIncapableOfSelfCare(Thing p) 
+Tbool IsIncapableOfSelfCare(Thing p) 
 
 # >>Is/was {1} in prison?
-TboolIn IsInPrison(Thing p)
+Tbool IsInPrison(Thing p)
 
 # >>Is/was {1} in a juvenile rehabilitation facility?
-TboolIn InJuvenileFacility(Thing p)
+Tbool InJuvenileFacility(Thing p)
 
 # >>Is/was {1} in foster care?
-TboolIn InFosterCare(Thing p)
+Tbool InFosterCare(Thing p)
 
 # >>Is/was {1} in a drug or alcohol treatment program?
-TboolIn InDrugOrAlcoholTreatmentProg(Thing p) 
+Tbool InDrugOrAlcoholTreatmentProg(Thing p) 
     
     
 # UNIT TESTS

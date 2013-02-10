@@ -7,16 +7,16 @@
 # GENERAL / ACTIVE DUTY / COMBAT
 
 # >>Does/did {1} serve in the U.S. Armed Forces?
-TboolIn InArmedForces(Thing p)
+Tbool InArmedForces(Thing p)
 
 # >>Is/was {1} deployed to a combat zone?
-TboolIn IsDeployedToCombatZone(Thing p)
+Tbool IsDeployedToCombatZone(Thing p)
 
 # >>Is/was {1} on active duty for training in the Armed Forces reserves?
-TboolIn OnActiveDutyForTraining(Thing p) 
+Tbool OnActiveDutyForTraining(Thing p) 
 
 # >>Is/was {1} on active duty in the Armed Forces?
-TboolIn OnActiveDuty(Thing p)
+Tbool OnActiveDuty(Thing p)
 
 
 # BRANCH OF ARMED FORCES
@@ -44,13 +44,13 @@ Tbool InReserveArmedForces(Thing p) =
         BranchOfArmedForces(p) == "Coast Guard Reserve"
 
 # >>What branch of the U.S. Armed Forces does/did {1} serve in? (Options: Army, Navy, Air Force, Marine Corps, Coast Guard, Army National Guard, Army Reserve, Air National Guard, Navy Reserve, Air Force Reserve, Marine Corps Reserve, Coast Guard Reserve, None of the above.)
-TstrIn BranchOfArmedForces(Thing person)
+Tstr BranchOfArmedForces(Thing person)
 
 
 # INJURY
 
 # >>Does/did {1} have a service-connected injury?
-TboolIn ServiceConnectedInjury(Thing p)
+Tbool ServiceConnectedInjury(Thing p)
 
 
 # DISCHARGE
@@ -60,7 +60,7 @@ Tbool DishonorablyDischarged(Thing p) =
     NatureOfDischarge(p) == "Dishonorable discharge"
     
 # >>What is the nature of {1}'s discharge from the U.S. Armed Forces?
-TstrIn NatureOfDischarge(Thing p)
+Tstr NatureOfDischarge(Thing p)
 
 ## Possible values:
 Expiration of term of service

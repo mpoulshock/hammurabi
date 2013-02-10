@@ -7,14 +7,14 @@
 # PLACE OF RESIDENCE
 
 # U.S. resident
-TboolIn IsUSResident(Thing p) =
+Tbool IsUSResident(Thing p) =
     CountryOfResidence(p) == "United States" |
     ResidesInUSState(p)
     
 ResidesInUSState(1) assumes CountryOfResidence(1) == "United States"
 
 # Resides in U.S. state
-TboolIn ResidesInUSState(Thing p) =
+Tbool ResidesInUSState(Thing p) =
     Geo.IsUSState(StateOfResidence(p))
     
 # Resident of a given state or country
@@ -23,20 +23,20 @@ Tbool IsResidentOf(Thing p, string jur) =
     StateOfResidence(p) == jur
 
 # >>In which country or territory does/did {1} reside?
-TstrIn CountryOfResidence(Thing p)
+Tstr CountryOfResidence(Thing p)
 
 # >>In what state does/did {1} reside?
-TstrIn StateOfResidence(Thing p) 
+Tstr StateOfResidence(Thing p) 
 
 
 # U.S. CITIZENSHIP
 
 # U.S. citizen
-TboolIn IsUSCitizen(Thing p) =
+Tbool IsUSCitizen(Thing p) =
     Imm.Status(p) == "U.S. citizen"     
 
 # >>Is {1} subject to U.S. jurisdiction?
-TboolIn IsSubjectToUSJurisdiction(Thing p)
+Tbool IsSubjectToUSJurisdiction(Thing p)
 
 
 # BIRTH LOCATION
@@ -46,10 +46,10 @@ Tbool BornInTheUSA(Thing p) =
     BirthCountry(p) == "United States"
 
 # >>In what country was {1} born?
-TstrIn BirthCountry(Thing p)
+Tstr BirthCountry(Thing p)
 
 # >>In what U.S. state or territory was {1} born?  (This includes places like Guam, Puerto Rico, and the Panama Canal Zone.)
-TstrIn BirthState(Thing p)
+Tstr BirthState(Thing p)
 
 
 # LOCATION
@@ -59,7 +59,7 @@ Tbool PresentInUS(Thing p) =
     CountryLocation(p) == "United States"
     
 # >>In what country or territory is/was {1} physically located?
-TstrIn CountryLocation(Thing p)
+Tstr CountryLocation(Thing p)
 
 
 # UNIT TESTS

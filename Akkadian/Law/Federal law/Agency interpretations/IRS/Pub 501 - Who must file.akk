@@ -142,31 +142,31 @@ Tbool MustFilePerTable3(Thing p) =
     HadThresholdChurchWages(p)
 
 # >>Does/did {1} owe the alternative minimum tax (AMT)?
-TboolIn OwesAlternativeMinimumTax(Thing p)
+Tbool OwesAlternativeMinimumTax(Thing p)
 
 # >>Does/did {1} owe an additional tax on a qualified plan?
-TboolIn OwesAdditionalTaxOnQualifiedPlan(Thing p)
+Tbool OwesAdditionalTaxOnQualifiedPlan(Thing p)
 
 # >>Does/did {1} owe Social Security or Medicare taxes on unreported tips or wages that were not withheld?
-TboolIn OwesSocSecOrMedicareTaxes(Thing p)
+Tbool OwesSocSecOrMedicareTaxes(Thing p)
 
 # >>Does/did {1} owe write-in taxes?
-TboolIn OwesWriteInTaxes(Thing p)
+Tbool OwesWriteInTaxes(Thing p)
 
 # >>Does/did {1} owe household employment taxes?
-TboolIn OwesHouseholdEmploymentTaxes(Thing p)
+Tbool OwesHouseholdEmploymentTaxes(Thing p)
 
 # >>Does/did {1} owe recapture taxes?
-TboolIn OwesRecaptureTaxes(Thing p)
+Tbool OwesRecaptureTaxes(Thing p)
 
 # >>Does/did {1} (or their spouse if filing jointly) receive Archer MSA, Medicare Advantage MSA, or health savings account distributions?
-TboolIn HadHSADistribution(Thing p)
+Tbool HadHSADistribution(Thing p)
 
 # >>Does/did {1} have over 108.28 in wages from a qualifying church-related organization?
-TboolIn HadThresholdChurchWages(Thing p)
+Tbool HadThresholdChurchWages(Thing p)
 	
 # >>What are/were {1}'s net earnings from self-employment?
-TnumIn NetEarningsFromSelfEmployment(Thing p)
+Tnum NetEarningsFromSelfEmployment(Thing p)
 
 
 # TODO: Move these elsewhere...?
@@ -211,10 +211,10 @@ Tbool LivedTogetherForTaxPurposes(Thing spouse, Thing deceasedSpouse) =
 # INPUTS
 
 # >>Does/did {1} itemize deductions?
-TboolIn ItemizesDeductions(Thing p)
+Tbool ItemizesDeductions(Thing p)
 
 # >>Does/did {1} have income from a U.S. possession (Guam, N. Mariana Islands, American Samoa, or the U.S. Virgin Islands)?
-TboolIn HasIncomeFromUSPossession(Thing p)
+Tbool HasIncomeFromUSPossession(Thing p)
 
 
 # UNIT TESTS

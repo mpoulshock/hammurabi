@@ -7,7 +7,7 @@
 
 
 # >>Can/did {2} claim {1} as a dependent (for tax purposes)?
-TboolIn? IsDependentOf(Thing d, Thing tp) =
+Tbool? IsDependentOf(Thing d, Thing tp) =
     ...
         IsQualifyingChildOf(d, tp) | 
         IsQualifyingRelativeOf(d, tp)
@@ -18,7 +18,7 @@ TboolIn? IsDependentOf(Thing d, Thing tp) =
 # QUALIFYING CHILD
     
 # >>Is/was {1} a 'qualifying child' of {2} for dependency purposes?
-TboolIn? IsQualifyingChildOf(Thing d, Thing tp) =    
+Tbool? IsQualifyingChildOf(Thing d, Thing tp) =    
     QCGenTest(d, tp, taxYear) &
     QCRelationTest(d, tp) &
     QCAgeTest(d, tp, taxYear) &
@@ -62,7 +62,7 @@ Tbool QCAgeTest(Thing d, Thing tp, Tnum taxYear) =
     
 # Subsections d3 and d4 are omitted.
 # >>Is/was {1} a 'qualifying relative' of {2} for dependency purposes?
-TboolIn? IsQualifyingRelativeOf(Thing d, Thing tp) =
+Tbool? IsQualifyingRelativeOf(Thing d, Thing tp) =
     genTest & 
     relationTest & 
     d4Test
@@ -145,25 +145,25 @@ Tbool CannotBeADependentOf(Thing d, Thing tp) =
 # FIGURE OUT WHO CAN CLAIM A PERSON AS A DEPENDENT (RECURSIVE)            
 
 # >>Can someone claim {1} as a dependent?
-TboolIn? CanBeClaimedAsDependentBySomeone(Thing p) =
+Tbool? CanBeClaimedAsDependentBySomeone(Thing p) =
     PeopleWhoMightClaimAsDependent(p).Exists(IsDependentOf(p,_))
     
 # >>Who has financial or custodial responsibility for {1}?
-TsetIn PeopleWhoMightClaimAsDependent(Thing p)
+Tset PeopleWhoMightClaimAsDependent(Thing p)
  
 # >>Can {1} be claimed as a qualifying child by more than one taxpayer?
-TboolIn CanBeClaimedAsQCByTwoTaxpayers(Thing p) 
+Tbool CanBeClaimedAsQCByTwoTaxpayers(Thing p) 
        
 
 # INPUTS
 
-TboolIn NotQualifyingChildOfAnyTaxpayer(Thing d)
+Tbool NotQualifyingChildOfAnyTaxpayer(Thing d)
 
-TboolIn AnotherTaxpayerProvidedSupportFor(Thing d)
+Tbool AnotherTaxpayerProvidedSupportFor(Thing d)
  
-TboolIn CanClaimSomeoneAsDependent(Thing d)
+Tbool CanClaimSomeoneAsDependent(Thing d)
 
-TboolIn MFJOnlyForRefund(Thing d)
+Tbool MFJOnlyForRefund(Thing d)
 
  
 # UNIT TESTS

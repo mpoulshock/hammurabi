@@ -12,11 +12,11 @@ Tbool IsEmancipatedMinor(Thing p) =
     OrderedEmancipated(p)
 
 # Has been ordered emancipated by a court
-TboolIn OrderedEmancipated(Thing p) =
+Tbool OrderedEmancipated(Thing p) =
     IsEligibleForEmancipation(p) &
     OrderedEmancipatedQ(p)
     
-TboolIn OrderedEmancipatedQ(Thing p)
+Tbool OrderedEmancipatedQ(Thing p)
 
 # Eligible to become emancipated
 Tbool IsEligibleForEmancipation(Thing p) =

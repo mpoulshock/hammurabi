@@ -25,7 +25,7 @@ Tbool IsDualStatusAlien(Thing p) =
 
 # Interview stops here before descending...    
 # >>What is {1}'s alien tax status? (Options: Resident alien, Nonresident alien, Dual-status alien)
-TstrIn? AlienTaxStatus(Thing p) =
+Tstr? AlienTaxStatus(Thing p) =
     set:
     # if IsDualStatusAlienInferred(p) -> "Dual-status alien"
     if IsResidentAlienInferred(p) -> "Resident alien"
@@ -45,7 +45,7 @@ Tbool ResidentAlienTest(Thing p) =
     NonresidentSpousalElection(p)
 
 # Factored out to prevent infinite loop when analyzing the nonresident spousal election
-TboolIn MeetsCoreResidentAlienTest(Thing p) =
+Tbool MeetsCoreResidentAlienTest(Thing p) =
     Imm.IsAlien(p) &
     ...
         ...
@@ -94,7 +94,7 @@ Tnum DaysPresentPerYear(Thing p) =
     PhysicallyPresent(p).TotalElapsedDaysPer(TheYear)
 
 # Physical presence
-TboolIn PhysicallyPresent(Thing p) =
+Tbool PhysicallyPresent(Thing p) =
     PresentInUS(p) &
     ! PresenceExempt(p) &
     ! ExemptIndividual(p)
@@ -249,40 +249,40 @@ Tbool IsBonaFideResidentOfPuertoRicoOrAmerSamoa(Thing p) =
 # INPUTS
 
 # >>Is/was {1} a bona fide resident of American Samoa?
-TboolIn IsBonaFideResidentOfAmericanSamoa(Thing p)
+Tbool IsBonaFideResidentOfAmericanSamoa(Thing p)
 
 # >>Is/was {1} a bona fide resident of Puerto Rico?
-TboolIn IsBonaFideResidentOfPuertoRico(Thing p)
+Tbool IsBonaFideResidentOfPuertoRico(Thing p)
 
 # >>Did/does {1} commute regularly to the U.S. from Canada or Mexico?
-TboolIn CommuteToUSRegularlyFromCanadaOrMexico(Thing p)
+Tbool CommuteToUSRegularlyFromCanadaOrMexico(Thing p)
 
 # >>Is/was {1} in transit through the U.S. for a period of less than 24 hours?
-TboolIn InTransitThroughUS(Thing p)
+Tbool InTransitThroughUS(Thing p)
 
 # >>Is/was {1} temporarily present in the U.S. as a crew member on a foreign vessel?
-TboolIn InUSAsCrewOnForeignVessel(Thing p)
+Tbool InUSAsCrewOnForeignVessel(Thing p)
 
 # >>Is/was {1} unable to leave the U.S. due to a medical problem that arose while you were in the U.S.?
-TboolIn UnableToLeaveUSDueToMedicalProblem(Thing p)
+Tbool UnableToLeaveUSDueToMedicalProblem(Thing p)
 
 # >>Does/did a foreign employer pay all of {1}'s compensation?
-TboolIn ForeignEmployerPaidAllIncome(Thing p)
+Tbool ForeignEmployerPaidAllIncome(Thing p)
 
 # >>Does/did {1} intend to reside permanently in the U.S.?
-TboolIn IntendToResidePermanentlyInUS(Thing p)
+Tbool IntendToResidePermanentlyInUS(Thing p)
 
 # >>Is/was {1} a professional athlete temporarily in the U.S. to compete in a charitable sports event?
-TboolIn ProfessionalAthleteTempInUSForCharity(Thing p)
+Tbool ProfessionalAthleteTempInUSForCharity(Thing p)
 
 # >>Does {1} have a 'closer connection' with {2} than with the U.S.?
-TboolIn CloserConnectionThanWithUS(Thing person, Thing country)    
+Tbool CloserConnectionThanWithUS(Thing person, Thing country)    
 
 # >>In what countries does {1} have a tax home? (A tax home is a person's main place of business or employment, regardless of where they live.)
-TsetIn TaxHomeCountries(Thing p)
+Tset TaxHomeCountries(Thing p)
 
 # >>Does {1} choose to be treated as a resident alien for tax purposes?
-TboolIn ChoosesToBeTreatedAsResidentAlien(Thing p)
+Tbool ChoosesToBeTreatedAsResidentAlien(Thing p)
 
 
 # UNIT TESTS

@@ -15,7 +15,7 @@ Tstr FilingStatusInferred(Thing p) =
 # COST OF KEEPING UP A HOME
 
 # >>Does/did {1} pay more than half the cost of keeping up a home in the tax year?
-TboolIn? PaidOverHalfCostKeepingUpHome(Thing p) =
+Tbool? PaidOverHalfCostKeepingUpHome(Thing p) =
     CostOfKeepingUpHome(p) > partPaidByOthers
     
     # TODO: Econ.HouseholdOf(p) correctly instantiates a Thing representing p's household,
@@ -23,7 +23,7 @@ TboolIn? PaidOverHalfCostKeepingUpHome(Thing p) =
     Tnum partPaidByOthers = CostOfKeepingUpHome(Econ.HouseholdOf(p)) - CostOfKeepingUpHome(p) 
     
 # Itemized costs of keeping up a home
-TnumIn CostOfKeepingUpHome(Thing p) =
+Tnum CostOfKeepingUpHome(Thing p) =
     Econ.AnnualPropertyTaxesPaid(p) +
     Econ.AnnualMortgageInterestPaid(p) +
     Econ.AnnualRentPaid(p) +
@@ -34,7 +34,7 @@ TnumIn CostOfKeepingUpHome(Thing p) =
     AnnualOtherHouseholdExpenses(p) 
 
 # >>How much does/did {1} pay annually for other household expenses?
-TnumIn AnnualOtherHouseholdExpenses(Thing p) 
+Tnum AnnualOtherHouseholdExpenses(Thing p) 
 
 
 # QUALIFYING PERSON FOR HEAD OF HOUSEHOLD
@@ -49,7 +49,7 @@ TODO:
 
 # Table 4 (page 9)
 # >>Is {1} a person qualifying {2} to file as Head of Household?
-TboolIn? IsQualifyingPersonForHoH(Thing otherPerson, Thing filer) =
+Tbool? IsQualifyingPersonForHoH(Thing otherPerson, Thing filer) =
     ...
         Sec152.IsQualifyingChildOf(otherPerson, filer) &
         ...
@@ -77,13 +77,13 @@ TboolIn? IsQualifyingPersonForHoH(Thing otherPerson, Thing filer) =
  
 
 # >>Do/did {1} and {2} live together for over half of the tax year?
-TboolIn LivedTogetherForOverHalfTaxYear(Thing p1, Thing p2)    
+Tbool LivedTogetherForOverHalfTaxYear(Thing p1, Thing p2)    
   
 # >>Can/could {1} claim an exemption for {2} only because of a multiple support agreement?
-TboolIn CanClaimExemptionForOnlyBecauseOfMultipleSupportAgreement(Thing p1, Thing p2)
+Tbool CanClaimExemptionForOnlyBecauseOfMultipleSupportAgreement(Thing p1, Thing p2)
 
 # >>Is the only reason that {1} can't claim an exemption for {2} that {1} can be claimed as a dependent on someone else's return?
-TboolIn OnlyReasonCantClaimExemptionIsBecauseClaimedAsDepBySomeoneElse(Thing p1, Thing p2)
+Tbool OnlyReasonCantClaimExemptionIsBecauseClaimedAsDepBySomeoneElse(Thing p1, Thing p2)
 
 
 # UNIT TESTS

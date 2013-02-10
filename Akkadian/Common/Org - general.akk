@@ -5,10 +5,10 @@
 
 
 # >>How many employees does {1} have?
-TnumIn NumberOfEmployees(Thing corp)
+Tnum NumberOfEmployees(Thing corp)
     
 # >>Is {1} a governmental entity?
-TboolIn IsGovtAgency(Thing corp)
+Tbool IsGovtAgency(Thing corp)
 
 # Unincorporated business entity (UBE)
 Tbool IsUnincorporatedBusinessEntity(Thing entity) =
@@ -22,7 +22,7 @@ Tbool IsUnincorporatedBusinessEntity(Thing entity) =
         TypeOfCorporateEntity(entity)
 
 # >>What type of corporate entity is {1}?
-TstrIn TypeOfCorporateEntity(Thing corp)
+Tstr TypeOfCorporateEntity(Thing corp)
     
     
 

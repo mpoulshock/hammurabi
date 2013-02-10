@@ -124,10 +124,10 @@ Tnum BoxesChecked(Thing p) =
 # INPUTS
 
 # >>What are/were {1}'s total itemized deductions?
-TnumIn TotalItemizedDeductions(Thing p)
+Tnum TotalItemizedDeductions(Thing p)
 
 # >>Is/was {1} filing a tax return for a short tax year due to a change in their annual accounting period?
-TboolIn FilingReturnForShortTaxYear(Thing p)
+Tbool FilingReturnForShortTaxYear(Thing p)
     
         
 # UNIT TESTS

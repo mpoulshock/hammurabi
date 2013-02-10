@@ -102,7 +102,7 @@ Tbool IsParentOf(Thing p1, Thing p2) =
       
 # 2611(11)
 # >>Does/did {1} have a 'serious health condition' (one that involves inpatient care or continuing treatment by a health care provider)?
-TboolIn HasSeriousHealthCondition(Thing p)
+Tbool HasSeriousHealthCondition(Thing p)
 
         
 # 2611(12) - Indicates whether one person is considered the "child" of another under the FMLA.
@@ -125,7 +125,7 @@ Tbool IsChildOf(Thing p1, Thing p2) =
 
 # Indicates the date the person started or intends to start FMLA leave.
 # >>When does {1} want to go on leave?
-TdateIn DateLeaveBegins(Thing p, Thing c)
+Tdate DateLeaveBegins(Thing p, Thing c)
   
 
 # Indicates whether one person acts in loco parentis of another.
@@ -138,10 +138,10 @@ Tbool ActsInLocoParentisOf(Thing p1, Thing p2) =
 # INPUTS
 
 # >>Does/did {2} have fewer than 50 employees within 75 miles of {1}'s worksite?
-TboolIn LessThan50EmployeesWithin75MilesOfWorksite(Thing p, Thing corp)
+Tbool LessThan50EmployeesWithin75MilesOfWorksite(Thing p, Thing corp)
 
 # >>Are/were there fewer than 50 employees at {1}'s worksite at {2}?
-TboolIn LessThan50EmployeesAtWorksite(Thing p, Thing corp)
+Tbool LessThan50EmployeesAtWorksite(Thing p, Thing corp)
         
         
 # UNIT TESTS

@@ -11,7 +11,7 @@
 
 
 # >>Is/was {1} a resident of a foreign country under an applicable tax treaty?
-TboolIn IsResidentOfForeignCountryUnderTaxTreaty(Thing p)
+Tbool IsResidentOfForeignCountryUnderTaxTreaty(Thing p)
 
 
 

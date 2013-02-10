@@ -6,7 +6,7 @@
 
 # Warning: many statutes redefine "minor" for specific, limited purposes
 # >>Is/was {1} a minor?
-TboolIn? IsMinor(Thing p) =
+Tbool? IsMinor(Thing p) =
     !ReachedAgeOfMajority(p) & 
     !IsEmancipatedMinor(p)
 
@@ -41,7 +41,7 @@ Tbool ReachedAgeOfMajority(Thing p) =
         
 # Will need to reference state rules, like Vermont example below...
 # >>Is/was {1} an emancipated minor?
-TboolIn IsEmancipatedMinor(Thing p) =
+Tbool IsEmancipatedMinor(Thing p) =
     set:
     if Age(p) <= 15 -> false        # Assumed
     if state == "Vermont" -> Vt.Stat.Tit12.Sec7151.IsEmancipatedMinor(p)

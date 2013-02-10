@@ -14,44 +14,44 @@ TODO:
 # TRANSACTIONS
 
 # Purpose, description, or nature of the transaction
-TstrIn PurposeOfTransaction(Thing transaction)
+Tstr PurposeOfTransaction(Thing transaction)
 
 # Description of the thing sold, if transaction is a sale
-TstrIn ThingSoldInTransaction(Thing transaction)
+Tstr ThingSoldInTransaction(Thing transaction)
 
 # Purchase price of thing sold, if transaction is a sale
-TnumIn PurchasePrice(Thing transaction)
+Tnum PurchasePrice(Thing transaction)
 
 # Date sale occurred, if there was one
-TdateIn DateOfSale(Thing transaction)
+Tdate DateOfSale(Thing transaction)
 
 # Date balance is due on a sale, if there was a sale
-TdateIn DateBalanceDue(Thing transaction)
+Tdate DateBalanceDue(Thing transaction)
 
 
 # TRANSFERS
 
 # Item tranferred
-TsetIn ItemTransferred(Thing transfer)
+Tset ItemTransferred(Thing transfer)
 
 # Date of transfer
-TdateIn DateOf(Thing transfer)
+Tdate DateOf(Thing transfer)
 
 # Transferor (giver)
 Thing Transferor(Thing transfer) =
     Transferors(transfer).ToThing
 
 # Set of transferors
-TsetIn Transferors(Thing transfer)
+Tset Transferors(Thing transfer)
 
 # Transferee (receiver)
 Thing Transferee(Thing transfer) =
     Transferees(transfer).ToThing
 
 # Set of transferees
-TsetIn Transferees(Thing transfer)
+Tset Transferees(Thing transfer)
 	
 # How the item was transferred
-TstrIn TransferMethod(Thing transfer)
+Tstr TransferMethod(Thing transfer)
 
 

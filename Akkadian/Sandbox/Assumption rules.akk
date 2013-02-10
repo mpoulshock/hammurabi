@@ -6,21 +6,21 @@
 
 # INPUT RULES FOR THE TEST ASSUMPTIONS
 
-TboolIn AreMarried2(Thing p1, Thing p2)
+Tbool AreMarried2(Thing p1, Thing p2)
 
-TboolIn LikeEachOther2(Thing p1, Thing p2)
+Tbool LikeEachOther2(Thing p1, Thing p2)
 
-TboolIn IsMarried2(Thing p)
+Tbool IsMarried2(Thing p)
 
-TboolIn IsPregnant2(Thing p)
+Tbool IsPregnant2(Thing p)
 
-TboolIn IsMale2(Thing p)
+Tbool IsMale2(Thing p)
 
-TstrIn Gender2(Thing p)
+Tstr Gender2(Thing p)
 
-TboolIn IsBroke(Thing p)
+Tbool IsBroke(Thing p)
 
-TnumIn Savings(Thing p)
+Tnum Savings(Thing p)
 
 
 # SOME TEST ASSUMPTIONS - <A> assumes <B>
