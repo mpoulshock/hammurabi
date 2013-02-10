@@ -68,7 +68,7 @@ Tbool SubsecCApplies(Thing c) =
 
 # UNIT TESTS
 
-Test: 348118400
+Test: 348118400		# fail: Defect was introduced when I started caching all function calls
 - Things tom, mom, dad
 - DoB(tom) = 1980-01-01
 - Fam.ParentsOf(tom) = [[mom, dad]]
@@ -76,14 +76,14 @@ Test: 348118400
 - Gender(dad) = "Male"
 - Fam.FamilyRelationship(mom,dad) = "None"
 - Fam.IsLegitimatedByLaw(tom) = false
-- Fam.Legitimated(dad,tom) = true
-- Fam.DateLegitimated(dad,tom) = 1985-01-01
+- Fam.LegitimatedQ(dad,tom) = true
+- Fam.DateLegitimated(dad,tom) = 1985-01-01	# skip
 - Fam.FamilyRelationship(dad,tom) = "Biological parent"
 - Imm.USImmigrationStatus(dad) = "U.S. national"
 - IsDeceased(dad) = false
 - DoB(dad) = 1955-01-01
-- Fam.CommittedToFinanciallySupport(dad,tom) = true
-- Fam.DateCommittedToFinanciallySupport(dad,tom) = 1985-01-01
+- Fam.CommittedToFinanciallySupportQ(dad,tom) = true
+- Fam.DateCommittedToFinanciallySupport(dad,tom) = 1985-01-01	# skip
 - USC.Tit8.Sec1409.SubsecAApplies(tom).TestOutput =?= "Time.DawnOf False 1/1/1985 12:00:00 AM True "
 
 Test: 225658686

@@ -29,8 +29,8 @@ namespace Akkadian
     {
         private static string mainRuleType = "";        // For main rules
         private static string currentRuleType = "";     // For main rules and subrules
-        private static string methodCacheLine = "";     // Creates line that caches method results
-        private static bool cacheRule = false;          // Should method results be cached?
+        public static string methodCacheLine = "";     // Creates line that caches method results
+        public static bool cacheRule = false;          // Should method results be cached?
         private static string tableMatchLine = "";      // Rule input that must be matched in a table
         public static int totalRuleCount = 0;           // Total rules in project
         public static int SlocCount = 0;                // Total Akkadian lines in project
@@ -262,7 +262,7 @@ namespace Akkadian
              
             // Regex part  
             string word = @"[-!\+\*/A-Za-z0-9\.;\(\),""'_<>=&| ]+";
-             
+
             // Stub()
             line = Regex.Replace(line, @"Stub\(\)", "new " + currentRuleType + "(Hstate.Stub)");    
 
@@ -294,25 +294,9 @@ namespace Akkadian
         /// </remarks>
         private static string ConvertRegularRules(string line, string space)
         {
-            // First, look for rules that require intermediate assertion checks
-            if (Util.IsInputRule(line) && line.TrimEnd().EndsWith("="))
-//            if (Util.Depth(line) == 0 && 
-//                Util.StartsWithAny(line, "Tbool","Tnum","Tstr","Tset","Tdate") != "" && 
-//                line.TrimEnd().EndsWith("="))
-                // if you toggle the above lines in, it no longer makes fcns for rules w/ 0 params
-                // b/c it doesn't get to CreateMainRule()
+            if (Util.Depth(line) == 0)
             {
-                // Note: These set class-level variables!
-                cacheRule = true;
-                methodCacheLine = TransformMethod.MethodCacheLine(line, space);
-
-                // Do the conversion
-                line = TransformMethod.CreateIntermediateAssertion(line, space);
-            }
-            // Else, process all other rules
-            else if (Util.IsMainRule(line))
-            {
-                line = TransformMethod.CreateMainRule(line);
+                line = TransformMethod.CreateMainRule(line, space);
             }
 
             return line;

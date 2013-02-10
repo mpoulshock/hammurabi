@@ -62,13 +62,20 @@ namespace Hammurabi
                 Fact f = new Fact(rel, e1, e2, e3, val);
                 FactBase.Add(f);
 
-                // Add Things to the ThingBase
-                AddThing((Thing)e1);
-                AddThing((Thing)e2);
-                AddThing((Thing)e3);
+                // TODO: This breaks when the objects are not Things (hence the try-catch)
+                try
+                {
+                    // Add Things to the ThingBase
+                    AddThing((Thing)e1);
+                    AddThing((Thing)e2);
+                    AddThing((Thing)e3);
 
-                // Look for additional inferences that can be drawn, based on assumptions.
-                Assumptions.TriggerInferences(rel, (Thing)e1, (Thing)e2, (Thing)e3, val);
+                    // Look for additional inferences that can be drawn, based on assumptions.
+                    Assumptions.TriggerInferences(rel, (Thing)e1, (Thing)e2, (Thing)e3, val);
+                }
+                catch
+                {
+                }
             }
         }
     }

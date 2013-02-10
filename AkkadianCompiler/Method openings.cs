@@ -67,41 +67,14 @@ namespace Akkadian
             
             return line;
         }
-        
-        /// <summary>
-        /// Handles intermediate facts (facts asserted mid-tree)
-        /// </summary>
-        public static string CreateIntermediateAssertion(string line, string space)
-        {
-            space = Util.NamespaceConvert(space);
-            
-            return Regex.Replace(line, 
-                                 @"(?<typ>"+typs+@")(In)?(?<sym>Sym)?(?<quest>\?)? (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@")(?<comma1>, ?)?(?<argtyp2>"+wrd+@" )?(?<arg2>"+wrd+@")?(?<comma2>, ?)?(?<argtyp3>"+wrd+@" )?(?<arg3>"+wrd+@")?\) =",
-                                 "        public static ${typ} ${fcn}(${argtyp1} ${arg1}${comma1} ${argtyp2} ${arg2}${comma2} ${argtyp3} ${arg3})\r\n" +
-                                 "        {\r\n" +
-                                 "            RulePreCheckResponse r = ShortCircuitValue<${typ}>(\""+space+"${fcn}\",\"${sym}\",\"${quest}\",${arg1}${comma1} ${arg2}${comma2} ${arg3});\r\n" +
-                                 "            if (r.shouldShortCircuit) return (${typ})r.val;\r\n\r\n");
-
-//            return Regex.Replace(line, 
-//                @"(?<typ>"+typs+@")In(?<sym>Sym)?(?<quest>\?)? (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@")(?<comma1>, ?)?(?<argtyp2>"+wrd+@" )?(?<arg2>"+wrd+@")?(?<comma2>, ?)?(?<argtyp3>"+wrd+@" )?(?<arg3>"+wrd+@")?\) =",
-//                "        public static ${typ} ${fcn}(${argtyp1} ${arg1}${comma1} ${argtyp2} ${arg2}${comma2} ${argtyp3} ${arg3})\r\n" +
-//                "        {\r\n" +
-//                "            RulePreCheckResponse r = ShortCircuitValue<${typ}>(\""+space+"${fcn}\",\"${sym}\",\"${quest}\",${arg1}${comma1} ${arg2}${comma2} ${arg3});\r\n" +
-//                "            if (r.shouldShortCircuit) return (${typ})r.val;\r\n\r\n");
-        }
 
         /// <summary>
         /// Generates the c# line that caches the result of the method (comes at the end of the method).
         /// </summary>
         public static string MethodCacheLine(string line, string space)
         {
-            space = Util.NamespaceConvert(space);
+            space = Util.NamespaceConvert(space).Replace("..","."); // .Replace 
 
-//            return Regex.Replace(line, 
-//                                 @"(?<typ>"+typs+@")In(?<sym>Sym)?(?<quest>\?)? (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@")(?<comma1>, ?)?(?<argtyp2>"+wrd+@" )?(?<arg2>"+wrd+@")?(?<comma2>, ?)?(?<argtyp3>"+wrd+@" )?(?<arg3>"+wrd+@")?\) =",
-//                                 "            if (!RESULT.IsEverUnstated) Facts.Assert" +
-//                                 "(${arg1}, \""+space+"${fcn}\"${comma1}${arg2}${comma2}${arg3}, RESULT);\r\n");
-     
             return Regex.Replace(line, 
                                  @"(?<typ>"+typs+@")(In)?(?<sym>Sym)?(?<quest>\?)? (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@")(?<comma1>, ?)?(?<argtyp2>"+wrd+@" )?(?<arg2>"+wrd+@")?(?<comma2>, ?)?(?<argtyp3>"+wrd+@" )?(?<arg3>"+wrd+@")?\) =",
                                  "            if (!RESULT.IsEverUnstated) Facts.Assert" +
@@ -111,15 +84,25 @@ namespace Akkadian
         /// <summary>
         /// Handles ordinary rules
         /// </summary>
-        public static string CreateMainRule(string line)
+        public static string CreateMainRule(string line, string space)
         {
+            space = Util.NamespaceConvert(space);
+        
             // Functions with 1-3 arguments
-            line = Regex.Replace(line, 
-                @"(?<typ>"+typs+@") (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@")(?<comma1>, ?)?(?<argtyp2>"+wrd+@" )?(?<arg2>"+wrd+@")?(?<comma2>, ?)?(?<argtyp3>"+wrd+@" )?(?<arg3>"+wrd+@")?\) =",
-                 "        public static ${typ} ${fcn}(${argtyp1} ${arg1}${comma1} ${argtyp2} ${arg2}${comma2} ${argtyp3} ${arg3})\r\n" +
-                 "        {\r\n" +
-                 "            Hstate h = EntityArgIsUnknown(${arg1}${comma1}${arg2}${comma2}${arg3});\r\n" +
-                 "            if (h != Hstate.Known) return new ${typ}(h);\r\n\r\n");
+            string lineafter = Regex.Replace(line, 
+                                 @"(?<typ>"+typs+@")(In)?(?<sym>Sym)?(?<quest>\?)? (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@")(?<comma1>, ?)?(?<argtyp2>"+wrd+@" )?(?<arg2>"+wrd+@")?(?<comma2>, ?)?(?<argtyp3>"+wrd+@" )?(?<arg3>"+wrd+@")?\) =",
+                                 "        public static ${typ} ${fcn}(${argtyp1} ${arg1}${comma1} ${argtyp2} ${arg2}${comma2} ${argtyp3} ${arg3})\r\n" +
+                                 "        {\r\n" +
+                                 "            RulePreCheckResponse RESPONSE = ShortCircuitValue<${typ}>(\""+space+"${fcn}\",\"${sym}\",\"${quest}\",${arg1}${comma1} ${arg2}${comma2} ${arg3});\r\n" +
+                                 "            if (RESPONSE.shouldShortCircuit) return (${typ})RESPONSE.val;\r\n\r\n");
+
+            // Add code that caches the results of the method, and the function opening
+            if (line != lineafter)
+            {
+                MainClass.cacheRule = true;
+                MainClass.methodCacheLine = TransformMethod.MethodCacheLine(line, space);
+                line = lineafter;
+            }
 
             // Otherwise, no need to check the arguments for uncertainty...
             string word = @"[-!\+\*/A-Za-z0-9\.;\(\),""'_<>=&| ]+";

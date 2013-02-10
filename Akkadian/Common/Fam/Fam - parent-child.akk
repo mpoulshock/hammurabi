@@ -136,20 +136,25 @@ TboolIn IsLegitimatedByLaw(Thing child)
     
 # Legitimated by father (he acknowledged parental responsibility)
 # Example of temporal value built from threshold facts and an event
-# >>Does/did {1} legitimate {2}?
 Tbool Legitimated(Thing parent, Thing child) =
     IsFatherOf(parent, child) &
     IsIllegitimate(child) &
-    TboolIn Legitimated(parent,child) &
+    LegitimatedQ(parent,child) &
     TheTime.IsAtOrAfter(DateLegitimated(parent,child))
 
+# >>Does/did {1} legitimate {2}?
+TboolIn LegitimatedQ(Thing parent, Thing child) 
+	
 # >>When did {1} legitimate {2}?
 TdateIn DateLegitimated(Thing parent, Thing child)
     
-# >>Is/was {1} legally committed to financially supporting {2}?
+# Legally committed to financially supporting 
 Tbool CommittedToFinanciallySupport(Thing p1, Thing p2) =
-    TboolIn CommittedToFinanciallySupport(p1,p2) &
+    CommittedToFinanciallySupportQ(p1,p2) &
     TheTime.IsAtOrAfter(DateCommittedToFinanciallySupport(p1,p2))
+
+# >>Is/was {1} legally committed to financially supporting {2}?	
+TboolIn CommittedToFinanciallySupportQ(Thing p1, Thing p2)
     
 # >>When was {1} first legally committed to financially supporting {2}?
 TdateIn DateCommittedToFinanciallySupport(Thing parent, Thing child)        
