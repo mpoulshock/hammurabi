@@ -1,0 +1,75 @@
+# Namespace:    Hammurabi.Fam
+# Summary:      Determines whether a person has reached the age of majority 
+# Updated:      2012-06-01
+# Author:       Michael Poulshock
+
+
+# Warning: many statutes redefine "minor" for specific, limited purposes
+# >>Is/was {1} a minor?
+Tbool? IsMinor(Thing p) =
+    !ReachedAgeOfMajority(p) & 
+    !IsEmancipatedMinor(p)
+
+# Reached age of majority
+# Tentative source: http://contests.about.com/od/sweepstakes101/a/agemajoristate.htm!
+# State rules should be amalgamated here following the Alabama example
+Tbool ReachedAgeOfMajority(Thing p) =
+    set:
+    if !IsUSResident(p) -> Stub()
+    if state == "Alabama" -> Ala.Code.Tit26.Sec1_1.ReachedAgeOfMajority(p)
+    if state == "Arkansas" & age >= 18 & HS -> true        # What about people who don't graduate HS?
+    if state == "Mississippi" & age >= 21 -> true
+    if state == "Nebraska" & (age >= 19 | IsMarried(p)) -> true        # NRS 43-2101 (c.f. nebraskaaccess.ne.gov/agemajority.asp)
+    if state == "Nevada" & age >= 18 -> true                        # NRS 129.010 (c.f. NRS 125B.200)
+    if state == "Ohio" & (age >= 18 | HS) -> true
+    if state == "Tennessee" & age >= 18 & HS -> true
+    if state == "Utah" & (age >= 18 | HS) -> true
+    if state == "Vermont" & age >= 18 -> true                        # 1 V.S.A. � 173
+    if state == "Virginia" & age >= 18 -> true                        # VA Code 1-204
+    if state == "Wisconsin" & age >= 18 -> true                        # Wisc. Stat. 990.01
+    else age >= 18
+    
+    Tstr state = 
+        StateOfResidence(p)
+        
+    Tnum age = 
+        Age(p)
+
+    Tbool HS = 
+        Edu.GraduatedHighSchool(p)
+        
+        
+# Will need to reference state rules, like Vermont example below...
+# >>Is/was {1} an emancipated minor?
+Tbool IsEmancipatedMinor(Thing p) =
+    set:
+    if Age(p) <= 15 -> false        # Assumed
+    if state == "Vermont" -> Vt.Stat.Tit12.Sec7151.IsEmancipatedMinor(p)
+    else Stub()
+        
+    Tstr state = 
+        StateOfResidence(p)
+
+        
+# UNIT TESTS
+
+Test: Minor1
+- Thing p
+- DoB(p) = 2000-10-10
+- StateOfResidence(p) = "Hawaii"
+- Fam.IsMinor(p).AsOf(2012-10-10).Out =?= true
+
+Test: Minor2
+- Thing p
+- CountryOfResidence(p) = "Poland"
+- StateOfResidence(p) = "N/A"
+- DoB(p) = 2010-10-10
+- Fam.IsMinor(p).AsOf(2012-10-10).Out =?= "Stub"
+
+Test: Minor3
+- Thing p
+- DoB(p) = 2000-10-10
+- StateOfResidence(p) = "Nebraska"
+- Fam.IsMinor(p).AsOf(2032-10-10).Out =?= false
+
+

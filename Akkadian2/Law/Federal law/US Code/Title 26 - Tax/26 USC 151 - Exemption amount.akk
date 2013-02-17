@@ -1,0 +1,74 @@
+# Citation:     26 U.S.C. 151 (2011)
+# Namespace:    USC.Tit26.Sec151
+# Summary:      Person's "exemption amount" as defined under Internal Revenue Code, Sec. 151.
+# Updated:      2011-10-13
+# Author:       Michael Poulshock
+
+
+# Exemption amount is defined in IRS.Pub501.ExemptionAmount, which incorporates the
+# "phaseout" rules below.
+
+    
+# EXEMPTION PHASEOUT
+
+## TODO: Understand and implement...
+(D) Coordination with other provisions
+The provisions of this paragraph shall not apply for purposes of determining whether a deduction under this section 
+with respect to any individual is allowable to another taxpayer for any taxable year.
+##
+
+# Applying the phaseout
+Tnum ExemptionAmountAfterPhaseout(Thing p) =
+    set:
+    if Sec62.AGI(p) > ThresholdAmount(p) -> IRS.Pub501.ExemptionAmountBeforePhaseout(p) * ReductionAmount(p)
+    else IRS.Pub501.ExemptionAmountBeforePhaseout(p)
+
+# Rule varies by year
+Tnum ReductionAmount(Thing p) =
+    set:
+    if year < 2006                  -> ApplicablePercentage(p)
+    if year >= 2006 & year <= 2009  -> ApplicableFraction(p)
+    else 1      # phaseout was phased out in 2010
+    
+    Tnum year = USC.Tit26.Sec441.TaxYear(p)
+  
+# Subpara. (B) - Applicable percentage  
+Tnum ApplicablePercentage(Thing p) =
+    Min(noOfMultiples * 2, 100)
+    
+    Tnum noOfMultiples = diff / applicableMultiple
+    
+    Tnum diff = Sec62.AGI(p) - ThresholdAmount(p)
+    
+    Tnum applicableMultiple =
+        set:
+        if Sec2.FilingStatus(p) == "Married filing separately" -> 1250
+        else 2500
+    
+# Subpara. (C) - Threshold amount
+Tnum ThresholdAmount(Thing p) =
+    set:
+    if status == "Married filing jointly"       -> 150000
+    if status == "Qualifying widow(er)"         -> 150000
+    if status == "Head of household"            -> 125000
+    if status == "Single"                       -> 100000
+    if status == "Married filing separately"    ->  75000
+    else Stub()
+    
+    Tstr status = Sec2.FilingStatus(p)
+    
+# Subpara. (E)(ii) - Applicable fraction
+Tnum ApplicableFraction(Thing p) =
+       set:
+    if year == 2009 -> 0.33333
+    if year == 2008 -> 0.33333
+    if year == 2007 -> 0.66667
+    if year == 2006 -> 0.66667
+    else Stub()
+    
+    Tnum year = USC.Tit26.Sec441.TaxYear(p)
+    
+
+# UNIT TESTS
+
+

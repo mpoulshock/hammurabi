@@ -1,0 +1,102 @@
+# Namespace:    Hammurabi.Mil
+# Summary:      Relationships related to the Armed Services.
+# Updated:      2012-09-06
+# Author:       Michael Poulshock
+
+
+# GENERAL / ACTIVE DUTY / COMBAT
+
+# >>Does/did {1} serve in the U.S. Armed Forces?
+Tbool InArmedForces(Thing p)
+
+# >>Is/was {1} deployed to a combat zone?
+Tbool IsDeployedToCombatZone(Thing p)
+
+# >>Is/was {1} on active duty for training in the Armed Forces reserves?
+Tbool OnActiveDutyForTraining(Thing p) 
+
+# >>Is/was {1} on active duty in the Armed Forces?
+Tbool OnActiveDuty(Thing p)
+
+
+# BRANCH OF ARMED FORCES
+    
+# Person serves (actively) in the Armed Forces.
+Tbool InActiveArmedForces(Thing p) =
+    InArmedForces(p) &
+    ...
+        BranchOfArmedForces(p) == "Army" |
+        BranchOfArmedForces(p) == "Navy" |
+        BranchOfArmedForces(p) == "Air Force" |
+        BranchOfArmedForces(p) == "Marine Corps" |
+        BranchOfArmedForces(p) == "Coast Guard"
+            
+# Person serves in reserve component of the Armed Forces (including National Guard).
+Tbool InReserveArmedForces(Thing p) =
+    InArmedForces(p) &
+    ...
+        BranchOfArmedForces(p) == "Army National Guard" |
+        BranchOfArmedForces(p) == "Army Reserve" |
+        BranchOfArmedForces(p) == "Air National Guard" |
+        BranchOfArmedForces(p) == "Navy Reserve" |
+        BranchOfArmedForces(p) == "Air Force Reserve" |
+        BranchOfArmedForces(p) == "Marine Corps Reserve" |
+        BranchOfArmedForces(p) == "Coast Guard Reserve"
+
+# >>What branch of the U.S. Armed Forces does/did {1} serve in? (Options: Army, Navy, Air Force, Marine Corps, Coast Guard, Army National Guard, Army Reserve, Air National Guard, Navy Reserve, Air Force Reserve, Marine Corps Reserve, Coast Guard Reserve, None of the above.)
+Tstr BranchOfArmedForces(Thing person)
+
+
+# INJURY
+
+# >>Does/did {1} have a service-connected injury?
+Tbool ServiceConnectedInjury(Thing p)
+
+
+# DISCHARGE
+        
+# Dishonorable discharge
+Tbool DishonorablyDischarged(Thing p) =
+    NatureOfDischarge(p) == "Dishonorable discharge"
+    
+# >>What is the nature of {1}'s discharge from the U.S. Armed Forces?
+Tstr NatureOfDischarge(Thing p)
+
+## Possible values:
+Expiration of term of service
+Reaching the maximum age limit
+High year tenure
+Disability, dependency, or hardship
+Pregnancy/parenthood
+Personality disorder
+Condition not a disability
+Physical or mental condition
+Convenience
+Unsuitability
+Misconduct 
+Resignation (available to officers only)
+Reduction in force
+Bad conduct discharge
+Dishonorable discharge
+Uncharacterized 
+##
+
+
+# ASSUMPTIONS
+
+IsDeployedToCombatZone(1) assumes OnActiveDuty(1)
+OnActiveDutyForTraining(1) assumes InReserveArmedForces(1)
+OnActiveDutyForTraining(1) assumes OnActiveDuty(1)
+OnActiveDuty(1) assumes InArmedForces(1)
+InActiveArmedForces(1) assumes InArmedForces(1)
+InReserveArmedForces(1) assumes InArmedForces(1)
+
+
+# UNIT TESTS
+
+Test: 108379812
+- Things t1, t2
+- Mil.InArmedForces(t1) = false
+- Mil.InArmedForces(t1).TestOutput =?= "Time.DawnOf False "
+
+

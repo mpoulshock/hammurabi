@@ -1,0 +1,15 @@
+# Citation:     Fed. R. Civ. P. 6 (2010)
+# Namespace:    FedRules.FRCP.Rule6
+# Summary:      Due date calculations.
+# Updated:      2010-06-24
+# Author:       Michael Poulshock
+
+
+# FRCP due date calculation
+# Does not implement 6(a)(6)(B) and (C), which state that legal holidays include
+# days declared a holiday by the President or Congress and holidays in the state 
+# where the district court is located.
+DateTime DueDate(int days, DateTime triggerDate) =
+    triggerDate.Date.AddDays(days).CurrentOrNextBusinessDay()
+
+

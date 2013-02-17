@@ -1,0 +1,57 @@
+# Namespace:    Hammurabi.Trans
+# Summary:      Facts related to transactions/exchanges.
+# Updated:      2012-07-26
+# Author:       Michael Poulshock
+
+
+##
+TODO: 
+ * Change namespace to Trans?
+ * Transaction is a list of asset transfers?
+##
+
+
+# TRANSACTIONS
+
+# Purpose, description, or nature of the transaction
+Tstr PurposeOfTransaction(Thing transaction)
+
+# Description of the thing sold, if transaction is a sale
+Tstr ThingSoldInTransaction(Thing transaction)
+
+# Purchase price of thing sold, if transaction is a sale
+Tnum PurchasePrice(Thing transaction)
+
+# Date sale occurred, if there was one
+Tdate DateOfSale(Thing transaction)
+
+# Date balance is due on a sale, if there was a sale
+Tdate DateBalanceDue(Thing transaction)
+
+
+# TRANSFERS
+
+# Item tranferred
+Tset ItemTransferred(Thing transfer)
+
+# Date of transfer
+Tdate DateOf(Thing transfer)
+
+# Transferor (giver)
+Thing Transferor(Thing transfer) =
+    Transferors(transfer).ToThing
+
+# Set of transferors
+Tset Transferors(Thing transfer)
+
+# Transferee (receiver)
+Thing Transferee(Thing transfer) =
+    Transferees(transfer).ToThing
+
+# Set of transferees
+Tset Transferees(Thing transfer)
+	
+# How the item was transferred
+Tstr TransferMethod(Thing transfer)
+
+

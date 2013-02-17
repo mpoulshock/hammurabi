@@ -1,0 +1,27 @@
+# Citation:        K.S.A. 35-107 (2009)
+# Namespace:    KSA.Tit35.Sec107
+# Summary:        Determines whether a date is a Kansas legal holiday.
+# Updated:        2011-03-05
+# Author:         Michael Poulshock
+
+
+# Kansas legal holiday
+# Kansas law does not refer to 5 U.S.C. 6103, but the logic is the same.
+bool IsLegalHoliday(DateTime d) =
+    USC.Tit5.Sec6103.IsNewYearsDayObserved(d) |
+    d == USC.Tit5.Sec6103.MLKDay(d.Year) |
+    d == PresidentsDay(d.Year) |
+    d == USC.Tit5.Sec6103.MemorialDay(d.Year) |
+    d == USC.Tit5.Sec6103.IndependenceDayObserved(d.Year) |
+    d == USC.Tit5.Sec6103.LaborDay(d.Year) |
+    d == USC.Tit5.Sec6103.ColumbusDay(d.Year) |
+    d == USC.Tit5.Sec6103.VeteransDayObserved(d.Year) |
+    d == USC.Tit5.Sec6103.ThanksgivingDay(d.Year) |
+    d == USC.Tit5.Sec6103.ChristmasDayObserved(d.Year)
+        
+# President's Day - third Monday in February.
+# Kansas law calls it "President's Day"; the U.S. Code calls it "Washington's Birthday."
+DateTime PresidentsDay(int year) =
+    USC.Tit5.Sec6103.WashingtonsBirthday(year)
+    
+

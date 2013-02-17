@@ -1,0 +1,75 @@
+# Citation:     8 U.S.C. 1401a (2012)
+# Namespace:    USC.Tit8.Sec1401a
+# Summary:      Birth abroad before 1952 to service parent
+# Updated:      2012-07-15
+# Author:       Michael Poulshock
+
+
+# Birth abroad before 1952 to service parent
+Tbool Sec1401gAppliesTo(Thing c) =
+    ! Sec1401.BornInUSorOP(c) &
+    DoB(c) > 1941-01-12 &
+    DoB(c) < 1952-12-24 &
+    parents.Exists(IsQualifyingServicemember(_))
+    
+    Tset parents =
+        Sec1401.BirthParents(c)        # Assumes two parents
+        
+# Qualifying parent
+Tbool IsQualifyingServicemember(Thing p) =
+    IsUSCitizen(p) &
+    Mil.InArmedForces(p).IsEverTrue(1946-12-31, 1952-12-24) &
+    Stub()  # case does not come within section 201(g) or (i) of the Nationality Act of 1940.
+
+
+# UNIT TESTS
+
+Test: 461666829
+- Things kid, mom, dad
+- DoB(kid) = 1950-01-01
+- Fam.ParentsOf(kid) = [[mom, dad]]
+- Gender(mom) = "Female"
+- Gender(dad) = "Male"
+- BirthCountry(kid) = "Saipan"
+- IsUSCitizen(dad) = true
+- Mil.InArmedForces(dad) = true
+- USC.Tit8.Sec1401a.Sec1401gAppliesTo(kid).TestOutput =?= "Time.DawnOf Stub "
+
+Test: 127066866
+- Things t1, t2
+- Mil.InArmedForces(t1) = false
+- USC.Tit8.Sec1401a.IsQualifyingServicemember(t1).TestOutput =?= "Time.DawnOf False "
+
+Test: BornTooEarly
+- Thing child
+- DoB(child) = 1930-03-02
+- USC.Tit8.Sec1401a.Sec1401gAppliesTo(child).Out =?= false
+
+Test: BornWithinRange1
+- Thing child
+- DoB(child) = 1945-03-02
+- USC.Tit8.Sec1401a.Sec1401gAppliesTo(child).Out =?= "Unstated"
+
+Test: BornWithinRange2
+- Things child, dad, mom
+- FatherAtTimeOfBirth(child) = dad
+- MotherAtTimeOfBirth(child) = mom
+- DoB(child) = 1945-03-02
+- USC.Tit8.Sec1401a.Sec1401gAppliesTo(child).Out =?= "Unstated"
+
+Test: DQbcUS
+- Thing child
+- BirthCountry(child) = "United States"
+- USC.Tit8.Sec1401a.Sec1401gAppliesTo(child).Out =?= false
+
+Test: NoEligParent
+- Things child, dad, mom
+- DoB(child) = 1945-03-02
+- BirthCountry(child) = "Bolivia"
+- Fam.ParentsOf(child) = [[mom, dad]]
+- Gender(mom) = "Female"
+- Gender(dad) = "Male"
+- IsUSCitizen(dad) = false
+- Mil.InArmedForces(mom) = false
+- USC.Tit8.Sec1401a.Sec1401gAppliesTo(child).Out =?= false
+

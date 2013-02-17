@@ -1,0 +1,49 @@
+# Citation:     26 U.S.C. 441 (2010)
+# Namespace:    USC.Tit26.Sec441
+# Summary:      Individual (not corporate) "tax year" under Internal Revenue Code, Section 441.
+# Updated:      2010-11-27
+# Author:       Michael Poulshock
+
+# Does not implement "52-53 week" tax years (can be done by overloading the method).
+# Assumes that the tax year takes the number of the year of the greatest overlap.
+# Assumes that the start month of a person's TY never changes.
+
+
+#  Individual tax year
+# Does not handle cases where start month changes in different tax years!
+Tnum TaxYear(Thing p) =
+    TemporalTaxYear(MonthTaxYearBegins(p))
+
+  
+# Tax year (temporal step function, starting in a given month)
+Tnum TemporalTaxYear(Tnum monthTaxYearBegins) =
+    Time.IntervalsSince(TYStartDate.AddYears(-50),
+                        TYStartDate.AddYears(50),
+                        Time.IntervalType.Year,
+                        DateTime.Now.Year - 50 + offset.ToInt)
+                                       
+    # Assumes that TY takes number of the year of with greatest overlap 
+    Tnum offset =
+        set:
+        if monthTaxYearBegins > 6 -> 1
+        else 0
+
+    Tdate TYStartDate = 
+        Date(DateTime.Now.Year, Convert.ToInt32(monthTaxYearBegins.ToInt), 1)
+            
+        
+# Month a person's tax year begins (defaults to January). 
+# >>In what month (1-12) does/did {1}'s tax year begin?
+Tnum MonthTaxYearBegins(Thing p) =
+    1
+
+    
+# UNIT TESTS
+
+Test: Test1
+- Thing p
+- Sec441.TaxYear(p).AsOf(2004-03-03).Out =?= 2004
+
+
+
+

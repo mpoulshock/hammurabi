@@ -1,0 +1,149 @@
+# Citation:     5 U.S.C. 6103 (2012)
+# Namespace:    USC.Tit5.Sec6103
+# Summary:      Determines whether a date is a U.S. federal holiday.
+# Updated:      2012-05-09
+# Author:       Michael Poulshock
+# Remarks:      Does not implement portions of sec. 6103 relating to the schedules of federal employees, or Inauguration Day.
+
+
+# Legal holiday
+bool IsLegalHoliday(DateTime d) =
+    IsNewYearsDayObserved(d) |
+    d == MLKDay(d.Year) |
+    d == WashingtonsBirthday(d.Year) |
+    d == MemorialDay(d.Year) |
+    d == IndependenceDayObserved(d.Year) |
+    d == LaborDay(d.Year) |
+    d == ColumbusDay(d.Year) |
+    d == VeteransDayObserved(d.Year) |
+    d == ThanksgivingDay(d.Year) |
+    d == ChristmasDayObserved(d.Year);    
+    
+# New Year's - January 1st.
+DateTime NewYearsDay(int year) =
+    new DateTime(year,1,1)
+        
+DateTime NewYearsDayObserved(int year) =
+    NewYearsDay(year).CurrentOrAdjacentWeekday()    
+        
+bool IsNewYearsDayObserved(DateTime d) =
+    # New years day can be observed in the previous year,
+    # for example, if it falls on a Saturday
+    d == NewYearsDayObserved(d.Year-1) |
+    d == NewYearsDayObserved(d.Year) |
+    d == NewYearsDayObserved(d.Year+1) 
+    # d.AddDays(-1) == NewYearsDayObserved(d.Year)        
+        
+# MLK Day - third Monday in January.
+DateTime MLKDay(int year) =
+    Time.NthDayOfWeekMonthYear(3,DayOfWeek.Monday,1,year)
+        
+# Washington's Birthday - third Monday in February.
+DateTime WashingtonsBirthday(int year) =
+    Time.NthDayOfWeekMonthYear(3,DayOfWeek.Monday,2,year)
+
+# Memorial Day - last Monday in May.
+DateTime MemorialDay(int year) =
+    Time.LastDayOfWeekMonthYear(DayOfWeek.Monday, 5, year)
+
+# July 4th.
+DateTime IndependenceDay(int year) =
+    new DateTime(year,7,4)
+        
+DateTime IndependenceDayObserved(int year) =
+    IndependenceDay(year).CurrentOrAdjacentWeekday()
+
+# Labor Day - first Monday in September.
+DateTime LaborDay(int year) =
+    Time.NthDayOfWeekMonthYear(1,DayOfWeek.Monday,9,year)
+        
+# Columbus Day - second Monday in October.
+DateTime ColumbusDay(int year) =
+    Time.NthDayOfWeekMonthYear(2,DayOfWeek.Monday,10,year)
+        
+# Veteran's Day - November 11th.
+DateTime VeteransDay(int year) =
+    new DateTime(year,11,11)
+        
+DateTime VeteransDayObserved(int year) =
+    VeteransDay(year).CurrentOrAdjacentWeekday()
+        
+# Thanksgiving - fourth Thursday in November.
+DateTime ThanksgivingDay(int year) =
+    Time.NthDayOfWeekMonthYear(4,DayOfWeek.Thursday,11,year)
+        
+# Christmas - December 25th.
+DateTime ChristmasDay(int year) =
+    new DateTime(year,12,25)
+        
+DateTime ChristmasDayObserved(int year) =
+    ChristmasDay(year).CurrentOrAdjacentWeekday()
+    
+    
+    
+# UNIT TESTS
+
+Test: 1
+- Sec6103.IsLegalHoliday(2011-01-01) =?= false
+
+Test: 2
+- Sec6103.IsLegalHoliday(2012-12-31) =?= false
+
+Test: 3
+- Sec6103.IsLegalHoliday(2011-01-02) =?= false
+
+Test: 4
+- Sec6103.IsLegalHoliday(2012-01-01) =?= false
+
+Test: 5
+- Sec6103.IsLegalHoliday(2012-01-02) =?= true
+
+Test: 6
+- Sec6103.IsLegalHoliday(2013-01-01) =?= true
+
+Test: 7
+- Sec6103.IsLegalHoliday(2011-01-17) =?= true
+
+Test: 8
+- Sec6103.IsLegalHoliday(2011-02-21) =?= true
+
+Test: 9
+- Sec6103.IsLegalHoliday(2011-02-17) =?= false
+
+Test: 10
+- Sec6103.IsLegalHoliday(2011-05-30) =?= true
+
+Test: 11
+- Sec6103.IsLegalHoliday(2015-07-04) =?= false
+
+Test: 12
+- Sec6103.IsLegalHoliday(2015-07-03) =?= true
+
+Test: 13
+- Sec6103.IsLegalHoliday(2013-09-02) =?= true
+
+Test: 14
+- Sec6103.IsLegalHoliday(2013-10-14) =?= true
+
+Test: 15
+- Sec6103.IsLegalHoliday(2012-11-11) =?= false
+
+Test: 16
+- Sec6103.IsLegalHoliday(2012-11-10) =?= false
+
+Test: 17
+- Sec6103.IsLegalHoliday(2012-11-12) =?= true
+
+Test: 18
+- Sec6103.IsLegalHoliday(2012-11-22) =?= true
+
+Test: 19
+- Sec6103.IsLegalHoliday(2012-12-25) =?= true
+
+Test: 20
+- Sec6103.IsLegalHoliday(2012-12-26) =?= false
+
+Test: 21
+- Sec6103.IsLegalHoliday(2013-01-01) =?= true
+
+

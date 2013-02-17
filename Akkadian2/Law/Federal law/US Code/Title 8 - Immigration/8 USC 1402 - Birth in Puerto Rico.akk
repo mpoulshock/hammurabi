@@ -1,0 +1,56 @@
+# Citation:     8 U.S.C. 1402 (2012)
+# Namespace:    USC.Tit8.Sec1402
+# Summary:      Persons born in Puerto Rico on or after 1899-04-11
+# Updated:      2012-07-09
+# Author:       Michael Poulshock
+
+
+# Citizenship of people born in Puerto Rico
+Tbool IsUSCitizenPerPuertoRico(Thing p) = 
+    IsUSCitizenPerPuertoRico1941(p) |
+    IsUSCitizenAtBirthPerPuertoRico(p)
+    
+# Citizenship (1941) of people born in Puerto Rico
+Tbool IsUSCitizenPerPuertoRico1941(Thing p) = 
+    BirthState(p) == "Puerto Rico" &
+    DoB(p) >= 1899-04-11 &
+    DoB(p) < 1941-01-13 &
+    IsSubjectToUSJurisdiction(p) &
+    ...
+        IsResidentOf(p, "Puerto Rico").AsOf(1941-01-13) |  # Resides in PR as of 1941-01-13 or
+        Stub()  # Resides in other sovereign U.S. territory
+    &
+    TheTime.IsAtOrAfter(1941-01-13)    # Makes conclusion true from DoB onward
+
+# Citizenship (at birth) of people born in Puerto Rico
+Tbool IsUSCitizenAtBirthPerPuertoRico(Thing p) = 
+    BirthState(p) == "Puerto Rico" &
+    DoB(p) >= 1941-01-13 &
+    IsSubjectToUSJurisdiction(p) &
+    TheTime.IsAtOrAfter(DoB(p))    # Makes conclusion true from DoB onward
+    
+    
+# UNIT TESTS
+
+Test: 528276149
+- Thing mary
+- BirthState(mary) = "Puerto Rico"
+- DoB(mary) = 1998-02-03
+- IsSubjectToUSJurisdiction(mary) = Tbool(?)
+- USC.Tit8.Sec1402.IsUSCitizenPerPuertoRico(mary).TestOutput =?= "Time.DawnOf False 2/3/1998 12:00:00 AM Uncertain "
+
+Test: 982509706
+- Thing mary
+- BirthState(mary) = "Puerto Rico"
+- DoB(mary) = 1945-11-23
+- IsSubjectToUSJurisdiction(mary) = true
+- USC.Tit8.Sec1402.IsUSCitizenPerPuertoRico(mary).TestOutput =?= "Time.DawnOf False 11/23/1945 12:00:00 AM True "
+
+Test: 762460209
+- Thing mary
+- BirthState(mary) = "Puerto Rico"
+- DoB(mary) = 1940-02-08
+- IsSubjectToUSJurisdiction(mary) = true
+- CountryOfResidence(mary) = "Puerto Rico"
+- USC.Tit8.Sec1402.IsUSCitizenPerPuertoRico(mary).TestOutput =?= "Time.DawnOf False 1/13/1941 12:00:00 AM True "
+

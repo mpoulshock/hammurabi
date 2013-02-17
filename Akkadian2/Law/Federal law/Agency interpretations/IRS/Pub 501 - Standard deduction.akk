@@ -1,0 +1,245 @@
+# Namespace:    IRS.Pub501
+# Summary:      IRS Publication 501 - Standard deduction
+# Updated:      2012-10-09
+# Author:       Michael Poulshock
+# Notes:        Decedents should be treated as if they were alive
+
+
+# RULES FOR TAX YEAR 2011
+
+# STANDARD DEDUCTION V. ITEMIZING DEDUCTIONS
+
+# Taxpayer should itemize instead of claiming standard deduction
+Tbool ShouldItemize(Thing p) =
+    TotalItemizedDeductions(p) > StandardDeduction(p)
+
+# Not eligible for standard deduction
+Tbool IneligibleForStandardDeduction(Thing p) =
+    ...
+        USC.Tit26.Sec2.FilingStatus(p) == "Married filing separately" &
+        MeetsSpouseItemizingTest(p)
+    |
+    FilingReturnForShortTaxYear(p) |    
+    IRS.Pub519.IsNonresidentAlien(p) |
+    IRS.Pub519.IsDualStatusAlien(p)
+        
+
+# STANDARD DEDUCTION AMOUNT
+
+# Standard deduction amount (2011)
+Tnum StandardDeduction(Thing p) =
+    set:
+    if IneligibleForStandardDeduction(p) -> 0
+    else Table6Amount(p)        # incorporates other tables
+    
+# Table 6 (page 24)
+Tnum Table6Amount(Thing p) =
+    set:
+    if claimableAsDep                           -> Table8Amount(p)
+    if agedOrBlind                              -> Table7Amount(p)
+    if status == "Single"                       ->  5800
+    if status == "Married filing separately"    ->  5800
+    if status == "Married filing jointly"       -> 11600
+    if status == "Qualifying widow(er)"         -> 11600
+    if status == "Head of household"            ->  8500
+    else Stub()
+
+    Tbool agedOrBlind =
+        DoB(p) < 1947-01-02 |
+        IsBlind(p) |
+        ...
+            status == "Married filing jointly" &
+            Fam.SpousesOf(p).Exists(DoB(_) < 1947-01-02 | IsBlind(_))
+        
+    Tbool claimableAsDep =
+        USC.Tit26.Sec152.CanBeClaimedAsDependentBySomeone(p) |
+        ...
+            status == "Married filing jointly" &
+            Fam.SpousesOf(p).Exists(USC.Tit26.Sec152.CanBeClaimedAsDependentBySomeone(_))
+        
+    Tstr status = USC.Tit26.Sec2.FilingStatus(p)
+    
+# Table 7 (page 24)
+Tnum Table7Amount(Thing p) =
+    Table7CoreAmount(USC.Tit26.Sec2.FilingStatus(p), BoxesChecked(p))
+
+Tnum Table7CoreAmount(Tstr status, Tnum boxesChecked) =
+    match status, boxesChecked
+    Single,                     1 ->  7250
+    Single,                     2 ->  8700
+    Married filing jointly,     1 -> 12750
+    Married filing jointly,     2 -> 13900
+    Married filing jointly,     3 -> 15050
+    Married filing jointly,     4 -> 16200
+    Qualifying widow(er),       1 -> 12750
+    Qualifying widow(er),       2 -> 13900
+    Qualifying widow(er),       3 -> 15050
+    Qualifying widow(er),       4 -> 16200
+    Married filing separately,  1 ->  6950
+    Married filing separately,  2 ->  8100
+    Married filing separately,  3 ->  9250
+    Married filing separately,  4 -> 10400
+    Head of household,          1 ->  9950
+    Head of household,          2 -> 11400
+    else Stub()
+
+# Table 8 (page 24)
+Tnum Table8Amount(Thing p) =
+    set:
+    if BoxesChecked(p) == 0 -> line7a
+    else line7c
+    
+    Tnum line7c = line7a + line7b
+    
+    Tnum line7b = 
+        set:
+        if Fam.IsMarried(p) -> BoxesChecked(p) * 1150
+        else BoxesChecked(p) * 1450
+    
+    Tnum line7a = Min(line5, line6)
+    
+    Tnum line6 =
+        set:
+        if status == "Single"                       ->  5800
+        if status == "Married filing separately"    ->  5800
+        if status == "Married filing jointly"       -> 11600
+        if status == "Head of household"            ->  8500
+        else Stub()
+    
+    Tstr status = USC.Tit26.Sec2.FilingStatus(p)
+    
+    Tnum line5 = Max(line3, 950)
+    
+    Tnum line3 = EarnedIncomeForFS(p) + 300    
+    
+    
+# Boxes checked on Table 7 or 8
+Tnum BoxesChecked(Thing p) = 
+    theSpouses.Filter(DoB(_) < 1947-01-02).Count +
+    theSpouses.Filter(IsBlind(_)).Count
+    
+    Tset theSpouses = Fam.SelfAndSpouseIfMarried(p)
+
+
+# INPUTS
+
+# >>What are/were {1}'s total itemized deductions?
+Tnum TotalItemizedDeductions(Thing p)
+
+# >>Is/was {1} filing a tax return for a short tax year due to a change in their annual accounting period?
+Tbool FilingReturnForShortTaxYear(Thing p)
+    
+        
+# UNIT TESTS
+
+Test: Page22_Ex4_Column3
+- Thing Ed
+- USC.Tit26.Sec2.FedTaxFilingStatus(Ed) = "Single"
+- USC.Tit26.Sec152.CanBeClaimedAsDependentBySomeone(Ed) = true
+- DoB(Ed) = 1990-01-01
+- IsBlind(Ed) = false
+- IRS.Pub501.EarnedIncomeForFS(Ed) = 3726
+- Fam.MaritalStatus(Ed) = "Single"    # Redundant question?
+- IRS.Pub501.Table6Amount(Ed).TestOutput =?= "Time.DawnOf 4026 "
+
+Test: Page22_Ex3_Column3
+- Thing Amy
+- USC.Tit26.Sec2.FedTaxFilingStatus(Amy) = "Single"
+- USC.Tit26.Sec152.CanBeClaimedAsDependentBySomeone(Amy) = true
+- DoB(Amy) = 1994-01-01
+- IsBlind(Amy) = true
+- IRS.Pub501.EarnedIncomeForFS(Amy) = 2900
+- Fam.MaritalStatus(Amy) = "Single"
+- IRS.Pub501.Table6Amount(Amy).TestOutput =?= "Time.DawnOf 4650 "
+
+Test: Page22_Ex2_Column3
+- Things Joe, Mary
+- USC.Tit26.Sec2.FedTaxFilingStatus(Joe) = "Married filing separately"
+- USC.Tit26.Sec152.CanBeClaimedAsDependentBySomeone(Joe) = true
+- DoB(Joe) = 1990-01-01
+- IsBlind(Joe) = false
+- IRS.Pub501.EarnedIncomeForFS(Joe) = 3800
+- Fam.SpousesOf(Joe) = [[Mary]]
+- DoB(Mary) = 1990-01-01
+- IsBlind(Mary) = false
+- IRS.Pub501.Table6Amount(Joe).TestOutput =?= "Time.DawnOf 4100 "
+
+Test: Page22_Ex1_Column3
+- Thing michael
+- USC.Tit26.Sec2.FedTaxFilingStatus(michael) = "Single"
+- USC.Tit26.Sec152.CanBeClaimedAsDependentBySomeone(michael) = true
+- DoB(michael) = 1995-01-01
+- IsBlind(michael) = false
+- IRS.Pub501.EarnedIncomeForFS(michael) = 150
+- Fam.MaritalStatus(michael) = "Single"
+- IRS.Pub501.Table6Amount(michael).TestOutput =?= "Time.DawnOf 950 "
+
+Test: Page22_Ex3_Column2
+- Things bill, lisa
+- USC.Tit26.Sec2.FedTaxFilingStatus(bill) = "Married filing jointly"
+- USC.Tit26.Sec152.CanBeClaimedAsDependentBySomeone(bill) = false
+- Fam.SpousesOf(bill) = [[lisa]]
+- USC.Tit26.Sec152.CanBeClaimedAsDependentBySomeone(lisa) = false
+- DoB(bill) = 1930-01-01
+- Fam.MaritalStatus(bill) = "Married"
+- DoB(lisa) = 1930-01-01
+- IsBlind(lisa) = false
+- IsBlind(bill) = false
+- IRS.Pub501.Table6Amount(bill).TestOutput =?= "Time.DawnOf 13900 "
+
+Test: Page22_Ex2_Column2
+- Things larry, donna
+- USC.Tit26.Sec2.FedTaxFilingStatus(larry) = "Married filing jointly"
+- USC.Tit26.Sec152.CanBeClaimedAsDependentBySomeone(larry) = false
+- Fam.SpousesOf(larry) = [[donna]]
+- USC.Tit26.Sec152.CanBeClaimedAsDependentBySomeone(donna) = false
+- DoB(larry) = 1966-01-01
+- IsBlind(larry) = true
+- Fam.MaritalStatus(larry) = "Married"
+- DoB(donna) = 1979-01-01
+- IsBlind(donna) = false
+- IRS.Pub501.Table6Amount(larry).TestOutput =?= "Time.DawnOf 12750 "
+
+Test: Page22_Ex1_Column2
+- Things larry, donna
+- USC.Tit26.Sec2.FedTaxFilingStatus(larry) = "Married filing jointly"
+- USC.Tit26.Sec152.CanBeClaimedAsDependentBySomeone(larry) = false
+- Fam.SpousesOf(larry) = [[donna]]
+- USC.Tit26.Sec152.CanBeClaimedAsDependentBySomeone(donna) = false
+- DoB(larry) = 1966-01-01
+- IsBlind(larry) = false
+- DoB(donna) = 1979-01-01
+- IsBlind(donna) = false
+- IRS.Pub501.Table6Amount(larry).TestOutput =?= "Time.DawnOf 11600 "
+
+Test: 200595112
+- Thing jim
+- IRS.Pub501.EarnedIncomeForFS(jim) = 100
+- USC.Tit26.Sec2.FedTaxFilingStatus(jim) = "Single"
+- Fam.MaritalStatus(jim) = "Single"
+- DoB(jim) = 1990-01-01
+- IsBlind(jim) = false
+- IRS.Pub501.Table8Amount(jim).TestOutput =?= "Time.DawnOf 950 "
+
+Test: 784536694
+- Things jon, sally
+- USC.Tit26.Sec2.FedTaxFilingStatus(jon) = "Married filing jointly"
+- DoB(jon) = 1960-01-01
+- IsBlind(jon) = false
+- USC.Tit26.Sec152.CanBeClaimedAsDependentBySomeone(jon) = false
+- Fam.SpousesOf(jon) = [[sally]]
+- USC.Tit26.Sec152.CanBeClaimedAsDependentBySomeone(sally) = false
+- DoB(sally) = 1960-01-01
+- IsBlind(sally) = false
+- IRS.Pub501.Table6Amount(jon).TestOutput =?= "Time.DawnOf 11600 "
+
+Test: 25881624
+- Things jim, jane
+- Fam.SpousesOf(jim) = [[jane]]
+- DoB(jane) = 1900-01-01
+- IsBlind(jane) = true
+- DoB(jim) = 1980-01-01
+- IsBlind(jim) = true
+- USC.Tit26.Sec2.FedTaxFilingStatus(jim) = "Married filing jointly"
+- IRS.Pub501.Table7Amount(jim).TestOutput =?= "Time.DawnOf 15050 "
+

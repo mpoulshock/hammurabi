@@ -1,0 +1,18 @@
+# Namespace:    Hammurabi.Noob
+# Summary:      A place for newbies to play.
+# Updated:      2013-01-13
+# Author:       Michael Poulshock
+ 
+
+# A sample rule
+# Note that the argument ("Thing person") is only necessary due to
+# a bug in the Hammurabi Interactive interview. 
+Tstr HelloWorld(Thing person) =
+    "Hello, world!"
+
+# Another sample rule
+# This one actually makes use of the "person" argument.
+Tstr HelloYou(Thing person) =
+    "Hello, " + person.Id
+ 
+ 

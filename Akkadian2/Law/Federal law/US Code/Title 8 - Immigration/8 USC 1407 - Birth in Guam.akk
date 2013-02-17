@@ -1,0 +1,53 @@
+# Citation:     8 U.S.C. 1407 (2012)
+# Namespace:    USC.Tit8.Sec1407
+# Summary:      Persons living in and born in Guam
+# Updated:      2012-09-15
+# Author:       Michael Poulshock
+
+
+# Citizenship - Guam
+Tbool IsUSCitizenPerGuam(Thing p) = 
+    ModernTest(p) |
+    Catchall(p)
+    
+# Current test for citizenship
+Tbool ModernTest(Thing p) =
+    DoB(p) >= 1899-04-11 &
+    BirthCountry(p) == "Guam" &
+    IsSubjectToUSJurisdiction(p) &
+    if DoB(p) < 1950-08-01 then !TookStepsToPreserveForeignNationality(p) &        # Proviso
+    TheTime.IsAtOrAfter(DoB(p))                # Presumed
+    
+# Stub if DoB is before 1899-04-11
+Tbool Catchall(Thing p) =
+    DoB(p) < 1899-04-11 &
+    BirthCountry(p) == "Guam" &
+    Stub()
+    
+# >>Did {1} take affirmative steps to preserve or acquire foreign nationality?
+Tbool TookStepsToPreserveForeignNationality(Thing p)
+
+
+# UNIT TESTS
+
+Test: 701366647
+- Thing murray
+- DoB(murray) = 1988-03-04
+- BirthCountry(murray) = "Guam"
+- IsSubjectToUSJurisdiction(murray) = true
+- USC.Tit8.Sec1407.IsUSCitizenPerGuam(murray).TestOutput =?= "Time.DawnOf False 3/4/1988 12:00:00 AM True "
+
+Test: 904438779
+- Thing murray
+- DoB(murray) = 1904-01-02
+- BirthCountry(murray) = "Guam"
+- IsSubjectToUSJurisdiction(murray) = true
+- USC.Tit8.Sec1407.TookStepsToPreserveForeignNationality(murray) = false
+- USC.Tit8.Sec1407.IsUSCitizenPerGuam(murray).TestOutput =?= "Time.DawnOf False 1/2/1904 12:00:00 AM True "
+
+Test: 65134483
+- Thing murray
+- DoB(murray) = 1890-01-01
+- BirthCountry(murray) = "Guam"
+- USC.Tit8.Sec1407.IsUSCitizenPerGuam(murray).TestOutput =?= "Time.DawnOf Stub "
+

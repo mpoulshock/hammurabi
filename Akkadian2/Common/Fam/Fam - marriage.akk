@@ -1,0 +1,294 @@
+# Namespace:    Hammurabi.Fam
+# Summary:      Basic family relationships relating to marriage
+# Updated:      2012-08-02
+# Author:       Michael Poulshock
+
+
+##
+Notes: These rules are not intuitive because they have to take into account
+the possibility that facts related to marriage can be expressed in a number
+of different ways:
+  * IsMarried(p)
+  * AreMarried(p,q)
+  * SpousesOf(p)
+  * MaritalStatus(p)
+  * FamilyRelation(p,q)
+  
+TOOD: Could the rules below be simplified by defining IsMarried, AreMarried, and 
+MaritalStatus in terms of SpousesOf (i.e. let the fact that conveys the most
+information be at the bottom of the pile)?
+##
+
+# MARITAL RELATIONSHIPS
+
+# >>Are/were {1} and {2} legally married?
+TboolSym AreMarried(Thing p1, Thing p2) =
+    set: 
+    if Facts.HasBeenAsserted("Fam.IsMarried",p1) & !IsMarried(p1) -> false
+    if Facts.HasBeenAsserted("Fam.IsMarried",p2) & !IsMarried(p2) -> false
+    if Facts.HasBeenAsserted("Fam.SpousesOf",p1) -> SpousesOf(p1).Contains(p2)
+    if Facts.HasBeenAsserted("Fam.SpousesOf",p2) -> SpousesOf(p2).Contains(p1)
+    else Relationship(p1,p2) == "Spouse"
+
+FamilyRelationship(1,2) = "Spouse" assumes FamilyRelationship(2,1) = "Spouse"
+
+# >>Who is/was {1}'s spouse(s)?
+Tset? SpousesOf(Thing p) =
+    set: 
+    if !Facts.HasBeenAsserted("SpousesOf",p) & spouses.Count == 0 -> new Tset(Hstate.Unstated)
+    else spouses
+    
+    Tset spouses = 
+        Facts.EveryoneExcept(p).Filter(AreMarried(p,_))
+    
+# The person and, if married, their spouse
+Tset SelfAndSpouseIfMarried(Thing p) =
+    set:
+    if IsMarried(p) -> SpousesOf(p) + p
+    else new Tset(p)
+
+# >>Is/was {1} married?
+Tbool IsMarried(Thing p) =
+    MaritalStatus(p) == "Married" |~    # TODO: Legally separated = married
+    SpousesOf(p).Count > 0 
+
+# Divorced
+Tbool IsDivorced(Thing p) =
+    Stub()
+    
+# Note: Divorce and widowhood can be inferred, so they're not options
+# >>What is/was {1}'s marital status?  (Options: Single, Married, Legally separated, Civil union, Domestic partnership)
+Tstr MaritalStatus(Thing p)
+
+# AreMarried(1,2) assumes MaritalStatus(1) = "Married"
+# AreMarried(1,2) assumes MaritalStatus(2) = "Married"
+IsMarried(1) assumes MaritalStatus(1) = "Married"
+
+
+# DIVORCE & WIDOWHOOD
+
+
+# True after a person's first marriage ends, otherwise false
+# Tbool TheTimeIsAfterMarriage(Thing p) =
+    # TheTime.IsAtOrAfter(dateFirstMarried) &
+    # ! IsMarried(p)
+
+    # Tbool timeAfterSpouseDied =
+        # TheTime.IsAtOrAfter(
+    
+    # Tdate dateFirstMarried = IsMarried(p).DateFirstTrue
+
+
+# GAY MARRIAGE
+
+# One person is a man, the other a woman
+Tbool OneManOneWoman(Thing p1, Thing p2) =
+    ...
+        IsFemale(p1) &
+        IsMale(p2)
+    |
+    ...
+        IsFemale(p2) &
+        IsMale(p1)
+        
+# Gay marriage
+Tbool InSameSexMarriage(Thing p1, Thing p2) =
+    AreMarried(p1,p2) &
+    Gender(p1) == Gender(p2)
+
+    
+# OTHER
+    
+# Domestic partners
+Tbool IsDomesticPartnerOf(Thing p1, Thing p2) =
+    Relationship(p1,p2) == "Domestic partner" |~
+    Relationship(p2,p1) == "Domestic partner"
+
+# Civil union
+Tbool InCivilUnion(Thing p1, Thing p2) =
+    Relationship(p1,p2) == "Partner by civil union" |~
+    Relationship(p2,p1) == "Partner by civil union"
+    
+# Ex-spouses
+Tbool ExSpouses(Thing p1, Thing p2) =
+    Relationship(p1,p2) == "Former spouse" |~
+    Relationship(p2,p1) == "Former spouse"
+        
+# >>Are/were {1} and {2} legally separated?
+TboolSym AreSeparated(Thing p1, Thing p2)
+        
+# >>Are/were {1} and {2} divorced?
+TboolSym AreDivorced(Thing p1, Thing p2) =
+    ExSpouses(p1,p2)
+
+# >>Is {1} a widow(er)?
+Tbool IsWidowed(Thing p)
+
+# >>Does/did {1} have the mental capacity to marry?
+Tbool HasMentalCapacityToMarry(Thing p)
+
+
+# UNIT TESTS
+
+Test: IsMarried0
+- Things mary, jon
+- Fam.SpousesOf(mary) = [[jon]]
+- Fam.IsMarried(mary).Out =?= true
+
+Test: IsMarried1a
+- Things p, q
+- Fam.AreMarried(p,q) = true
+- Fam.IsMarried(p).Out =?= true
+
+Test: IsMarried1b
+- Things p, q
+- Fam.AreMarried(q,p) = true
+- Fam.IsMarried(p).Out =?= true
+
+Test: IsMarried2
+- Things p, q
+- Fam.AreMarried(p,q) = false
+- Fam.IsMarried(p).Out =?= "Unstated"
+
+Test: IsMarried3
+- Thing p
+- Fam.IsMarried(p).Out =?= "Unstated"
+
+Test: IsMarried4
+- Thing p
+- Fam.IsMarried(p) = false
+- Fam.IsMarried(p).Out =?= false
+
+Test: IsMarried5
+- Thing p
+- Fam.IsMarried(p) = true
+- Fam.IsMarried(p).Out =?= true
+
+Test: IsMarried6    # fail
+- Things p, q
+- Fam.SpousesOf(p) = [[q]]
+- Fam.IsMarried(p).Out =?= true
+
+Test: IsMarried7
+- Things p, q
+- Fam.SpousesOf(p) = [[q]]
+- Fam.IsMarried(q).Out =?= true
+
+Test: IsMarried8
+- Thing p
+- Fam.MaritalStatus(p) = "Single"
+- Fam.IsMarried(p).Out =?= false
+
+Test: IsMarried9    # time-varying
+- Thing jed
+- Fam.MaritalStatus(jed) = {Time.DawnOf: "Married"; 2011-03-04: "Single"}
+- Fam.IsMarried(jed).TestOutput =?= "Time.DawnOf True 3/4/2011 12:00:00 AM False "
+
+Test: FamRel1
+- Things p, q
+- Fam.FamilyRelationship(p,q) = "Spouse"
+- Fam.AreMarried(p,q).Out =?= true
+
+Test: FamRel2
+- Things p, q
+- Fam.FamilyRelationship(p,q) = "Spouse"
+- Fam.AreMarried(q,p).Out =?= true
+
+Test: FamRel3
+- Things p, q
+- Fam.FamilyRelationship(p,q) = "Parent"
+- Fam.AreMarried(p,q).Out =?= false
+
+Test: FamRel4
+- Things p, q
+- Fam.AreMarried(p,q).Out =?= "Unstated"
+
+Test: AreMarried1
+- Things p, q
+- Fam.IsMarried(p) = false
+- Fam.AreMarried(p,q).Out =?= false
+
+Test: AreMarried2
+- Things p, q
+- Fam.IsMarried(p) = true
+- Fam.AreMarried(p,q).Out =?= "Unstated"
+
+Test: AreMarried3a
+- Things p, q
+- Fam.AreMarried(p,q) = true
+- Fam.AreMarried(p,q).Out =?= true
+
+Test: AreMarried3b
+- Things p, q
+- Fam.AreMarried(p,q) = true
+- Fam.AreMarried(q,p).Out =?= true
+
+Test: AreMarried4
+- Things p, q
+- Fam.AreMarried(p,q) = false
+- Fam.AreMarried(p,q).Out =?= false
+
+Test: AreMarried5
+- Things p, q
+- Fam.AreMarried(p,q).Out =?= "Unstated"
+
+Test: AreMarried6
+- Things p, q
+- Fam.SpousesOf(p) = [[q]]
+- Fam.AreMarried(p,q).Out =?= true
+
+Test: AreMarried7
+- Things p, q
+- Fam.SpousesOf(p) = [[q]]
+- Fam.AreMarried(q,p).Out =?= true
+
+Test: AreMarried8
+- Things p, q
+- Fam.SpousesOf(p) = [[ ]]
+- Fam.AreMarried(p,q).Out =?= false
+
+Test: AreMarried9
+- Things p, q
+- Thing r
+- Fam.SpousesOf(p) = [[r]]
+- Fam.AreMarried(p,q).Out =?= false
+
+Test: SpousesOf1
+- Thing p
+- Fam.SpousesOf(p).Count.Out =?= "Unstated"
+
+Test: SpousesOf2
+- Thing p
+- Fam.SpousesOf(p) = [[ ]]
+- Fam.SpousesOf(p).Count.Out =?= 0
+
+Test: SpousesOf3
+- Things p, q
+- Fam.SpousesOf(p) = [[q]]
+- Fam.SpousesOf(p).Count.Out =?= 1
+
+Test: SpousesOf4
+- Things p, q, r
+- Fam.SpousesOf(p) = [[q,r]]
+- Fam.SpousesOf(p).Count.Out =?= 2
+
+Test: SpousesOf5
+- Things p, q
+- Fam.AreMarried(p,q) = true   
+- Fam.SpousesOf(p).Count.Out =?= 1    # Note: doesn't return Unstated here
+
+Test: SpousesOf6
+- Things p, q
+- Fam.SpousesOf(p) = [[q]]
+- Fam.SpousesOf(q).Count.Out =?= 1     # Note: returns 1 even though q could have other spouses
+
+Test: SpousesOf7a
+- Things p, q
+- Fam.FamilyRelationship(p,q) = "Spouse"
+- Fam.SpousesOf(p).Count.Out =?= 1
+
+Test: SpousesOf7b
+- Things p, q
+- Fam.FamilyRelationship(p,q) = "Spouse"
+- Fam.SpousesOf(q).Count.Out =?= 1
+

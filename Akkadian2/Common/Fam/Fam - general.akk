@@ -1,0 +1,347 @@
+# Namespace:    Hammurabi.Fam
+# Summary:      Basic family relationships
+# Updated:      2012-09-08
+# Author:       Michael Poulshock
+
+
+# FAMILY MEMBERS
+
+# >>Who are {1}'s family members?
+Tset FamilyOf(Thing person)
+
+
+# BASIC FAMILY RELATIONSHIPS
+# Marital and parent-child relationships are elsewhere
+    
+# Siblings
+TboolSym AreSiblings(Thing p1, Thing p2) =
+    Relationship(p1,p2) == "Sibling" |~
+    Relationship(p2,p1) == "Sibling"
+
+##
+Tbool AreSiblingsInferred(Thing kid1, Thing kid2, Thing parent1, Thing parent2) =
+    IsParentOf(parent1,kid1) &
+    IsParentOf(parent2,kid1) &
+    IsParentOf(parent1,kid2) &
+    IsParentOf(parent2,kid2)
+##
+    
+# Half-siblings
+Tbool AreHalfSiblings(Thing p1, Thing p2) =
+    Relationship(p1,p2) == "Half sibling" |~
+    Relationship(p2,p1) == "Half sibling"
+    # or, share one parent
+
+# Step-siblings
+Tbool AreStepsiblings(Thing p1, Thing p2) =
+    Relationship(p1,p2) == "Stepsibling" |~
+    Relationship(p2,p1) == "Stepsibling"
+    
+# Grandparent
+Tbool IsGrandparentOf(Thing p1, Thing p2) =
+    peopleBut(p1,p2).Exists(IsGrandparentInferred(p1,_,p2)) |
+    Relationship(p1,p2) == "Grandparent" |~
+    Relationship(p2,p1) == "Grandchild"
+    
+Tbool IsGrandparentInferred(Thing grandparent, Thing parent, Thing person) =
+    IsParentOf(parent,person) &
+    IsParentOf(grandparent,parent)
+
+# Great-grandparent
+Tbool IsGreatGrandparentOf(Thing p1, Thing p2) =
+    peopleBut(p1,p2).Exists(IsGreatGrandparentInferred(p1,_,p2)) |
+    Relationship(p1,p2) == "Great-grandparent" |~
+    Relationship(p2,p1) == "Great-grandchild"
+
+Tbool IsGreatGrandparentInferred(Thing ggparent, Thing parent, Thing person) =
+    IsParentOf(parent,person) &
+    IsGrandparentOf(ggparent,parent)
+    
+# Great-great-grandparent
+Tbool IsGreatGreatGrandparentOf(Thing p1, Thing p2) =
+    Relationship(p1,p2) == "Great-great-grandparent" |~
+    Relationship(p2,p1) == "Great-great-grandchild"
+        
+# Aunt or uncle
+Tbool IsAuntOrUncleOf(Thing p1, Thing p2) =
+    peopleBut(p1,p2).Exists(IsAuntUncleInferred(p1,_,p2)) |
+    Relationship(p1,p2) == "Aunt or uncle" |~
+    Relationship(p2,p1) == "Niece or nephew"
+
+Tbool IsAuntUncleInferred(Thing auntUncle, Thing parent, Thing person) =
+    IsParentOf(parent,person) &
+    AreSiblings(parent,auntUncle)
+
+# Great aunt or uncle
+Tbool IsGreatAuntOrUncleOf(Thing p1, Thing p2) =
+    peopleBut(p1,p2).Exists(IsGreatAuntUncleInferred(p1,_,p2)) |
+    Relationship(p1,p2) == "Great aunt or uncle" |~
+    Relationship(p2,p1) == "Grand niece or nephew"
+
+Tbool IsGreatAuntUncleInferred(Thing auntUncle, Thing parent, Thing person) =
+    IsParentOf(parent,person) &
+    IsAuntOrUncleOf(auntUncle,parent)
+
+# Great-great aunt or uncle
+Tbool IsGreatGreatAuntOrUncleOf(Thing p1, Thing p2) =
+    Relationship(p1,p2) == "Great-great aunt or uncle" |~
+    Relationship(p2,p1) == "Great-grand niece or nephew"
+        
+# Cousins
+Tbool IsCousinOf(Thing p1, Thing p2) =
+    IsFirstCousinOf(p1, p2) |
+    IsNonFirstCousinOf(p1, p2)
+        
+# First cousins
+Tbool IsFirstCousinOf(Thing p1, Thing p2) =
+    Relationship(p1,p2) == "First cousin" |~
+    Relationship(p2,p1) == "First cousin"
+        
+# Cousins, but not first cousins
+Tbool IsNonFirstCousinOf(Thing p1, Thing p2) =
+    Relationship(p1,p2) == "Other cousin" |~
+    Relationship(p2,p1) == "Other cousin"
+        
+# Lineal ancestor (only includes blood relatives)
+Tbool IsAncestorOf(Thing ancestor, Thing person) =
+    set:
+    if IsAncestorAsserted(ancestor,person) -> true
+    else nextGen.Exists(IsAncestorOf(ancestor,_))
+    
+    Tset nextGen =
+        peopleBut(person).Filter(IsAncestorAsserted(_,person))
+
+FamilyRelationship(1,2) = "Biological parent" assumes IsAncestorAsserted(1,2)
+FamilyRelationship(1,2) = "Biological child"    assumes IsAncestorAsserted(2,1)
+
+Tbool IsAncestorAsserted(Thing p1, Thing p2) =
+    false    # default to false
+
+# Lineal descendant (only includes blood relatives)
+Tbool IsDescendantOf(Thing p1, Thing p2) =
+    IsAncestorOf(p2,p1)
+    
+# >>What is/was {1}'s family relationship to {2}? (Options: Spouse, Partner by civil union, Domestic partner, Former spouse, -, Biological parent, Stepparent, Adoptive parent, Foster parent, -, Biological child, Stepchild, Adopted child, Foster child, -, Sibling, Half sibling, Stepsibling, -, Grandparent, Great-grandparent, Great-great-grandparent, -, Grandchild, Great-grandchild, Great-great-grandchild, -, Aunt or uncle, Great aunt or uncle, Great-great aunt or uncle, -, Niece or nephew, Grand niece or nephew, Great-grand niece or nephew, -, First cousin, Other cousin, -, Other family relation, No family relation)
+Tstr Relationship(Thing p1, Thing p2) =
+    FamilyRelationship(p1,p2)
+  
+# >>What is/was {1}'s family relationship to {2}? (Options: Spouse, Partner by civil union, Domestic partner, Former spouse, -, Biological parent, Stepparent, Adoptive parent, Foster parent, -, Biological child, Stepchild, Adopted child, Foster child, -, Sibling, Half sibling, Stepsibling, -, Grandparent, Great-grandparent, Great-great-grandparent, -, Grandchild, Great-grandchild, Great-great-grandchild, -, Aunt or uncle, Great aunt or uncle, Great-great aunt or uncle, -, Niece or nephew, Grand niece or nephew, Great-grand niece or nephew, -, First cousin, Other cousin, -, Other family relation, No family relation)  
+Tstr FamilyRelationship(Thing p1, Thing p2)
+
+
+# CUSTODY, GUARDIANSHIP, ETC.    
+
+# >>Does/did {1} have legal custody over {2}?
+Tbool HasCustodyOf(Thing p1, Thing p2)
+
+# Ward (minor)
+Tbool IsWardOf(Thing child, Thing adult) =
+    IsMinor(child) &
+    IsLegalGuardianOf(adult, child)
+
+# >>Is/was {1} a (general) legal guardian of {2}?
+Tbool? IsLegalGuardianOf(Thing p1, Thing p2) =
+    CanBeAGuardianOf(p1, p2)
+        
+# >>Does/did {1} act in loco parentis with respect to {2}?
+Tbool? ActsInLocoParentisOf(Thing p1, Thing p2) =
+    !IsParentOf(p2,p1)
+
+# ActsInLocoParentisOf(1,2) assumes IsParentOf(1,2) = false    
+    
+# >>Does/did {1} have day-to-day responsibility for {2}?
+Tbool? HasDayToDayResponsibilityFor(Thing p1, Thing p2) =
+    CanBeAGuardianOf(p1, p2)
+
+# Person can be the guardian of another
+Tbool CanBeAGuardianOf(Thing guard, Thing ward) =
+    Age(guard) >= 16 &                        
+    ...
+        IsDisabled(ward) |                    # Disablity (need to clarify)
+        ...
+            Age(ward) < 18 &                # Infancy...
+            Age(guard) > Age(ward) &
+            !IsParentOf(ward, guard) &        
+            !InCivilUnion(guard, ward) &
+            !IsDomesticPartnerOf(guard, ward) &
+            !ExSpouses(guard, ward)
+
+# Custodial parent
+Tbool IsCustodialParentOf(Thing p1, Thing p2) =
+    IsParentOf(p1,p2) &
+    HasCustodyOf(p1,p2)
+
+# Noncustodial parent
+Tbool IsNoncustodialParentOf(Thing parent, Thing child) =
+    IsParentOf(parent,child) &
+    !HasCustodyOf(parent,child)
+    
+
+# OTHER
+
+# >>Is {1} the next of kin (nearest blood relative) of {2}?
+Tbool IsNextOfKinOf(Thing p1, Thing p2) 
+    # or inferred?
+    
+# Lives with any parent, custodian, or guardian (PCG)
+Tbool LivesWithPCG(Thing p) =
+    members.Exists(IsLivingWithPCG(p,_))
+
+    Tset members =
+        Econ.HouseholdMembersOf(p) - p
+    
+# Person (p1) lives with parent, custodian, or guardian (PCG)
+Tbool IsLivingWithPCG(Thing p1, Thing p2) =
+    Econ.LivesWith(p1, p2) &
+    ...
+        IsParentOf(p2, p1) |
+        HasCustodyOf(p2, p1) |
+        IsLegalGuardianOf(p2, p1)
+
+# Cohabitation
+Tbool Cohabitate(Thing p1, Thing p2) =
+    Econ.LivesWith(p1, p2) &
+    AreInIntimateRelationship(p1, p2)
+
+# >>Do/did {1} and {2} have a marriage contract or agreement?
+TboolSym HaveMarriageAgreement(Thing p1, Thing p2)    
+
+# >>Do/did {1} and {2} hold each other out to the community as spouses?
+TboolSym HeldOutAsSpouses(Thing p1, Thing p2)
+    
+# >>Are/were {1} and {2} in an intimate relationship?
+TboolSym AreInIntimateRelationship(Thing p1, Thing p2)
+
+# >>Does/did {1} care for an incapacitated person?
+Tbool CaresForIncapacitatedPerson(Thing p) 
+
+
+# UNIT TESTS
+
+Test: Ancestor1
+- Things person, parent, grandparent
+- Fam.FamilyRelationship(parent,person) = "Biological parent"
+- Fam.FamilyRelationship(grandparent,parent) = "Biological parent"
+- Fam.IsAncestorOf(grandparent,person).Out =?= true
+
+Test: Ancestor2
+- Things person, grandparent
+- Fam.IsAncestorOf(grandparent,person).Out =?= false
+
+Test: Ancestor3
+- Things person, parent
+- Fam.FamilyRelationship(parent,person) = "Biological parent"
+- Fam.IsAncestorOf(parent,person).Out =?= true
+
+Test: Ancestor4
+- Things person, cousin
+- Fam.FamilyRelationship(person,cousin) = "First cousin"
+- Fam.IsAncestorOf(person,cousin).Out =?= false
+
+Test: AuntUncleInferred1
+- Things person, parent, aunt
+- Fam.IsParentOf(parent,person) = true
+- Fam.AreSiblings(parent,aunt) = true
+- Fam.IsAuntOrUncleOf(aunt,person).Out =?= true
+
+Test: AuntUncleInferred2
+- Things person, parent, aunt
+- Fam.AreSiblings(parent,aunt) = true
+- Fam.IsAuntOrUncleOf(aunt,person).Out =?= "Unstated"
+
+Test: AuntUncleInferred3
+- Things t1, t2
+- Fam.FamilyRelationship(t1,t2) = "Aunt or uncle"
+- Fam.IsAuntOrUncleOf(t1,t2).Out =?= true
+
+Test: AuntUncleInferred4
+- Things t1, t2
+- Fam.FamilyRelationship(t1,t2) = "Biological parent"
+- Fam.IsAuntOrUncleOf(t1,t2).Out =?= false
+
+Test: Grandparent1
+- Things t1, t2
+- Fam.FamilyRelationship(t1,t2) = "Grandparent"
+- Fam.IsGrandparentOf(t1,t2).Out =?= true
+
+Test: Grandparent2
+- Things t1, t2
+- Fam.FamilyRelationship(t2,t1) = "Grandchild"
+- Fam.IsGrandparentOf(t1,t2).Out =?= true
+
+Test: Grandparent3
+- Things t1, t2
+- Fam.FamilyRelationship(t1,t2) = "Sibling"
+- Fam.IsGrandparentOf(t1,t2).Out =?= false
+
+Test: Grandparent4
+- Things t1, t2
+- Fam.FamilyRelationship(t2,t1) = "Sibling"
+- Fam.IsGrandparentOf(t1,t2).Out =?= false
+
+Test: Grandparent5
+- Things t1, t2
+- Fam.IsGrandparentOf(t1,t2).Out =?= "Unstated"
+
+Test: Grandparent6
+- Things person, parent, grandparent
+- Fam.IsParentOf(parent, person) = true
+- Fam.IsParentOf(grandparent, parent) = true
+- Fam.IsGrandparentOf(grandparent,person).Out =?= true
+
+Test: Grandparent7
+- Things person, parent, grandparent
+- Fam.IsParentOf(grandparent, parent) = true
+- Fam.IsGrandparentOf(grandparent,person).Out =?= "Unstated"
+
+Test: 49171719
+- Things t1, t2
+- Things sam, john
+- Econ.HouseholdMembersOf(t1) = [[sam, john]]
+- Econ.LivesWith(sam,t1) = true
+- Fam.IsParentOf(sam,t1) = false
+- Fam.HasCustodyOf(sam,t1) = false
+- Fam.IsLegalGuardianOf(sam,t1) = true
+- Econ.LivesWith(john,t1) = false
+- Fam.LivesWithPCG(t1).TestOutput =?= "Time.DawnOf True "
+
+Test: 135354455
+- Things t1, t2
+- Fam.FamilyRelationship(t2,t1) = "First cousin"
+- Fam.IsCousinOf(t1, t2).TestOutput =?= "Time.DawnOf True "
+
+Test: Sanity1a    
+- Thing a
+- Thing b
+- Fam.IsParentOf(a,b) = true
+- Fam.IsParentOf(a,b).Out =?= true
+
+Test: Sanity1b    
+- Thing a
+- Thing b
+- Fam.IsParentOf(a,b) = true
+- Fam.IsChildOf(b,a).Out =?= true
+
+Test: Sanity2
+- Thing p
+- Fam.IsMarried(p) = true
+- Fam.IsMarried(p).Out =?= true
+
+Test: ShortCircuit1
+- Thing p1
+- Thing p2
+- Fam.ActsInLocoParentisOf(p1,p2) = true
+- Fam.ActsInLocoParentisOf(p1,p2).Out =?= true
+
+Test: ShortCircuit2
+- Thing p1
+- Thing p2
+- Fam.ActsInLocoParentisOf(p1,p2) = false
+- Fam.ActsInLocoParentisOf(p1,p2).Out =?= false
+
+Test: ShortCircuit3
+- Thing p1
+- Thing p2
+- Fam.IsParentOf(p2,p1) = true
+- Fam.ActsInLocoParentisOf(p1,p2).Out =?= false
+

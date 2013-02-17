@@ -1,0 +1,119 @@
+# Citation:     8 U.S.C. 1408 (2012)
+# Namespace:    USC.Tit8.Sec1408
+# Summary:      Nationals but not citizens of the U.S. at birth
+# Updated:      2012-09-16
+# Author:       Michael Poulshock
+
+
+# U.S. national (but not citizen) by birth
+Tbool IsUSNationalByBirth(Thing p) = 
+    ...
+        Para1(p) |
+        Para2(p) |
+        Para3(p) |
+        Para4(p)
+    &
+    TheTime.IsAtOrAfter(DoB(p))        # Status as national starts at birth
+    
+    
+# Paragraph (1) - Born in outlying possession on or after U.S. annexation
+Tbool Para1(Thing p) =
+    ...
+        BirthCountry(p) == "American Samoa" &
+        DoB(p) >= 1911-07-17         # http://en.wikipedia.org/wiki/American_Samoa
+    |
+    ...
+        BirthCountry(p) == "Swains Island" &
+        DoB(p) >= 1925-03-04         # http://en.wikipedia.org/wiki/Swains_Island
+
+        
+# Paragraph (2) - Both parents nationals
+Tbool Para2(Thing p) =
+    ! Sec1401.BornInUSorOP(p) &
+    ...
+        Sec1401.ParentsMarried(p) |
+        Sec1409.SubsecAApplies(p)        # Paternal legitimation
+    &
+    Sec1401.BothParentsNationals(p) &
+    Sec1401.ParentResidedInUSorOPBeforeBirthOf(p)
+
+    
+# Paragraph (3) - Of unknown parentage, found in outlying possession
+# Actual rule is more subtle, involving a rebuttable presumption re:
+# birth location
+Tbool Para3(Thing p) =
+    Fam.IsOfUnknownParentage(p) &
+    ...
+        BirthCountry(p) == "American Samoa" |
+        BirthCountry(p) == "Swains Island"
+
+
+# Paragraph (4) - One parent national, one parent alien
+Tbool Para4(Thing p) =
+    ! Sec1401.BornInUSorOP(p) &
+    Sec1401.ParentsMarried(p) &
+    Sec1401.OneNationalOneAlienParent(p) &
+    Sec1401.BirthParents(p).Exists(Para4ParentTest(_, DoB(p)))
+
+# National parent meets complex time-based test for physical presence
+# TODO: Test this thoroughly; not convinced that it's correct yet.
+Tbool Para4ParentTest(Thing parent, Tdate date) =
+    Imm.IsUSNational(parent) &
+    present7YearsIn10.IsEverTrueBefore(date) &
+    fiveYearTestMet.IsEverTrueBefore(date) &
+    Stub()   # Para (4) not handled completely b/c it involves analysis of a sliding
+             # window of time during which several facts are considered.  Also, rare.
+    
+    # (4) - present for a total of seven years in any continuous period of ten years
+    Tbool present7YearsIn10 =
+        present.ElapsedYearsInSlidingWindow(10, "Year") >= 7    # Poor performance
+    
+    # (4)(B)
+    Tbool fiveYearTestMet =
+        present.RunningElapsedYears >= 5 &                        # Extremely poor performance
+        Age(parent) >= 14
+    
+    # "Physically present"
+    Tbool present =
+        Sec1401.PresentUnderSubsecG(parent)  
+
+    ##
+    # (4)(A) - A one year absence starts the clock over...
+    Tbool notOutsideOneYear =
+        outside.RunningElapsedYears <= 1
+        
+    Tbool outside = 
+        ! Sec1401.PresentUnderSubsecG(parent)
+    ##    
+    
+
+    
+
+# UNIT TESTS
+
+Test: Para3
+- Thing liz
+- BirthCountry(liz) = "Swains Island"
+- DoB(liz) = 1900-02-01
+- Fam.IsOfUnknownParentage(liz) = true
+- USC.Tit8.Sec1408.IsUSNationalByBirth(liz).TestOutput =?= "Time.DawnOf False 2/1/1900 12:00:00 AM True "
+
+Test: Para2
+- Things izzy, mom, dad
+- BirthCountry(izzy) = "Saipan"
+- Fam.ParentsOf(izzy) = [[mom, dad]]
+- Gender(mom) = "Female"
+- Gender(dad) = "Male"
+- Fam.FamilyRelationship(dad,mom) = "Spouse"
+- DoB(izzy) = 1975-03-03
+- Imm.USImmigrationStatus(dad) = "U.S. national"
+- Imm.USImmigrationStatus(mom) = "U.S. national"
+- CountryOfResidence(dad) = "American Samoa"
+- USC.Tit8.Sec1408.IsUSNationalByBirth(izzy).TestOutput =?= "Time.DawnOf False 3/3/1975 12:00:00 AM True "
+
+Test: Para1
+- Thing izzy
+- BirthCountry(izzy) = "American Samoa"
+- DoB(izzy) = 1977-04-12
+- USC.Tit8.Sec1408.IsUSNationalByBirth(izzy).TestOutput =?= "Time.DawnOf False 4/12/1977 12:00:00 AM True "
+

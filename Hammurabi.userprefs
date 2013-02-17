@@ -1,18 +1,16 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="AkkadianCompiler\Main.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Akkadian\Common\Edu - general.akk">
     <Files>
-      <File FileName="Hammurabi\Core\Facts\CacheBase.cs" Line="37" Column="47" />
-      <File FileName="AkkadianCompiler\Main.cs" Line="262" Column="14" />
-      <File FileName="New Text Document.txt" Line="5" Column="7" />
+      <File FileName="Akkadian\Common\Edu - general.akk" Line="8" Column="12" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
-          <Node name="New Folder" expanded="True" />
-          <Node name="AkkadianCompiler" expanded="True">
-            <Node name="Main.cs" selected="True" />
+          <Node name="Akkadian" expanded="True">
+            <Node name="Common" expanded="True" />
           </Node>
+          <Node name="AkkadianCompiler" selected="True" />
         </State>
       </Pad>
       <Pad Id="ClassPad">

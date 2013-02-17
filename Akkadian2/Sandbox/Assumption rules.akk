@@ -1,0 +1,123 @@
+# Namespace:    Hammurabi.Sandbox
+# Summary:      Rules that test assumption inferences
+# Updated:      2012-09-05
+# Author:       Michael Poulshock
+
+
+# INPUT RULES FOR THE TEST ASSUMPTIONS
+
+Tbool AreMarried2(Thing p1, Thing p2)
+
+Tbool LikeEachOther2(Thing p1, Thing p2)
+
+Tbool IsMarried2(Thing p)
+
+Tbool IsPregnant2(Thing p)
+
+Tbool IsMale2(Thing p)
+
+Tstr Gender2(Thing p)
+
+Tbool IsBroke(Thing p)
+
+Tnum Savings(Thing p)
+
+
+# SOME TEST ASSUMPTIONS - <A> assumes <B>
+
+IsPregnant2(1) assumes Gender2(1) = "Female"
+IsMale2(1) assumes IsPregnant2(1) = false
+AreMarried2(1,2) assumes IsMarried2(2)
+AreMarried2(1,2) assumes LikeEachOther2(2,1)
+IsBroke(1) assumes Savings(1) = 0
+
+##
+Syntax rules for assumptions:
+- Arguments must be numbered (1, 2, or 3).
+- On the left side, the numbers must be in numerical order.
+- Relationships on the left side that are not Boolean will not participate in
+  "if -B, then -A" inferences (because these couldn't be negated).
+##
+
+
+# TESTS
+
+# If -B, then -A
+
+Test: Assumption2a
+- Thing p
+- Sandbox.Gender2(p) = "Male"
+- Sandbox.IsPregnant2(p).Out =?= false
+
+Test: Assumption2b
+- Thing p
+- Sandbox.Gender2(p) = "Female"
+- Sandbox.IsPregnant2(p).Out =?= "Unstated"
+
+Test: Assumption2c
+- Thing p
+- Sandbox.IsPregnant2(p) = true
+- Sandbox.IsMale2(p).Out =?= false
+
+Test: Assumption2d
+- Thing p
+- Sandbox.IsPregnant2(p) = false
+- Sandbox.IsMale2(p).Out =?= "Unstated"
+
+Test: Assumption2e    # fails b/c AreMarried2(_,2) doesn't match wildcards
+- Things a, b
+- Sandbox.IsMarried2(b) = false
+- Sandbox.AreMarried2(a,b).Out =?= false
+
+Test: Assumption2f
+- Things a, b
+- Sandbox.LikeEachOther2(b,a) = false
+- Sandbox.AreMarried2(a,b).Out =?= false
+
+Test: Assumption2g
+- Things a, b
+- Sandbox.LikeEachOther2(b,a) = true
+- Sandbox.AreMarried2(a,b).Out =?= "Unstated"
+
+Test: Assumption2h
+- Thing a
+- Sandbox.Savings(a) = 99
+- Sandbox.IsBroke(a).Out =?= false
+
+
+# If A, then B
+
+Test: Assumption1a
+- Thing p
+- Sandbox.IsMale2(p) = true
+- Sandbox.IsPregnant2(p).Out =?= false
+
+Test: Assumption1b
+- Things a, b
+- Sandbox.AreMarried2(a,b) = true
+- Sandbox.IsMarried2(b).Out =?= true
+
+Test: Assumption1c
+- Thing p
+- Sandbox.IsPregnant2(p) = true
+- Sandbox.Gender2(p).Out =?= "Female"
+
+Test: Assumption1d
+- Thing p
+- Sandbox.Gender2(p).Out =?= "Unstated"
+
+Test: Assumption1e
+- Thing p
+- Sandbox.IsBroke(p) = true
+- Sandbox.Savings(p).Out =?= 0
+
+Test: Assumption1f
+- Thing p
+- Sandbox.IsBroke(p) = false
+- Sandbox.Savings(p).Out =?= "Unstated"
+
+Test: Assumption1g
+- Things a, b
+- Sandbox.AreMarried2(a,b) = true
+- Sandbox.LikeEachOther2(b,a).Out =?= true
+

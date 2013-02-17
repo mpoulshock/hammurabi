@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Default</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ItemType>GenericProject</ItemType>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{44425A97-5000-4D67-9344-B8A2FA6F6664}</ProjectGuid>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Default|AnyCPU' ">
+    <OutputPath>.\</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="Common\Edu - general.akk" />
+    <None Include="Common\Geo - jurisdictions.akk" />
+    <None Include="Common\Hammurabi - general-purpose functions.akk" />
+    <None Include="Common\Imm - status and residence.akk" />
+    <None Include="Common\Mil - general.akk" />
+    <None Include="Common\Org - general.akk" />
+    <None Include="Common\Property - general.akk" />
+    <None Include="Common\Econ\Econ - assets.akk" />
+    <None Include="Common\Econ\Econ - employment.akk" />
+    <None Include="Common\Econ\Econ - household.akk" />
+    <None Include="Common\Econ\Econ - income.akk" />
+    <None Include="Common\Econ\Econ - shelter.akk" />
+    <None Include="Common\Econ\Econ - transactions.akk" />
+    <None Include="Common\Fam\Fam - age of majority.akk" />
+    <None Include="Common\Fam\Fam - general.akk" />
+    <None Include="Common\Fam\Fam - marriage.akk" />
+    <None Include="Common\Fam\Fam - parent-child.akk" />
+    <None Include="Common\People\People - general.akk" />
+    <None Include="Common\People\People - residence and citizenship.akk" />
+    <None Include="Law\Federal law\Agency interpretations\IRS\Pub 501 - Exemptions.akk" />
+    <None Include="Law\Federal law\Agency interpretations\IRS\Pub 501 - Filing status.akk" />
+    <None Include="Law\Federal law\Agency interpretations\IRS\Pub 501 - Income for filing status and standard deduction.akk" />
+    <None Include="Law\Federal law\Agency interpretations\IRS\Pub 501 - Standard deduction.akk" />
+    <None Include="Law\Federal law\Agency interpretations\IRS\Pub 501 - Who must file.akk" />
+    <None Include="Law\Federal law\Agency interpretations\IRS\Pub 519 - Alien tax status.akk" />
+    <None Include="Law\Federal law\Agency interpretations\IRS\Pub 901 - Tax treaties.akk" />
+    <None Include="Law\Federal law\Agency interpretations\IRS\Pub 946 - Depreciating property.akk" />
+    <None Include="Law\Federal law\Code of Federal Regulations\Title 26 - Tax\26 CFR 1.6050I-1 - Reporting cash transactions.akk" />
+    <None Include="Law\Federal law\Code of Federal Regulations\Title 29 - Labor\29 CFR 1630 - Disability defined.akk" />
+    <None Include="Law\Federal law\Federal Rules\FRCP\Rule 6 - Computing time.akk" />
+    <None Include="Law\Federal law\US Code\Title 26 - Tax\26 USC 151 - Exemption amount.akk" />
+    <None Include="Law\Federal law\US Code\Title 26 - Tax\26 USC 152 - Dependents.akk" />
+    <None Include="Law\Federal law\US Code\Title 26 - Tax\26 USC 2 - Filing status.akk" />
+    <None Include="Law\Federal law\US Code\Title 26 - Tax\26 USC 22 - Disability.akk" />
+    <None Include="Law\Federal law\US Code\Title 26 - Tax\26 USC 3306 - FUTA.akk" />
+    <None Include="Law\Federal law\US Code\Title 26 - Tax\26 USC 408 - IRAs.akk" />
+    <None Include="Law\Federal law\US Code\Title 26 - Tax\26 USC 441 - Tax year.akk" />
+    <None Include="Law\Federal law\US Code\Title 26 - Tax\26 USC 6013 - MFJ.akk" />
+    <None Include="Law\Federal law\US Code\Title 26 - Tax\26 USC 6050I - Reporting cash transactions.akk" />
+    <None Include="Law\Federal law\US Code\Title 26 - Tax\26 USC 61 - Gross income.akk" />
+    <None Include="Law\Federal law\US Code\Title 26 - Tax\26 USC 62 - AGI.akk" />
+    <None Include="Law\Federal law\US Code\Title 26 - Tax\26 USC 7701 - Definitions.akk" />
+    <None Include="Law\Federal law\US Code\Title 29 - Labor\29 USC 206 - Minimum wage.akk" />
+    <None Include="Law\Federal law\US Code\Title 29 - Labor\29 USC 2611 - FMLA definitions.akk" />
+    <None Include="Law\Federal law\US Code\Title 29 - Labor\29 USC 2612 - FMLA rules.akk" />
+    <None Include="Law\Federal law\US Code\Title 38 - Veterans\38 USC 1501 - Periods of war.akk" />
+    <None Include="Law\Federal law\US Code\Title 42 - Health and welfare\42 USC 416 - Retirement age.akk" />
+    <None Include="Law\Federal law\US Code\Title 42 - Health and welfare\42 USC 9902 - Poverty guidelines.akk" />
+    <None Include="Law\Federal law\US Code\Title 5 - Fed govt\5 USC 6103 - Legal holidays.akk" />
+    <None Include="Law\Federal law\US Code\Title 5 - Fed govt\5 USC 6301 - Fed employees - leave.akk" />
+    <None Include="Law\Federal law\US Code\Title 8 - Immigration\8 USC 1101 - Definitions.akk" />
+    <None Include="Law\Federal law\US Code\Title 8 - Immigration\8 USC 1182 - Inadmissible aliens.akk" />
+    <None Include="Law\Federal law\US Code\Title 8 - Immigration\8 USC 1401 - Citizenship at birth.akk" />
+    <None Include="Law\Federal law\US Code\Title 8 - Immigration\8 USC 1401a - Birth abroad to servicemember.akk" />
+    <None Include="Law\Federal law\US Code\Title 8 - Immigration\8 USC 1402 - Birth in Puerto Rico.akk" />
+    <None Include="Law\Federal law\US Code\Title 8 - Immigration\8 USC 1403 - Birth in Canal Zone.akk" />
+    <None Include="Law\Federal law\US Code\Title 8 - Immigration\8 USC 1404 - Birth in Alaska.akk" />
+    <None Include="Law\Federal law\US Code\Title 8 - Immigration\8 USC 1405 - Birth in Hawaii.akk" />
+    <None Include="Law\Federal law\US Code\Title 8 - Immigration\8 USC 1406 - Birth in Virgin Islands.akk" />
+    <None Include="Law\Federal law\US Code\Title 8 - Immigration\8 USC 1407 - Birth in Guam.akk" />
+    <None Include="Law\Federal law\US Code\Title 8 - Immigration\8 USC 1408 - Nationals of US at birth.akk" />
+    <None Include="Law\Federal law\US Code\Title 8 - Immigration\8 USC 1409 - Born out of wedlock.akk" />
+    <None Include="Law\Federal law\US Code\Title 8 - Immigration\Imm - general.akk" />
+    <None Include="Law\State law\Alabama\Ala Code 26-1-1 - Age of majority.akk" />
+    <None Include="Law\State law\Alabama\Food Assistance Program.akk" />
+    <None Include="Law\State law\Kansas\Kansas Statutes\Title 23 - Domestic relations\KSA 23-2502 - Common law marriage.akk" />
+    <None Include="Law\State law\Kansas\Kansas Statutes\Title 35 - Holidays\KSA 35-107 - Legal holidays.akk" />
+    <None Include="Law\State law\Multi-state\Civil procedure\Statutes of limitations - torts.akk" />
+    <None Include="Law\State law\Multi-state\Civil procedure\Time limits to collect court judgments.akk" />
+    <None Include="Law\State law\Multi-state\Family law\Next of kin.akk" />
+    <None Include="Law\State law\Vermont\VT Stat 12-7151 - Emancipated minors.akk" />
+    <None Include="Sandbox\Assumption rules.akk" />
+    <None Include="Sandbox\Mileage.akk" />
+    <None Include="Sandbox\Newbies.akk" />
+    <None Include="Sandbox\Random unit tests.akk" />
+    <None Include="Sandbox\Recursion test.akk" />
+    <None Include="Sandbox\Test for Hammurabi Interactive.akk" />
+  </ItemGroup>
+</Project>
