@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HammurabiWebService", "Hamm
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HammurabiWebServiceHost", "HammurabiWebServiceHost\HammurabiWebServiceHost.csproj", "{2CDFC242-E702-4FCE-B20C-BB688A97AB24}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Akkadian", "Akkadian", "{31034210-3B6F-4A6D-AE67-C8BE4FAA3708}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -54,6 +56,8 @@ Global
 		{EF025235-40B5-44DC-ADA6-8363E55EA5A4}.Default|Any CPU.Build.0 = Debug|x86
 		{EF025235-40B5-44DC-ADA6-8363E55EA5A4}.Release|x86.ActiveCfg = Release|x86
 		{EF025235-40B5-44DC-ADA6-8363E55EA5A4}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = Hammurabi\Hammurabi.csproj

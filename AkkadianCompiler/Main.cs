@@ -29,8 +29,8 @@ namespace Akkadian
     {
         private static string mainRuleType = "";        // For main rules
         private static string currentRuleType = "";     // For main rules and subrules
-        public static string methodCacheLine = "";     // Creates line that caches method results
-        public static bool cacheRule = false;          // Should method results be cached?
+        public static string methodCacheLine = "";      // Creates line that caches method results
+        public static bool cacheRule = false;           // Should method results be cached?
         private static string tableMatchLine = "";      // Rule input that must be matched in a table
         public static int totalRuleCount = 0;           // Total rules in project
         public static int SlocCount = 0;                // Total Akkadian lines in project

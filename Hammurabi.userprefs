@@ -2,21 +2,16 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
   <MonoDevelop.Ide.Workbench ActiveDocument="AkkadianCompiler\Main.cs">
     <Files>
-      <File FileName="AkkadianCompiler\Method openings.cs" Line="89" Column="58" />
+      <File FileName="Hammurabi\Core\Facts\CacheBase.cs" Line="37" Column="47" />
       <File FileName="AkkadianCompiler\Main.cs" Line="262" Column="14" />
+      <File FileName="New Text Document.txt" Line="5" Column="7" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
+          <Node name="New Folder" expanded="True" />
           <Node name="AkkadianCompiler" expanded="True">
             <Node name="Main.cs" selected="True" />
-          </Node>
-          <Node name="HammurabiInteractive" expanded="True">
-            <Node name="Interview" expanded="True" />
-          </Node>
-          <Node name="HammurabiWebService" expanded="True" />
-          <Node name="Unit tests - Hammurabi core" expanded="True">
-            <Node name="Unit tests" expanded="True" />
           </Node>
         </State>
       </Pad>
@@ -34,13 +29,11 @@
           </Node>
         </State>
       </Pad>
+      <Pad Id="MonoDevelop.NUnit.TestPad">
+        <State expanded="True" selected="True" />
+      </Pad>
       <Pad Id="MonoDevelop.Debugger.WatchPad">
         <State />
-      </Pad>
-      <Pad Id="MonoDevelop.NUnit.TestPad">
-        <State expanded="True">
-          <Node name="Hammurabi" selected="True" />
-        </State>
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
