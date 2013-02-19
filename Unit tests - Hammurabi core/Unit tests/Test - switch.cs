@@ -218,21 +218,6 @@ namespace Hammurabi.UnitTests.CoreFcns
             Assert.AreEqual("Time.DawnOf 42 ", result.TestOutput);        
         }
 
-        // ConditionalAssignment
-
-        [Test]
-        public void ConditionalAssignment1 ()
-        {
-            Tnum tn = new Tnum(4);
-            Tbool tb = Tbool.MakeTbool(Time.DawnOf, Hstate.Unstated,
-                                       Date(2000,1,1), true,
-                                       Date(2001,1,1), false,
-                                       Date(2002,1,1), true,
-                                       Date(2003,1,1), Hstate.Stub);
-            Tnum result = Util.ConditionalAssignment<Tnum>(tb,tn);
-            Assert.AreEqual("Time.DawnOf Null 1/1/2000 12:00:00 AM 4 1/1/2001 12:00:00 AM Null 1/1/2002 12:00:00 AM 4 1/1/2003 12:00:00 AM Null ", result.TestOutput);        
-        }
-
         // MergeTvars
 
         [Test]

@@ -31,11 +31,17 @@ namespace Hammurabi.UnitTests.CoreFcns
         private static Tbool stub = new Tbool(Hstate.Stub);
         private static Tbool unstat = new Tbool(Hstate.Unstated); 
         private static Tbool uncert = new Tbool(Hstate.Uncertain);  
-        private static Tbool tbv = Tbool.MakeTbool(Time.DawnOf, false,  
-                                             Date(2000,1,1), true,
-                                             Date(2001,1,1), Hstate.Uncertain,
-                                             Date(2002,1,1), Hstate.Unstated); 
-        
+        private static Tbool tbv = VaryingTbool(); 
+
+        private static Tbool VaryingTbool()
+        {
+            Tbool result = new Tbool(false);
+            result.AddState(Date(2000,1,1), true);
+            result.AddState(Date(2001,1,1), Hstate.Uncertain);
+            result.AddState(Date(2002,1,1), Hstate.Unstated);
+            return result;
+        }
+
         // AND
         
         [Test]

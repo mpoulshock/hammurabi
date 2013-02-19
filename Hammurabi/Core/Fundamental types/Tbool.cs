@@ -54,34 +54,6 @@ namespace Hammurabi
         }
 
         /// <summary>
-        /// Initializes a new instance of the Tbool class and loads
-        /// a list of date-value pairs.
-        /// </summary>
-        public static Tbool MakeTbool(params object[] list)
-        {
-            Tbool result = new Tbool();
-            for(int i=0; i < list.Length - 1; i+=2)  
-            {
-                try
-                {
-                    Hstate h = (Hstate)list[i+1];
-                    if (h != Hstate.Known)
-                    {
-                        result.AddState(Convert.ToDateTime(list[i]),
-                                    new Hval(null,h));
-                    }
-                }
-                catch
-                {
-                    bool b = Convert.ToBoolean(list[i+1]);
-                    result.AddState(Convert.ToDateTime(list[i]),
-                                new Hval(b));
-                }
-            }
-            return result;
-        }
-
-        /// <summary>
         /// Implicitly converts bools to Tbools.
         /// </summary>
         public static implicit operator Tbool(bool b) 

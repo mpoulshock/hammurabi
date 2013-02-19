@@ -60,39 +60,6 @@ namespace Hammurabi
         }
 
         /// <summary>
-        /// Initializes a new instance of the Tnum class and loads
-        /// a list of date-value pairs.
-        /// </summary>
-        public static Tnum MakeTnum(params object[] list)
-        {
-            Tnum result = new Tnum();
-            for(int i=0; i < list.Length - 1; i+=2)  
-            {
-                try
-                {
-                    // Deal with Stubs (necessary b/c Hstate enums look like ints!)
-                    if (((Tnum)list[i+1]).FirstValue.IsStub)
-                    {
-                        result.AddState(Convert.ToDateTime(list[i]),
-                                        new Hval(null,Hstate.Stub));
-                    }
-                    else
-                    {
-                        decimal d = Convert.ToDecimal(list[i+1]);
-                        result.AddState(Convert.ToDateTime(list[i]), new Hval(d));
-                    }
-
-                }
-                catch
-                {
-                    decimal d = Convert.ToDecimal(list[i+1]);
-                    result.AddState(Convert.ToDateTime(list[i]), new Hval(d));
-                }
-            }
-            return result;
-        }
-        
-        /// <summary>
         /// Implicitly converts ints to Tnums.
         /// </summary>
         public static implicit operator Tnum(int i) 

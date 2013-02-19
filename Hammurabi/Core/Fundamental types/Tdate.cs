@@ -58,34 +58,6 @@ namespace Hammurabi
         }
 
         /// <summary>
-        /// Initializes a new instance of the Tdate class and loads
-        /// a list of date-value pairs.
-        /// </summary>
-        public static Tdate MakeTdate(params object[] list)
-        {
-            Tdate result = new Tdate();
-            for(int i=0; i < list.Length - 1; i+=2)  
-            {
-                DateTime point = Convert.ToDateTime(list[i]);
-                try
-                {
-                    Hstate h = (Hstate)list[i+1];
-                    if (h != Hstate.Known)
-                    {
-                        result.AddState(point, new Hval(null,h));
-                    }
-                }
-                catch
-                {
-                    DateTime d = Convert.ToDateTime(list[i+1]);
-                    result.AddState(point,
-                                new Hval(d));
-                }
-            }
-            return result;
-        }
-        
-        /// <summary>
         /// Implicitly converts DateTimes to Tdates.
         /// </summary>
         public static implicit operator Tdate(DateTime d) 

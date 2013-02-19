@@ -52,34 +52,6 @@ namespace Hammurabi
         }
 
         /// <summary>
-        /// Initializes a new instance of the Tstr class and loads
-        /// a list of date-value pairs.
-        /// </summary>
-        public static Tstr MakeTstr(params object[] list)
-        {
-            Tstr result = new Tstr();
-            for(int i=0; i < list.Length - 1; i+=2)  
-            {
-                try
-                {
-                    Hstate h = (Hstate)list[i+1];
-                    if (h != Hstate.Known)
-                    {
-                        result.AddState(Convert.ToDateTime(list[i]),
-                                    new Hval(null,h));
-                    }
-                }
-                catch
-                {
-                    string s = Convert.ToString(list[i+1]);
-                    result.AddState(Convert.ToDateTime(list[i]),
-                                new Hval(s));
-                }
-            }
-            return result;
-        }
-        
-        /// <summary>
         /// Implicitly converts strings to Tstrs.
         /// </summary>
         public static implicit operator Tstr(string s) 

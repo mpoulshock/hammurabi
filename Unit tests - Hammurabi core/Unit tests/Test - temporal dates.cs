@@ -195,47 +195,5 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tnum result = Tdate.DayDiff(td1,td2);
             Assert.AreEqual("Time.DawnOf -3653 ", result.TestOutput);        
         }
-
-        // MakeTnum
-        
-        [Test]
-        public void Tvar_load_1()
-        {
-            Tnum t = Tnum.MakeTnum(Time.DawnOf, null,
-                              Date(1961,01,01), 5.14,
-                              Date(2001,03,04), 7.00);
-            
-            decimal? result = t.AsOf(Date(1971,1,1)).ToDecimal;
-            Assert.AreEqual(5.14, result);        
-        } 
-        
-        [Test]
-        public void Tvar_load_2()
-        {
-            Tnum t = Tnum.MakeTnum(
-            Time.DawnOf,    null,
-            Date(1978,01,01), 2.65,
-            Date(1979,01,01), 2.90,
-            Date(1980,01,01), 3.10,
-            Date(1981,01,01), 3.35,
-            Date(1990,04,01), 3.80,
-            Date(1991,04,01), 4.25,
-            Date(1996,10,01), 4.75,
-            Date(1997,09,01), 5.15,
-            Date(2007,07,24), 5.85,
-            Date(2008,07,24), 6.55,
-            Date(2009,07,24), 7.25,
-            null);
-
-            decimal? result = t.AsOf(Date(1991,1,1)).ToDecimal;
-            Assert.AreEqual(3.80, result);        
-        } 
-
-        [Test]
-        public void Tvar_load_3()
-        {
-            Tnum t = Tnum.MakeTnum(Time.DawnOf, 200);
-            Assert.AreEqual(200, t.AsOf(Date(2001,03,03)).Out);        
-        }
     }
 }   

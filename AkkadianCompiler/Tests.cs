@@ -146,11 +146,12 @@ namespace Akkadian
             string type = DetectType(firstPair[1].Trim());
 
             // Generate MakeTvar() expression
-            string result = type + ".Make" + type + "(";
+            string result = "Switch<" + type + ">(";
             foreach (string s in timepts)
             {
                 string[] pair = s.Split(':');
-                result += pair[0] + ", " + pair[1] + ", ";
+                result += "()=> TheTime.IsAtOrAfter(" + pair[0] + "), ";   // Add the date
+                result += "()=> " + pair[1] + ", ";   // Add the value
             }
 
             result = result.TrimEnd(',',' ');
