@@ -71,6 +71,7 @@ namespace Akkadian
             // Do some initial text conversions
             line = line.TrimStart('-',' ');
             line = Util.ConvertDate(line);
+            line = Util.RemoveCurrencyStyling(line);
 
             // Handle assertions with uncertain values
             line = Regex.Replace(line, @"(?<typ>(Tbool|Tstr|Tnum|Tdate|Tset))\(\?\)", 

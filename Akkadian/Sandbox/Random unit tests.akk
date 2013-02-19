@@ -1,6 +1,6 @@
 # Namespace:    Hammurabi.Sandbox
 # Summary:      A host of random unit tests
-# Updated:      2013-02-03
+# Updated:      2013-02-18
 # Author:       Michael Poulshock
 
 
@@ -611,11 +611,10 @@ Tbool SomeTemporalBooleanSubrule() =
     rule
     
     Tbool rule =
-        temporal:
-        from Time.DawnOf -> false
-        from 2000-01-01 -> true
-        from 2001-01-01 -> false
-        endtemporal
+        set:
+        after 2001-01-01 -> false
+        after 2000-01-01 -> true
+        else false
     
 Test: TimeVaryingBooleanSub1
 - Sandbox.SomeTemporalBooleanSubrule().AsOf(1999-03-09).Out =?= false
@@ -629,11 +628,10 @@ Test: TimeVaryingBooleanSub3
     
 # Time-varying boolean
 Tbool SomeTemporalBoolean() =
-    temporal:
-    from Time.DawnOf -> false
-    from 2000-01-01 -> true
-    from 2001-01-01 -> false
-    endtemporal
+    set:
+    after 2001-01-01 -> false
+    after 2000-01-01 -> true
+    else false
         
 Test: TimeVaryingBoolean1
 - Sandbox.SomeTemporalBoolean().AsOf(1999-03-09).Out =?= false
@@ -645,3 +643,21 @@ Test: TimeVaryingBoolean3
 - Sandbox.SomeTemporalBoolean().AsOf(2002-03-09).Out =?= false        
 
 
+# Yet another time-varying boolean
+Tnum FedMinWageTest() =
+    set:
+    after 2009-07-24 -> $7.25
+    after 2008-07-24 -> $6.55
+    after 2007-07-24 -> SomeTestNumber()
+    else Stub()
+
+Test: TemporalTnumTest1
+- Sandbox.FedMinWageTest().AsOf(2008-12-12).Out =?= $6.55
+   
+Test: TemporalTnumTest2
+- Sandbox.FedMinWageTest().AsOf(2001-12-12).Out =?= "Stub"
+    
+Tnum SomeTestNumber() =
+    5
+    
+    

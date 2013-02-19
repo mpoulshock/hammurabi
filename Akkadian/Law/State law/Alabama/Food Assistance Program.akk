@@ -94,45 +94,43 @@ Tbool MeetsFinancialReqs(Thing p, Tset household) =
 
 # Net income limit
 Tnum NetIncomeLimit(Tnum size) =
-    temporal:
-    from Time.DawnOf -> Stub()
-    from 2011-10-01 -> NetLimit2012(size)
-    from 2012-09-30 -> Stub()
-    endtemporal
+    set:
+    after 2012-09-30 -> Stub()
+    after 2011-10-01 -> NetLimit2012(size)
+    else Stub()
         
 # Net income limit for 2012
 Tnum NetLimit2012(Tnum size) =
     match size
-    1 -> 908
-    2 -> 1226
-    3 -> 1545
-    4 -> 1863
-    5 -> 2181
-    6 -> 2500
-    7 -> 2818
-    8 -> 3136
-    else 3136 + ((size-8) * 319)
+    1 -> $908
+    2 -> $1,226
+    3 -> $1,545
+    4 -> $1,863
+    5 -> $2,181
+    6 -> $2,500
+    7 -> $2,818
+    8 -> $3,136
+    else $3,136 + ((size-8) * $319)
 
 # Gross income limit
 Tnum GrossIncomeLimit(Tnum size) =
-    temporal:
-    from Time.DawnOf -> Stub()
-    from 2011-10-01 -> GrossLimit2012(size)
-    from 2012-09-30 -> Stub()
-    endtemporal
+    set:
+    after 2012-09-30 -> Stub()
+    after 2011-10-01 -> GrossLimit2012(size)
+    else Stub()
 
 # Gross income limit for 2012
 Tnum GrossLimit2012(Tnum size) =
     match size
-    1 -> 1180
-    2 -> 1594
-    3 -> 2008
-    4 -> 2422
-    5 -> 2836
-    6 -> 3249
-    7 -> 3663
-    8 -> 4077
-    else 4077 + ((size-8) * 414)
+    1 -> $1,180
+    2 -> $1,594
+    3 -> $2,008
+    4 -> $2,422
+    5 -> $2,836
+    6 -> $3,249
+    7 -> $3,663
+    8 -> $4,077
+    else $4,077 + ((size-8) * $414)
     
 # Net income
 Tnum NetIncome(Thing person, Tset household) =
@@ -192,9 +190,9 @@ Tnum Deductions(Thing p, Tset household) =
 # Note: no temporal constraints stated
 Tnum StandardDeduction(Tnum size) =
     set:
-    if size <= 3 -> 147
-    if size == 4 -> 155
-    if size == 5 -> 181
+    if size <= 3 -> $147
+    if size == 4 -> $155
+    if size == 5 -> $181
     else 208
     
 # Elderly
@@ -218,12 +216,12 @@ Tnum AppProcessTime(Thing person) =
 # Expedited application
 Tbool ExpeditedAppRequired(Thing p) =
     ...
-        HouseholdMonthlyGrossIncome(hh) < 150 &
-        Econ.LiquidAssets(p) < 100
+        HouseholdMonthlyGrossIncome(hh) < $150 &
+        Econ.LiquidAssets(p) < $100
     |
     rentMortUtil > HouseholdMonthlyGrossIncome(hh) + Econ.LiquidAssets(p) |
     ...
-        Econ.LiquidAssets(p) < 100 &
+        Econ.LiquidAssets(p) < $100 &
         hh.Exists(Econ.IsMigrantOrSeasonalFarmworker(_))
     
     Tnum rentMortUtil =

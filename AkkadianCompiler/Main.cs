@@ -255,13 +255,13 @@ namespace Akkadian
         private static string Convert(string line, string previousLine)
         {
             // Perform general syntactic replacements
-            line = line.Replace("|~","^");
-            line = line.Replace("&","&&").Replace("|","||");
-            line = line.Replace("...","(");
-            line = line.Replace("<>","!=");
-             
-            // Regex part  
-            string word = @"[-!\+\*/A-Za-z0-9\.;\(\),""'_<>=&| ]+";
+            line = line.Replace("|~", "^");
+            line = line.Replace("&", "&&").Replace("|", "||");
+            line = line.Replace("...", "(");
+            line = line.Replace("<>", "!=");
+
+            // Currency values
+            line = Util.RemoveCurrencyStyling(line);
 
             // Stub()
             line = Regex.Replace(line, @"Stub\(\)", "new " + currentRuleType + "(Hstate.Stub)");    
@@ -269,6 +269,9 @@ namespace Akkadian
             // Process question-related metadata and declared assumptions
             Questions.GatherMetadata(line, previousLine);
             line = Assumptions.Process(line, docNameSpace);
+            
+            // Regex part  
+            string word = @"[-!\+\*/A-Za-z0-9\.;\(\),""'_<>=&| ]+";
 
             // Convert rules and dates
             line = ConvertRegularRules(line, docNameSpace);
@@ -310,12 +313,8 @@ namespace Akkadian
             // Switch(condition, value, ..., default) - must come before "rule tables" (b/c rule tables look for "->"
             line = Regex.Replace(line, @"set:", "Switch<" + ruleType + ">(");    
             line = Regex.Replace(line, @"if (?<condition>"+word+") -> (?<value>"+word+")", "()=> ${condition}, ()=> ${value},");    
+            line = Regex.Replace(line, @"after (?<condition>"+word+") -> (?<value>"+word+")", "()=> TheTime.IsAtOrAfter(${condition}), ()=> ${value},");  
             line = Regex.Replace(line, @"else (?<default>"+word+")", "()=> ${default})");  
-             
-            // Temporal tables - must come before "rule tables"
-            line = Regex.Replace(line.Replace("\t","    "), @"temporal:", ruleType + ".Make" + ruleType + "(");  
-            line = Regex.Replace(line, @"from (?<condition>"+word+") -> (?<value>"+word+")", "${condition}, ${value},");  
-            line = Regex.Replace(line, "endtemporal", "new " + ruleType + "(Hstate.Stub))");    // Value here is filler; needed due to extra comma in previous line
 
             // Rule tables - must come before "dates"
             line = Regex.Replace(line, @"match "+word, "Switch<" + ruleType + ">(");    

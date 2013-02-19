@@ -171,7 +171,6 @@
     <Folder Include="Core\Facts\" />
     <Folder Include="Core\Fundamental types\" />
     <Folder Include="Generated source\" />
-    <Folder Include="Core\Data\" />
     <Folder Include="Core\Engine\" />
   </ItemGroup>
   <ProjectExtensions>

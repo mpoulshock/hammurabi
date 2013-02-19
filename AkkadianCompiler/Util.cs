@@ -284,7 +284,22 @@ namespace Akkadian
         }
      
         /// <summary>
-        /// Determines whether a string is a valid number
+        /// Removes commas and dollar signs from currency strings.
+        /// </summary>
+        public static string RemoveCurrencyStyling(string line)
+        {
+            MatchCollection matches = Regex.Matches(line, @"\$[0-9\.,]+");
+            foreach (Match m in matches)
+            {
+                string strippedVal = m.Groups[0].Value.Replace(",","").Replace("$","");
+                line = line.Replace(m.Groups[0].Value, strippedVal);
+            }
+
+            return line;
+        }
+
+        /// <summary>
+        /// Determines whether a string is a valid number.
         /// </summary>
         public static bool IsNumber(string s)
         {

@@ -9,11 +9,10 @@
     <ProjectGuid>{44425A97-5000-4D67-9344-B8A2FA6F6664}</ProjectGuid>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Default|AnyCPU' ">
-    <OutputPath>.\</OutputPath>
+    <OutputPath>.</OutputPath>
   </PropertyGroup>
   <ItemGroup>
     <None Include="Common\Edu - general.akk" />
-    <None Include="Common\Geo - jurisdictions.akk" />
     <None Include="Common\Hammurabi - general-purpose functions.akk" />
     <None Include="Common\Imm - status and residence.akk" />
     <None Include="Common\Mil - general.akk" />
@@ -89,5 +88,6 @@
     <None Include="Sandbox\Random unit tests.akk" />
     <None Include="Sandbox\Recursion test.akk" />
     <None Include="Sandbox\Test for Hammurabi Interactive.akk" />
+    <None Include="Common\Geo - jurisdictions.akk" />
   </ItemGroup>
 </Project>

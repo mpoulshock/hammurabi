@@ -1,16 +1,36 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Akkadian\Common\Edu - general.akk">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Akkadian\Law\Federal law\US Code\Title 29 - Labor\29 USC 206 - Minimum wage.akk">
     <Files>
-      <File FileName="Akkadian\Common\Edu - general.akk" Line="8" Column="12" />
+      <File FileName="Akkadian\Sandbox\Random unit tests.akk" Line="677" Column="10" />
+      <File FileName="AkkadianCompiler\Main.cs" Line="319" Column="134" />
+      <File FileName="Hammurabi\Core\Fundamental types\Tnum.cs" Line="66" Column="34" />
+      <File FileName="..\AkkadianSyntaxHighlighting\AkkadianSyntaxMode.xml" Line="62" Column="14" />
+      <File FileName="Akkadian\Law\Federal law\US Code\Title 29 - Labor\29 USC 206 - Minimum wage.akk" Line="33" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
           <Node name="Akkadian" expanded="True">
-            <Node name="Common" expanded="True" />
+            <Node name="Law" expanded="True">
+              <Node name="Federal law" expanded="True">
+                <Node name="US Code" expanded="True">
+                  <Node name="Title 29 - Labor" expanded="True">
+                    <Node name="29 USC 206 - Minimum wage.akk" selected="True" />
+                  </Node>
+                  <Node name="Title 42 - Health and welfare" expanded="True" />
+                </Node>
+              </Node>
+              <Node name="State law" expanded="True">
+                <Node name="Alabama" expanded="True" />
+              </Node>
+            </Node>
+            <Node name="Sandbox" expanded="True" />
           </Node>
-          <Node name="AkkadianCompiler" selected="True" />
+          <Node name="Hammurabi" expanded="True">
+            <Node name="Generated source" expanded="True" />
+          </Node>
+          <Node name="Unit tests - Hammurabi core" expanded="True" />
         </State>
       </Pad>
       <Pad Id="ClassPad">
@@ -28,7 +48,13 @@
         </State>
       </Pad>
       <Pad Id="MonoDevelop.NUnit.TestPad">
-        <State expanded="True" selected="True" />
+        <State expanded="True" selected="True">
+          <Node name="Hammurabi" expanded="True">
+            <Node name="Hammurabi" expanded="True">
+              <Node name="UnitTests" expanded="True" />
+            </Node>
+          </Node>
+        </State>
       </Pad>
       <Pad Id="MonoDevelop.Debugger.WatchPad">
         <State />
