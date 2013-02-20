@@ -4,7 +4,83 @@
 # Author:       Michael Poulshock
  
 
-# A sample rule
+# Person's age
+
+# Year
+
+# Federal minimum wage
 Tnum FedMinWage() =
     USC.Tit29.Sec206.FedMinWage()
 
+# Standard (tax) deduction
+Tnum StandardDeduction(Thing person) =
+    IRS.Pub501.StandardDeduction(person)
+
+# Who must file?
+Tbool MustFileTaxReturn(Thing p) =
+    IRS.Pub501.MustFileTaxReturn(p)
+
+# Tax dependent
+Tbool IsDependentOf(Thing p1, Thing p2) =
+    USC.Tit26.Sec152.IsDependentOf(p1, p2)
+    
+# Depreciation deduction
+Tnum Depreciation(Thing person, Thing prop) =
+    IRS.Pub946.DepreciationDeduction(person, prop)
+
+# IRS mileage rate
+Tnum IRSMileageRate(Thing p) =
+    IRS.Mileage.Rate(IRSMileageActivity(p))
+
+# >>What type of activity is/was the driving for?  (Options: Business, Medical, Moving, Charitable)
+Tstr IRSMileageActivity(Thing p)
+      
+# FUTA employer
+Tbool IsFUTAEmployer(Thing corp) =
+    USC.Tit26.Sec3306.IsEmployer(corp)
+
+# FMLA
+Tbool FMLALeave(Thing e, Thing c) =
+    USC.Tit29.Sec2612.IsEntitledToLeaveFrom(e, c)
+
+# FRCP due date
+DateTime DueDate(int days, DateTime triggerDate) =
+    FedRules.FRCP.Rule6.DueDate(days, triggerDate)
+    
+# Period of war
+Tbool IsWar() =
+    USC.Tit38.Sec1501.IsPeriodOfWar()
+    
+# Retirement age
+Tbool RetirementAge(Thing person) =
+    USC.Tit42.Sec416.ReachedRetirementAge(person)
+
+# Federal poverty level
+Tnum FedPovLevel(Tnum familySize, Tstr jur) =
+    USC.Tit42.Sec9902.FedPovertyGuideline(familySize, jur)
+
+# Legal holiday
+bool IsLegalHoliday(DateTime d) =
+    IsLegalHoliday(d)
+
+# TODO: Add immigration
+
+# Kansas common law marriage
+Tbool KansasCommonLawMarriage(Thing p1, Thing p2) =
+    KSA.Tit23.Sec2502.InCommonLawMarriage(p1, p2)
+
+# Statute of limitations - torts (years)
+# Type = "Motor vehicle accident" or ""
+Tnum LimitationsTort(Tstr state, Tstr type) =
+    CivPro.Torts.StatuteOfLimitationsTort(state, type)
+    
+# Time limit to collect court judgments (in years)
+# Try: Georgia ""
+Tnum YearsToCollect(Tstr state, Tstr courtType) =
+    CivPro.Judgments.YearsToCollect(state, courtType)
+    
+# Vermont emancipated minor
+Tbool VermontEmancipatedMinor(Thing p) =
+    Vt.Stat.Tit12.Sec7151.IsEligibleForEmancipation(p)
+
+    

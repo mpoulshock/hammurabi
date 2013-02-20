@@ -67,23 +67,23 @@ Tbool MustFilePerTable2Single(Thing p) =
         ...
             ! Over65OrBlind(p) &
             ...
-                UnearnedIncome(p) > 950 |
-                EarnedIncomeForFS(p) > 5800 |
-                GrossIncomeForFS(p) > Max(950, Min(EarnedIncomeForFS(p), 5500) + 300)
+                UnearnedIncome(p) > $950 |
+                EarnedIncomeForFS(p) > $5,800 |
+                GrossIncomeForFS(p) > Max(950, Min(EarnedIncomeForFS(p), $5,500) + $300)
         |
         ...
             Over65OrBlind(p) & ! Over65AndBlind(p) &     # either 65+ or blind, but not both
             ...
-                UnearnedIncome(p) > 2400 |
-                EarnedIncomeForFS(p) > 7250 |
-                GrossIncomeForFS(p) > Max(2400, Min(EarnedIncomeForFS(p), 5500) + 1750)
+                UnearnedIncome(p) > $2,400 |
+                EarnedIncomeForFS(p) > $7,250 |
+                GrossIncomeForFS(p) > Max(2400, Min(EarnedIncomeForFS(p), $5,500) + $1,750)
         |
         ...
             Over65AndBlind(p) &
             ...
-                UnearnedIncome(p) > 3850 |
-                EarnedIncomeForFS(p) > 8700 |
-                GrossIncomeForFS(p) > Max(3850, Min(EarnedIncomeForFS(p), 5500) + 3200)                
+                UnearnedIncome(p) > $3,850 |
+                EarnedIncomeForFS(p) > $8,700 |
+                GrossIncomeForFS(p) > Max(3850, Min(EarnedIncomeForFS(p), $5,500) + $3,200)          
 
 # Table 2 - married dependents
 Tbool MustFilePerTable2Married(Thing p) =

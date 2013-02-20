@@ -36,20 +36,20 @@ Tbool CertainNonresidentAliens(Thing p) =
 # Source: http://taxes.about.com/od/preparingyourtaxes/a/personal_exempt.htm
 Tnum ExemptionAmountPerPerson(Thing p) =
     set:
-    if year == 2012 -> 3800
-    if year == 2011 -> 3700
-    if year == 2010 -> 3650
-    if year == 2009 -> 3650
-    if year == 2008 -> 3500
-    if year == 2007 -> 3400
-    if year == 2006 -> 3300
-    if year == 2005 -> 3200
-    if year == 2004 -> 3100
-    if year == 2003 -> 3050
-    if year == 2002 -> 3000
-    if year == 2001 -> 2900
-    if year == 2000 -> 2800
-    if year == 1999 -> 2750
+    if year == 2012 -> $3,800
+    if year == 2011 -> $3,700
+    if year == 2010 -> $3,650
+    if year == 2009 -> $3,650
+    if year == 2008 -> $3,500
+    if year == 2007 -> $3,400
+    if year == 2006 -> $3,300
+    if year == 2005 -> $3,200
+    if year == 2004 -> $3,100
+    if year == 2003 -> $3,050
+    if year == 2002 -> $3,000
+    if year == 2001 -> $2,900
+    if year == 2000 -> $2,800
+    if year == 1999 -> $2,750
     else Stub()
     
     Tnum year = Sec441.TaxYear(p)
@@ -75,9 +75,9 @@ Tnum SpouseExemption(Thing p) =
     set:
     if SpouseDiedAndPersonDidNotRemarry(p)  -> 1
     if ! MarriedAtEndOfTaxYear(p)           -> 0
-    if SpouseDiedDuringTaxYear(p)             -> 0    # Person remarried
+    if SpouseDiedDuringTaxYear(p)           -> 0    # Person remarried
     if MFJAndUnclaimedSpouse(p)             -> 1    # Person and spouse alive
-    if MeetsMFSorHoHTest(p)                    -> 1    #   " "
+    if MeetsMFSorHoHTest(p)                 -> 1    #   " "
     else 0
 
 # Spouse died and person remarried during tax year
