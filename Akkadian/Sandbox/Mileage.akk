@@ -21,24 +21,24 @@ Tnum Rate(Tstr activityType) =
 # Rate for business purposes
 Tnum BusinessRate() =
     set:
-    after 2014-01-01  -> Stub()
-    after 2013-01-01  -> 0.565
-    after 2012-01-01  -> 0.555
+    from 2014-01-01  -> Stub()
+    from 2013-01-01  -> 0.565
+    from 2012-01-01  -> 0.555
     else Stub()
 
 # Rate for medical or moving purposes
 Tnum MedicalMovingRate() =
     set:
-    after 2014-01-01  -> Stub()
-    after 2013-01-01  -> 0.24
-    after 2012-01-01  -> 0.23
+    from 2014-01-01  -> Stub()
+    from 2013-01-01  -> 0.24
+    from 2012-01-01  -> 0.23
     else Stub()
     
 # Rate for mileage in service of a charitable organization
 Tnum CharitableRate() =
     set:
-    after 2014-01-01  -> Stub()
-    after 2013-01-01  -> 0.14
+    from 2014-01-01  -> Stub()
+    from 2013-01-01  -> 0.14
     else Stub()
     
 

@@ -1,0 +1,10 @@
+# Namespace:    Hammurabi.Demo
+# Summary:      Select Hammurabi functions, wrapped up in the Demo namespace for easy access.
+# Updated:      2013-02-19
+# Author:       Michael Poulshock
+ 
+
+# A sample rule
+Tnum FedMinWage() =
+    USC.Tit29.Sec206.FedMinWage()
+

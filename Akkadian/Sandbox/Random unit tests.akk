@@ -612,8 +612,8 @@ Tbool SomeTemporalBooleanSubrule() =
     
     Tbool rule =
         set:
-        after 2001-01-01 -> false
-        after 2000-01-01 -> true
+        from 2001-01-01 -> false
+        from 2000-01-01 -> true
         else false
     
 Test: TimeVaryingBooleanSub1
@@ -629,8 +629,8 @@ Test: TimeVaryingBooleanSub3
 # Time-varying boolean
 Tbool SomeTemporalBoolean() =
     set:
-    after 2001-01-01 -> false
-    after 2000-01-01 -> true
+    from 2001-01-01 -> false
+    from 2000-01-01 -> true
     else false
         
 Test: TimeVaryingBoolean1
@@ -646,9 +646,9 @@ Test: TimeVaryingBoolean3
 # Yet another time-varying boolean
 Tnum FedMinWageTest() =
     set:
-    after 2009-07-24 -> $7.25
-    after 2008-07-24 -> $6.55
-    after 2007-07-24 -> SomeTestNumber()
+    from 2009-07-24 -> $7.25
+    from 2008-07-24 -> $6.55
+    from 2007-07-24 -> SomeTestNumber()
     else Stub()
 
 Test: TemporalTnumTest1

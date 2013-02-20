@@ -95,8 +95,8 @@ Tbool MeetsFinancialReqs(Thing p, Tset household) =
 # Net income limit
 Tnum NetIncomeLimit(Tnum size) =
     set:
-    after 2012-09-30 -> Stub()
-    after 2011-10-01 -> NetLimit2012(size)
+    from 2012-09-30 -> Stub()
+    from 2011-10-01 -> NetLimit2012(size)
     else Stub()
         
 # Net income limit for 2012
@@ -115,8 +115,8 @@ Tnum NetLimit2012(Tnum size) =
 # Gross income limit
 Tnum GrossIncomeLimit(Tnum size) =
     set:
-    after 2012-09-30 -> Stub()
-    after 2011-10-01 -> GrossLimit2012(size)
+    from 2012-09-30 -> Stub()
+    from 2011-10-01 -> GrossLimit2012(size)
     else Stub()
 
 # Gross income limit for 2012

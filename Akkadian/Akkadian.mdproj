@@ -89,5 +89,7 @@
     <None Include="Sandbox\Recursion test.akk" />
     <None Include="Sandbox\Test for Hammurabi Interactive.akk" />
     <None Include="Common\Geo - jurisdictions.akk" />
+    <None Include="Sandbox\Demo - Scratchpad.akk" />
+    <None Include="Sandbox\Demo - Wrapper rules.akk" />
   </ItemGroup>
 </Project>

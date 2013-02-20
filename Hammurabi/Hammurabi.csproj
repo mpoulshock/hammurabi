@@ -9,6 +9,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Hammurabi</RootNamespace>
     <AssemblyName>Hammurabi</AssemblyName>
+	<OutputPath>bin\Debug</OutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>True</DebugSymbols>
@@ -163,6 +164,8 @@
     <Compile Include="Generated source\Newbies.cs" />
     <Compile Include="Generated source\Mileage.cs" />
     <Compile Include="Core\Facts\CacheBase.cs" />
+    <Compile Include="Generated source\Demo - Scratchpad.cs" />
+    <Compile Include="Generated source\Demo - Wrapper rules.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

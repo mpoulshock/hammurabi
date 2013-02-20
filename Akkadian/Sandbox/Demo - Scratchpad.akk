@@ -1,0 +1,12 @@
+# Namespace:    Hammurabi.Demo
+# Summary:      Place to write demo rules.
+# Updated:      2013-02-19
+# Author:       Michael Poulshock
+ 
+
+# A sample rule
+Tstr HelloWorld(Thing person) =
+    "Hello, world!"
+
+
+ 

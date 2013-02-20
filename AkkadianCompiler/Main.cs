@@ -22,6 +22,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.Xml;
+using Microsoft.Build.Evaluation;
+
 
 namespace Akkadian
 {
@@ -41,11 +44,11 @@ namespace Akkadian
         /// <summary>
         /// The entry point of the program, where the program control starts and ends.
         /// </summary>
-        public static void Main (string[] args)
+        public static void Main(string[] args)
         {
             // Gets the file path of the high-level Hammurabi folder
             string currentDir = Environment.CurrentDirectory;
-            string projectPath = currentDir.Replace(@"AkkadianCompiler\bin\Debug","");
+            string projectPath = currentDir.Replace(@"AkkadianCompiler\bin\Debug", "");
 
             // Top-level folder where the .akk files live
             string sourcePath = projectPath + @"Akkadian";
@@ -56,6 +59,20 @@ namespace Akkadian
 
             // Go
             CompileAll(sourcePath, targetPath);
+
+            // Build Hammurabi.dll
+            Console.WriteLine("\nRebuilding Hammurabi.dll...");
+            var projectCollection = ProjectCollection.GlobalProjectCollection;
+            var project = projectCollection.LoadProject(projectPath + @"\Hammurabi\Hammurabi.csproj");
+            if (project.Build())
+            {
+                Console.WriteLine("Build succeeded.\n");
+            }
+            else
+            {
+                // TODO: Show reasons for failure in the console.
+                Console.WriteLine("Build failed.\n");
+            }
         }
      
         /// <summary>
@@ -313,7 +330,7 @@ namespace Akkadian
             // Switch(condition, value, ..., default) - must come before "rule tables" (b/c rule tables look for "->"
             line = Regex.Replace(line, @"set:", "Switch<" + ruleType + ">(");    
             line = Regex.Replace(line, @"if (?<condition>"+word+") -> (?<value>"+word+")", "()=> ${condition}, ()=> ${value},");    
-            line = Regex.Replace(line, @"after (?<condition>"+word+") -> (?<value>"+word+")", "()=> TheTime.IsAtOrAfter(${condition}), ()=> ${value},");  
+            line = Regex.Replace(line, @"from (?<condition>"+word+") -> (?<value>"+word+")", "()=> TheTime.IsAtOrAfter(${condition}), ()=> ${value},");  
             line = Regex.Replace(line, @"else (?<default>"+word+")", "()=> ${default})");  
 
             // Rule tables - must come before "dates"

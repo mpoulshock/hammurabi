@@ -17,9 +17,9 @@ Tnum FPG133(Tnum familySize, Tstr jur) =
 # Federal HHS Poverty Guidelines
 Tnum FedPovertyGuideline(Tnum familySize, Tstr jur) =
     set:
-    after 2013-01-15 -> Stub()
-    after 2012-01-26 -> RateFor2012
-    after 2011-01-20 -> RateFor2011
+    from 2013-01-15 -> Stub()
+    from 2012-01-26 -> RateFor2012
+    from 2011-01-20 -> RateFor2011
     else Stub()
     
     Tnum RateFor2012 =

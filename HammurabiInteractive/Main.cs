@@ -36,6 +36,9 @@ namespace Interactive
     {
         public static void Main (string[] args)
         {
+            // Just for fun...
+            Console.ForegroundColor = ConsoleColor.Green;
+
             // Ask the user what goal they want to investigate
             Console.WriteLine("Enter goal:");
             string goal = Console.ReadLine();
