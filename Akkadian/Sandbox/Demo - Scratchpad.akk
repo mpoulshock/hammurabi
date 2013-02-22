@@ -1,12 +1,16 @@
 # Namespace:    Hammurabi.Demo
 # Summary:      Place to write demo rules.
-# Updated:      2013-02-19
+# Updated:      2013-02-20
 # Author:       Michael Poulshock
  
 
-# A sample rule
-Tstr HelloWorld(Thing person) =
-    "Hello, world!"
 
-
- 
+# A rule built on top of the existing rules
+# >>Is {1} eligible for the benefit program?
+Tbool IsEligible(Thing person) =
+    StateOfResidence(person) == "New Jersey" &
+    Age(person) >= 18 &
+    Econ.AnnualIncome(person) < $14,000 & 
+    ! Econ.IsEmployed(person) &
+    IsUSCitizen(person)
+    

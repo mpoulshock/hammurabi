@@ -6,7 +6,7 @@
 
 # NATURE OF EMPLOYMENT RELATIONSHIP
 
-# Is/was {1} employed?
+# >>Is/was {1} employed?
 Tbool IsEmployed(Thing p)
 
 # Indicates whether a person is employed by a particular employer (corporation).  
@@ -180,7 +180,7 @@ Tbool IsUSGovtEmployee(Thing p)
 # >>Is/was {1} a migrant farmworker?
 Tbool IsMigrantOrSeasonalFarmworker(Thing p)
 
-# >>At {2}, is does/did {1} work as part of an airline flight crew?
+# >>At {2}, does/did {1} work as part of an airline flight crew?
 Tbool IsAirlineFlightCrew(Thing p, Thing corp) 
 
 # >>Is {1} an employee of the Panama Railroad Company (or its successor in title)?

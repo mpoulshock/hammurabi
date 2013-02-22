@@ -203,7 +203,7 @@ Tbool Cohabitate(Thing p1, Thing p2) =
     Econ.LivesWith(p1, p2) &
     AreInIntimateRelationship(p1, p2)
 
-# >>Do/did {1} and {2} have a marriage contract or agreement?
+# >>Do/did {1} and {2} have a marriage contract or agreement (even an oral one)?
 TboolSym HaveMarriageAgreement(Thing p1, Thing p2)    
 
 # >>Do/did {1} and {2} hold each other out to the community as spouses?

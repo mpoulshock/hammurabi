@@ -195,7 +195,16 @@ namespace Interactive
         private static string ResultsText(Facts.Fact goal)
         {
             // TODO: Does not correctly display Tset.TestOutput
-            string result = goal.ValueAsString() + "\n";
+            string tline = goal.ValueAsString().Replace("12:00:00 AM", "\t").Replace("Time.DawnOf ", "Time.DawnOf\t ");
+
+            // For eternal values, only show value
+            if (goal.Value().IsEternal)
+            {
+                tline = tline.Replace("Time.DawnOf\t ","");
+            }
+
+            // Show question and answer
+            string result = goal.QuestionText() + "\n\n" + tline + "\n";
             
             // Add result to test case
             Tvar testResult = goal.GetFunction().Invoke();

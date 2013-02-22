@@ -38,9 +38,13 @@ namespace Interactive
         {
             // Just for fun...
             Console.ForegroundColor = ConsoleColor.Green;
+            Console.Title = "Hammura.bi Interactive";
+            Console.WindowWidth = 100;
+            Console.WindowHeight = 50;
+            Console.WriteLine("Welcome to the Hammura.bi knowledge base.\n\n");
 
             // Ask the user what goal they want to investigate
-            Console.WriteLine("Enter goal:");
+            Console.WriteLine("Enter a goal to test:\n");
             string goal = Console.ReadLine();
 
             // Main loop - runs the interview multiple times
@@ -74,7 +78,7 @@ namespace Interactive
                     // Switch to a new interview topic
                     if (next == "n")
                     {
-                        Console.WriteLine("\nEnter goal:");
+                        Console.WriteLine("\nEnter a goal to test:\n");
                         goal = Console.ReadLine();
                     }
 

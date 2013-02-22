@@ -1,7 +1,7 @@
 # Citation:     26 U.S.C. 3306 (2011)
 # Namespace:    USC.Tit26.Sec3306
 # Summary:      Definitions relevant to the Federal Unemployment Tax Act (FUTA).
-# Updated:      2012-06-25
+# Updated:      2013-02-20
 # Author:       Michael Poulshock
 
 
@@ -19,10 +19,11 @@ Tbool a1(Thing c) =
     
     # Paid $1,500 or more in wages in any calendar quarter in current or the preceding calendar year 
     Tbool wageTest = 
+        hasEmp &
         QWages1500.CountPastNIntervals(TheYear,2) > 0
 
     Tbool QWages1500 = 
-        (QuarterlyGeneralWagesPaid(c) >= 1500).EverPer(TheQuarter)
+        (Org.QuarterlyGeneralWagesPaid(c) >= 1500).EverPer(TheQuarter)
         
     # Employed at least one individual...on each of some 20 days during the calendar year or 
     # during the preceding calendar year, each day being in a different calendar week
@@ -30,7 +31,7 @@ Tbool a1(Thing c) =
         (hasEmp.CountPer(TheYear) >= 20).CountPastNIntervals(TheYear,2) > 0
 
     Tbool hasEmp = 
-        (NumberOfGeneralEmployees(c) >= 1).EverPer(TheCalendarWeek)        
+        (Org.NumberOfGeneralEmployees(c) >= 1).EverPer(TheCalendarWeek)        
 
         
 # Employer - agricultural, defined
@@ -40,10 +41,11 @@ Tbool a2(Thing c) =
 
     # Paid $20,000 or more in wages in any calendar quarter in current or the preceding calendar year 
     Tbool wageTest = 
+        hasEmp &
         QWages20K.CountPastNIntervals(TheYear,2) > 0
         
     Tbool QWages20K = 
-        (QuarterlyAgWagesPaid(c) >= 20000).EverPer(TheQuarter)
+        (Org.QuarterlyAgWagesPaid(c) >= 20000).EverPer(TheQuarter)
          
     # Employed at least 10 individuals...on each of some 20 days during the calendar year or 
     # during the preceding calendar year, each day being in a different calendar week
@@ -51,7 +53,7 @@ Tbool a2(Thing c) =
         (hasEmp.CountPer(TheYear) >= 20).CountPastNIntervals(TheYear,2) > 0
         
     Tbool hasEmp = 
-        (NumberOfAgEmployees(c) >= 10).EverPer(TheCalendarWeek)
+        (Org.NumberOfAgEmployees(c) >= 10).EverPer(TheCalendarWeek)
 
     
 # Employer - domestic, defined
@@ -60,24 +62,6 @@ Tbool a3(Thing c) =
 
     # Paid $1,000 or more in wages in any calendar quarter in current or the preceding calendar year 
     Tbool QWages1K = 
-        (QuarterlyDomesticWagesPaid(c) >= 1000).EverPer(TheQuarter)
-
-        
-# Number of general, not agricultural or domestic, employees
-Tnum NumberOfGeneralEmployees(Thing c)
-
-# Number of agricultural employees.
-Tnum NumberOfAgEmployees(Thing c)
-        
-# Wages paid for general, not agricultural or domestic, employment.
-# This is a Tnum that varies quarterly.
-Tnum QuarterlyGeneralWagesPaid(Thing c)
-            
-# Wages paid for agricultural employment.
-# This is a Tnum that varies quarterly.
-Tnum QuarterlyAgWagesPaid(Thing c)
-        
-# Wages paid for domestic employment.
-# This is a Tnum that varies quarterly.
-Tnum QuarterlyDomesticWagesPaid(Thing c)
+        Org.NumberOfDomesticEmployees(c) > 0 &
+        (Org.QuarterlyDomesticWagesPaid(c) >= 1000).EverPer(TheQuarter)
 

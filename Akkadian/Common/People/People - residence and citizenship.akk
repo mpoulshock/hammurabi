@@ -31,7 +31,9 @@ Tstr StateOfResidence(Thing p)
 
 # U.S. CITIZENSHIP
 
-# U.S. citizen
+# This connects to the rules in Imm - general and it
+# should be used as the primary U.S. citizen function.
+# >>Is/was {1} a U.S. citizen?
 Tbool IsUSCitizen(Thing p) =
     Imm.Status(p) == "U.S. citizen"     
 

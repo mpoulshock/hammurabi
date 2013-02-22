@@ -6,8 +6,8 @@
 
 # ANNUAL INCOME
 
-# Total annual income
-Tnum AnnualIncome(Thing p) =
+# >>What is {1}'s total annual income?
+Tnum? AnnualIncome(Thing p) =
     AnnualWages(p) +
     AnnualSelfEmploymentIncome(p) +
     AnnualSocialSecurityBenefits(p) +

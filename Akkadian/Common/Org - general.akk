@@ -1,12 +1,33 @@
 # Namespace:    Hammurabi.Org
 # Summary:      Basic facts relating to organizations.
-# Updated:      2012-05-05
+# Updated:      2013-02-20
 # Author:       Michael Poulshock
 
 
 # >>How many employees does {1} have?
 Tnum NumberOfEmployees(Thing corp)
-    
+
+# >>How many general (not agricultural or domestic) employees does {1} have?
+Tnum NumberOfGeneralEmployees(Thing c)
+
+# >>How many agricultural employees does {1} have?
+Tnum NumberOfAgEmployees(Thing c)
+ 
+# >>How many domestic employees does {1} have?
+Tnum NumberOfDomesticEmployees(Thing c)
+       
+# This is a Tnum that varies quarterly.
+# >>How much does {1} pay in general (not agricultural or domestic) wages per quarter?
+Tnum QuarterlyGeneralWagesPaid(Thing c)
+            
+# This is a Tnum that varies quarterly.
+# >>How much does {1} pay in agricultural wages per quarter?
+Tnum QuarterlyAgWagesPaid(Thing c)
+        
+# This is a Tnum that varies quarterly.
+# >>How much does {1} pay in domestic wages per quarter?
+Tnum QuarterlyDomesticWagesPaid(Thing c)
+
 # >>Is {1} a governmental entity?
 Tbool IsGovtAgency(Thing corp)
 

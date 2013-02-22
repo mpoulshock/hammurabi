@@ -1,86 +1,143 @@
 # Namespace:    Hammurabi.Demo
 # Summary:      Select Hammurabi functions, wrapped up in the Demo namespace for easy access.
-# Updated:      2013-02-19
+# Updated:      2013-02-21
 # Author:       Michael Poulshock
- 
 
-# Person's age
 
-# Year
+# SIMPLE FACTS
 
-# Federal minimum wage
-Tnum FedMinWage() =
-    USC.Tit29.Sec206.FedMinWage()
+# Demo.IsHoliday 2013-07-04
+# >>Is {1} a federal holiday?
+Tbool IsHoliday(Tdate d) =
+    USC.Tit5.Sec6103.IsLegalHoliday(d.ToDateTime)
+   
+# Demo.FRCPDueDate 60 2013-02-22
+# This takes into account federal holidays
+# >>Under the FRCP, when is a filing due, based on a trigger date of {2} and a period of {1} days?
+Tdate FRCPDueDate(Tnum days, Tdate trigger) =
+    FedRules.FRCP.Rule6.DueDate(days.ToHardInt, trigger.ToDateTime)
 
-# Standard (tax) deduction
-Tnum StandardDeduction(Thing person) =
-    IRS.Pub501.StandardDeduction(person)
-
-# Who must file?
-Tbool MustFileTaxReturn(Thing p) =
-    IRS.Pub501.MustFileTaxReturn(p)
-
-# Tax dependent
-Tbool IsDependentOf(Thing p1, Thing p2) =
-    USC.Tit26.Sec152.IsDependentOf(p1, p2)
-    
-# Depreciation deduction
+# TODO: Infinite loop
+# >>What depreciation deduction can {1} claim for {2}?
 Tnum Depreciation(Thing person, Thing prop) =
     IRS.Pub946.DepreciationDeduction(person, prop)
 
-# IRS mileage rate
-Tnum IRSMileageRate(Thing p) =
-    IRS.Mileage.Rate(IRSMileageActivity(p))
-
-# >>What type of activity is/was the driving for?  (Options: Business, Medical, Moving, Charitable)
-Tstr IRSMileageActivity(Thing p)
-      
-# FUTA employer
-Tbool IsFUTAEmployer(Thing corp) =
-    USC.Tit26.Sec3306.IsEmployer(corp)
-
-# FMLA
-Tbool FMLALeave(Thing e, Thing c) =
-    USC.Tit29.Sec2612.IsEntitledToLeaveFrom(e, c)
-
-# FRCP due date
-DateTime DueDate(int days, DateTime triggerDate) =
-    FedRules.FRCP.Rule6.DueDate(days, triggerDate)
-    
-# Period of war
-Tbool IsWar() =
-    USC.Tit38.Sec1501.IsPeriodOfWar()
-    
-# Retirement age
-Tbool RetirementAge(Thing person) =
-    USC.Tit42.Sec416.ReachedRetirementAge(person)
-
-# Federal poverty level
-Tnum FedPovLevel(Tnum familySize, Tstr jur) =
-    USC.Tit42.Sec9902.FedPovertyGuideline(familySize, jur)
-
-# Legal holiday
-bool IsLegalHoliday(DateTime d) =
-    IsLegalHoliday(d)
-
-# TODO: Add immigration
-
-# Kansas common law marriage
-Tbool KansasCommonLawMarriage(Thing p1, Thing p2) =
-    KSA.Tit23.Sec2502.InCommonLawMarriage(p1, p2)
-
-# Statute of limitations - torts (years)
-# Type = "Motor vehicle accident" or ""
+# Demo.LimitationsTort Nevada ""
+# >>What's the statute of limitations (in years) for torts in {1}
 Tnum LimitationsTort(Tstr state, Tstr type) =
     CivPro.Torts.StatuteOfLimitationsTort(state, type)
     
-# Time limit to collect court judgments (in years)
-# Try: Georgia ""
+# Demo.YearsToCollect Georgia ""
+# >>What's the time limit (in years) to collect state court judgments in {1}?
 Tnum YearsToCollect(Tstr state, Tstr courtType) =
     CivPro.Judgments.YearsToCollect(state, courtType)
+
+
+# TEMPORAL FACTS
+
+# Demo.FedMinWage
+# Values altered for demo purposes
+# >>What is the federal minimum wage?
+Tnum FedMinWage() =
+    set:
+    from 2009-07-24 -> $7.25
+    from 2008-07-24 -> $6.55
+    from 2007-07-24 -> $5.85
+    from 1997-09-01 -> $5.15
+    from 1996-10-01 -> $4.75
+    from 1991-04-01 -> $4.25
+    from 1990-04-01 -> $3.85
+    from 1981-01-01 -> $3.35
+    from 1980-01-01 -> $3.15
+    from 1979-01-01 -> $2.95
+    from 1978-01-01 -> $2.65
+    else Stub()
+        
+# Demo.FedPovLevel 4 Georgia
+# >>What's the federal poverty level for a family of {1} living in {2}?
+Tnum FedPovLevel(Tnum familySize, Tstr jur) =
+    USC.Tit42.Sec9902.FedPovertyGuideline(familySize, jur)
     
-# Vermont emancipated minor
+# Demo.IsWar
+# >>Is it a period of war under 38 USC 1501?
+Tbool IsWar() =
+    USC.Tit38.Sec1501.IsPeriodOfWar()
+    
+# >>What is the (absolute) year?
+Tnum Year() =
+    TheYear
+    
+# >>What is the (absolute) quarter?
+Tnum Quarter() =
+    TheQuarter
+
+
+# DETERMINATIONS
+    
+# Demo.MileageRate some_trip
+# >>What is the IRS reimbursable mileage rate for {1}?
+Tnum MileageRate(Thing trip) =
+    IRS.Mileage.Rate(IRSMileageActivity(trip))
+
+# >>What type of activity is/was {1}?  (Options: Business, Medical, Moving, Charitable)
+Tstr IRSMileageActivity(Thing trip)
+    
+# Demo.Retirement Mary
+# >>When will {1} reach retirement age?
+Tdate Retirement(Thing person) =
+    USC.Tit42.Sec416.ReachedRetirementAge(person).DateFirstTrue
+    
+# Demo.Age Tony
+# >>What is {1}'s age?
+Tnum Age(Thing person) =
+    set:
+    if IsAlive(person) -> H.Age(person)
+    else 0
+
+# Demo.StandardDeduction Sunita
+# >>What is {1}'s standard (tax) deduction?
+Tnum StandardDeduction(Thing person) =
+    IRS.Pub501.StandardDeduction(person)
+
+# Demo.MustFile Larry
+# >>Does {1} need to file a tax return?
+Tbool MustFile(Thing p) =
+    IRS.Pub501.MustFileTaxReturn(p)
+
+# Demo.IsFUTAEmployer SomeCorp      
+# >>Is {1} an 'employer' covered by FUTA?
+Tbool IsFUTAEmployer(Thing corp) =
+    USC.Tit26.Sec3306.IsEmployer(corp).AsOf(DateTime.Now)
+
+# This is a good one to do...
+# Demo.FMLALeave Sandy SomeCorp
+# >>Is {1} eligible for FMLA leave from {2}?
+Tbool FMLALeave(Thing e, Thing c) =
+    USC.Tit29.Sec2612.IsEntitledToLeaveFrom(e, c).AsOf(DateTime.Now)
+
+
+
+# Demo.KansasCLM Anne Andy
+# >>Are {1} and {2} considered to be in a common law marriage under Kansas law?
+Tbool KansasCLM(Thing p1, Thing p2) =
+    KSA.Tit23.Sec2502.InCommonLawMarriage(p1, p2).AsOf(DateTime.Now)
+
+# TODO: It works, but be ready to explain logic
+# Demo.VermontEmancipatedMinor Len
+# >>In Vermont, is {1} considered an emancipated minor?
 Tbool VermontEmancipatedMinor(Thing p) =
     Vt.Stat.Tit12.Sec7151.IsEligibleForEmancipation(p)
 
-    
+# TODO: Test
+# Demo.IsDependentOf Tom Kitty
+# >>Is {1} a dependent of {2} (for tax law purposes)?
+Tbool IsDependentOf(Thing p1, Thing p2) =
+    USC.Tit26.Sec152.IsDependentOf(p1, p2)    
+
+# TODO: Broken
+# Demo.IsUSCitizen Ronald
+# >>Is {1} a U.S. citizen?
+Tbool IsUSCitizen(Thing person) =
+    H.IsUSCitizen(person)
+
+        

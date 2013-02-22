@@ -2,24 +2,11 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Akkadian\Sandbox\Demo - Wrapper rules.akk">
     <Files>
-      <File FileName="AkkadianCompiler\Main.cs" Line="68" Column="47" />
-      <File FileName="Akkadian\Sandbox\Demo - Wrapper rules.akk" Line="9" Column="21" />
-      <File FileName="Akkadian\Sandbox\Demo - Scratchpad.akk" Line="6" Column="1" />
+      <File FileName="Akkadian\Sandbox\Demo - Wrapper rules.akk" Line="6" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
-        <State expanded="True">
-          <Node name="Akkadian" expanded="True">
-            <Node name="Law" expanded="True">
-              <Node name="Federal law" expanded="True" />
-            </Node>
-            <Node name="Sandbox" expanded="True" />
-          </Node>
-          <Node name="AkkadianCompiler" expanded="True" selected="True">
-            <Node name="References" expanded="True" />
-          </Node>
-          <Node name="Hammurabi" expanded="True" />
-        </State>
+        <State expanded="True" selected="True" />
       </Pad>
       <Pad Id="ClassPad">
         <State expanded="True">

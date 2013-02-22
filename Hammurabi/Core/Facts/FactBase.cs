@@ -120,7 +120,7 @@ namespace Hammurabi
             /// </summary>
             public string ValueAsString()
             {
-                return this.QuestionText() + "\n" + Value().Timeline.Replace("12:00:00 AM","\t");
+                return Value().Timeline;
             }
 
             /// <summary>

@@ -110,7 +110,19 @@ namespace Hammurabi
                 return (Convert.ToInt32(this.FirstValue.Val));
             }
         }
-        
+
+        /// <summary>
+        /// Converts a Tnum to an integer.  Should only be used when it is
+        /// not possible for the value to be unknown.
+        /// </summary>
+        public int ToHardInt
+        {
+            get
+            {
+                return Convert.ToInt32(this.ToInt);
+            }
+        }
+
         /// <summary>
         /// Converts a Tnum to a nullable decimal.
         /// Returns null if the Tnum is unknown or if it's value changes over
