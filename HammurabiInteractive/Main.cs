@@ -39,9 +39,9 @@ namespace Interactive
             // Just for fun...
             Console.ForegroundColor = ConsoleColor.Green;
             Console.Title = "Hammura.bi Interactive";
-            Console.WindowWidth = 100;
-            Console.WindowHeight = 50;
-            Console.WriteLine("Welcome to the Hammura.bi knowledge base.\n\n");
+//            Console.WindowWidth = 100;
+//            Console.WindowHeight = 40;
+//            Console.WriteLine("Welcome to the Hammura.bi knowledge base.\n\n");
 
             // Ask the user what goal they want to investigate
             Console.WriteLine("Enter a goal to test:\n");

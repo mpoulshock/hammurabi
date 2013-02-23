@@ -351,33 +351,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         {
             Assert.AreEqual("Time.DawnOf 88 ", new Tnum(-88).Abs.TestOutput);        
         }
-        
-        // ToUSD
-        
-        [Test]
-        public void Test120 ()
-        {
-            Assert.AreEqual("$88.37", new Tnum(88.369).ToUSD);        
-        }
-        
-        [Test]
-        public void Test121 ()
-        {
-            Assert.AreEqual("$88.30", new Tnum(88.3).ToUSD);        
-        }
-        
-        [Test]
-        public void Test122 ()
-        {
-            Assert.AreEqual("$88.00", new Tnum(88).ToUSD);        
-        }
-        
-        [Test]
-        public void Test123 ()
-        {
-            Assert.AreEqual("$44,988.00", new Tnum(44988).ToUSD);        
-        }
-        
+
         // Temporal
         
         [Test]

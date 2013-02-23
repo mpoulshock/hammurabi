@@ -1,6 +1,6 @@
 # Namespace:    Hammurabi.Demo
 # Summary:      Select Hammurabi functions, wrapped up in the Demo namespace for easy access.
-# Updated:      2013-02-21
+# Updated:      2013-02-23
 # Author:       Michael Poulshock
 
 
@@ -13,7 +13,7 @@ Tbool IsHoliday(Tdate d) =
    
 # Demo.FRCPDueDate 60 2013-02-22
 # This takes into account federal holidays
-# >>Under the FRCP, when is a filing due, based on a trigger date of {2} and a period of {1} days?
+# >>When is an FRCP filing due, based on a trigger date of {2} and a period of {1} days?
 Tdate FRCPDueDate(Tnum days, Tdate trigger) =
     FedRules.FRCP.Rule6.DueDate(days.ToHardInt, trigger.ToDateTime)
 
@@ -22,15 +22,19 @@ Tdate FRCPDueDate(Tnum days, Tdate trigger) =
 Tnum Depreciation(Thing person, Thing prop) =
     IRS.Pub946.DepreciationDeduction(person, prop)
 
-# Demo.LimitationsTort Nevada ""
-# >>What's the statute of limitations (in years) for torts in {1}
-Tnum LimitationsTort(Tstr state, Tstr type) =
-    CivPro.Torts.StatuteOfLimitationsTort(state, type)
+# Demo.SoLTort Nevada
+# >>What's the statute of limitations (in years) for torts in {1}?
+Tnum SoLTort(Tstr state) =
+    CivPro.Torts.StatuteOfLimitationsTort(state, typ)
     
-# Demo.YearsToCollect Georgia ""
+    Tstr typ = "";
+    
+# Demo.YearsToCollect Georgia
 # >>What's the time limit (in years) to collect state court judgments in {1}?
-Tnum YearsToCollect(Tstr state, Tstr courtType) =
-    CivPro.Judgments.YearsToCollect(state, courtType)
+Tnum YearsToCollect(Tstr state) =
+    CivPro.Judgments.YearsToCollect(state, typ)
+
+    Tstr typ = "";
 
 
 # TEMPORAL FACTS
@@ -38,25 +42,13 @@ Tnum YearsToCollect(Tstr state, Tstr courtType) =
 # Demo.FedMinWage
 # Values altered for demo purposes
 # >>What is the federal minimum wage?
-Tnum FedMinWage() =
-    set:
-    from 2009-07-24 -> $7.25
-    from 2008-07-24 -> $6.55
-    from 2007-07-24 -> $5.85
-    from 1997-09-01 -> $5.15
-    from 1996-10-01 -> $4.75
-    from 1991-04-01 -> $4.25
-    from 1990-04-01 -> $3.85
-    from 1981-01-01 -> $3.35
-    from 1980-01-01 -> $3.15
-    from 1979-01-01 -> $2.95
-    from 1978-01-01 -> $2.65
-    else Stub()
+Tstr FedMinWage() =
+    USC.Tit29.Sec206.FedMinWage().ToUSD
         
 # Demo.FedPovLevel 4 Georgia
 # >>What's the federal poverty level for a family of {1} living in {2}?
-Tnum FedPovLevel(Tnum familySize, Tstr jur) =
-    USC.Tit42.Sec9902.FedPovertyGuideline(familySize, jur)
+Tstr FedPovLevel(Tnum familySize, Tstr jur) =
+    USC.Tit42.Sec9902.FedPovertyGuideline(familySize, jur).ToUSD
     
 # Demo.IsWar
 # >>Is it a period of war under 38 USC 1501?
@@ -76,8 +68,8 @@ Tnum Quarter() =
     
 # Demo.MileageRate some_trip
 # >>What is the IRS reimbursable mileage rate for {1}?
-Tnum MileageRate(Thing trip) =
-    IRS.Mileage.Rate(IRSMileageActivity(trip))
+Tstr MileageRate(Thing trip) =
+    IRS.Mileage.Rate(IRSMileageActivity(trip)).ToUSD
 
 # >>What type of activity is/was {1}?  (Options: Business, Medical, Moving, Charitable)
 Tstr IRSMileageActivity(Thing trip)
@@ -96,8 +88,8 @@ Tnum Age(Thing person) =
 
 # Demo.StandardDeduction Sunita
 # >>What is {1}'s standard (tax) deduction?
-Tnum StandardDeduction(Thing person) =
-    IRS.Pub501.StandardDeduction(person)
+Tstr StandardDeduction(Thing person) =
+    IRS.Pub501.StandardDeduction(person).ToUSD
 
 # Demo.MustFile Larry
 # >>Does {1} need to file a tax return?

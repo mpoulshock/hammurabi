@@ -157,6 +157,56 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tnum res = new Tnum(88.34).RoundToNearest(1);
             Assert.AreEqual("Time.DawnOf 88.00 ", res.TestOutput);    
         }
+
+         // Tnum.ToUSD
+
+        [Test]
+        public void ToUSD_1()
+        {
+            Tstr res = new Tnum(88.369).ToUSD;
+            Assert.AreEqual("Time.DawnOf $88.37 ", res.TestOutput);        
+        }
         
+        [Test]
+        public void ToUSD_2()
+        {
+            Tstr res = new Tnum(88.3).ToUSD;
+            Assert.AreEqual("Time.DawnOf $88.30 ", res.TestOutput);        
+        }
+        
+        [Test]
+        public void ToUSD_3()
+        {
+            Tstr res = new Tnum(88).ToUSD;
+            Assert.AreEqual("Time.DawnOf $88.00 ", res.TestOutput);        
+        }
+        
+        [Test]
+        public void ToUSD_4()
+        {
+            Tstr res = new Tnum(44988).ToUSD;
+            Assert.AreEqual("Time.DawnOf $44,988.00 ", res.TestOutput);        
+        }
+
+        [Test]
+        public void ToUSD_5()
+        {
+            Tstr res = new Tnum(new Hval()).ToUSD;
+            Assert.AreEqual("Time.DawnOf Unstated ", res.TestOutput);        
+        }
+
+        [Test]
+        public void ToUSD_6()
+        {
+            Tstr res = new Tnum(-44988).ToUSD;
+            Assert.AreEqual("Time.DawnOf ($44,988.00) ", res.TestOutput);        
+        }
+
+        [Test]
+        public void ToUSD_7()
+        {
+            Tstr res = new Tnum(2).ToUSD;
+            Assert.AreEqual("Time.DawnOf $2.00 ", res.TestOutput);        
+        }
     }
 }
