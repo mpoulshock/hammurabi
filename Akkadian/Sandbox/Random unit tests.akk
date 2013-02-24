@@ -1,7 +1,25 @@
 # Namespace:    Hammurabi.Sandbox
 # Summary:      A host of random unit tests
-# Updated:      2013-02-18
+# Updated:      2013-02-23
 # Author:       Michael Poulshock
+
+
+# DO ASSUMPTION RULES SHORT-CIRCUIT INTERVIEWS?
+
+# It seems like they do.  When the following rule is run in the interview,
+# which is pre-seeded with the fact that Gender(person) = "Male",
+# IsPregnant(person) becomes false.
+
+Tbool IsPretendEligible(Thing p) =
+    ...
+        TestMethod918a(p) |
+        Sandbox.IsPregnant(p)
+    & 
+    Imm.IsUSNational(p)
+
+Tbool IsPregnant(Thing p)
+
+IsPregnant(1) assumes Gender(1) = "Female"
 
 
 # INTERACTIVE TEST OF LOOK-AHEAD SHORT-CIRCUITING

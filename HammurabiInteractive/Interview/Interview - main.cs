@@ -104,9 +104,8 @@ namespace Interactive
         private static void AssertPreliminaryFacts()   
         {
             // Put any facts to be asserted here, like this:
-            // Facts.Assert(e, r.HoursWorkedPerWeek, 44);
 //            Thing A = Facts.AddThing("A");
-//            Facts.Assert(A,"Sandbox.LookAheadProngB2",true);
+//            Facts.Assert(A,"Sandbox.Gender","Female");
         }
         
         /// <summary>
