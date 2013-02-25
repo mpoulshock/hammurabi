@@ -1,4 +1,4 @@
-// Copyright (c) 2012 Hammura.bi LLC
+// Copyright (c) 2011-2013 Hammura.bi LLC
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -88,10 +88,13 @@ namespace Hammurabi
                     return (T)f.v;
                 }
             }
-            
+
             // Add the fact to the list of unknown facts
             if (GetUnknowns)
             {
+                // EXPERIMENTAL: First look for any assumed facts
+                Assumptions.AskAssumedFacts(rel, e1, e2, e3, true);
+
                 AddUnknown(rel, e1, e2, e3);
             }
             

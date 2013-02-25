@@ -151,5 +151,43 @@ namespace Hammurabi
                 }
             }
         }
+
+        /// <summary>
+        /// Scans the assumption table, looking for assumptions to add to the Facts.Unknowns list.
+        /// </summary>
+        public static void AskAssumedFacts(string rel, object e1, object e2, object e3, bool isLeaf)
+        {
+            foreach (Pair p in Pairs)
+            {
+                // If A, then B
+                if (p.LeftHandPoint.Relationship == rel)
+                {
+                    // For each rightPoint.Arg number, get the corresponding Thing
+                    object[] args = new object[3]{e1,e2,e3};
+                    
+                    int a1 = p.RightHandPoint.Arg1 - 1;  // -1 b/c array is base-zero
+                    int a2 = p.RightHandPoint.Arg2 - 1;
+                    int a3 = p.RightHandPoint.Arg3 - 1;
+                    
+                    object t1 = a1 >= 0 ? args[a1] : null;
+                    object t2 = a2 >= 0 ? args[a2] : null;
+                    object t3 = a3 >= 0 ? args[a3] : null;
+
+                    if (!Facts.HasBeenAsserted(p.RightHandPoint.Relationship, t1, t2, t3))
+                    {
+                        if (!isLeaf)
+                        {
+                            // Does not work
+                            Facts.Fact f = new Facts.Fact(p.RightHandPoint.Relationship, t1, t2, t3);
+                            f.Value();
+                        }
+                        else
+                        {
+                            Facts.AddUnknown(p.RightHandPoint.Relationship, t1, t2, t3);
+                        }
+                    }
+                }
+            }
+        }
     }
 }

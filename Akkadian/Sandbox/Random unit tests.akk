@@ -1,7 +1,33 @@
 # Namespace:    Hammurabi.Sandbox
 # Summary:      A host of random unit tests
-# Updated:      2013-02-23
+# Updated:      2013-02-24
 # Author:       Michael Poulshock
+
+
+# NEED TO ASK ASSUMPTIONS WHEN LOOKING FOR NEXT QUESTION
+
+# For example, in the following rule set, IsFatherOf should be asked
+# before Legitimated, since the latter assumes the former.  In other
+# words, all assumptions should be checked before investigating a fact.
+
+# This check has to happen at the beginning of each method (rule), before
+# the rule conditions are evaluated.
+#
+# Implementation options:
+#   1. In RulePreCheck, add any assumed facts to Facts.Unknowns.
+#   2. In RulePreCheck, evaluate any assumed facts.
+
+Tbool MeetsTest123(Thing parent, Thing child) =
+    Legitimated(parent,child)
+
+# >>Did {1} legitimate {2}?
+Tbool Legitimated(Thing a, Thing b)
+
+# >>Is {1} the father of {2}?
+Tbool IsFatherOf(Thing a, Thing b)
+
+Legitimated(1,2) assumes IsFatherOf(1,2)
+Legitimated(1,2) assumes IsPretendEligible(1)
 
 
 # DO ASSUMPTION RULES SHORT-CIRCUIT INTERVIEWS?

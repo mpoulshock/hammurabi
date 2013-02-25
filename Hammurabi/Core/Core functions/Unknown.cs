@@ -64,10 +64,20 @@ namespace Hammurabi
                 // If the fact has not been asserted, add it to the list of unknown facts, so it gets asked.
                 if (!Facts.HasBeenAssertedSym(param1, rel, param2))
                 {
-                    // "?" indicates that this node is a question to be asked of the user
-                    if (questionIndicator == "?")
+                    // EXPERIMENTAL: First, ask any assumed facts 
+                    if (Facts.GetUnknowns)
                     {
-                        Facts.AddUnknown(rel, param1, param2, null);
+//                        if (Facts.Sym(param1, rel, param2).IsEternallyUncertain)
+//                        {
+//                            Assumptions.AskAssumedFacts(rel, param1, param2, param3);
+//                            Assumptions.AskAssumedFacts(rel, param2, param1, param3);
+//                        }
+
+                        // "?" indicates that this node is a question to be asked of the user
+                        if (questionIndicator == "?")
+                        {
+                            Facts.AddUnknown(rel, param1, param2, null);
+                        }
                     }
                 }
 
@@ -87,10 +97,18 @@ namespace Hammurabi
             {
                 if (!Facts.HasBeenAsserted(rel, param1, param2, param3))
                 {
-                    if (questionIndicator == "?")
+                     
+                    if (Facts.GetUnknowns)
                     {
-                        Facts.AddUnknown(rel, param1, param2, param3);
+                        // EXPERIMENTAL: First, ask any assumed facts
+//                        Assumptions.AskAssumedFacts(rel, param1, param2, param3, false);
+                    
+                        if (questionIndicator == "?")
+                        {
+                            Facts.AddUnknown(rel, param1, param2, param3);
+                        }
                     }
+                    
                 }
                 else
                 {

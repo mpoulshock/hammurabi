@@ -1,12 +1,29 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Akkadian\Sandbox\Demo - Wrapper rules.akk">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Hammurabi\Core\Core functions\Unknown.cs">
     <Files>
-      <File FileName="Akkadian\Sandbox\Demo - Wrapper rules.akk" Line="6" Column="1" />
+      <File FileName="Akkadian\Sandbox\Random unit tests.akk" Line="13" Column="40" />
+      <File FileName="Hammurabi\Core\Facts\Assumptions.cs" Line="179" Column="22" />
+      <File FileName="Hammurabi\Core\Core functions\Unknown.cs" Line="100" Column="15" />
+      <File FileName="Hammurabi\Core\Facts\Inputs.cs" Line="38" Column="9" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
-        <State expanded="True" selected="True" />
+        <State expanded="True">
+          <Node name="Akkadian" expanded="True">
+            <Node name="Common" expanded="True">
+              <Node name="Fam" expanded="True" />
+            </Node>
+            <Node name="Sandbox" expanded="True" />
+          </Node>
+          <Node name="Hammurabi" selected="True" />
+          <Node name="HammurabiInteractive" expanded="True">
+            <Node name="Interview" expanded="True" />
+          </Node>
+          <Node name="Unit tests - Hammurabi core" expanded="True">
+            <Node name="References" expanded="True" />
+          </Node>
+        </State>
       </Pad>
       <Pad Id="ClassPad">
         <State expanded="True">
@@ -22,11 +39,11 @@
           </Node>
         </State>
       </Pad>
-      <Pad Id="MonoDevelop.NUnit.TestPad">
-        <State expanded="True" selected="True" />
-      </Pad>
       <Pad Id="MonoDevelop.Debugger.WatchPad">
         <State />
+      </Pad>
+      <Pad Id="MonoDevelop.NUnit.TestPad">
+        <State expanded="True" selected="True" />
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
