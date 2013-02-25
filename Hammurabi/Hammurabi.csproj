@@ -139,7 +139,6 @@
     <Compile Include="Generated source\8 USC 1408 - Nationals of US at birth.cs" />
     <Compile Include="Core\Core functions\Tbool - elapsed time - sliding window.cs" />
     <Compile Include="Generated source\Random unit tests.cs" />
-    <Compile Include="Core\Facts\Inputs - symmetrical.cs" />
     <Compile Include="Generated source\Question metadata.cs" />
     <Compile Include="Core\Engine\Question class.cs" />
     <Compile Include="Generated source\Econ - transactions.cs" />
