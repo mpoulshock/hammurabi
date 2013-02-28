@@ -139,7 +139,6 @@ Tnum NetIncome(Thing person, Tset household) =
 # Sum of individuals' gross income
 Tnum HouseholdMonthlyGrossIncome(Tset household) =
     household.Sum(MonthlyGrossIncome(_))
-    # Sum(household.Constituents, MonthlyGrossIncome(_))
 
 # Individual gross income
 Tnum MonthlyGrossIncome(Thing p) =
@@ -167,7 +166,6 @@ Tnum Deductions(Thing p, Tset household) =
     
     Tnum selfEmploymentDeduction =
         household.Sum(Econ.MonthlySelfEmploymentIncome(_)) * 0.40
-        # Sum(household.Constituents, Econ.MonthlySelfEmploymentIncome(_)) * 0.40
         
     Tnum medicalDeduction =
         Stub()

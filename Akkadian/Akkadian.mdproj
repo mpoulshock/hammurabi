@@ -91,5 +91,10 @@
     <None Include="Common\Geo - jurisdictions.akk" />
     <None Include="Sandbox\Demo - Scratchpad.akk" />
     <None Include="Sandbox\Demo - Wrapper rules.akk" />
+    <None Include="Law\State law\Pennsylvania\Pa. Code\Title 55\55 Pa Code 601 - LIHEAP.akk" />
+    <None Include="Law\Federal law\US Code\Title 8 - Immigration\8 USC 1641 - Aliens eligible for public benefits.akk" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Law\State law\Pennsylvania\" />
   </ItemGroup>
 </Project>

@@ -80,18 +80,7 @@ namespace Hammurabi
             
             foreach (Facts.Fact f in Facts.Unknowns)
             {
-//                if (f.object2 != null)
-//                {
-//                    result += f.subject.Id + " " + f.relationship + " " + f.object1.Id + " " + f.object2.Id+ "\n";
-//                }
-//                else if (f.object1 != null)
-//                {
-//                    result += f.subject.Id + " " + f.relationship + " " + f.object1.Id + "\n";
-//                }
-//                else
-//                {
-//                    result += f.subject.Id + " " + f.relationship + "\n";
-//                }
+                result += f.Relationship + " " + f.Arg1 + " " + f.Arg2 + " " + f.Arg3;
             }
             
             return result;

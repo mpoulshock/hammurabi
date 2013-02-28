@@ -93,7 +93,15 @@ namespace Hammurabi
             if (GetUnknowns)
             {
                 // EXPERIMENTAL: First look for any assumed facts
-                Assumptions.AskAssumedFacts(rel, e1, e2, e3, true);
+                // TODO: This breaks when the objects are not Things (hence the try-catch)
+//                try
+//                {
+//                    // Add Things to the ThingBase
+//                    Assumptions.AskAssumedFacts(rel, AddThing((Thing)e1), AddThing((Thing)e2), AddThing((Thing)e3));
+//                }
+//                catch
+//                {
+//                }
 
                 AddUnknown(rel, e1, e2, e3);
             }

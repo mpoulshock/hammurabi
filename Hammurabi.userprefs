@@ -1,27 +1,29 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Hammurabi\Core\Core functions\Unknown.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Akkadian\Law\Federal law\US Code\Title 42 - Health and welfare\42 USC 9902 - Poverty guidelines.akk">
     <Files>
-      <File FileName="Akkadian\Sandbox\Random unit tests.akk" Line="13" Column="40" />
-      <File FileName="Hammurabi\Core\Facts\Assumptions.cs" Line="179" Column="22" />
-      <File FileName="Hammurabi\Core\Core functions\Unknown.cs" Line="100" Column="15" />
-      <File FileName="Hammurabi\Core\Facts\Inputs.cs" Line="38" Column="9" />
+      <File FileName="Akkadian\Sandbox\Random unit tests.akk" Line="10" Column="1" />
+      <File FileName="Hammurabi\Core\Facts\Assumptions.cs" Line="1" Column="1" />
+      <File FileName="Hammurabi\Core\Core functions\Unknown.cs" Line="1" Column="1" />
+      <File FileName="Hammurabi\Core\Facts\Inputs.cs" Line="1" Column="1" />
+      <File FileName="Akkadian\Law\Federal law\US Code\Title 42 - Health and welfare\42 USC 9902 - Poverty guidelines.akk" Line="58" Column="17" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
           <Node name="Akkadian" expanded="True">
-            <Node name="Common" expanded="True">
-              <Node name="Fam" expanded="True" />
+            <Node name="Law" expanded="True">
+              <Node name="Federal law" expanded="True">
+                <Node name="US Code" expanded="True">
+                  <Node name="Title 42 - Health and welfare" expanded="True">
+                    <Node name="42 USC 9902 - Poverty guidelines.akk" selected="True" />
+                  </Node>
+                </Node>
+              </Node>
             </Node>
-            <Node name="Sandbox" expanded="True" />
           </Node>
-          <Node name="Hammurabi" selected="True" />
           <Node name="HammurabiInteractive" expanded="True">
             <Node name="Interview" expanded="True" />
-          </Node>
-          <Node name="Unit tests - Hammurabi core" expanded="True">
-            <Node name="References" expanded="True" />
           </Node>
         </State>
       </Pad>
@@ -43,7 +45,15 @@
         <State />
       </Pad>
       <Pad Id="MonoDevelop.NUnit.TestPad">
-        <State expanded="True" selected="True" />
+        <State expanded="True">
+          <Node name="Hammurabi" expanded="True">
+            <Node name="Hammurabi" expanded="True">
+              <Node name="UnitTests" expanded="True">
+                <Node name="Test_USCTit42Sec9902" expanded="True" selected="True" />
+              </Node>
+            </Node>
+          </Node>
+        </State>
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>

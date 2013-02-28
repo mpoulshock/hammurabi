@@ -1,0 +1,19 @@
+# Namespace:    USC.Tit8.Sec1641
+# Citation:     8 USC 1641 (2013)
+# Summary:      Defines "qualified aliens" eligible for federal public benefits.
+# Updated:      2013-02-27
+# Author:       Michael Poulshock
+
+
+# TODO: Clarify these; link to Imm.Status()
+Tbool IsQualifiedAlien(Thing p) =
+    Imm.Status(p) == "Legal permanent resident" |
+    Imm.Status(p) == "Asylee" |
+    Imm.Status(p) == "Refugee" |
+    Imm.Status(p) == "Parolee" | 
+    Imm.Status(p) == "Deportation withheld" | 
+    Imm.Status(p) == "Conditional entry" | 
+    Imm.Status(p) == "Cuban or Haitian entrant" | 
+    Imm.Status(p) == "Qualified battered alien" 
+    
+    

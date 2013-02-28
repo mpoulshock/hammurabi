@@ -1,10 +1,14 @@
-# Citation:     42 U.S.C. 9902 (2011)
+# Citation:     42 U.S.C. 9902 (2013)
 # Namespace:    USC.Tit42.Sec9902
 # Summary:      Federal HHS Poverty Guidelines ("FPL")
-# Source:       http://aspe.hhs.gov/poverty/12poverty.shtml
-# Updated:      2012-04-26
+# Source:       http://aspe.hhs.gov/poverty/
+# Updated:      2013-02-27
 # Author:       Michael Poulshock
 
+
+# nnn% of the FPG
+Tnum FPGPercentage(Tnum familySize, Tstr jur, Tnum percentage) =
+    (FedPovertyGuideline(familySize,jur) * percentage).RoundDown(1)
 
 # 125% of the FPG
 Tnum FPG125(Tnum familySize, Tstr jur) =
@@ -17,10 +21,19 @@ Tnum FPG133(Tnum familySize, Tstr jur) =
 # Federal HHS Poverty Guidelines
 Tnum FedPovertyGuideline(Tnum familySize, Tstr jur) =
     set:
-    from 2013-01-15 -> Stub()
+    from 2014-01-15 -> Stub()
+    from 2013-01-25 -> RateFor2013
     from 2012-01-26 -> RateFor2012
     from 2011-01-20 -> RateFor2011
     else Stub()
+
+    Tnum RateFor2013 =
+        set:
+        if Geo.Among48ContiguousStates(jur) -> ContigRate2013(familySize)
+        if jur == "District of Columbia" -> ContigRate2013(familySize)
+        if jur == "Alaska" -> AKRate2013(familySize)
+        if jur == "Hawaii" -> HIRate2013(familySize)
+        else Stub()
     
     Tnum RateFor2012 =
         set:
@@ -38,7 +51,48 @@ Tnum FedPovertyGuideline(Tnum familySize, Tstr jur) =
         if jur == "Hawaii" -> HIRate2011(familySize)
         else Stub()
 
-        
+
+# 2013
+# Poverty guideline for 48 states + DC
+Tnum ContigRate2013(Tnum familySize) =
+    match familySize
+    1 -> $11,490
+    2 -> $15,510
+    3 -> $19,530
+    4 -> $23,550
+    5 -> $27,570
+    6 -> $31,590
+    7 -> $35,610
+    8 -> $39,630
+    else $39,630 + ($4,020 * (familySize-8))
+
+# Poverty guideline for AK
+Tnum AKRate2013(Tnum familySize) =
+    match familySize
+    1 -> $14,350
+    2 -> $19,380
+    3 -> $24,410
+    4 -> $29,440
+    5 -> $34,470
+    6 -> $39,500
+    7 -> $44,530
+    8 -> $49,560
+    else $49,560 + ($5,030 * (familySize-8))
+
+# Poverty guideline for HI
+Tnum HIRate2013(Tnum familySize) =
+    match familySize
+    1 -> $13,230
+    2 -> $17,850
+    3 -> $22,470
+    4 -> $27,090
+    5 -> $31,710
+    6 -> $36,330
+    7 -> $40,950
+    8 -> $45,570
+    else $45,570 + ($4,620 * (familySize-8))
+
+                
 # 2012
 # Poverty guideline for 48 states + DC
 Tnum ContigRate2012(Tnum familySize) =
@@ -123,6 +177,10 @@ Tnum HIRate2011(Tnum familySize) =
 
 # UNIT TESTS
 
-Test: FPL1      # fails b/c MakeTnum can't accept Tnums
+Test: FPL1 
 - USC.Tit42.Sec9902.FedPovertyGuideline(4, "Texas").AsOf(2012-05-05).Out =?= $23,050
+
+Test: FPL2 
+- USC.Tit42.Sec9902.FedPovertyGuideline(7, "New Jersey").AsOf(2013-05-05).Out =?= $35,610
+
 

@@ -163,6 +163,8 @@
     <Compile Include="Core\Facts\CacheBase.cs" />
     <Compile Include="Generated source\Demo - Scratchpad.cs" />
     <Compile Include="Generated source\Demo - Wrapper rules.cs" />
+    <Compile Include="Generated source\55 Pa Code 601 - LIHEAP.cs" />
+    <Compile Include="Generated source\8 USC 1641 - Aliens eligible for public benefits.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

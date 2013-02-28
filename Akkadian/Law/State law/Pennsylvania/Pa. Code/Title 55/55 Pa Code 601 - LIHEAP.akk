@@ -1,0 +1,56 @@
+# Namespace:    Pa.Code.Tit55.Ch601
+# Summary:      Low Income Home Energy Assistance Program (LIHEAP)
+# Updated:      2013-02-27
+# Author:       Michael Poulshock
+
+
+# 601.31 - GENERAL ELIGIBILITY REQUIREMENTS
+
+# General eligibility
+Tbool IsEligible(Thing household) =
+    MeetsIncomeTest(household) &
+    ResponsibleForHeatingCosts(household) &
+    PaResidents(household) &
+    LawfullyPresent(household)
+    
+# Income test
+# TODO: Countable household members only?
+Tbool MeetsIncomeTest(Thing hh) =
+    AnnualHouseholdIncome(hh) <= USC.Tit42.Sec9902.FPGPercentage(HouseholdMembers(hh).Count, "Pennsylvania", threshold)
+
+    Tnum threshold =
+        set:
+        from 2012-12-31 -> Stub()
+        from 2011-01-01 -> 1.50     # TODO: Check these dates
+        else Stub()
+
+# Responsible for heating costs
+Tbool ResponsibleForHeatingCosts(Thing hh) =
+    Stub()
+    
+# At least one household member is a PA resident (assumption)
+Tbool PaResidents(Thing hh) =
+    HouseholdMembers(hh).Exists(StateOfResidence(_) == "Pennsylvania")
+    
+# At least one household member is lawfully present in the U.S.
+Tbool LawfullyPresent(Thing hh) =
+    HouseholdMembers(hh).Exists(IsLawfullyPresent(_))
+   
+# Lawful presence
+Tbool IsLawfullyPresent(Thing p) =
+    Imm.IsUSCitizen(p) |
+    IsQLAN(p)
+    
+# Qualified lawfully admitted noncitizen
+Tbool IsQLAN(Thing p) =
+    USC.Tit8.Sec1641.IsQualifiedAlien(p)
+    
+    
+         
+# INPUTS (may have to move some of these)
+
+Tset HouseholdMembers(Thing household)  # move?
+
+Tnum AnnualHouseholdIncome(Thing household)     # Move to income?
+
+        

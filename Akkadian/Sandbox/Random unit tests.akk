@@ -45,6 +45,8 @@ Tbool IsPretendEligible(Thing p) =
 
 Tbool IsPregnant(Thing p)
 
+Tstr Gender(Thing p)
+
 IsPregnant(1) assumes Gender(1) = "Female"
 
 

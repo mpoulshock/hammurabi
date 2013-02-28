@@ -50,7 +50,7 @@ Tstr Status(Thing p) =
     USImmigrationStatus(p)
 
 # Stopping point before descending into citizenship law
-# >>What is/was {1}'s U.S. immigration status? (Options: U.S. citizen, U.S. national, Legal permanent resident, Refugee, Temporary visitor, Undocumented immigrant)
+# >>What is/was {1}'s U.S. immigration status? (Options: U.S. citizen, U.S. national, Legal permanent resident, Asylee, Refugee, Temporary visitor, Undocumented immigrant)
 Tstr? USImmigrationStatus(Thing p) = 
     set:
     if USC.Tit8.Gen.IsUSCitizenInferred(p) -> "U.S. citizen"
