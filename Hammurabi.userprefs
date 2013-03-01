@@ -1,30 +1,30 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Akkadian\Law\Federal law\US Code\Title 42 - Health and welfare\42 USC 9902 - Poverty guidelines.akk">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Akkadian\Law\State law\Pennsylvania\Pa. Code\Title 55\55 Pa Code 601 - LIHEAP.akk">
     <Files>
-      <File FileName="Akkadian\Sandbox\Random unit tests.akk" Line="10" Column="1" />
-      <File FileName="Hammurabi\Core\Facts\Assumptions.cs" Line="1" Column="1" />
-      <File FileName="Hammurabi\Core\Core functions\Unknown.cs" Line="1" Column="1" />
-      <File FileName="Hammurabi\Core\Facts\Inputs.cs" Line="1" Column="1" />
-      <File FileName="Akkadian\Law\Federal law\US Code\Title 42 - Health and welfare\42 USC 9902 - Poverty guidelines.akk" Line="58" Column="17" />
+      <File FileName="Akkadian\Law\State law\Pennsylvania\Pa. Code\Title 55\55 Pa Code 601 - LIHEAP.akk" Line="70" Column="1" />
+      <File FileName="Akkadian\Common\Econ\Econ - household.akk" Line="51" Column="96" />
+      <File FileName="Akkadian\Common\People\People - general.akk" Line="90" Column="30" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
           <Node name="Akkadian" expanded="True">
+            <Node name="Common" expanded="True">
+              <Node name="Econ" expanded="True" />
+              <Node name="People" expanded="True" />
+            </Node>
             <Node name="Law" expanded="True">
-              <Node name="Federal law" expanded="True">
-                <Node name="US Code" expanded="True">
-                  <Node name="Title 42 - Health and welfare" expanded="True">
-                    <Node name="42 USC 9902 - Poverty guidelines.akk" selected="True" />
+              <Node name="State law" expanded="True">
+                <Node name="Pennsylvania" expanded="True">
+                  <Node name="Pa. Code" expanded="True">
+                    <Node name="Title 55" expanded="True" />
                   </Node>
                 </Node>
               </Node>
             </Node>
           </Node>
-          <Node name="HammurabiInteractive" expanded="True">
-            <Node name="Interview" expanded="True" />
-          </Node>
+          <Node name="AkkadianCompiler" selected="True" />
         </State>
       </Pad>
       <Pad Id="ClassPad">
@@ -45,15 +45,7 @@
         <State />
       </Pad>
       <Pad Id="MonoDevelop.NUnit.TestPad">
-        <State expanded="True">
-          <Node name="Hammurabi" expanded="True">
-            <Node name="Hammurabi" expanded="True">
-              <Node name="UnitTests" expanded="True">
-                <Node name="Test_USCTit42Sec9902" expanded="True" selected="True" />
-              </Node>
-            </Node>
-          </Node>
-        </State>
+        <State expanded="True" selected="True" />
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>

@@ -81,8 +81,11 @@ Tbool IsDisabled(Thing p)
 # >>Is/was {1} incapable of self-care?
 Tbool IsIncapableOfSelfCare(Thing p) 
 
-# >>Is/was {1} in prison?
+# >>Is/was {1} incarcerated or in prison?
 Tbool IsInPrison(Thing p)
+
+# >>Is {1} a fleeing felon?
+Tbool IsFleeingFelon(Thing p)
 
 # >>Is/was {1} in a juvenile rehabilitation facility?
 Tbool InJuvenileFacility(Thing p)

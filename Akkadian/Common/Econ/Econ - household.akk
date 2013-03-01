@@ -42,6 +42,28 @@ Tbool PurchaseAndPrepareMealsTogether(Thing p1, Thing p2)
 PurchaseAndPrepareMealsTogether(1,2) assumes LivesWith(1,2)
 
 
+# NATURE OF HOUSING
+# These inputs could be for an individual or a household
+
+# >>What type of housing is {1} living in?  (Options: ???; Camper or RV; )
+Tstr HousingType(Thing t)
+
+# >>What is the nature of {1}'s living arrangement?  (Options: Own; Rent; Reside in institution; Incarcerated; Temporary living arrangement)
+Tstr LivingArrangement(Thing t)
+
+# >>Is {1}'s housing subsidized?
+Tbool HousingIsSubsidized(Thing t)
+
+# >>Is {1} operating a business from their residence?
+Tbool OperatesHomeBasedBusiness(Thing t)
+
+# >>What is the primary type of heating fuel does {1} use?  (Options: Natural gas; Electric; Fuel oil; Coal; Kerosene; Propane; Wood; Other.)
+Tstr HeatingFuelType(Thing t)
+
+# >>What is the secondary type of heating fuel does {1} use?  (Options: Natural gas; Electric; Fuel oil; Coal; Kerosene; Propane; Wood; Other.)
+Tstr SecondaryHeatingFuelType(Thing t)
+
+
 # UNIT TESTS
 
 Test: 714127497
