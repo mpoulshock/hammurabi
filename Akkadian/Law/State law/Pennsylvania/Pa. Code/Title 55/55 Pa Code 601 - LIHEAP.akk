@@ -1,6 +1,6 @@
 # Namespace:    Pa.Code.Tit55.Ch601
 # Summary:      Low Income Home Energy Assistance Program (LIHEAP)
-# Updated:      2013-02-27
+# Updated:      2013-03-01
 # Author:       Michael Poulshock
 
 
@@ -16,7 +16,7 @@ Tbool IsEligible(Thing household) =
 # Income test
 # TODO: Countable household members only?
 Tbool MeetsIncomeTest(Thing hh) =
-    AnnualHouseholdIncome(hh) <= USC.Tit42.Sec9902.FPGPercentage(HouseholdMembers(hh).Count, "Pennsylvania", threshold)
+    LIHEAPIncome(hh) <= USC.Tit42.Sec9902.FPGPercentage(Mems(hh).Count, "Pennsylvania", threshold)
 
     Tnum threshold =
         set:
@@ -25,16 +25,15 @@ Tbool MeetsIncomeTest(Thing hh) =
         else Stub()
 
 # >>Is {1} responsible for home heating costs?
-Tbool? ResponsibleForHeatingCosts(Thing hh) =
-    Stub()
+Tbool ResponsibleForHeatingCosts(Thing hh)
     
 # At least one household member is a PA resident (assumption)
 Tbool PaResidents(Thing hh) =
-    HouseholdMembers(hh).Exists(StateOfResidence(_) == "Pennsylvania")
+    Mems(hh).Exists(StateOfResidence(_) == "Pennsylvania")
     
 # At least one household member is lawfully present in the U.S. (assumption)
 Tbool LawfullyPresent(Thing hh) =
-    HouseholdMembers(hh).Exists(IsLawfullyPresent(_))
+    Mems(hh).Exists(IsLawfullyPresent(_))
    
 # Lawful presence
 Tbool IsLawfullyPresent(Thing p) =
@@ -54,7 +53,7 @@ Tnum HouseholdSize(Thing hh) =
 
 # Countable household members
 Tset CountableMembers(Thing hh) =
-    HouseholdMembers(hh).Filter(IsCountable(_))
+    Mems(hh).Filter(IsCountable(_))
 
 # Household member should be counted
 Tbool IsCountable(Thing p) =
@@ -65,42 +64,62 @@ Tbool IsCountable(Thing p) =
     ! IsInPrison(p) &
     ! IsFleeingFelon(p)     # TODO: Left out people fleeing NJ high misdemeanors
      
-
+# Household members
+Tset Mems(Thing household) =
+    Econ.HouseholdMembers(household)
+    
+    
 # COUNTABLE INCOME
+# Note: All values are annual
 
 # 601.41(2) - LIHEAP income
 Tnum LIHEAPIncome(Thing hh) =
     set:
-    if AnnualEmploymentIncome(hh) > 0 -> CountableIncome(hh) - (AnnualGrossWages(hh) * 0.20)
-    else CountableIncome(hh)
+    if AnnualEmploymentIncome(hh) > 0 -> TotalCountableIncome(hh) - (Econ.AnnualWages(hh) * 0.20)
+    else TotalCountableIncome(hh)
+    
+Tnum AnnualEmploymentIncome(Thing hh) =
+    MembersWithCountableIncome(hh).Sum(Econ.AnnualWages(_))
+
+# Total countable income from all countable household members
+Tnum TotalCountableIncome(Thing hh) =
+    MembersWithCountableIncome(hh).Sum(CountableIncome(_))
+    
+Tset MembersWithCountableIncome(Thing hh) =
+    Mems(hh).Filter(IncomeIsCounted(_))
 
 # 601.81
 Tbool IncomeIsCounted(Thing p) = 
-    Stub()
+    true        # TODO: Refine...
 
 # Total countable income
-Tnum CountableIncome(Thing hh) =
-    GrossIncome(hh) - ExcludedIncome(hh)
+Tnum CountableIncome(Thing p) =
+    GrossIncome(p) - ExcludedIncome(p)
 
 # 601.82
-Tnum GrossIncome(Thing hh) =
-    Stub()
-    
+Tnum GrossIncome(Thing p) =
+    EarnedIncome(p) + UnearnedIncome(p)
+
+Tnum EarnedIncome(Thing p) =
+    Econ.AnnualWages(p) +
+    Ch183.Sec65.MonthlyProfit(p) * 12      # Encompasses both 601.82(2) and (3)
+
+Tnum UnearnedIncome(Thing p) =
+    Econ.AnnualUnearnedIncome(p) 
+            
 # 601.84
-Tnum ExcludedIncome(Thing hh) =
-    Stub()
+# >>How much of {1}'s income should be excluded under 55 Pa. Code 601.84?
+Tnum ExcludedIncome(Thing p)
     
              
-# INPUTS (may have to move some of these)
+# GENERAL LIHEAP BENEFIT AMOUNT
 
-Tset HouseholdMembers(Thing household)  # move?
+# Depends on: PACountyOfResidence, LIHEAPIncome, Econ.HeatingFuelType, and HouseholdSize.
+# If the rules can't be found elsewhere, they have to be reverse engineered from this webpage:
+# http://www.dpw.state.pa.us/foradults/heatingassistanceliheap/liheapbenefitamounttable/index.htm
 
-Tnum AnnualHouseholdIncome(Thing household)     # Move to income?
 
-Tnum AnnualEmploymentIncome(Thing household)
-
-Tnum AnnualGrossWages(Thing household)
-
+# INPUTS 
 
 # >>Did {1} previously receive a LIHEAP benefit in another household during the program year?
 Tbool PreviouslyReceivedLIHEAPInAnotherHousehold(Thing person)

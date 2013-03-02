@@ -8,15 +8,23 @@
 
 # >>What is {1}'s total annual income?
 Tnum? AnnualIncome(Thing p) =
+    AnnualEarnedIncome(p) +
+    AnnualUnearnedIncome(p)
+    
+# >>What is {1}'s annual earned income?
+Tnum AnnualEarnedIncome(Thing p) =
     AnnualWages(p) +
-    AnnualSelfEmploymentIncome(p) +
+    AnnualSelfEmploymentIncome(p)
+    
+# >>What is {1}'s annual unearned income?
+Tnum? AnnualUnearnedIncome(Thing p) =
     AnnualSocialSecurityBenefits(p) +
     AnnualSupplementalSecurityIncome(p) +
     AnnualVeteransBenefits(p) +
     AnnualChildSupportIncome(p) +
     AnnualUnemploymentCompensation(p)
     
-# Wages
+# Gross wages
 # TODO: Reconsider multiplying average wages by 12...
 Tnum AnnualWages(Thing p) =
     MonthlyWages(p) * 12
