@@ -140,7 +140,19 @@ namespace Hammurabi
                 return (Convert.ToDecimal(this.FirstValue.Val));
             }
         }
-        
+
+        /// <summary>
+        /// Converts a Tnum to an decimal.  Should only be used when it is
+        /// not possible for the value to be unknown.
+        /// </summary>
+        public decimal ToHardDecimal
+        {
+            get
+            {
+                return Convert.ToDecimal(this.ToDecimal);
+            }
+        }
+
         /// <summary>
         /// Returns the value of the Tnum at a specified point in time.
         /// </summary>

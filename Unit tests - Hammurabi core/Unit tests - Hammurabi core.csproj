@@ -69,6 +69,7 @@
     <Compile Include="Unit tests\Test - elapsed time - running.cs" />
     <Compile Include="Unit tests\Test - elapsed time - sliding window.cs" />
     <Compile Include="Unit tests\Test - ThingBase.cs" />
+    <Compile Include="Unit tests\Test - accumulate.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

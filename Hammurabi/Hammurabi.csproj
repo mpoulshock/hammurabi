@@ -166,6 +166,7 @@
     <Compile Include="Generated source\55 Pa Code 601 - LIHEAP.cs" />
     <Compile Include="Generated source\8 USC 1641 - Aliens eligible for public benefits.cs" />
     <Compile Include="Generated source\55 Pa Code 183.65 - Profit.cs" />
+    <Compile Include="Core\Core functions\Tnum - accumulate.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
