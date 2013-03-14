@@ -26,6 +26,39 @@ namespace Hammurabi
     {
         /// <summary>
         /// Takes a Tnum representing some value per unit time, and accumulates it
+        /// over a given type of time interval to obtain a running total.
+        /// </summary>
+        /// <example>
+        /// Calculate lifetime accrued income, given a person's annual income:
+        /// 
+        ///   AccruedIncome = AnnualIncome.Accumulated(TheYear)
+        /// 
+        /// The time units cancel: [$/year] * [year] yields [$].
+        /// </example>
+        public Tnum Accumulated(Tnum interval)  
+        {
+            // If base Tnum is ever unknown during the time period, return 
+            // the state with the proper precedence
+            Hstate baseState = PrecedenceForMissingTimePeriods(this);
+            if (baseState != Hstate.Known) return new Tnum(baseState);
+
+            // Start accumulating...
+            Tnum result = new Tnum(0);
+            decimal total = 0;
+
+            // Iterate through the intervals, totaling
+            for (int i=1; i < interval.TimeLine.Count-1; i++)
+            {
+                // TODO: end v. beginning of interval?
+                total += this.AsOf(interval.TimeLine.Keys[i]).ToHardDecimal;
+                result.AddState(interval.TimeLine.Keys[i], total);
+            }
+            
+            return result.Lean;
+        }
+
+        /// <summary>
+        /// Takes a Tnum representing some value per unit time, and accumulates it
         /// over a given number of successive time intervals.
         /// </summary>
         /// <example>
@@ -38,47 +71,55 @@ namespace Hammurabi
         /// </example>
         public Tnum AccumulatedOver(Tnum numberOfIntervals, Tnum interval)  
         {
-            // If base Tnum is ever unknown during the time period, return 
-            // the state with the proper precedence
-            Hstate baseState = PrecedenceForMissingTimePeriods(this);
-            if (baseState != Hstate.Known) return new Tnum(baseState);
-
             // Handle eternal values
             if (this.IsEternal)
             {
+                // If base Tnum is ever unknown during the time period, return 
+                // the state with the proper precedence
+                Hstate baseState = PrecedenceForMissingTimePeriods(this);
+                if (baseState != Hstate.Known) return new Tnum(baseState);
+                
                 return this * numberOfIntervals;
             }
-
+            
             // Start accumulating...
             int num = numberOfIntervals.ToHardInt;  // TODO: Handle unknowns
-
-            // TODO: For efficiency, first bind base Tnum to interval Tnum
-
-            // Set first value as accumulation of first N intervals (these cover
-            // an insigificant time period near the dawn of time.
-            Tnum result = new Tnum();
-            decimal firstVal = Convert.ToDecimal(this.FirstValue.Val) * num;
-            result.AddState(Time.DawnOf, firstVal);
-
-            // Iterate through the intervals
-            for (int i=num; i < interval.TimeLine.Count-num; i++)
+            
+            // Get first accumulated value
+            decimal firstVal = 0;
+            for (int j=0; j<num; j++)
             {
-                decimal total = 0;
-
-                // Add up the amount in this interval and N subsequent intervals
-                for (int j=0; j<num; j++)
+                // Don't walk off the end of the timeline
+                if (j < interval.TimeLine.Count)
                 {
-                    // Don't walk off the end of the timeline
-                    if (i+j < interval.TimeLine.Count-num)
-                    {
-                        total += this.AsOf(interval.TimeLine.Keys[i+j]).ToHardDecimal;
-                    }
+                    firstVal += this.AsOf(interval.TimeLine.Keys [j]).ToHardDecimal;
+                }
+            }
+            Tnum result = new Tnum(firstVal);
+            
+            // Iterate through the subsequent intervals
+            decimal previousVal = firstVal;
+            for (int i=1; i < interval.TimeLine.Count-num; i++)
+            {
+                // Take the value from the last iteration, and slide it the time window to the right, 
+                // subtracting the left interval and adding the new right one.
+//                decimal lastOldInterval = Convert.ToDecimal(this.ObjectAsOf(interval.TimeLine.Keys[i-1]).Val);
+//                decimal nextNewInterval = Convert.ToDecimal(this.ObjectAsOf(interval.TimeLine.Keys[i+num-1]).Val);
+                decimal lastOldInterval = this.AsOf(interval.TimeLine.Keys[i-1]).ToHardDecimal;
+                decimal nextNewInterval = this.AsOf(interval.TimeLine.Keys[i+num-1]).ToHardDecimal;
+                decimal newVal = previousVal - lastOldInterval + nextNewInterval;
+
+                // Only add changepoint if value actually changes
+                if (newVal != previousVal)
+                {
+                    result.AddState(interval.TimeLine.Keys[i], newVal);
                 }
 
-                result.AddState(interval.TimeLine.Keys[i], total);
+                // Set for next iteration
+                previousVal = newVal;
             }
-
-            return result.Lean;
+            
+            return result;
         }
     }
 }

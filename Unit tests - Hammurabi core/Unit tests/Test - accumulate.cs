@@ -26,9 +26,24 @@ namespace Hammurabi.UnitTests.CoreFcns
 {
     [TestFixture]
     public class Accumulate : H
-    {    
+    {   
+        // ACCUMULATED
+
         [Test]
         public void Accumulate1()
+        {
+            Tnum t = new Tnum(0);
+            t.AddState(Date(2010, 1, 1), 1000);
+            t.AddState(Date(2011, 1, 1), 0);
+
+            Tnum r = t.Accumulated(TheMonth); //.AsOf(Date(2012,1,1));           
+            Assert.AreEqual("Time.DawnOf 12000 ", r.TestOutput);    
+        }
+
+        // ACCUMULATED OVER
+
+        [Test]
+        public void AccumulateOver1()
         {
             Tnum t = new Tnum(1000);
             Tnum r = t.AccumulatedOver(2, TheMonth);           
@@ -36,7 +51,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         }
 
         [Test]
-        public void Accumulate2()
+        public void AccumulateOver2()
         {
             Tnum t = new Tnum(new Hval());
             Tnum r = t.AccumulatedOver(2, TheMonth);           
@@ -44,7 +59,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         }
 
         [Test]
-        public void Accumulate3()
+        public void AccumulateOver3()
         {
             Tnum t = new Tnum(Hstate.Stub);
             Tnum r = t.AccumulatedOver(2, TheMonth);           
@@ -52,13 +67,13 @@ namespace Hammurabi.UnitTests.CoreFcns
         }
 
         [Test]
-        public void Accumulate4()
+        public void AccumulateOver4()
         {
             Tnum t = new Tnum(1000);
             t.AddState(Date(2013, 1, 1), 2000);
 
             Tnum r = t.AccumulatedOver(2, TheYear);           
-            Assert.AreEqual("Time.DawnOf 2000 1/1/2012 12:00:00 AM 3000 1/1/2013 12:00:00 AM 4000 1/1/2199 12:00:00 AM 2000 ", r.TestOutput);    
+            Assert.AreEqual("Time.DawnOf 2000 1/1/2012 12:00:00 AM 3000 1/1/2013 12:00:00 AM 4000 ", r.TestOutput);    
         }
     }
 }

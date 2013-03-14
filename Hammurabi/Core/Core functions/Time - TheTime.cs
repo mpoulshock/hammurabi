@@ -1,4 +1,4 @@
-// Copyright (c) 2012 Hammura.bi LLC
+// Copyright (c) 2010-2013 Hammura.bi LLC
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -25,8 +25,7 @@ namespace Hammurabi
     public partial class H
     {
         /// <summary>
-        /// Returns a Tnum representing the calendar year.  Spans all of
-        /// "time": from 1800-01-01 to 2200-12-31.
+        /// Returns a Tnum representing the calendar year, spanning all of time.
         /// </summary>
         public static Tnum TheYear
         {
@@ -81,8 +80,23 @@ namespace Hammurabi
                 return TheTime.CalendarWeek(5);
             }
         }
+
+        /// <summary>
+        /// Returns a Tnum representing the day, spanning a 200-year period.
+        /// </summary>
+        /// <remarks>
+        /// Warning: This has over 73,000 intervals, so use judiciously.
+        /// </remarks>
+        public static Tnum TheDay
+        {
+            get
+            {
+                return Time.IntervalsSince(Date(1900,1,1), Date(2100,1,1), Time.IntervalType.Day, 1);
+            }
+        }
     }
-    
+        
+
     /// <summary>
     /// A construct representing "the time" - as in that abstract thing we refer
     /// to when we say something like, "The time is 5 pm." 

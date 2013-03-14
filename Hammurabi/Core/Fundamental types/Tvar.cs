@@ -340,8 +340,6 @@ namespace Hammurabi
         /// </summary>
         public Hval ObjectAsOf(DateTime dt)
         {
-            Hval result = TimeLine.Values[TimeLine.Count-1];
-            
             for (int i = 0; i < TimeLine.Count-1; i++ ) 
             {
                 // If value is between two adjacent points on the timeline...
@@ -349,12 +347,12 @@ namespace Hammurabi
                 {
                     if (dt < TimeLine.Keys[i+1])
                     {
-                        result = TimeLine.Values[i];
+                        return TimeLine.Values[i];
                     }
                 }
             }
 
-            return result;
+            return TimeLine.Values[TimeLine.Count-1];
         }
 
         /// <summary>

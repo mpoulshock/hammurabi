@@ -1,7 +1,89 @@
 # Namespace:    Hammurabi.H
 # Summary:      General-purpose functions that don't need to be in the Hammurabi core
-# Updated:      2012-12-25
+# Updated:      2013-03-04
 # Author:       Michael Poulshock
+
+
+# DAYS IN CALENDAR QUARTER
+
+Tnum DaysInQuarter() =
+    set:
+    if TheQuarter == 1 & IsLeapYear() -> 91
+    if TheQuarter == 1 -> 90
+    if TheQuarter == 2 -> 91
+    if TheQuarter == 3 -> 92
+    if TheQuarter == 4 -> 92
+    else Stub()
+
+Test: DaysInQtr1
+- DaysInQuarter().AsOf(2014-02-03).Out =?= 90
+
+Test: DaysInQtr2
+- DaysInQuarter().AsOf(2016-02-03).Out =?= 91
+
+
+# DAYS IN MONTH
+
+Tnum DaysInMonth() =
+    set:
+    if TheMonth ==  1 -> 31
+    if TheMonth ==  2 & IsLeapYear() -> 29
+    if TheMonth ==  2 -> 28
+    if TheMonth ==  3 -> 31
+    if TheMonth ==  4 -> 30
+    if TheMonth ==  5 -> 31
+    if TheMonth ==  6 -> 30
+    if TheMonth ==  7 -> 31
+    if TheMonth ==  8 -> 31
+    if TheMonth ==  9 -> 30
+    if TheMonth == 10 -> 31
+    if TheMonth == 11 -> 30
+    if TheMonth == 12 -> 31
+    else Stub()
+
+Test: DaysInMonth1
+- DaysInMonth().AsOf(2014-02-03).Out =?= 28
+
+Test: DaysInMonth2
+- DaysInMonth().AsOf(2016-02-03).Out =?= 29
+
+Test: DaysInMonth3
+- DaysInMonth().AsOf(2014-12-03).Out =?= 31
+
+Test: DaysInMonth4
+- DaysInMonth().AsOf(2014-04-03).Out =?= 30
+
+Test: DaysInMonth5
+- DaysInMonth().AsOf(1803-04-03).Out =?= "Stub"
+
+
+# DAYS IN YEAR
+
+Tnum DaysInYear() =
+    set:
+    if IsLeapYear() -> 366
+    else 365
+    
+Test: DaysInYear1
+- DaysInYear().AsOf(2016-04-05).Out =?= 366
+
+Test: DaysInYear2
+- DaysInYear().AsOf(2019-04-05).Out =?= 365
+
+
+# LEAP YEARS
+
+Tbool IsLeapYear() =
+    set:
+    if TheYear == 2100  -> false
+    if TheYear % 4 == 0 -> true
+    else false
+
+Test: LeapYear1
+- IsLeapYear().AsOf(2016-04-05).Out =?= true
+
+Test: LeapYear2
+- IsLeapYear().AsOf(2019-04-05).Out =?= false
 
 
 # GET QUARTER
@@ -14,7 +96,16 @@ Tnum GetQuarter(Tdate date) =
     if date.Month <= 6 -> 2
     if date.Month <= 9 -> 3
     else 4
-    
+
+Test: GetQtr1
+- GetQuarter(2010-03-02).Out =?= 1
+
+Test: GetQtr2
+- GetQuarter(2010-12-02).Out =?= 4
+
+Test: GetQtr3
+- GetQuarter(new Tdate(Hstate.Unstated)).Out =?= "Unstated"
+        
     
 # TEMPORAL MAP FUNCTION
 

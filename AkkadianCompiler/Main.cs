@@ -288,7 +288,7 @@ namespace Akkadian
             line = Assumptions.Process(line, docNameSpace);
             
             // Regex part  
-            string word = @"[-!\+\*/A-Za-z0-9\.;\(\),""'_<>=&| ]+";
+            string word = @"[-!\+\*/A-Za-z0-9\.;\(\),""'_<>=&| %]+";
 
             // Convert rules and dates
             line = ConvertRegularRules(line, docNameSpace);

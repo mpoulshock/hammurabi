@@ -67,7 +67,58 @@ Tbool IsCountable(Thing p) =
 # Household members
 Tset Mems(Thing household) =
     Econ.HouseholdMembers(household)
+
+
+# TREATMENT OF INCOME
+
+# 601.83(a) - "Treated" income
+# Applicant may choose whether the time period to be used in determining gross annual 
+# income shall be for the 12 months or the 90 days before the date of application.
+# Regardless of the selected time period, income shall be converted to a yearly figure.
+# TODO: Special rules for people receiving certain DPW benefits.
+Tnum TreatedIncome(Thing hh) =
+    Min(Month12Income(hh), Day90Income(hh) * (DaysInYear()/90)).RoundToNearest(0.01)   # Applicant wants lower of the two
+
+# Income accrued in the prior 12 months
+Tnum Month12Income(Thing hh) =
+    MonthlyIncomeTemp(hh).AccumulatedOver(12, TheMonth).Shift(-1, TheYear)
+
+# Income accrued in the prior 90 days
+Tnum Day90Income(Thing hh) =
+    DailyIncome(hh).AccumulatedOver(90, TheDay).Shift(-90, TheDay)
+
+# Daily income
+Tnum DailyIncome(Thing hh) =
+    MonthlyIncomeTemp(hh) / DaysInMonth()
     
+# Temporary input
+Tnum MonthlyIncomeTemp(Thing hh)
+ 
+Test: TreatedIncome1
+- Thing hh
+- Pa.Code.Tit55.Ch601.MonthlyIncomeTemp(hh) = {2015-01-01: $1; 1800-01-01: $2}
+- Pa.Code.Tit55.Ch601.Day90Income(hh).RoundToNearest(0.01).AsOf(2010-01-01).Out =?= $5.87
+   
+Test: TreatedIncome2
+- Thing hh
+- Pa.Code.Tit55.Ch601.MonthlyIncomeTemp(hh) = $1
+- Pa.Code.Tit55.Ch601.Day90Income(hh).RoundToNearest(0.01).AsOf(2010-01-01).Out =?= $2.94  # Convert.ToDecimal($2.94)
+
+Test: TreatedIncome3
+- Thing hh
+- Pa.Code.Tit55.Ch601.MonthlyIncomeTemp(hh) = $1000
+- Pa.Code.Tit55.Ch601.DailyIncome(hh).RoundToNearest(0.01).AsOf(2010-01-01).Out =?= $32.26
+
+Test: TreatedIncome4
+- Thing hh
+- Pa.Code.Tit55.Ch601.MonthlyIncomeTemp(hh) = $1000
+- Pa.Code.Tit55.Ch601.Month12Income(hh).RoundToNearest(0.01).AsOf(2015-01-01).Out =?= $12,000.00
+
+Test: TreatedIncome5_Recently_lost_job
+- Thing hh
+- Pa.Code.Tit55.Ch601.MonthlyIncomeTemp(hh) = {2015-05-01: $0; 1800-01-01: $2,000}
+- Pa.Code.Tit55.Ch601.TreatedIncome(hh).AsOf(2015-06-15).Out =?= $12,035.84
+
     
 # COUNTABLE INCOME
 # Note: All values are annual
