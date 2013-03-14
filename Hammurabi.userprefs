@@ -1,43 +1,13 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Hammurabi\Core\Core functions\Tnum - accumulate.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Akkadian\Law\State law\Pennsylvania\Pa. Code\Title 55\55 Pa Code 601 - LIHEAP.akk">
     <Files>
-      <File FileName="Hammurabi\Core\Core functions\Tnum - accumulate.cs" Line="108" Column="45" />
-      <File FileName="Akkadian\Law\State law\Pennsylvania\Pa. Code\Title 55\55 Pa Code 601 - LIHEAP.akk" Line="105" Column="94" />
-      <File FileName="Unit tests - Hammurabi core\Unit tests\Test - accumulate.cs" Line="39" Column="46" />
-      <File FileName="Hammurabi\Core\Fundamental types\Tvar.cs" Line="335" Column="61" />
-      <File FileName="Hammurabi\Core\Core functions\Tbool - temporal.cs" Line="1" Column="1" />
+      <File FileName="Hammurabi\Core\Core functions\Tnum - accumulate.cs" Line="72" Column="68" />
+      <File FileName="Akkadian\Law\State law\Pennsylvania\Pa. Code\Title 55\55 Pa Code 601 - LIHEAP.akk" Line="74" Column="31" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
-        <State expanded="True">
-          <Node name="Akkadian" expanded="True">
-            <Node name="Common" expanded="True">
-              <Node name="Econ" expanded="True" />
-            </Node>
-            <Node name="Law" expanded="True">
-              <Node name="State law" expanded="True">
-                <Node name="Pennsylvania" expanded="True">
-                  <Node name="Pa. Code" expanded="True">
-                    <Node name="Title 55" expanded="True" />
-                  </Node>
-                </Node>
-              </Node>
-            </Node>
-          </Node>
-          <Node name="Hammurabi" expanded="True">
-            <Node name="Core" expanded="True">
-              <Node name="Core functions" expanded="True">
-                <Node name="Tnum - accumulate.cs" selected="True" />
-              </Node>
-              <Node name="Fundamental types" expanded="True" />
-            </Node>
-            <Node name="Generated source" expanded="True" />
-          </Node>
-          <Node name="Unit tests - Hammurabi core" expanded="True">
-            <Node name="Unit tests" expanded="True" />
-          </Node>
-        </State>
+        <State expanded="True" />
       </Pad>
       <Pad Id="ClassPad">
         <State expanded="True">

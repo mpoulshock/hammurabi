@@ -34,10 +34,33 @@ namespace Hammurabi.UnitTests.CoreFcns
         {
             Tnum t = new Tnum(0);
             t.AddState(Date(2010, 1, 1), 1000);
-            t.AddState(Date(2011, 1, 1), 0);
+            t.AddState(Date(2010, 3, 1), 0);
+            Tnum r = t.Accumulated(TheMonth).AsOf(Date(2012,1,1));           
+            Assert.AreEqual("2000", r.EasyOut);    
+        }
 
-            Tnum r = t.Accumulated(TheMonth); //.AsOf(Date(2012,1,1));           
-            Assert.AreEqual("Time.DawnOf 12000 ", r.TestOutput);    
+        [Test]
+        public void Accumulate2()       // Fail: not sure what's happening here.  Decimal comparison issues?
+        {
+            Tnum t = new Tnum(0);
+            Tnum r = t.Accumulated(TheMonth);           
+            Assert.AreEqual("0", r.EasyOut);    
+        }
+        
+        [Test]
+        public void Accumulate3()
+        {
+            Tnum t = new Tnum(new Hval());
+            Tnum r = t.Accumulated(TheMonth);           
+            Assert.AreEqual("Unstated", r.EasyOut);    
+        }
+        
+        [Test]
+        public void Accumulate4()
+        {
+            Tnum t = new Tnum(Hstate.Stub);
+            Tnum r = t.Accumulated(TheMonth);           
+            Assert.AreEqual("Stub", r.EasyOut);    
         }
 
         // ACCUMULATED OVER

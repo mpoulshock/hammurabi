@@ -69,6 +69,7 @@ namespace Hammurabi
         /// 
         /// The time units cancel: [$/mo.] * [mo.] yields [$].
         /// </example>
+        //  TODO: Work on performance.  AO(90, days) takes ~ 2 sec.
         public Tnum AccumulatedOver(Tnum numberOfIntervals, Tnum interval)  
         {
             // Handle eternal values

@@ -118,26 +118,6 @@ namespace Hammurabi
         /// </summary>
         public void AddState(DateTime dt, Hval hval)
         {
-            // If a state (DateTime) is added to a Tvar that already has that 
-            // state, an error occurs.  We could check for duplicates here, but
-            // this function is used extremely frequently and doing so would
-            // probably affect performance.
-
-            // We could also check that newly added values are different from the 
-            // prior one.  (See LeanTvar<T>() below.)
-//            if (TimeLine.Count > 0)
-//            {
-//                if (!object.Equals(TimeLine.Values[TimeLine.Count-1].Val, hval.Val))
-//                {
-//                    TimeLine.Add(dt, hval);
-//                }
-//            }
-//            else
-//            {
-//                TimeLine.Add(dt, hval);
-//            }
-
-
             TimeLine.Add(dt, hval);
         }
         
@@ -193,6 +173,31 @@ namespace Hammurabi
                     }
                 }
                 return result;
+            }
+        }
+
+        /// <summary>
+        /// Displays a cleaner timeline string.
+        /// </summary>
+        public string EasyOut
+        {
+            get 
+            {  
+                if (this.TimeLine.Count == 1)
+                {
+                    return this.FirstValue.ToString;
+                }
+
+                string result = "";
+
+                foreach(KeyValuePair<DateTime,Hval> de in this.TimeLine)
+                {
+                    string date = de.Key.ToString("yyyy-MM-dd").Replace("1800-01-01", "Dawn");
+                    date = date.Replace(" 12:00:00 AM", "");
+                    string val = de.Value.ToString;
+                    result += date + ": " + val + "; ";
+                }
+                return result.TrimEnd(' ', ';');
             }
         }
 
