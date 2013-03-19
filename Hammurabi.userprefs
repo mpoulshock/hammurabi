@@ -1,13 +1,29 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Akkadian\Law\State law\Pennsylvania\Pa. Code\Title 55\55 Pa Code 601 - LIHEAP.akk">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Akkadian\Sandbox\Recursion test.akk">
     <Files>
-      <File FileName="Hammurabi\Core\Core functions\Tnum - accumulate.cs" Line="72" Column="68" />
-      <File FileName="Akkadian\Law\State law\Pennsylvania\Pa. Code\Title 55\55 Pa Code 601 - LIHEAP.akk" Line="74" Column="31" />
+      <File FileName="Akkadian\Sandbox\Demo - Scratchpad.akk" Line="1" Column="1" />
+      <File FileName="Akkadian\Common\Econ\Econ - income.akk" Line="15" Column="35" />
+      <File FileName="Hammurabi\Core\Fundamental types\Tline.cs" Line="1" Column="1" />
+      <File FileName="Akkadian\Sandbox\Recursion test.akk" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
-        <State expanded="True" />
+        <State expanded="True">
+          <Node name="Akkadian" expanded="True">
+            <Node name="Common" expanded="True">
+              <Node name="Econ" expanded="True" />
+            </Node>
+            <Node name="Sandbox" expanded="True">
+              <Node name="Recursion test.akk" selected="True" />
+            </Node>
+          </Node>
+          <Node name="Hammurabi" expanded="True">
+            <Node name="Core" expanded="True">
+              <Node name="Fundamental types" expanded="True" />
+            </Node>
+          </Node>
+        </State>
       </Pad>
       <Pad Id="ClassPad">
         <State expanded="True">
@@ -33,7 +49,7 @@
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
-      <Breakpoint file="C:\Users\Michael\Documents\GitHub\hammurabi\Hammurabi\Generated source\Question metadata.cs" line="60" />
+      <Breakpoint file="C:\Users\Michael\Documents\GitHub\hammurabi\Hammurabi\Generated source\Question metadata.cs" line="60" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />

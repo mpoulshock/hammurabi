@@ -69,64 +69,12 @@ Tset Mems(Thing household) =
     Econ.HouseholdMembers(household)
 
 
-# TREATMENT OF INCOME
-
-# 601.83(a) - "Treated" income
-# Applicant may choose whether the time period to be used in determining gross annual 
-# income shall be for the 12 months or the 90 days before the date of application.
-# Regardless of the selected time period, income shall be converted to a yearly figure.
-# TODO: Special rules for people receiving certain DPW benefits.
-Tnum TreatedIncome(Thing hh) =
-    Min(Month12Income(hh), Day90Income(hh) * (DaysInYear()/90)).RoundToNearest(0.01)   # Applicant wants lower of the two
-
-# Income accrued in the prior 12 months
-Tnum Month12Income(Thing hh) =
-    MonthlyIncomeTemp(hh).AccumulatedOver(12, TheMonth).Shift(-1, TheYear)
-
-# Income accrued in the prior 90 days
-Tnum Day90Income(Thing hh) =
-    DailyIncome(hh).AccumulatedOver(90, TheDay).Shift(-90, TheDay)
-
-# Daily income
-Tnum DailyIncome(Thing hh) =
-    MonthlyIncomeTemp(hh) / DaysInMonth()
-    
-# Temporary input
-Tnum MonthlyIncomeTemp(Thing hh)
- 
-Test: TreatedIncome1
-- Thing hh
-- Pa.Code.Tit55.Ch601.MonthlyIncomeTemp(hh) = {2015-01-01: $1; 1800-01-01: $2}
-- Pa.Code.Tit55.Ch601.Day90Income(hh).RoundToNearest(0.01).AsOf(2010-01-01).Out =?= $5.87
-   
-Test: TreatedIncome2
-- Thing hh
-- Pa.Code.Tit55.Ch601.MonthlyIncomeTemp(hh) = $1
-- Pa.Code.Tit55.Ch601.Day90Income(hh).RoundToNearest(0.01).AsOf(2010-01-01).Out =?= $2.94  # Convert.ToDecimal($2.94)
-
-Test: TreatedIncome3
-- Thing hh
-- Pa.Code.Tit55.Ch601.MonthlyIncomeTemp(hh) = $1000
-- Pa.Code.Tit55.Ch601.DailyIncome(hh).RoundToNearest(0.01).AsOf(2010-01-01).Out =?= $32.26
-
-Test: TreatedIncome4
-- Thing hh
-- Pa.Code.Tit55.Ch601.MonthlyIncomeTemp(hh) = $1000
-- Pa.Code.Tit55.Ch601.Month12Income(hh).RoundToNearest(0.01).AsOf(2015-01-01).Out =?= $12,000.00
-
-Test: TreatedIncome5_Recently_lost_job
-- Thing hh
-- Pa.Code.Tit55.Ch601.MonthlyIncomeTemp(hh) = {2015-05-01: $0; 1800-01-01: $2,000}
-- Pa.Code.Tit55.Ch601.TreatedIncome(hh).AsOf(2015-06-15).Out =?= $12,035.84
-
-    
-# COUNTABLE INCOME
-# Note: All values are annual
+# HOUSEHOLD (ANNUAL) INCOME FOR ELIGIBILITY PURPOSES    
 
 # 601.41(2) - LIHEAP income
 Tnum LIHEAPIncome(Thing hh) =
     set:
-    if AnnualEmploymentIncome(hh) > 0 -> TotalCountableIncome(hh) - (Econ.AnnualWages(hh) * 0.20)
+    if AnnualEmploymentIncome(hh) > 0 -> TotalCountableIncome(hh) - (AnnualEmploymentIncome(hh) * 0.20)
     else TotalCountableIncome(hh)
     
 Tnum AnnualEmploymentIncome(Thing hh) =
@@ -134,7 +82,7 @@ Tnum AnnualEmploymentIncome(Thing hh) =
 
 # Total countable income from all countable household members
 Tnum TotalCountableIncome(Thing hh) =
-    MembersWithCountableIncome(hh).Sum(CountableIncome(_))
+    MembersWithCountableIncome(hh).Sum(TreatedIncome(_))
     
 Tset MembersWithCountableIncome(Thing hh) =
     Mems(hh).Filter(IncomeIsCounted(_))
@@ -143,7 +91,49 @@ Tset MembersWithCountableIncome(Thing hh) =
 Tbool IncomeIsCounted(Thing p) = 
     true        # TODO: Refine...
 
-# Total countable income
+
+# TREATMENT OF INCOME
+
+# 601.83(a) - "Treated" (annual) income
+# Applicant may choose whether the time period to be used in determining gross annual 
+# income shall be for the 12 months or the 90 days before the date of application.
+# Regardless of the selected time period, income shall be converted to a yearly figure.
+# TODO: Special rules for people receiving certain DPW benefits.
+Tnum TreatedIncome(Thing p) =
+    Min(Month12Income(p), Day90Income(p) * (DaysInYear()/90)).RoundToNearest(0.01)   # Applicant wants lower of the two
+
+# Income accrued in the prior 12 months
+Tnum Month12Income(Thing p) =
+    CountableIncome(p).AccumulatedOver(12, TheMonth).Shift(-1, TheYear)
+
+# Income accrued in the prior 90 days
+Tnum Day90Income(Thing p) =
+    DailyIncome(p).AccumulatedOver(90, TheDay).Shift(-90, TheDay)
+
+# Daily income
+Tnum DailyIncome(Thing p) =
+    CountableIncome(p) / DaysInMonth()
+    
+    
+Test: TreatedIncome1
+- Thing p
+- Pa.Code.Tit55.Ch601.CountableIncome(p) = $1000
+- Pa.Code.Tit55.Ch601.DailyIncome(p).RoundToNearest(0.01).AsOf(2010-01-01).Out =?= $32.26
+
+Test: TreatedIncome2
+- Thing p
+- Pa.Code.Tit55.Ch601.CountableIncome(p) = $1000
+- Pa.Code.Tit55.Ch601.Month12Income(p).RoundToNearest(0.01).AsOf(2015-01-01).Out =?= $12,000.00
+
+Test: TreatedIncome3_Recently_lost_job
+- Thing p
+- Pa.Code.Tit55.Ch601.CountableIncome(p) = {2015-05-01: $0; 1800-01-01: $2,000}
+- Pa.Code.Tit55.Ch601.TreatedIncome(p).AsOf(2015-06-15).Out =?= $12,035.84
+
+
+# COUNTABLE MONTHLY INCOME
+
+# 601.81 - Total countable income
 Tnum CountableIncome(Thing p) =
     GrossIncome(p) - ExcludedIncome(p)
 
@@ -152,14 +142,14 @@ Tnum GrossIncome(Thing p) =
     EarnedIncome(p) + UnearnedIncome(p)
 
 Tnum EarnedIncome(Thing p) =
-    Econ.AnnualWages(p) +
-    Ch183.Sec65.MonthlyProfit(p) * 12      # Encompasses both 601.82(2) and (3)
+    Econ.MonthlyWages(p) +
+    Ch183.Sec65.MonthlyProfit(p)      # Encompasses both 601.82(2) and (3)
 
 Tnum UnearnedIncome(Thing p) =
-    Econ.AnnualUnearnedIncome(p) 
+    Econ.MonthlyUnearnedIncome(p) 
             
 # 601.84
-# >>How much of {1}'s income should be excluded under 55 Pa. Code 601.84?
+# >>How much of {1}'s monthly income should be excluded under 55 Pa. Code 601.84?
 Tnum ExcludedIncome(Thing p)
     
              
@@ -174,4 +164,24 @@ Tnum ExcludedIncome(Thing p)
 
 # >>Did {1} previously receive a LIHEAP benefit in another household during the program year?
 Tbool PreviouslyReceivedLIHEAPInAnotherHousehold(Thing person)
+
+
+# UNIT TESTS
+
+Test: 403207628
+- Thing Joneses
+- Things sam
+- Econ.HouseholdMembers(Joneses) = [[sam]]
+- Econ.MonthlyWages(sam) = 400
+- Pa.Code.Tit55.Ch183.Sec65.MonthlyProfit(sam) = 0
+- Econ.MonthlySocialSecurityBenefits(sam) = 0
+- Econ.MonthlySupplementalSecurityIncome(sam) = 0
+- Econ.MonthlyVeteransBenefits(sam) = 0
+- Econ.MonthlyChildSupportIncome(sam) = 0
+- Econ.MonthlyUnemploymentCompensation(sam) = 0
+- Pa.Code.Tit55.Ch601.ExcludedIncome(sam) = 0
+- Pa.Code.Tit55.Ch601.ResponsibleForHeatingCosts(Joneses) = true
+- StateOfResidence(sam) = "Pennsylvania"
+- Imm.USImmigrationStatus(sam) = "U.S. citizen"
+- Pa.Code.Tit55.Ch601.IsEligible(Joneses).TestOutput =?= "Time.DawnOf Stub 1/20/2011 12:00:00 AM True 12/31/2012 12:00:00 AM Stub "
 

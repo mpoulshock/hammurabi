@@ -61,8 +61,16 @@ Tnum AnnualUnemploymentCompensation(Thing p) =
 
 # Total monthly income
 Tnum MonthlyIncome(Thing p) =
+    MonthlyEarnedIncome(p) +
+    MonthlyUnearnedIncome(p)
+    
+# >>What is/was {1}'s monthly earned income?
+Tnum? MonthlyEarnedIncome(Thing p) =
     MonthlyWages(p) +
-    MonthlySelfEmploymentIncome(p) +
+    MonthlySelfEmploymentIncome(p)
+    
+# >>What is/was {1}'s monthly unearned income?
+Tnum MonthlyUnearnedIncome(Thing p) =
     MonthlySocialSecurityBenefits(p) +
     MonthlySupplementalSecurityIncome(p) +
     MonthlyVeteransBenefits(p) +
