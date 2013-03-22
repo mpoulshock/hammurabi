@@ -214,7 +214,7 @@ namespace Interactive
         {
             string i = input.Trim();
 
-            if (currentQType == "Tbool")
+            if (currentQType == "Tbool" && !input.StartsWith("{"))
             {
                 i = i.ToLower();
                 if (i == "t" || i == "yes" || i == "y") return "true";

@@ -64,6 +64,27 @@ Tnum Quarter() =
     TheQuarter
 
 
+# TEMPORAL I/0
+    
+# >>Does {1} pass the documentation test?
+Tbool HasDocumentation(Thing p) =
+    HasSSN(p)
+    
+# >>Does {1} pass the income test?
+Tbool IncomeUnderLimit(Thing p) =
+    Econ.AnnualIncome(p) <= $25,000
+
+# >>Is {1} a resident of Kentucky?
+Tbool IsKentuckyResident(Thing p) =
+    StateOfResidence(p) == "Kentucky"
+    
+# >>Does {1} pass the composite test?
+Tbool PassesTest(Thing p) =
+    HasDocumentation(p) &
+    IncomeUnderLimit(p) &
+    IsKentuckyResident(p)
+
+
 # DETERMINATIONS
     
 # Demo.MileageRate some_trip
@@ -133,3 +154,11 @@ Tbool IsUSCitizen(Thing person) =
     H.IsUSCitizen(person)
 
         
+
+# UNIT TESTS
+
+Test: 281047258
+- Thing adsf
+- HasSSN(adsf) = {2010-01-01: true; Time.DawnOf: false}
+- Hammurabi.Demo.HasDocumentation(adsf).TestOutput =?= "Time.DawnOf False 1/1/2010 12:00:00 AM True "
+

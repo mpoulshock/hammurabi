@@ -1,4 +1,4 @@
-// Copyright (c) 2012 Hammura.bi LLC
+// Copyright (c) 2012-2013 Hammura.bi LLC
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -56,7 +56,7 @@ namespace Interactive
                 }
                 else 
                 {
-                    Facts.Assert(subj, rel, obj, new Tbool(Convert.ToBoolean(val)));
+                    Facts.Assert(subj, rel, obj, TboolFromTemporalString(val));
                     AkkTest.testStr += val + "\r\n";
                 }
             }
@@ -69,7 +69,7 @@ namespace Interactive
                 }
                 else 
                 {
-                    Facts.Assert(subj, rel, obj, new Tstr(Convert.ToString(val)));
+                    Facts.Assert(subj, rel, obj, TstrFromTemporalString(val));
                     AkkTest.testStr += "\"" + val + "\"\r\n";
                 }
             }
@@ -82,7 +82,7 @@ namespace Interactive
                 }
                 else 
                 {
-                    Facts.Assert(subj, rel, obj, new Tnum(Convert.ToDouble(val)));
+                    Facts.Assert(subj, rel, obj, TnumFromTemporalString(val));
                     AkkTest.testStr += val + "\r\n";
                 }
             }
@@ -95,7 +95,7 @@ namespace Interactive
                 }
                 else 
                 {
-                    Facts.Assert(subj, rel, obj, new Tdate(DateTime.Parse(val)));
+                    Facts.Assert(subj, rel, obj, TdateFromTemporalString(val));
                     AkkTest.testStr += val + "\r\n";
                 }
             }
@@ -120,20 +120,16 @@ namespace Interactive
                         // Create a list of Things
                         string[] items = val.Split(new char[] {';'});
                         List<Thing> list = new List<Thing>();
-                        string thingList = "";
+                        string thingList = "";      // for .akk unit tests
                         foreach (string i in items)
                         {
                             string name = i.Trim();
-    //                        if (name != "t1" && name != "t2" && !Facts.ThingExists(name))
-    //                        {
-                                list.Add(new Thing(name));
-                                thingList += name + ",";
-    //                        }
+                            list.Add(Facts.AddThing(name));
+                            thingList += name + ",";
                         }
 
                         // Assert the Tset
-                        Tset result = new Tset(list);
-                        Facts.Assert(subj, rel, obj, result);
+                        Facts.Assert(subj, rel, obj, new Tset(list));
 
                         // Build the .akk unit test string
                         AkkTest.testStr += "- Things " + thingList.TrimEnd(',') + "\r\n";
@@ -142,6 +138,114 @@ namespace Interactive
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Creates a Tbool from a string representing a time-varying value.
+        /// </summary>
+        /// <remarks>
+        /// Sample input: {2012-01-01: true; Time.DawnOf: false}
+        /// Note the reverse chronological order.
+        /// </remarks>
+        private static Tbool TboolFromTemporalString(string val)
+        {
+            if (val.StartsWith("{"))
+            {
+                // Assert each of the time-value pairs
+                Tbool result = new Tbool();
+                foreach (string s in TimeValuePairs(val))
+                {
+                    string[] parts = s.Split(new char[] {':'});
+                    DateTime datePart = Convert.ToDateTime(parts[0].Trim().Replace("Time.DawnOf","1800-01-01"));
+                    bool valPart = Convert.ToBoolean(parts[1].Trim());
+                    result.AddState(datePart, valPart);
+                }
+                return result;
+            }
+
+            return new Tbool(Convert.ToBoolean(val));
+        }
+
+        /// <summary>
+        /// Creates a Tstr from a string representing a time-varying value.
+        /// </summary>
+        /// <remarks>
+        /// Sample input: {2012-01-01: "Hello"; Time.DawnOf: "world"}
+        /// </remarks>
+        private static Tstr TstrFromTemporalString(string val)
+        {
+            if (val.StartsWith("{"))
+            {
+                Tstr result = new Tstr();
+                foreach (string s in TimeValuePairs(val))
+                {
+                    string[] parts = s.Split(new char[] {':'});
+                    DateTime datePart = Convert.ToDateTime(parts[0].Trim().Replace("Time.DawnOf","1800-01-01"));
+                    result.AddState(datePart, parts[1].Trim());
+                }
+                return result;
+            }
+            
+            return new Tstr(val);
+        }
+
+        /// <summary>
+        /// Creates a Tnum from a string representing a time-varying value.
+        /// </summary>
+        /// <remarks>
+        /// Sample input: {2012-01-01: 5; Time.DawnOf: $55,000.01}
+        /// </remarks>
+        private static Tnum TnumFromTemporalString(string val)
+        {
+            if (val.StartsWith("{"))
+            {
+                Tnum result = new Tnum();
+                foreach (string s in TimeValuePairs(val))
+                {
+                    string[] parts = s.Split(new char[] {':'});
+                    DateTime datePart = Convert.ToDateTime(parts[0].Trim().Replace("Time.DawnOf","1800-01-01"));
+                    decimal valPart = Convert.ToDecimal(parts[1].Trim(' ','$').Replace(",",""));
+                    result.AddState(datePart, valPart);
+                }
+                return result;
+            }
+            
+            return new Tnum(val);
+        }
+
+        /// <summary>
+        /// Creates a Tdate from a string representing a time-varying value.
+        /// </summary>
+        /// <remarks>
+        /// Sample input: {2012-01-01: 2012-12-31; Time.DawnOf: 2000-12-31}
+        /// </remarks>
+        private static Tdate TdateFromTemporalString(string val)
+        {
+            if (val.StartsWith("{"))
+            {
+                Tdate result = new Tdate();
+                foreach (string s in TimeValuePairs(val))
+                {
+                    string[] parts = s.Split(new char[] {':'});
+                    DateTime datePart = Convert.ToDateTime(parts[0].Trim().Replace("Time.DawnOf","1800-01-01"));
+                    DateTime valPart = Convert.ToDateTime(parts[1].Trim());
+                    result.AddState(datePart, valPart);
+                }
+                return result;
+            }
+            
+            return new Tdate(val);
+        }
+
+        /// <summary>
+        /// Converts timeline string into array of time-value pairs.
+        /// </summary>
+        private static string[] TimeValuePairs(string val)
+        {
+            val = val.Trim('{','}');
+            string[] pairs = val.Split(new char[] {';'});
+            Array.Reverse(pairs);
+            return pairs;
         }
     }
 }

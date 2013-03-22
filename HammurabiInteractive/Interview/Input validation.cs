@@ -33,6 +33,10 @@ namespace Interactive
 		/// </summary>
 		public static bool AnswerIsValid(Question question, string input)
 		{
+            // Allow time-varying inputs
+            // TODO: Validate these
+            if (input.StartsWith("{") & input.EndsWith("}")) return true;
+
             // Allow "unstated"
             if (input.Trim() == "?") return true;
 

@@ -17,7 +17,7 @@ Generated source/
 Akkadian/Extensions/
 
 *.VisualState.xml
-
+*.userprefs
 
 #################
 ## Visual Studio
