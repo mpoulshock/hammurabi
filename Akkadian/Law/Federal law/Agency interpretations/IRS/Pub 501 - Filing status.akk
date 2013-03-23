@@ -92,25 +92,25 @@ Test: Page8_Example4_GirlfriendsChild
 - Things girlfriendChild, filer
 - USC.Tit26.Sec152.IsQualifyingChildOf(girlfriendChild,filer) = false
 - USC.Tit26.Sec152.IsQualifyingRelativeOf(girlfriendChild,filer) = false
-- IRS.Pub501.IsQualifyingPersonForHoH(girlfriendChild, filer).TestOutput =?= "Time.DawnOf False "
+- IRS.Pub501.IsQualifyingPersonForHoH(girlfriendChild, filer).Out =?= false
 
 Test: Page8_Example3_Girlfriend
 - Things girlfriend, taxfiler
 - USC.Tit26.Sec152.IsQualifyingChildOf(girlfriend,taxfiler) = false
 - USC.Tit26.Sec152.IsQualifyingRelativeOf(girlfriend,taxfiler) = false
-- IRS.Pub501.IsQualifyingPersonForHoH(girlfriend, taxfiler).TestOutput =?= "Time.DawnOf False "
+- IRS.Pub501.IsQualifyingPersonForHoH(girlfriend, taxfiler).Out =?= false
 
 Test: Page8_Example2_ChildNotQP
 - Things child, parent
 - USC.Tit26.Sec152.IsQualifyingChildOf(child,parent) = false
 - USC.Tit26.Sec152.IsQualifyingRelativeOf(child,parent) = false
-- IRS.Pub501.IsQualifyingPersonForHoH(child, parent).TestOutput =?= "Time.DawnOf False "
+- IRS.Pub501.IsQualifyingPersonForHoH(child, parent).Out =?= false
 
 Test: Page8_Example1_Child
 - Things child, parent
 - USC.Tit26.Sec152.IsQualifyingChildOf(child,parent) = true
 - Fam.MaritalStatus(child) = "Single"
-- IRS.Pub501.IsQualifyingPersonForHoH(child, parent).TestOutput =?= "Time.DawnOf True "
+- IRS.Pub501.IsQualifyingPersonForHoH(child, parent).Out =?= true
 
 
 

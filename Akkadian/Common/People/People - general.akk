@@ -104,23 +104,23 @@ Test: 193653325
 - IsDeceased(t1) = true
 - DoB(t1) = 2000-01-02
 - DateOfDeath(t1) = 2088-03-02
-- Hammurabi.H.IsAlive(t1).TestOutput =?= "Time.DawnOf False 1/2/2000 12:00:00 AM True 3/2/2088 12:00:00 AM False "
+- Hammurabi.H.IsAlive(t1).Out =?= "{Dawn: false; 1/2/2000: true; 3/2/2088: false}"
 
 Test: 143320034
 - Things t1, t2
 - IsDeceased(t1) = false
 - DoB(t1) = 2011-01-01
-- Hammurabi.H.IsAlive(t1).TestOutput =?= "Time.DawnOf False 1/1/2011 12:00:00 AM True 1/1/2131 12:00:00 AM False "
+- Hammurabi.H.IsAlive(t1).Out =?= "{Dawn: false; 1/1/2011: true; 1/1/2131: false}"
 
 Test: 773795755
 - Things t1, t2
 - Gender(t1) = "Female"
-- Hammurabi.H.IsFemale(t1).TestOutput =?= "Time.DawnOf True "
+- Hammurabi.H.IsFemale(t1).Out =?= true
 
 Test: 308454842
 - Things t1, t2
 - Gender(t1) = "Male"
-- Hammurabi.H.IsFemale(t1).TestOutput =?= "Time.DawnOf False "
+- Hammurabi.H.IsFemale(t1).Out =?= false
 
 Test: TotalSanity
 - Thing p

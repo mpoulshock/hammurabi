@@ -35,7 +35,7 @@ Test: 701366647
 - DoB(murray) = 1988-03-04
 - BirthCountry(murray) = "Guam"
 - IsSubjectToUSJurisdiction(murray) = true
-- USC.Tit8.Sec1407.IsUSCitizenPerGuam(murray).TestOutput =?= "Time.DawnOf False 3/4/1988 12:00:00 AM True "
+- USC.Tit8.Sec1407.IsUSCitizenPerGuam(murray).Out =?= "{Dawn: false; 3/4/1988: true}"
 
 Test: 904438779
 - Thing murray
@@ -43,11 +43,11 @@ Test: 904438779
 - BirthCountry(murray) = "Guam"
 - IsSubjectToUSJurisdiction(murray) = true
 - USC.Tit8.Sec1407.TookStepsToPreserveForeignNationality(murray) = false
-- USC.Tit8.Sec1407.IsUSCitizenPerGuam(murray).TestOutput =?= "Time.DawnOf False 1/2/1904 12:00:00 AM True "
+- USC.Tit8.Sec1407.IsUSCitizenPerGuam(murray).Out =?= "{Dawn: false; 1/2/1904: true}"
 
 Test: 65134483
 - Thing murray
 - DoB(murray) = 1890-01-01
 - BirthCountry(murray) = "Guam"
-- USC.Tit8.Sec1407.IsUSCitizenPerGuam(murray).TestOutput =?= "Time.DawnOf Stub "
+- USC.Tit8.Sec1407.IsUSCitizenPerGuam(murray).Out =?= "Stub"
 

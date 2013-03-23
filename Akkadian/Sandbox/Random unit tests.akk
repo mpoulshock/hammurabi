@@ -129,29 +129,29 @@ Test: 171824320
 - Thing p
 - Sandbox.TestMethod918a(p) = new Tbool(Hstate.Unstated)
 - Sandbox.TestMethod918b(p) = false
-- Sandbox.AnotherMethod(p).TestOutput =?= "Time.DawnOf False "
+- Sandbox.AnotherMethod(p).Out =?= false
 
 Test: 580982293
 - Thing p
 - Sandbox.TestMethod918a(p) = new Tbool(Hstate.Unstated)
 - Sandbox.TestMethod918b(p) = true
-- Sandbox.AnotherMethod(p).TestOutput =?= "Time.DawnOf True "
+- Sandbox.AnotherMethod(p).Out =?= true
 
 Test: 288489417
 - Thing p
 - Sandbox.TestMethod918a(p) = Tbool(?)
 - Sandbox.TestMethod918b(p) = Tbool(?)
-- Sandbox.AnotherMethod(p).TestOutput =?= "Time.DawnOf Uncertain "
+- Sandbox.AnotherMethod(p).Out =?= "Uncertain"
 
 Test: 798236451
 - Thing p
 - Sandbox.TestMethod918a(p) = false
-- Sandbox.AnotherMethod(p).TestOutput =?= "Time.DawnOf False "
+- Sandbox.AnotherMethod(p).Out =?= false
 
 Test: 416036083
 - Thing p
 - Sandbox.TestMethod918a(p) = true
-- Sandbox.AnotherMethod(p).TestOutput =?= "Time.DawnOf True "
+- Sandbox.AnotherMethod(p).Out =?= true
 
 
 # TEST OF AKKADIAN COMPILER - METHOD SIGNATURES
@@ -210,28 +210,28 @@ Tbool TimeError2(Thing t) =
 
 Test: PeriodEndVal1
 - Thing p
-- Fam.IsMarried(p) = {Time.DawnOf: false; 2012-05-02: true}
-- Fam.IsMarried(p).PeriodEndVal(TheYear).TestOutput =?= "Time.DawnOf False 1/1/2012 12:00:00 AM True "
+- Fam.IsMarried(p) = {Dawn: false; 2012-05-02: true}
+- Fam.IsMarried(p).PeriodEndVal(TheYear).Out =?= "{Dawn: false; 1/1/2012: true}"
 
 Test: PeriodEndVal2
 - Thing p
 - Fam.IsMarried(p) = true
-- Fam.IsMarried(p).PeriodEndVal(TheYear).TestOutput =?= "Time.DawnOf True "
+- Fam.IsMarried(p).PeriodEndVal(TheYear).Out =?= true
 
 Test: PeriodEndVal3
 - Thing p
 - IsDeceased(p) = Tbool(?)
-- IsDeceased(p).PeriodEndVal(TheYear).TestOutput =?= "Time.DawnOf Uncertain "
+- IsDeceased(p).PeriodEndVal(TheYear).Out =?= "Uncertain"
 
 Test: PeriodEndVal4
 - Thing p
-- Fam.IsMarried(p) = {Time.DawnOf: false; 2012-03-11: true; 2012-05-02: false}
-- Fam.IsMarried(p).PeriodEndVal(TheYear).TestOutput =?= "Time.DawnOf False "
+- Fam.IsMarried(p) = {Dawn: false; 2012-03-11: true; 2012-05-02: false}
+- Fam.IsMarried(p).PeriodEndVal(TheYear).Out =?= false
 
 Test: PeriodEndVal5
 - Thing p
-- Fam.IsMarried(p) = {Time.DawnOf: false; 2012-01-01: true}
-- Fam.IsMarried(p).PeriodEndVal(TheYear).TestOutput =?= "Time.DawnOf False 1/1/2012 12:00:00 AM True "
+- Fam.IsMarried(p) = {Dawn: false; 2012-01-01: true}
+- Fam.IsMarried(p).PeriodEndVal(TheYear).Out =?= "{Dawn: false; 1/1/2012: true}"
 
 
 # USE OF HIGHER-ORDER FUNCTIONS
@@ -258,18 +258,18 @@ Test: 825234342
 
 Test: Shift1
 - Thing p
-- Econ.AnnualIncome(p) = {Time.DawnOf: 0; 2000-01-01: 100; 2001-01-01: 200}
-- Econ.AnnualIncome(p).Shift(-1,TheYear).TestOutput =?= "Time.DawnOf 0 1/1/2001 12:00:00 AM 100 1/1/2002 12:00:00 AM 200 "
+- Econ.AnnualIncome(p) = {Dawn: 0; 2000-01-01: 100; 2001-01-01: 200}
+- Econ.AnnualIncome(p).Shift(-1,TheYear).Out =?= "{Dawn: 0; 1/1/2001: 100; 1/1/2002: 200}"
 
 Test: Shift2
 - Thing p
-- Econ.AnnualIncome(p) = {Time.DawnOf: 0; 2000-01-01: 100; 2001-01-01: 200}
-- Econ.AnnualIncome(p).Shift(0,TheYear).TestOutput =?= "Time.DawnOf 0 1/1/2000 12:00:00 AM 100 1/1/2001 12:00:00 AM 200 "
+- Econ.AnnualIncome(p) = {Dawn: 0; 2000-01-01: 100; 2001-01-01: 200}
+- Econ.AnnualIncome(p).Shift(0,TheYear).Out =?= "{Dawn: 0; 1/1/2000: 100; 1/1/2001: 200}"
 
 Test: Shift3
 - Thing p
-- Econ.AnnualIncome(p) = {Time.DawnOf: 0; 2000-01-01: 100; 2001-01-01: 200}
-- Econ.AnnualIncome(p).Shift(2,TheYear).TestOutput =?= "Time.DawnOf 0 1/1/1998 12:00:00 AM 100 1/1/1999 12:00:00 AM 200 "
+- Econ.AnnualIncome(p) = {Dawn: 0; 2000-01-01: 100; 2001-01-01: 200}
+- Econ.AnnualIncome(p).Shift(2,TheYear).Out =?= "{Dawn: 0; 1/1/1998: 100; 1/1/1999: 200}"
 
     
 # UNIT TESTS FOR YEARDIFF, WEEKDIFF, DAYDIFF
@@ -441,7 +441,7 @@ Tbool SetContainsThing(Thing p1, Thing p2) =
 Test: 85594484
 - Things t1, t2
 - Fam.ChildrenOf(t1) = [[t2]]
-- Sandbox.SetContainsThing(t1, t2).TestOutput =?= "Time.DawnOf True "
+- Sandbox.SetContainsThing(t1, t2).Out =?= true
 
 
 # ASK INTERMEDIATE QUESTION BEFORE DESCENDING TREE
@@ -568,7 +568,7 @@ Test: 864022057
 - Sandbox.MotherOf(barry) = [[monroevius]]
 - Sandbox.IsCitizen(monroevius) = Tbool(?)
 - Sandbox.IsCitizenByLaw(monroevius) = true
-- Sandbox.IsCitizen(t1).TestOutput =?= "Time.DawnOf True "
+- Sandbox.IsCitizen(t1).Out =?= true
 
 
 # TSET INPUTS

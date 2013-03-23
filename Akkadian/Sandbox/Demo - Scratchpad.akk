@@ -26,8 +26,8 @@ Test: TippedEmployee1
 
 Test: TippedEmployee2
 - Thing Joan
-- Econ.MonthlyIncome(Joan) = {Time.DawnOf: 0; 2013-03-15: 900}
-- Demo.IsTippedEmployee(Joan).EasyOut =?= "Dawn: False; 3/15/2013: True"
+- Econ.MonthlyIncome(Joan) = {Dawn: 0; 2013-03-15: 900}
+- Demo.IsTippedEmployee(Joan).Out =?= "{Dawn: false; 3/15/2013: true}"
 
 
 

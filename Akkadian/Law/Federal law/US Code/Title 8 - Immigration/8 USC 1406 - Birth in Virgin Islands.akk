@@ -32,13 +32,13 @@ Test: 222040772
 - DoB(lana) = 1930-03-04
 - BirthCountry(lana) = "Virgin Islands"
 - IsSubjectToUSJurisdiction(lana) = true
-- USC.Tit8.Sec1406.IsUSCitizenPerVI(lana).TestOutput =?= "Time.DawnOf False 3/4/1930 12:00:00 AM True "
+- USC.Tit8.Sec1406.IsUSCitizenPerVI(lana).Out =?= "{Dawn: false; 3/4/1930: true}"
 
 Test: 99021694
 - Thing lana
 - DoB(lana) = 1903-02-03
 - BirthCountry(lana) = "Virgin Islands"
-- USC.Tit8.Sec1406.IsUSCitizenPerVI(lana).TestOutput =?= "Time.DawnOf Stub "
+- USC.Tit8.Sec1406.IsUSCitizenPerVI(lana).Out =?= "Stub"
 
 
 

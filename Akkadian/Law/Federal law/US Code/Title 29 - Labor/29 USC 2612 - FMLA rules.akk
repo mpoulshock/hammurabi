@@ -100,7 +100,7 @@ Test: 54153730
 - USC.Tit29.Sec2611.LessThan50EmployeesWithin75MilesOfWorksite(t1,t2) = false
 - USC.Tit29.Sec2611.DateLeaveBegins(t1,t2) = 2010-01-02
 - Econ.EmploymentRelationship(t1,t2) = "None"
-- USC.Tit29.Sec2612.IsEntitledToLeaveFrom(t1, t2).TestOutput =?= "Time.DawnOf False "
+- USC.Tit29.Sec2612.IsEntitledToLeaveFrom(t1, t2).Out =?= false
 
 Test: Test1
 - Things e, c

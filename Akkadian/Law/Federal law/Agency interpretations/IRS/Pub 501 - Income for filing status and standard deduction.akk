@@ -110,7 +110,7 @@ Test: 58209548
 - IRS.Pub501.AnnualUnemploymentIncome(jed) = 0
 - IRS.Pub501.AnnualTaxableSocialSecurityBenefits(jed) = 0
 - IRS.Pub501.AnnualPensionAnnuityTrustIncome(jed) = 0
-- IRS.Pub501.UnearnedIncome(jed).TestOutput =?= "Time.DawnOf 18 "
+- IRS.Pub501.UnearnedIncome(jed).Out =?= $18
 
 Test: 200206942
 - Thing jon
@@ -121,7 +121,7 @@ Test: 200206942
 - IRS.Pub501.AnnualIncomeFromPuertoRico(jon) = 900
 - IRS.Pub501.AnnualFederalIncomeFromPuertoRico(jon) = 900
 - IRS.Pub501.HasIncomeFromUSPossession(jon) = false
-- IRS.Pub501.IndividualEarnedIncomeForFS(jon).TestOutput =?= "Time.DawnOf 900 "
+- IRS.Pub501.IndividualEarnedIncomeForFS(jon).Out =?= $900
 
 Test: 474480858
 - Things tony, jane
@@ -134,5 +134,5 @@ Test: 474480858
 - IRS.Pub501.AnnualTipIncome(tony) = 0
 - IRS.Pub501.AnnualScholarshipIncome(tony) = 0
 - IRS.Pub501.HasIncomeFromUSPossession(tony) = false
-- IRS.Pub501.EarnedIncomeForFS(tony).TestOutput =?= "Time.DawnOf 300 "
+- IRS.Pub501.EarnedIncomeForFS(tony).Out =?= $300
 

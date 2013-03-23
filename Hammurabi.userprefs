@@ -1,9 +1,56 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Akkadian\Law\Federal law\US Code\Title 8 - Immigration\8 USC 1407 - Birth in Guam.akk">
+    <Files>
+      <File FileName="Hammurabi\Core\Fundamental types\Tvar.cs" Line="1" Column="1" />
+      <File FileName="Akkadian\Sandbox\Demo - Scratchpad.akk" Line="1" Column="1" />
+      <File FileName="Akkadian\Common\Fam\Fam - marriage.akk" Line="1" Column="1" />
+      <File FileName="AkkadianCompiler\Tests.cs" Line="1" Column="1" />
+      <File FileName="Akkadian\Common\People\People - general.akk" Line="1" Column="1" />
+      <File FileName="Akkadian\Law\Federal law\Agency interpretations\IRS\Pub 501 - Exemptions.akk" Line="1" Column="1" />
+      <File FileName="Akkadian\Law\Federal law\Agency interpretations\IRS\Pub 501 - Who must file.akk" Line="1" Column="1" />
+      <File FileName="Hammurabi\Generated source\People - general.cs" Line="1" Column="1" />
+      <File FileName="Akkadian\Law\Federal law\Agency interpretations\IRS\Pub 519 - Alien tax status.akk" Line="1" Column="1" />
+      <File FileName="Akkadian\Law\Federal law\US Code\Title 8 - Immigration\8 USC 1402 - Birth in Puerto Rico.akk" Line="1" Column="1" />
+      <File FileName="Akkadian\Law\Federal law\US Code\Title 8 - Immigration\8 USC 1403 - Birth in Canal Zone.akk" Line="1" Column="1" />
+      <File FileName="Akkadian\Law\Federal law\US Code\Title 8 - Immigration\8 USC 1404 - Birth in Alaska.akk" Line="1" Column="1" />
+      <File FileName="Akkadian\Law\Federal law\US Code\Title 8 - Immigration\8 USC 1405 - Birth in Hawaii.akk" Line="1" Column="1" />
+      <File FileName="Akkadian\Law\Federal law\US Code\Title 8 - Immigration\8 USC 1406 - Birth in Virgin Islands.akk" Line="1" Column="1" />
+      <File FileName="Akkadian\Law\Federal law\US Code\Title 8 - Immigration\8 USC 1407 - Birth in Guam.akk" Line="30" Column="1" />
+    </Files>
     <Pads>
       <Pad Id="ProjectPad">
-        <State expanded="True" />
+        <State expanded="True">
+          <Node name="Akkadian" expanded="True">
+            <Node name="Common" expanded="True">
+              <Node name="Fam" expanded="True" />
+              <Node name="People" expanded="True" />
+            </Node>
+            <Node name="Law" expanded="True">
+              <Node name="Federal law" expanded="True">
+                <Node name="Agency interpretations" expanded="True">
+                  <Node name="IRS" expanded="True" />
+                </Node>
+                <Node name="US Code" expanded="True">
+                  <Node name="Title 8 - Immigration" expanded="True">
+                    <Node name="8 USC 1407 - Birth in Guam.akk" selected="True" />
+                  </Node>
+                </Node>
+              </Node>
+            </Node>
+            <Node name="Sandbox" expanded="True" />
+          </Node>
+          <Node name="AkkadianCompiler" expanded="True" />
+          <Node name="Hammurabi" expanded="True">
+            <Node name="Core" expanded="True">
+              <Node name="Fundamental types" expanded="True" />
+            </Node>
+            <Node name="Generated source" expanded="True" />
+          </Node>
+          <Node name="Unit tests - Hammurabi core" expanded="True">
+            <Node name="Unit tests" expanded="True" />
+          </Node>
+        </State>
       </Pad>
       <Pad Id="ClassPad">
         <State expanded="True">

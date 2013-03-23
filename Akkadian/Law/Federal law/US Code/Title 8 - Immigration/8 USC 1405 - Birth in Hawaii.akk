@@ -37,20 +37,20 @@ Test: 781940999
 - DoB(mel) = 1901-01-01
 - BirthState(mel) = "Guam"
 - USC.Tit8.Sec1405.HawCitOn18980812(mel) = true
-- USC.Tit8.Sec1405.IsUSCitizenPerHawaii(mel).TestOutput =?= "Time.DawnOf True "
+- USC.Tit8.Sec1405.IsUSCitizenPerHawaii(mel).Out =?= true
 
 Test: 379711445
 - Thing mel
 - DoB(mel) = 1899-01-01
 - BirthState(mel) = "Hawaii"
 - USC.Tit8.Sec1405.HawCitOn18980812(mel) = false
-- USC.Tit8.Sec1405.IsUSCitizenPerHawaii(mel).TestOutput =?= "Time.DawnOf False 4/30/1900 12:00:00 AM True "
+- USC.Tit8.Sec1405.IsUSCitizenPerHawaii(mel).Out =?= "{Dawn: false; 4/30/1900: true}"
 
 Test: 363859658
 - Thing mel
 - DoB(mel) = 1888-02-01
 - USC.Tit8.Sec1405.HawCitOn18980812(mel) = false
-- USC.Tit8.Sec1405.IsUSCitizenPerHawaii(mel).TestOutput =?= "Time.DawnOf False "
+- USC.Tit8.Sec1405.IsUSCitizenPerHawaii(mel).Out =?= false
 
 
 

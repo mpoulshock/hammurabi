@@ -184,5 +184,5 @@ Test: 403207628
 - Pa.Code.Tit55.Ch601.ResponsibleForHeatingCosts(Joneses) = true
 - StateOfResidence(sam) = "Pennsylvania"
 - Imm.USImmigrationStatus(sam) = "U.S. citizen"
-- Pa.Code.Tit55.Ch601.IsEligible(Joneses).TestOutput =?= "Time.DawnOf Stub 1/20/2011 12:00:00 AM True 12/31/2012 12:00:00 AM Stub "
+- Pa.Code.Tit55.Ch601.IsEligible(Joneses).Out =?= "{Dawn: Stub; 1/20/2011: true; 12/31/2012: Stub}"
 

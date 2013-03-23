@@ -96,7 +96,7 @@ Test: Para3
 - BirthCountry(liz) = "Swains Island"
 - DoB(liz) = 1900-02-01
 - Fam.IsOfUnknownParentage(liz) = true
-- USC.Tit8.Sec1408.IsUSNationalByBirth(liz).TestOutput =?= "Time.DawnOf False 2/1/1900 12:00:00 AM True "
+- USC.Tit8.Sec1408.IsUSNationalByBirth(liz).Out =?= "{Dawn: false; 2/1/1900: true}"
 
 Test: Para2
 - Things izzy, mom, dad
@@ -109,11 +109,11 @@ Test: Para2
 - Imm.USImmigrationStatus(dad) = "U.S. national"
 - Imm.USImmigrationStatus(mom) = "U.S. national"
 - CountryOfResidence(dad) = "American Samoa"
-- USC.Tit8.Sec1408.IsUSNationalByBirth(izzy).TestOutput =?= "Time.DawnOf False 3/3/1975 12:00:00 AM True "
+- USC.Tit8.Sec1408.IsUSNationalByBirth(izzy).Out =?= "{Dawn: false; 3/3/1975: true}"
 
 Test: Para1
 - Thing izzy
 - BirthCountry(izzy) = "American Samoa"
 - DoB(izzy) = 1977-04-12
-- USC.Tit8.Sec1408.IsUSNationalByBirth(izzy).TestOutput =?= "Time.DawnOf False 4/12/1977 12:00:00 AM True "
+- USC.Tit8.Sec1408.IsUSNationalByBirth(izzy).Out =?= "{Dawn: false; 4/12/1977: true}"
 

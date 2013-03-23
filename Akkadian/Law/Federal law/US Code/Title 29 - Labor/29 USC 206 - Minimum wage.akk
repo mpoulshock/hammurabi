@@ -26,8 +26,8 @@ Tnum FedMinWage() =
 # UNIT TESTS
 
 Test: MinWage1
-- USC.Tit29.Sec206.FedMinWage().AsOf(2001-03-03).TestOutput =?= "Time.DawnOf 5.15 "
+- USC.Tit29.Sec206.FedMinWage().AsOf(2001-03-03).Out =?= $5.15
 
 Test: MinWage2
-- USC.Tit29.Sec206.FedMinWage().AsOf(1975-03-03).TestOutput =?= "Time.DawnOf Stub "
+- USC.Tit29.Sec206.FedMinWage().AsOf(1975-03-03).Out =?= "Stub"
 

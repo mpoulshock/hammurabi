@@ -145,7 +145,7 @@ Test: USCitizenMFJ
 - IsDeceased(tammy) = false
 - USC.Tit26.Sec152.CanBeClaimedAsDependentBySomeone(tammy) = false
 - IRS.Pub501.DependencyExemptions(jed) = 0
-- IRS.Pub501.ExemptionAmountBeforePhaseout(jed).AsOf(2011-12-31).TestOutput =?= "Time.DawnOf 7400 "
+- IRS.Pub501.ExemptionAmountBeforePhaseout(jed).AsOf(2011-12-31).Out =?= $7,400
 
 Test: USCitizenSingle
 - Thing jimbo
@@ -156,7 +156,7 @@ Test: USCitizenSingle
 - Fam.MaritalStatus(jimbo) = "Single"
 - USC.Tit26.Sec2.FedTaxFilingStatus(jimbo) = "Single"
 - IRS.Pub501.DependencyExemptions(jimbo) = 1
-- IRS.Pub501.ExemptionAmountBeforePhaseout(jimbo).AsOf(2011-12-31).TestOutput =?= "Time.DawnOf 7400 "
+- IRS.Pub501.ExemptionAmountBeforePhaseout(jimbo).AsOf(2011-12-31).Out =?= $7,400
 
 Test: 631329891
 - Thing larry
@@ -164,7 +164,7 @@ Test: 631329891
 - CountryOfResidence(larry) = "Russia"
 - Imm.USImmigrationStatus(larry) = "Alien"
 - IRS.Pub519.AlienTaxStatus(larry) = "Dual-status alien"
-- IRS.Pub501.ExemptionAmountBeforePhaseout(larry).TestOutput =?= "Time.DawnOf Stub "
+- IRS.Pub501.ExemptionAmountBeforePhaseout(larry).Out =?= "Stub"
 
 Test: 243734645
 - Thing larry
@@ -173,22 +173,22 @@ Test: 243734645
 - Imm.USImmigrationStatus(larry) = "Alien"
 - IRS.Pub519.AlienTaxStatus(larry) = "Nonresident alien"
 - USC.Tit26.Sec152.CanBeClaimedAsDependentBySomeone(larry) = false
-- IRS.Pub501.ExemptionAmountBeforePhaseout(larry).AsOf(2011-12-31).TestOutput =?= "Time.DawnOf 3700 "
+- IRS.Pub501.ExemptionAmountBeforePhaseout(larry).AsOf(2011-12-31).Out =?= $3,700
 
 Test: 385282068
 - Thing larry
 - IsDeceased(larry) = false
 - CountryOfResidence(larry) = "India"
-- IRS.Pub501.ExemptionAmountBeforePhaseout(larry).TestOutput =?= "Time.DawnOf Stub "
+- IRS.Pub501.ExemptionAmountBeforePhaseout(larry).Out =?= "Stub"
 
 Test: DiedDuringTaxYear1
 - Thing jim
 - IsDeceased(jim) = true
 - DateOfDeath(jim) = 2010-04-04
-- IRS.Pub501.DiedDuringTaxYear(jim).TestOutput =?= "Time.DawnOf False 1/1/2010 12:00:00 AM True 1/1/2011 12:00:00 AM False "
+- IRS.Pub501.DiedDuringTaxYear(jim).Out =?= "{Dawn: false; 1/1/2010: true; 1/1/2011: false}"
 
 Test: DiedDuringTaxYear2
 - Thing jim
 - IsDeceased(jim) = false
-- IRS.Pub501.DiedDuringTaxYear(jim).TestOutput =?= "Time.DawnOf False "
+- IRS.Pub501.DiedDuringTaxYear(jim).Out =?= false
 

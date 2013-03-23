@@ -47,28 +47,28 @@ Test: 960269281
 - BirthState(mervin) = "Alaska"
 - DoB(mervin) = 1988-02-03
 - IsNativeAmerican(mervin) = false
-- USC.Tit8.Sec1404.IsUSCitizenPerAlaska(mervin).TestOutput =?= "Time.DawnOf False 2/3/1988 12:00:00 AM True "
+- USC.Tit8.Sec1404.IsUSCitizenPerAlaska(mervin).Out =?= "{Dawn: false; 2/3/1988: true}"
 
 Test: 540489836
 - Thing mervin
 - BirthState(mervin) = "Alaska"
 - DoB(mervin) = 1920-02-01
 - IsNativeAmerican(mervin) = true
-- USC.Tit8.Sec1404.IsUSCitizenPerAlaska(mervin).TestOutput =?= "Time.DawnOf False 6/2/1924 12:00:00 AM True "
+- USC.Tit8.Sec1404.IsUSCitizenPerAlaska(mervin).Out =?= "{Dawn: false; 6/2/1924: true}"
 
 Test: 917373403
 - Thing p
 - BirthState(p) = Tstr(?)
 - DoB(p) = Tdate(?)
 - IsNativeAmerican(p) = Tbool(?)
-- USC.Tit8.Sec1404.IsUSCitizenPerAlaska(p).TestOutput =?= "Time.DawnOf Uncertain "
+- USC.Tit8.Sec1404.IsUSCitizenPerAlaska(p).Out =?= "Uncertain"
 
 Test: 93000163
 - Thing p
 - BirthState(p) = "Alaska"
 - DoB(p) = 2011-01-01
 - IsNativeAmerican(p) = Tbool(?)
-- USC.Tit8.Sec1404.IsUSCitizenPerAlaska(p).TestOutput =?= "Time.DawnOf False 1/1/2011 12:00:00 AM Uncertain "
+- USC.Tit8.Sec1404.IsUSCitizenPerAlaska(p).Out =?= "{Dawn: false; 1/1/2011: Uncertain}"
 
 Test: TemporalFact1
 - Thing p

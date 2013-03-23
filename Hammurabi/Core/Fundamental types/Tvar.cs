@@ -177,31 +177,6 @@ namespace Hammurabi
         }
 
         /// <summary>
-        /// Displays a cleaner timeline string.
-        /// </summary>
-        public string EasyOut
-        {
-            get 
-            {  
-                if (this.TimeLine.Count == 1)
-                {
-                    return this.FirstValue.ToString;
-                }
-
-                string result = "";
-
-                foreach(KeyValuePair<DateTime,Hval> de in this.TimeLine)
-                {
-                    string date = de.Key.ToString().Replace("1/1/1800", "Dawn");
-                    date = date.Replace(" 12:00:00 AM", "");
-                    string val = de.Value.ToString;
-                    result += date + ": " + val + "; ";
-                }
-                return result.TrimEnd(' ', ';');
-            }
-        }
-
-        /// <summary>
         /// Displays a timeline indicating the state of the object at various
         /// points in time.  Same as .Timeline but without line breaks.
         /// Used for test cases only.
@@ -217,7 +192,6 @@ namespace Hammurabi
         /// <summary>
         /// Displays an output object.
         /// </summary>
-        //  TODO: Handle temporal outputs.
         public object Out
         {
             get 
@@ -236,9 +210,18 @@ namespace Hammurabi
                 }
                 else
                 {
-                    return this.TestOutput;
+                    string result = "{";
+                    
+                    foreach(KeyValuePair<DateTime,Hval> de in this.TimeLine)
+                    {
+                        string date = de.Key.ToString().Replace("1/1/1800", "Dawn");
+                        date = date.Replace(" 12:00:00 AM", "");
+                        string val = de.Value.ToString.Replace("True","true").Replace("False","false");
+                        result += date + ": " + val + "; ";
+                    }
+                    return result.TrimEnd(' ', ';') + "}";
                 }
-              }
+            }
         }
 
         /// <summary>

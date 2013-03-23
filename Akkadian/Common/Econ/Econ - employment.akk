@@ -201,35 +201,35 @@ IsPanamaRailroadEmployee(1) assumes IsEmployed(1)
 Test: 257940961
 - Things t1, t2
 - Econ.PercentSelfSupport(t1) = 20
-- Econ.ManagesOwnAffairs(t1).TestOutput =?= "Time.DawnOf Unstated "
+- Econ.ManagesOwnAffairs(t1).Out =?= "Unstated"
 
 Test: 87584116
 - Things t1, t2
 - Econ.IsFullTimeEmployee(t1,t2) = Tbool(?)
 - Econ.HoursWorkedPerWeek(t1,t2) = 45
 - Econ.EmploymentRelationship(t1,t2) = "Intern"
-- Econ.IsFullTimeEmployee(t1, t2).TestOutput =?= "Time.DawnOf False "
+- Econ.IsFullTimeEmployee(t1, t2).Out =?= false
 
 Test: 202197433
 - Things t1, t2
 - Econ.IsFullTimeEmployee(t1,t2) = Tbool(?)
 - Econ.HoursWorkedPerWeek(t1,t2) = 33
 - Econ.EmploymentRelationship(t1,t2) = "Employee"
-- Econ.IsFullTimeEmployee(t1, t2).TestOutput =?= "Time.DawnOf Stub "
+- Econ.IsFullTimeEmployee(t1, t2).Out =?= "Stub"
 
 Test: 936674161
 - Things t1, t2
 - Econ.IsFullTimeEmployee(t1,t2) = Tbool(?)
 - Econ.HoursWorkedPerWeek(t1,t2) = 39
 - Econ.EmploymentRelationship(t1,t2) = "Employee"
-- Econ.IsFullTimeEmployee(t1, t2).TestOutput =?= "Time.DawnOf True "
+- Econ.IsFullTimeEmployee(t1, t2).Out =?= true
 
 Test: 526288678
 - Things t1, t2
 - Econ.IsFullTimeEmployee(t1,t2) = Tbool(?)
 - Econ.HoursWorkedPerWeek(t1,t2) = 10
 - Econ.EmploymentRelationship(t1,t2) = "Employee"
-- Econ.IsFullTimeEmployee(t1, t2).TestOutput =?= "Time.DawnOf False "
+- Econ.IsFullTimeEmployee(t1, t2).Out =?= false
 
 Test: Tbool1
 - Thing p

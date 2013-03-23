@@ -33,12 +33,12 @@ Test: 461666829
 - BirthCountry(kid) = "Saipan"
 - IsUSCitizen(dad) = true
 - Mil.InArmedForces(dad) = true
-- USC.Tit8.Sec1401a.Sec1401gAppliesTo(kid).TestOutput =?= "Time.DawnOf Stub "
+- USC.Tit8.Sec1401a.Sec1401gAppliesTo(kid).Out =?= "Stub"
 
 Test: 127066866
 - Things t1, t2
 - Mil.InArmedForces(t1) = false
-- USC.Tit8.Sec1401a.IsQualifyingServicemember(t1).TestOutput =?= "Time.DawnOf False "
+- USC.Tit8.Sec1401a.IsQualifyingServicemember(t1).Out =?= false
 
 Test: BornTooEarly
 - Thing child

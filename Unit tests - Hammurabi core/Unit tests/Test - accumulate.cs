@@ -36,7 +36,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             t.AddState(Date(2010, 1, 1), 1000);
             t.AddState(Date(2010, 3, 1), 0);
             Tnum r = t.Accumulated(TheMonth).AsOf(Date(2012,1,1));           
-            Assert.AreEqual("2000", r.EasyOut);    
+            Assert.AreEqual(2000, r.Out);    
         }
 
         [Test]
@@ -44,7 +44,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         {
             Tnum t = new Tnum(0);
             Tnum r = t.Accumulated(TheMonth);           
-            Assert.AreEqual("0", r.EasyOut);    
+            Assert.AreEqual(0, r.Out);    
         }
         
         [Test]
@@ -52,7 +52,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         {
             Tnum t = new Tnum(new Hval());
             Tnum r = t.Accumulated(TheMonth);           
-            Assert.AreEqual("Unstated", r.EasyOut);    
+            Assert.AreEqual("Unstated", r.Out);    
         }
         
         [Test]
@@ -60,7 +60,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         {
             Tnum t = new Tnum(Hstate.Stub);
             Tnum r = t.Accumulated(TheMonth);           
-            Assert.AreEqual("Stub", r.EasyOut);    
+            Assert.AreEqual("Stub", r.Out);    
         }
 
         // ACCUMULATED OVER

@@ -84,7 +84,7 @@ Test: 348118400		# fail: Defect was introduced when I started caching all functi
 - DoB(dad) = 1955-01-01
 - Fam.CommittedToFinanciallySupportQ(dad,tom) = true
 - Fam.DateCommittedToFinanciallySupport(dad,tom) = 1985-01-01	# skip
-- USC.Tit8.Sec1409.SubsecAApplies(tom).TestOutput =?= "Time.DawnOf False 1/1/1985 12:00:00 AM True "
+- USC.Tit8.Sec1409.SubsecAApplies(tom).Out =?= "{Dawn: false; 1/1/1985: true}"
 
 Test: 225658686
 - Things roy, mom, dad
@@ -95,7 +95,7 @@ Test: 225658686
 - Fam.FamilyRelationship(mom,dad) = "None"
 - Fam.Legitimated(dad,roy) = true
 - Fam.DateLegitimated(dad,roy) = 1960-02-02
-- USC.Tit8.Sec1409.SubsecBApplies(roy).TestOutput =?= "Time.DawnOf True "
+- USC.Tit8.Sec1409.SubsecBApplies(roy).Out =?= true
 
 Test: 380775793
 - Things ramsey, mom, dad
@@ -107,7 +107,7 @@ Test: 380775793
 - BirthCountry(ramsey) = "Japan"
 - Fam.FamilyRelationship(mom,dad) = "None"
 - Imm.USImmigrationStatus(mom) = "U.S. national"
-- USC.Tit8.Sec1409.SubsecCApplies(ramsey).TestOutput =?= "Time.DawnOf False 3/3/1988 12:00:00 AM True "
+- USC.Tit8.Sec1409.SubsecCApplies(ramsey).Out =?= "{Dawn: false; 3/3/1988: true}"
 
 Test: SubsecC_UnnecessaryQuestion
 - Things jamie, mom, dad
@@ -117,5 +117,5 @@ Test: SubsecC_UnnecessaryQuestion
 - Gender(dad) = "Male"
 - CountryLocation(mom) = "United States"
 - BirthCountry(jamie) = "United States"
-- USC.Tit8.Sec1409.SubsecCApplies(jamie).TestOutput =?= "Time.DawnOf False "
+- USC.Tit8.Sec1409.SubsecCApplies(jamie).Out =?= false
 

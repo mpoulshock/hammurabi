@@ -140,7 +140,7 @@ Test: Page22_Ex4_Column3
 - IsBlind(Ed) = false
 - IRS.Pub501.EarnedIncomeForFS(Ed) = $3,726
 - Fam.MaritalStatus(Ed) = "Single"    # Redundant question?
-- IRS.Pub501.Table6Amount(Ed).TestOutput =?= "Time.DawnOf 4026 "
+- IRS.Pub501.Table6Amount(Ed).Out =?= $4,026
 
 Test: Page22_Ex3_Column3
 - Thing Amy
@@ -150,7 +150,7 @@ Test: Page22_Ex3_Column3
 - IsBlind(Amy) = true
 - IRS.Pub501.EarnedIncomeForFS(Amy) = $2,900
 - Fam.MaritalStatus(Amy) = "Single"
-- IRS.Pub501.Table6Amount(Amy).TestOutput =?= "Time.DawnOf 4650 "
+- IRS.Pub501.Table6Amount(Amy).Out =?= $4,650
 
 Test: Page22_Ex2_Column3
 - Things Joe, Mary
@@ -162,7 +162,7 @@ Test: Page22_Ex2_Column3
 - Fam.SpousesOf(Joe) = [[Mary]]
 - DoB(Mary) = 1990-01-01
 - IsBlind(Mary) = false
-- IRS.Pub501.Table6Amount(Joe).TestOutput =?= "Time.DawnOf 4100 "
+- IRS.Pub501.Table6Amount(Joe).Out =?= $4,100
 
 Test: Page22_Ex1_Column3
 - Thing michael
@@ -172,7 +172,7 @@ Test: Page22_Ex1_Column3
 - IsBlind(michael) = false
 - IRS.Pub501.EarnedIncomeForFS(michael) = $150
 - Fam.MaritalStatus(michael) = "Single"
-- IRS.Pub501.Table6Amount(michael).TestOutput =?= "Time.DawnOf 950 "
+- IRS.Pub501.Table6Amount(michael).Out =?= $950
 
 Test: Page22_Ex3_Column2
 - Things bill, lisa
@@ -185,7 +185,7 @@ Test: Page22_Ex3_Column2
 - DoB(lisa) = 1930-01-01
 - IsBlind(lisa) = false
 - IsBlind(bill) = false
-- IRS.Pub501.Table6Amount(bill).TestOutput =?= "Time.DawnOf 13900 "
+- IRS.Pub501.Table6Amount(bill).Out =?= $13,900
 
 Test: Page22_Ex2_Column2
 - Things larry, donna
@@ -198,7 +198,7 @@ Test: Page22_Ex2_Column2
 - Fam.MaritalStatus(larry) = "Married"
 - DoB(donna) = 1979-01-01
 - IsBlind(donna) = false
-- IRS.Pub501.Table6Amount(larry).TestOutput =?= "Time.DawnOf 12750 "
+- IRS.Pub501.Table6Amount(larry).Out =?= $12,750
 
 Test: Page22_Ex1_Column2
 - Things larry, donna
@@ -210,7 +210,7 @@ Test: Page22_Ex1_Column2
 - IsBlind(larry) = false
 - DoB(donna) = 1979-01-01
 - IsBlind(donna) = false
-- IRS.Pub501.Table6Amount(larry).TestOutput =?= "Time.DawnOf 11600 "
+- IRS.Pub501.Table6Amount(larry).Out =?= $11,600
 
 Test: 200595112
 - Thing jim
@@ -219,7 +219,7 @@ Test: 200595112
 - Fam.MaritalStatus(jim) = "Single"
 - DoB(jim) = 1990-01-01
 - IsBlind(jim) = false
-- IRS.Pub501.Table8Amount(jim).TestOutput =?= "Time.DawnOf 950 "
+- IRS.Pub501.Table8Amount(jim).Out =?= $950
 
 Test: 784536694
 - Things jon, sally
@@ -231,7 +231,7 @@ Test: 784536694
 - USC.Tit26.Sec152.CanBeClaimedAsDependentBySomeone(sally) = false
 - DoB(sally) = 1960-01-01
 - IsBlind(sally) = false
-- IRS.Pub501.Table6Amount(jon).TestOutput =?= "Time.DawnOf 11600 "
+- IRS.Pub501.Table6Amount(jon).Out =?= $11,600
 
 Test: 25881624
 - Things jim, jane
@@ -241,5 +241,5 @@ Test: 25881624
 - DoB(jim) = 1980-01-01
 - IsBlind(jim) = true
 - USC.Tit26.Sec2.FedTaxFilingStatus(jim) = "Married filing jointly"
-- IRS.Pub501.Table7Amount(jim).TestOutput =?= "Time.DawnOf 15050 "
+- IRS.Pub501.Table7Amount(jim).Out =?= $15,050
 

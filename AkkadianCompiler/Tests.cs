@@ -1,4 +1,4 @@
-// Copyright (c) 2012 Hammura.bi LLC
+// Copyright (c) 2012-2013 Hammura.bi LLC
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -28,7 +28,7 @@ namespace Akkadian
     /// </summary>
     public class Tests
     { 
-        private static string word = @"[-!\+\*/A-Za-z0-9\.;:\(\),""'_<>=&|\[\]\? ]+";
+        private static string word = @"[-!\+\*/A-Za-z0-9\.;:\(\),""'_<>=&|\[\]\?{} ]+";
 
         // Opens the testing namespace/class
         public static string unitSpaceOpen =
@@ -151,7 +151,7 @@ namespace Akkadian
             foreach (string s in timepts)
             {
                 string[] pair = s.Split(':');
-                result += "()=> TheTime.IsAtOrAfter(" + pair[0] + "), ";   // Add the date
+                result += "()=> TheTime.IsAtOrAfter(" + pair[0].Replace("Dawn","Time.DawnOf") + "), ";   // Add the date
                 result += "()=> " + pair[1] + ", ";   // Add the value
             }
 

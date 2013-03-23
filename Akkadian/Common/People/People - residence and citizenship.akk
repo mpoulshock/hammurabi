@@ -69,17 +69,17 @@ Tstr CountryLocation(Thing p)
 Test: 909943367
 - Thing jane
 - StateOfResidence(jane) = "Louisiana"
-- Hammurabi.H.IsUSResident(jane).TestOutput =?= "Time.DawnOf True "
+- Hammurabi.H.IsUSResident(jane).Out =?= true
 
 Test: 280315571
 - Thing jane
 - CountryOfResidence(jane) = "Japan"
-- Hammurabi.H.IsUSResident(jane).TestOutput =?= "Time.DawnOf False "
+- Hammurabi.H.IsUSResident(jane).Out =?= false
 
 Test: 909943867
 - Thing jane
 - CountryOfResidence(jane) = "United States"
-- Hammurabi.H.IsUSResident(jane).TestOutput =?= "Time.DawnOf True "
+- Hammurabi.H.IsUSResident(jane).Out =?= true
 
 
 

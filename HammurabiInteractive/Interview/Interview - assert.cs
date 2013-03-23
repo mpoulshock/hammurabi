@@ -156,7 +156,7 @@ namespace Interactive
                 foreach (string s in TimeValuePairs(val))
                 {
                     string[] parts = s.Split(new char[] {':'});
-                    DateTime datePart = Convert.ToDateTime(parts[0].Trim().Replace("Time.DawnOf","1800-01-01"));
+                    DateTime datePart = Convert.ToDateTime(parts[0].Trim().Replace("Dawn","1800-01-01"));
                     bool valPart = Convert.ToBoolean(parts[1].Trim());
                     result.AddState(datePart, valPart);
                 }
@@ -180,7 +180,7 @@ namespace Interactive
                 foreach (string s in TimeValuePairs(val))
                 {
                     string[] parts = s.Split(new char[] {':'});
-                    DateTime datePart = Convert.ToDateTime(parts[0].Trim().Replace("Time.DawnOf","1800-01-01"));
+                    DateTime datePart = Convert.ToDateTime(parts[0].Trim().Replace("Dawn","1800-01-01"));
                     result.AddState(datePart, parts[1].Trim());
                 }
                 return result;
@@ -203,7 +203,7 @@ namespace Interactive
                 foreach (string s in TimeValuePairs(val))
                 {
                     string[] parts = s.Split(new char[] {':'});
-                    DateTime datePart = Convert.ToDateTime(parts[0].Trim().Replace("Time.DawnOf","1800-01-01"));
+                    DateTime datePart = Convert.ToDateTime(parts[0].Trim().Replace("Dawn","1800-01-01"));
                     decimal valPart = Convert.ToDecimal(parts[1].Trim(' ','$').Replace(",",""));
                     result.AddState(datePart, valPart);
                 }
@@ -227,7 +227,7 @@ namespace Interactive
                 foreach (string s in TimeValuePairs(val))
                 {
                     string[] parts = s.Split(new char[] {':'});
-                    DateTime datePart = Convert.ToDateTime(parts[0].Trim().Replace("Time.DawnOf","1800-01-01"));
+                    DateTime datePart = Convert.ToDateTime(parts[0].Trim().Replace("Dawn","1800-01-01"));
                     DateTime valPart = Convert.ToDateTime(parts[1].Trim());
                     result.AddState(datePart, valPart);
                 }

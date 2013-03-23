@@ -114,6 +114,6 @@ Test: 708567851
 - Econ.MonthlyVeteransBenefits(t1) = 0
 - Econ.MonthlyChildSupportIncome(t1) = 3
 - Econ.MonthlyUnemploymentCompensation(t1) = 0
-- Econ.AnnualIncome(t1).TestOutput =?= "Time.DawnOf 9672 "
+- Econ.AnnualIncome(t1).Out =?= $9,672
 
 

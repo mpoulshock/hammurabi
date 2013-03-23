@@ -303,12 +303,12 @@ Test: 49171719
 - Fam.HasCustodyOf(sam,t1) = false
 - Fam.IsLegalGuardianOf(sam,t1) = true
 - Econ.LivesWith(john,t1) = false
-- Fam.LivesWithPCG(t1).TestOutput =?= "Time.DawnOf True "
+- Fam.LivesWithPCG(t1).Out =?= true
 
 Test: 135354455
 - Things t1, t2
 - Fam.FamilyRelationship(t2,t1) = "First cousin"
-- Fam.IsCousinOf(t1, t2).TestOutput =?= "Time.DawnOf True "
+- Fam.IsCousinOf(t1, t2).Out =?= true
 
 Test: Sanity1a    
 - Thing a

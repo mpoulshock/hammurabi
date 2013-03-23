@@ -264,17 +264,17 @@ Test: 574277777
 - Imm.USImmigrationStatus(jini) = "Legal permanent resident"
 - Imm.USImmigrationStatus(barka) = "U.S. citizen"
 - CountryOfResidence(barka) = "United States"
-- USC.Tit8.Sec1401.SubsecH(a).TestOutput =?= "Time.DawnOf True "
+- USC.Tit8.Sec1401.SubsecH(a).Out =?= true
 
 Test: 856160232
 - Thing a
 - DoB(a) = 1934-05-24
-- USC.Tit8.Sec1401.SubsecH(a).TestOutput =?= "Time.DawnOf Stub "
+- USC.Tit8.Sec1401.SubsecH(a).Out =?= "Stub"
 
 Test: 506836087
 - Thing a
 - DoB(a) = 1920-01-01
-- USC.Tit8.Sec1401.SubsecH(a).TestOutput =?= "Time.DawnOf False "
+- USC.Tit8.Sec1401.SubsecH(a).Out =?= false
 
 Test: 717543211
 - Thing a
@@ -288,10 +288,10 @@ Test: 717543211
 - IsUSCitizen(jim) = true
 - IsUSCitizen(pam) = true
 - CountryOfResidence(jim) = "United States"
-- USC.Tit8.Sec1401.AcquiredCitizenshipAtBirth(a).TestOutput =?= "Time.DawnOf True "
+- USC.Tit8.Sec1401.AcquiredCitizenshipAtBirth(a).Out =?= true
 
 Test: 350267835
 - Thing a
 - BirthCountry(a) = "United States"
-- USC.Tit8.Sec1401.AcquiredCitizenshipAtBirth(a).TestOutput =?= "Time.DawnOf True "
+- USC.Tit8.Sec1401.AcquiredCitizenshipAtBirth(a).Out =?= true
 

@@ -49,7 +49,7 @@ Test: 619099897
 - IsUSCitizen(minerva) = false
 - BirthCountry(leon) = "Panama"
 - DoB(leon) = 1978-03-22
-- USC.Tit8.Sec1403.IsUSCitizenPerCanalZone(leon).TestOutput =?= "Time.DawnOf False 3/22/1978 12:00:00 AM True "
+- USC.Tit8.Sec1403.IsUSCitizenPerCanalZone(leon).Out =?= "{Dawn: false; 3/22/1978: true}"
 
 Test: 708272036
 - Things ted, jed, edna
@@ -61,5 +61,5 @@ Test: 708272036
 - Gender(jed) = "Male"
 - Imm.USImmigrationStatus(jed) = "U.S. citizen"
 - Imm.USImmigrationStatus(edna) = "U.S. citizen"
-- USC.Tit8.Sec1403.IsUSCitizenPerCanalZone(ted).TestOutput =?= "Time.DawnOf False 3/9/1988 12:00:00 AM True "
+- USC.Tit8.Sec1403.IsUSCitizenPerCanalZone(ted).Out =?= "{Dawn: false; 3/9/1988: true}"
 

@@ -73,7 +73,7 @@ Test: 714127497
 - Things t1, t2
 - Things moe, harry, larry
 - Econ.HouseholdMembersOf(t1) = [[moe, harry, larry]]
-- Econ.HouseholdSize(t1).TestOutput =?= "Time.DawnOf 3 "
+- Econ.HouseholdSize(t1).Out =?= 3
 
 Test: TboolSym1
 - Thing a
