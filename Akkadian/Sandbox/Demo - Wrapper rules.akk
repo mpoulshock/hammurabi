@@ -159,6 +159,6 @@ Tbool IsUSCitizen(Thing person) =
 
 Test: 281047258
 - Thing adsf
-- HasSSN(adsf) = {2010-01-01: true; Time.DawnOf: false}
+- HasSSN(adsf) = {Time.DawnOf: false; 2010-01-01: true}
 - Hammurabi.Demo.HasDocumentation(adsf).TestOutput =?= "Time.DawnOf False 1/1/2010 12:00:00 AM True "
 

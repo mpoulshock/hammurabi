@@ -244,7 +244,6 @@ namespace Interactive
         {
             val = val.Trim('{','}');
             string[] pairs = val.Split(new char[] {';'});
-            Array.Reverse(pairs);
             return pairs;
         }
     }

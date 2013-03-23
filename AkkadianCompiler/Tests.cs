@@ -140,6 +140,7 @@ namespace Akkadian
             // Parse string
             fact = fact.Trim('{','}',' ');
             string[] timepts = fact.Split(';');
+            Array.Reverse(timepts);     // In a Switch statement, later time-value pairs must come first
 
             // Detect Tbool type by looking at the value in the first time-value pair
             string[] firstPair = timepts[0].Split(':');

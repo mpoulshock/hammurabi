@@ -128,7 +128,7 @@ Test: TreatedIncome2
 
 Test: TreatedIncome3_Recently_lost_job
 - Thing p
-- Pa.Code.Tit55.Ch601.CountableIncome(p) = {2015-05-01: $0; 1800-01-01: $2,000}
+- Pa.Code.Tit55.Ch601.CountableIncome(p) = {1800-01-01: $2,000; 2015-05-01: $0}
 - Pa.Code.Tit55.Ch601.TreatedIncome(p).AsOf(2015-06-15).Out =?= $12,035.84
 
 

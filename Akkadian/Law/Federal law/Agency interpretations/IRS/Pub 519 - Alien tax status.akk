@@ -304,31 +304,31 @@ Test: 47588400
 
 Test: Student1
 - Thing jamela
-- Imm.NonimmigrantVisaType(jamela) = {2002-05-02: "J-1"; Time.DawnOf: "None"}
+- Imm.NonimmigrantVisaType(jamela) = {Time.DawnOf: "None"; 2002-05-02: "J-1"}
 - Imm.CompliedWithTermsOfVisa(jamela) = true
 - IRS.Pub519.IntendToResidePermanentlyInUS(jamela) = false
 - IRS.Pub519.ExemptStudent(jamela).AsOf(2012-12-31).Out =?= true
 
 Test: Student2
 - Thing jamela
-- Imm.NonimmigrantVisaType(jamela) = {2011-05-02: "J-1"; Time.DawnOf: "None"}
+- Imm.NonimmigrantVisaType(jamela) = {Time.DawnOf: "None"; 2011-05-02: "J-1"}
 - IRS.Pub519.ExemptStudent(jamela).AsOf(2012-12-31).Out =?= true
 
 Test: Teacher1
 - Thing marge
-- Imm.NonimmigrantVisaType(marge) = {2012-05-02: "J-1"; Time.DawnOf: "None"}
+- Imm.NonimmigrantVisaType(marge) = {Time.DawnOf: "None"; 2012-05-02: "J-1"}
 - IRS.Pub519.ForeignEmployerPaidAllIncome(marge) = false
 - IRS.Pub519.ExemptTeacherOrTrainee(marge).AsOf(2012-12-31).Out =?= true
     
 Test: Teacher2
 - Thing marge
-- Imm.NonimmigrantVisaType(marge) = {2008-01-01: "J-1"; Time.DawnOf: "None"}
+- Imm.NonimmigrantVisaType(marge) = {Time.DawnOf: "None"; 2008-01-01: "J-1"}
 - IRS.Pub519.ExemptTeacherOrTrainee(marge).AsOf(2012-12-31).Out =?= false
 
 Test: Teacher3
 - Thing marge
-- Imm.NonimmigrantVisaType(marge) = {2010-05-01: "J-1"; Time.DawnOf: "None"}
-- IRS.Pub519.ForeignEmployerPaidAllIncome(marge) = {2010-05-01: true; Time.DawnOf: false}
+- Imm.NonimmigrantVisaType(marge) = {Time.DawnOf: "None"; 2010-05-01: "J-1"}
+- IRS.Pub519.ForeignEmployerPaidAllIncome(marge) = {Time.DawnOf: false; 2010-05-01: true}
 - IRS.Pub519.ExemptTeacherOrTrainee(marge).AsOf(2012-12-31).Out =?= true
     
 Test: Teacher4
@@ -338,27 +338,27 @@ Test: Teacher4
 
 Test: SubsPresence_Pub519_Page4_Example1
 - Thing jed
-- IRS.Pub519.PhysicallyPresent(jed) = {2011-04-30: false; 2011-01-01: true; 2010-04-30: false; 2010-01-01: true; 2009-04-30: false; 2009-01-01: true; Time.DawnOf: false}
+- IRS.Pub519.PhysicallyPresent(jed) = {Time.DawnOf: false; 2009-01-01: true; 2009-04-30: false; 2010-01-01: true; 2010-04-30: false; 2011-01-01: true;  2011-04-30: false}
 - IRS.Pub519.MeetsBasicSubstantialPresenceTest(jed).TestOutput =?= "Time.DawnOf False "        # Comes to 180 days
 
 Test: SubsPresence2
 - Thing jed
-- IRS.Pub519.PhysicallyPresent(jed) = {2011-05-01: false; 2011-01-01: true; 2010-02-10: false; 2010-01-01: true; 2009-01-21: false; 2009-01-01: true; Time.DawnOf: false}
+- IRS.Pub519.PhysicallyPresent(jed) = {Time.DawnOf: false; 2009-01-01: true; 2009-01-21: false; 2010-01-01: true; 2010-02-10: false; 2011-01-01: true;  2011-05-01: false}
 - IRS.Pub519.MeetsBasicSubstantialPresenceTest(jed).TestOutput =?= "Time.DawnOf False "    
 
 Test: SubsPresence3
 - Thing jed
-- IRS.Pub519.PhysicallyPresent(jed) = {2011-05-04: false; 2011-01-01: true; 2010-05-01: false; 2010-01-01: true; 2009-05-01: false; 2009-01-01: true; Time.DawnOf: false}
+- IRS.Pub519.PhysicallyPresent(jed) = {Time.DawnOf: false; 2009-01-01: true; 2009-05-01: false; 2010-01-01: true; 2010-05-01: false; 2011-01-01: true; 2011-05-04: false}
 - IRS.Pub519.MeetsBasicSubstantialPresenceTest(jed).TestOutput =?= "Time.DawnOf False 1/1/2011 12:00:00 AM True 1/1/2012 12:00:00 AM False "        # 183 days in 2011
 
 Test: ThreeYearWeightedTotal
 - Thing jed
-- IRS.Pub519.PhysicallyPresent(jed) = {2011-05-01: false; 2011-01-01: true; 2010-05-01: false; 2010-01-01: true; 2009-05-01: false; 2009-01-01: true; Time.DawnOf: false}
+- IRS.Pub519.PhysicallyPresent(jed) = {Time.DawnOf: false; 2009-01-01: true; 2009-05-01: false; 2010-01-01: true; 2010-05-01: false; 2011-01-01: true; 2011-05-01: false}
 - IRS.Pub519.ThreeYearWeightedTotal(jed).TestOutput =?= "Time.DawnOf 0 1/1/2009 12:00:00 AM 120 1/1/2010 12:00:00 AM 160 1/1/2011 12:00:00 AM 180 1/1/2012 12:00:00 AM 60 1/1/2013 12:00:00 AM 20 1/1/2014 12:00:00 AM 0 "
 
 Test: DaysPresent1
 - Thing jed
-- IRS.Pub519.PhysicallyPresent(jed) = {2011-05-30: false; 2011-01-01: true; 2010-02-10: false; 2010-01-01: true; 2009-01-21: false; 2009-01-01: true; Time.DawnOf: false}
+- IRS.Pub519.PhysicallyPresent(jed) = {Time.DawnOf: false; 2009-01-01: true; 2009-01-21: false; 2010-01-01: true; 2010-02-10: false; 2011-01-01: true; 2011-05-30: false}
 - IRS.Pub519.DaysPresentPerYear(jed).TestOutput =?= "Time.DawnOf 0 1/1/2009 12:00:00 AM 20 1/1/2010 12:00:00 AM 40 1/1/2011 12:00:00 AM 149 1/1/2012 12:00:00 AM 0 "
 
 Test: 397888975

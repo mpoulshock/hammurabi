@@ -235,13 +235,13 @@ Test: LivedTogether1
 - Things mary, tony
 - IsDeceased(tony) = true
 - DateOfDeath(tony) = 2012-05-01
-- Econ.LivesWith(tony,mary) = {2012-05-02: false; Time.DawnOf: true}
+- Econ.LivesWith(tony,mary) = {Time.DawnOf: true; 2012-05-02: false}
 - IRS.Pub501.LivedTogetherForTaxPurposes(mary, tony).TestOutput =?= "Time.DawnOf True 1/1/2013 12:00:00 AM False "
 
 Test: LivedTogether2
 - Things mary, tony
 - IsDeceased(tony) = false
-- Econ.LivesWith(tony,mary) = {2012-05-02: false; Time.DawnOf: true}
+- Econ.LivesWith(tony,mary) = {Time.DawnOf: true; 2012-05-02: false}
 - IRS.Pub501.LivedTogetherForTaxPurposes(mary, tony).TestOutput =?= "Time.DawnOf True 1/1/2012 12:00:00 AM False "
 
 Test: TaxAge1
@@ -258,7 +258,7 @@ Test: TaxAge2
 
 Test: TaxMaritalStatus
 - Thing jim
-- Fam.MaritalStatus(jim) = {2012-05-02: "Married"; Time.DawnOf: "Single"}
+- Fam.MaritalStatus(jim) = {Time.DawnOf: "Single"; 2012-05-02: "Married"}
 - IRS.Pub501.MaritalStatusForTaxPurposes(jim).TestOutput =?= "Time.DawnOf Single 1/1/2012 12:00:00 AM Married "
 
 Test: 738117373

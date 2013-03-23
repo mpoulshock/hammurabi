@@ -72,12 +72,12 @@ Test: 93000163
 
 Test: TemporalFact1
 - Thing p
-- USC.Tit8.Sec1404.IsNoncitizenIndian(p) = {1950-01-01: false; 1920-01-01: true}
+- USC.Tit8.Sec1404.IsNoncitizenIndian(p) = {1920-01-01: true; 1950-01-01: false}
 - USC.Tit8.Sec1404.IsNoncitizenIndian(p).AsOf(1930-01-01).Out =?= true
 
 Test: TemporalFact2
 - Thing p
-- USC.Tit8.Sec1404.IsNoncitizenIndian(p) = {1950-01-01: false; 1920-01-01: true}
+- USC.Tit8.Sec1404.IsNoncitizenIndian(p) = {1920-01-01: true; 1950-01-01: false}
 - USC.Tit8.Sec1404.IsNoncitizenIndian(p).AsOf(1960-01-01).Out =?= false
 
 

@@ -181,7 +181,7 @@ Test: IsMarried8
 
 Test: IsMarried9    # time-varying
 - Thing jed
-- Fam.MaritalStatus(jed) = {2011-03-04: "Single"; Time.DawnOf: "Married"}
+- Fam.MaritalStatus(jed) = {Time.DawnOf: "Married"; 2011-03-04: "Single"}
 - Fam.IsMarried(jed).TestOutput =?= "Time.DawnOf True 3/4/2011 12:00:00 AM False "
 
 Test: FamRel1
