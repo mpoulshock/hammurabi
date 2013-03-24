@@ -151,7 +151,6 @@ namespace Hammurabi
                 else if (this.IsUncertain) return "Uncertain";   
                 else if (this.IsUnstated) return "Unstated"; 
                 else if (this.State == Hstate.Null) return "Null";
-                else if (this.Obj.GetType() == (new DateTime()).GetType()) return Convert.ToString("mm/dd/yyyy");
                 else if (this.IsSet()) return this.ToSerializedSet();
                 else return Convert.ToString(this.Obj);
             }

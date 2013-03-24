@@ -84,6 +84,7 @@ namespace Interactive
         /// </summary>
         public static void CloseUnitTest(Tvar val, string goal)
         {
+            // TODO: Handle eternal currency, numbers, bool, sets, dates
             string result = Convert.ToString(val.Out);
             testStr += "- " + TestGoal(goal) + ".Out =?= \"" + result + "\"";
         }

@@ -154,11 +154,4 @@ Tbool IsUSCitizen(Thing person) =
     H.IsUSCitizen(person)
 
         
-
-# UNIT TESTS
-
-Test: 281047258
-- Thing adsf
-- HasSSN(adsf) = {Dawn: false; 2010-01-01: true}
-- Hammurabi.Demo.HasDocumentation(adsf).Out =?= "{Dawn: false; 1/1/2010: true}"
-
+        

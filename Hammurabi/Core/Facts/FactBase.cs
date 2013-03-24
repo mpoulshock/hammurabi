@@ -120,7 +120,19 @@ namespace Hammurabi
             /// </summary>
             public string ValueAsString()
             {
-                return Value().Timeline;
+                string result = "";
+                foreach(KeyValuePair<DateTime,Hval> de in Value().IntervalValues)
+                {
+                    if (Convert.ToDateTime(de.Key) == Time.DawnOf)
+                    {
+                        result += "DawnOfTime   " + de.Value.ToString + "\n";
+                    }
+                    else
+                    {
+                        result += de.Key.ToString("yyyy-MM-dd") + "   " + de.Value.ToString + "\n"; 
+                    }
+                }
+                return result;
             }
 
             /// <summary>

@@ -1,4 +1,4 @@
-// Copyright (c) 2012 Hammura.bi LLC
+// Copyright (c) 2012-2013 Hammura.bi LLC
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -149,31 +149,6 @@ namespace Hammurabi
         public void SetEternally(Hval hval)
         {
             AddState(Time.DawnOf, hval);
-        }
-
-        /// <summary>
-        /// Displays a timeline showing the state of the object at various
-        /// points in time.
-        /// </summary>
-        public string Timeline
-        {
-            get 
-            {  
-                string result = "";
-                foreach(KeyValuePair<DateTime,Hval> de in this.TimeLine)
-                {
-                    if (Convert.ToDateTime(de.Key) == Time.DawnOf)
-                    {
-                        result += "Time.DawnOf " + de.Value.ToString + "\n";
-                    }
-                    else
-                    {
-                        // Show the value as an element on the timeline
-                        result += de.Key + " " + de.Value.ToString + "\n"; 
-                    }
-                }
-                return result;
-            }
         }
 
         /// <summary>

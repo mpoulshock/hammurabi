@@ -1,34 +1,29 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Unit tests - Hammurabi core\Unit tests\Test - math - basic.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Hammurabi\Core\Fundamental types\Hval.cs">
     <Files>
-      <File FileName="Hammurabi\Core\Fundamental types\Tvar.cs" Line="208" Column="51" />
-      <File FileName="Hammurabi\Core\Fundamental types\Hval.cs" Line="154" Column="111" />
-      <File FileName="Unit tests - Hammurabi core\Unit tests\Test - temporal dates.cs" Line="32" Column="9" />
-      <File FileName="Unit tests - Hammurabi core\Unit tests\Test - switch.cs" Line="218" Column="30" />
-      <File FileName="Unit tests - Hammurabi core\Unit tests\Test - set - higher order.cs" Line="379" Column="55" />
-      <File FileName="Unit tests - Hammurabi core\Unit tests\Test - math - basic.cs" Line="208" Column="6" />
-      <File FileName="Unit tests - Hammurabi core\Unit tests\Test - fundamental types.cs" Line="822" Column="39" />
-      <File FileName="Unit tests - Hammurabi core\Unit tests\Test - string - basic.cs" Line="44" Column="37" />
-      <File FileName="Unit tests - Hammurabi core\Unit tests\Test - unknown.cs" Line="118" Column="9" />
+      <File FileName="Hammurabi\Core\Fundamental types\Hval.cs" Line="148" Column="16" />
+      <File FileName="Unit tests - Hammurabi core\Unit tests\Test - math - basic.cs" Line="208" Column="10" />
+      <File FileName="HammurabiInteractive\Interview\Akkadian unit tests.cs" Line="87" Column="73" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
+          <Node name="Akkadian" expanded="True">
+            <Node name="Sandbox" expanded="True" />
+          </Node>
           <Node name="Hammurabi" expanded="True">
             <Node name="Core" expanded="True">
-              <Node name="Core functions" expanded="True" />
-              <Node name="Facts" expanded="True" />
-              <Node name="Fundamental types" expanded="True" />
+              <Node name="Fundamental types" expanded="True">
+                <Node name="Hval.cs" selected="True" />
+              </Node>
             </Node>
           </Node>
           <Node name="HammurabiInteractive" expanded="True">
             <Node name="Interview" expanded="True" />
           </Node>
           <Node name="Unit tests - Hammurabi core" expanded="True">
-            <Node name="Unit tests" expanded="True">
-              <Node name="Test - math - basic.cs" selected="True" />
-            </Node>
+            <Node name="Unit tests" expanded="True" />
           </Node>
         </State>
       </Pad>
