@@ -1,10 +1,12 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Hammurabi\Core\Fundamental types\Hval.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Hammurabi\Core\Core functions\Math.cs">
     <Files>
-      <File FileName="Hammurabi\Core\Fundamental types\Hval.cs" Line="148" Column="16" />
-      <File FileName="Unit tests - Hammurabi core\Unit tests\Test - math - basic.cs" Line="208" Column="10" />
-      <File FileName="HammurabiInteractive\Interview\Akkadian unit tests.cs" Line="87" Column="73" />
+      <File FileName="Unit tests - Hammurabi core\Unit tests\Test - math - basic.cs" Line="201" Column="10" />
+      <File FileName="HammurabiInteractive\Interview\Akkadian unit tests.cs" Line="89" Column="60" />
+      <File FileName="Hammurabi\Core\Fundamental types\Tvar.cs" Line="164" Column="30" />
+      <File FileName="Hammurabi\Core\Fundamental types\Hval.cs" Line="57" Column="1" />
+      <File FileName="Hammurabi\Core\Core functions\Math.cs" Line="145" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -12,11 +14,15 @@
           <Node name="Akkadian" expanded="True">
             <Node name="Sandbox" expanded="True" />
           </Node>
+          <Node name="AkkadianCompiler" expanded="True" />
           <Node name="Hammurabi" expanded="True">
             <Node name="Core" expanded="True">
-              <Node name="Fundamental types" expanded="True">
-                <Node name="Hval.cs" selected="True" />
+              <Node name="Core functions" expanded="True">
+                <Node name="Math.cs" selected="True" />
               </Node>
+              <Node name="Engine" expanded="True" />
+              <Node name="Facts" expanded="True" />
+              <Node name="Fundamental types" expanded="True" />
             </Node>
           </Node>
           <Node name="HammurabiInteractive" expanded="True">
@@ -45,7 +51,7 @@
         <State />
       </Pad>
       <Pad Id="MonoDevelop.NUnit.TestPad">
-        <State expanded="True" selected="True" />
+        <State expanded="True" />
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>

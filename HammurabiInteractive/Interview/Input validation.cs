@@ -81,7 +81,7 @@ namespace Interactive
 		/// <summary>
 		/// Determines whether a string is a valid number
 		/// </summary>
-		private static bool IsNumber(string s)
+		public static bool IsNumber(string s)
 		{
 			try
 			{

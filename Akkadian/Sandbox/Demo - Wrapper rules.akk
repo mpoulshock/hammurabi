@@ -36,6 +36,10 @@ Tnum YearsToCollect(Tstr state) =
 
     Tstr typ = "";
 
+# Tset
+Tset SomeSet(Thing A) =
+    Fam.ParentsOf(A)
+
 
 # TEMPORAL FACTS
 
@@ -153,5 +157,4 @@ Tbool IsDependentOf(Thing p1, Thing p2) =
 Tbool IsUSCitizen(Thing person) =
     H.IsUSCitizen(person)
 
-        
-        
+

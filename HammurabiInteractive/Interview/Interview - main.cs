@@ -187,13 +187,12 @@ namespace Interactive
             Console.WriteLine("\n");
 
             // Indent and format results
-            string tline = goal.ValueAsString().Replace("\n","\n\t");
-            tline = "\t" + tline.Replace("12:00:00 AM", "\t").Replace("Time.DawnOf ", "Time.DawnOf\t ");
+            string tline = "\t" + goal.ValueAsString().Replace("\n","\n\t");
 
             // For eternal values, only show value
             if (goal.Value().IsEternal)
             {
-                tline = "\t" + tline.Replace("\tTime.DawnOf\t ","");
+                tline = tline.Replace("DawnOfTime   ","");
             }
 
             // Concatenate question and answer

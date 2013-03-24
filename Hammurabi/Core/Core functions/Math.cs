@@ -141,7 +141,7 @@ namespace Hammurabi
 
                 if (denominator == 0)   // Short circuit 1: Div-by-zero
                 {
-                    result.AddState(slice.Key, new Hval(Hstate.Uncertain));
+                    result.AddState(slice.Key, new Hval(null));
                 }
                 else if (top != Hstate.Known)                     // Short circuit 2: Hstates
                 {

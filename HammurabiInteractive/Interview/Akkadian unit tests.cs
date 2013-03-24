@@ -53,6 +53,7 @@ namespace Interactive
             string t3 = Engine.Thing3.Id;
 
             // Line declaring the Things used
+            // TODO: Only add Things, not Tvars
             if (t3 != "")      testStr += "- Things " + t1 + ", " + t2 + ", " + t3 + "\r\n";
             else if (t2 != "") testStr += "- Things " + t1 + ", " + t2 + "\r\n";
             else               testStr += "- Thing " + t1 + "\r\n";
@@ -84,9 +85,28 @@ namespace Interactive
         /// </summary>
         public static void CloseUnitTest(Tvar val, string goal)
         {
-            // TODO: Handle eternal currency, numbers, bool, sets, dates
             string result = Convert.ToString(val.Out);
-            testStr += "- " + TestGoal(goal) + ".Out =?= \"" + result + "\"";
+            testStr += "- " + TestGoal(goal) + ".Out =?= ";
+
+            bool noQuotes = Interview.IsNumber(Convert.ToString(val.Out)) || 
+                            Convert.ToString(val.Out) == "True" || 
+                            Convert.ToString(val.Out) == "False";
+
+            if (val.IsEternal && val.Out.GetType() == new DateTime().GetType())
+            {
+                // Handle eternal (known) Tdates
+                testStr += Convert.ToDateTime(val.Out).ToString("yyyy-MM-dd");
+            }
+            else if (val.IsEternal && noQuotes) 
+            {
+                // Omit quotation marks around result for eternal (and known) Tnums and Tbools
+                testStr += result.ToLower();
+            }
+            else 
+            {
+                // Include quotation marks for eternal Tsets and Tstrs, and for time-varying Tvars
+                testStr += "\"" + result + "\"";
+            }
         }
         
         /// <summary>
