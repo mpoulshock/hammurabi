@@ -40,7 +40,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Facts.Assert(p1, "IsMarriedTo", p2, true);
             Facts.Assert(p2, "IsMarriedTo", p1, true);
             Tbool result = Facts.Sym(p1, "IsMarriedTo", p2);
-            Assert.AreEqual("Time.DawnOf True ", result.TestOutput);       
+            Assert.AreEqual(true, result.Out);       
         }
         
         [Test]
@@ -50,7 +50,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Facts.Assert(p1, "IsMarriedTo", p2, true);
             Facts.Assert(p2, "IsMarriedTo", p1, false);                         // contradictory assertion
             Tbool result = Facts.Sym(p1, "IsMarriedTo", p2);
-            Assert.AreEqual("Time.DawnOf True ", result.TestOutput);    // what is desired here? (or forbid contradictions)
+            Assert.AreEqual(true, result.Out);    // what is desired here? (or forbid contradictions)
         }
         
         [Test]
@@ -59,7 +59,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Facts.Clear();
             Facts.Assert(p1, "IsMarriedTo", p2, true);
             Tbool result = Facts.Sym(p1, "IsMarriedTo", p2);
-            Assert.AreEqual("Time.DawnOf True ", result.TestOutput);       
+            Assert.AreEqual(true, result.Out);       
         }
         
         [Test]
@@ -69,7 +69,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Facts.Assert(p1, "IsMarriedTo", p2, false);
             Facts.Assert(p2, "IsMarriedTo", p1, false);
             Tbool result = Facts.Sym(p1, "IsMarriedTo", p2);
-            Assert.AreEqual("Time.DawnOf False ", result.TestOutput);       
+            Assert.AreEqual(false , result.Out);       
         }  
         
         [Test]
@@ -78,7 +78,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Facts.Clear();
             Facts.Assert(p1, "IsMarriedTo", p2, false);
             Tbool result = Facts.Sym(p1, "IsMarriedTo", p2);
-            Assert.AreEqual("Time.DawnOf False ", result.TestOutput);       
+            Assert.AreEqual(false , result.Out);       
         }
         
         [Test]
@@ -86,7 +86,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         {
             Facts.Clear();
             Tbool result = Facts.Sym(p1, "IsMarriedTo", p2);
-            Assert.AreEqual("Time.DawnOf Unstated ", result.TestOutput);       
+            Assert.AreEqual("Unstated", result.Out);       
         }
         
         // .Either - correct result?
@@ -97,7 +97,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Facts.Clear();
             Facts.Assert(p1, "Fam.FamilyRelationship", p2, "Biological parent");
             Tbool result = Fam.IsBiologicalParentOf(p1, p2);
-            Assert.AreEqual("Time.DawnOf True ", result.TestOutput);       
+            Assert.AreEqual(true, result.Out);       
         }
         
         [Test]
@@ -106,7 +106,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Facts.Clear();
             Facts.Assert(p2, "Fam.FamilyRelationship", p1, "Biological child");
             Tbool result = Fam.IsBiologicalParentOf(p1, p2);
-            Assert.AreEqual("Time.DawnOf True ", result.TestOutput);       
+            Assert.AreEqual(true, result.Out);       
         }
         
         [Test]
@@ -114,7 +114,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         {
             Facts.Clear();
             Tbool result = Fam.IsBiologicalParentOf(p1, p2);
-            Assert.AreEqual("Time.DawnOf Unstated ", result.TestOutput);       
+            Assert.AreEqual("Unstated", result.Out);       
         }
 
         // Some family relationship inputs

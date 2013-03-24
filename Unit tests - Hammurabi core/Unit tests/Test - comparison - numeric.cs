@@ -32,28 +32,28 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void Test1 ()
         {
             Tbool t = new Tnum(2.0) == new Tnum(2);
-            Assert.AreEqual("Time.DawnOf True ", t.TestOutput);        
+            Assert.AreEqual(true , t.Out);        
         }
 
         [Test]
         public void Test2 ()
         {
             Tbool t = new Tnum(2.00000000000001) == new Tnum(2);            // Max precision
-            Assert.AreEqual("Time.DawnOf False ", t.TestOutput);        
+            Assert.AreEqual(false , t.Out);        
         }
 
         [Test]
         public void Test3 ()
         {
             Tbool t = new Tnum(1.99999999999999) == new Tnum(2);            // Max precision
-            Assert.AreEqual("Time.DawnOf False ", t.TestOutput);        
+            Assert.AreEqual(false , t.Out);        
         }
         
         [Test]
         public void Test4 ()
         {
             Tbool t = new Tnum(-2) == new Tnum(2);        
-            Assert.AreEqual("Time.DawnOf False ", t.TestOutput);        
+            Assert.AreEqual(false , t.Out);        
         }
         
         // TODO: Convert string currency values to Tnums
@@ -62,35 +62,35 @@ namespace Hammurabi.UnitTests.CoreFcns
 //        public void Test5 ()
 //        {
 //            Tbool t = new Tnum("$3.94") == new Tnum(3.94);        
-//            Assert.AreEqual("Time.DawnOf True ", t.TestOutput);        
+//            Assert.AreEqual(true , t.Out);        
 //        }
         
         [Test]
         public void Test6 ()
         {
             Tbool t = new Tnum(3.94) == new Tnum(3.940);        
-            Assert.AreEqual("Time.DawnOf True ", t.TestOutput);        
+            Assert.AreEqual(true , t.Out);        
         }
         
         [Test]
         public void Test7 ()
         {
             Tbool t = new Tnum(-3.94) == new Tnum(-3.940);        
-            Assert.AreEqual("Time.DawnOf True ", t.TestOutput);        
+            Assert.AreEqual(true , t.Out);        
         }
         
         [Test]
         public void Test8 ()
         {
             Tbool t = new Tnum(-3.94) == -3.940;        
-            Assert.AreEqual("Time.DawnOf True ", t.TestOutput);        
+            Assert.AreEqual(true , t.Out);        
         }
         
         [Test]
         public void Test9 ()
         {
             Tbool t = new Tnum(0.1) == new Tnum(0.10);        
-            Assert.AreEqual("Time.DawnOf True ", t.TestOutput);        
+            Assert.AreEqual(true , t.Out);        
         }
 
         
@@ -100,49 +100,49 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void Test11 ()
         {
             Tbool t = new Tnum(2.0) != new Tnum(2);
-            Assert.AreEqual("Time.DawnOf False ", t.TestOutput);        
+            Assert.AreEqual(false , t.Out);        
         }
 
         [Test]
         public void Test12 ()
         {
             Tbool t = new Tnum(2.00000000000001) != new Tnum(2);            // Max precision
-            Assert.AreEqual("Time.DawnOf True ", t.TestOutput);        
+            Assert.AreEqual(true , t.Out);        
         }
 
         [Test]
         public void Test13 ()
         {
             Tbool t = new Tnum(1.99999999999999) != new Tnum(2);            // Max precision
-            Assert.AreEqual("Time.DawnOf True ", t.TestOutput);        
+            Assert.AreEqual(true , t.Out);        
         }
         
         [Test]
         public void Test14 ()
         {
             Tbool t = new Tnum(-2) != new Tnum(2);        
-            Assert.AreEqual("Time.DawnOf True ", t.TestOutput);        
+            Assert.AreEqual(true , t.Out);        
         }
         
         [Test]
         public void Test16 ()
         {
             Tbool t = new Tnum(3.94) != new Tnum(3.940);        
-            Assert.AreEqual("Time.DawnOf False ", t.TestOutput);        
+            Assert.AreEqual(false , t.Out);        
         }
         
         [Test]
         public void Test17 ()
         {
             Tbool t = new Tnum(-3.94) != new Tnum(-3.940);        
-            Assert.AreEqual("Time.DawnOf False ", t.TestOutput);        
+            Assert.AreEqual(false , t.Out);        
         }
         
         [Test]
         public void Test20 ()
         {
             Tbool t = new Tnum(-3.94) != -3.940;        
-            Assert.AreEqual("Time.DawnOf False ", t.TestOutput);        
+            Assert.AreEqual(false , t.Out);        
         }
         
         // GREATER THAN
@@ -151,49 +151,49 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void Test21 ()
         {
             Tbool t = new Tnum(2.0) > new Tnum(2);
-            Assert.AreEqual("Time.DawnOf False ", t.TestOutput);        
+            Assert.AreEqual(false , t.Out);        
         }
 
         [Test]
         public void Test22 ()
         {
             Tbool t = new Tnum(2.00000000000001) > new Tnum(2);            // Max precision
-            Assert.AreEqual("Time.DawnOf True ", t.TestOutput);        
+            Assert.AreEqual(true , t.Out);        
         }
 
         [Test]
         public void Test23 ()
         {
             Tbool t = new Tnum(1.99999999999999) > new Tnum(2);            // Max precision
-            Assert.AreEqual("Time.DawnOf False ", t.TestOutput);        
+            Assert.AreEqual(false , t.Out);        
         }
         
         [Test]
         public void Test24 ()
         {
             Tbool t = new Tnum(-2) > new Tnum(2);        
-            Assert.AreEqual("Time.DawnOf False ", t.TestOutput);        
+            Assert.AreEqual(false , t.Out);        
         }
         
         [Test]
         public void Test26 ()
         {
             Tbool t = new Tnum(3.94) > new Tnum(3.940);        
-            Assert.AreEqual("Time.DawnOf False ", t.TestOutput);        
+            Assert.AreEqual(false , t.Out);        
         }
         
         [Test]
         public void Test27 ()
         {
             Tbool t = new Tnum(-3.94) > new Tnum(-3.940);        
-            Assert.AreEqual("Time.DawnOf False ", t.TestOutput);        
+            Assert.AreEqual(false , t.Out);        
         }
         
         [Test]
         public void Test30 ()
         {
             Tbool t = new Tnum(-3.94) > -3.940;        
-            Assert.AreEqual("Time.DawnOf False ", t.TestOutput);        
+            Assert.AreEqual(false , t.Out);        
         }
 
         
@@ -201,7 +201,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void Test30_a ()
         {
             Tbool t = new Tbool(0 > 365);      
-            Assert.AreEqual("Time.DawnOf False ", t.TestOutput);        
+            Assert.AreEqual(false , t.Out);        
         }
 
         // LESS THAN
@@ -210,49 +210,49 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void Test31 ()
         {
             Tbool t = new Tnum(2.0) < new Tnum(2);
-            Assert.AreEqual("Time.DawnOf False ", t.TestOutput);        
+            Assert.AreEqual(false , t.Out);        
         }
 
         [Test]
         public void Test32 ()
         {
             Tbool t = new Tnum(2.00000000000001) < new Tnum(2);            // Max precision
-            Assert.AreEqual("Time.DawnOf False ", t.TestOutput);        
+            Assert.AreEqual(false , t.Out);        
         }
 
         [Test]
         public void Test33 ()
         {
             Tbool t = new Tnum(1.99999999999999) < new Tnum(2);            // Max precision
-            Assert.AreEqual("Time.DawnOf True ", t.TestOutput);        
+            Assert.AreEqual(true , t.Out);        
         }
         
         [Test]
         public void Test34 ()
         {
             Tbool t = new Tnum(-2) < new Tnum(2);        
-            Assert.AreEqual("Time.DawnOf True ", t.TestOutput);        
+            Assert.AreEqual(true , t.Out);        
         }
         
         [Test]
         public void Test36 ()
         {
             Tbool t = new Tnum(3.94) < new Tnum(3.940);        
-            Assert.AreEqual("Time.DawnOf False ", t.TestOutput);        
+            Assert.AreEqual(false , t.Out);        
         }
         
         [Test]
         public void Test37 ()
         {
             Tbool t = new Tnum(-3.94) < new Tnum(-3.940);        
-            Assert.AreEqual("Time.DawnOf False ", t.TestOutput);        
+            Assert.AreEqual(false , t.Out);        
         }
         
         [Test]
         public void Test40 ()
         {
             Tbool t = new Tnum(-3.94) < -3.940;        
-            Assert.AreEqual("Time.DawnOf False ", t.TestOutput);        
+            Assert.AreEqual(false , t.Out);        
         }
         
         // >=
@@ -261,35 +261,35 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void Test41 ()
         {
             Tbool t = new Tnum(2.0) >= new Tnum(2);
-            Assert.AreEqual("Time.DawnOf True ", t.TestOutput);        
+            Assert.AreEqual(true , t.Out);        
         }
         
         [Test]
         public void Test42 ()
         {
             Tbool t = new Tnum(44) >= new Tnum(-3);
-            Assert.AreEqual("Time.DawnOf True ", t.TestOutput);        
+            Assert.AreEqual(true , t.Out);        
         }
         
         [Test]
         public void Test43 ()
         {
             Tbool t = new Tnum(-44) >= new Tnum(-446);
-            Assert.AreEqual("Time.DawnOf True ", t.TestOutput);        
+            Assert.AreEqual(true , t.Out);        
         }
         
         [Test]
         public void Test44 ()
         {
             Tbool t = new Tnum(-44) >= new Tnum(-4);
-            Assert.AreEqual("Time.DawnOf False ", t.TestOutput);        
+            Assert.AreEqual(false , t.Out);        
         }
         
         [Test]
         public void Test45 ()
         {
             Tbool t = new Tnum(-3.94) >= -3.940;        
-            Assert.AreEqual("Time.DawnOf True ", t.TestOutput);        
+            Assert.AreEqual(true , t.Out);        
         }
         
         // <=
@@ -298,35 +298,35 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void Test51 ()
         {
             Tbool t = new Tnum(2.0) <= new Tnum(2);
-            Assert.AreEqual("Time.DawnOf True ", t.TestOutput);        
+            Assert.AreEqual(true , t.Out);        
         }
         
         [Test]
         public void Test52 ()
         {
             Tbool t = new Tnum(44) <= new Tnum(-3);
-            Assert.AreEqual("Time.DawnOf False ", t.TestOutput);        
+            Assert.AreEqual(false , t.Out);        
         }
         
         [Test]
         public void Test53 ()
         {
             Tbool t = new Tnum(-44) <= new Tnum(-446);
-            Assert.AreEqual("Time.DawnOf False ", t.TestOutput);        
+            Assert.AreEqual(false , t.Out);        
         }
         
         [Test]
         public void Test54 ()
         {
             Tbool t = new Tnum(-44) <= new Tnum(-4);
-            Assert.AreEqual("Time.DawnOf True ", t.TestOutput);        
+            Assert.AreEqual(true , t.Out);        
         }
         
         [Test]
         public void Test55 ()
         {
             Tbool t = new Tnum(-3.94) <= -3.940;        
-            Assert.AreEqual("Time.DawnOf True ", t.TestOutput);        
+            Assert.AreEqual(true , t.Out);        
         }
         
         // Temporal
@@ -336,7 +336,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         {
             Tnum x = new Tnum(10);
             x.AddState(Date(2000,1,1), 1);
-            Assert.AreEqual("Time.DawnOf False 1/1/2000 12:00:00 AM True ", (x <= 1).TestOutput );    
+            Assert.AreEqual("{Dawn: false; 1/1/2000: true}", (x <= 1).Out );    
         }
         
     }

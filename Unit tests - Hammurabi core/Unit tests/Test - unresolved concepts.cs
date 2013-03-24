@@ -51,7 +51,7 @@ namespace Hammurabi.UnitTests.CoreFcns
 //            Tset result = people.Filter( _ => IsParentOf(P1,_));
 //            
 //            Assert.AreEqual("Time.DawnOf P3, P4 ", 
-//                            result.TestOutput);
+//                            result.Out);
 //        }
 //        
 //        private static Tbool IsParentOf(Thing p1, Thing p2)
@@ -70,7 +70,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Thing c2 = new Thing("c2");
             Facts.Assert(p, "EmploymentRelationship", c2, "Employee");
             Tbool result = SomeoneWorksAt(c, new Tset(p));  // returns Unknown b/c it's unknown whether IsEmployedBy(p,c)
-            Assert.AreEqual("Time.DawnOf False ", result.TestOutput);        
+            Assert.AreEqual(false , result.Out);        
         }
 
         private static Tbool SomeoneWorksAt(Thing c, Tset theSet)
@@ -92,8 +92,8 @@ namespace Hammurabi.UnitTests.CoreFcns
             t.AddState(Date(2011,1,1), true);
             t.AddState(Date(2011,2,1), false);
             Tnum actual = t.RunningCountPer(TheYear);
-            string expected = "Time.DawnOf 0 12/1/2010 12:00:00 AM 1 1/1/2011 12:00:00 AM 0 2/1/2011 12:00:00 AM 1 3/1/2011 12:00:00 AM 2 1/1/2012 12:00:00 AM 0 ";
-            Assert.AreEqual(expected, actual.TestOutput);      
+            string expected = "{Dawn: 0; 12/1/2010: 1; 1/1/2011: 0; 2/1/2011: 1; 3/1/2011: 2; 1/1/2012: 0}";
+            Assert.AreEqual(expected, actual.Out);      
         }
     }
 }

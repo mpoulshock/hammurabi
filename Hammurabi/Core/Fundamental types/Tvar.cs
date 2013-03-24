@@ -177,19 +177,6 @@ namespace Hammurabi
         }
 
         /// <summary>
-        /// Displays a timeline indicating the state of the object at various
-        /// points in time.  Same as .Timeline but without line breaks.
-        /// Used for test cases only.
-        /// </summary>
-        public string TestOutput
-        {
-            get
-            {
-                return Timeline.Replace("\n"," ");
-            }
-        }
-        
-        /// <summary>
         /// Displays an output object.
         /// </summary>
         public object Out
@@ -201,6 +188,8 @@ namespace Hammurabi
                     Hval v = this.FirstValue;
                     if (v.IsKnown)
                     {
+                        if (v.IsSet())   return v.ToSerializedSet();
+
                         return v.Obj;
                     }
                     else

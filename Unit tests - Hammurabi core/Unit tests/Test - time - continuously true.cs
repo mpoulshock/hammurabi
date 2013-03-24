@@ -37,7 +37,7 @@ namespace Hammurabi.UnitTests.CoreFcns
 
             Tnum r = tb.MonthsContinuouslyTrue;
 
-            Assert.AreEqual("Time.DawnOf 0 2/1/2000 12:00:00 AM 1 3/1/2000 12:00:00 AM 0 ", r.TestOutput);    
+            Assert.AreEqual("{Dawn: 0; 2/1/2000: 1; 3/1/2000: 0}", r.Out);    
         }
 
         [Test]
@@ -46,7 +46,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tbool tb = new Tbool(false);
             Tnum r = tb.MonthsContinuouslyTrue;
 
-            Assert.AreEqual("Time.DawnOf 0 ", r.TestOutput);    
+            Assert.AreEqual(0, r.Out);    
         }
 
         [Test]
@@ -58,7 +58,7 @@ namespace Hammurabi.UnitTests.CoreFcns
 
             Tnum r = tb.DaysContinuouslyTrue;
 
-            Assert.AreEqual("Time.DawnOf Unstated ", r.TestOutput);    
+            Assert.AreEqual("Unstated", r.Out);    
         }
 
         [Test]
@@ -70,7 +70,7 @@ namespace Hammurabi.UnitTests.CoreFcns
 
             Tnum r = tb.DaysContinuouslyTrue;
 
-            Assert.AreEqual("Time.DawnOf Stub ", r.TestOutput);    
+            Assert.AreEqual("Stub", r.Out);    
         }
     }
 }

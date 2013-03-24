@@ -70,7 +70,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         {
             Tnum t = new Tnum(1000);
             Tnum r = t.AccumulatedOver(2, TheMonth);           
-            Assert.AreEqual("Time.DawnOf 2000 ", r.TestOutput);    
+            Assert.AreEqual(2000, r.Out);    
         }
 
         [Test]
@@ -78,7 +78,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         {
             Tnum t = new Tnum(new Hval());
             Tnum r = t.AccumulatedOver(2, TheMonth);           
-            Assert.AreEqual("Time.DawnOf Unstated ", r.TestOutput);    
+            Assert.AreEqual("Unstated", r.Out);    
         }
 
         [Test]
@@ -86,7 +86,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         {
             Tnum t = new Tnum(Hstate.Stub);
             Tnum r = t.AccumulatedOver(2, TheMonth);           
-            Assert.AreEqual("Time.DawnOf Stub ", r.TestOutput);    
+            Assert.AreEqual("Stub", r.Out);    
         }
 
         [Test]
@@ -96,7 +96,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             t.AddState(Date(2013, 1, 1), 2000);
 
             Tnum r = t.AccumulatedOver(2, TheYear);           
-            Assert.AreEqual("Time.DawnOf 2000 1/1/2012 12:00:00 AM 3000 1/1/2013 12:00:00 AM 4000 ", r.TestOutput);    
+            Assert.AreEqual("{Dawn: 2000; 1/1/2012: 3000; 1/1/2013: 4000}", r.Out);    
         }
     }
 }

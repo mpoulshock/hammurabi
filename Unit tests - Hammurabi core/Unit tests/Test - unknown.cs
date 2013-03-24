@@ -28,7 +28,7 @@ namespace Hammurabi.UnitTests.CoreFcns
     [TestFixture]
     public class Hstates : H
     {
-        private static string eternallyUnstated = "Time.DawnOf Unstated ";
+        private static string eternallyUnstated = "Unstated";
         private static Tbool tbt = new Tbool(true);
         private static Tbool tbf = new Tbool(false);
         private static Tbool tbu = new Tbool(Hstate.Unstated);
@@ -50,7 +50,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         {
             Tnum n2 = new Tnum(4);
             Tnum result = n + n2;
-            Assert.AreEqual(eternallyUnstated, result.TestOutput);        
+            Assert.AreEqual(eternallyUnstated, result.Out);        
         }
 
         [Test]
@@ -58,7 +58,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         {
             Tnum n2 = new Tnum(4);
             Tnum result = tnv() + n2;
-            Assert.AreEqual("Time.DawnOf Stub 1/1/2001 12:00:00 AM Uncertain 1/1/2002 12:00:00 AM Unstated ", result.TestOutput);        
+            Assert.AreEqual("{Dawn: Stub; 1/1/2001: Uncertain; 1/1/2002: Unstated}", result.Out);        
         }
 
         // Math - subtraction
@@ -68,7 +68,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         {
             Tnum n2 = new Tnum(4);
             Tnum result = n - n2;
-            Assert.AreEqual(eternallyUnstated, result.TestOutput);        
+            Assert.AreEqual(eternallyUnstated, result.Out);        
         }
 
         [Test]
@@ -76,7 +76,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         {
             Tnum n2 = new Tnum(4);
             Tnum result = tnv() - n2;
-            Assert.AreEqual("Time.DawnOf Stub 1/1/2001 12:00:00 AM Uncertain 1/1/2002 12:00:00 AM Unstated ", result.TestOutput);        
+            Assert.AreEqual("{Dawn: Stub; 1/1/2001: Uncertain; 1/1/2002: Unstated}", result.Out);        
         }
 
         // Math - multiplication
@@ -86,7 +86,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         {
             Tnum n2 = new Tnum(4);
             Tnum result = n * n2;
-            Assert.AreEqual(eternallyUnstated, result.TestOutput);        
+            Assert.AreEqual(eternallyUnstated, result.Out);        
         }
         
         [Test]
@@ -94,14 +94,14 @@ namespace Hammurabi.UnitTests.CoreFcns
         {
             Tnum n2 = new Tnum(0);
             Tnum result = n * n2;
-            Assert.AreEqual("Time.DawnOf 0 ", result.TestOutput);        
+            Assert.AreEqual(0, result.Out);        
         }
         
         [Test]
         public void Unknown_Mult_3 ()
         {
             Tnum result = n * 0;
-            Assert.AreEqual("Time.DawnOf 0 ", result.TestOutput);        
+            Assert.AreEqual(0, result.Out);        
         }
 
         [Test]
@@ -109,25 +109,17 @@ namespace Hammurabi.UnitTests.CoreFcns
         {
             Tnum n2 = new Tnum(4);
             Tnum result = tnv() * n2;
-            Assert.AreEqual("Time.DawnOf Stub 1/1/2001 12:00:00 AM Uncertain 1/1/2002 12:00:00 AM Unstated ", result.TestOutput);        
+            Assert.AreEqual("{Dawn: Stub; 1/1/2001: Uncertain; 1/1/2002: Unstated}", result.Out);        
         }
 
         // Math - div
-
-        [Test]
-        public void Unknown_Div_1 ()  // Div-by-zero
-        {
-            Tnum n2 = new Tnum(4);
-            Tnum result = n2 / 0;
-            Assert.AreEqual("Time.DawnOf Uncertain ", result.TestOutput);        
-        }
 
         [Test]
         public void Unknown_Div_2 ()
         {
             Tnum n2 = new Tnum(4);
             Tnum result = tnv() / n2;
-            Assert.AreEqual("Time.DawnOf Stub 1/1/2001 12:00:00 AM Uncertain 1/1/2002 12:00:00 AM Unstated ", result.TestOutput);        
+            Assert.AreEqual("{Dawn: Stub; 1/1/2001: Uncertain; 1/1/2002: Unstated}", result.Out);        
         }
 
         // Math - modulo
@@ -136,14 +128,14 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void Modulo_1 ()
         {
             Tnum result = 3 % 2;
-            Assert.AreEqual("Time.DawnOf 1 ", result.TestOutput);        
+            Assert.AreEqual(1, result.Out);        
         }
 
         [Test]
         public void Unknown_Modulo_1 ()
         {
             Tnum result = n % 3;
-            Assert.AreEqual("Time.DawnOf Unstated ", result.TestOutput);        
+            Assert.AreEqual("Unstated", result.Out);        
         }
 
         [Test]
@@ -151,7 +143,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         {
             Tnum n2 = new Tnum(4);
             Tnum result = tnv() % n2;
-            Assert.AreEqual("Time.DawnOf Stub 1/1/2001 12:00:00 AM Uncertain 1/1/2002 12:00:00 AM Unstated ", result.TestOutput);        
+            Assert.AreEqual("{Dawn: Stub; 1/1/2001: Uncertain; 1/1/2002: Unstated}", result.Out);        
         }
 
         // Math - abs
@@ -160,14 +152,14 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void Unknown_Abs_1 ()
         {
             Tnum result = n.Abs;
-            Assert.AreEqual(eternallyUnstated, result.TestOutput);        
+            Assert.AreEqual(eternallyUnstated, result.Out);        
         }
 
         [Test]
         public void Unknown_Abs_2 ()
         {
             Tnum result = tnv().Abs;
-            Assert.AreEqual("Time.DawnOf Stub 1/1/2001 12:00:00 AM Uncertain 1/1/2002 12:00:00 AM Unstated ", result.TestOutput);        
+            Assert.AreEqual("{Dawn: Stub; 1/1/2001: Uncertain; 1/1/2002: Unstated}", result.Out);        
         }
 
         // Math - round
@@ -176,27 +168,27 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void Unknown_Round_1 ()
         {
             Tnum result = n.RoundUp(2);
-            Assert.AreEqual(eternallyUnstated, result.TestOutput);        
+            Assert.AreEqual(eternallyUnstated, result.Out);        
         }
 
         [Test]
         public void Unknown_Round_2 ()
         {
             Tnum result = tnv().RoundToNearest(10);
-            Assert.AreEqual("Time.DawnOf Stub 1/1/2001 12:00:00 AM Uncertain 1/1/2002 12:00:00 AM Unstated ", result.TestOutput);        
+            Assert.AreEqual("{Dawn: Stub; 1/1/2001: Uncertain; 1/1/2002: Unstated}", result.Out);        
         }
 
         [Test]
         public void Unknown_Round_3 ()
         {
             Tnum result = tnv().RoundUp(10);
-            Assert.AreEqual("Time.DawnOf Stub 1/1/2001 12:00:00 AM Uncertain 1/1/2002 12:00:00 AM Unstated ", result.TestOutput);        
+            Assert.AreEqual("{Dawn: Stub; 1/1/2001: Uncertain; 1/1/2002: Unstated}", result.Out);        
         }
         [Test]
         public void Unknown_Round_4 ()
         {
             Tnum result = tnv().RoundDown(10);
-            Assert.AreEqual("Time.DawnOf Stub 1/1/2001 12:00:00 AM Uncertain 1/1/2002 12:00:00 AM Unstated ", result.TestOutput);        
+            Assert.AreEqual("{Dawn: Stub; 1/1/2001: Uncertain; 1/1/2002: Unstated}", result.Out);        
         }
 
 
@@ -207,14 +199,14 @@ namespace Hammurabi.UnitTests.CoreFcns
         {
             Tnum n2 = new Tnum(4);
             Tnum result = Min(n, n2);
-            Assert.AreEqual(eternallyUnstated, result.TestOutput);        
+            Assert.AreEqual(eternallyUnstated, result.Out);        
         }
 
         [Test]
         public void Unknown_Min_2 ()
         {
             Tnum result = Min(tnv(),3);
-            Assert.AreEqual("Time.DawnOf Stub 1/1/2001 12:00:00 AM Uncertain 1/1/2002 12:00:00 AM Unstated ", result.TestOutput);        
+            Assert.AreEqual("{Dawn: Stub; 1/1/2001: Uncertain; 1/1/2002: Unstated}", result.Out);        
         }
 
         // Math - max
@@ -224,14 +216,14 @@ namespace Hammurabi.UnitTests.CoreFcns
         {
             Tnum n2 = new Tnum(4);
             Tnum result = Max(n, n2);
-            Assert.AreEqual(eternallyUnstated, result.TestOutput);        
+            Assert.AreEqual(eternallyUnstated, result.Out);        
         }
 
         [Test]
         public void Unknown_Max_2 ()
         {
             Tnum result = Max(tnv(),3);
-            Assert.AreEqual("Time.DawnOf Stub 1/1/2001 12:00:00 AM Uncertain 1/1/2002 12:00:00 AM Unstated ", result.TestOutput);        
+            Assert.AreEqual("{Dawn: Stub; 1/1/2001: Uncertain; 1/1/2002: Unstated}", result.Out);        
         }
 
         // Tvar.Lean
@@ -240,7 +232,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void Unknown_Lean_1 ()
         {
             Tbool result = tbu.Lean;
-            Assert.AreEqual(eternallyUnstated, result.TestOutput);        
+            Assert.AreEqual(eternallyUnstated, result.Out);        
         }
 
         [Test]
@@ -248,7 +240,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         {
             Tbool t = new Tbool(Hstate.Stub);
             t.AddState(DateTime.Now, Hstate.Stub);
-            Assert.AreEqual("Time.DawnOf Stub ", t.Lean.TestOutput);        
+            Assert.AreEqual("Stub", t.Lean.Out);        
         }
 
         // Tvar.AsOf
@@ -257,7 +249,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void Unknown_AsOf_1 ()
         {
             Tbool result = tbu.AsOf(DateTime.Now);
-            Assert.AreEqual(eternallyUnstated, result.TestOutput);        
+            Assert.AreEqual(eternallyUnstated, result.Out);        
         }
         
         // Tvar.IsAlways / IsEver
@@ -266,14 +258,14 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void Unknown_IsAlways_1 ()
         {
             Tbool result = tbu.IsAlwaysTrue();
-            Assert.AreEqual(eternallyUnstated, result.TestOutput);        
+            Assert.AreEqual(eternallyUnstated, result.Out);        
         }
         
         [Test]
         public void Unknown_IsEver_1 ()
         {
             Tbool result = tbu.IsEverTrue();
-            Assert.AreEqual(eternallyUnstated, result.TestOutput);        
+            Assert.AreEqual(eternallyUnstated, result.Out);        
         }
 
         // String concatenation
@@ -283,7 +275,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         {
             Tstr ts2 = new Tstr(Hstate.Unstated);
             Tstr ts3 = " x" + ts2;
-            Assert.AreEqual(eternallyUnstated, ts3.TestOutput);            
+            Assert.AreEqual(eternallyUnstated, ts3.Out);            
         }
 
         // Set.AsOf
@@ -291,7 +283,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         [Test]
         public void Unknown_SetAsOf_1 ()
         {
-            Assert.AreEqual(eternallyUnstated, theSet.AsOf(Time.DawnOf).TestOutput);    
+            Assert.AreEqual(eternallyUnstated, theSet.AsOf(Time.DawnOf).Out);    
         }
         
         // Set.IsSubsetOf
@@ -302,7 +294,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Thing P1 = new Thing("P1");
             Thing P2 = new Thing("P2");
             Tset s1 = new Tset(P1,P2);    
-            Assert.AreEqual(eternallyUnstated, theSet.IsSubsetOf(s1).TestOutput);        
+            Assert.AreEqual(eternallyUnstated, theSet.IsSubsetOf(s1).Out);        
         }
         
         // Set.Contains
@@ -311,7 +303,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void Unknown_SetContains_1 ()
         {
             Thing P1 = new Thing("P1");
-            Assert.AreEqual(eternallyUnstated, theSet.Contains(P1).TestOutput);        
+            Assert.AreEqual(eternallyUnstated, theSet.Contains(P1).Out);        
         }
         
         // Set equality
@@ -323,7 +315,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Thing P2 = new Thing("P2");
             Tset s1 = new Tset(P1,P2);
             Tbool res = s1 == theSet;
-            Assert.AreEqual(eternallyUnstated, res.TestOutput);        
+            Assert.AreEqual(eternallyUnstated, res.Out);        
         }
         
         [Test]
@@ -333,7 +325,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Thing P2 = new Thing("P2");
             Tset s1 = new Tset(P1,P2);
             Tbool res = s1 != theSet;
-            Assert.AreEqual(eternallyUnstated, res.TestOutput);        
+            Assert.AreEqual(eternallyUnstated, res.Out);        
         }
         
         // IsAtOrBefore
@@ -344,7 +336,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tdate td1 = new Tdate(2000,1,1);
             Tdate td2 = new Tdate(Hstate.Unstated);
             Tbool result = td2 <= td1;
-            Assert.AreEqual(eternallyUnstated, result.TestOutput);    
+            Assert.AreEqual(eternallyUnstated, result.Out);    
         }
 
         // Numeric comparison
@@ -353,35 +345,35 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void Unknown_NumericComparison1 ()
         {
             Tbool r = tnv() > 7;
-            Assert.AreEqual("Time.DawnOf Stub 1/1/2001 12:00:00 AM Uncertain 1/1/2002 12:00:00 AM Unstated ", r.TestOutput);    
+            Assert.AreEqual("{Dawn: Stub; 1/1/2001: Uncertain; 1/1/2002: Unstated}", r.Out);    
         }
 
         [Test]
         public void Unknown_NumericComparison2 ()
         {
             Tbool r = tnv() == 7;
-            Assert.AreEqual("Time.DawnOf Stub 1/1/2001 12:00:00 AM Uncertain 1/1/2002 12:00:00 AM Unstated ", r.TestOutput);    
+            Assert.AreEqual("{Dawn: Stub; 1/1/2001: Uncertain; 1/1/2002: Unstated}", r.Out);    
         }
 
         [Test]
         public void Unknown_NumericComparison3 ()
         {
             Tbool r = new Tnum(Hstate.Uncertain) == new Tnum(Hstate.Unstated);
-            Assert.AreEqual("Time.DawnOf Uncertain ", r.TestOutput);    
+            Assert.AreEqual("Uncertain", r.Out);    
         }
 
         [Test]
         public void Unknown_NumericComparison4 ()
         {
             Tbool r = new Tnum(Hstate.Uncertain) == new Tnum(Hstate.Uncertain);
-            Assert.AreEqual("Time.DawnOf Uncertain ", r.TestOutput);    
+            Assert.AreEqual("Uncertain", r.Out);    
         }
 
         [Test]
         public void Unknown_NumericComparison5 ()
         {
             Tbool r = new Tnum(Hstate.Stub) == new Tnum(Hstate.Uncertain);
-            Assert.AreEqual("Time.DawnOf Stub ", r.TestOutput);    
+            Assert.AreEqual("Stub", r.Out);    
         }
 
         // Unknown entity instances (that are function arguments)

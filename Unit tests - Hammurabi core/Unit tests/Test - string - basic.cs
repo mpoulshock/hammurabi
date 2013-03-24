@@ -32,7 +32,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tstr ts1 = new Tstr("hello,");
             Tstr ts2 = new Tstr("world");
             Tstr ts3 = ts1 + ts2;
-            Assert.AreEqual("Time.DawnOf hello,world ", ts3.TestOutput);            
+            Assert.AreEqual("hello,world", ts3.Out);            
         }
         
         [Test]
@@ -41,14 +41,14 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tstr ts1 = new Tstr("hello,");
             Tstr ts2 = new Tstr("world");
             Tstr ts3 = ts1 + " " + ts2;
-            Assert.AreEqual("Time.DawnOf hello, world ", ts3.TestOutput);            
+            Assert.AreEqual("hello, world", ts3.Out);            
         }
         
         [Test]
         public void Test3 ()
         {
             Tstr ts1 = new Tstr("hello,") + " world";
-            Assert.AreEqual("Time.DawnOf hello, world ", ts1.TestOutput);            
+            Assert.AreEqual("hello, world", ts1.Out);            
         }   
     }
 }

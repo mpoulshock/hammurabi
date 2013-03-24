@@ -36,7 +36,7 @@ namespace Hammurabi.UnitTests.CoreFcns
 
             Tnum r = tb.ElapsedDaysInSlidingWindow(2, "Day");
 
-            Assert.AreEqual("Time.DawnOf 0 1/2/2000 12:00:00 AM 1 1/3/2000 12:00:00 AM 2 1/4/2000 12:00:00 AM 1 1/5/2000 12:00:00 AM 0 ", r.TestOutput);    
+            Assert.AreEqual("{Dawn: 0; 1/2/2000: 1; 1/3/2000: 2; 1/4/2000: 1; 1/5/2000: 0}", r.Out);    
         }
 
         [Test]
@@ -45,7 +45,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tbool tb = new Tbool(false);
             Tnum r = tb.ElapsedDaysInSlidingWindow(2, "Day");
 
-            Assert.AreEqual("Time.DawnOf 0 ", r.TestOutput);    
+            Assert.AreEqual(0, r.Out);    
         }
 
         [Test]
@@ -57,7 +57,7 @@ namespace Hammurabi.UnitTests.CoreFcns
 
             Tnum r = tb.ElapsedDaysInSlidingWindow(2, "Day");
 
-            Assert.AreEqual("Time.DawnOf Unstated ", r.TestOutput);    
+            Assert.AreEqual("Unstated", r.Out);    
         }
 
         [Test]
@@ -69,7 +69,7 @@ namespace Hammurabi.UnitTests.CoreFcns
 
             Tnum r = tb.ElapsedDaysInSlidingWindow(2, "Day");
 
-            Assert.AreEqual("Time.DawnOf Stub ", r.TestOutput);    
+            Assert.AreEqual("Stub", r.Out);    
         }
 
         [Test]
@@ -82,10 +82,10 @@ namespace Hammurabi.UnitTests.CoreFcns
             tb.AddState(new DateTime(2000,2,18),false);
 
             Tnum r = tb.ElapsedDaysInSlidingWindow(2, "Day");
-            string tline = "Time.DawnOf 0 1/2/2000 12:00:00 AM 1 1/3/2000 12:00:00 AM 2 1/4/2000 12:00:00 AM 1 1/5/2000 12:00:00 AM 0 " +
-                "1/11/2000 12:00:00 AM 1 1/12/2000 12:00:00 AM 2 2/19/2000 12:00:00 AM 1 2/20/2000 12:00:00 AM 0 "; 
+            string tline = "{Dawn: 0; 1/2/2000: 1; 1/3/2000: 2; 1/4/2000: 1; 1/5/2000: 0; " +
+                "1/11/2000: 1; 1/12/2000: 2; 2/19/2000: 1; 2/20/2000: 0}"; 
 
-            Assert.AreEqual(tline, r.TestOutput);    
+            Assert.AreEqual(tline, r.Out);    
         }
 
         [Test]
@@ -94,7 +94,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             // Not totally correct (around the dawn of time), but should be fine for most computations...
             Tbool tb = new Tbool(true);
             Tnum r = tb.ElapsedDaysInSlidingWindow(2, "Day");
-            Assert.AreEqual("Time.DawnOf 0 1/3/1800 12:00:00 AM 1 1/4/1800 12:00:00 AM 2 ", r.TestOutput);    
+            Assert.AreEqual("{Dawn: 0; 1/3/1800: 1; 1/4/1800: 2}", r.Out);    
         }
     }
 }

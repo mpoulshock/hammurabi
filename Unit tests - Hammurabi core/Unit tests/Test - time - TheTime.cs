@@ -1,4 +1,4 @@
-// Copyright (c) 2012 Hammura.bi LLC
+// Copyright (c) 2012-2013 Hammura.bi LLC
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -33,21 +33,21 @@ namespace Hammurabi.UnitTests.CoreFcns
 		public void IsAtOrAfter1 ()
 		{
 			Tbool afterY2K = TheTime.IsAtOrAfter(Date(2000,1,1));	
-			Assert.AreEqual("Time.DawnOf True ", afterY2K.AsOf(Date(2012,1,1)).TestOutput);		
+			Assert.AreEqual(true, afterY2K.AsOf(Date(2012,1,1)).Out);		
 		}
 		
 		[Test]
 		public void IsAtOrAfter2 ()
 		{
 			Tbool afterY2K = TheTime.IsAtOrAfter(Date(2000,1,1));	
-			Assert.AreEqual("Time.DawnOf False ", afterY2K.AsOf(Date(1999,1,1)).TestOutput);		
+            Assert.AreEqual(false, afterY2K.AsOf(Date(1999,1,1)).Out);		
 		}
 		
 		[Test]
 		public void IsAtOrAfter3 ()
 		{
 			Tbool afterY2K = TheTime.IsAtOrAfter(Date(2000,1,1));	
-			Assert.AreEqual("Time.DawnOf True ", afterY2K.AsOf(Date(2000,1,1)).TestOutput);		
+            Assert.AreEqual(true, afterY2K.AsOf(Date(2000,1,1)).Out);		
 		}
 		
         [Test]
@@ -55,7 +55,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         {
             Tdate d = new Tdate(Hstate.Uncertain);
             Tbool afterY2K = TheTime.IsAtOrAfter(d);   
-            Assert.AreEqual("Time.DawnOf Uncertain ", afterY2K.TestOutput);        
+            Assert.AreEqual("Uncertain", afterY2K.Out);        
         }
 
 		// IsBefore
@@ -64,21 +64,21 @@ namespace Hammurabi.UnitTests.CoreFcns
 		public void IsBefore1 ()
 		{
 			Tbool beforeY2K = TheTime.IsBefore(Date(2000,1,1));	
-			Assert.AreEqual("Time.DawnOf False ", beforeY2K.AsOf(Date(2012,1,1)).TestOutput);		
+            Assert.AreEqual(false, beforeY2K.AsOf(Date(2012,1,1)).Out);		
 		}
 		
 		[Test]
 		public void IsBefore2 ()
 		{
 			Tbool beforeY2K = TheTime.IsBefore(Date(2000,1,1));	
-			Assert.AreEqual("Time.DawnOf True ", beforeY2K.AsOf(Date(1999,1,1)).TestOutput);		
+            Assert.AreEqual(true, beforeY2K.AsOf(Date(1999,1,1)).Out);		
 		}
 		
 		[Test]
 		public void IsBefore3 ()
 		{
 			Tbool beforeY2K = TheTime.IsBefore(Date(2000,1,1));	
-			Assert.AreEqual("Time.DawnOf False ", beforeY2K.AsOf(Date(2000,1,1)).TestOutput);		
+            Assert.AreEqual(false, beforeY2K.AsOf(Date(2000,1,1)).Out);		
 		}
 		
 		// IsBetween
@@ -87,42 +87,42 @@ namespace Hammurabi.UnitTests.CoreFcns
 		public void IsBetween0 ()
 		{
 			Tbool isDuringTheBushYears = TheTime.IsBetween(Date(2001,1,20), Date(2009,1,20));	
-			Assert.AreEqual("Time.DawnOf False 1/20/2001 12:00:00 AM True 1/20/2009 12:00:00 AM False ", isDuringTheBushYears.TestOutput);		
+            Assert.AreEqual("{Dawn: false; 1/20/2001: true; 1/20/2009: false}", isDuringTheBushYears.Out);		
 		}
 		
 		[Test]
 		public void IsBetween1 ()
 		{
 			Tbool isDuringTheBushYears = TheTime.IsBetween(Date(2001,1,20), Date(2009,1,20));	
-			Assert.AreEqual("Time.DawnOf False ", isDuringTheBushYears.AsOf(Date(1999,1,1)).TestOutput);		
+            Assert.AreEqual(false, isDuringTheBushYears.AsOf(Date(1999,1,1)).Out);		
 		}
 		
 		[Test]
 		public void IsBetween2 ()
 		{
 			Tbool isDuringTheBushYears = TheTime.IsBetween(Date(2001,1,20), Date(2009,1,20));	
-			Assert.AreEqual("Time.DawnOf True ", isDuringTheBushYears.AsOf(Date(2001,1,20)).TestOutput);			
+            Assert.AreEqual(true, isDuringTheBushYears.AsOf(Date(2001,1,20)).Out);			
 		}
 		
 		[Test]
 		public void IsBetween3 ()
 		{
 			Tbool isDuringTheBushYears = TheTime.IsBetween(Date(2001,1,20), Date(2009,1,20));	
-			Assert.AreEqual("Time.DawnOf True ", isDuringTheBushYears.AsOf(Date(2008,1,1)).TestOutput);			
+            Assert.AreEqual(true, isDuringTheBushYears.AsOf(Date(2008,1,1)).Out);			
 		}
 		
 		[Test]
 		public void IsBetween4 () 
 		{
 			Tbool isDuringTheBushYears = TheTime.IsBetween(Date(2001,1,20), Date(2009,1,20));	
-			Assert.AreEqual("Time.DawnOf False ", isDuringTheBushYears.AsOf(Date(2009,1,20)).TestOutput);			
+            Assert.AreEqual(false, isDuringTheBushYears.AsOf(Date(2009,1,20)).Out);			
 		}
 		
 		[Test]
 		public void IsBetween5 ()
 		{
 			Tbool isDuringTheBushYears = TheTime.IsBetween(Date(2001,1,20), Date(2009,1,20));	
-			Assert.AreEqual("Time.DawnOf False ", isDuringTheBushYears.AsOf(Date(2012,1,1)).TestOutput);			
+            Assert.AreEqual(false, isDuringTheBushYears.AsOf(Date(2012,1,1)).Out);			
 		}
 		
         [Test]
@@ -130,7 +130,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         {
             Tdate d = new Tdate(Hstate.Uncertain);
             Tbool isDuringTheBushYears = TheTime.IsBetween(d, Date(2009,1,20));   
-            Assert.AreEqual("Time.DawnOf Uncertain 1/20/2009 12:00:00 AM False ", isDuringTheBushYears.TestOutput);           
+            Assert.AreEqual("{Dawn: Uncertain; 1/20/2009: false}", isDuringTheBushYears.Out);           
         }
 
 		// TheYear
@@ -140,20 +140,20 @@ namespace Hammurabi.UnitTests.CoreFcns
 		{	
 			// This test will break every new calendar year (b/c the time frame of TheYear is determined by the system clock)
 			// Last updated: 4/28/12
-            Assert.AreEqual("Time.DawnOf 0 1/1/2011 12:00:00 AM 2011 1/1/2012 12:00:00 AM 2012 1/1/2013 12:00:00 AM 2013 1/1/2014 12:00:00 AM 2014 1/1/2015 12:00:00 AM 0 ", TheTime.Year(2).TestOutput);		
+            Assert.AreEqual("{Dawn: 0; 1/1/2011: 2011; 1/1/2012: 2012; 1/1/2013: 2013; 1/1/2014: 2014; 1/1/2015: 0}", TheTime.Year(2).Out);		
 		}
 		
 		[Test]
 		public void TheYear2 ()
 		{
 			Tbool isAfterY2K = TheYear > 2000; 	
-			Assert.AreEqual("Time.DawnOf True ", isAfterY2K.AsOf(DateTime.Now).TestOutput);		
+            Assert.AreEqual(true, isAfterY2K.AsOf(DateTime.Now).Out);		
 		}
 		
 		public void TheYear3 ()
 		{
 			Tbool isAfterY2K = TheYear > 2000; 	
-			Assert.AreEqual("Time.DawnOf True ", isAfterY2K.AsOf(Date(1999,12,31)).TestOutput);		
+            Assert.AreEqual(true, isAfterY2K.AsOf(Date(1999,12,31)).Out);		
 		}
 		
 		// TheQuarter
@@ -162,14 +162,14 @@ namespace Hammurabi.UnitTests.CoreFcns
 		public void TheQuarter1 ()
 		{
 			Tbool is4thQtr = TheQuarter == 4; 	
-			Assert.AreEqual("Time.DawnOf True ", is4thQtr.AsOf(Date(2015,11,15)).TestOutput);		
+            Assert.AreEqual(true, is4thQtr.AsOf(Date(2015,11,15)).Out);		
 		}
 		
 		[Test]
 		public void TheQuarter2 ()
 		{
 			Tbool is4thQtr = TheQuarter == 4; 	
-			Assert.AreEqual("Time.DawnOf False ", is4thQtr.AsOf(Date(2015,3,15)).TestOutput);		
+			Assert.AreEqual(false, is4thQtr.AsOf(Date(2015,3,15)).Out);		
 		}
 		
 		[Test]
@@ -177,7 +177,7 @@ namespace Hammurabi.UnitTests.CoreFcns
 		{
 			// It should never be the 5th quarter
 			Tbool is5thQtr = TheQuarter == 5; 	
-			Assert.AreEqual("Time.DawnOf False ", is5thQtr.IsEverTrue().TestOutput);		
+			Assert.AreEqual(false, is5thQtr.IsEverTrue().Out);		
 		}
 		
 		[Test]
@@ -185,7 +185,7 @@ namespace Hammurabi.UnitTests.CoreFcns
 		{
 			// The quarter is numbered 0 outside of the default 20 year time span
 			Tbool is0thQtr = TheQuarter == 0; 	
-			Assert.AreEqual("Time.DawnOf True ", is0thQtr.IsEverTrue().TestOutput);		
+			Assert.AreEqual(true, is0thQtr.IsEverTrue().Out);		
 		}
 		
 		[Test]
@@ -193,7 +193,7 @@ namespace Hammurabi.UnitTests.CoreFcns
 		{
 			// It should be the 2nd quarter sometime
 			Tbool is2ndQtr = TheQuarter == 2; 	
-			Assert.AreEqual("Time.DawnOf True ", is2ndQtr.IsEverTrue().TestOutput);		
+			Assert.AreEqual(true, is2ndQtr.IsEverTrue().Out);		
 		}
 		
 		// TheMonth
@@ -202,28 +202,28 @@ namespace Hammurabi.UnitTests.CoreFcns
 		public void TheMonth1 ()
 		{
 			Tbool isApril = TheMonth == 4; 	
-			Assert.AreEqual("Time.DawnOf False ", isApril.AsOf(Date(2015,3,15)).TestOutput);		
+			Assert.AreEqual(false, isApril.AsOf(Date(2015,3,15)).Out);		
 		}
 		
 		[Test]
 		public void TheMonth2 ()
 		{
 			Tbool isApril = TheMonth == 4; 	
-			Assert.AreEqual("Time.DawnOf True ", isApril.AsOf(Date(2015,4,15)).TestOutput);		
+			Assert.AreEqual(true, isApril.AsOf(Date(2015,4,15)).Out);		
 		}
 		
 		[Test]
 		public void TheMonth3 ()
 		{
 			Tbool isAfterJuly = TheMonth > 7; 	
-			Assert.AreEqual("Time.DawnOf False ", isAfterJuly.AsOf(Date(2015,4,15)).TestOutput);		
+			Assert.AreEqual(false, isAfterJuly.AsOf(Date(2015,4,15)).Out);		
 		}
 		
 		[Test]
 		public void TheMonth4 ()
 		{
 			Tbool isAfterJuly = TheMonth > 7; 	
-			Assert.AreEqual("Time.DawnOf True ", isAfterJuly.AsOf(Date(2015,8,15)).TestOutput);		
+			Assert.AreEqual(true, isAfterJuly.AsOf(Date(2015,8,15)).Out);		
 		}
 		
 		[Test]
@@ -231,7 +231,7 @@ namespace Hammurabi.UnitTests.CoreFcns
 		{
 			// It should never be month 13
 			Tbool isMonth13 = TheMonth == 13; 	
-			Assert.AreEqual("Time.DawnOf False ", isMonth13.IsEverTrue().TestOutput);		
+			Assert.AreEqual(false, isMonth13.IsEverTrue().Out);		
 		}
 		
 		[Test]
@@ -239,7 +239,7 @@ namespace Hammurabi.UnitTests.CoreFcns
 		{
 			// The month is numbered 0 outside of the default 10 year time span
 			Tbool isMonth0 = TheMonth == 0; 	
-			Assert.AreEqual("Time.DawnOf True ", isMonth0.IsEverTrue().TestOutput);		
+			Assert.AreEqual(true, isMonth0.IsEverTrue().Out);		
 		}
         
 		// Tnum.Max
@@ -247,13 +247,13 @@ namespace Hammurabi.UnitTests.CoreFcns
 		[Test]
 		public void Max1 ()
 		{
-			Assert.AreEqual("Time.DawnOf 4 ", TheQuarter.Max().TestOutput);		
+			Assert.AreEqual(4, TheQuarter.Max().Out);		
 		}
 		
 		[Test]
 		public void Max2 ()
 		{
-			Assert.AreEqual("Time.DawnOf 12 ", TheMonth.Max().TestOutput);		
+			Assert.AreEqual(12, TheMonth.Max().Out);		
 		}
 		
 		// Tnum.Min
@@ -261,13 +261,13 @@ namespace Hammurabi.UnitTests.CoreFcns
 		[Test]
 		public void Min1 ()
 		{
-			Assert.AreEqual("Time.DawnOf 0 ", TheTime.TheQuarter.Min().TestOutput);		
+			Assert.AreEqual(0, TheTime.TheQuarter.Min().Out);		
 		}
 		
 		[Test]
 		public void Min2 ()
 		{
-			Assert.AreEqual("Time.DawnOf 0 ", TheMonth.Min().TestOutput);		
+			Assert.AreEqual(0, TheMonth.Min().Out);		
 		}
 	}
 }

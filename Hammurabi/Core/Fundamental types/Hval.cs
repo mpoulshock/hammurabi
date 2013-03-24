@@ -151,8 +151,31 @@ namespace Hammurabi
                 else if (this.IsUncertain) return "Uncertain";   
                 else if (this.IsUnstated) return "Unstated"; 
                 else if (this.State == Hstate.Null) return "Null";
+                else if (this.Obj.GetType() == (new DateTime()).GetType()) return Convert.ToString("mm/dd/yyyy");
+                else if (this.IsSet()) return this.ToSerializedSet();
                 else return Convert.ToString(this.Obj);
             }
+        }
+
+        /// <summary>
+        /// Serializes a set of Things.
+        /// </summary>
+        public string ToSerializedSet()
+        {
+            string result = "";
+            foreach(Thing t in (List<Thing>)this.Obj)
+            {
+                result += t.Id + ", ";
+            }
+            return result.TrimEnd(',',' ');
+        }
+
+        /// <summary>
+        /// Determines whether this instance is a set of Things.
+        /// </summary>
+        public bool IsSet()
+        {
+            return  this.Obj.GetType() == (new List<Thing>()).GetType();
         }
 
         /// <summary>

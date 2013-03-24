@@ -41,19 +41,19 @@ namespace Hammurabi.UnitTests.CoreFcns
         [Test]
         public void Misc_Recursion1 ()
         {
-            Assert.AreEqual("Time.DawnOf 89 ", Fibonacci(10).TestOutput );    
+            Assert.AreEqual(89, Fibonacci(10).Out);    
         }
         
         [Test]
         public void Misc_Recursion2 ()
         {
-            Assert.AreNotEqual("Time.DawnOf 89 ", Fibonacci(11).TestOutput );    
+            Assert.AreNotEqual(89, Fibonacci(11).Out);    
         }
         
         [Test]
         public void Misc_Recursion3 ()
         {
-            Assert.AreEqual("Time.DawnOf 1 ", Fibonacci(1).TestOutput );    
+            Assert.AreEqual(1, Fibonacci(1).Out);    
         }
         
         private static Tnum Fibonacci(Tnum x)
@@ -68,19 +68,19 @@ namespace Hammurabi.UnitTests.CoreFcns
         [Test]
         public void Misc_TemporalRecursion1 ()
         {
-            Assert.AreEqual("Time.DawnOf 89 ", TemporalFibonacci(10).TestOutput );    
+            Assert.AreEqual(89, TemporalFibonacci(10).Out);    
         }
         
         [Test]
         public void Misc_TemporalRecursion2 ()
         {
-            Assert.AreNotEqual("Time.DawnOf 89 ", TemporalFibonacci(11).TestOutput );    
+            Assert.AreNotEqual(89, TemporalFibonacci(11).Out);    
         }
         
         [Test]
         public void Misc_TemporalRecursion3 ()
         {
-            Assert.AreEqual("Time.DawnOf 1 ", TemporalFibonacci(1).TestOutput );    
+            Assert.AreEqual(1, TemporalFibonacci(1).Out);    
         }
         
         [Test]
@@ -89,7 +89,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tnum x = new Tnum();
             x.AddState(Time.DawnOf, 10);
             x.AddState(new DateTime(2000,1,1), 1);
-            Assert.AreEqual("Time.DawnOf 89 1/1/2000 12:00:00 AM 1 ", TemporalFibonacci(x).TestOutput );    
+            Assert.AreEqual("{Dawn: 89; 1/1/2000: 1}", TemporalFibonacci(x).Out);    
         }
         
         private static Tnum TemporalFibonacci(Tnum x)

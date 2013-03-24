@@ -224,7 +224,7 @@ namespace Hammurabi
                     result += " " + ((Thing)f.Arg2).Id;
                 }
 
-                result += " = " + f.v.TestOutput + "\n";
+                result += " = " + Convert.ToString(f.v.Out) + "\n";
             }
 
             return result;

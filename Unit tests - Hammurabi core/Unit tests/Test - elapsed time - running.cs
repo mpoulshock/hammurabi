@@ -38,7 +38,7 @@ namespace Hammurabi.UnitTests.CoreFcns
 
             Tnum r = tb.RunningElapsedDays;
 
-            Assert.AreEqual("Time.DawnOf 0 1/2/2000 12:00:00 AM 1 1/4/2000 12:00:00 AM 2 ", r.TestOutput);    
+            Assert.AreEqual("{Dawn: 0; 1/2/2000: 1; 1/4/2000: 2}", r.Out);    
         }
 
         [Test]
@@ -47,7 +47,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tbool tb = new Tbool(false);
             Tnum r = tb.RunningElapsedYears;
 
-            Assert.AreEqual("Time.DawnOf 0 ", r.TestOutput);    
+            Assert.AreEqual(0, r.Out);    
         }
 
         [Test]
@@ -59,7 +59,7 @@ namespace Hammurabi.UnitTests.CoreFcns
 
             Tnum r = tb.RunningElapsedWeeks;
 
-            Assert.AreEqual("Time.DawnOf Unstated ", r.TestOutput);    
+            Assert.AreEqual("Unstated", r.Out);    
         }
 
         [Test]
@@ -71,7 +71,7 @@ namespace Hammurabi.UnitTests.CoreFcns
 
             Tnum r = tb.RunningElapsedWeeks;
 
-            Assert.AreEqual("Time.DawnOf Stub ", r.TestOutput);    
+            Assert.AreEqual("Stub", r.Out);    
         }
     }
 }

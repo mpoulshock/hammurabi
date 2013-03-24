@@ -84,8 +84,8 @@ namespace Interactive
         /// </summary>
         public static void CloseUnitTest(Tvar val, string goal)
         {
-            string result = Convert.ToString(val.TestOutput);
-            testStr += "- " + TestGoal(goal) + ".TestOutput =?= \"" + result + "\"";
+            string result = Convert.ToString(val.Out);
+            testStr += "- " + TestGoal(goal) + ".Out =?= \"" + result + "\"";
         }
         
         /// <summary>

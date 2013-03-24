@@ -202,57 +202,6 @@ namespace Hammurabi
         }
 
         /// <summary>
-        /// Displays a timeline indicating the members of the set at various
-        /// points in time.
-        /// </summary>
-        new public string Timeline
-        {
-            get 
-            {  
-                string result = "";
-                foreach(KeyValuePair<DateTime,Hval> de in this.TimeLine)
-                {
-                    // Show the interval start time
-                    if (Convert.ToDateTime(de.Key) == Time.DawnOf)
-                    {
-                        result += "Time.DawnOf ";
-                    }
-                    else
-                    {
-                        result += de.Key + " ";  
-                    }
-
-                    // Show the value
-                    if (!de.Value.IsKnown) result += de.Value.ToString;
-
-                    else
-                    {
-                        foreach(Thing le in (List<Thing>)de.Value.Val)
-                        {
-                            result += le.Id + ", ";
-                        }
-                        result = result.TrimEnd(',',' ');
-                    }
-                    result += "\n"; 
-                }
-                return result;
-            }
-        }
-        
-        /// <summary>
-        /// Displays a timeline indicating the members of the set at various
-        /// points in time.  Same as .Timeline but without line breaks.
-        /// Used for test cases only.
-        /// </summary>
-        new public string TestOutput
-        {
-            get
-            {
-                return Timeline.Replace("\n"," ");
-            }
-        }
-
-        /// <summary>
         /// Counts the number of set members at each time interval. 
         /// </summary>
         public Tnum Count

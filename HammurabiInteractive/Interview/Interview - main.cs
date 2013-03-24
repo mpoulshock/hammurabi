@@ -186,7 +186,6 @@ namespace Interactive
         {
             Console.WriteLine("\n");
 
-            // TODO: Does not correctly display Tset.TestOutput
             // Indent and format results
             string tline = goal.ValueAsString().Replace("\n","\n\t");
             tline = "\t" + tline.Replace("12:00:00 AM", "\t").Replace("Time.DawnOf ", "Time.DawnOf\t ");

@@ -161,68 +161,68 @@ namespace Hammurabi.UnitTests.CoreFcns
         [Test]
         public void TestTvar1 () //
         {
-            Assert.AreEqual("Time.DawnOf 42 ", tn1.AsOf(Time.DawnOf).TestOutput);        
+            Assert.AreEqual(42, tn1.AsOf(Time.DawnOf).Out);        
         }
 
         [Test]
         public void TestTvar3 ()
         {
-            Assert.AreEqual(tb1.TestOutput,tb2.TestOutput);        
+            Assert.AreEqual(tb1.Out,tb2.Out);        
         }
         
         [Test]
         public void TestTvar4 ()
         {
-            Assert.AreEqual("Time.DawnOf True ",tb1.TestOutput);        
+            Assert.AreEqual(true, tb1.Out);        
         }
         
         [Test]
         public void TestTvar5 ()
         {
             Tbool eq = tb1 == tb2;
-            Assert.AreEqual("Time.DawnOf True ",eq.TestOutput);        
+            Assert.AreEqual(true, eq.Out);        
         }
         
         [Test]
         public void TestTvar6 () 
         {
             Tbool eq = tn1 == tn2;
-            Assert.AreEqual("Time.DawnOf False ",eq.TestOutput);        
+            Assert.AreEqual(false, eq.Out);        
         }
 
         [Test]
         public void TestTvar6a() 
         {
             Tbool eq = tn0 == tn1;
-            Assert.AreEqual("Time.DawnOf True ",eq.TestOutput);        
+            Assert.AreEqual(true, eq.Out);        
         }
 
         [Test]
         public void TestTvar6b() 
         {
             Tbool eq = tn1 != tn2;
-            Assert.AreEqual("Time.DawnOf True ",eq.TestOutput);        
+            Assert.AreEqual(true, eq.Out);        
         }
 
         [Test]
         public void TestTvar8 ()
         {
             Tbool t2 = tbu;
-            Assert.AreEqual("Time.DawnOf Unstated ", t2.TestOutput);        
+            Assert.AreEqual("Unstated", t2.Out);        
         }
 
         [Test]
         public void TestTvar9 ()
         {
             Tbool t2 = tbn;
-            Assert.AreEqual("Time.DawnOf Uncertain ", t2.TestOutput);        
+            Assert.AreEqual("Uncertain", t2.Out);        
         }
 
         [Test]
         public void TestTvar10 ()
         {
             Tbool t2 = new Tbool(true);
-            Assert.AreEqual("Time.DawnOf True ", t2.TestOutput);        
+            Assert.AreEqual(true, t2.Out);        
         }
 
         // Hval equality
