@@ -7,7 +7,7 @@
 !AkkadianCompiler.exe
 
 *.dll
-!Hammurabi/bin/Debug/hammurabi.dll
+!hammurabi.dll
 !nunit.core.dll
 !nunit.framework.dll
 
