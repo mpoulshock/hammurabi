@@ -82,7 +82,7 @@ Test: Snap7     # Tset is uncertain
 
 
 # A function that, given a set of people, returns the largest 
-# possible subset in which everyone has the same last name?
+# possible subset in which everyone has the same last name
 
 # Largest subset of people with same name
 Tset CommonNameSet(Tset people) =

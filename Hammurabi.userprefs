@@ -1,22 +1,15 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" PreferredExecutionTarget="MonoDevelop.Default" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Akkadian\Sandbox\Optimization experiments.akk">
     <Files>
-      <File FileName="Akkadian\Sandbox\Optimization experiments.akk" Line="62" Column="36" />
-      <File FileName="Hammurabi\Core\Core functions\Set - optimal subsets.cs" Line="115" Column="48" />
-      <File FileName="Hammurabi\Core\Fundamental types\Tset.cs" Line="96" Column="13" />
+      <File FileName="Akkadian\Sandbox\Optimization experiments.akk" Line="85" Column="59" />
+      <File FileName="Hammurabi\Core\Core functions\Set - optimal subsets.cs" Line="122" Column="59" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
-          <Node name="Akkadian" expanded="True">
-            <Node name="Sandbox" expanded="True" />
-          </Node>
-          <Node name="AkkadianCompiler" selected="True" />
-          <Node name="Hammurabi" expanded="True">
-            <Node name="Core" expanded="True">
-              <Node name="Core functions" expanded="True" />
-            </Node>
+          <Node name="HammurabiInteractive" expanded="True">
+            <Node name="References" expanded="True" selected="True" />
           </Node>
         </State>
       </Pad>
@@ -38,7 +31,13 @@
         <State />
       </Pad>
       <Pad Id="MonoDevelop.NUnit.TestPad">
-        <State expanded="True" />
+        <State expanded="True" selected="True">
+          <Node name="Hammurabi" expanded="True">
+            <Node name="Hammurabi" expanded="True">
+              <Node name="UnitTests" expanded="True" />
+            </Node>
+          </Node>
+        </State>
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
