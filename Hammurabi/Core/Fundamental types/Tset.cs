@@ -87,7 +87,7 @@ namespace Hammurabi
         /// <summary>
         /// Adds a time interval and list of set members to the timeline. 
         /// </summary>
-        public void AddState (DateTime dt, params Thing[] list)
+        public void AddState(DateTime dt, params Thing[] list)
         {
             List<Thing> entities = new List<Thing>();
             

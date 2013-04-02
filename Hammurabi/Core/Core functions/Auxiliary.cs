@@ -36,7 +36,7 @@ namespace Hammurabi
                 return new Hval(null,top);
             }
 
-            decimal max= Convert.ToDecimal(list[0].Val);
+            decimal max = Convert.ToDecimal(list[0].Val);
             foreach (Hval v in list) 
             {
                 if (Convert.ToDecimal(v.Val) > max)

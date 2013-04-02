@@ -1,0 +1,111 @@
+# Namespace:    Hammurabi.Sandbox
+# Summary:      Experiments with optimization functions
+# Updated:      2013-04-01
+# Author:       Michael Poulshock
+
+
+# A function that, given a set of people, returns the subset that 
+# has the best possible SNAP allotment, where the allotment goes 
+# down as income in the subset increases, but goes up as the size
+# of the subset increases.
+
+# Set of household members who would maximize the SNAP allotment
+Tset SnapApplicants(Tset hh) =
+    hh.OptimalSubset(SnapAllotment(_))
+
+# Approximates a household's SNAP allotment
+Tnum SnapAllotment(Tset hh) =
+    (hh.Count * hh.Count * $1,000) / hh.Sum(Econ.AnnualIncome(_))
+
+# Way to test the above
+Tset TestSNAP(Thing p) =
+    SnapApplicants(SetOfPeople(p))
+ 
+# >>Who are {1}'s people?
+Tset SetOfPeople(Thing t)
+   
+
+Test: Snap1
+- Things a, b, c
+- Sandbox.SetOfPeople(a) = [[a,b,c]]
+- Econ.AnnualIncome(a) =  $10,000
+- Econ.AnnualIncome(b) =  $13,000
+- Econ.AnnualIncome(c) = $100,000
+- Sandbox.TestSNAP(a).Out =?= "a, b"
+
+Test: Snap2
+- Things a, b, c
+- Sandbox.SetOfPeople(a) = [[a,b,c]]
+- Econ.AnnualIncome(a) =   $1,000
+- Econ.AnnualIncome(b) = $130,000
+- Econ.AnnualIncome(c) = $100,000
+- Sandbox.TestSNAP(a).Out =?= "a"
+
+Test: Snap3     # Temporal combo of Snap1 and Snap2
+- Things a, b, c
+- Sandbox.SetOfPeople(a) = [[a,b,c]]
+- Econ.AnnualIncome(a) = {Dawn: $10,000; 2014-01-01: $1,000}
+- Econ.AnnualIncome(b) = {Dawn: $13,000; 2014-01-01: $130,000}
+- Econ.AnnualIncome(c) = $100,000
+- Sandbox.TestSNAP(a).Out =?= "{Dawn: a, b; 1/1/2014: a}"
+
+Test: Snap4     # Fact about set member is uncertain
+- Things a, b, c
+- Sandbox.SetOfPeople(a) = [[a,b,c]]
+- Econ.AnnualIncome(a) = Tnum(?)
+- Econ.AnnualIncome(b) = $130,000
+- Econ.AnnualIncome(c) = $100,000
+- Sandbox.TestSNAP(a).Out =?= "Uncertain"   # Fail @ "Set - optimal subsets.cs" line 115
+
+Test: Snap5     # Fact about set member is unstated
+- Things a, b, c
+- Sandbox.SetOfPeople(a) = [[a,b,c]]
+- Econ.AnnualIncome(b) = $130,000
+- Econ.AnnualIncome(c) = $100,000
+- Sandbox.TestSNAP(a).Out =?= "Unstated"
+
+Test: Snap6     # Tset is unstated
+- Things a, b, c
+- Econ.AnnualIncome(a) = $10,000
+- Econ.AnnualIncome(b) = $130,000
+- Econ.AnnualIncome(c) = $100,000
+- Sandbox.TestSNAP(a).Out =?= "Unstated"
+
+Test: Snap7     # Tset is uncertain
+- Things a, b, c
+- Sandbox.SetOfPeople(a) = Tset(?)
+- Econ.AnnualIncome(a) = $10,000
+- Econ.AnnualIncome(b) = $130,000
+- Econ.AnnualIncome(c) = $100,000
+- Sandbox.TestSNAP(a).Out =?= "Uncertain"
+
+
+
+# A function that, given a set of people, returns the largest 
+# possible subset in which everyone has the same last name?
+
+# Largest subset of people with same name
+Tset CommonNameSet(Tset people) =
+    people.OptimalSubset(NoWithSameName(_))
+
+# Determines whether everyone in a set has the same name
+Tnum NoWithSameName(Tset people) =
+    Stub()
+
+# Number of people with the same name as a given person
+# Tnum NoWithSameName(Tset theSet, Thing p) =
+#     theSet.Filter(Name(p) == Name(_)).Count  
+
+# >>What is {1}'s name?        
+# Tstr Name(Thing t) 
+
+
+
+# A way to find optimal solutions (e.g., finding the mix of parameters 
+# that achieves a maximum or minimum of another variable that is 
+# dependent on those parameters).
+
+
+
+
+

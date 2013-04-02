@@ -115,7 +115,7 @@ namespace Hammurabi
         {
             return new Hval(n);
         }
-        public static implicit operator Hval(Hstate s) 
+        public static implicit operator Hval(Hstate s)  // Does not seem to work properly
         {
             return new Hval(null,s);
         }
