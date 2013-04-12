@@ -31,10 +31,7 @@ namespace Hammurabi
         public static Hval Maximum(List<Hval> list)
         {
             Hstate top = H.PrecedingState(list);
-            if (top != Hstate.Known)
-            {
-                return new Hval(null,top);
-            }
+            if (top != Hstate.Known) return new Hval(null,top);
 
             decimal max = Convert.ToDecimal(list[0].Val);
             foreach (Hval v in list) 
@@ -54,10 +51,7 @@ namespace Hammurabi
         public static Hval Minimum(List<Hval> list)
         {
             Hstate top = H.PrecedingState(list);
-            if (top != Hstate.Known)
-            {
-                return new Hval(null,top);
-            }
+            if (top != Hstate.Known) return new Hval(null,top);
 
             decimal min = Convert.ToDecimal(list[0].Val);
             foreach (Hval v in list) 

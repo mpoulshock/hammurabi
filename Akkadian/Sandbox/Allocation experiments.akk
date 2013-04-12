@@ -1,0 +1,85 @@
+# Namespace:    Hammurabi.Sandbox
+# Summary:      Experiments with allocation problems
+# Updated:      2013-04-06
+# Author:       Michael Poulshock
+
+
+# Sometimes you need to allocate a quantity among a number of containers.  For
+# example, maybe you need to distribute the proceeds of a will, or allocate 
+# entitlement benefits among a number of distributees, each of whom has a
+# limited capacity.  Below is a way to handle such problems.
+
+
+# INPUTS
+
+Tset Recipients(Thing allocator)
+
+Tnum Capacity(Thing t)
+
+Tnum Priority(Thing t)
+
+
+# ALLOCATION FUNCTION
+
+# Calculates the amount of t's allocation from the pot, given a set of recipients
+Tnum Allocation(Thing t, Thing pot, Tset recips) =
+    Min(Capacity(t), newPotAmt)
+
+    # Capacity of the pot, based on what's left after higher-priority things get 
+    # their share.
+    Tnum newPotAmt = 
+        set:
+        if dibs.Count == 0 -> Capacity(pot)
+        else Capacity(pot) - dibs.Sum(Allocation(_, pot, recips))
+        
+    # Recipients with a higher prioity than t
+    Tset dibs = recips.Filter(Priority(_) < Priority(t))
+    
+    
+# Method to test the above
+Tnum AllocationTest(Thing t, Thing pot) =
+    Allocation(t, pot, Recipients(pot))
+
+
+# UNIT TESTS
+
+Test: Allocation1
+- Things a, b, c
+- Sandbox.Recipients(a) = [[b, c]]
+- Sandbox.Priority(b) = 1
+- Sandbox.Priority(c) = 2
+- Sandbox.Capacity(a) = 100
+- Sandbox.Capacity(b) = 10
+- Sandbox.Capacity(c) = 50
+- Sandbox.AllocationTest(b, a).Out =?= 10
+
+Test: Allocation2
+- Things a, b, c
+- Sandbox.Recipients(a) = [[b, c]]
+- Sandbox.Priority(b) = 1
+- Sandbox.Priority(c) = 2
+- Sandbox.Capacity(a) = 100
+- Sandbox.Capacity(b) = 10
+- Sandbox.Capacity(c) = 50
+- Sandbox.AllocationTest(c, a).Out =?= 50
+
+Test: Allocation3
+- Things a, b, c
+- Sandbox.Recipients(a) = [[b, c]]
+- Sandbox.Priority(b) = 1
+- Sandbox.Priority(c) = 2
+- Sandbox.Capacity(a) = 25
+- Sandbox.Capacity(b) = 10
+- Sandbox.Capacity(c) = 50
+- Sandbox.AllocationTest(c, a).Out =?= 15
+
+Test: Allocation4
+- Things a, b, c
+- Sandbox.Recipients(a) = [[b, c]]
+- Sandbox.Priority(b) = 1
+- Sandbox.Priority(c) = 2
+- Sandbox.Capacity(a) = 5
+- Sandbox.Capacity(b) = 10
+- Sandbox.Capacity(c) = 50
+- Sandbox.AllocationTest(c, a).Out =?= 0
+

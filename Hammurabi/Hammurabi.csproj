@@ -169,6 +169,8 @@
     <Compile Include="Core\Core functions\Tnum - accumulate.cs" />
     <Compile Include="Generated source\Optimization experiments.cs" />
     <Compile Include="Core\Core functions\Set - optimal subsets.cs" />
+    <Compile Include="Generated source\Allocation experiments.cs" />
+    <Compile Include="Generated source\Min and max tests.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
