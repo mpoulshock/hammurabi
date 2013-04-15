@@ -29,8 +29,8 @@ namespace Akkadian
     public class Util
     {
         private static string[] RuleTypes = new string[8]{"Tbool","Tnum","Tdate","Tstr","Tset","DateTime","bool","Thing"};
-        public static string EndRule = "        }\r\n\r\n";
-        public static string wrd = @"[a-zA-Z0-9_]+";
+        public const string EndRule = "        }\r\n\r\n";
+        public const string wrd = @"[a-zA-Z0-9_]+";
      
         /// <summary>
         /// Creates closing parentheses for a nested Boolean expression.

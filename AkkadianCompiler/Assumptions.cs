@@ -68,7 +68,7 @@ namespace Akkadian
         private static string NodeString(string nspace, string node)
         {
             string result = "";
-            string quote = "\"";
+            const string quote = "\"";
 
             // Analyze the relationship...         1             2        3         4        5        7       8                   9
             Match match = Regex.Match(node, @"([a-zA-Z0-9_]+)\(([0-9]),?([0-9])?,?([0-9])?\)( = )?((false)|([0-9]+)|("+quote+@"[a-zA-Z0-9\. ]+"+quote+"))?");

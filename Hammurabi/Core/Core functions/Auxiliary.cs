@@ -93,12 +93,12 @@ namespace Hammurabi
         /// </summary>
         public static object ReturnProperTvar<T>()
         {
-            if (typeof(T) == new Tbool().GetType()) { return new Tbool(); }
-            if (typeof(T) == new Tnum().GetType())  { return new Tnum(); }
-            if (typeof(T) == new Tstr().GetType())  { return new Tstr(); }
-            if (typeof(T) == new Tdate().GetType()) { return new Tdate(); }
-            if (typeof(T) == new Tset().GetType())  { return new Tset(); }
-            
+            if (typeof(T) == typeof(Tbool)) { return new Tbool(); }
+            if (typeof(T) == typeof(Tnum))  { return new Tnum(); }
+            if (typeof(T) == typeof(Tstr))  { return new Tstr(); }
+            if (typeof(T) == typeof(Tdate)) { return new Tdate(); }
+            if (typeof(T) == typeof(Tset))  { return new Tset(); }
+
             // If all else fails (which it better not)...
             return new Tbool();
         }
@@ -108,23 +108,23 @@ namespace Hammurabi
         /// </summary>
         public static object ReturnProperTvar<T>(object val)
         {
-            if (typeof(T) == new Tbool().GetType())
+            if (typeof(T) == typeof(Tbool)) 
             {
                 return new Tbool(Convert.ToBoolean(val)); 
             }
-            if (typeof(T) == new Tnum().GetType())
+            if (typeof(T) == typeof(Tnum))
             {
                 return new Tnum(Convert.ToDecimal(val));
             }
-            if (typeof(T) == new Tstr().GetType())
+            if (typeof(T) == typeof(Tstr))
             {
                 return new Tstr(Convert.ToString(val));
             }
-            if (typeof(T) == new Tdate().GetType())
+            if (typeof(T) == typeof(Tdate))
             {
                 return new Tdate(Convert.ToDateTime(val));
             }
-            if (typeof(T) == new Tset().GetType())
+            if (typeof(T) == typeof(Tset))
             {
                 return new Tset((List<Thing>)val);
             }

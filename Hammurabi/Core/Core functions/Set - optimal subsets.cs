@@ -70,7 +70,7 @@ namespace Hammurabi
 
                     // For each combination of set members, get the associated fcn val
                     List<Tuple<Tset,Tnum>> setFcnVals = new List<Tuple<Tset,Tnum>>();
-                    Tnum maxVal = new Tnum(-999999999);
+                    Tnum maxVal = new Tnum(Decimal.MinValue);
                     foreach (Tset s in Combos(mems))
                     {
                         // Invoke the fcn for that subset

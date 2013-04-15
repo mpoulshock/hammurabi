@@ -25,8 +25,8 @@ namespace Akkadian
     public class TransformMethod
     {
         // Regex parts
-        public static string wrd = @"[a-zA-Z0-9_]+";
-        public static string typs = @"(Tbool|Tnum|Tstr|Tset|Tdate)";
+        public const string wrd = @"[a-zA-Z0-9_]+";
+        public const string typs = @"(Tbool|Tnum|Tstr|Tset|Tdate)";
 
         /// <summary>
         /// Handles fact inputs
@@ -97,7 +97,7 @@ namespace Akkadian
             }
 
             // Otherwise, no need to check the arguments for uncertainty...
-            string word = @"[-!\+\*/A-Za-z0-9\.;\(\),""'_<>=&| ]+";
+            const string word = @"[-!\+\*/A-Za-z0-9\.;\(\),""'_<>=&| ]+";
             line = Regex.Replace(line, @"(?<dec>(Tbool|Tnum|Tstr|Tdate|Tset|Thing|DateTime|bool)"+word+") =",
                                       "        public static ${dec}\r\n        {\r\n");  
 

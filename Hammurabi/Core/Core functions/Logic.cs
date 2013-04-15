@@ -179,33 +179,25 @@ namespace Hammurabi
         // ********************************************************************
         
         /// <summary>
-        /// "Either" operator (|~ in Akkadian)
-        /// </summary>
-        public static Tbool operator ^ (Tbool tb1, Tbool tb2)
-        {
-            return Either(tb1,tb2);
-        }
-
-        /// <summary>
-        /// Returns either of the two Tbools.
+        /// "Either" operator (|~ in Akkadian) - Returns either of the two Tbools.
         /// </summary>
         /// <remarks>
-        /// This function is needed because if either A or B is false, the
-        /// funtion should return false.  If, instead, A || B were used to
-        /// analyze input facts, and if A were false and B were unstated, the 
-        /// function would erroneously return unstated.
+        /// 1. This function is needed because if either A or B is false, the
+        ///    funtion should return false.  If, instead, A || B were used to
+        ///    analyze input facts, and if A were false and B were unstated, the 
+        ///    function would erroneously return unstated.
+        /// 2. The ^ operator does not short-circuit like && and ||.  So in the
+        ///    interview, this asks B when A is known
         /// </remarks>
-        // ^ operator does not short-circuit like && and ||
-        // So in interview, this asks B when A is known
-        private static Tbool Either(Tbool A, Tbool B)
+        public static Tbool operator ^ (Tbool tb1, Tbool tb2)
         {
-            if (!A.IsEternallyUnstated)
+            if (!tb1.IsEternallyUnstated)
             {
-                return A;
+                return tb1;
             }
             
-            return B;
-        } 
+            return tb2;
+        }
     }
     
     #pragma warning restore 660, 661

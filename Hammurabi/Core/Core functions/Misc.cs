@@ -38,7 +38,7 @@ namespace Hammurabi
         /// value as the first (test) argument
         /// </summary>
         // TODO: Generalize BoolCount to ValCount(val, Tvar[] list)?
-        public static Tnum BoolCount (bool test, params Tbool[] list)
+        public static Tnum BoolCount(bool test, params Tbool[] list)
         {
             Tnum result = new Tnum();
             

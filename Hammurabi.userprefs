@@ -1,18 +1,9 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Akkadian\Sandbox\Allocation experiments.akk">
-    <Files>
-      <File FileName="Akkadian\Sandbox\Allocation experiments.akk" Line="26" Column="32" />
-    </Files>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
+  <MonoDevelop.Ide.Workbench>
     <Pads>
       <Pad Id="ProjectPad">
-        <State expanded="True">
-          <Node name="Akkadian" expanded="True">
-            <Node name="Sandbox" expanded="True" />
-            <Node name="Tests" expanded="True" />
-          </Node>
-          <Node name="AkkadianCompiler" selected="True" />
-        </State>
+        <State expanded="True" />
       </Pad>
       <Pad Id="ClassPad">
         <State expanded="True">
@@ -32,15 +23,7 @@
         <State />
       </Pad>
       <Pad Id="MonoDevelop.NUnit.TestPad">
-        <State expanded="True">
-          <Node name="Hammurabi" expanded="True">
-            <Node name="Hammurabi" expanded="True">
-              <Node name="UnitTests" expanded="True">
-                <Node name="Test_HammurabiSandbox" expanded="True" selected="True" />
-              </Node>
-            </Node>
-          </Node>
-        </State>
+        <State expanded="True" selected="True" />
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
