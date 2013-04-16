@@ -97,6 +97,7 @@
     <None Include="Tests\Test for Hammurabi Interactive.akk" />
     <None Include="Law\Federal law\Agency interpretations\IRS\Mileage.akk" />
     <None Include="Tests\Optimization tests.akk" />
+    <None Include="Law\Federal law\Agency interpretations\IRS\Pub 590 - Required minimum distributions.akk" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Law\State law\Pennsylvania\" />

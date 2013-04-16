@@ -171,6 +171,7 @@
     <Compile Include="Generated source\Allocation experiments.cs" />
     <Compile Include="Generated source\Min and max tests.cs" />
     <Compile Include="Generated source\Optimization tests.cs" />
+    <Compile Include="Generated source\Pub 590 - Required minimum distributions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

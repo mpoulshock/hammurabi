@@ -1,0 +1,35 @@
+# Namespace:    IRS.Pub590
+# Summary:      IRS Publication 590 - Required minimum distributions
+# Updated:      2013-04-15
+# Author:       Michael Poulshock
+
+
+# How much must be withdrawn (what is the required minimum distribution) from {1}?
+Tnum RMDAmount(Thing ira) =
+    set:
+    if ! IsSubjectToRMD(ira) -> $0
+    else CalculatedRMDAmount(ira)
+
+# >>Is {1} subject to a required minimum distribution (RMD)?    
+Tbool IsSubjectToRMD(Thing ira)
+
+# Appendix A
+Tnum CalculatedRMDAmount(Thing ira) =
+    EndOfYearValue(ira) / ApplicableTableValue(Owner(ira).ToThing)
+    
+# Value of IRA on the last day of the previous calendar year
+Tnum EndOfYearValue(Thing ira) =
+    Value(ira).PeriodEndVal(TheYear)
+
+# Life expectancy value from Table I, II, or III
+Tnum ApplicableTableValue(Thing owner)
+
+
+# INPUTS
+
+Tnum Value(Thing ira)
+
+Tset Owner(Thing ira)
+    
+    
+    
