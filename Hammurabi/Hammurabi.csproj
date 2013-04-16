@@ -167,10 +167,10 @@
     <Compile Include="Generated source\8 USC 1641 - Aliens eligible for public benefits.cs" />
     <Compile Include="Generated source\55 Pa Code 183.65 - Profit.cs" />
     <Compile Include="Core\Core functions\Tnum - accumulate.cs" />
-    <Compile Include="Generated source\Optimization experiments.cs" />
     <Compile Include="Core\Core functions\Set - optimal subsets.cs" />
     <Compile Include="Generated source\Allocation experiments.cs" />
     <Compile Include="Generated source\Min and max tests.cs" />
+    <Compile Include="Generated source\Optimization tests.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

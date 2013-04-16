@@ -21,9 +21,33 @@ Tnum Rate(Tstr activityType) =
 # Rate for business purposes
 Tnum BusinessRate() =
     set:
-    from 2014-01-01  -> Stub()
-    from 2013-01-01  -> 0.565
-    from 2012-01-01  -> 0.555
+    from 2014-01-01 -> Stub()
+    from 2013-01-01 -> 0.565
+    from 2012-01-01 -> 0.555
+    from 2011-07-01 -> 0.555    # Source from here down: wikipedia.org/wiki/Business_mileage_reimbursement_rate
+    from 2011-01-01 -> 0.510
+    from 2010-01-01 -> 0.500
+    from 2009-01-01 -> 0.550
+    from 2008-07-01 -> 0.585
+    from 2008-01-01 -> 0.505    
+    from 2007-01-01 -> 0.485
+    from 2006-01-01 -> 0.445
+    from 2005-09-01 -> 0.485
+    from 2005-01-01 -> 0.405
+    from 2004-01-01 -> 0.375
+    from 2003-01-01 -> 0.360
+    from 2002-01-01 -> 0.365
+    from 2001-01-01 -> 0.325
+    from 2000-01-01 -> 0.325
+    from 1999-04-01 -> 0.310
+    from 1999-01-01 -> 0.325
+    from 1998-01-01 -> 0.325
+    from 1997-01-01 -> 0.315
+    from 1996-01-01 -> 0.310
+    from 1995-01-01 -> 0.300
+    from 1994-01-01 -> 0.290
+    from 1992-01-01 -> 0.260
+    from 1991-01-01 -> 0.276
     else Stub()
 
 # Rate for medical or moving purposes

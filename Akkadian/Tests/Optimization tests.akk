@@ -1,4 +1,4 @@
-# Namespace:    Hammurabi.Sandbox
+# Namespace:    Hammurabi.Tests
 # Summary:      Experiments with optimization functions
 # Updated:      2013-04-01
 # Author:       Michael Poulshock
@@ -27,57 +27,57 @@ Tset SetOfPeople(Thing t)
 
 Test: Snap1
 - Things a, b, c
-- Sandbox.SetOfPeople(a) = [[a,b,c]]
+- Tests.SetOfPeople(a) = [[a,b,c]]
 - Econ.AnnualIncome(a) =  $10,000
 - Econ.AnnualIncome(b) =  $13,000
 - Econ.AnnualIncome(c) = $100,000
-- Sandbox.TestSNAP(a).Out =?= "a, b"
+- Tests.TestSNAP(a).Out =?= "a, b"
 
 Test: Snap2
 - Things a, b, c
-- Sandbox.SetOfPeople(a) = [[a,b,c]]
+- Tests.SetOfPeople(a) = [[a,b,c]]
 - Econ.AnnualIncome(a) =   $1,000
 - Econ.AnnualIncome(b) = $130,000
 - Econ.AnnualIncome(c) = $100,000
-- Sandbox.TestSNAP(a).Out =?= "a"
+- Tests.TestSNAP(a).Out =?= "a"
 
 Test: Snap3     # Temporal combo of Snap1 and Snap2
 - Things a, b, c
-- Sandbox.SetOfPeople(a) = [[a,b,c]]
+- Tests.SetOfPeople(a) = [[a,b,c]]
 - Econ.AnnualIncome(a) = {Dawn: $10,000; 2014-01-01: $1,000}
 - Econ.AnnualIncome(b) = {Dawn: $13,000; 2014-01-01: $130,000}
 - Econ.AnnualIncome(c) = $100,000
-- Sandbox.TestSNAP(a).Out =?= "{Dawn: a, b; 1/1/2014: a}"
+- Tests.TestSNAP(a).Out =?= "{Dawn: a, b; 1/1/2014: a}"
 
 Test: Snap4     # Fact about set member is uncertain
 - Things a, b, c
-- Sandbox.SetOfPeople(a) = [[a,b,c]]
+- Tests.SetOfPeople(a) = [[a,b,c]]
 - Econ.AnnualIncome(a) = Tnum(?)
 - Econ.AnnualIncome(b) = $130,000
 - Econ.AnnualIncome(c) = $100,000
-- Sandbox.TestSNAP(a).Out =?= "Uncertain"   # Fail @ "Set - optimal subsets.cs" line 115
+- Tests.TestSNAP(a).Out =?= "Uncertain"   # Fail @ "Set - optimal subsets.cs" line 115
 
 Test: Snap5     # Fact about set member is unstated
 - Things a, b, c
-- Sandbox.SetOfPeople(a) = [[a,b,c]]
+- Tests.SetOfPeople(a) = [[a,b,c]]
 - Econ.AnnualIncome(b) = $130,000
 - Econ.AnnualIncome(c) = $100,000
-- Sandbox.TestSNAP(a).Out =?= "Unstated"
+- Tests.TestSNAP(a).Out =?= "Unstated"
 
 Test: Snap6     # Tset is unstated
 - Things a, b, c
 - Econ.AnnualIncome(a) = $10,000
 - Econ.AnnualIncome(b) = $130,000
 - Econ.AnnualIncome(c) = $100,000
-- Sandbox.TestSNAP(a).Out =?= "Unstated"
+- Tests.TestSNAP(a).Out =?= "Unstated"
 
 Test: Snap7     # Tset is uncertain
 - Things a, b, c
-- Sandbox.SetOfPeople(a) = Tset(?)
+- Tests.SetOfPeople(a) = Tset(?)
 - Econ.AnnualIncome(a) = $10,000
 - Econ.AnnualIncome(b) = $130,000
 - Econ.AnnualIncome(c) = $100,000
-- Sandbox.TestSNAP(a).Out =?= "Uncertain"
+- Tests.TestSNAP(a).Out =?= "Uncertain"
 
 
 

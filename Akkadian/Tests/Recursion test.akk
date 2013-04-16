@@ -1,4 +1,4 @@
-# Namespace:    Hammurabi.Sandbox
+# Namespace:    Hammurabi.Tests
 # Summary:      Rest of recursion with Tvars.
 # Updated:      2012-07-04
 # Author:       Michael Poulshock
@@ -20,18 +20,17 @@ Tnum Factorial(Tnum n) =
 # UNIT TESTS
 
 Test: Fib1
-- Sandbox.Fibonacci(1).Out =?= 1
+- Tests.Fibonacci(1).Out =?= 1
 
 Test: Fib2
-- Sandbox.Fibonacci(10).Out =?= 89
+- Tests.Fibonacci(10).Out =?= 89
 
 Test: Fac1
-- Sandbox.Factorial(1).Out =?= 1
+- Tests.Factorial(1).Out =?= 1
 
 Test: Fac2
-- Sandbox.Factorial(3).Out =?= 6
+- Tests.Factorial(3).Out =?= 6
 
 Test: Fac3
-- Sandbox.Factorial(7).Out =?= 5040
-
+- Tests.Factorial(7).Out =?= 5040
 

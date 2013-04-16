@@ -1,4 +1,4 @@
-# Namespace:    Hammurabi.Sandbox
+# Namespace:    Hammurabi.Tests
 # Summary:      A host of random unit tests
 # Updated:      2013-02-24
 # Author:       Michael Poulshock
@@ -39,7 +39,7 @@ Legitimated(1,2) assumes IsPretendEligible(1)
 Tbool IsPretendEligible(Thing p) =
     ...
         TestMethod918a(p) |
-        Sandbox.IsPregnant(p)
+        Tests.IsPregnant(p)
     & 
     Imm.IsUSNational(p)
 
@@ -127,31 +127,31 @@ Tbool AnotherMethod(Thing p) =
 
 Test: 171824320
 - Thing p
-- Sandbox.TestMethod918a(p) = new Tbool(Hstate.Unstated)
-- Sandbox.TestMethod918b(p) = false
-- Sandbox.AnotherMethod(p).Out =?= false
+- Tests.TestMethod918a(p) = new Tbool(Hstate.Unstated)
+- Tests.TestMethod918b(p) = false
+- Tests.AnotherMethod(p).Out =?= false
 
 Test: 580982293
 - Thing p
-- Sandbox.TestMethod918a(p) = new Tbool(Hstate.Unstated)
-- Sandbox.TestMethod918b(p) = true
-- Sandbox.AnotherMethod(p).Out =?= true
+- Tests.TestMethod918a(p) = new Tbool(Hstate.Unstated)
+- Tests.TestMethod918b(p) = true
+- Tests.AnotherMethod(p).Out =?= true
 
 Test: 288489417
 - Thing p
-- Sandbox.TestMethod918a(p) = Tbool(?)
-- Sandbox.TestMethod918b(p) = Tbool(?)
-- Sandbox.AnotherMethod(p).Out =?= "Uncertain"
+- Tests.TestMethod918a(p) = Tbool(?)
+- Tests.TestMethod918b(p) = Tbool(?)
+- Tests.AnotherMethod(p).Out =?= "Uncertain"
 
 Test: 798236451
 - Thing p
-- Sandbox.TestMethod918a(p) = false
-- Sandbox.AnotherMethod(p).Out =?= false
+- Tests.TestMethod918a(p) = false
+- Tests.AnotherMethod(p).Out =?= false
 
 Test: 416036083
 - Thing p
-- Sandbox.TestMethod918a(p) = true
-- Sandbox.AnotherMethod(p).Out =?= true
+- Tests.TestMethod918a(p) = true
+- Tests.AnotherMethod(p).Out =?= true
 
 
 # TEST OF AKKADIAN COMPILER - METHOD SIGNATURES
@@ -189,10 +189,10 @@ Tnum DepreciationPercentage(Tnum year) =
  
  
 Test: Depreciation1
-- Hammurabi.Sandbox.DepreciationRate(1999-01-01).AsOf(2003-03-03).Out =?= 0.1152
+- Hammurabi.Tests.DepreciationRate(1999-01-01).AsOf(2003-03-03).Out =?= 0.1152
 
 Test: Depreciation2
-- Hammurabi.Sandbox.DepreciationRate(1999-01-01).AsOf(2010-03-03).Out =?= "Stub"
+- Hammurabi.Tests.DepreciationRate(1999-01-01).AsOf(2010-03-03).Out =?= "Stub"
 
 
 # ELAPSED TIME - PERFORMANCE ISSUES
@@ -245,13 +245,13 @@ Test: 965821874
 - Things jim, a
 - Fam.SpousesOf(jim) = [[a]]
 - DoB(a) = 1900-01-01
-- Sandbox.LogicalExpressionInHigherOrderRule(jim).AsOf(2000-01-01).Out =?= 0
+- Tests.LogicalExpressionInHigherOrderRule(jim).AsOf(2000-01-01).Out =?= 0
 
 Test: 825234342
 - Things jim, a
 - Fam.SpousesOf(jim) = [[a]]
 - DoB(a) = 1979-01-01
-- Sandbox.LogicalExpressionInHigherOrderRule(jim).AsOf(2000-01-01).Out =?= 1    
+- Tests.LogicalExpressionInHigherOrderRule(jim).AsOf(2000-01-01).Out =?= 1    
     
     
 # TVAR.SHIFT
@@ -340,12 +340,12 @@ Tbool DateEquality1(Thing c) =
 Test: DateEquality1a
 - Thing b
 - DoB(b) = 2000-01-01
-- Sandbox.DateEquality1(b).Out =?= true
+- Tests.DateEquality1(b).Out =?= true
 
 Test: DateEquality1b
 - Thing b
 - DoB(b) = 2002-01-01
-- Sandbox.DateEquality1(b).Out =?= false
+- Tests.DateEquality1(b).Out =?= false
 
 Tbool DateEquality2(Thing c) =
     DoB(c) <> 2000-01-01
@@ -353,12 +353,12 @@ Tbool DateEquality2(Thing c) =
 Test: DateEquality2a
 - Thing b
 - DoB(b) = 2000-01-01
-- Sandbox.DateEquality2(b).Out =?= false
+- Tests.DateEquality2(b).Out =?= false
 
 Test: DateEquality2b
 - Thing b
 - DoB(b) = 2000-02-01
-- Sandbox.DateEquality2(b).Out =?= true
+- Tests.DateEquality2(b).Out =?= true
 
 Tbool DateEquality3(Thing c) =
     DoB(c) < 2000-01-01
@@ -366,17 +366,17 @@ Tbool DateEquality3(Thing c) =
 Test: DateEquality3a
 - Thing b
 - DoB(b) = 2000-01-01
-- Sandbox.DateEquality3(b).Out =?= false
+- Tests.DateEquality3(b).Out =?= false
 
 Test: DateEquality3b
 - Thing b
 - DoB(b) = 2001-01-01
-- Sandbox.DateEquality3(b).Out =?= false
+- Tests.DateEquality3(b).Out =?= false
 
 Test: DateEquality3c
 - Thing b
 - DoB(b) = 1999-01-01
-- Sandbox.DateEquality3(b).Out =?= true
+- Tests.DateEquality3(b).Out =?= true
 
 Tbool DateEquality4(Thing c) =
     DoB(c) <= 2000-01-01
@@ -384,17 +384,17 @@ Tbool DateEquality4(Thing c) =
 Test: DateEquality4a
 - Thing b
 - DoB(b) = 2000-01-01
-- Sandbox.DateEquality4(b).Out =?= true
+- Tests.DateEquality4(b).Out =?= true
 
 Test: DateEquality4b
 - Thing b
 - DoB(b) = 2001-01-01
-- Sandbox.DateEquality4(b).Out =?= false
+- Tests.DateEquality4(b).Out =?= false
 
 Test: DateEquality4c
 - Thing b
 - DoB(b) = 1999-01-01
-- Sandbox.DateEquality4(b).Out =?= true
+- Tests.DateEquality4(b).Out =?= true
 
 Tbool DateEquality5(Thing c) =
     DoB(c) > 2000-01-01
@@ -402,17 +402,17 @@ Tbool DateEquality5(Thing c) =
 Test: DateEquality5a
 - Thing b
 - DoB(b) = 2000-01-01
-- Sandbox.DateEquality5(b).Out =?= false
+- Tests.DateEquality5(b).Out =?= false
 
 Test: DateEquality5b
 - Thing b
 - DoB(b) = 2001-01-01
-- Sandbox.DateEquality5(b).Out =?= true
+- Tests.DateEquality5(b).Out =?= true
 
 Test: DateEquality5c
 - Thing b
 - DoB(b) = 1999-01-01
-- Sandbox.DateEquality5(b).Out =?= false
+- Tests.DateEquality5(b).Out =?= false
 
 Tbool DateEquality6(Thing c) =
     DoB(c) >= 2000-01-01
@@ -420,17 +420,17 @@ Tbool DateEquality6(Thing c) =
 Test: DateEquality6a
 - Thing b
 - DoB(b) = 2000-01-01
-- Sandbox.DateEquality6(b).Out =?= true
+- Tests.DateEquality6(b).Out =?= true
 
 Test: DateEquality6b
 - Thing b
 - DoB(b) = 2001-01-01
-- Sandbox.DateEquality6(b).Out =?= true
+- Tests.DateEquality6(b).Out =?= true
 
 Test: DateEquality6c
 - Thing b
 - DoB(b) = 1999-01-01
-- Sandbox.DateEquality6(b).Out =?= false
+- Tests.DateEquality6(b).Out =?= false
 
 
 # TSET.CONTAINS
@@ -441,7 +441,7 @@ Tbool SetContainsThing(Thing p1, Thing p2) =
 Test: 85594484
 - Things t1, t2
 - Fam.ChildrenOf(t1) = [[t2]]
-- Sandbox.SetContainsThing(t1, t2).Out =?= true
+- Tests.SetContainsThing(t1, t2).Out =?= true
 
 
 # ASK INTERMEDIATE QUESTION BEFORE DESCENDING TREE
@@ -481,28 +481,28 @@ Thing UncertainThing() =
     
 Test: UncertainThing1
 - Things p, q
-- Sandbox.SomeMethod(p,q).Out =?= true
+- Tests.SomeMethod(p,q).Out =?= true
 
 Test: UncertainThing2
-- Sandbox.SomeMethod(Sandbox.UnstatedThing(), Sandbox.StubThing()).Out =?= "Unstated"
+- Tests.SomeMethod(Tests.UnstatedThing(), Tests.StubThing()).Out =?= "Unstated"
 
 Test: UncertainThing3
-- Sandbox.SomeMethod(Sandbox.UnstatedThing(), Sandbox.UncertainThing()).Out =?= "Unstated"
+- Tests.SomeMethod(Tests.UnstatedThing(), Tests.UncertainThing()).Out =?= "Unstated"
 
 Test: UncertainThing4
-- Sandbox.SomeMethod(Sandbox.StubThing(), Sandbox.UncertainThing()).Out =?= "Stub"
+- Tests.SomeMethod(Tests.StubThing(), Tests.UncertainThing()).Out =?= "Stub"
 
 Test: UncertainThing5
 - Thing p
-- Sandbox.SomeMethod(p, Sandbox.UncertainThing()).Out =?= "Uncertain"
+- Tests.SomeMethod(p, Tests.UncertainThing()).Out =?= "Uncertain"
 
 Test: UncertainThing6
 - Thing p
-- Sandbox.SomeMethod(p, Sandbox.StubThing()).Out =?= "Stub"
+- Tests.SomeMethod(p, Tests.StubThing()).Out =?= "Stub"
 
 Test: UncertainThing7
 - Thing p
-- Sandbox.SomeMethod(p, Sandbox.UnstatedThing()).Out =?= "Unstated"
+- Tests.SomeMethod(p, Tests.UnstatedThing()).Out =?= "Unstated"
 
 
 # INFINITE LOOPS
@@ -524,51 +524,51 @@ Tset MotherOf(Thing p)
 	
 Test: Loop1
 - Thing p
-- Sandbox.IsCitizen(p).Out =?= "Unstated"
+- Tests.IsCitizen(p).Out =?= "Unstated"
 
 Test: Loop2
 - Things p, mom
-- Sandbox.MotherOf(p) = [[mom]]
-- Sandbox.IsCitizen(p).Out =?= "Unstated"
+- Tests.MotherOf(p) = [[mom]]
+- Tests.IsCitizen(p).Out =?= "Unstated"
 
 Test: Loop3
 - Things p, mom
-- Sandbox.MotherOf(p) = [[mom]]
-- Sandbox.IsCitizenByLaw(p) = false
-- Sandbox.IsCitizenByLaw(mom) = true
-- Sandbox.IsCitizen(p).Out =?= true
+- Tests.MotherOf(p) = [[mom]]
+- Tests.IsCitizenByLaw(p) = false
+- Tests.IsCitizenByLaw(mom) = true
+- Tests.IsCitizen(p).Out =?= true
 
 Test: Loop4
 - Thing p
-- Sandbox.IsCitizenByLaw(p) = true
-- Sandbox.IsCitizen(p).Out =?= true
+- Tests.IsCitizenByLaw(p) = true
+- Tests.IsCitizen(p).Out =?= true
 
 Test: Loop5
 - Thing p
-- Sandbox.IsCitizenByLaw(p) = false
-- Sandbox.IsCitizen(p).Out =?= "Unstated"
+- Tests.IsCitizenByLaw(p) = false
+- Tests.IsCitizen(p).Out =?= "Unstated"
 
 Test: Loop6
 - Thing p
 - Thing mom
-- Sandbox.MotherOf(p) = [[mom]]
-- Sandbox.IsCitizenByLaw(p) = false
-- Sandbox.IsCitizen(mom) = false
-- Sandbox.IsCitizen(p).Out =?= false
+- Tests.MotherOf(p) = [[mom]]
+- Tests.IsCitizenByLaw(p) = false
+- Tests.IsCitizen(mom) = false
+- Tests.IsCitizen(p).Out =?= false
 
 Test: 864022057
 - Things t1, t2
-- Sandbox.IsCitizen(t1) = Tbool(?)
-- Sandbox.IsCitizenByLaw(t1) = false
+- Tests.IsCitizen(t1) = Tbool(?)
+- Tests.IsCitizenByLaw(t1) = false
 - Things barry
-- Sandbox.MotherOf(t1) = [[barry]]
-- Sandbox.IsCitizen(barry) = Tbool(?)
-- Sandbox.IsCitizenByLaw(barry) = false
+- Tests.MotherOf(t1) = [[barry]]
+- Tests.IsCitizen(barry) = Tbool(?)
+- Tests.IsCitizenByLaw(barry) = false
 - Things monroevius
-- Sandbox.MotherOf(barry) = [[monroevius]]
-- Sandbox.IsCitizen(monroevius) = Tbool(?)
-- Sandbox.IsCitizenByLaw(monroevius) = true
-- Sandbox.IsCitizen(t1).Out =?= true
+- Tests.MotherOf(barry) = [[monroevius]]
+- Tests.IsCitizen(monroevius) = Tbool(?)
+- Tests.IsCitizenByLaw(monroevius) = true
+- Tests.IsCitizen(t1).Out =?= true
 
 
 # TSET INPUTS
@@ -583,31 +583,31 @@ Tset TestTset(Thing p)
 Test: Tset1
 - Thing p
 - Thing joan
-- Sandbox.TestTset(p) = [[joan]]
-- Sandbox.TestTsetCount(p).Out =?= 1
+- Tests.TestTset(p) = [[joan]]
+- Tests.TestTsetCount(p).Out =?= 1
 
 Test: Tset2
 - Thing p
 - Thing jim
 - Thing joan
-- Sandbox.TestTset(p) = [[jim, joan]]
-- Sandbox.TestTsetCount(p).Out =?= 2
+- Tests.TestTset(p) = [[jim, joan]]
+- Tests.TestTsetCount(p).Out =?= 2
 
 Test: Tset3
 - Thing p
-- Sandbox.TestTset(p) = [[ ]]
-- Sandbox.TestTsetCount(p).Out =?= 0
+- Tests.TestTset(p) = [[ ]]
+- Tests.TestTsetCount(p).Out =?= 0
 
 Test: Tset4
 - Thing p
-- Sandbox.TestTsetCount(p).Out =?= "Unstated"
+- Tests.TestTsetCount(p).Out =?= "Unstated"
 
 Test: Tset5  # fail b/c doesn't output Tset data
 - Thing p
 - Thing jim
 - Thing joan
-- Sandbox.TestTset(p) = [[jim, joan]]
-- Sandbox.TestTset(p).Out =?= "jim, joan"
+- Tests.TestTset(p) = [[jim, joan]]
+- Tests.TestTset(p).Out =?= "jim, joan"
 
 
 # METHODS WITH THREE PARAMETERS
@@ -623,31 +623,31 @@ Tbool IsXYZ(Thing x, Thing y, Thing z)
 
 Test: Param3_1a
 - Things x, y, z
-- Sandbox.IsXYZ(x,y,z) = true
-- Sandbox.IsXYZ(x,y,z).Out =?= true
+- Tests.IsXYZ(x,y,z) = true
+- Tests.IsXYZ(x,y,z).Out =?= true
 
 Test: Param3_1b
 - Things x, y, z
-- Sandbox.IsXYZ(x,y,z) = false
-- Sandbox.IsXYZ(x,y,z).Out =?= false
+- Tests.IsXYZ(x,y,z) = false
+- Tests.IsXYZ(x,y,z).Out =?= false
 
 Test: Param3_1c
 - Things x, y, z
-- Sandbox.IsXYZ(x,y,z).Out =?= "Unstated"
+- Tests.IsXYZ(x,y,z).Out =?= "Unstated"
 
 Test: Param3_2a
 - Things a, b, c
-- Sandbox.IsXYZ(a,b,c) = true
-- Sandbox.Another3ParamTest(a,b,c).Out =?= true
+- Tests.IsXYZ(a,b,c) = true
+- Tests.Another3ParamTest(a,b,c).Out =?= true
 
 Test: Param3_2b
 - Things a, b, c
-- Sandbox.IsXYZ(a,b,c) = false
-- Sandbox.Another3ParamTest(a,b,c).Out =?= false
+- Tests.IsXYZ(a,b,c) = false
+- Tests.Another3ParamTest(a,b,c).Out =?= false
 
 Test: Param3_2c
 - Things a, b, c
-- Sandbox.Another3ParamTest(a,b,c).Out =?= "Unstated"
+- Tests.Another3ParamTest(a,b,c).Out =?= "Unstated"
 
 
 # TIME-VARYING BOOLEANS
@@ -663,13 +663,13 @@ Tbool SomeTemporalBooleanSubrule() =
         else false
     
 Test: TimeVaryingBooleanSub1
-- Sandbox.SomeTemporalBooleanSubrule().AsOf(1999-03-09).Out =?= false
+- Tests.SomeTemporalBooleanSubrule().AsOf(1999-03-09).Out =?= false
 
 Test: TimeVaryingBooleanSub2
-- Sandbox.SomeTemporalBooleanSubrule().AsOf(2000-03-09).Out =?= true
+- Tests.SomeTemporalBooleanSubrule().AsOf(2000-03-09).Out =?= true
 
 Test: TimeVaryingBooleanSub3
-- Sandbox.SomeTemporalBooleanSubrule().AsOf(2002-03-09).Out =?= false        
+- Tests.SomeTemporalBooleanSubrule().AsOf(2002-03-09).Out =?= false        
     
     
 # Time-varying boolean
@@ -680,13 +680,13 @@ Tbool SomeTemporalBoolean() =
     else false
         
 Test: TimeVaryingBoolean1
-- Sandbox.SomeTemporalBoolean().AsOf(1999-03-09).Out =?= false
+- Tests.SomeTemporalBoolean().AsOf(1999-03-09).Out =?= false
 
 Test: TimeVaryingBoolean2
-- Sandbox.SomeTemporalBoolean().AsOf(2000-03-09).Out =?= true
+- Tests.SomeTemporalBoolean().AsOf(2000-03-09).Out =?= true
 
 Test: TimeVaryingBoolean3
-- Sandbox.SomeTemporalBoolean().AsOf(2002-03-09).Out =?= false        
+- Tests.SomeTemporalBoolean().AsOf(2002-03-09).Out =?= false        
 
 
 # Yet another time-varying boolean
@@ -698,10 +698,10 @@ Tnum FedMinWageTest() =
     else Stub()
 
 Test: TemporalTnumTest1
-- Sandbox.FedMinWageTest().AsOf(2008-12-12).Out =?= $6.55
+- Tests.FedMinWageTest().AsOf(2008-12-12).Out =?= $6.55
    
 Test: TemporalTnumTest2
-- Sandbox.FedMinWageTest().AsOf(2001-12-12).Out =?= "Stub"
+- Tests.FedMinWageTest().AsOf(2001-12-12).Out =?= "Stub"
     
 Tnum SomeTestNumber() =
     5
