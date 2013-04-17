@@ -1,6 +1,6 @@
 # Namespace:    Hammurabi.H
 # Summary:      Basic facts about individual people.
-# Updated:      2012-09-08
+# Updated:      2013-04-16
 # Author:       Michael Poulshock
 
     
@@ -17,15 +17,18 @@ Tbool IsDeceased(Thing p)
 
 # Age (in years)
 Tnum Age(Thing p) =
-    Time.IntervalsSince(DoB(p),
-                        DoB(p).AddYears(110),
-                        Time.IntervalType.Year)
-                        
+    set:
+    from DoB(p) -> Time.IntervalsSince(DoB(p).AddYears(1), DoB(p).AddYears(span), Time.IntervalType.Year, 1)
+    else 0        
+
+    Tnum span = YearDiff(DoB(p), Time.EndOf)
+    
+                           
 # Alive
 Tbool IsAlive(Thing p) =
     ...
         !IsDeceased(p) &
-        TheTime.IsBetween(DoB(p), DoB(p).AddYears(120))        # TODO: Reconsider...
+        TheTime.IsAtOrAfter(DoB(p))   # Assumed alive until the end of time
     |
     ...
         IsDeceased(p) &
@@ -110,7 +113,7 @@ Test: 143320034
 - Things t1, t2
 - IsDeceased(t1) = false
 - DoB(t1) = 2011-01-01
-- Hammurabi.H.IsAlive(t1).Out =?= "{Dawn: false; 1/1/2011: true; 1/1/2131: false}"
+- Hammurabi.H.IsAlive(t1).Out =?= "{Dawn: false; 1/1/2011: true}"
 
 Test: 773795755
 - Things t1, t2
@@ -141,7 +144,7 @@ Test: Alive2b
 - Thing p
 - DoB(p) = 2000-01-01
 - IsDeceased(p) = false
-- IsAlive(p).AsOf(2150-01-01).Out =?= false
+- IsAlive(p).AsOf(2150-01-01).Out =?= true
 
 Test: Alive2c
 - Thing p

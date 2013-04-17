@@ -2,34 +2,99 @@
 # Summary:      IRS Publication 590 - Required minimum distributions
 # Updated:      2013-04-15
 # Author:       Michael Poulshock
+# TODO: Ref_fail:    IRS.Pub501
 
 
 # How much must be withdrawn (what is the required minimum distribution) from {1}?
-Tnum RMDAmount(Thing ira) =
+Tnum RMDAmount(Thing person, Thing ira) =
     set:
-    if ! IsSubjectToRMD(ira) -> $0
-    else CalculatedRMDAmount(ira)
+    if ! IsSubjectToRMD(person, ira) -> $0
+    else CalculatedRMDAmount(person, ira)
 
 # >>Is {1} subject to a required minimum distribution (RMD)?    
-Tbool IsSubjectToRMD(Thing ira)
+Tbool IsSubjectToRMD(Thing person, Thing ira)
 
 # Appendix A
-Tnum CalculatedRMDAmount(Thing ira) =
-    EndOfYearValue(ira) / ApplicableTableValue(Owner(ira).ToThing)
+Tnum CalculatedRMDAmount(Thing person, Thing ira) =
+    EndOfYearValue(ira) / ApplicableTableValue(person)
     
 # Value of IRA on the last day of the previous calendar year
 Tnum EndOfYearValue(Thing ira) =
     Value(ira).PeriodEndVal(TheYear)
 
 # Life expectancy value from Table I, II, or III
-Tnum ApplicableTableValue(Thing owner)
+Tnum ApplicableTableValue(Thing person) =
+    set:
+    if Table2Applies(person) -> Table2Value(person)
+    if Table3Applies(person) -> Table3Value(person)
+    else Table1Value(person)
 
+# Table I value
+Tnum Table1Value(Thing person)
 
+# Table II applies
+Tbool Table2Applies(Thing person)
+
+# Table II value
+Tnum Table2Value(Thing person)
+
+# Table III applies
+Tbool Table3Applies(Thing p) =
+    ! Fam.IsMarried(p) |
+    Fam.SpousesOf(p).Exists( TaxAge(p) - TaxAge(_) <= 10 ) |
+    Fam.SpousesOf(p).Exists( ! IsSoleBeneficiaryOfIRA(_,p) )
+    
+# Table III value - Distribution period
+Tnum Table3Value(Thing p) =
+    Table3ValueByAge(TaxAge(p))
+
+Tnum Table3ValueByAge(Tnum age) =
+    match age
+    70 -> 27.4
+    71 -> 26.5
+    72 -> 25.6
+    73 -> 24.7
+    74 -> 23.8
+    75 -> 22.9
+    76 -> 22.0
+    77 -> 21.2
+    78 -> 20.3
+    79 -> 19.5
+    80 -> 18.7
+    81 -> 17.9
+    82 -> 17.1
+    83 -> 16.3
+    84 -> 15.5
+    85 -> 14.8
+    86 -> 14.1
+    87 -> 13.4
+    88 -> 12.7
+    89 -> 12.0
+    90 -> 11.4
+    91 -> 10.8
+    92 -> 10.2
+    93 -> 9.6
+    94 -> 9.1
+    95 -> 8.6
+    96 -> 8.1
+    97 -> 7.6
+    98 -> 7.1
+    99 -> 6.7
+    100 -> 6.3      # Subsequent rows omitted
+    else Stub()
+    
+
+# UTIL
+
+Tnum TaxAge(Thing p) =
+    IRS.Pub501.TaxAge(p)
+    
+    
 # INPUTS
 
 Tnum Value(Thing ira)
 
-Tset Owner(Thing ira)
-    
+Tbool IsSoleBeneficiaryOfIRA(Thing potentialBeneficiary, Thing owner)
+
     
     

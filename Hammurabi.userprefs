@@ -1,19 +1,38 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="Akkadian\Law\Federal law\Agency interpretations\IRS\Pub 590 - Required minimum distributions.akk">
+    <Files>
+      <File FileName="Akkadian\Tests\Random unit tests.akk" Line="1" Column="1" />
+      <File FileName="Akkadian\Law\Federal law\Agency interpretations\IRS\Pub 590 - Required minimum distributions.akk" Line="6" Column="1" />
+      <File FileName="Akkadian\Law\Federal law\Agency interpretations\IRS\Pub 501 - Exemptions.akk" Line="1" Column="1" />
+    </Files>
     <Pads>
       <Pad Id="ProjectPad">
-        <State expanded="True" />
-      </Pad>
-      <Pad Id="ClassPad">
         <State expanded="True">
-          <Node name="Hammurabi" expanded="True">
-            <Node name="Hammurabi" expanded="True">
-              <Node name="Hammurabi.H" expanded="True">
-                <Node name="AddThing" selected="True" />
+          <Node name="Akkadian" expanded="True">
+            <Node name="Akkadian extensions" expanded="True" />
+            <Node name="Law" expanded="True">
+              <Node name="Federal law" expanded="True">
+                <Node name="Agency interpretations" expanded="True">
+                  <Node name="IRS" expanded="True">
+                    <Node name="Pub 590 - Required minimum distributions.akk" selected="True" />
+                  </Node>
+                </Node>
               </Node>
             </Node>
           </Node>
+          <Node name="Hammurabi" expanded="True" />
+          <Node name="HammurabiInteractive" expanded="True">
+            <Node name="References" expanded="True" />
+          </Node>
+          <Node name="Unit tests - Hammurabi core" expanded="True">
+            <Node name="References" expanded="True" />
+            <Node name="Unit tests" expanded="True" />
+          </Node>
+        </State>
+      </Pad>
+      <Pad Id="ClassPad">
+        <State expanded="True" selected="True">
           <Node name="HammurabiWebService" expanded="True">
             <Node name="HammurabiWebService" expanded="True" />
           </Node>

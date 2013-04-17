@@ -76,8 +76,8 @@ namespace Hammurabi
                 indexNumber++;
                 indexDate = indexDate.AddInterval(interval, 1);
             }
-            
-            result.AddState(end, 0);
+
+            if (end < Time.EndOf) result.AddState(end, 0);
             return result;
         }
 
