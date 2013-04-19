@@ -37,7 +37,7 @@ namespace Interactive
         public static void Main (string[] args)
         {
             // Just for fun...
-            Console.ForegroundColor = ConsoleColor.Green;
+//            Console.ForegroundColor = ConsoleColor.Green;
             Console.Title = "Hammura.bi Interactive";
 //            Console.WindowWidth = 100;
 //            Console.WindowHeight = 40;

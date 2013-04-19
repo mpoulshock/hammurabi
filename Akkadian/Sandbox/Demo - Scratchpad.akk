@@ -16,7 +16,10 @@ Tbool IsAlien(Thing person) =
 # and regularly receives more than $30 a month in tips.
 
 Tbool IsTippedEmployee(Thing person) =
-    Econ.MonthlyIncome(person) > $30
+    MonthlyTipIncome(person) > $30
+
+# >>What is {1}'s monthly tip income?
+Tnum MonthlyTipIncome(Thing person)
 
 
 Test: TippedEmployee1

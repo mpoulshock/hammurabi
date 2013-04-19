@@ -275,5 +275,34 @@ namespace Hammurabi
                 return result;
             }
         }
+
+        /// <summary>
+        /// Converts Uncertain and Stub time periods to a given value.
+        /// </summary>
+        /// <remarks>
+        /// Used to rid a Tnum of uncertainty.  Note that it does not convert Unstated 
+        /// periods because doing so would break the backward chaining interview.
+        /// </remarks>
+        public Tnum NormalizedTo(decimal val)
+        {
+            Tnum result = new Tnum();
+
+            foreach (KeyValuePair<DateTime,Hval> slice in this.IntervalValues)
+            {
+                Hval theVal = slice.Value;
+                
+                if (theVal.IsUncertain || theVal.IsStub)
+                {
+                    result.AddState(slice.Key, val);
+                }
+                else
+                {
+                    result.AddState(slice.Key, slice.Value);
+                }
+
+            }
+            
+            return result.Lean;
+        }
     }
 }
