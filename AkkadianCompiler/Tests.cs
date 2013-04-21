@@ -47,27 +47,19 @@ namespace Akkadian
             "    public partial class Test_" + spce + " : H\r\n" +
             "    {\r\n";
         }
-        
-        // Accumulates lines as they are processed
-        public static string unitTests = "";
-        
+
         // Closes the namespace/class
         public const string unitSpaceClose =
             "    }\r\n" +
             "}\r\n";
-        
-        // Unit test output
-        public static string UnitTestText =
-            unitSpaceOpen +
-            unitTests +
-            unitSpaceClose;
 
-        
         /// <summary>
         /// Converts the .akk unit test to C#.
         /// </summary>
-        public static void ProcessTestLine(string line)
+        public static string ProcessTestLine(string line)
         {
+            string unitTests = "";
+
             // Do some initial text conversions
             line = line.TrimStart('-',' ');
             line = Util.ConvertDate(line);
@@ -102,6 +94,8 @@ namespace Akkadian
             
             // Factual assertions
             else unitTests += ConvertFact(line) + "\r\n";
+
+            return unitTests;
         }
 
         /// <summary>
@@ -199,7 +193,7 @@ namespace Akkadian
         /// <summary>
         /// Writes the unit tests to the C# file.
         /// </summary>
-        public static string WriteUnitTests(string nameSpace)
+        public static string WriteUnitTests(string unitTests, string nameSpace)
         {
             if (unitTests.Trim() != "")
             {

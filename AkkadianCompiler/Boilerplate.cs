@@ -1,4 +1,4 @@
-// Copyright (c) 2012 Hammura.bi LLC
+// Copyright (c) 2012-2013 Hammura.bi LLC
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -26,26 +26,43 @@ namespace Akkadian
     public class Boilerplate
     {
         /// <summary>
-        /// Assembles the text that goes at the top of the .cs file
+        /// Extracts the document namespace from the .akk file.
         /// </summary>
-        public static string InitialBoilerplate(string file)
+        public static string GetDocNameSpace(string file)
         {
-            // Read the file and extract the "namespace" and "using" data
             StreamReader stream = new StreamReader(file);
-            string line = "", space = "", refs = "";
-            while( (line = stream.ReadLine()) != null )
+            string line = "", space = "";
+
+            for (int i=0; i<5; i++)
             {
+                line = stream.ReadLine();
                 if (line.Contains("Namespace:")) 
                 {
                     space = Util.Clean(line, "Namespace:");
-                    MainClass.docNameSpace = space;
                 }
-                else if (line.Contains("References:")) refs = Util.Clean(line, "References:");
             }
+
             stream.Close();
-             
-            // Get namespace to be used in unit tests
-            MainClass.unitTestNameSpace = space.Replace(".","");
+            return space;
+        }
+
+        /// <summary>
+        /// Assembles the text that goes at the top of the .cs file
+        /// </summary>
+        public static string InitialBoilerplate(string file, string space)
+        {
+            // Read the file and extract the "namespace" and "using" data
+            StreamReader stream = new StreamReader(file);
+            string line = "", refs = "";
+
+            for (int i=0; i<5; i++)
+            {
+                line = stream.ReadLine();
+                if (line.Contains("References:"))
+                {
+                    refs = Util.Clean(line, "References:");
+                }
+            }
 
             // Assemble the result
             string nspace = GetNamespace(space);
@@ -54,7 +71,7 @@ namespace Akkadian
                    "namespace " + nspace + "\r\n{\r\n" +
                    ClassDecl(GetClass(space));
         }
-         
+
         /// <summary>
         /// Declares the class in the .cs file.
         /// </summary>

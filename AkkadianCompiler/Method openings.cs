@@ -1,4 +1,4 @@
-// Copyright (c) 2012 Hammura.bi LLC
+// Copyright (c) 2012-2013 Hammura.bi LLC
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -36,6 +36,7 @@ namespace Akkadian
             // Rule conclusion line - no conditions in rule
             if (line.StartsWith("T"))
             {
+                string lineBefore = line;
                 space = Util.NamespaceConvert(space);
 
                 if (line.StartsWith("TboolSym"))    // this check included for performance reasons
@@ -55,8 +56,10 @@ namespace Akkadian
                                      "        public static ${type} ${fcn}(${argtyp1} ${arg1}${comma1}${argtyp2} ${arg2}${comma2}${argtyp3} ${arg3})\r\n        {\r\n" +
                                      "        return Facts.QueryTvar<${type}>(\""+space+"${fcn}\", ${arg1}${comma1}${arg2}${comma2}${arg3});");  
                 }
-            }
 
+                // Count input functions
+                if (line != lineBefore) MainClass.totalInputRuleCount++;
+            }
             return line;
         }
 
@@ -74,34 +77,24 @@ namespace Akkadian
         }
 
         /// <summary>
-        /// Handles ordinary rules
+        /// Creates method openings for ordinary rules.
         /// </summary>
         public static string CreateMainRule(string line, string space)
         {
             space = Util.NamespaceConvert(space);
         
             // Functions with 1-3 arguments
-            string lineafter = Regex.Replace(line, 
-                                 @"(?<typ>"+typs+@")(?<sym>Sym)?(?<quest>\?)? (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@")(?<comma1>, ?)?(?<argtyp2>"+wrd+@" )?(?<arg2>"+wrd+@")?(?<comma2>, ?)?(?<argtyp3>"+wrd+@" )?(?<arg3>"+wrd+@")?\) =",
-                                 "        public static ${typ} ${fcn}(${argtyp1} ${arg1}${comma1} ${argtyp2} ${arg2}${comma2} ${argtyp3} ${arg3})\r\n" +
-                                 "        {\r\n" +
-                                 "            RulePreCheckResponse RESPONSE = ShortCircuitValue<${typ}>(\""+space+"${fcn}\",\"${sym}\",\"${quest}\",${arg1}${comma1} ${arg2}${comma2} ${arg3});\r\n" +
-                                 "            if (RESPONSE.shouldShortCircuit) return (${typ})RESPONSE.val;\r\n\r\n");
+            line = Regex.Replace(line, 
+                @"(?<typ>"+typs+@")(?<sym>Sym)?(?<quest>\?)? (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@")(?<comma1>, ?)?(?<argtyp2>"+wrd+@" )?(?<arg2>"+wrd+@")?(?<comma2>, ?)?(?<argtyp3>"+wrd+@" )?(?<arg3>"+wrd+@")?\) =",
+                "        public static ${typ} ${fcn}(${argtyp1} ${arg1}${comma1} ${argtyp2} ${arg2}${comma2} ${argtyp3} ${arg3})\r\n" +
+                "        {\r\n" +
+                "            RulePreCheckResponse RESPONSE = ShortCircuitValue<${typ}>(\""+space+"${fcn}\",\"${sym}\",\"${quest}\",${arg1}${comma1} ${arg2}${comma2} ${arg3});\r\n" +
+                "            if (RESPONSE.shouldShortCircuit) return (${typ})RESPONSE.val;\r\n\r\n");
 
-            // Add code that caches the results of the method, and the function opening
-            if (line != lineafter)
-            {
-                MainClass.cacheRule = true;
-                MainClass.methodCacheLine = TransformMethod.MethodCacheLine(line, space);
-                line = lineafter;
-            }
-
-            // Otherwise, no need to check the arguments for uncertainty...
+            // Functions with no arguments (no need to check the arguments for uncertainty here)
             const string word = @"[-!\+\*/A-Za-z0-9\.;\(\),""'_<>=&| ]+";
-            line = Regex.Replace(line, @"(?<dec>(Tbool|Tnum|Tstr|Tdate|Tset|Thing|DateTime|bool)"+word+") =",
-                                      "        public static ${dec}\r\n        {\r\n");  
-
-            return line;
+            return Regex.Replace(line, @"(?<dec>(Tbool|Tnum|Tstr|Tdate|Tset|Thing|DateTime|bool)"+word+") =",
+                                 "        public static ${dec}\r\n        {\r\n");  
         }
     }
 }

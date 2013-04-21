@@ -1,4 +1,4 @@
-// Copyright (c) 2012 Hammura.bi LLC
+// Copyright (c) 2012-2013 Hammura.bi LLC
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -22,25 +22,19 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Xml;
 using Microsoft.Build.Evaluation;
-
 
 namespace Akkadian
 {
     class MainClass
     {
-        private static string mainRuleType = "";        // For main rules
-        private static string currentRuleType = "";     // For main rules and subrules
-        public static string methodCacheLine = "";      // Creates line that caches method results
-        public static bool cacheRule = false;           // Should method results be cached?
-        private static string tableMatchLine = "";      // Rule input that must be matched in a table
-        public static int totalRuleCount = 0;           // Total rules in project
+        // Global counters
         public static int SlocCount = 0;                // Total Akkadian lines in project
-        public static string unitTestNameSpace = "";    // Namespace of unit tests
-        public static string docNameSpace = "";         // For question metadata
-        public static string akkDoc = "";               // For question metadata
-     
+        public static int totalRuleCount = 0;           // Total rules in project
+        public static int totalInputRuleCount = 0;      // Total input functions in project
+
         /// <summary>
         /// The entry point of the program, where the program control starts and ends.
         /// </summary>
@@ -93,19 +87,13 @@ namespace Akkadian
                 file.Delete(); 
             }
 
-            // Compile all files in .akk directory
+            // Compile all files in .akk directory (in parallel)
             Console.WriteLine("Compiling .akk source files...\n");
-            int docCount = 0;
-            foreach(string f in Directory.GetFiles(sourcePath, "*.akk", SearchOption.AllDirectories))
+            string[] akkFiles = Directory.GetFiles(sourcePath, "*.akk", SearchOption.AllDirectories);
+            Parallel.ForEach(akkFiles, f => 
             {
-                // Keep track of current rule document - for question metadata
-                akkDoc = f;
-
-                // Do the compilation
-                Console.WriteLine(" * " + f.Replace(sourcePath,""));
                 Compile(f, targetPath);
-                docCount++;
-            }
+            } );
 
             // Generate metadata files
             Questions.GenerateMetadataFile(targetPath);
@@ -116,12 +104,13 @@ namespace Akkadian
             
             // Display compilation stats
             Console.WriteLine("\nStats...\n");
-            Console.WriteLine(" * Time:  " + duration);
-            Console.WriteLine(" * Files: " + docCount);
-            Console.WriteLine(" * Rules: " + totalRuleCount);
-            Console.WriteLine(" * SLOC:  " + SlocCount);
+            Console.WriteLine(" * Time:   " + duration);
+            Console.WriteLine(" * Files:  " + akkFiles.Length);
+            Console.WriteLine(" * Rules:  " + (totalRuleCount - totalInputRuleCount));
+            Console.WriteLine(" * Inputs: " + totalInputRuleCount);
+            Console.WriteLine(" * SLOC:   " + SlocCount);
         }
-     
+
         /// <summary>
         /// Compiles the specified .akk document.
         /// </summary>
@@ -132,6 +121,7 @@ namespace Akkadian
             string OutputFileName = targetPath + docName;
 
             // Compile the document
+            Console.WriteLine(" * " + docName.TrimStart('\\'));
             string snippet = CompilerOutput(InputFileName);
          
             // Write the string to a file
@@ -145,13 +135,6 @@ namespace Akkadian
         /// </summary>
         public static string CompilerOutput(string file)
         {
-            // First pass: get the file metadata
-            string result = Boilerplate.InitialBoilerplate(file);
-         
-            // Second pass: parse the rules, line by line
-            StreamReader stream = new StreamReader(file);
-            string line;
-         
             // Mutable variables
             int ruleCount = 0;
             int lastLineDepth = 0;
@@ -159,11 +142,25 @@ namespace Akkadian
             bool isCommentBlock = false;
             bool isRulePart = false;
             string rulePart = "";
-            Tests.unitTests = "";
             List<string> subrules = new List<string>();
-            string previousLine = "";
-         
-            // Read the stream a line at a time
+            string previousLine = "";       // Keeps track of the previous .akk line
+            string tableMatchLine = "";     // Rule input that must be matched in a table
+            string currentRuleType = "";    // For main rules and subrule
+            string mainRuleType = "";       // For main rules
+            string methodCacheLine = "";    // Creates line that caches method results
+            bool cacheRule = false;         // Should method results be cached?
+            string unitTests = "";          // Accumulates lines as they are processed
+
+            // First pass: get the document namespace
+            string docNameSpace = Boilerplate.GetDocNameSpace(file);
+            string unitTestNameSpace = docNameSpace.Replace(".","");
+
+            // Second pass: get the file metadata
+            string result = Boilerplate.InitialBoilerplate(file, docNameSpace);
+           
+            // Third pass: parse the rules, line by line
+            StreamReader stream = new StreamReader(file);
+            string line;
             while( (line = stream.ReadLine()) != null )
             {
                 line = line.Replace("\t","    ");
@@ -182,7 +179,7 @@ namespace Akkadian
                 // Create unit test from .akk
                 if (Tests.IsTestLine(line)) 
                 {
-                    Tests.ProcessTestLine(line);
+                    unitTests += Tests.ProcessTestLine(line);
                     continue;
                 }
                 
@@ -199,8 +196,17 @@ namespace Akkadian
 
                     // Process current line
                     cacheRule = false;
-                    result += Convert(line, previousLine);
+                    result += Convert(line, previousLine, file, tableMatchLine, currentRuleType, docNameSpace);
                  
+                    // Detect whether this is a function that needs to be cached
+                    const string wrd = TransformMethod.wrd;
+                    const string typs = TransformMethod.typs;
+                    if (Regex.Match(line, @"(?<typ>"+typs+@")(?<sym>Sym)?(?<quest>\?)? (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@")(?<comma1>, ?)?(?<argtyp2>"+wrd+@" )?(?<arg2>"+wrd+@")?(?<comma2>, ?)?(?<argtyp3>"+wrd+@" )?(?<arg3>"+wrd+@")?\) =").Success)
+                    {
+                        cacheRule = true;
+                        methodCacheLine = TransformMethod.MethodCacheLine(line, docNameSpace);
+                    }
+
                     // Set flag variables
                     ruleCount++;
                     parenCount = 0;
@@ -233,7 +239,7 @@ namespace Akkadian
                     if (line.Trim().StartsWith("match")) tableMatchLine = line;
                  
                     // Convert the line items (to main rule or subrule)
-                    snippet += "        " + Convert(line, previousLine) + "\r\n";
+                    snippet += "        " + Convert(line, previousLine, file, tableMatchLine, currentRuleType, docNameSpace) + "\r\n";
                     if (isRulePart) rulePart += snippet;
                     else result += snippet;
                 }
@@ -261,7 +267,7 @@ namespace Akkadian
 
             // Close the class/namespace, and add the unit tests
             result += Boilerplate.ClassAndNamespaceClose;
-            result += Tests.WriteUnitTests(unitTestNameSpace);
+            result += Tests.WriteUnitTests(unitTests, unitTestNameSpace);
 
             return result;
         }
@@ -269,7 +275,7 @@ namespace Akkadian
         /// <summary>
         /// Applies transformation rules to the input line.
         /// </summary>
-        private static string Convert(string line, string previousLine)
+        private static string Convert(string line, string previousLine, string fileName, string tableMatchLine, string currentRuleType, string docNameSpace)
         {
             // Perform general syntactic replacements
             line = line.Replace("|~", "^");
@@ -284,7 +290,7 @@ namespace Akkadian
             line = Regex.Replace(line, @"Stub\(\)", "new " + currentRuleType + "(Hstate.Stub)");    
 
             // Process question-related metadata and declared assumptions
-            Questions.GatherMetadata(line, previousLine);
+            Questions.GatherMetadata(line, previousLine, fileName, docNameSpace);
             line = Assumptions.Process(line, docNameSpace);
             
             // Regex part  

@@ -63,7 +63,7 @@ namespace Akkadian
         /// <summary>
         /// Extracts the question metadata from the lines.
         /// </summary>
-        public static void GatherMetadata(string line, string previousLine)
+        public static void GatherMetadata(string line, string previousLine, string fileName, string docNameSpace)
         {
             // Use a regex to identify the function parts
             const string wrd = @"[a-zA-Z0-9_]+";
@@ -90,15 +90,15 @@ namespace Akkadian
                 string param3 = match.Groups[11].Value.Trim();
 
                 // Get the name of the appropriate namespace
-                string relName = Util.NamespaceConvert(MainClass.docNameSpace) + rel;
+                string relName = Util.NamespaceConvert(docNameSpace) + rel;
 
                 // Only get method-related data if it's a main rule and all parameters are Things.
                 // This is because only rule conclusions will be used as interview starting points.
                 if (Util.IsMainRule(line))
                 {
                     // Details captured for the purpose of interview goals
-                    string method = MainClass.docNameSpace + "." + rel;
-                    string file = MainClass.akkDoc;
+                    string method = docNameSpace + "." + rel;
+                    string file = fileName;
 
                     // Add metadata to the question list
                     questionData.Add(new Qdata(relName, type, questionText, file, method, param1, param2, param3));
