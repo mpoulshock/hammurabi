@@ -288,7 +288,7 @@ namespace Hammurabi
         /// </summary>
         public Tbool Contains(Thing e)
         {
-            return Auxiliary.IsMemberOfSet(e,this);
+            return Util.IsMemberOfSet(e,this);
         }
 
         /// <summary>

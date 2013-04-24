@@ -37,7 +37,7 @@ namespace Hammurabi
         {
             // Default result
             Hval h = new Hval(null, Hstate.Null);
-            T result = (T)Auxiliary.ReturnProperTvar<T>(h);
+            T result = (T)Util.ReturnProperTvar<T>(h);
 
             // Analyze each condition-value pair...and keep going
             // until all intervals of the result Tvar are defined...
@@ -45,7 +45,7 @@ namespace Hammurabi
             for (int arg=0; arg < len-1; arg+=2)
             {
                 // Get value of the condition
-                Tbool newCondition = Auxiliary.ConvertToTvar<Tbool>(arguments[arg].Invoke());
+                Tbool newCondition = Util.ConvertToTvar<Tbool>(arguments[arg].Invoke());
 
                 // Identify the intervals when the new condition is neither false nor true
                 // Falsehood causes it to fall through to next condition. Truth causes the
@@ -64,7 +64,7 @@ namespace Hammurabi
                 // If new true segments are found, accumulate the values during those intervals
                 if (newConditionIsTrueAndResultIsNull.IsEverTrue())
                 {
-                    T val = (T)Auxiliary.ConvertToTvar<T>(arguments[arg+1].Invoke());
+                    T val = (T)Util.ConvertToTvar<T>(arguments[arg+1].Invoke());
                     result = Util.MergeTvars<T>(result,
                                            Util.ConditionalAssignment<T>(newConditionIsTrueAndResultIsNull, val)); 
                 }
@@ -76,7 +76,7 @@ namespace Hammurabi
 
             }
 
-            T defaultVal = (T)Auxiliary.ConvertToTvar<T>(arguments[len-1].Invoke());
+            T defaultVal = (T)Util.ConvertToTvar<T>(arguments[len-1].Invoke());
             result = Util.MergeTvars<T>(result, defaultVal);
 
             return result.LeanTvar<T>();
@@ -99,7 +99,7 @@ namespace Hammurabi
         /// </remarks>
         public static T ConditionalAssignment<T>(Tbool tb, Tvar val) where T : Tvar
         {
-            T result = (T)Auxiliary.ReturnProperTvar<T>();
+            T result = (T)Util.ReturnProperTvar<T>();
 
             foreach (DateTime d in H.TimePoints(tb,val))
             {
@@ -128,7 +128,7 @@ namespace Hammurabi
         /// </remarks>
         public static T MergeTvars<T>(T tv1, T tv2) where T : Tvar
         {
-            T result = (T)Auxiliary.ReturnProperTvar<T>();
+            T result = (T)Util.ReturnProperTvar<T>();
 
             foreach (DateTime d in H.TimePoints(tv1,tv2))
             {

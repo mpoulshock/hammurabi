@@ -49,7 +49,7 @@ namespace Hammurabi
             Hstate h = EntityArgIsUnknown(argList);
             if (h != Hstate.Known) 
             {
-                T scv = (T)Auxiliary.ReturnProperTvar<T>(new Hval(null, h));
+                T scv = (T)Util.ReturnProperTvar<T>(new Hval(null, h));
                 return new RulePreCheckResponse(scv, true);
             }
 
@@ -162,7 +162,7 @@ namespace Hammurabi
         /// </summary>       
         public static Hstate PrecedingStateForLogic(List<Hval> inputs) 
         {
-            Hval[] list = Auxiliary.ListToArray<Hval>(inputs);
+            Hval[] list = Util.ListToArray<Hval>(inputs);
 
             // If one fact is unstated, we want to continue trying to prove (OR) or 
             // falsify (AND) the conclusion of the rule.
@@ -183,7 +183,7 @@ namespace Hammurabi
         /// </summary>       
         public static Hstate PrecedingState(List<Hval> list) 
         {
-            return PrecedingState(Auxiliary.ListToArray<Hval>(list));
+            return PrecedingState(Util.ListToArray<Hval>(list));
         }
         protected static Hstate PrecedingState(params Hval[] list) 
         {

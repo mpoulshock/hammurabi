@@ -76,7 +76,6 @@ namespace Akkadian
         public static void CompileAll(string sourcePath, string targetPath)
         {
             // Start timer 
-            TimeSpan duration = new TimeSpan();
             DateTime startTime = DateTime.Now;
          
             // Delete C# files generated on a prior run (to avoid cruft)
@@ -96,15 +95,16 @@ namespace Akkadian
             } );
 
             // Generate metadata files
+            // The next two steps consume 10% of the compilation time...
             Questions.GenerateMetadataFile(targetPath);
             Assumptions.GenerateAssumptionFile(targetPath);
 
-            // Display elapsed time
-            duration = DateTime.Now - startTime;
+            // Determine elapsed time
+            TimeSpan duration = DateTime.Now - startTime;
             
             // Display compilation stats
             Console.WriteLine("\nStats...\n");
-            Console.WriteLine(" * Time:   " + duration);
+            Console.WriteLine(" * Time:   " + Math.Round(duration.TotalSeconds, 3) + "s");
             Console.WriteLine(" * Files:  " + akkFiles.Length);
             Console.WriteLine(" * Rules:  " + (totalRuleCount - totalInputRuleCount));
             Console.WriteLine(" * Inputs: " + totalInputRuleCount);
@@ -301,6 +301,7 @@ namespace Akkadian
             line = ConvertRuleTables(line, currentRuleType, tableMatchLine, word);
 
             // Facts.QueryTvar<Tvar>()
+//            line = TransformMethod.QueryTvarTransform(line, docNameSpace, previousLine);  // can be used to generate c# custom attributes
             line = TransformMethod.QueryTvarTransform(line, docNameSpace);
     
             // IfThen() 

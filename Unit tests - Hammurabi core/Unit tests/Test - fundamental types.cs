@@ -1017,7 +1017,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void TvarTypeTest1 ()
         {
             Tnum item = new Tnum(3);
-            bool istype = Auxiliary.IsType<Tnum>(item);
+            bool istype = Util.IsType<Tnum>(item);
             Assert.AreEqual(true, istype);        
         }
         
@@ -1025,7 +1025,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void TvarTypeTest2 ()
         {
             Tnum item = new Tnum(3);
-            bool istype = Auxiliary.IsType<Tbool>(item);
+            bool istype = Util.IsType<Tbool>(item);
             Assert.AreEqual(false, istype);        
         }
 

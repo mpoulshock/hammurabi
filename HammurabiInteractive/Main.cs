@@ -51,8 +51,8 @@ namespace Interactive
             while (true)
             {
                 // If invalid goal, prompt for new goal
-                try
-                {
+//                try
+//                {
                     // Run the interview
                     Interview.ProcessRequest(goal);
 
@@ -85,12 +85,12 @@ namespace Interactive
                     // Continue session or quit
                     if (next == "r" || next == "n") {}
                     else break;
-                }
-                catch
-                {
-                    Console.WriteLine("\nInvalid request. Enter goal:");
-                    goal = Console.ReadLine();
-                }
+//                }
+//                catch
+//                {
+//                    Console.WriteLine("\nInvalid request. Enter goal:");
+//                    goal = Console.ReadLine();
+//                }
             }
         }
     }

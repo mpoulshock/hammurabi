@@ -51,7 +51,6 @@
     <Compile Include="Core\Fundamental types\Tstr.cs" />
     <Compile Include="Core\Fundamental types\Tset.cs" />
     <Compile Include="Core\Core functions\Comparison - numeric.cs" />
-    <Compile Include="Core\Core functions\Auxiliary.cs" />
     <Compile Include="Core\Core functions\Unknown.cs" />
     <Compile Include="Core\Core functions\Time - analysis.cs" />
     <Compile Include="Core\Core functions\Time - dates.cs" />
@@ -172,6 +171,7 @@
     <Compile Include="Generated source\Test for Hammurabi Interactive.cs" />
     <Compile Include="Generated source\Time limits to collect court judgments.cs" />
     <Compile Include="Generated source\VT Stat 12-7151 - Emancipated minors.cs" />
+    <Compile Include="Core\Core functions\Util.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

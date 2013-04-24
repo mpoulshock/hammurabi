@@ -126,7 +126,7 @@ namespace Hammurabi
         /// </summary>
         public T LeanTvar<T>() where T : Tvar
         {
-            T result = (T)Auxiliary.ReturnProperTvar<T>();
+            T result = (T)Util.ReturnProperTvar<T>();
             result.AddState(TimeLine.Keys[0], TimeLine.Values[0]);
 
             if (TimeLine.Count > 0)
@@ -284,7 +284,7 @@ namespace Hammurabi
                 result = this.ObjectAsOf(date.ToDateTime);
             }
 
-            return (T)Auxiliary.ReturnProperTvar<T>(result);
+            return (T)Util.ReturnProperTvar<T>(result);
         }
 
         /// <summary>
@@ -429,7 +429,7 @@ namespace Hammurabi
         {
             // TODO: Make "offset" a Tnum instead of an int
 
-            T result = (T)Auxiliary.ReturnProperTvar<T>();
+            T result = (T)Util.ReturnProperTvar<T>();
             result.AddState(this.TimeLine.Keys[0], this.TimeLine.Values[0]);
 
             // No need to handle uncertainty b/c this method just reuses the values in
@@ -492,7 +492,7 @@ namespace Hammurabi
         /// </example>            
         public T PeriodEndVal<T>(Tnum temporalPeriod) where T : Tvar
         {
-            T result = (T)Auxiliary.ReturnProperTvar<T>();
+            T result = (T)Util.ReturnProperTvar<T>();
             result.AddState(this.TimeLine.Keys[0], this.TimeLine.Values[0]);
             
             // No need to handle uncertainty b/c this method just reuses the values in

@@ -50,7 +50,7 @@ namespace Hammurabi
         /// </summary>
         public static T QueryTvar<T>(string rel, object e1) where T : Tvar
         {
-            T defaultVal = (T)Auxiliary.ReturnProperTvar<T>(Hstate.Unstated);
+            T defaultVal = (T)Util.ReturnProperTvar<T>(Hstate.Unstated);
             
             return (T)QueryTvar<T>(rel, e1, null, null, defaultVal);
         }
@@ -60,7 +60,7 @@ namespace Hammurabi
         /// </summary>
         public static T QueryTvar<T>(string rel, object e1, object e2) where T : Tvar
         {
-            T defaultVal = (T)Auxiliary.ReturnProperTvar<T>(Hstate.Unstated);
+            T defaultVal = (T)Util.ReturnProperTvar<T>(Hstate.Unstated);
             
             return QueryTvar<T>(rel, e1, e2, null, defaultVal);
         }
@@ -70,7 +70,7 @@ namespace Hammurabi
         /// </summary>
         public static T QueryTvar<T>(string rel, object e1, object e2, object e3) where T : Tvar
         {
-            T defaultVal = (T)Auxiliary.ReturnProperTvar<T>(Hstate.Unstated);
+            T defaultVal = (T)Util.ReturnProperTvar<T>(Hstate.Unstated);
             
             return QueryTvar<T>(rel, e1, e2, e3, defaultVal);
         }
@@ -83,7 +83,7 @@ namespace Hammurabi
             // Look up fact in table of facts
             foreach (Fact f in FactBase)
             {
-                if (f.Arg1 == e1 && f.Relationship == rel && f.Arg2 == e2 && f.Arg3 == e3)
+                if (f.Relationship == rel && Util.AreEqual(f.Arg1, e1) && Util.AreEqual(f.Arg2, e2) && Util.AreEqual(f.Arg3, e3))
                 {
                     return (T)f.v;
                 }

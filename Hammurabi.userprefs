@@ -1,9 +1,34 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="Hammurabi\Core\Facts\Set-assert.cs">
+    <Files>
+      <File FileName="AkkadianCompiler\Method openings.cs" Line="59" Column="79" />
+      <File FileName="Hammurabi\Core\Facts\FactBase.cs" Line="49" Column="17" />
+      <File FileName="AkkadianCompiler\Main.cs" Line="305" Column="73" />
+      <File FileName="Hammurabi\Core\Facts\Set-assert.cs" Line="76" Column="73" />
+    </Files>
     <Pads>
       <Pad Id="ProjectPad">
-        <State expanded="True" />
+        <State expanded="True">
+          <Node name="Akkadian" expanded="True">
+            <Node name="Sandbox" expanded="True" />
+            <Node name="Tests" expanded="True" />
+          </Node>
+          <Node name="AkkadianCompiler" expanded="True" />
+          <Node name="Hammurabi" expanded="True">
+            <Node name="Core" expanded="True">
+              <Node name="Core functions" expanded="True" />
+              <Node name="Facts" expanded="True">
+                <Node name="Set-assert.cs" selected="True" />
+              </Node>
+              <Node name="Fundamental types" expanded="True" />
+            </Node>
+            <Node name="Generated source" expanded="True" />
+          </Node>
+          <Node name="HammurabiInteractive" expanded="True">
+            <Node name="Interview" expanded="True" />
+          </Node>
+        </State>
       </Pad>
       <Pad Id="ClassPad">
         <State expanded="True" selected="True">
@@ -16,7 +41,9 @@
         <State />
       </Pad>
       <Pad Id="MonoDevelop.NUnit.TestPad">
-        <State expanded="True" selected="True" />
+        <State expanded="True">
+          <Node name="Hammurabi" expanded="True" selected="True" />
+        </State>
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>

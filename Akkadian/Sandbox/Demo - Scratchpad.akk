@@ -24,12 +24,12 @@ Tnum MonthlyTipIncome(Thing person)
 
 Test: TippedEmployee1
 - Thing Joan
-- Econ.MonthlyIncome(Joan) = $400
+- Demo.MonthlyTipIncome(Joan) = $400
 - Demo.IsTippedEmployee(Joan).Out =?= true
 
 Test: TippedEmployee2
 - Thing Joan
-- Econ.MonthlyIncome(Joan) = {Dawn: 0; 2013-03-15: 900}
+- Demo.MonthlyTipIncome(Joan) = {Dawn: 0; 2013-03-15: 900}
 - Demo.IsTippedEmployee(Joan).Out =?= "{Dawn: false; 3/15/2013: true}"
 
 

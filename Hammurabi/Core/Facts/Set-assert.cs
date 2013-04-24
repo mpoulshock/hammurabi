@@ -62,6 +62,8 @@ namespace Hammurabi
                 Fact f = new Fact(rel, e1, e2, e3, val);
                 FactBase.Add(f);
 
+//                DisplayAssertedFact(rel, e1, e2, e3, val);
+
                 // TODO: This breaks when the objects are not Things (hence the try-catch)
                 try
                 {
@@ -77,6 +79,21 @@ namespace Hammurabi
                 {
                 }
             }
+        }
+
+        /// <summary>
+        /// Displays the asserted fact (for testing purposes).
+        /// </summary>
+        private static void DisplayAssertedFact(string rel, object e1, object e2, object e3, Tvar val)
+        {
+            string result = "    " + rel + "(" + Util.ArgToString(e1);
+
+            if (e2 != null) result += "," + Util.ArgToString(e2);
+            if (e3 != null) result += "," + Util.ArgToString(e3);
+            result += ") = ";
+            result += Convert.ToString(val.Out);
+
+            Console.WriteLine(result);
         }
     }
 }

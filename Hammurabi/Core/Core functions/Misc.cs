@@ -79,7 +79,7 @@ namespace Hammurabi
         /// </summary>
         public static Tnum Min(params Tnum[] list)
         {
-            return ApplyFcnToTimeline(x => Auxiliary.Minimum(x), list);
+            return ApplyFcnToTimeline(x => Util.Minimum(x), list);
         }
         
         /// <summary>
@@ -88,7 +88,7 @@ namespace Hammurabi
         /// </summary>
         public static Tnum Max(params Tnum[] list)
         {
-            return ApplyFcnToTimeline(x => Auxiliary.Maximum(x), list);
+            return ApplyFcnToTimeline(x => Util.Maximum(x), list);
         }
         
         /// <summary>

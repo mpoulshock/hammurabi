@@ -31,6 +31,7 @@ namespace Akkadian
         /// <summary>
         /// Handles fact inputs
         /// </summary>
+//        public static string QueryTvarTransform(string line, string space, string previousLine)
         public static string QueryTvarTransform(string line, string space)
         {
             // Rule conclusion line - no conditions in rule
@@ -50,9 +51,12 @@ namespace Akkadian
                 }
                 else
                 {
+//                    string qText = previousLine.Trim().Replace("# >>","").Trim();
+
                     // Functions with 1-3 arguments
                     line = Regex.Replace(line, 
                                      @"(?<type>"+typs+@") (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@")(?<comma1>, ?)?(?<argtyp2>"+wrd+@" )?(?<arg2>"+wrd+@")?(?<comma2>, ?)?(?<argtyp3>"+wrd+@" )?(?<arg3>"+wrd+@")?\)",
+//                                     "        [FunctionMetadata(ReturnType=\"${type}\", QuestionText=\""+ qText + "\")]\r\n" +
                                      "        public static ${type} ${fcn}(${argtyp1} ${arg1}${comma1}${argtyp2} ${arg2}${comma2}${argtyp3} ${arg3})\r\n        {\r\n" +
                                      "        return Facts.QueryTvar<${type}>(\""+space+"${fcn}\", ${arg1}${comma1}${arg2}${comma2}${arg3});");  
                 }
@@ -82,7 +86,7 @@ namespace Akkadian
         public static string CreateMainRule(string line, string space)
         {
             space = Util.NamespaceConvert(space);
-        
+
             // Functions with 1-3 arguments
             line = Regex.Replace(line, 
                 @"(?<typ>"+typs+@")(?<sym>Sym)?(?<quest>\?)? (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@")(?<comma1>, ?)?(?<argtyp2>"+wrd+@" )?(?<arg2>"+wrd+@")?(?<comma2>, ?)?(?<argtyp3>"+wrd+@" )?(?<arg3>"+wrd+@")?\) =",

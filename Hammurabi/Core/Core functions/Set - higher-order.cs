@@ -178,7 +178,7 @@ namespace Hammurabi
         /// </summary>
         public Tnum Min(Func<Thing,Tnum> func)
         {
-            return ApplyFcnToTset(this, x => func(x), y => Auxiliary.Minimum(y));
+            return ApplyFcnToTset(this, x => func(x), y => Util.Minimum(y));
         }
         
         /// <summary>
@@ -187,7 +187,7 @@ namespace Hammurabi
         /// </summary>
         public Tnum Max(Func<Thing,Tnum> func)
         {
-            return ApplyFcnToTset(this, x => func(x), y => Auxiliary.Maximum(y));
+            return ApplyFcnToTset(this, x => func(x), y => Util.Maximum(y));
         }
         
         /// <summary>

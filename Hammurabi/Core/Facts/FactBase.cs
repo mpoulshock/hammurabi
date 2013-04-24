@@ -21,10 +21,24 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Interactive;
 
 namespace Hammurabi
 {
+    // EXPERIMENTAL - C# custom attributes
+//    public class FunctionMetadata : Attribute
+//    {
+//        public string ReturnType { get; set; }
+//        public string Arg1Type { get; set; }
+//        public string Arg2Type { get; set; }
+//        public string Arg3Type { get; set; }
+//        public string QuestionText { get; set; }
+//        public string FullName { get; set; }
+//        public string AkkFile { get; set; }
+//        public Func<Tvar> TheFunc { get; set; }
+//    }
+
 	// TODO: Review accessibility level of these methods
 	
 	public partial class Facts
@@ -140,15 +154,42 @@ namespace Hammurabi
             /// </summary>
             public string QuestionText()
             {
+//                string r = "";
+//
+//                // Get all types in hammurabi.dll
+//                foreach (Type t in Assembly.GetExecutingAssembly().GetTypes())
+//                {
+//                    // Get all methods for each of those types
+//                    foreach(MethodInfo m in t.GetMethods())
+//                    {
+//                        // Look at the custom attributes in each method
+//                        foreach (Attribute a in m.GetCustomAttributes())
+//                        {
+//                            if (a is FunctionMetadata)
+//                            {
+//                                FunctionMetadata fm = (FunctionMetadata)a;
+//
+//                                if (fm.FullName == Relationship)
+//                                {
+//                                    r = fm.QuestionText;
+//                                    break;
+//                            }
+//                        }
+//                    }
+//
+//                }
+//                string result = r;
+
                 // Embed the names of the Things into the question
                 string result = Interactive.Templates.GetQ(Relationship).questionText;
-                
-                return result.Replace("{1}", Convert.ToString(Arg1))
-                    .Replace("{2}", Convert.ToString(Arg2))
-                        .Replace("{3}", Convert.ToString(Arg3));
+
+
+                return result.Replace("{1}", Util.ArgToString(Arg1))
+                            .Replace("{2}", Util.ArgToString(Arg2))
+                            .Replace("{3}", Util.ArgToString(Arg3));
             }
 		}
-		
+
         /// <summary>
         /// Counts how many known facts there are. 
         /// </summary>
@@ -209,7 +250,7 @@ namespace Hammurabi
             // Look up fact in table of facts
             foreach (Fact f in FactBase)
             {
-                if (f.Relationship == rel && f.Arg1 == e1 && f.Arg2 == e2 && f.Arg3 == e3)
+                if (f.Relationship == rel && Util.AreEqual(f.Arg1, e1) && Util.AreEqual(f.Arg2, e2) && Util.AreEqual(f.Arg3, e3))
                 {
                     return true;
                 }

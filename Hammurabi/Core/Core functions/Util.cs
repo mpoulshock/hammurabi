@@ -1,4 +1,4 @@
-// Copyright (c) 2012 Hammura.bi LLC
+// Copyright (c) 2012-2013 Hammura.bi LLC
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,7 @@ using System.Collections.Generic;
 
 namespace Hammurabi
 {
-    public static class Auxiliary
+    public static partial class Util
     {
         /// <summary>
         /// Returns the maximum value of a list of input values
@@ -188,6 +188,35 @@ namespace Hammurabi
                 result[i] = list[i];
             }
             return result;
+        }
+        
+        /// <summary>
+        /// Converts an object (which could be a Thing) into a string.
+        /// </summary>
+        public static string ArgToString(object o)
+        {
+            if (o == null) return "";
+            if (o.GetType() == new Thing("").GetType()) return ((Thing)o).Id;
+            if (o.GetType() == new Tnum(0).GetType()) return Convert.ToString(((Tnum)o).Out);
+            return Convert.ToString(o);
+        }
+
+        /// <summary>
+        /// Determine whether two objects have the same value.
+        /// </summary>
+        /// <remarks>
+        /// This is used in Facts (to determine if a fact has been asserted).
+        /// </remarks>
+        public static bool AreEqual(object o1, object o2)
+        {
+            if (o1 == null && o2 == null) return true;
+            if (o1.GetType() == new Thing("").GetType()) return o1 == o2;
+            if (o1.GetType() == new Tbool(true).GetType()) { return ((Tbool)o1 == (Tbool)o2).IsTrue; }
+            if (o1.GetType() == new Tnum(0).GetType()) { return ((Tnum)o1 == (Tnum)o2).IsTrue; }
+            if (o1.GetType() == new Tstr("").GetType()) { return ((Tstr)o1 == (Tstr)o2).IsTrue; }
+            if (o1.GetType() == new Tdate().GetType()) { return ((Tdate)o1 == (Tdate)o2).IsTrue; }
+            if (o1.GetType() == new Tset().GetType()) { return ((Tset)o1 == (Tset)o2).IsTrue; }
+            return false;
         }
     }
 }

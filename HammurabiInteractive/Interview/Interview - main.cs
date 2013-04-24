@@ -126,7 +126,7 @@ namespace Interactive
             Console.WriteLine("Percent complete: " + response.PercentComplete);
 
             // Display question text
-            string qText = QuestionText(theFact, theQ);
+            string qText = theFact.QuestionText(); // QuestionText(theFact, theQ);
             Console.WriteLine(qText);
             AkkTest.assertedRelationship = AkkTest.AddUnitTestAssertRel(theFact, theQ);
 
@@ -135,23 +135,6 @@ namespace Interactive
             {
                 Console.WriteLine("Note: " + theQ.explanation);
             }
-        }
-        
-        /// <summary>
-        /// Returns the text of the question that should be displayed.
-        /// </summary>
-        public static string QuestionText(Facts.Fact theF, Question theQ)
-        {
-            // Embed the names of the Things into the question
-            string qText = theQ.questionText.Replace("{1}", ((Thing)theF.Arg1).Id);
-
-            // If there is a direct object, embed its name into the question
-            if (theF.Arg2 != null)
-            {
-                qText = qText.Replace("{2}", ((Thing)theF.Arg2).Id);
-            }
-
-            return qText;
         }
 
         /// <summary>
