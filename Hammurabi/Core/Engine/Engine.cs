@@ -78,6 +78,8 @@ namespace Interactive
             int percent = 0;
             Facts.Fact theNextFact = new Facts.Fact("", null, null, null);
 
+            InitializeProofTree();
+
             // Pre-evaluate each goal in order to cache the results of 
             // each evaluted function in the FactBase.  This will make 
             // look-ahead short-circuiting work in the interview.
@@ -93,6 +95,8 @@ namespace Interactive
             {
                 g.Value();
             }
+
+            Console.WriteLine(ShowProofTree());
 
             // Prepare to look for unknown facts
             Facts.GetUnknowns = true;

@@ -51,6 +51,7 @@ namespace Akkadian
                 }
                 else
                 {
+                    // Part of the experiment in using C# custom attributes...
 //                    string qText = previousLine.Trim().Replace("# >>","").Trim();
 
                     // Functions with 1-3 arguments
@@ -72,7 +73,7 @@ namespace Akkadian
         /// </summary>
         public static string MethodCacheLine(string line, string space)
         {
-            space = Util.NamespaceConvert(space).Replace("..","."); // .Replace 
+            space = Util.NamespaceConvert(space).Replace("..",".");
 
             return Regex.Replace(line, 
                                  @"(?<typ>"+typs+@")(?<sym>Sym)?(?<quest>\?)? (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@")(?<comma1>, ?)?(?<argtyp2>"+wrd+@" )?(?<arg2>"+wrd+@")?(?<comma2>, ?)?(?<argtyp3>"+wrd+@" )?(?<arg3>"+wrd+@")?\) =",
@@ -94,6 +95,14 @@ namespace Akkadian
                 "        {\r\n" +
                 "            RulePreCheckResponse RESPONSE = ShortCircuitValue<${typ}>(\""+space+"${fcn}\",\"${sym}\",\"${quest}\",${arg1}${comma1} ${arg2}${comma2} ${arg3});\r\n" +
                 "            if (RESPONSE.shouldShortCircuit) return (${typ})RESPONSE.val;\r\n\r\n");
+
+            // Functions with 1-3 arguments, that return Things
+            line = Regex.Replace(line, 
+                                 @"Thing (?<fcn>"+wrd+@")\((?<argtyp1>"+wrd+@" )(?<arg1>"+wrd+@")(?<comma1>, ?)?(?<argtyp2>"+wrd+@" )?(?<arg2>"+wrd+@")?(?<comma2>, ?)?(?<argtyp3>"+wrd+@" )?(?<arg3>"+wrd+@")?\) =",
+                                 "        public static Thing ${fcn}(${argtyp1} ${arg1}${comma1} ${argtyp2} ${arg2}${comma2} ${argtyp3} ${arg3})\r\n" +
+                                 "        {\r\n" +
+                                 "            ShortCircuitValue<Tbool>(\""+space+"${fcn}\",\"\",\"\",${arg1}${comma1} ${arg2}${comma2} ${arg3});\r\n");
+
 
             // Functions with no arguments (no need to check the arguments for uncertainty here)
             const string word = @"[-!\+\*/A-Za-z0-9\.;\(\),""'_<>=&| ]+";

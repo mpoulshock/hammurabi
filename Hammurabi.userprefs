@@ -1,33 +1,40 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Hammurabi\Core\Facts\Set-assert.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Hammurabi\Core\Core functions\Unknown.cs">
     <Files>
-      <File FileName="AkkadianCompiler\Method openings.cs" Line="59" Column="79" />
-      <File FileName="Hammurabi\Core\Facts\FactBase.cs" Line="49" Column="17" />
-      <File FileName="AkkadianCompiler\Main.cs" Line="305" Column="73" />
-      <File FileName="Hammurabi\Core\Facts\Set-assert.cs" Line="76" Column="73" />
+      <File FileName="AkkadianCompiler\Method openings.cs" Line="104" Column="1" />
+      <File FileName="Hammurabi\Core\Facts\FactBase.cs" Line="208" Column="61" />
+      <File FileName="Hammurabi\Core\Core functions\Unknown.cs" Line="62" Column="28" />
+      <File FileName="Hammurabi\Core\Facts\Inputs.cs" Line="85" Column="73" />
+      <File FileName="Hammurabi\Core\Engine\Proof tree.cs" Line="59" Column="38" />
+      <File FileName="Hammurabi\Core\Engine\Engine.cs" Line="99" Column="24" />
+      <File FileName="Hammurabi\Core\Core functions\Util.cs" Line="213" Column="13" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
           <Node name="Akkadian" expanded="True">
-            <Node name="Sandbox" expanded="True" />
-            <Node name="Tests" expanded="True" />
+            <Node name="Common" expanded="True">
+              <Node name="Fam" expanded="True" />
+            </Node>
+            <Node name="Law" expanded="True">
+              <Node name="Federal law" expanded="True">
+                <Node name="US Code" expanded="True">
+                  <Node name="Title 8 - Immigration" expanded="True" />
+                </Node>
+              </Node>
+            </Node>
           </Node>
           <Node name="AkkadianCompiler" expanded="True" />
           <Node name="Hammurabi" expanded="True">
             <Node name="Core" expanded="True">
-              <Node name="Core functions" expanded="True" />
-              <Node name="Facts" expanded="True">
-                <Node name="Set-assert.cs" selected="True" />
+              <Node name="Core functions" expanded="True">
+                <Node name="Unknown.cs" selected="True" />
               </Node>
-              <Node name="Fundamental types" expanded="True" />
+              <Node name="Engine" expanded="True" />
             </Node>
-            <Node name="Generated source" expanded="True" />
           </Node>
-          <Node name="HammurabiInteractive" expanded="True">
-            <Node name="Interview" expanded="True" />
-          </Node>
+          <Node name="Unit tests - Hammurabi core" expanded="True" />
         </State>
       </Pad>
       <Pad Id="ClassPad">
@@ -41,9 +48,7 @@
         <State />
       </Pad>
       <Pad Id="MonoDevelop.NUnit.TestPad">
-        <State expanded="True">
-          <Node name="Hammurabi" expanded="True" selected="True" />
-        </State>
+        <State expanded="True" selected="True" />
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>

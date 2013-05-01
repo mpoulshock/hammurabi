@@ -132,13 +132,14 @@ namespace Hammurabi
         }
 
         /// <summary>
-        /// Adds preceding zeros to a string until it reaches a given length. 
+        /// Creates a string of N blank spaces.
         /// </summary>
-        public static string AddPrecedingZeros(string s, int desiredLength)
+        public static string NSpaces(int count)
         {
-            if (s.Length >= desiredLength) return s;
-
-            return AddPrecedingZeros("0" + s, desiredLength);
+            string result = "";
+            for (int i=0; i<count; i++)
+                result += " ";
+            return result;
         }
     }
 }

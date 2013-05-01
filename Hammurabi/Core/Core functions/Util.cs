@@ -198,6 +198,7 @@ namespace Hammurabi
             if (o == null) return "";
             if (o.GetType() == new Thing("").GetType()) return ((Thing)o).Id;
             if (o.GetType() == new Tnum(0).GetType()) return Convert.ToString(((Tnum)o).Out);
+            if (o.GetType() == new Tdate().GetType()) return Convert.ToString(((Tdate)o).Out);
             return Convert.ToString(o);
         }
 

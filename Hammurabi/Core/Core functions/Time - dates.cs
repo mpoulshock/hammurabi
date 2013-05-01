@@ -157,17 +157,7 @@ namespace Hammurabi
             else
                 return dt.AddMonths(n);
         }
-        
-        /// <summary>
-        /// Converts a DateTime to a string in the format yyyy-mm-dd.
-        /// </summary>
-        public static string ToDateString(this DateTime dt)
-        {
-            string m = H.AddPrecedingZeros(dt.Month.ToString(),2);
-            string d = H.AddPrecedingZeros(dt.Day.ToString(),2);
-            return dt.Year + "-" + m + "-" + d;
-        }
-        
+
         #region Friendly reminders
         
         // C# methods that apply to a DateTime instance:

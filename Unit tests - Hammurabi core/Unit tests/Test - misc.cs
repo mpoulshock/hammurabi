@@ -27,15 +27,6 @@ namespace Hammurabi.UnitTests.CoreFcns
     [TestFixture]
     public class MiscFcns : H
     {    
-        // AddPrecedingZeroes
-        
-        [Test]
-        public void Misc_AddPrecedingZeroes ()
-        {
-            string result = AddPrecedingZeros("711", 6);
-            Assert.AreEqual("000711", result);    
-        }
-        
         // Recursion using Tvars - non-temporal
         
         [Test]

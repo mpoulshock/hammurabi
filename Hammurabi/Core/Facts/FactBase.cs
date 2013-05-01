@@ -1,4 +1,4 @@
-// Copyright (c) 2012 Hammura.bi LLC
+// Copyright (c) 2010-2013 Hammura.bi LLC
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -48,7 +48,7 @@ namespace Hammurabi
 		/// It's where all the asserted facts live.
 		/// </summary>
 		private static List<Fact> FactBase = new List<Fact>();
-        
+
 		/// <summary>
 		/// A Fact object represents a fact that is stored in the knowledge
 		/// base.
@@ -183,12 +183,17 @@ namespace Hammurabi
                 // Embed the names of the Things into the question
                 string result = Interactive.Templates.GetQ(Relationship).questionText;
 
-
                 return result.Replace("{1}", Util.ArgToString(Arg1))
                             .Replace("{2}", Util.ArgToString(Arg2))
                             .Replace("{3}", Util.ArgToString(Arg3));
             }
 		}
+
+
+
+        // TODO: Move these to a separate file?
+
+
 
         /// <summary>
         /// Counts how many known facts there are. 
@@ -281,6 +286,22 @@ namespace Hammurabi
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// Displays the cached value of the Tvar as a string.
+        /// </summary>
+        public static string GetCachedFcnValue(Facts.Fact f)
+        {
+            foreach (Fact f2 in FactBase)
+            {
+                if (f.Relationship == f2.Relationship && Util.AreEqual(f.Arg1, f2.Arg1) && Util.AreEqual(f.Arg2, f2.Arg2) && Util.AreEqual(f.Arg3, f2.Arg3))
+                {
+                    return Convert.ToString(f2.v.Out);
+                }
+            }
+
+            return "?";
         }
 	}
 }

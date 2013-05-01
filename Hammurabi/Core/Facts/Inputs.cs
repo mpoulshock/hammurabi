@@ -19,6 +19,7 @@
 // THE SOFTWARE.
 
 using System;
+using Interactive;
 
 namespace Hammurabi
 {
@@ -80,6 +81,9 @@ namespace Hammurabi
         /// </summary>
         public static T QueryTvar<T>(string rel, object e1, object e2, object e3, T defaultValue) where T : Tvar
         {
+            // Adds the function node to the proof tree
+            Engine.AddToProofTree(new Facts.Fact(rel, e1, e2, e3, "?"));
+
             // Look up fact in table of facts
             foreach (Fact f in FactBase)
             {

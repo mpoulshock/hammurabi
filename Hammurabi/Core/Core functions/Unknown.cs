@@ -1,4 +1,4 @@
-// Copyright (c) 2012 Hammura.bi LLC
+// Copyright (c) 2012-2013 Hammura.bi LLC
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using Interactive;
 
 namespace Hammurabi
 {
@@ -57,6 +58,9 @@ namespace Hammurabi
             object param1 = argList[0];
             object param2 = argList.Length > 1 ? argList[1] : null;
             object param3 = argList.Length > 2 ? argList[2] : null;
+
+            // Adds the function node to the proof tree
+            Engine.AddToProofTree(new Facts.Fact(rel, param1, param2, param3, "?"));
 
             // Handle symmetrical facts
             if (symIndicator == "Sym")
