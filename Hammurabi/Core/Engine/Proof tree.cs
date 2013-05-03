@@ -18,7 +18,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Hammurabi;
@@ -97,24 +96,12 @@ namespace Interactive
             foreach (ProofTreeNode n in ProofTree)
             {
                 // Gets the value of the fcn, as stored in the FactBase (no re-computation)
-                string v = Facts.GetCachedFcnValue(n.TheFact);
+                string v = n.TheFact.GetCachedFcnValue();
 
                 // Display the fact, indented one space per depth level on the function tree
-                result += H.NSpaces(n.Depth) + FormatFactAsString(n.TheFact) + v + "\n";
+                result += H.NSpaces(n.Depth) + n.TheFact.FormatFactAsString() + " = " + v + "\n";
             }
 
-            return result;
-        }
-
-        /// <summary>
-        /// Displays the asserted fact as a string (for testing purposes).
-        /// </summary>
-        public static string FormatFactAsString(Facts.Fact f)
-        {
-            string result = f.Relationship + "(" + Util.ArgToString(f.Arg1);
-            if (f.Arg2 != null) result += "," + Util.ArgToString(f.Arg2);
-            if (f.Arg3 != null) result += "," + Util.ArgToString(f.Arg3);
-            result += ") = ";
             return result;
         }
     }

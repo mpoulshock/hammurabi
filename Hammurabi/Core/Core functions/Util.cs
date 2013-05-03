@@ -197,8 +197,11 @@ namespace Hammurabi
         {
             if (o == null) return "";
             if (o.GetType() == new Thing("").GetType()) return ((Thing)o).Id;
+            if (o.GetType() == new Tbool().GetType()) return Convert.ToString(((Tbool)o).Out);
             if (o.GetType() == new Tnum(0).GetType()) return Convert.ToString(((Tnum)o).Out);
             if (o.GetType() == new Tdate().GetType()) return Convert.ToString(((Tdate)o).Out);
+            if (o.GetType() == new Tstr().GetType()) return Convert.ToString(((Tstr)o).Out);
+            if (o.GetType() == new Tset().GetType()) return Convert.ToString(((Tset)o).Out);
             return Convert.ToString(o);
         }
 

@@ -1,40 +1,14 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Hammurabi\Core\Core functions\Unknown.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Hammurabi\Core\Engine\Proof tree.cs">
     <Files>
-      <File FileName="AkkadianCompiler\Method openings.cs" Line="104" Column="1" />
-      <File FileName="Hammurabi\Core\Facts\FactBase.cs" Line="208" Column="61" />
-      <File FileName="Hammurabi\Core\Core functions\Unknown.cs" Line="62" Column="28" />
-      <File FileName="Hammurabi\Core\Facts\Inputs.cs" Line="85" Column="73" />
-      <File FileName="Hammurabi\Core\Engine\Proof tree.cs" Line="59" Column="38" />
-      <File FileName="Hammurabi\Core\Engine\Engine.cs" Line="99" Column="24" />
-      <File FileName="Hammurabi\Core\Core functions\Util.cs" Line="213" Column="13" />
+      <File FileName="Hammurabi\Core\Engine\Proof tree.cs" Line="89" Column="1" />
+      <File FileName="Hammurabi\Core\Engine\Engine.cs" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
-        <State expanded="True">
-          <Node name="Akkadian" expanded="True">
-            <Node name="Common" expanded="True">
-              <Node name="Fam" expanded="True" />
-            </Node>
-            <Node name="Law" expanded="True">
-              <Node name="Federal law" expanded="True">
-                <Node name="US Code" expanded="True">
-                  <Node name="Title 8 - Immigration" expanded="True" />
-                </Node>
-              </Node>
-            </Node>
-          </Node>
+        <State expanded="True" selected="True">
           <Node name="AkkadianCompiler" expanded="True" />
-          <Node name="Hammurabi" expanded="True">
-            <Node name="Core" expanded="True">
-              <Node name="Core functions" expanded="True">
-                <Node name="Unknown.cs" selected="True" />
-              </Node>
-              <Node name="Engine" expanded="True" />
-            </Node>
-          </Node>
-          <Node name="Unit tests - Hammurabi core" expanded="True" />
         </State>
       </Pad>
       <Pad Id="ClassPad">
