@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+using Hammurabi;
 
 namespace HammurabiWebService
 {
@@ -99,6 +100,16 @@ namespace HammurabiWebService
             Arg2 = arg2;
             Arg3 = arg3;
             Timeline = timeline;
+        }
+
+        public Factoid(Facts.Fact f)
+        {
+            FactType = f.GetTvarType();
+            Relationship = f.Relationship;
+            Arg1 = Util.ArgToString(f.Arg1);
+            Arg2 = Util.ArgToString(f.Arg2);
+            Arg3 = Util.ArgToString(f.Arg3);
+            QuestionText = f.QuestionText();
         }
 
     }

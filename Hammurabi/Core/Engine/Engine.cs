@@ -96,7 +96,7 @@ namespace Interactive
                 g.Value();
             }
 
-            Console.WriteLine(ShowProofTree());
+//            Console.WriteLine(ShowProofTree());
 
             // Prepare to look for unknown facts
             Facts.GetUnknowns = true;

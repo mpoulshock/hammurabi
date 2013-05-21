@@ -19,10 +19,11 @@ namespace HammurabiWebService
             List<Factoid> facts = new List<Factoid>(){fact1};
 
             // Define goals to be sought, and combine them into a list
-            Factoid goal1 = new Factoid("Tnum","USC.Tit26.Sec151.ThresholdAmount","Jim","","");
-            Factoid goal2 = new Factoid("Tnum","USC.Tit26.Sec151.ApplicablePercentage","Jim","","");
-            Factoid goal3 = new Factoid("Tbool","USC.Tit26.Sec152.IsDependentOf","Kid","Dad","");
-            List<Factoid> goals = new List<Factoid>(){goal1,goal2,goal3};
+            Factoid goal1 = new Factoid("Tnum", "IRS.Pub501.StandardDeduction", "Jim", "", "");
+//            Factoid goal1 = new Factoid("Tnum","USC.Tit26.Sec151.ThresholdAmount","Jim","","");
+//            Factoid goal2 = new Factoid("Tnum","USC.Tit26.Sec151.ApplicablePercentage","Jim","","");
+//            Factoid goal3 = new Factoid("Tbool","USC.Tit26.Sec152.IsDependentOf","Kid","Dad","");  // For some reason, this is very slow...
+            List<Factoid> goals = new List<Factoid>(){goal1};
 
             // Assemble a mock request to the web service
             Packet mockPacket = new Packet(goals, facts);
@@ -48,11 +49,11 @@ namespace HammurabiWebService
             }
 
             // Start a fresh session
-            Facts.Clear();
+//            Facts.Clear();
             Facts.GetUnknowns = true;
             Facts.Unknowns.Clear();
             bool allDone = true;
-            int percent = 100;
+            request.PercentageComplete = 100;
             
             // Assert facts into a Hammurabi session
             foreach(Factoid f in request.AssertedFacts)
@@ -84,14 +85,18 @@ namespace HammurabiWebService
             // Determine the next fact and the percent complete
             if (!allDone)
             {
-                // TODO: Get list of needed facts (Facts.Unknowns)
-                percent = Interactive.Engine.ProgressPercentage(Facts.Count(), Facts.Unknowns.Count);
+//                Factoid neededFact = new Factoid("Tnum","USC.Tit26.Sec151.ThresholdAmount","Jim","","");
+//                Facts.Fact f = new Facts.Fact("USC.Tit26.Sec151.ThresholdAmount", null, null, null);
+//                Factoid neededFact = new Factoid(f);
+
+                Factoid neededFact = new Factoid(Facts.Unknowns[0]);
+                request.NeededFacts = new List<Factoid>(){neededFact}; 
+
+                request.PercentageComplete = Interactive.Engine.ProgressPercentage(Facts.Count(), Facts.Unknowns.Count);
             }
 
-            request.PercentageComplete = percent;
-
             // Add elapsed time to response object
-            request.ResponseTimeInMs = Convert.ToDecimal((DateTime.Now - startTime).TotalMilliseconds);
+            request.ResponseTimeInMs = Convert.ToInt32((DateTime.Now - startTime).TotalMilliseconds);
 
             return request;
         }

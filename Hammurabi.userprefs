@@ -1,14 +1,16 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Hammurabi\Core\Engine\Proof tree.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="HammurabiWebService\HammurabiWebService\Web.config">
     <Files>
-      <File FileName="Hammurabi\Core\Engine\Proof tree.cs" Line="89" Column="1" />
-      <File FileName="Hammurabi\Core\Engine\Engine.cs" Line="1" Column="1" />
+      <File FileName="HammurabiWebService\HammurabiWebService\IService.cs" Line="4" Column="30" />
+      <File FileName="HammurabiWebService\HammurabiWebService\Service.svc" Line="1" Column="83" />
+      <File FileName="HammurabiWebService\HammurabiWebService\Web.config" Line="30" Column="59" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
-        <State expanded="True" selected="True">
-          <Node name="AkkadianCompiler" expanded="True" />
+        <State expanded="True">
+          <Node name="HammurabiWebService" expanded="True" />
+          <Node name="HammurabiWebServiceHost" expanded="True" selected="True" />
         </State>
       </Pad>
       <Pad Id="ClassPad">

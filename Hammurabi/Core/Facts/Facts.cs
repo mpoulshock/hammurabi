@@ -125,6 +125,16 @@ namespace Hammurabi
             }
 
             /// <summary>
+            /// Returns the Type of Tvar, given the relationship text.
+            /// </summary>
+            /// <returns>The tvar type.</returns>
+            public string GetTvarType()
+            {
+                Question q = Interactive.Templates.GetQ(Relationship);
+                return q.questionType;
+            }
+
+            /// <summary>
             /// Displays the asserted fact as a string.
             /// </summary>
             /// <example>
