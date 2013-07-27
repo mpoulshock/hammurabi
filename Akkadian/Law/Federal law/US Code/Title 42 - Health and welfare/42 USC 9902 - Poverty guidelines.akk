@@ -16,163 +16,76 @@ Tnum FPG125(Tnum familySize, Tstr jur) =
 
 # 133% of the FPG
 Tnum FPG133(Tnum familySize, Tstr jur) =
-    (FedPovertyGuideline(familySize,jur) * 1.33).RoundDown(1)
+    (FedPovertyGuideline(familySize,jur) * 1.3333).RoundDown(1)
   
 # Federal HHS Poverty Guidelines
 Tnum FedPovertyGuideline(Tnum familySize, Tstr jur) =
     set:
-    from 2014-01-15 -> Stub()
-    from 2013-01-25 -> RateFor2013
-    from 2012-01-26 -> RateFor2012
-    from 2011-01-20 -> RateFor2011
+    if Geo.Among48ContiguousStates(jur) -> FPL48(familySize)
+    if jur == "District of Columbia" -> FPL48(familySize)
+    if jur == "Alaska" -> FPLAK(familySize)
+    if jur == "Hawaii" -> FPLHI(familySize)
+    else Stub()
+  
+# FPL for the 48 states plus DC
+Tnum FPL48(Tnum familySize) =
+    BaseLevel48() + (AdditionalAmt48() * (familySize - 1))
+
+Tnum BaseLevel48() =
+    set:
+    from 2014-01-20 -> Stub()
+    from 2013-01-25 -> $11,490
+    from 2012-01-26 -> $11,170
+    from 2011-01-20 -> $10,890
     else Stub()
 
-    Tnum RateFor2013 =
-        set:
-        if Geo.Among48ContiguousStates(jur) -> ContigRate2013(familySize)
-        if jur == "District of Columbia" -> ContigRate2013(familySize)
-        if jur == "Alaska" -> AKRate2013(familySize)
-        if jur == "Hawaii" -> HIRate2013(familySize)
-        else Stub()
-    
-    Tnum RateFor2012 =
-        set:
-        if Geo.Among48ContiguousStates(jur) -> ContigRate2012(familySize)
-        if jur == "District of Columbia" -> ContigRate2012(familySize)
-        if jur == "Alaska" -> AKRate2012(familySize)
-        if jur == "Hawaii" -> HIRate2012(familySize)
-        else Stub()
-        
-    Tnum RateFor2011 =
-        set:
-        if Geo.Among48ContiguousStates(jur) -> ContigRate2011(familySize)
-        if jur == "District of Columbia" -> ContigRate2011(familySize)
-        if jur == "Alaska" -> AKRate2011(familySize)
-        if jur == "Hawaii" -> HIRate2011(familySize)
-        else Stub()
+Tnum AdditionalAmt48() = 
+    set:
+    from 2014-01-20 -> Stub()
+    from 2013-01-25 -> $4,020
+    from 2012-01-26 -> $3,960
+    from 2011-01-20 -> $3,820
+    else Stub()
 
+# FPL for Alaska
+Tnum FPLAK(Tnum familySize) =
+    BaseLevelAK() + (AdditionalAmtAK() * (familySize - 1))
 
-# 2013
-# Poverty guideline for 48 states + DC
-Tnum ContigRate2013(Tnum familySize) =
-    match familySize
-    1 -> $11,490
-    2 -> $15,510
-    3 -> $19,530
-    4 -> $23,550
-    5 -> $27,570
-    6 -> $31,590
-    7 -> $35,610
-    8 -> $39,630
-    else $39,630 + ($4,020 * (familySize-8))
+Tnum BaseLevelAK() =
+    set:
+    from 2014-01-20 -> Stub()
+    from 2013-01-25 -> $14,350
+    from 2012-01-26 -> $13,970
+    from 2011-01-20 -> $13,600
+    else Stub()
 
-# Poverty guideline for AK
-Tnum AKRate2013(Tnum familySize) =
-    match familySize
-    1 -> $14,350
-    2 -> $19,380
-    3 -> $24,410
-    4 -> $29,440
-    5 -> $34,470
-    6 -> $39,500
-    7 -> $44,530
-    8 -> $49,560
-    else $49,560 + ($5,030 * (familySize-8))
+Tnum AdditionalAmtAK() = 
+    set:
+    from 2014-01-20 -> Stub()
+    from 2013-01-25 -> $5,030
+    from 2012-01-26 -> $4,950
+    from 2011-01-20 -> $4,780
+    else Stub()
 
-# Poverty guideline for HI
-Tnum HIRate2013(Tnum familySize) =
-    match familySize
-    1 -> $13,230
-    2 -> $17,850
-    3 -> $22,470
-    4 -> $27,090
-    5 -> $31,710
-    6 -> $36,330
-    7 -> $40,950
-    8 -> $45,570
-    else $45,570 + ($4,620 * (familySize-8))
+# FPL for Hawaii
+Tnum FPLHI(Tnum familySize) =
+    BaseLevelHI() + (AdditionalAmtHI() * (familySize - 1))
 
-                
-# 2012
-# Poverty guideline for 48 states + DC
-Tnum ContigRate2012(Tnum familySize) =
-    match familySize
-    1 -> $11,170
-    2 -> $15,130
-    3 -> $19,090
-    4 -> $23,050
-    5 -> $27,010
-    6 -> $30,970
-    7 -> $34,930
-    8 -> $38,890
-    else $38,890 + ($3,960 * (familySize-8))
+Tnum BaseLevelHI() =
+    set:
+    from 2014-01-20 -> Stub()
+    from 2013-01-25 -> $13,230
+    from 2012-01-26 -> $12,860
+    from 2011-01-20 -> $12,540
+    else Stub()
 
-# Poverty guideline for AK
-Tnum AKRate2012(Tnum familySize) =
-    match familySize
-    1 -> $13,970
-    2 -> $18,920
-    3 -> $23,870
-    4 -> $28,820
-    5 -> $33,770
-    6 -> $38,720
-    7 -> $43,670
-    8 -> $48,620
-    else $48,620 + ($4,950 * (familySize-8))
-
-# Poverty guideline for HI
-Tnum HIRate2012(Tnum familySize) =
-    match familySize
-    1 -> $12,860
-    2 -> $17,410
-    3 -> $21,960
-    4 -> $26,510
-    5 -> $31,060
-    6 -> $35,610
-    7 -> $40,160
-    8 -> $44,710
-    else $44,710 + ($4,550 * (familySize-8))
-
-    
-# 2011
-# Poverty guideline for 48 states + DC
-Tnum ContigRate2011(Tnum familySize) =
-    match familySize
-    1 -> $10,890
-    2 -> $14,710
-    3 -> $18,530
-    4 -> $22,350
-    5 -> $26,170
-    6 -> $29,990
-    7 -> $33,810
-    8 -> $37,630
-    else $37,630 + ($3,820 * (familySize-8))
-
-# Poverty guideline for AK
-Tnum AKRate2011(Tnum familySize) =
-    match familySize
-    1 -> $13,600
-    2 -> $18,380
-    3 -> $23,160
-    4 -> $27,940
-    5 -> $32,720
-    6 -> $37,500
-    7 -> $42,280
-    8 -> $47,060
-    else $47,060 + ($4,780 * (familySize-8))
-
-# Poverty guideline for HI
-Tnum HIRate2011(Tnum familySize) =
-    match familySize
-    1 -> $12,540
-    2 -> $16,930
-    3 -> $21,320
-    4 -> $25,710
-    5 -> $30,100
-    6 -> $34,490
-    7 -> $38,880
-    8 -> $43,270
-    else $43,270 + ($4,390 * (familySize-8))
+Tnum AdditionalAmtHI() = 
+    set:
+    from 2014-01-20 -> Stub()
+    from 2013-01-25 -> $4,620
+    from 2012-01-26 -> $4,550
+    from 2011-01-20 -> $4,390
+    else Stub()
 
 
 # UNIT TESTS
@@ -182,5 +95,4 @@ Test: FPL1
 
 Test: FPL2 
 - USC.Tit42.Sec9902.FedPovertyGuideline(7, "New Jersey").AsOf(2013-05-05).Out =?= $35,610
-
 
