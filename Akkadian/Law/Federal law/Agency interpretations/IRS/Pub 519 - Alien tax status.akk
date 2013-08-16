@@ -166,7 +166,9 @@ Tbool ExemptStudent(Thing p) =
         ! IntendToResidePermanentlyInUS(p) &
         Imm.CompliedWithTermsOfVisa(p)
     
-    Tbool fiveYearTest = onStudentVisa.EverPer(TheYear).RunningElapsedWholeYears >= 5
+    # "exempt...for any part of more than five calendar years" (p. 5)
+    # Need to use Shift() b/c RunningElapsedInterval counts intervals when they're true?
+    Tbool fiveYearTest = onStudentVisa.EverPer(TheYear).RunningElapsedIntervals(TheYear) >= 5
     
     Tbool onStudentVisa =
         visa == "F-1" |

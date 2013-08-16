@@ -36,7 +36,13 @@ namespace Hammurabi
             Quarter,            // DateTime.AddYears(3)
             Year                // DateTime.AddYears(1)
         }
-        
+
+        // Constants
+
+        public const double DaysPerYear = 365.242;
+
+        public const double DaysPerMonth = 30.437;
+
         
         //*********************************************************************
         // TEMPORAL "STEP" FUNCTIONS
