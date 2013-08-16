@@ -1,4 +1,4 @@
-// Copyright (c) 2012 Hammura.bi LLC
+// Copyright (c) 2012-2013 Hammura.bi LLC
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -26,7 +26,59 @@ namespace Hammurabi.UnitTests.CoreFcns
 {
     [TestFixture]
     public class RunningElapsedTime : H
-    {    
+    {   
+        // RunningElapsedIntervals
+
+        [Test]
+        public void RunningElapsedIntervals1 ()
+        {
+            Tbool tb = new Tbool(false);
+            tb.AddState(new DateTime(2015,1,1),true);
+            tb.AddState(new DateTime(2015,1,2),false);
+            tb.AddState(new DateTime(2015,1,3),true);
+            tb.AddState(new DateTime(2015,1,4),false);
+
+            Tnum r = tb.RunningElapsedIntervals(TheDay);
+
+            Assert.AreEqual("{Dawn: 0; 1/1/2015: 1; 1/3/2015: 2}", r.Out);    
+        }
+
+        [Test]
+        public void RunningElapsedIntervals2 ()
+        {
+            Tbool tb = new Tbool(false);
+            Tnum r = tb.RunningElapsedIntervals(TheYear);
+
+            Assert.AreEqual(0, r.Out);    
+        }
+
+        [Test]
+        public void RunningElapsedIntervals3 ()
+        {
+            Tbool tb = new Tbool(false);
+            tb.AddState(new DateTime(2000,1,1), Hstate.Unstated);
+            tb.AddState(new DateTime(2000,3,1), false);
+
+            Tnum r = tb.RunningElapsedIntervals(TheYear);
+
+            Assert.AreEqual("Unstated", r.Out);    
+        }
+
+        [Test]
+        public void RunningElapsedIntervals4 ()
+        {
+            Tbool tb = new Tbool(false);
+            tb.AddState(new DateTime(2000,1,1), Hstate.Stub);
+            tb.AddState(new DateTime(2000,3,1), false);
+
+            Tnum r = tb.RunningElapsedIntervals(TheYear);
+
+            Assert.AreEqual("Stub", r.Out);    
+        }
+
+
+        // RunningElapsedTime
+
         [Test]
         public void RunningElapsedTime1 ()
         {

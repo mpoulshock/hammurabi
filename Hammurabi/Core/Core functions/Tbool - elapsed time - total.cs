@@ -120,7 +120,7 @@ namespace Hammurabi
         /// Returns the total elapsed time, between two given DateTimes, during
         /// which a Tbool is true.
         /// </summary>
-        protected TimeSpan TotalElapsedTime(DateTime start, DateTime end)
+        private TimeSpan TotalElapsedTime(DateTime start, DateTime end)
         {
             TimeSpan result = new TimeSpan();
             int count = this.TimeLine.Count;

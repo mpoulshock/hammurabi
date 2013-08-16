@@ -101,7 +101,7 @@ Tbool SubsecGTest(Thing c) =
 # Certain governmental service counts towards physical presence.
 Tbool SubsecGParentTest(Thing parent, Tdate childDoB) =
     IsUSCitizen(parent) &
-    presentYears.IsEverTrueBefore(childDoB) &
+    presentYears.IsEverTrue(Time.DawnOf, childDoB) &
     presentYearsBeforeAge14.IsEverTrue()
     
     # How many years they must be present...
@@ -149,7 +149,7 @@ Tbool SubsecH(Thing c) =
         ParentsMarried(c) &
         Imm.IsAlien(FatherOf(c)) &
         IsUSCitizen(MotherOf(c)) &
-        ResidedInUSorOP(MotherOf(c)).IsEverTrueBefore(DoB(c))
+        ResidedInUSorOP(MotherOf(c)).IsEverTrue(Time.DawnOf, DoB(c))
 
 
 # PLACE OF BIRTH
@@ -164,8 +164,8 @@ Tbool BornInUSorOP(Thing c) =
 
 # A parent resided in U.S. at or before child's birth
 Tbool ParentResidedInUSorOPBeforeBirthOf(Thing c) =
-    ResidedInUSorOP(FatherOf(c)).IsEverTrueBefore(DoB(c)) |
-    ResidedInUSorOP(MotherOf(c)).IsEverTrueBefore(DoB(c))
+    ResidedInUSorOP(FatherOf(c)).IsEverTrue(Time.DawnOf, DoB(c)) |
+    ResidedInUSorOP(MotherOf(c)).IsEverTrue(Time.DawnOf, DoB(c))
 
 # Resided in U.S. or outlying possession
 Tbool ResidedInUSorOP(Thing p) =
@@ -188,7 +188,7 @@ Tbool IsCitizenPresentInUSorOP1YearBefore(Thing p, Tdate date) =
 # (This rule allows logic reuse.)
 Tbool IsCitizenPresentInUSorOPNYearsBefore(Thing p, Tnum years, Tdate date) =
     IsUSCitizen(p) &
-    present.IsEverTrueBefore(date)
+    present.IsEverTrue(Time.DawnOf, date)
     
     Tbool present =
         PresentInUSorOP(p).YearsContinuouslyTrue >= years    # Terrible performance

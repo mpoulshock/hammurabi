@@ -59,8 +59,8 @@ Tbool Para4(Thing p) =
 # TODO: Test this thoroughly; not convinced that it's correct yet.
 Tbool Para4ParentTest(Thing parent, Tdate date) =
     Imm.IsUSNational(parent) &
-    present7YearsIn10.IsEverTrueBefore(date) &
-    fiveYearTestMet.IsEverTrueBefore(date) &
+    present7YearsIn10.IsEverTrue(Time.DawnOf, date) &
+    fiveYearTestMet.IsEverTrue(Time.DawnOf, date) &
     Stub()   # Para (4) not handled completely b/c it involves analysis of a sliding
              # window of time during which several facts are considered.  Also, rare.
     

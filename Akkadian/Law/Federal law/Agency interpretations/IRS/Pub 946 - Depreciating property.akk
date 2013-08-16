@@ -154,14 +154,12 @@ Tnum StraightLineRate(Tnum yearsRemaining) =
 Tnum FirstYearPercentage(Tstr convention, Tdate datePlacedInService) =
     set:
     if convention == "Half-year" -> 0.50
-    if convention == "Mid-quarter" & serviceQuarter == 1 -> 0.875
-    if convention == "Mid-quarter" & serviceQuarter == 2 -> 0.625
-    if convention == "Mid-quarter" & serviceQuarter == 3 -> 0.375
-    if convention == "Mid-quarter" & serviceQuarter == 4 -> 0.125
+    if convention == "Mid-quarter" & datePlacedInService.Quarter == 1 -> 0.875
+    if convention == "Mid-quarter" & datePlacedInService.Quarter == 2 -> 0.625
+    if convention == "Mid-quarter" & datePlacedInService.Quarter == 3 -> 0.375
+    if convention == "Mid-quarter" & datePlacedInService.Quarter == 4 -> 0.125
     if convention == "Mid-month" -> ((12 - datePlacedInService.Month + 0.50) / 12).RoundToNearest(0.001)
     else Stub()
-    
-    Tnum serviceQuarter = GetQuarter(datePlacedInService)
 
  
 # INPUTS

@@ -51,13 +51,13 @@ namespace Hammurabi
         
         /// <summary>
         /// Returns a Tnum representing the calendar month (by default, a
-        /// 10-year span centered on Jan. 1st of the current year)
+        /// 20-year span centered on Jan. 1st of the current year)
         /// </summary>
         public static Tnum TheMonth
         {
             get
             {
-                return TheTime.Month(5);
+                return TheTime.Month(10);
             }
         }
         

@@ -93,7 +93,7 @@ Tbool SpouseDiedDuringTaxYear(Thing p) =
 # True during the tax year in which a person died
 Tbool DiedDuringTaxYear(Thing p) =
     IsDeceased(p).IsEverTrue() &
-    DateIsInPeriod(DateOfDeath(p), Sec441.TaxYear(p))
+    DateOfDeath(p).IsInPeriod(Sec441.TaxYear(p))
     
 # Married on last day of tax year 
 Tbool MarriedAtEndOfTaxYear(Thing p) =

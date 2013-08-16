@@ -1,4 +1,4 @@
-// Copyright (c) 2012 Hammura.bi LLC
+// Copyright (c) 2012-2013 Hammura.bi LLC
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -140,6 +140,18 @@ namespace Hammurabi
             return this.PeriodEndVal<Tdate>(temporalPeriod).Lean;
         }
 
+        /// <summary>
+        /// Returns true in the period during which a given date falls
+        /// Example: (2013-04-15).IsInPeriod(TheYear) is true for all of 2013, and otherwise false
+        /// </summary>
+        public Tbool IsInPeriod(Tnum interval)
+        {
+            Tbool afterEvent = TheTime.IsAtOrAfter(this);
+
+            return afterEvent.EverPer(interval) &&
+                afterEvent.CountPastNIntervals(interval,1) == 0;
+        }
+
 
         // ********************************************************************
         // AddTimeInterval
@@ -238,6 +250,21 @@ namespace Hammurabi
                 }
                 
                 return result.Lean;  
+            }
+        }
+
+        /// <summary>
+        /// For a given date, determine what calendar quarter it's in.
+        /// </summary>
+        // TODO: Handle fiscal years that don't start in January.
+        public Tnum Quarter
+        {       
+            get
+            {
+                return Switch<Tnum>(()=> this.Month <= 3, ()=> 1,
+                                    ()=> this.Month <= 6, ()=> 2,
+                                    ()=> this.Month <= 9, ()=> 3,
+                                    ()=> 4); 
             }
         }
 

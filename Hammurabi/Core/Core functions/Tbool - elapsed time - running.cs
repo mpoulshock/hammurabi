@@ -1,4 +1,4 @@
-// Copyright (c) 2012 Hammura.bi LLC
+// Copyright (c) 2012-2013 Hammura.bi LLC
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -76,8 +76,47 @@ namespace Hammurabi
         {
             get
             {
-                return RunningElapsedTime(Time.IntervalType.Day);
+                return RunningElapsedIntervals(TheDay).Shift(-1, TheDay) ;
+//                return RunningElapsedTime(Time.IntervalType.Day);
             }
+        }
+
+        /// <summary>
+        /// Provides a running count of the number of whole intervals 
+        /// that a Tbool has been true.
+        /// </summary>
+        /// <remarks>
+        /// Example:
+        ///         tb = <--FTFTTF-->
+        ///     tb.ICT = <--010230-->
+        /// </remarks>
+        public Tnum RunningElapsedIntervals(Tnum interval)  
+        {
+            // If base Tnum is ever unknown during the time period, return 
+            // the state with the proper precedence
+            Hstate baseState = PrecedenceForMissingTimePeriods(this);
+            if (baseState != Hstate.Known) return new Tnum(baseState);
+
+            int intervalCount = 0;
+
+            Tnum result = new Tnum();
+
+            // Iterate through the time intervals in the input Tnum
+            for (int i=0; i < interval.IntervalValues.Count-1; i++)
+            {
+                DateTime start = interval.IntervalValues.Keys[i];
+                DateTime end = interval.IntervalValues.Keys[i+1];
+
+                // If base Tbool is always true during the interval, increment the count
+                if (this.IsAlwaysTrue(start, end))
+                {
+                    intervalCount++;
+                }
+
+                result.AddState(start, intervalCount);
+            }
+
+            return result.Lean;
         }
 
         /// <summary>
@@ -85,9 +124,13 @@ namespace Hammurabi
         /// has been true.  The count carries over from one true interval to the next.
         /// </summary>
         /// <remarks>
+        /// An interval is counted in the subsequent interval, meaning that the count
+        /// reflects how many past intervals have been true.
+        /// 
         /// Example:
-        ///         tb = <--f--|--t--|-f-|--t--|--f-->
-        ///     tb.DCT = <--0--|01234|-4-|56789|--9-->
+        /// 
+        ///         tb = <--FTTTTTFFFTTTTFF-->
+        ///     tb.DCT = <--001234500067890-->
         /// 
         /// Use these methods judiciously, as they can involve tens of thousands of intervals.
         /// </remarks>

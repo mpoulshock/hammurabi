@@ -1,4 +1,4 @@
-// Copyright (c) 2012 Hammura.bi LLC
+// Copyright (c) 2012-2013 Hammura.bi LLC
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -31,7 +31,7 @@ namespace Hammurabi
         {
             get
             {
-                return TimeContinuouslyTrue(Time.IntervalType.Year);
+                return Max(this.ContinuousElapsedIntervals(TheYear) - 1, 0);
             }
         }
 
@@ -45,7 +45,7 @@ namespace Hammurabi
         {
             get
             {
-                return TimeContinuouslyTrue(Time.IntervalType.Month);
+                return Max(this.ContinuousElapsedIntervals(TheMonth) - 1, 0);
             }
         }
 
@@ -59,7 +59,7 @@ namespace Hammurabi
         {
             get
             {
-                return TimeContinuouslyTrue(Time.IntervalType.Week);
+                return Max(this.ContinuousElapsedIntervals(TheCalendarWeek) - 1, 0);
             }
         }
 
@@ -69,70 +69,53 @@ namespace Hammurabi
         /// <remarks>
         /// Use judiciously, as this can involve tens of thousands of time intervals.
         /// </remarks>
-        public Tnum DaysContinuouslyTrue 
+        public Tnum DaysContinuouslyTrue
         {
             get
             {
-                return TimeContinuouslyTrue(Time.IntervalType.Day);
+                return Max(this.ContinuousElapsedIntervals(TheDay) - 1, 0);
             }
         }
 
         /// <summary>
-        /// Provides a running count of how many intervals (years, days, etc.) a Tbool 
+        /// Provides a running count of how many whole intervals a Tbool 
         /// has been continuously true.
         /// </summary>
         /// <remarks>
         /// Example:
-        ///         tb = <--f--|--t--|-f-|---t---|--f-->
-        ///     tb.DCT = <--0--|01234|-0-|0123456|--0-->
+        ///         tb = <--FTFTTF-->
+        ///     tb.ICT = <--010120-->
         /// </remarks>
-        private Tnum TimeContinuouslyTrue(Time.IntervalType interval)  
+        public Tnum ContinuousElapsedIntervals(Tnum interval)  
         {
             // If base Tnum is ever unknown during the time period, return 
             // the state with the proper precedence
             Hstate baseState = PrecedenceForMissingTimePeriods(this);
             if (baseState != Hstate.Known) return new Tnum(baseState);
 
+            int intervalCount = 0;
+
             Tnum result = new Tnum();
 
-            // Iterate through the time intervals in the Tbool
-            for (int i=0; i < this.IntervalValues.Count; i++)
+            // Iterate through the time intervals in the input Tnum
+            for (int i=0; i < interval.IntervalValues.Count-1; i++)
             {
-                // Get interval start date
-                DateTime intervalStart = this.IntervalValues.Keys[i];
+                DateTime start = interval.IntervalValues.Keys[i];
+                DateTime end = interval.IntervalValues.Keys[i+1];
 
-                if (this.IntervalValues.Values[i].IsTrue) 
+                // If base Tbool is always true during the interval, increment the count
+                if (this.IsAlwaysTrue(start, end))
                 {
-                    // Determine the end of the interval
-                    DateTime nextIntervalStart = new DateTime();
-                    if (i == this.IntervalValues.Count-1)
-                    {
-                        nextIntervalStart = Time.EndOf.AddYears(-1);
-                    }
-                    else
-                    {
-                        nextIntervalStart = this.IntervalValues.Keys[i+1];
-                    }
-
-                    // Variables to keep track of count and date
-                    int count = 0;
-                    DateTime indexDate = intervalStart;
-            
-                    // Begin counting off intervals
-                    while (indexDate < nextIntervalStart) 
-                    {
-                        result.AddState(indexDate, count);
-                        count++;
-                        indexDate = indexDate.AddInterval(interval, 1);
-                    }
+                    intervalCount++;
                 }
                 else
                 {
-                    // Do nothing; count is 0 throughout the interval.
-                     result.AddState(intervalStart,0);
+                    intervalCount = 0;
                 }
+
+                result.AddState(start, intervalCount);
             }
-            
+
             return result.Lean;
         }
     }

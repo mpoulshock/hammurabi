@@ -27,17 +27,32 @@ namespace Hammurabi.UnitTests.CoreFcns
     [TestFixture]
     public class ContinuouslyTrue : H
     {    
-        
+        // ContinuousElapsedIntervals
+
+        [Test]
+        public void ContinuousElapsedIntervals1 ()
+        {
+            Tbool tb = new Tbool(false);
+            tb.AddState(Date(2015,1,1), true);
+            tb.AddState(Date(2015,3,1), false);
+
+            Tnum r = tb.ContinuousElapsedIntervals(TheTime.TheMonth);
+
+            Assert.AreEqual("{Dawn: 0; 1/1/2015: 1; 2/1/2015: 2; 3/1/2015: 0}", r.Out);    
+        }
+
+        // TimeContinuouslyTrue
+
         [Test]
         public void ContinuouslyTrue1 ()
         {
             Tbool tb = new Tbool(false);
-            tb.AddState(new DateTime(2000,1,1), true);
-            tb.AddState(new DateTime(2000,3,1), false);
+            tb.AddState(new DateTime(2015,1,1), true);
+            tb.AddState(new DateTime(2015,3,1), false);
 
             Tnum r = tb.MonthsContinuouslyTrue;
 
-            Assert.AreEqual("{Dawn: 0; 2/1/2000: 1; 3/1/2000: 0}", r.Out);    
+            Assert.AreEqual("{Dawn: 0; 2/1/2015: 1; 3/1/2015: 0}", r.Out);    
         }
 
         [Test]
@@ -53,8 +68,8 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void ContinuouslyTrue3 ()
         {
             Tbool tb = new Tbool(false);
-            tb.AddState(new DateTime(2000,1,1), Hstate.Unstated);
-            tb.AddState(new DateTime(2000,3,1), false);
+            tb.AddState(new DateTime(2015,1,1), Hstate.Unstated);
+            tb.AddState(new DateTime(2015,3,1), false);
 
             Tnum r = tb.DaysContinuouslyTrue;
 
@@ -65,8 +80,8 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void ContinuouslyTrue4 ()
         {
             Tbool tb = new Tbool(false);
-            tb.AddState(new DateTime(2000,1,1), Hstate.Stub);
-            tb.AddState(new DateTime(2000,3,1), false);
+            tb.AddState(new DateTime(2015,1,1), Hstate.Stub);
+            tb.AddState(new DateTime(2015,3,1), false);
 
             Tnum r = tb.DaysContinuouslyTrue;
 

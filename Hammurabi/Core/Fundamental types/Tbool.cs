@@ -136,22 +136,6 @@ namespace Hammurabi
         }
 
         /// <summary>
-        /// Returns true if the Tbool is ever true before a given date
-        /// </summary>
-        public Tbool IsEverTrueBefore(Tdate end)
-        {
-            return this.IsEverTrue(Time.DawnOf, end);
-        }
-        
-        /// <summary>
-        /// Returns true if the Tbool is ever true after a given date
-        /// </summary>
-        public Tbool IsEverTrueAfter(Tdate start)
-        {
-            return this.IsEverTrue(start, Time.EndOf);
-        }
-
-        /// <summary>
         /// Determines whether this instance is ever true during a specified time period.
         /// </summary>
         public Tbool IsEverTrue(Tdate start, Tdate end)

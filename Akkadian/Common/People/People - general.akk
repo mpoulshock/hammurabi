@@ -22,7 +22,19 @@ Tnum Age(Thing p) =
     else 0        
 
     Tnum span = YearDiff(DoB(p), Time.EndOf)
+
+# Common law age (age turns the day before one's birthday)
+# See 42 CFR 435.522(a).
+##
+Tnum CommonLawAge(Thing p) =
+    set:
+    from DoB(p) -> Time.IntervalsSince(DoB(p).AddYears(1), DoB(p).AddYears(span), Time.IntervalType.Year, 1)
+    else 0        
+
+    Tnum span = YearDiff(DoB(p), Time.EndOf)
     
+    Tnum date = DoB(p).AddDays(-1)
+##
                            
 # Alive
 Tbool IsAlive(Thing p) =

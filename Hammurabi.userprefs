@@ -1,21 +1,19 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Akkadian\Akkadian extensions\Hammurabi - general-purpose functions.akk">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Akkadian\Common\People\People - general.akk">
     <Files>
-      <File FileName="HammurabiWebService\HammurabiWebService\Service.svc.cs" Line="1" Column="1" />
-      <File FileName="HammurabiWebService\HammurabiWebService\Packet.cs" Line="112" Column="25" />
-      <File FileName="Hammurabi\Core\Facts\Facts.cs" Line="1" Column="1" />
-      <File FileName="Akkadian\Akkadian extensions\Hammurabi - general-purpose functions.akk" Line="1" Column="1" />
+      <File FileName="Akkadian\Common\People\People - general.akk" Line="35" Column="35" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
-          <Node name="Akkadian" expanded="True">
-            <Node name="Akkadian extensions" expanded="True">
-              <Node name="Hammurabi - general-purpose functions.akk" selected="True" />
+          <Node name="AkkadianCompiler" selected="True" />
+          <Node name="Hammurabi" expanded="True">
+            <Node name="Core" expanded="True">
+              <Node name="Facts" expanded="True" />
             </Node>
+            <Node name="Generated source" expanded="True" />
           </Node>
-          <Node name="HammurabiWebService" expanded="True" />
         </State>
       </Pad>
       <Pad Id="ClassPad">

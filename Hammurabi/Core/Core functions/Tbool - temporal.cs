@@ -191,85 +191,22 @@ namespace Hammurabi
 
         /// <summary>
         /// Returns true whenever (1) a Tbool has been true for the previous n 
-        /// full, consecutive calendar weeks, and (2) it is still true.
+        /// full, consecutive intervals, and (2) it is still true.
         /// </summary>
-        public Tbool ConsecutiveFullCalWeeks(Tnum numberOfWeeks)
+        public Tbool ConsecutiveFullIntervals(Tnum numberOfWeeks, Tnum interval)
         {
-            Tnum lastN = this.AlwaysPer(TheCalendarWeek).CountPastNIntervals(TheCalendarWeek, numberOfWeeks + 1, 1);
+            Tnum lastN = this.AlwaysPer(interval).CountPastNIntervals(interval, numberOfWeeks + 1, 1);
             return this & lastN >= numberOfWeeks;
         }
 
         /// <summary>
         /// Returns true whenever (1) a Tbool has been true for the previous n 
-        /// partial, consecutive calendar weeks, and (2) it is still true.
+        /// partial, consecutive intervals, and (2) it is still true.
         /// </summary>
-        public Tbool ConsecutivePartCalWeeks(Tnum numberOfWeeks)
+        public Tbool ConsecutivePartialIntervals(Tnum numberOfWeeks, Tnum interval)
         {
-            Tnum lastN = this.EverPer(TheCalendarWeek).CountPastNIntervals(TheCalendarWeek, numberOfWeeks + 1, 1);
+            Tnum lastN = this.EverPer(interval).CountPastNIntervals(interval, numberOfWeeks + 1, 1);
             return this & lastN >= numberOfWeeks;
-        }
-
-        /// <summary>
-        /// Returns true whenever (1) a Tbool has been true for the previous n 
-        /// full, consecutive calendar months, and (2) it is still true.
-        /// </summary>
-        public Tbool ConsecutiveFullCalMonths(Tnum numberOfMonths)
-        {
-            Tnum lastN = this.AlwaysPer(TheMonth).CountPastNIntervals(TheMonth, numberOfMonths+1, 1);
-            return this & lastN >= numberOfMonths;
-        }
-
-        /// <summary>
-        /// Returns true whenever (1) a Tbool has been true for the previous n 
-        /// partial, consecutive calendar months, and (2) it is still true.
-        /// </summary>
-        public Tbool ConsecutivePartCalMonths(Tnum numberOfMonths)
-        {
-            Tnum month = TheTime.TheMonth;
-            Tnum lastN = this.EverPer(month).CountPastNIntervals(month, numberOfMonths + 1, 1);
-            return this & lastN >= numberOfMonths;
-        }
-
-        /// <summary>
-        /// Returns true whenever (1) a Tbool has been true for the previous n 
-        /// full, consecutive calendar quarters, and (2) it is still true.
-        /// </summary>
-        public Tbool ConsecutiveFullCalQtrs(Tnum numberOfQtrs)
-        {
-            Tnum lastN = this.AlwaysPer(TheQuarter).CountPastNIntervals(TheQuarter, numberOfQtrs + 1, 1);
-            return this & lastN >= numberOfQtrs;
-        }
-
-        /// <summary>
-        /// Returns true whenever (1) a Tbool has been true for the previous n 
-        /// partial, consecutive calendar quarters, and (2) it is still true.
-        /// </summary>
-        public Tbool ConsecutivePartCalQtrs(Tnum numberOfQtrs)
-        {
-            Tnum qtr = TheTime.TheQuarter;
-            Tnum lastN = this.EverPer(qtr).CountPastNIntervals(qtr, numberOfQtrs + 1, 1);
-            return this & lastN >= numberOfQtrs;
-        }
-
-        /// <summary>
-        /// Returns true whenever (1) a Tbool has been true for the previous n 
-        /// full, consecutive calendar years, and (2) it is still true.
-        /// </summary>
-        public Tbool ConsecutiveFullCalYears(Tnum numberOfYears)
-        {
-            Tnum lastN = this.AlwaysPer(TheYear).CountPastNIntervals(TheYear, numberOfYears + 1, 1);
-            return this & lastN >= numberOfYears;
-        }
-
-        /// <summary>
-        /// Returns true whenever (1) a Tbool has been true for the previous n 
-        /// partial, consecutive calendar years, and (2) it is still true.
-        /// </summary>
-        public Tbool ConsecutivePartCalYears(Tnum numberOfYears)
-        {
-            Tnum year = TheTime.TheYear;
-            Tnum lastN = this.EverPer(year).CountPastNIntervals(year, numberOfYears + 1, 1);
-            return this & lastN >= numberOfYears;
         }
 
         /// <summary>
@@ -397,104 +334,6 @@ namespace Hammurabi
             }
 
             return result.Lean;
-        }
-
-        /// <summary>
-        /// Returns true whenever (1) a Tbool has been true for the previous n 
-        /// consecutive days, and (2) it is still true.
-        /// </summary>
-        public Tbool ConsecutiveDays(Tnum numberOfDays)
-        {
-            return ForConsecutiveIntervals(Time.IntervalType.Day, numberOfDays);
-        }
-        
-        /// <summary>
-        /// Returns true whenever (1) a Tbool has been true for the previous n 
-        /// consecutive weeks, and (2) it is still true.
-        /// </summary>
-        public Tbool ConsecutiveWeeks(Tnum numberOfWeeks)
-        {
-            return ForConsecutiveIntervals(Time.IntervalType.Week, numberOfWeeks);
-        }
-        
-        /// <summary>
-        /// Returns true whenever (1) a Tbool has been true for the previous n 
-        /// consecutive months, and (2) it is still true.
-        /// </summary>
-        /// <remarks>
-        /// Example: if isEmployed.ForConsecutiveMonths(6), if the person is 
-        /// employed from 1/1 to 12/31, this function will return true from 
-        /// 7/1 - 12/31.
-        /// </remarks>
-        public Tbool ConsecutiveMonths(Tnum numberOfMonths)
-        {
-            return ForConsecutiveIntervals(Time.IntervalType.Month, numberOfMonths);
-        }
-        
-        /// <summary>
-        /// Returns true whenever (1) a Tbool has been true for the previous n 
-        /// consecutive years, and (2) it is still true.
-        /// </summary>
-        public Tbool ConsecutiveYears(Tnum numberOfYears)
-        {
-            return ForConsecutiveIntervals(Time.IntervalType.Year, numberOfYears);
-        }
-        
-        /// <summary>
-        /// General function that determines whether a Tbool is true for a given number
-        /// of intervals of a specified type. 
-        /// </summary>
-        private Tbool ForConsecutiveIntervals(Time.IntervalType type, Tnum numberOfIntervals)
-        {
-            // If val is unknown and base Tvar is eternally unknown,
-            // return the typical precedence state
-            Hval intervals = numberOfIntervals.FirstValue;
-            if (!intervals.IsKnown && this.TimeLine.Count == 1)
-            {
-                if (!this.FirstValue.IsKnown)
-                {
-                    Hstate s = PrecedingState(this.FirstValue, intervals);
-                    return new Tbool(s);
-                }
-            }
-
-            // If val is unknown, return its state
-            if (!intervals.IsKnown) return new Tbool(intervals);
-
-            // Else begin counting intervals...
-            Tbool result = new Tbool();
-            result.AddState(Time.DawnOf, false);
-            
-            SortedList<DateTime, Hval> t = this.TimeLine;
-            
-            for (int i = 0; i < t.Count; i++)
-            {
-                // If any interval is unknown, return that value
-                // This could be refined later (some unknown intervals are irrelevant)
-                if (!t.Values[i].IsKnown)
-                {
-                    return new Tbool(t.Values[i]);
-                }
-
-                if (t.Values[i].IsTrue)
-                {
-                    DateTime start = t.Keys[i];
-                    int noOfIntervals = Convert.ToInt32(numberOfIntervals.FirstValue.Val);
-                    DateTime thresholdReached = start.AddInterval(type, noOfIntervals);
-
-                    if ((i < t.Count-1 && thresholdReached <= t.Keys[i+1]) || i == t.Count-1)
-                    {
-                        
-                        result.AddState(thresholdReached, true);
-                    }
-                }
-            }
-
-            // If the underlying Tbool (this) is no longer true, the result should
-            // not be true either.
-            Tbool trueForPeriod = this && result;
-            
-            return trueForPeriod.Lean;
         }
     }
 }

@@ -86,26 +86,17 @@ Test: LeapYear2
 - IsLeapYear().AsOf(2019-04-05).Out =?= false
 
 
-# GET QUARTER
-
-# For a given date, determine what calendar quarter it's in.
-# TODO: Handle fiscal years that don't start in January.
-Tnum GetQuarter(Tdate date) =
-    set:
-    if date.Month <= 3 -> 1
-    if date.Month <= 6 -> 2
-    if date.Month <= 9 -> 3
-    else 4
+# GET QUARTER (unit tests)
 
 Test: GetQtr1
-- GetQuarter(2010-03-02).Out =?= 1
+- (new Tdate(2010,3,2)).Quarter.Out =?= 1
 
 Test: GetQtr2
-- GetQuarter(2010-12-02).Out =?= 4
+- (new Tdate(2010,12,2)).Quarter.Out =?= 4
 
 Test: GetQtr3
-- GetQuarter(new Tdate(Hstate.Unstated)).Out =?= "Unstated"
-        
+- (new Tdate(Hstate.Unstated)).Quarter.Out =?= "Unstated"
+
     
 # TEMPORAL MAP FUNCTION
 
@@ -115,17 +106,6 @@ Test: GetQtr3
 Tnum TemporalMap(Func<Tnum,Tnum> fcn, Tdate startDate, Tnum intervalCount, Time.IntervalType intervalType) = 
     fcn(Time.IntervalsSince(startDate, startDate.AddYears(intervalCount), intervalType))
     
-    
-# TEMPORAL DETERMINATIONS
-
-# Returns true in the period during which a given date falls
-# Example: DateIsInPeriod(2013-04-15, TheYear) is true for all of 2013, and otherwise false
-Tbool DateIsInPeriod(Tdate date, Tnum temporalPeriod) =
-    afterEvent.EverPer(temporalPeriod) &
-    afterEvent.CountPastNIntervals(temporalPeriod,1) == 0
-    
-    Tbool afterEvent = TheTime.IsAtOrAfter(date)
-
 
 # ADD THING (INSTANTIATE A NEW ONE)
 

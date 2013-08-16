@@ -54,7 +54,7 @@ Tbool SubsecCApplies(Thing c) =
     ! BornInTheUSA(c) & 
     Fam.BornOutOfWedlock(c) &
     Imm.IsUSNational(mom).AsOf(DoB(c)) &
-    momPresent.IsEverTrueBefore(DoB(c)) &
+    momPresent.IsEverTrue(Time.DawnOf, DoB(c)) &
     TheTime.IsAtOrAfter(DoB(c))
         
     # Physically present for a continuous period of one year

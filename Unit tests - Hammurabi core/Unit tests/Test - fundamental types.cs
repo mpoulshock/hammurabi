@@ -829,65 +829,6 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tnum actual = t.CountPastNIntervals(TheTime.Year(2), 2);
             Assert.AreEqual(0, actual.Out);      
         }
-        
-        // Tbool.ForConsecutiveMonths
-        
-        [Test]
-        public void ForConsecutiveMonths_1 ()
-        {
-            Tbool t = new Tbool(false);
-            Tbool r = t.ConsecutiveMonths(12);
-            Assert.AreEqual(false, r.Out);      
-        }
-        
-        [Test]
-        public void ForConsecutiveMonths_2 ()
-        {
-            Tbool t = new Tbool(false);
-            t.AddState(new DateTime(2000,1,1), true);
-
-            Tbool r = t.ConsecutiveMonths(12);
-            Assert.AreEqual("{Dawn: false; 1/1/2001: true}", r.Out);      
-        }
-        
-        [Test]
-        public void ForConsecMonths_3 ()
-        {
-            Tbool t = new Tbool(false);
-            t.AddState(Date(2000,1,1),true);
-            t.AddState(Date(2001,1,1),false);
-            Tbool r = t.ConsecutiveMonths(6);
-            Assert.AreEqual("{Dawn: false; 7/1/2000: true; 1/1/2001: false}", r.Out);      
-        }
-        
-        [Test]
-        public void ForConsecutiveMonths_4 ()
-        {
-            Tbool t = new Tbool(false);
-            t.AddState(Date(2000,1,1),true);
-            t.AddState(Date(2001,1,1),false);
-            Tbool r = t.ConsecutiveMonths(18);
-            Assert.AreEqual(false, r.Out);      
-        }
-        
-        [Test]
-        public void ForConsecutiveMonths_5 ()
-        {
-            Tbool t = new Tbool(false);
-            t.AddState(Date(2000,1,1),true);
-            t.AddState(Date(2001,1,1),false);
-            t.AddState(Date(2001,6,1),true);
-            Tbool r = t.ConsecutiveMonths(20);
-            Assert.AreEqual("{Dawn: false; 2/1/2003: true}", r.Out);      
-        }
-
-        [Test]
-        public void ForConsecutiveMonths_6 ()
-        {
-            Tbool t = new Tbool(Hstate.Uncertain);
-            Tbool r = t.ConsecutiveMonths(20);
-            Assert.AreEqual("Uncertain", r.Out);      
-        }
 
         // Tbool.DateFirstTrue
 
