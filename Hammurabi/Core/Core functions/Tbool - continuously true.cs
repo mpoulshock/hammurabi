@@ -25,56 +25,16 @@ namespace Hammurabi
     public partial class Tbool
     {
         /// <summary>
-        /// Provides a running count of how many years a Tbool has been continuously true.
-        /// </summary>
-        public Tnum YearsContinuouslyTrue 
-        {
-            get
-            {
-                return Max(this.ContinuousElapsedIntervals(TheYear) - 1, 0);
-            }
-        }
-
-        /// <summary>
-        /// Provides a running count of how many months a Tbool has been continuously true.
+        /// Provides a running count of how many intervals a Tbool has been continuously true. A
+        /// true interval is counted in the subsequent interval (unlike ContinuousElapsedIntervals(),
+        /// which counts it in the current interval).
         /// </summary>
         /// <remarks>
-        /// Use judiciously, as this can involve thousands of time intervals.
+        /// Use judiciously with TheDay and TheCalendarWeek, as they have thousands of time intervals.
         /// </remarks>
-        public Tnum MonthsContinuouslyTrue 
+        public Tnum ContinuousElapsedIntervalsPast(Tnum interval)
         {
-            get
-            {
-                return Max(this.ContinuousElapsedIntervals(TheMonth) - 1, 0);
-            }
-        }
-
-        /// <summary>
-        /// Provides a running count of how many weeks a Tbool has been continuously true.
-        /// </summary>
-        /// <remarks>
-        /// Use judiciously, as this can involve thousands of time intervals.
-        /// </remarks>
-        public Tnum WeeksContinuouslyTrue 
-        {
-            get
-            {
-                return Max(this.ContinuousElapsedIntervals(TheCalendarWeek) - 1, 0);
-            }
-        }
-
-        /// <summary>
-        /// Provides a running count of how many days a Tbool has been continuously true.
-        /// </summary>
-        /// <remarks>
-        /// Use judiciously, as this can involve tens of thousands of time intervals.
-        /// </remarks>
-        public Tnum DaysContinuouslyTrue
-        {
-            get
-            {
-                return Max(this.ContinuousElapsedIntervals(TheDay) - 1, 0);
-            }
+            return Max(this.ContinuousElapsedIntervals(interval) - 1, 0);
         }
 
         /// <summary>

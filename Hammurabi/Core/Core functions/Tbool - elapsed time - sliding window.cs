@@ -1,4 +1,4 @@
-// Copyright (c) 2012 Hammura.bi LLC
+// Copyright (c) 2012-2013 Hammura.bi LLC
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -31,7 +31,7 @@ namespace Hammurabi
         public Tnum ElapsedYearsInSlidingWindow(int windowSize, string windowIntervalType)  
         {
             int days = SizeOfWindowInDays(windowSize, windowIntervalType);
-            return ElapsedDaysInSlidingWindow(days) / 365.24;
+            return ElapsedDaysInSlidingWindow(days) / Time.DaysPerYear; 
         }
 
         /// <summary>
@@ -87,9 +87,9 @@ namespace Hammurabi
         {
             double factor = 1;
 
-            if (windowIntervalType == "Year")         factor = 365.24;
-            else if (windowIntervalType == "Quarter") factor = 91.31;
-            else if (windowIntervalType == "Month")   factor = 30.436;
+            if (windowIntervalType == "Year")         factor = Time.DaysPerYear;
+            else if (windowIntervalType == "Quarter") factor = Time.DaysPerQuarer;
+            else if (windowIntervalType == "Month")   factor = Time.DaysPerMonth;
             else if (windowIntervalType == "Week")    factor = 7;
 
             return Convert.ToInt32(windowSize * factor);

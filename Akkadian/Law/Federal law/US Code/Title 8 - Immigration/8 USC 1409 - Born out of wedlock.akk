@@ -59,7 +59,7 @@ Tbool SubsecCApplies(Thing c) =
         
     # Physically present for a continuous period of one year
     Tbool momPresent =
-        Sec1401.PresentInUSorOP(mom).YearsContinuouslyTrue >= 1
+        Sec1401.PresentInUSorOP(mom).ContinuousElapsedIntervalsPast(TheYear) >= 1
     
     Thing mom =
         Sec1401.MotherOf(c)

@@ -1,4 +1,4 @@
-// Copyright (c) 2012 Hammura.bi LLC
+// Copyright (c) 2012-2013 Hammura.bi LLC
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -41,7 +41,9 @@ namespace Hammurabi
 
         public const double DaysPerYear = 365.242;
 
-        public const double DaysPerMonth = 30.437;
+        public const double DaysPerQuarer = DaysPerYear / 4;
+
+        public const double DaysPerMonth = DaysPerYear / 12;
 
         
         //*********************************************************************

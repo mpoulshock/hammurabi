@@ -191,7 +191,7 @@ Tbool IsCitizenPresentInUSorOPNYearsBefore(Thing p, Tnum years, Tdate date) =
     present.IsEverTrue(Time.DawnOf, date)
     
     Tbool present =
-        PresentInUSorOP(p).YearsContinuouslyTrue >= years    # Terrible performance
+        PresentInUSorOP(p).ContinuousElapsedIntervalsPast(TheYear) >= years    # Terrible performance
 
 # >>Was {1} physically present in the U.S. or one of its outlying possessions?
 Tbool PresentInUSorOP(Thing p) =

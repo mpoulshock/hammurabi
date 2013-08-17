@@ -32,7 +32,7 @@ namespace Hammurabi
         {
             get
             {
-                Tnum unrounded = this.RunningElapsedDays / Time.DaysPerYear; //365;
+                Tnum unrounded = this.RunningElapsedDays / Time.DaysPerYear; 
                 return unrounded.RoundDown(1);
             }
         }

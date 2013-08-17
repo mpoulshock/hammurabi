@@ -50,7 +50,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             tb.AddState(new DateTime(2015,1,1), true);
             tb.AddState(new DateTime(2015,3,1), false);
 
-            Tnum r = tb.MonthsContinuouslyTrue;
+            Tnum r = tb.ContinuousElapsedIntervalsPast(TheMonth);
 
             Assert.AreEqual("{Dawn: 0; 2/1/2015: 1; 3/1/2015: 0}", r.Out);    
         }
@@ -59,7 +59,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void ContinuouslyTrue2 ()
         {
             Tbool tb = new Tbool(false);
-            Tnum r = tb.MonthsContinuouslyTrue;
+            Tnum r = tb.ContinuousElapsedIntervalsPast(TheMonth);
 
             Assert.AreEqual(0, r.Out);    
         }
@@ -71,7 +71,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             tb.AddState(new DateTime(2015,1,1), Hstate.Unstated);
             tb.AddState(new DateTime(2015,3,1), false);
 
-            Tnum r = tb.DaysContinuouslyTrue;
+            Tnum r = tb.ContinuousElapsedIntervalsPast(TheDay);
 
             Assert.AreEqual("Unstated", r.Out);    
         }
@@ -83,7 +83,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             tb.AddState(new DateTime(2015,1,1), Hstate.Stub);
             tb.AddState(new DateTime(2015,3,1), false);
 
-            Tnum r = tb.DaysContinuouslyTrue;
+            Tnum r = tb.ContinuousElapsedIntervalsPast(TheDay);
 
             Assert.AreEqual("Stub", r.Out);    
         }

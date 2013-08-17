@@ -1,4 +1,4 @@
-// Copyright (c) 2012 Hammura.bi LLC
+// Copyright (c) 2012-2013 Hammura.bi LLC
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -65,21 +65,9 @@ namespace Hammurabi
         /// Returns the total elapsed years between two given DateTimes, during
         /// which a Tbool is true.
         /// </summary>
-        public Tnum TotalElapsedYearsBefore(Tdate end)
-        {
-            return this.TotalElapsedDays(Time.DawnOf,end) / 365;   // Doesn't consider leap years!
-        }
         public Tnum TotalElapsedYears(Tdate start, Tdate end)
         {
-            return this.TotalElapsedDays(start,end) / 365;   // Doesn't consider leap years!
-        }
-
-        /// <summary>
-        /// Returns the total elapsed days during which a Tbool is true. 
-        /// </summary>
-        public Tnum TotalElapsedDays()
-        {
-            return TotalElapsedDays(Time.DawnOf, Time.EndOf);
+            return this.TotalElapsedDays(start, end) / Time.DaysPerYear;
         }
 
         /// <summary>
@@ -88,6 +76,11 @@ namespace Hammurabi
         /// </summary>
         public Tnum TotalElapsedDays(Tdate start, Tdate end)  
         {
+            // EXPERIMENTAL (currently much slower):
+//            return TotalElapsedIntervals(start, end, TheDay);
+
+
+
             // This unknown-handling logic is not totally correct:
 
             // If start or end dates are unknown...
@@ -109,11 +102,13 @@ namespace Hammurabi
         }
 
         /// <summary>
-        /// Returns the total elapsed time during which a Tvar has a given value. 
+        /// EXPERIMENTAL - Returns the total number of elapsed intervals between two dates.
         /// </summary>
-        private TimeSpan TotalElapsedTime()
+        public Tnum TotalElapsedIntervals(Tdate start, Tdate end, Tnum interval)
         {
-            return TotalElapsedTime(Time.DawnOf, Time.EndOf);
+            Tnum rei = RunningElapsedIntervals(interval);
+
+            return rei.AsOf(end) - rei.AsOf(start);
         }
 
         /// <summary>
