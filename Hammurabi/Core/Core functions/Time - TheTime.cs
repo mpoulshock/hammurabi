@@ -45,7 +45,7 @@ namespace Hammurabi
             // can be used when Q1 starts sometime other than Jan. 1)
             get
             {
-                return TheTime.Quarter(1, 1, 20);
+                return Time.Quarter(1, 1, 20);
             }
         }
         
@@ -57,7 +57,7 @@ namespace Hammurabi
         {
             get
             {
-                return TheTime.Month(10);
+                return Time.Month(10);
             }
         }
         
@@ -77,7 +77,7 @@ namespace Hammurabi
         {
             get
             {
-                return TheTime.CalendarWeek(5);
+                return Time.CalendarWeek(5);
             }
         }
 
@@ -98,10 +98,10 @@ namespace Hammurabi
         
 
     /// <summary>
-    /// A construct representing "the time" - as in that abstract thing we refer
-    /// to when we say something like, "The time is 5 pm." 
+    /// A construct representing "the time" - as in that thing we refer
+    /// to when we say, "The time is 5 pm." 
     /// </summary>
-    public partial class TheTime : Time
+    public partial class Time
     {
         /// <summary>
         /// Returns a Tbool that's true at and after a specified DateTime, 

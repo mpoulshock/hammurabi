@@ -16,12 +16,12 @@ Tbool ProngA(Thing p) =
     DoB(p) >= 1898-08-12 &
     DoB(p) < 1900-04-30 &
     BirthState(p) == "Hawaii" &        # At the time was called Republic of Hawaii
-    TheTime.IsAtOrAfter(1900-04-30)
+    Time.IsAtOrAfter(1900-04-30)
     
 Tbool ProngB(Thing p) =
     DoB(p) >= 1900-04-30 &
     BirthState(p) == "Hawaii" &
-    TheTime.IsAtOrAfter(DoB(p))    # Makes conclusion true from DoB onward
+    Time.IsAtOrAfter(DoB(p))    # Makes conclusion true from DoB onward
     
 Tbool ProngC(Thing p) =
     HawCitOn18980812(p)

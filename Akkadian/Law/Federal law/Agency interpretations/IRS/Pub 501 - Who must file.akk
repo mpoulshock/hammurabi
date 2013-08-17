@@ -199,7 +199,7 @@ Tbool LivedTogetherForTaxPurposes(Thing spouse, Thing deceasedSpouse) =
     ...
         IsDeceased(deceasedSpouse) &
         Econ.LivesWith(spouse,deceasedSpouse).AsOf(DateOfDeath(deceasedSpouse)) &
-        TheTime.IsBefore(DateOfDeath(deceasedSpouse).AddYears(1)).PeriodEndVal(year)    # ugly, but prevents eternal truth
+        Time.IsBefore(DateOfDeath(deceasedSpouse).AddYears(1)).PeriodEndVal(year)    # ugly, but prevents eternal truth
     |
     Econ.LivesWith(spouse,deceasedSpouse).PeriodEndVal(year)
     

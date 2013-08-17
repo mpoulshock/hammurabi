@@ -115,7 +115,7 @@ Tbool PaternityEstablishedFor(Thing parent, Thing child) =
     IsMale(parent) &
     Age(parent) - Age(child) >= 12 &
     PaternityEstablishedForQ(parent,child) &
-    TheTime.IsAtOrAfter(DatePaternityEstablishedFor(parent,child))
+    Time.IsAtOrAfter(DatePaternityEstablishedFor(parent,child))
 
 # >> Was {1}'s paternity of {2} established?
 Tbool PaternityEstablishedForQ(Thing parent, Thing child)
@@ -143,7 +143,7 @@ Tbool Legitimated(Thing parent, Thing child) =
     IsFatherOf(parent, child) &
     IsIllegitimate(child) &
     LegitimatedQ(parent,child) &
-    TheTime.IsAtOrAfter(DateLegitimated(parent,child))
+    Time.IsAtOrAfter(DateLegitimated(parent,child))
 
 # >>Does/did {1} legitimate {2}?
 Tbool LegitimatedQ(Thing parent, Thing child) 
@@ -154,7 +154,7 @@ Tdate DateLegitimated(Thing parent, Thing child)
 # Legally committed to financially supporting 
 Tbool CommittedToFinanciallySupport(Thing p1, Thing p2) =
     CommittedToFinanciallySupportQ(p1,p2) &
-    TheTime.IsAtOrAfter(DateCommittedToFinanciallySupport(p1,p2))
+    Time.IsAtOrAfter(DateCommittedToFinanciallySupport(p1,p2))
 
 # >>Is/was {1} legally committed to financially supporting {2}?	
 Tbool CommittedToFinanciallySupportQ(Thing p1, Thing p2)

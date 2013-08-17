@@ -12,7 +12,7 @@ Tbool IsUSCitizenPerAlaska(Thing p) =
         TestB(p) |
         TestC(p)
     & 
-    TheTime.IsAtOrAfter(DoB(p))    # Makes conclusion true from DoB onward
+    Time.IsAtOrAfter(DoB(p))    # Makes conclusion true from DoB onward
 
 # First test
 Tbool TestA(Thing p) =
@@ -26,7 +26,7 @@ Tbool TestB(Thing p) =
     BirthState(p) == "Alaska" &
     DoB(p) >= 1867-03-30 &
     DoB(p) < 1924-06-02 &
-    TheTime.IsAtOrAfter(1924-06-02)    # Makes conclusion true from DoB onward
+    Time.IsAtOrAfter(1924-06-02)    # Makes conclusion true from DoB onward
 
 # Third test
 Tbool TestC(Thing p) =

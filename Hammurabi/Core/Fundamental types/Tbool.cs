@@ -126,7 +126,7 @@ namespace Hammurabi
         {
             Tbool equalsVal = this == true; 
 
-            Tbool isDuringInterval = TheTime.IsBetween(start, end);
+            Tbool isDuringInterval = Time.IsBetween(start, end);
             
             Tbool isOverlap = equalsVal & isDuringInterval;
 
@@ -142,7 +142,7 @@ namespace Hammurabi
         {
             Tbool equalsVal = this == true; 
             
-            Tbool isDuringInterval = TheTime.IsBetween(start, end);
+            Tbool isDuringInterval = Time.IsBetween(start, end);
             
             Tbool isOverlap = equalsVal & isDuringInterval;
             

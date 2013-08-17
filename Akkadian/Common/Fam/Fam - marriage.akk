@@ -70,11 +70,11 @@ IsMarried(1) assumes MaritalStatus(1) = "Married"
 
 # True after a person's first marriage ends, otherwise false
 # Tbool TheTimeIsAfterMarriage(Thing p) =
-    # TheTime.IsAtOrAfter(dateFirstMarried) &
+    # Time.IsAtOrAfter(dateFirstMarried) &
     # ! IsMarried(p)
 
     # Tbool timeAfterSpouseDied =
-        # TheTime.IsAtOrAfter(
+        # Time.IsAtOrAfter(
     
     # Tdate dateFirstMarried = IsMarried(p).DateFirstTrue
 

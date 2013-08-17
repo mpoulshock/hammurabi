@@ -16,7 +16,7 @@ Tbool ModernTest(Thing p) =
     BirthCountry(p) == "Guam" &
     IsSubjectToUSJurisdiction(p) &
     if DoB(p) < 1950-08-01 then !TookStepsToPreserveForeignNationality(p) &        # Proviso
-    TheTime.IsAtOrAfter(DoB(p))                # Presumed
+    Time.IsAtOrAfter(DoB(p))                # Presumed
     
 # Stub if DoB is before 1899-04-11
 Tbool Catchall(Thing p) =

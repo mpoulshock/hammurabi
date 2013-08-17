@@ -40,11 +40,11 @@ Tnum CommonLawAge(Thing p) =
 Tbool IsAlive(Thing p) =
     ...
         !IsDeceased(p) &
-        TheTime.IsAtOrAfter(DoB(p))   # Assumed alive until the end of time
+        Time.IsAtOrAfter(DoB(p))   # Assumed alive until the end of time
     |
     ...
         IsDeceased(p) &
-        TheTime.IsBetween(DoB(p), DateOfDeath(p))
+        Time.IsBetween(DoB(p), DateOfDeath(p))
         
 # Age in months (temporal)
 Tnum AgeInMonths(Thing p) =

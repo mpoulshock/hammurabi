@@ -1,20 +1,16 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Akkadian\Common\People\People - general.akk">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Hammurabi\Core\Core functions\Tbool - elapsed time - sliding window.cs">
     <Files>
-      <File FileName="Akkadian\Common\People\People - general.akk" Line="35" Column="35" />
+      <File FileName="Hammurabi\Core\Core functions\Tbool - elapsed time - total.cs" Line="52" Column="33" />
+      <File FileName="Hammurabi\Core\Core functions\Tbool - elapsed time - running.cs" Line="35" Column="78" />
+      <File FileName="Unit tests - Hammurabi core\Unit tests\Test - elapsed time - running.cs" Line="112" Column="25" />
+      <File FileName="Unit tests - Hammurabi core\Unit tests\Test - time - continuously true.cs" Line="62" Column="64" />
+      <File FileName="Hammurabi\Core\Core functions\Tbool - elapsed time - sliding window.cs" Line="84" Column="47" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
-        <State expanded="True">
-          <Node name="AkkadianCompiler" selected="True" />
-          <Node name="Hammurabi" expanded="True">
-            <Node name="Core" expanded="True">
-              <Node name="Facts" expanded="True" />
-            </Node>
-            <Node name="Generated source" expanded="True" />
-          </Node>
-        </State>
+        <State expanded="True" />
       </Pad>
       <Pad Id="ClassPad">
         <State expanded="True" selected="True">

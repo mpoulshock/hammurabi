@@ -146,7 +146,7 @@ namespace Hammurabi
         /// </summary>
         public Tbool IsInPeriod(Tnum interval)
         {
-            Tbool afterEvent = TheTime.IsAtOrAfter(this);
+            Tbool afterEvent = Time.IsAtOrAfter(this);
 
             return afterEvent.EverPer(interval) &&
                 afterEvent.CountPastNIntervals(interval,1) == 0;

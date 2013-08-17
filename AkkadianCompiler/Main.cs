@@ -337,7 +337,7 @@ namespace Akkadian
             // Switch(condition, value, ..., default) - must come before "rule tables" (b/c rule tables look for "->"
             line = Regex.Replace(line, @"set:", "Switch<" + ruleType + ">(");    
             line = Regex.Replace(line, @"if (?<condition>"+word+") -> (?<value>"+word+")", "()=> ${condition}, ()=> ${value},");    
-            line = Regex.Replace(line, @"from (?<condition>"+word+") -> (?<value>"+word+")", "()=> TheTime.IsAtOrAfter(${condition}), ()=> ${value},");  
+            line = Regex.Replace(line, @"from (?<condition>"+word+") -> (?<value>"+word+")", "()=> Time.IsAtOrAfter(${condition}), ()=> ${value},");  
             line = Regex.Replace(line, @"else (?<default>"+word+")", "()=> ${default})");  
 
             // Rule tables - must come before "dates"

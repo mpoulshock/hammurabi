@@ -36,7 +36,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             tb.AddState(Date(2015,1,1), true);
             tb.AddState(Date(2015,3,1), false);
 
-            Tnum r = tb.ContinuousElapsedIntervals(TheTime.TheMonth);
+            Tnum r = tb.ContinuousElapsedIntervals(Time.TheMonth);
 
             Assert.AreEqual("{Dawn: 0; 1/1/2015: 1; 2/1/2015: 2; 3/1/2015: 0}", r.Out);    
         }

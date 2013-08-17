@@ -144,7 +144,7 @@ namespace Akkadian
             foreach (string s in timepts)
             {
                 string[] pair = s.Split(':');
-                result += "()=> TheTime.IsAtOrAfter(" + pair[0].Replace("Dawn","Time.DawnOf") + "), ";   // Add the date
+                result += "()=> Time.IsAtOrAfter(" + pair[0].Replace("Dawn","Time.DawnOf") + "), ";   // Add the date
                 result += "()=> " + pair[1] + ", ";   // Add the value
             }
 

@@ -15,21 +15,21 @@ Tbool IsPeriodOfWar() =
 
 # Tentative source: Nolo Press, "Soc. Sec., Medicare, & Gov't Pensions" (2010)
 Tbool IsWorldWarII() =
-    TheTime.IsAtOrAfter(1941-12-07) &
-    TheTime.IsBefore(1947-01-01)
+    Time.IsAtOrAfter(1941-12-07) &
+    Time.IsBefore(1947-01-01)
 
 # Source: Nolo
 Tbool IsKoreanConflict() = 
-    TheTime.IsAtOrAfter(1950-06-27) &
-    TheTime.IsBefore(1955-02-01)
+    Time.IsAtOrAfter(1950-06-27) &
+    Time.IsBefore(1955-02-01)
 
 # Source: Nolo
 Tbool IsVietnamEra() =
-    TheTime.IsAtOrAfter(1964-08-05) &
-    TheTime.IsBefore(1975-05-08)
+    Time.IsAtOrAfter(1964-08-05) &
+    Time.IsBefore(1975-05-08)
 
 # Source: Nolo
 Tbool IsPersianGulfWar() =
-    TheTime.IsAtOrAfter(1990-08-02)
+    Time.IsAtOrAfter(1990-08-02)
     
 

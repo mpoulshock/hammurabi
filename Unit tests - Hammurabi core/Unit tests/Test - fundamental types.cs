@@ -394,7 +394,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void FT_EverPerInterval_1 ()
         {
             // This will break annually b/c Year is determined by the system clock
-            Tnum theYear = TheTime.Year(5);
+            Tnum theYear = Time.Year(5);
             
             Tbool t = new Tbool();
             t.AddState(Time.DawnOf, false);
@@ -407,7 +407,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         [Test]
         public void FT_EverPerInterval_2 ()
         {
-            Tnum theYear = TheTime.Year(5);
+            Tnum theYear = Time.Year(5);
             Tbool t = new Tbool(Hstate.Unstated);
             Tbool result = t.EverPer(theYear);
             Assert.AreEqual("Unstated", result.Lean.Out);        
@@ -429,7 +429,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void FT_AlwaysPerInterval_1 ()
         {
             // This will break annually b/c Year is determined by the system clock
-            Tnum theYear = TheTime.Year(5);
+            Tnum theYear = Time.Year(5);
             
             Tbool t = new Tbool();
             t.AddState(Time.DawnOf, false);
@@ -442,7 +442,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         [Test]
         public void FT_AlwaysPerInterval_2 ()
         {
-            Tnum theYear = TheTime.Year(5);
+            Tnum theYear = Time.Year(5);
             Tbool result = new Tbool(Hstate.Stub).AlwaysPer(theYear);
             Assert.AreEqual("Stub", result.Lean.Out);        
         }
@@ -806,19 +806,19 @@ namespace Hammurabi.UnitTests.CoreFcns
         [Test]
         public void FT_CountPastNIntervals_1 ()
         {
-            // This test case will break every year due to the use of TheTime.Year
+            // This test case will break every year due to the use of Time.Year
             Tbool t = new Tbool(true);
             t.AddState(Date(2012,1,1), false);
-            Tnum actual = t.CountPastNIntervals(TheTime.Year(2), 2);
+            Tnum actual = t.CountPastNIntervals(Time.Year(2), 2);
             Assert.AreEqual("{Dawn: 0; 1/1/2011: 2; 1/1/2012: 1; 1/1/2013: 0}", actual.Out);      
         }
         
         [Test]
         public void FT_CountPastNIntervals_2 ()
         {
-            // This test case will break every year due to the use of TheTime.Year
+            // This test case will break every year due to the use of Time.Year
             Tbool t = new Tbool(true);
-            Tnum actual = t.CountPastNIntervals(TheTime.Year(2), 2);
+            Tnum actual = t.CountPastNIntervals(Time.Year(2), 2);
             Assert.AreEqual("{Dawn: 0; 1/1/2011: 2}", actual.Out);      
         }
         
@@ -826,7 +826,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void FT_CountPastNIntervals_3 ()
         {
             Tbool t = new Tbool(false);
-            Tnum actual = t.CountPastNIntervals(TheTime.Year(2), 2);
+            Tnum actual = t.CountPastNIntervals(Time.Year(2), 2);
             Assert.AreEqual(0, actual.Out);      
         }
 

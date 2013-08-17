@@ -15,7 +15,7 @@ Tbool ModernTest(Thing p) =
     DoB(p) >= 1927-02-25 &
     BirthCountry(p) == "Virgin Islands" &
     IsSubjectToUSJurisdiction(p) &
-    TheTime.IsAtOrAfter(DoB(p))
+    Time.IsAtOrAfter(DoB(p))
     
 # Stub if DoB is before 1927-02-25
 Tbool Catchall(Thing p) =

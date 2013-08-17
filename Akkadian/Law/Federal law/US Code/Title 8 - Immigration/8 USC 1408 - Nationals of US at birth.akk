@@ -13,7 +13,7 @@ Tbool IsUSNationalByBirth(Thing p) =
         Para3(p) |
         Para4(p)
     &
-    TheTime.IsAtOrAfter(DoB(p))        # Status as national starts at birth
+    Time.IsAtOrAfter(DoB(p))        # Status as national starts at birth
     
     
 # Paragraph (1) - Born in outlying possession on or after U.S. annexation

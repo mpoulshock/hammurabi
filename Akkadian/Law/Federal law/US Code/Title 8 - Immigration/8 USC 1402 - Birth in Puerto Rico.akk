@@ -20,14 +20,14 @@ Tbool IsUSCitizenPerPuertoRico1941(Thing p) =
         IsResidentOf(p, "Puerto Rico").AsOf(1941-01-13) |  # Resides in PR as of 1941-01-13 or
         Stub()  # Resides in other sovereign U.S. territory
     &
-    TheTime.IsAtOrAfter(1941-01-13)    # Makes conclusion true from DoB onward
+    Time.IsAtOrAfter(1941-01-13)    # Makes conclusion true from DoB onward
 
 # Citizenship (at birth) of people born in Puerto Rico
 Tbool IsUSCitizenAtBirthPerPuertoRico(Thing p) = 
     BirthState(p) == "Puerto Rico" &
     DoB(p) >= 1941-01-13 &
     IsSubjectToUSJurisdiction(p) &
-    TheTime.IsAtOrAfter(DoB(p))    # Makes conclusion true from DoB onward
+    Time.IsAtOrAfter(DoB(p))    # Makes conclusion true from DoB onward
     
     
 # UNIT TESTS

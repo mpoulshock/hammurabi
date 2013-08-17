@@ -63,7 +63,7 @@ Tnum HoursInLast12Mo(Thing p, Thing c) =
         last12Mo & Econ.IsEmployedBy(p,c)
 
     Tbool last12Mo = 
-        TheTime.IsBetween(start.AddMonths(-12), start)
+        Time.IsBetween(start.AddMonths(-12), start)
 
     Tdate start = 
         DateLeaveBegins(p,c)       
