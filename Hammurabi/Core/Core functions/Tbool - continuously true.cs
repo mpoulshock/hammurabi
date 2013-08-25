@@ -54,8 +54,10 @@ namespace Hammurabi
             if (baseState != Hstate.Known) return new Tnum(baseState);
 
             int intervalCount = 0;
+            DateTime dateNextTrue = this.DateNextTrue(Time.DawnOf);
+            DateTime dateNextTrueIntervalEnds = this.NextChangeDate(dateNextTrue.AddTicks(1));
 
-            Tnum result = new Tnum();
+            Tnum result = new Tnum(0);
 
             // Iterate through the time intervals in the input Tnum
             for (int i=0; i < interval.IntervalValues.Count-1; i++)
@@ -64,19 +66,26 @@ namespace Hammurabi
                 DateTime end = interval.IntervalValues.Keys[i+1];
 
                 // If base Tbool is always true during the interval, increment the count
-                if (this.IsAlwaysTrue(start, end))
+                if (end <= dateNextTrueIntervalEnds)
                 {
-                    intervalCount++;
+                    if (start >= dateNextTrue)
+                    {
+                        intervalCount++;
+                        result.AddState(start, intervalCount);
+                        continue;
+                    }
                 }
                 else
                 {
+                    // Otherwise, skip to next true interval
                     intervalCount = 0;
+                    result.AddState(start, intervalCount);
+                    dateNextTrue = this.DateNextTrue(end);
+                    dateNextTrueIntervalEnds = this.NextChangeDate(dateNextTrue.AddTicks(1));
                 }
-
-                result.AddState(start, intervalCount);
             }
 
-            return result.Lean;
+            return result;
         }
     }
 }

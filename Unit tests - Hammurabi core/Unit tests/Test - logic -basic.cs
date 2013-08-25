@@ -370,92 +370,41 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tbool t1 = tbf | ( unstat & tbt );
             Assert.AreEqual("Unstated", t1.Out);        
         }
-        
-        // XOR
-//        
-//        [Test]
-//        public void LogicXor1 ()
-//        {
-//            Tbool t1 = tbt ^ tbf;
-//            Assert.AreEqual(true, t1.Out);        
-//        }
-//        
-//        [Test]
-//        public void LogicXor2 ()
-//        {
-//            Tbool t2 = tbt ^ tbt;
-//            Assert.AreEqual(false, t2.Out);        
-//        }
-//        
-//        [Test]
-//        public void LogicXor3 ()
-//        {
-//            Tbool t7 = tbf ^ tbf;
-//            Assert.AreEqual(false, t7.Out);        
-//        }
-//        
-//        [Test]
-//        public void LogicXor4 ()
-//        {
-//            Tbool t1 = tbf ^ tbf ^ tbt;
-//            Assert.AreEqual(true, t1.Out);            
-//        }
-//        
-//        [Test]
-//        public void LogicXor5 ()
-//        {
-//            Tbool t1 = tbt ^ tbf ^ tbf;
-//            Assert.AreEqual(true, t1.Out);            
-//        }
-//        
-//        [Test]
-//        public void LogicXor6 ()
-//        {
-//            Tbool t1 = tbt ^ tbf ^ tbt;
-//            Assert.AreEqual(false, t1.Out);            
-//        }
-//        
-//        [Test]
-//        public void LogicXor7 ()
-//        {
-//            Tbool t1 = tbf ^ tbt ^ tbf;
-//            Assert.AreEqual(true, t1.Out);            
-//        }
-//        
+ 
         // BOOL COUNT
         
         [Test]
         public void LogicBoolCount1 ()
         {
-            Tnum result = BoolCount(true, tbt);
+            Tnum result = BoolCount(tbt);
             Assert.AreEqual(1, result.Out);    
         }
         
         [Test]
         public void LogicBoolCount2 ()
         {
-            Tnum result = BoolCount(false, tbt);
+            Tnum result = BoolCount(tbf);
             Assert.AreEqual(0, result.Out);    
         }
         
         [Test]
         public void LogicBoolCount3 ()
         {
-            Tnum result = BoolCount(false, tbt, tbt);
-            Assert.AreEqual(0, result.Out);    
+            Tnum result = BoolCount(tbf, tbt);
+            Assert.AreEqual(1, result.Out);    
         }
         
         [Test]
         public void LogicBoolCount4 ()
         {
-            Tnum result = BoolCount(true, tbt, tbt);
+            Tnum result = BoolCount(tbt, tbt);
             Assert.AreEqual(2, result.Out);    
         }
         
         [Test]
         public void LogicBoolCount5 ()
         {
-            Tnum result = BoolCount(true, tbt, tbf);
+            Tnum result = BoolCount(tbt, tbf);
             Assert.AreEqual(1, result.Out);    
         }
         

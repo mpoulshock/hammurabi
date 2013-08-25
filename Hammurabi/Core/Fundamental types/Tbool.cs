@@ -385,6 +385,37 @@ namespace Hammurabi
             return !EqualTo(tb1,tb2);
         }
 
+        /// <summary>
+        /// Given a Tbool and an index date, returns the date of the next change date of the Tbool.
+        /// </summary>
+        public DateTime NextChangeDate(DateTime indexDate)
+        {
+            for (int j=0; j < this.IntervalValues.Count; j++)
+            {
+                if (indexDate <= this.IntervalValues.Keys[j])
+                {
+                    return this.IntervalValues.Keys[j];
+                }
+            }
+
+            return Time.EndOf;
+        }
+
+        /// <summary>
+        /// Given a Tbool and an index date, returns the date the Tbool is next true.
+        /// </summary>
+        public DateTime DateNextTrue(DateTime indexDate)
+        {
+            for (int j=0; j < this.IntervalValues.Count; j++)
+            {
+                if (indexDate <= this.IntervalValues.Keys[j] && Convert.ToBoolean(this.IntervalValues.Values[j].Val) == true)
+                {
+                    return this.IntervalValues.Keys[j];
+                }
+            }
+
+            return Time.EndOf;
+        }
     }
     
     #pragma warning restore 660, 661

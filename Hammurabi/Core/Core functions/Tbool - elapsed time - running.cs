@@ -87,9 +87,8 @@ namespace Hammurabi
         /// <remarks>
         /// Example:
         ///         tb = <--FTFTTF-->
-        ///     tb.ICT = <--010230-->
+        ///     tb.REI = <--010230-->
         /// </remarks>
-        // TODO: Speed up by skipping ahead to the next changepoint.
         public Tnum RunningElapsedIntervals(Tnum interval)  
         {
             // If base Tnum is ever unknown during the time period, return 
@@ -98,8 +97,10 @@ namespace Hammurabi
             if (baseState != Hstate.Known) return new Tnum(baseState);
 
             int intervalCount = 0;
+            DateTime dateNextTrue = this.DateNextTrue(Time.DawnOf);
+            DateTime dateNextTrueIntervalEnds = this.NextChangeDate(dateNextTrue.AddTicks(1));
 
-            Tnum result = new Tnum();
+            Tnum result = new Tnum(0);
 
             // Iterate through the time intervals in the input Tnum
             for (int i=0; i < interval.IntervalValues.Count-1; i++)
@@ -108,15 +109,24 @@ namespace Hammurabi
                 DateTime end = interval.IntervalValues.Keys[i+1];
 
                 // If base Tbool is always true during the interval, increment the count
-                if (this.IsAlwaysTrue(start, end))
+                if (end <= dateNextTrueIntervalEnds)
                 {
-                    intervalCount++;
+                    if (start >= dateNextTrue)
+                    {
+                        intervalCount++;
+                        result.AddState(start, intervalCount);
+                        continue;
+                    }
                 }
-
-                result.AddState(start, intervalCount);
+                else
+                {
+                    // Otherwise, skip to next true interval
+                    dateNextTrue = this.DateNextTrue(end);
+                    dateNextTrueIntervalEnds = this.NextChangeDate(dateNextTrue.AddTicks(1));
+                }
             }
 
-            return result.Lean;
+            return result;
         }
 
         /// <summary>
@@ -134,7 +144,7 @@ namespace Hammurabi
         /// 
         /// Use these methods judiciously, as they can involve tens of thousands of intervals.
         /// </remarks>
-        private Tnum RunningElapsedTime(Time.IntervalType interval)  
+        public Tnum RunningElapsedTime(Time.IntervalType interval)  
         {
             // If base Tnum is ever unknown during the time period, return 
             // the state with the proper precedence

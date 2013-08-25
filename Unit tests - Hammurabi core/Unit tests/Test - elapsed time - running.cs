@@ -26,8 +26,154 @@ namespace Hammurabi.UnitTests.CoreFcns
 {
     [TestFixture]
     public class RunningElapsedTime : H
-    {   
-        // RunningElapsedIntervals
+    {
+        // Performance testing
+
+        [Test]
+        public void RunningElapsedIntervals_Performance ()
+        {
+            Tbool tb = new Tbool(false);
+            tb.AddState(new DateTime(2015,1,1),true);
+            tb.AddState(new DateTime(2015,1,2),false);
+            tb.AddState(new DateTime(2015,1,3),true);
+            tb.AddState(new DateTime(2015,1,4),false);
+
+            DateTime startTime = DateTime.Now;
+
+//            18ms
+//            Tbool t = tb && !tb || tb;
+
+//            10ms
+//            Tnum t = tb.TotalElapsedDays(Time.DawnOf, Time.EndOf);
+
+//            11ms
+//            Tnum t = tb.RunningElapsedTime(Time.IntervalType.Day);
+
+//            40ms
+//            Tnum t = tb.RunningElapsedIntervals(TheDay);
+
+//            40ms
+//            Tnum t = tb.ContinuousElapsedIntervals(TheDay);
+
+//            44ms
+//            Tnum t = tb.CountPastNIntervals(TheDay, 4, 0);
+
+
+            int ResponseTimeInMs = Convert.ToInt32((DateTime.Now - startTime).TotalMilliseconds);
+
+            // The sole purpose of this unit test is to examine performance, so it will always fail...
+            Assert.AreEqual(ResponseTimeInMs, 0);    
+        }
+
+        // NextChangeDate
+
+        [Test]
+        public void NextChangeDate1 ()
+        {
+            Tbool tb = new Tbool(false);
+            tb.AddState(new DateTime(2015,1,1),true);
+            tb.AddState(new DateTime(2015,2,1),false);
+            tb.AddState(new DateTime(2015,3,1),true);
+            tb.AddState(new DateTime(2015,9,1),false);
+
+            DateTime d = tb.NextChangeDate(new DateTime(2015, 1, 2));
+            Assert.AreEqual(new DateTime(2015, 2, 1), d);    
+        }
+
+        [Test]
+        public void NextChangeDate2 ()
+        {
+            Tbool tb = new Tbool(false);
+            tb.AddState(new DateTime(2015,1,1),true);
+            tb.AddState(new DateTime(2015,2,1),false);
+            tb.AddState(new DateTime(2015,3,1),true);
+            tb.AddState(new DateTime(2015,9,1),false);
+
+            DateTime d = tb.NextChangeDate(new DateTime(2010, 1, 1));
+            Assert.AreEqual(new DateTime(2015, 1, 1), d);    
+        }
+
+        [Test]
+        public void NextChangeDate3 ()
+        {
+            Tbool tb = new Tbool(false);
+            tb.AddState(new DateTime(2015,1,1),true);
+            tb.AddState(new DateTime(2015,2,1),false);
+            tb.AddState(new DateTime(2015,3,1),true);
+            tb.AddState(new DateTime(2015,9,1),false);
+
+            DateTime d = tb.NextChangeDate(Time.DawnOf);
+            Assert.AreEqual(Time.DawnOf, d);    
+        }
+
+        [Test]
+        public void NextChangeDate4 ()
+        {
+            Tbool tb = new Tbool(false);
+            tb.AddState(new DateTime(2015,1,1),true);
+            tb.AddState(new DateTime(2015,2,1),false);
+            tb.AddState(new DateTime(2015,3,1),true);
+            tb.AddState(new DateTime(2015,9,1),false);
+
+            DateTime d = tb.NextChangeDate(Time.EndOf);
+            Assert.AreEqual(Time.EndOf, d);    
+        }
+
+        [Test]
+        public void NextChangeDate5 ()
+        {
+            Tbool tb = new Tbool(false);
+            tb.AddState(new DateTime(2015,1,1),true);
+            tb.AddState(new DateTime(2015,2,1),false);
+            tb.AddState(new DateTime(2015,3,1),true);
+            tb.AddState(new DateTime(2015,9,1),false);
+
+            DateTime d = tb.NextChangeDate(new DateTime(2015, 8, 15));
+            Assert.AreEqual(new DateTime(2015, 9, 1), d);    
+        }
+
+        // DateNextTrue
+
+        [Test]
+        public void DateNextTrue1 ()
+        {
+            Tbool tb = new Tbool(false);
+            tb.AddState(new DateTime(2015,1,1),true);
+            tb.AddState(new DateTime(2015,2,1),false);
+            tb.AddState(new DateTime(2015,3,1),true);
+            tb.AddState(new DateTime(2015,9,1),false);
+
+            DateTime d = tb.DateNextTrue(Time.DawnOf);
+            Assert.AreEqual(new DateTime(2015, 1, 1), d);    
+        }
+
+        [Test]
+        public void DateNextTrue2 ()
+        {
+            Tbool tb = new Tbool(false);
+            tb.AddState(new DateTime(2015,1,1),true);
+            tb.AddState(new DateTime(2015,2,1),false);
+            tb.AddState(new DateTime(2015,3,1),true);
+            tb.AddState(new DateTime(2015,9,1),false);
+
+            DateTime d = tb.DateNextTrue(Date(2015,5,5));
+            Assert.AreEqual(Time.EndOf, d);    
+        }
+
+        [Test]
+        public void DateNextTrue3 ()
+        {
+            Tbool tb = new Tbool(false);
+            tb.AddState(new DateTime(2015,1,1),true);
+            tb.AddState(new DateTime(2015,2,1),false);
+            tb.AddState(new DateTime(2015,3,1),true);
+            tb.AddState(new DateTime(2015,9,1),false);
+
+            DateTime d = tb.DateNextTrue(Date(2015,2,15));
+            Assert.AreEqual(new DateTime(2015,3,1), d);    
+        }
+
+        // RunningElapsedIntervals***** 
 
         [Test]
         public void RunningElapsedIntervals1 ()
@@ -74,6 +220,20 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tnum r = tb.RunningElapsedIntervals(TheYear);
 
             Assert.AreEqual("Stub", r.Out);    
+        }
+
+        [Test]
+        public void RunningElapsedIntervals5 ()
+        {
+            Tbool tb = new Tbool(false);
+            tb.AddState(new DateTime(2015,1,1),true);
+            tb.AddState(new DateTime(2015,1,2),false);
+            tb.AddState(new DateTime(2015,1,3),true);
+            tb.AddState(new DateTime(2015,1,5),false);
+
+            Tnum r = tb.RunningElapsedIntervals(TheDay);
+
+            Assert.AreEqual("{Dawn: 0; 1/1/2015: 1; 1/3/2015: 2; 1/4/2015: 3}", r.Out);    
         }
 
 

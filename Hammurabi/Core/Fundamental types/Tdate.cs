@@ -159,6 +159,7 @@ namespace Hammurabi
     
         /// <summary>
         /// Adds a specified number of days to each DateTime in a Tdate.
+        /// Negative values are subtracted.
         /// </summary>        
         public Tdate AddDays(int days)
         {        
@@ -182,6 +183,7 @@ namespace Hammurabi
         
         /// <summary>
         /// Adds a specified number of months to each DateTime in a Tdate.
+        /// Negative values are subtracted.
         /// </summary>
         public Tdate AddMonths(int months)
         {        
@@ -205,6 +207,7 @@ namespace Hammurabi
         
         /// <summary>
         /// Adds a specified number of years to each DateTime in a Tdate.
+        /// Negative values are subtracted.
         /// </summary>
         public Tdate AddYears(Tnum years)
         {     
@@ -397,7 +400,7 @@ namespace Hammurabi
             // Partial year
             else
             {
-                return Math.Round((date2 - date1).TotalDays / 365.2425, 3);
+                return Math.Round((date2 - date1).TotalDays / Time.DaysPerYear, 3);
             }
         }
 

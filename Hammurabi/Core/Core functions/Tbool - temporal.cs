@@ -190,26 +190,6 @@ namespace Hammurabi
         }
 
         /// <summary>
-        /// Returns true whenever (1) a Tbool has been true for the previous n 
-        /// full, consecutive intervals, and (2) it is still true.
-        /// </summary>
-        public Tbool ConsecutiveFullIntervals(Tnum numberOfWeeks, Tnum interval)
-        {
-            Tnum lastN = this.AlwaysPer(interval).CountPastNIntervals(interval, numberOfWeeks + 1, 1);
-            return this & lastN >= numberOfWeeks;
-        }
-
-        /// <summary>
-        /// Returns true whenever (1) a Tbool has been true for the previous n 
-        /// partial, consecutive intervals, and (2) it is still true.
-        /// </summary>
-        public Tbool ConsecutivePartialIntervals(Tnum numberOfWeeks, Tnum interval)
-        {
-            Tnum lastN = this.EverPer(interval).CountPastNIntervals(interval, numberOfWeeks + 1, 1);
-            return this & lastN >= numberOfWeeks;
-        }
-
-        /// <summary>
         /// Returns the number of intervals that the Tbool is true,
         /// going back a specified number of intervals.
         /// </summary>

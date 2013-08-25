@@ -1,4 +1,4 @@
-// Copyright (c) 2012 Hammura.bi LLC
+// Copyright (c) 2012-2013 Hammura.bi LLC
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -32,24 +32,22 @@ namespace Hammurabi
         {       
             return !tb1 || tb2;
         }
-        
+
         /// <summary>
-        /// Counts the number of boolean inputs that have the same value
-        /// value as the first (test) argument
+        /// Counts the number of Tbools that are true.
         /// </summary>
-        // TODO: Generalize BoolCount to ValCount(val, Tvar[] list)?
-        public static Tnum BoolCount(bool test, params Tbool[] list)
+        public static Tnum BoolCount(params Tbool[] list)
         {
             Tnum result = new Tnum();
-            
+
             foreach(KeyValuePair<DateTime,List<Hval>> slice in TimePointValues(list))
             {    
-                result.AddState(slice.Key, BoolCountK(test, slice.Value));
+                result.AddState(slice.Key, BoolCountK(true, slice.Value));
             }
-            
+
             return result.Lean;
         }
-        
+
         /// <summary>
         /// Private non-temporal BOOL COUNT function.
         /// </summary>
@@ -97,14 +95,6 @@ namespace Hammurabi
         public static DateTime Date(int year, int mo, int day)
         {
             return new DateTime(year, mo, day);
-        }
-        
-        /// <summary>
-        /// Converts a yyyy-mm-dd string into a DateTime.
-        /// </summary>
-        public static DateTime Date(string date)
-        {
-            return DateTime.Parse(date);
         }
 
         /// <summary>
