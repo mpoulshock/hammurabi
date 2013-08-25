@@ -140,9 +140,9 @@ Tbool ExemptTeacherOrTrainee(Thing p) =
     Tbool threeYearTest =
         yearsInPrior6Years <= 3 &
         ForeignEmployerPaidAllIncome(p).AlwaysPer(TheYear) &
-        foreignEmpPaidTecherComp.AlwaysPer(TheYear).CountPastNIntervals(TheYear,6) == 6
+        foreignEmpPaidTecherComp.AlwaysPer(TheYear).SlidingElapsedIntervals(TheYear,6) == 6
         
-    Tnum yearsInPrior6Years = onTeacherTraineeVisa.EverPer(TheYear).CountPastNIntervals(TheYear,6)
+    Tnum yearsInPrior6Years = onTeacherTraineeVisa.EverPer(TheYear).SlidingElapsedIntervals(TheYear,6)
     
     Tbool foreignEmpPaidTecherComp =
         if onTeacherTraineeVisa then ForeignEmployerPaidAllIncome(p)

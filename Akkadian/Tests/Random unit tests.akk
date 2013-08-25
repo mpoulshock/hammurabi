@@ -203,7 +203,7 @@ Tbool TimeError1(Thing t) =
 
 # Poor performance    
 Tbool TimeError2(Thing t) =
-    (new Tbool(true)).ElapsedYearsInSlidingWindow(10, "Year") >= 7
+    (new Tbool(true)).SlidingElapsedIntervals(TheYear, 10) >= 7
 
 	
 # PERIOD END VALUE

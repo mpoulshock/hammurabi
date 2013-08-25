@@ -66,7 +66,7 @@ Tbool Para4ParentTest(Thing parent, Tdate date) =
     
     # (4) - present for a total of seven years in any continuous period of ten years
     Tbool present7YearsIn10 =
-        present.ElapsedYearsInSlidingWindow(10, "Year") >= 7    # Poor performance
+        present.SlidingElapsedIntervals(TheYear, 10) >= 7
     
     # (4)(B)
     Tbool fiveYearTestMet =

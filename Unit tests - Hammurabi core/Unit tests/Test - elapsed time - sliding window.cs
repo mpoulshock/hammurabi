@@ -1,4 +1,4 @@
-// Copyright (c) 2012 Hammura.bi LLC
+// Copyright (c) 2012-2013 Hammura.bi LLC
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -25,76 +25,95 @@ using NUnit.Framework;
 namespace Hammurabi.UnitTests.CoreFcns
 {
     [TestFixture]
-    public class ElapsedTimeSlidingWindow : H
-    {    
+    public class SlidingElapsedIntervals : H
+    {   
+        // SlidingElapsedIntervals
+
         [Test]
-        public void ElapsedTimeSlidingWindow1 ()
+        public void SlidingElapsedIntervals1 ()
         {
             Tbool tb = new Tbool(false);
-            tb.AddState(new DateTime(2000,1,1),true);
-            tb.AddState(new DateTime(2000,1,3),false);
+            tb.AddState(new DateTime(2015,1,1),true);
+            tb.AddState(new DateTime(2015,1,3),false);
 
-            Tnum r = tb.ElapsedDaysInSlidingWindow(2, "Day");
+            Tnum r = tb.SlidingElapsedIntervals(TheDay, 2);
 
-            Assert.AreEqual("{Dawn: 0; 1/2/2000: 1; 1/3/2000: 2; 1/4/2000: 1; 1/5/2000: 0}", r.Out);    
+            Assert.AreEqual("{Dawn: 0; 1/2/2015: 1; 1/3/2015: 2; 1/4/2015: 1; 1/5/2015: 0}", r.Out);    
         }
 
         [Test]
-        public void ElapsedTimeSlidingWindow2 ()
+        public void SlidingElapsedIntervals2 ()
         {
             Tbool tb = new Tbool(false);
-            Tnum r = tb.ElapsedDaysInSlidingWindow(2, "Day");
+            Tnum r = tb.SlidingElapsedIntervals(TheDay, 2);
 
             Assert.AreEqual(0, r.Out);    
         }
 
         [Test]
-        public void ElapsedTimeSlidingWindow3 ()    // failing
+        public void SlidingElapsedIntervals3 () 
         {
             Tbool tb = new Tbool(false);
-            tb.AddState(new DateTime(2000,1,1), Hstate.Unstated);
-            tb.AddState(new DateTime(2000,3,1), false);
+            tb.AddState(new DateTime(2015,1,1), Hstate.Unstated);
+            tb.AddState(new DateTime(2015,3,1), false);
 
-            Tnum r = tb.ElapsedDaysInSlidingWindow(2, "Day");
+            Tnum r = tb.SlidingElapsedIntervals(TheDay, 2);
 
             Assert.AreEqual("Unstated", r.Out);    
         }
 
         [Test]
-        public void ElapsedTimeSlidingWindow4 ()    // failing
+        public void SlidingElapsedIntervals4 ()
         {
             Tbool tb = new Tbool(false);
-            tb.AddState(new DateTime(2000,1,1), Hstate.Stub);
-            tb.AddState(new DateTime(2000,3,1), false);
+            tb.AddState(new DateTime(2015,1,1), Hstate.Stub);
+            tb.AddState(new DateTime(2015,3,1), false);
 
-            Tnum r = tb.ElapsedDaysInSlidingWindow(2, "Day");
+            Tnum r = tb.SlidingElapsedIntervals(TheDay, 2);
 
             Assert.AreEqual("Stub", r.Out);    
         }
 
         [Test]
-        public void ElapsedTimeSlidingWindow5 ()
+        public void SlidingElapsedIntervals5 ()
         {
             Tbool tb = new Tbool(false);
-            tb.AddState(new DateTime(2000,1,1),true);
-            tb.AddState(new DateTime(2000,1,3),false);
-            tb.AddState(new DateTime(2000,1,10),true);
-            tb.AddState(new DateTime(2000,2,18),false);
+            tb.AddState(new DateTime(2015,1,1),true);
+            tb.AddState(new DateTime(2015,1,3),false);
+            tb.AddState(new DateTime(2015,1,10),true);
+            tb.AddState(new DateTime(2015,2,18),false);
 
-            Tnum r = tb.ElapsedDaysInSlidingWindow(2, "Day");
-            string tline = "{Dawn: 0; 1/2/2000: 1; 1/3/2000: 2; 1/4/2000: 1; 1/5/2000: 0; " +
-                "1/11/2000: 1; 1/12/2000: 2; 2/19/2000: 1; 2/20/2000: 0}"; 
+            Tnum r = tb.SlidingElapsedIntervals(TheDay, 2);
+            string tline = "{Dawn: 0; 1/2/2015: 1; 1/3/2015: 2; 1/4/2015: 1; 1/5/2015: 0; " +
+                "1/11/2015: 1; 1/12/2015: 2; 2/19/2015: 1; 2/20/2015: 0}"; 
 
             Assert.AreEqual(tline, r.Out);    
         }
 
         [Test]
-        public void ElapsedTimeSlidingWindow6 ()
+        public void SlidingElapsedIntervals6 ()
         {
-            // Not totally correct (around the dawn of time), but should be fine for most computations...
             Tbool tb = new Tbool(true);
-            Tnum r = tb.ElapsedDaysInSlidingWindow(2, "Day");
-            Assert.AreEqual("{Dawn: 0; 1/3/1800: 1; 1/4/1800: 2}", r.Out);    
+            Tnum r = tb.SlidingElapsedIntervals(TheDay, 2);
+            Assert.AreEqual(2, r.Out);    
+        }
+
+        [Test]
+        public void SlidingElapsedIntervals7 ()
+        {
+            Tbool t = new Tbool(true);
+            t.AddState(Date(2012,1,1), false);
+            Tnum actual = t.SlidingElapsedIntervals(TheYear, 2);
+            Assert.AreEqual("{Dawn: 0; 1/1/1801: 1; 1/1/1802: 2; 1/1/2013: 1; 1/1/2014: 0}", actual.Out);      
+
+        }
+
+        [Test]
+        public void SlidingElapsedIntervals8 ()
+        {
+            Tbool t = new Tbool(true);
+            Tnum actual = t.SlidingElapsedIntervals(TheYear, 2);
+            Assert.AreEqual(2, actual.Out);      
         }
     }
 }

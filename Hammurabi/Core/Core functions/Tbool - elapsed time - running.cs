@@ -114,7 +114,7 @@ namespace Hammurabi
                     if (start >= dateNextTrue)
                     {
                         intervalCount++;
-                        result.AddState(start, intervalCount);
+                        if (start != Time.DawnOf) result.AddState(start, intervalCount);
                         continue;
                     }
                 }

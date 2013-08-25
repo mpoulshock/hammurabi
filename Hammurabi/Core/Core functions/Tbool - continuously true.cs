@@ -71,7 +71,7 @@ namespace Hammurabi
                     if (start >= dateNextTrue)
                     {
                         intervalCount++;
-                        result.AddState(start, intervalCount);
+                        if (start != Time.DawnOf) result.AddState(start, intervalCount);
                         continue;
                     }
                 }
@@ -79,7 +79,7 @@ namespace Hammurabi
                 {
                     // Otherwise, skip to next true interval
                     intervalCount = 0;
-                    result.AddState(start, intervalCount);
+                    if (start != Time.DawnOf) result.AddState(start, intervalCount);
                     dateNextTrue = this.DateNextTrue(end);
                     dateNextTrueIntervalEnds = this.NextChangeDate(dateNextTrue.AddTicks(1));
                 }

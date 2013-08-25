@@ -55,9 +55,11 @@ namespace Hammurabi.UnitTests.CoreFcns
 //            40ms
 //            Tnum t = tb.ContinuousElapsedIntervals(TheDay);
 
-//            44ms
-//            Tnum t = tb.CountPastNIntervals(TheDay, 4, 0);
+//            45ms
+//            Tbool t = tb.Shift(4, TheDay);
 
+//            75ms
+//            Tnum t = tb.SlidingElapsedIntervals(TheDay, 4);
 
             int ResponseTimeInMs = Convert.ToInt32((DateTime.Now - startTime).TotalMilliseconds);
 

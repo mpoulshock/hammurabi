@@ -84,7 +84,7 @@ Tbool IsCoveredEmployer(Thing c) =
     # longer has employed 50 employees for 20 (nonconsecutive) workweeks in the 
     # current and preceding calendar year.  29 CFR 825.105(f).
     Tbool meetsThreshold = 
-        (weeks > 20).CountPastNIntervals(TheYear, 2) >= 1
+        (weeks > 20).SlidingElapsedIntervals(TheYear, 2) >= 1
 
     Tnum weeks = 
         (Org.NumberOfEmployees(c) > 50).AlwaysPer(TheCalendarWeek).CountPer(TheYear)
@@ -227,5 +227,5 @@ Test: Time_1
 - (new Tbool(true)).AlwaysPer(TheCalendarWeek).CountPer(TheYear).AsOf(2012-01-15).Out =?= 51
 
 Test: Time_2
-- (new Tbool(true)).CountPastNIntervals(TheYear, 2).AsOf(2012-01-15).Out =?= 2
+- (new Tbool(true)).SlidingElapsedIntervals(TheYear, 2).AsOf(2012-01-15).Out =?= 2
 

@@ -1,4 +1,4 @@
-// Copyright (c) 2012 Hammura.bi LLC
+// Copyright (c) 2012-2013 Hammura.bi LLC
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -191,20 +191,6 @@ namespace Hammurabi
 
         /// <summary>
         /// Returns the number of intervals that the Tbool is true,
-        /// going back a specified number of intervals.
-        /// </summary>
-        /// <remarks>
-        /// The current interval is counted.  So, for example, if the range
-        /// equals 2, the function would evaluate the current interval and the
-        /// prior interval.
-        /// </remarks>
-        public Tnum CountPastNIntervals(Tnum intervals, Tnum rangeSpan)
-        {
-            return CountPastNIntervals(intervals, rangeSpan, 0);
-        }
-
-        /// <summary>
-        /// Returns the number of intervals that the Tbool is true,
         /// covering a range of intervals starting x intervals in the past
         /// and ending y intervals in the past (or, if y=0, in the present
         /// interval).
@@ -216,104 +202,108 @@ namespace Hammurabi
         ///                                    ^
         ///                                  "now"
         ///                      (the interval being analyzed)
+        /// 
+        /// The current interval is counted.  So, for example, if the range
+        /// equals 2, the function would evaluate the current interval and the
+        /// prior interval.
         /// </remarks>
-        public Tnum CountPastNIntervals(Tnum intervals, Tnum rangeStart, Tnum rangeEnd)
-        {
-            // If base Tnum is ever unknown during the time period, return 
-            // the state with the proper precedence
-            Hstate tnumState = PrecedenceForMissingTimePeriods(this);
-            if (tnumState != Hstate.Known) return new Tnum(tnumState);
-
-            // Determine the nature of the range (the time window to analyze)
-            int rangeStartInt = Convert.ToInt32(rangeStart.FirstValue.Val);
-            int rangeEndInt = Convert.ToInt32(rangeEnd.FirstValue.Val);
-            int rangeWidth = rangeStartInt - rangeEndInt + 1;
-
-            // Set up the result Tnum
-            Tnum result = new Tnum();
-            result.AddState(Time.DawnOf, 0);  // Probably not ideal, but good enough
-
-            // Tvars we'll be working with
-            SortedList<DateTime, Hval> intrvl = intervals.IntervalValues;
-            SortedList<DateTime, Hval> baseTbool = this.IntervalValues;
-
-            // Time window start and end, and date Tbool next changes
-            DateTime windowStart = Time.DawnOf;
-            DateTime windowEnd = Time.EndOf;
-            DateTime nextChangeDate = Time.DawnOf;
-
-            // Count forward from the beginning of time through each interval
-            for (int b = 0; b < intrvl.Count - 1; b++)
-            {
-                // Determine the start and end dates of current window
-                windowEnd = intrvl.Keys[b];
-                if (b > rangeWidth) windowStart = intrvl.Keys[b - rangeWidth];
-
-                // Only analyze the window if its end passes the next change date
-                // Otherwise, skip ahead until the next time the Tbool changes value
-                // (for performance).
-                if (windowEnd > nextChangeDate)
-                {
-                    // To count how many of the relevant intervals are true
-                    int count = 0;
-
-                    // Collect unknown states during the relevant time period
-                    List<Hval> states = new List<Hval>();
-
-                    // Look back the specified number of intervals
-                    for (int n = rangeEndInt; n < rangeStartInt; n++)
-                    {
-                        int index = b - n;
-                        if (index >= rangeEndInt)
-                        {
-                            // Handle unknowns
-                            Hval baseState = this.ObjectAsOf(intrvl.Keys[index]);
-                            if (!baseState.IsKnown)
-                            {
-                                states.Add(baseState);
-                            }
-                            else if (Convert.ToBoolean(baseState.Val))
-                            {
-                                count++;
-                            }
-                        }
-                    }
-
-                    // Add the appropriate state
-                    if (states.Count > 0)
-                    {
-                        result.AddState(intrvl.Keys[b], PrecedingState(states));
-                    }
-                    else
-                    {
-                        result.AddState(intrvl.Keys[b], count);
-                    }
-
-                    // Determine when the Tbool next changes its value
-                    // First, if the window has moved past the last Tbool change date,
-                    // then we can jump ahead to the end of time.
-                    if (windowStart > baseTbool.Keys[baseTbool.Count-1])
-                    {
-                        nextChangeDate = Time.EndOf;
-                    }
-                    else
-                    {
-                        for (int j=0; j < baseTbool.Count; j++)
-                        {
-                            // If the window is subsumed by a single interval on the Tbool,
-                            // then we can jump ahead to that point in time.
-                            if (windowEnd < baseTbool.Keys[j] &&
-                                windowStart > baseTbool.Keys[j-1])
-                            {
-                                nextChangeDate = baseTbool.Keys[j];
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-
-            return result.Lean;
-        }
+//        private Tnum CountPastNIntervals(Tnum intervals, Tnum rangeStart, Tnum rangeEnd)
+//        {
+//            // If base Tnum is ever unknown during the time period, return 
+//            // the state with the proper precedence
+//            Hstate tnumState = PrecedenceForMissingTimePeriods(this);
+//            if (tnumState != Hstate.Known) return new Tnum(tnumState);
+//
+//            // Determine the nature of the range (the time window to analyze)
+//            int rangeStartInt = Convert.ToInt32(rangeStart.FirstValue.Val);
+//            int rangeEndInt = Convert.ToInt32(rangeEnd.FirstValue.Val);
+//            int rangeWidth = rangeStartInt - rangeEndInt + 1;
+//
+//            // Set up the result Tnum
+//            Tnum result = new Tnum();
+//            result.AddState(Time.DawnOf, 0);  // Probably not ideal, but good enough
+//
+//            // Tvars we'll be working with
+//            SortedList<DateTime, Hval> intrvl = intervals.IntervalValues;
+//            SortedList<DateTime, Hval> baseTbool = this.IntervalValues;
+//
+//            // Time window start and end, and date Tbool next changes
+//            DateTime windowStart = Time.DawnOf;
+//            DateTime windowEnd = Time.EndOf;
+//            DateTime nextChangeDate = Time.DawnOf;
+//
+//            // Count forward from the beginning of time through each interval
+//            for (int b = 0; b < intrvl.Count - 1; b++)
+//            {
+//                // Determine the start and end dates of current window
+//                windowEnd = intrvl.Keys[b];
+//                if (b > rangeWidth) windowStart = intrvl.Keys[b - rangeWidth];
+//
+//                // Only analyze the window if its end passes the next change date
+//                // Otherwise, skip ahead until the next time the Tbool changes value
+//                // (for performance).
+//                if (windowEnd > nextChangeDate)
+//                {
+//                    // To count how many of the relevant intervals are true
+//                    int count = 0;
+//
+//                    // Collect unknown states during the relevant time period
+//                    List<Hval> states = new List<Hval>();
+//
+//                    // Look back the specified number of intervals
+//                    for (int n = rangeEndInt; n < rangeStartInt; n++)
+//                    {
+//                        int index = b - n;
+//                        if (index >= rangeEndInt)
+//                        {
+//                            // Handle unknowns
+//                            Hval baseState = this.ObjectAsOf(intrvl.Keys[index]);
+//                            if (!baseState.IsKnown)
+//                            {
+//                                states.Add(baseState);
+//                            }
+//                            else if (Convert.ToBoolean(baseState.Val))
+//                            {
+//                                count++;
+//                            }
+//                        }
+//                    }
+//
+//                    // Add the appropriate state
+//                    if (states.Count > 0)
+//                    {
+//                        result.AddState(intrvl.Keys[b], PrecedingState(states));
+//                    }
+//                    else
+//                    {
+//                        result.AddState(intrvl.Keys[b], count);
+//                    }
+//
+//                    // Determine when the Tbool next changes its value
+//                    // First, if the window has moved past the last Tbool change date,
+//                    // then we can jump ahead to the end of time.
+//                    if (windowStart > baseTbool.Keys[baseTbool.Count-1])
+//                    {
+//                        nextChangeDate = Time.EndOf;
+//                    }
+//                    else
+//                    {
+//                        for (int j=0; j < baseTbool.Count; j++)
+//                        {
+//                            // If the window is subsumed by a single interval on the Tbool,
+//                            // then we can jump ahead to that point in time.
+//                            if (windowEnd < baseTbool.Keys[j] &&
+//                                windowStart > baseTbool.Keys[j-1])
+//                            {
+//                                nextChangeDate = baseTbool.Keys[j];
+//                                break;
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//
+//            return result.Lean;
+//        }
     }
 }

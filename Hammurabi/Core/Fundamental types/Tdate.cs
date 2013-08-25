@@ -146,10 +146,11 @@ namespace Hammurabi
         /// </summary>
         public Tbool IsInPeriod(Tnum interval)
         {
-            Tbool afterEvent = Time.IsAtOrAfter(this);
+            // The event + 1 tick (temporal)
+            Tbool theEvent = Time.IsBetween(this, new Tdate(this.ToDateTime.AddTicks(1)));
 
-            return afterEvent.EverPer(interval) &&
-                afterEvent.CountPastNIntervals(interval,1) == 0;
+            // True during the interval when the event occurs
+            return theEvent.EverPer(interval);
         }
 
 

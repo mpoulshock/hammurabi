@@ -20,7 +20,7 @@ Tbool a1(Thing c) =
     # Paid $1,500 or more in wages in any calendar quarter in current or the preceding calendar year 
     Tbool wageTest = 
         hasEmp &
-        QWages1500.CountPastNIntervals(TheYear,2) > 0
+        QWages1500.SlidingElapsedIntervals(TheYear,2) > 0
 
     Tbool QWages1500 = 
         (Org.QuarterlyGeneralWagesPaid(c) >= 1500).EverPer(TheQuarter)
@@ -28,7 +28,7 @@ Tbool a1(Thing c) =
     # Employed at least one individual...on each of some 20 days during the calendar year or 
     # during the preceding calendar year, each day being in a different calendar week
     Tbool weekTest = 
-        (hasEmp.CountPer(TheYear) >= 20).CountPastNIntervals(TheYear,2) > 0
+        (hasEmp.CountPer(TheYear) >= 20).SlidingElapsedIntervals(TheYear,2) > 0
 
     Tbool hasEmp = 
         (Org.NumberOfGeneralEmployees(c) >= 1).EverPer(TheCalendarWeek)        
@@ -42,7 +42,7 @@ Tbool a2(Thing c) =
     # Paid $20,000 or more in wages in any calendar quarter in current or the preceding calendar year 
     Tbool wageTest = 
         hasEmp &
-        QWages20K.CountPastNIntervals(TheYear,2) > 0
+        QWages20K.SlidingElapsedIntervals(TheYear,2) > 0
         
     Tbool QWages20K = 
         (Org.QuarterlyAgWagesPaid(c) >= 20000).EverPer(TheQuarter)
@@ -50,7 +50,7 @@ Tbool a2(Thing c) =
     # Employed at least 10 individuals...on each of some 20 days during the calendar year or 
     # during the preceding calendar year, each day being in a different calendar week
     Tbool weekTest = 
-        (hasEmp.CountPer(TheYear) >= 20).CountPastNIntervals(TheYear,2) > 0
+        (hasEmp.CountPer(TheYear) >= 20).SlidingElapsedIntervals(TheYear,2) > 0
         
     Tbool hasEmp = 
         (Org.NumberOfAgEmployees(c) >= 10).EverPer(TheCalendarWeek)
@@ -58,7 +58,7 @@ Tbool a2(Thing c) =
     
 # Employer - domestic, defined
 Tbool a3(Thing c) = 
-    QWages1K.CountPastNIntervals(TheYear,2) > 0
+    QWages1K.SlidingElapsedIntervals(TheYear,2) > 0
 
     # Paid $1,000 or more in wages in any calendar quarter in current or the preceding calendar year 
     Tbool QWages1K = 

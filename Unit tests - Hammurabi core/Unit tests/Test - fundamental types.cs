@@ -800,35 +800,6 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tnum actual = t.RunningCountPer(TheYear);
             Assert.AreEqual("{Dawn: 0; 2/1/2010: 1; 4/1/2010: 2}", actual.Out);      
         }
-        
-        // Tbool.CountPastNIntervals
-        
-        [Test]
-        public void FT_CountPastNIntervals_1 ()
-        {
-            // This test case will break every year due to the use of Time.Year
-            Tbool t = new Tbool(true);
-            t.AddState(Date(2012,1,1), false);
-            Tnum actual = t.CountPastNIntervals(Time.Year(2), 2);
-            Assert.AreEqual("{Dawn: 0; 1/1/2011: 2; 1/1/2012: 1; 1/1/2013: 0}", actual.Out);      
-        }
-        
-        [Test]
-        public void FT_CountPastNIntervals_2 ()
-        {
-            // This test case will break every year due to the use of Time.Year
-            Tbool t = new Tbool(true);
-            Tnum actual = t.CountPastNIntervals(Time.Year(2), 2);
-            Assert.AreEqual("{Dawn: 0; 1/1/2011: 2}", actual.Out);      
-        }
-        
-        [Test]
-        public void FT_CountPastNIntervals_3 ()
-        {
-            Tbool t = new Tbool(false);
-            Tnum actual = t.CountPastNIntervals(Time.Year(2), 2);
-            Assert.AreEqual(0, actual.Out);      
-        }
 
         // Tbool.DateFirstTrue
 
@@ -1063,6 +1034,29 @@ namespace Hammurabi.UnitTests.CoreFcns
         {
             Tnum t = new Tnum(Hstate.Unstated);
             Assert.AreEqual("Unstated", t.Shift(0, TheYear).Out);      
+        }
+
+        // DateIsInPeriod
+
+        [Test]
+        public void DateIsInPeriod1 ()
+        {
+            Tdate d = new Tdate(2015, 1, 2);
+            Assert.AreEqual(false, d.IsInPeriod(TheYear).AsOf(Date(2014, 12, 31)).Out);      
+        }
+
+        [Test]
+        public void DateIsInPeriod2 ()
+        {
+            Tdate d = new Tdate(2015, 1, 2);
+            Assert.AreEqual(true, d.IsInPeriod(TheYear).AsOf(Date(2015, 12, 31)).Out);      
+        }
+
+        [Test]
+        public void DateIsInPeriod3 ()
+        {
+            Tdate d = new Tdate(2015, 1, 2);
+            Assert.AreEqual(false, d.IsInPeriod(TheYear).AsOf(Date(2016, 12, 31)).Out);      
         }
     }    
 }

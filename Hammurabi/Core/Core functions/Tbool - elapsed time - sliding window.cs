@@ -25,26 +25,6 @@ namespace Hammurabi
     public partial class Tbool
     {
         /// <summary>
-        /// Provides a running count of how many intervals years a Tbool 
-        /// has been true within some sliding window of time.
-        /// </summary>
-        public Tnum ElapsedYearsInSlidingWindow(int windowSize, string windowIntervalType)  
-        {
-            int days = SizeOfWindowInDays(windowSize, windowIntervalType);
-            return ElapsedDaysInSlidingWindow(days) / Time.DaysPerYear; 
-        }
-
-        /// <summary>
-        /// Provides a running count of how many days years a Tbool 
-        /// has been true within some sliding window of time.
-        /// </summary>
-        public Tnum ElapsedDaysInSlidingWindow(int windowSize, string windowIntervalType)  
-        {
-            int days = SizeOfWindowInDays(windowSize, windowIntervalType);
-            return ElapsedDaysInSlidingWindow(days);
-        }
-
-        /// <summary>
         /// Provides a running count of how many intervals (years, days, etc.) a Tbool 
         /// has been true within some sliding window of time.  At the end of that sliding 
         /// window, this function returns the amount of time that has elapsed within the 
@@ -54,45 +34,28 @@ namespace Hammurabi
         /// Example: For a given Tbool, at any given point in time, for how many days during the
         /// previous 3 days is the Tbool true?
         /// 
-        ///                     tb = <-TTT-TTT->   where T = true and "-" = false
-        ///     tb.EDISW(3, "Day") = <001232223>
+        ///                     tb = <FTTTFTTTF>
+        ///      tb.SEI(3, TheDay) = <001232223>
         /// </remarks>
-        private Tnum ElapsedDaysInSlidingWindow(int windowSizeInDays)  
+        public Tnum SlidingElapsedIntervals(Tnum interval, Tnum windowSize)
         {
-            // Range of time to be analyzed
-            DateTime start = Time.DawnOf;
-            DateTime end = Time.EndOf;
-
-            // If possible, narrow the range of analysis (for performance reasons)
-            if (this.IntervalValues.Count > 1 && this.IsEverTrue()) 
+            // If a Tbool is eternally true, return windowSize
+            if (this.IsTrue)
             {
-                start = this.DateFirstTrue.ToDateTime.AddDays(windowSizeInDays * -1);
-                end = this.DateLastTrue.ToDateTime.AddDays(windowSizeInDays + 2);
+                return windowSize;
             }
 
-            // Create a time line of day-based intervals
-            Tnum theDay = Time.IntervalsSince(start, end, Time.IntervalType.Day, 0);
+            // The number of true intervals in a sliding window of time equals
+            // the running count as of time1 minus the running count as of time0.
+            Tnum r = this.RunningElapsedIntervals(interval);
 
-            // Analyze the window as it slides forward day-by-day
-            return CountPastNIntervals(theDay, windowSizeInDays + 1, 1);
-        }
+            int size = Convert.ToInt32(windowSize.FirstValue.Val) * -1;
 
-        /// <summary>
-        /// Computes the number of days in a time period consisting of N intervals of T type.
-        /// </summary>
-        /// <example>
-        /// SizeOfWindowInDays(2, "Week") = 14
-        /// </example>
-        private int SizeOfWindowInDays(int windowSize, string windowIntervalType) 
-        {
-            double factor = 1;
+            // Counts the current inerval
+//            return r - r.Shift(size, interval);  
 
-            if (windowIntervalType == "Year")         factor = Time.DaysPerYear;
-            else if (windowIntervalType == "Quarter") factor = Time.DaysPerQuarer;
-            else if (windowIntervalType == "Month")   factor = Time.DaysPerMonth;
-            else if (windowIntervalType == "Week")    factor = 7;
-
-            return Convert.ToInt32(windowSize * factor);
+            // Doesn't count the current interval - only previous N intervals
+            return (r - r.Shift(size, interval)).Shift(-1, interval);
         }
     }
 }
