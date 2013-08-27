@@ -86,8 +86,10 @@ namespace Hammurabi
         /// </summary>
         /// <remarks>
         /// Example:
-        ///         tb = <--FTFTTF-->
-        ///     tb.REI = <--010230-->
+        ///         tb = <--FTFTTFF-->
+        ///     tb.REI = <--0011233-->
+        /// 
+        /// Note: An elapsed interval is counted in the subsequent interval.
         /// </remarks>
         public Tnum RunningElapsedIntervals(Tnum interval)  
         {
@@ -114,7 +116,7 @@ namespace Hammurabi
                     if (start >= dateNextTrue)
                     {
                         intervalCount++;
-                        if (start != Time.DawnOf) result.AddState(start, intervalCount);
+                        result.AddState(end, intervalCount);
                         continue;
                     }
                 }
@@ -129,68 +131,69 @@ namespace Hammurabi
             return result;
         }
 
-        /// <summary>
-        /// Provides a running count of how many intervals (years, days, etc.) a Tbool 
-        /// has been true.  The count carries over from one true interval to the next.
-        /// </summary>
-        /// <remarks>
-        /// An interval is counted in the subsequent interval, meaning that the count
-        /// reflects how many past intervals have been true.
-        /// 
-        /// Example:
-        /// 
-        ///         tb = <--FTTTTTFFFTTTTFF-->
-        ///     tb.DCT = <--001234500067890-->
-        /// 
-        /// Use these methods judiciously, as they can involve tens of thousands of intervals.
-        /// </remarks>
-        public Tnum RunningElapsedTime(Time.IntervalType interval)  
-        {
-            // If base Tnum is ever unknown during the time period, return 
-            // the state with the proper precedence
-            Hstate baseState = PrecedenceForMissingTimePeriods(this);
-            if (baseState != Hstate.Known) return new Tnum(baseState);
-
-            Tnum result = new Tnum();
-            int count = 0;
-
-            // Iterate through the time intervals in the Tbool
-            for (int i=0; i < this.IntervalValues.Count; i++)
-            {
-                // Get interval start date
-                DateTime intervalStart = this.IntervalValues.Keys[i];
-
-                if (this.IntervalValues.Values[i].IsTrue) 
-                {
-                    // Determine the end of the interval
-                    DateTime nextIntervalStart = new DateTime();
-                    if (i == this.IntervalValues.Count-1)
-                    {
-                        nextIntervalStart = Time.EndOf.AddYears(-1);
-                    }
-                    else
-                    {
-                        nextIntervalStart = this.IntervalValues.Keys[i+1];
-                    }
-
-                    // Variables to keep track of count and date
-                    DateTime indexDate = intervalStart;
-            
-                    // Begin counting off intervals
-                    while (indexDate < nextIntervalStart) 
-                    {
-                        result.AddState(indexDate, count);
-                        count++;
-                        indexDate = indexDate.AddInterval(interval, 1);
-                    }
-                }
-                else
-                {
-                    result.AddState(intervalStart, count);
-                }
-            }
-            
-            return result.Lean;
-        }
+//        /// <summary>
+//        /// Provides a running count of how many intervals (years, days, etc.) a Tbool 
+//        /// has been true.  The count carries over from one true interval to the next.
+//        /// </summary>
+//        /// <remarks>
+//        /// An interval is counted in the subsequent interval, meaning that the count
+//        /// reflects how many past intervals have been true.
+//        /// 
+//        /// Example:
+//        /// 
+//        ///         tb = <--FTTTTTFFFTTTTFF-->
+//        ///     tb.DCT = <--001234500067890-->
+//        /// 
+//        /// Use these methods judiciously, as they can involve tens of thousands of intervals.
+//        /// </remarks>
+//        /// NOT DELETING ONLY BECAUSE THIS IS A VERY FAST METHOD
+//        public Tnum RunningElapsedTime(Time.IntervalType interval)  
+//        {
+//            // If base Tnum is ever unknown during the time period, return 
+//            // the state with the proper precedence
+//            Hstate baseState = PrecedenceForMissingTimePeriods(this);
+//            if (baseState != Hstate.Known) return new Tnum(baseState);
+//
+//            Tnum result = new Tnum();
+//            int count = 0;
+//
+//            // Iterate through the time intervals in the Tbool
+//            for (int i=0; i < this.IntervalValues.Count; i++)
+//            {
+//                // Get interval start date
+//                DateTime intervalStart = this.IntervalValues.Keys[i];
+//
+//                if (this.IntervalValues.Values[i].IsTrue) 
+//                {
+//                    // Determine the end of the interval
+//                    DateTime nextIntervalStart = new DateTime();
+//                    if (i == this.IntervalValues.Count-1)
+//                    {
+//                        nextIntervalStart = Time.EndOf.AddYears(-1);
+//                    }
+//                    else
+//                    {
+//                        nextIntervalStart = this.IntervalValues.Keys[i+1];
+//                    }
+//
+//                    // Variables to keep track of count and date
+//                    DateTime indexDate = intervalStart;
+//            
+//                    // Begin counting off intervals
+//                    while (indexDate < nextIntervalStart) 
+//                    {
+//                        result.AddState(indexDate, count);
+//                        count++;
+//                        indexDate = indexDate.AddInterval(interval, 1);
+//                    }
+//                }
+//                else
+//                {
+//                    result.AddState(intervalStart, count);
+//                }
+//            }
+//            
+//            return result.Lean;
+//        }
     }
 }

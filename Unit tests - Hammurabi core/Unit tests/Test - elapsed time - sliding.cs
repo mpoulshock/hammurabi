@@ -25,7 +25,7 @@ using NUnit.Framework;
 namespace Hammurabi.UnitTests.CoreFcns
 {
     [TestFixture]
-    public class SlidingElapsedIntervals : H
+    public partial class ElapsedTime : H
     {   
         // SlidingElapsedIntervals
 
@@ -104,8 +104,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tbool t = new Tbool(true);
             t.AddState(Date(2012,1,1), false);
             Tnum actual = t.SlidingElapsedIntervals(TheYear, 2);
-            Assert.AreEqual("{Dawn: 0; 1/1/1801: 1; 1/1/1802: 2; 1/1/2013: 1; 1/1/2014: 0}", actual.Out);      
-
+            Assert.AreEqual("{Dawn: 0; 1/1/1801: 1; 1/1/1802: 2; 1/1/2013: 1; 1/1/2014: 0}", actual.Out);
         }
 
         [Test]

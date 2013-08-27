@@ -34,11 +34,14 @@ namespace Hammurabi
         /// Example: For a given Tbool, at any given point in time, for how many days during the
         /// previous 3 days is the Tbool true?
         /// 
-        ///                     tb = <FTTTFTTTF>
-        ///      tb.SEI(3, TheDay) = <001232223>
+        ///                     tb = <FTTTFTTTFFFF>
+        ///      tb.SEI(3, TheDay) = <001232223210>
         /// </remarks>
         public Tnum SlidingElapsedIntervals(Tnum interval, Tnum windowSize)
         {
+            // HANDLE UNKNOWNS
+
+
             // If a Tbool is eternally true, return windowSize
             if (this.IsTrue)
             {
@@ -52,10 +55,7 @@ namespace Hammurabi
             int size = Convert.ToInt32(windowSize.FirstValue.Val) * -1;
 
             // Counts the current inerval
-//            return r - r.Shift(size, interval);  
-
-            // Doesn't count the current interval - only previous N intervals
-            return (r - r.Shift(size, interval)).Shift(-1, interval);
+            return r - r.Shift(size, interval);  
         }
     }
 }

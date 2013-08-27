@@ -25,7 +25,7 @@ using NUnit.Framework;
 namespace Hammurabi.UnitTests.CoreFcns
 {
     [TestFixture]
-    public class ContinuouslyTrue : H
+    public partial class ElapsedTime : H
     {    
         // ContinuousElapsedIntervals
 
@@ -33,57 +33,45 @@ namespace Hammurabi.UnitTests.CoreFcns
         public void ContinuousElapsedIntervals1 ()
         {
             Tbool tb = new Tbool(false);
-            tb.AddState(Date(2015,1,1), true);
-            tb.AddState(Date(2015,3,1), false);
-
-            Tnum r = tb.ContinuousElapsedIntervals(Time.TheMonth);
-
-            Assert.AreEqual("{Dawn: 0; 1/1/2015: 1; 2/1/2015: 2; 3/1/2015: 0}", r.Out);    
-        }
-
-        // TimeContinuouslyTrue
-
-        [Test]
-        public void ContinuouslyTrue1 ()
-        {
-            Tbool tb = new Tbool(false);
             tb.AddState(new DateTime(2015,1,1), true);
             tb.AddState(new DateTime(2015,3,1), false);
+            tb.AddState(new DateTime(2015,5,1), true);
+            tb.AddState(new DateTime(2015,6,1), false);
 
-            Tnum r = tb.ContinuousElapsedIntervalsPast(TheMonth);
+            Tnum r = tb.ContinuousElapsedIntervals(TheMonth);
 
-            Assert.AreEqual("{Dawn: 0; 2/1/2015: 1; 3/1/2015: 0}", r.Out);    
+            Assert.AreEqual("{Dawn: 0; 2/1/2015: 1; 3/1/2015: 2; 4/1/2015: 0; 6/1/2015: 1; 7/1/2015: 0}", r.Out);    
         }
 
         [Test]
-        public void ContinuouslyTrue2 ()
+        public void ContinuousElapsedIntervals2 ()
         {
             Tbool tb = new Tbool(false);
-            Tnum r = tb.ContinuousElapsedIntervalsPast(TheMonth);
+            Tnum r = tb.ContinuousElapsedIntervals(TheMonth);
 
             Assert.AreEqual(0, r.Out);    
         }
 
         [Test]
-        public void ContinuouslyTrue3 ()
+        public void ContinuousElapsedIntervals3 ()
         {
             Tbool tb = new Tbool(false);
             tb.AddState(new DateTime(2015,1,1), Hstate.Unstated);
             tb.AddState(new DateTime(2015,3,1), false);
 
-            Tnum r = tb.ContinuousElapsedIntervalsPast(TheDay);
+            Tnum r = tb.ContinuousElapsedIntervals(TheDay);
 
             Assert.AreEqual("Unstated", r.Out);    
         }
 
         [Test]
-        public void ContinuouslyTrue4 ()
+        public void ContinuousElapsedIntervals4 ()
         {
             Tbool tb = new Tbool(false);
             tb.AddState(new DateTime(2015,1,1), Hstate.Stub);
             tb.AddState(new DateTime(2015,3,1), false);
 
-            Tnum r = tb.ContinuousElapsedIntervalsPast(TheDay);
+            Tnum r = tb.ContinuousElapsedIntervals(TheDay);
 
             Assert.AreEqual("Stub", r.Out);    
         }

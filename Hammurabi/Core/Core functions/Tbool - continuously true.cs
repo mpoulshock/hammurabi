@@ -25,19 +25,6 @@ namespace Hammurabi
     public partial class Tbool
     {
         /// <summary>
-        /// Provides a running count of how many intervals a Tbool has been continuously true. A
-        /// true interval is counted in the subsequent interval (unlike ContinuousElapsedIntervals(),
-        /// which counts it in the current interval).
-        /// </summary>
-        /// <remarks>
-        /// Use judiciously with TheDay and TheCalendarWeek, as they have thousands of time intervals.
-        /// </remarks>
-        public Tnum ContinuousElapsedIntervalsPast(Tnum interval)
-        {
-            return Max(this.ContinuousElapsedIntervals(interval) - 1, 0);
-        }
-
-        /// <summary>
         /// Provides a running count of how many whole intervals a Tbool 
         /// has been continuously true.
         /// </summary>
@@ -45,6 +32,8 @@ namespace Hammurabi
         /// Example:
         ///         tb = <--FTFTTF-->
         ///     tb.ICT = <--010120-->
+        /// 
+        /// Use judiciously with TheDay and TheCalendarWeek, as they have thousands of time intervals.
         /// </remarks>
         public Tnum ContinuousElapsedIntervals(Tnum interval)  
         {
@@ -71,7 +60,7 @@ namespace Hammurabi
                     if (start >= dateNextTrue)
                     {
                         intervalCount++;
-                        if (start != Time.DawnOf) result.AddState(start, intervalCount);
+                        result.AddState(end, intervalCount);
                         continue;
                     }
                 }
@@ -79,7 +68,7 @@ namespace Hammurabi
                 {
                     // Otherwise, skip to next true interval
                     intervalCount = 0;
-                    if (start != Time.DawnOf) result.AddState(start, intervalCount);
+                    result.AddState(end, intervalCount);
                     dateNextTrue = this.DateNextTrue(end);
                     dateNextTrueIntervalEnds = this.NextChangeDate(dateNextTrue.AddTicks(1));
                 }
