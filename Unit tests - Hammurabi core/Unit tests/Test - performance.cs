@@ -27,42 +27,85 @@ namespace Hammurabi.UnitTests.CoreFcns
     [TestFixture]
     public class Performance : H
     {
-        [Test]
-        public void RunningElapsedIntervals_Performance ()
+        // The sole purpose of this set of tests is to verify that these Akkadian functions
+        // stay within reasonable performance tolerances.  They may not all pass all the time,
+        // but they should pass almost all of the time.
+        // Obviously, different machines will execute these functions at different speeds.
+
+        /// <summary>
+        /// A Tbool used to test the Akkadian functions.
+        /// </summary>
+        private static Tbool Tb1()
         {
             Tbool tb = new Tbool(false);
             tb.AddState(new DateTime(2015,1,1),true);
-            tb.AddState(new DateTime(2015,1,2),false);
-            tb.AddState(new DateTime(2015,1,3),true);
-            tb.AddState(new DateTime(2015,1,4),false);
+            tb.AddState(new DateTime(2015,2,2),false);
+            tb.AddState(new DateTime(2015,3,3),true);
+            tb.AddState(new DateTime(2015,4,4),false);
+            return tb;
+        }
 
+        [Test]
+        public void Performance_And ()
+        {
             DateTime startTime = DateTime.Now;
-
-            //            18ms
-            //            Tbool t = tb && !tb || tb;
-
-            //            10ms
-            //            Tnum t = tb.TotalElapsedDays(Time.DawnOf, Time.EndOf);
-
-            //            11ms
-            //            Tnum t = tb.RunningElapsedTime(Time.IntervalType.Day);
-
-            //            40ms
-            //            Tnum t = tb.RunningElapsedIntervals(TheDay);
-
-            //            40ms
-            //            Tnum t = tb.ContinuousElapsedIntervals(TheDay);
-
-            //            45ms
-            //            Tbool t = tb.Shift(4, TheDay);
-
-            //            75ms
-            //            Tnum t = tb.SlidingElapsedIntervals(TheDay, 4);
-
+            Tbool t = Tb1() && Tb1();
             int ResponseTimeInMs = Convert.ToInt32((DateTime.Now - startTime).TotalMilliseconds);
+            Assert.AreEqual(true, ResponseTimeInMs < 30);    
+        }
 
-            // The sole purpose of this unit test is to examine performance, so it will always fail...
-            Assert.AreEqual(ResponseTimeInMs, 0);    
+        [Test]
+        public void Performance_RunningElapsedIntervals ()
+        {
+            DateTime startTime = DateTime.Now;
+            Tnum t = Tb1().RunningElapsedIntervals(TheDay);
+            int ResponseTimeInMs = Convert.ToInt32((DateTime.Now - startTime).TotalMilliseconds);
+            Assert.AreEqual(true, ResponseTimeInMs < 60);    
+        }
+
+        [Test]
+        public void Performance_ContinuousElapsedIntervals ()
+        {
+            DateTime startTime = DateTime.Now;
+            Tnum t = Tb1().ContinuousElapsedIntervals(TheDay);
+            int ResponseTimeInMs = Convert.ToInt32((DateTime.Now - startTime).TotalMilliseconds);
+            Assert.AreEqual(true, ResponseTimeInMs < 70);    
+        }
+
+        [Test]
+        public void Performance_SlidingElapsedIntervals1 ()
+        {
+            DateTime startTime = DateTime.Now;
+            Tnum t = Tb1().SlidingElapsedIntervals(TheDay, 10);
+            int ResponseTimeInMs = Convert.ToInt32((DateTime.Now - startTime).TotalMilliseconds);
+            Assert.AreEqual(true, ResponseTimeInMs < 115);    
+        }
+
+        [Test]
+        public void Performance_SlidingElapsedIntervals2 ()
+        {
+            DateTime startTime = DateTime.Now;
+            Tnum t = (new Tbool(true)).SlidingElapsedIntervals(TheDay, 10);
+            int ResponseTimeInMs = Convert.ToInt32((DateTime.Now - startTime).TotalMilliseconds);
+            Assert.AreEqual(true, ResponseTimeInMs < 105);    
+        }
+
+        [Test]
+        public void Performance_TotalElapsedIntervals ()
+        {
+            DateTime startTime = DateTime.Now;
+            Tnum t = Tb1().TotalElapsedIntervals(TheDay, Time.DawnOf, Time.EndOf);
+            int ResponseTimeInMs = Convert.ToInt32((DateTime.Now - startTime).TotalMilliseconds);
+            Assert.AreEqual(true, ResponseTimeInMs < 70);    
+        }
+
+        [Test]
+        public void Performance_Shift ()
+        {
+            DateTime startTime = DateTime.Now;
+            Tbool t = Tb1().Shift(10, TheDay);
+            int ResponseTimeInMs = Convert.ToInt32((DateTime.Now - startTime).TotalMilliseconds);
+            Assert.AreEqual(true, ResponseTimeInMs < 60);    
         }
     }
 }

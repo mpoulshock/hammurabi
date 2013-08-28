@@ -39,7 +39,7 @@ namespace Hammurabi
             if (top != Hstate.Known) return new Tnum(top);
 
             Tnum result = new Tnum();
-            
+
             int count = period.IntervalValues.Count;
             for (int i=0; i < count; i++)
             {
@@ -48,7 +48,7 @@ namespace Hammurabi
                 {
                     spanEnd = period.IntervalValues.Keys[i+1];
                 }
-                
+
                 TimeSpan time = this.TotalElapsedTime(period.IntervalValues.Keys[i], spanEnd);
 
                 // Add the state, but not if it's at the end of time
@@ -57,58 +57,8 @@ namespace Hammurabi
                     result.AddState(period.IntervalValues.Keys[i], time.TotalDays);
                 }
             }
-            
+
             return result.Lean;
-        }
-
-        /// <summary>
-        /// Returns the total elapsed years between two given DateTimes, during
-        /// which a Tbool is true.
-        /// </summary>
-        public Tnum TotalElapsedYears(Tdate start, Tdate end)
-        {
-            return this.TotalElapsedDays(start, end) / Time.DaysPerYear;
-        }
-
-        /// <summary>
-        /// Returns the total elapsed days, between two given DateTimes, during
-        /// which a Tbool is true. 
-        /// </summary>
-        public Tnum TotalElapsedDays(Tdate start, Tdate end)  
-        {
-            // EXPERIMENTAL (currently much slower):
-//            return TotalElapsedIntervals(start, end, TheDay);
-
-
-
-            // This unknown-handling logic is not totally correct:
-
-            // If start or end dates are unknown...
-            Hstate top = PrecedingState(start.FirstValue, end.FirstValue);
-            if (top != Hstate.Known) return new Tnum(new Hval(null,top));
-
-            // If base Tnum is ever unknown during the time period, return 
-            // the state with the proper precedence
-            Hstate returnState = PrecedenceForMissingTimePeriods(this);
-            if (returnState != Hstate.Known) return new Tnum(returnState);
-
-            // Get start and end dates
-            DateTime startDT = Convert.ToDateTime(start.FirstValue.Val);
-            DateTime endDT = Convert.ToDateTime(end.FirstValue.Val);
-
-            // Else, calculate how much time has elapsed while the Tvar had that value.
-            double days = Convert.ToDouble(TotalElapsedTime(startDT, endDT).TotalDays);
-            return new Tnum(days);
-        }
-
-        /// <summary>
-        /// EXPERIMENTAL - Returns the total number of elapsed intervals between two dates.
-        /// </summary>
-        public Tnum TotalElapsedIntervals(Tdate start, Tdate end, Tnum interval)
-        {
-            Tnum rei = RunningElapsedIntervals(interval);
-
-            return rei.AsOf(end) - rei.AsOf(start);
         }
 
         /// <summary>
@@ -129,7 +79,7 @@ namespace Hammurabi
                     {
                         spanEnd = Time.Earliest(TimeLine.Keys[i+1], end);
                     }
-        
+
                     if (spanStart < spanEnd)
                     {
                         TimeSpan newDuration = spanEnd - spanStart;
@@ -137,7 +87,7 @@ namespace Hammurabi
                     }
                 }
             }
-        
+
             return result;
         }
     }    

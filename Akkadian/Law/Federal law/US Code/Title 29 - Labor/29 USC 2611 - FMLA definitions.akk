@@ -27,10 +27,10 @@ Tbool IsEligibleEmployee(Thing p, Thing corp) =
         else true
 
     Tbool TwelveMoInLast7Yrs = 
-        Econ.IsEmployedBy(p, corp).TotalElapsedDays(d.AddYears(-7),d) > 364
+        Econ.IsEmployedBy(p, corp).TotalElapsedIntervals(TheDay, d.AddYears(-7), d) > 364
         
     Tbool Employed7YrsAgo = 
-        Econ.IsEmployedBy(p, corp).TotalElapsedDays(Time.DawnOf,d.AddYears(-7)) > 0
+        Econ.IsEmployedBy(p, corp).TotalElapsedIntervals(TheDay, Time.DawnOf, d.AddYears(-7)) > 0
     
     Tdate d = 
         DateLeaveBegins(p, corp)
@@ -54,7 +54,7 @@ Tbool IsEligibleEmployee(Thing p, Thing corp) =
 # leading up to the family leave start date.
 # HACK: Need to create a Tnum.SumOver(interval,start,end) function to implement this correctly...
 Tnum HoursInLast12Mo(Thing p, Thing c) =
-    (avgHours / 7) * employed.TotalElapsedDays(Time.DawnOf, start)
+    (avgHours / 7) * employed.TotalElapsedIntervals(TheDay, Time.DawnOf, start)
     
     Tnum avgHours = 
         Econ.HoursWorkedPerWeek(p,c)

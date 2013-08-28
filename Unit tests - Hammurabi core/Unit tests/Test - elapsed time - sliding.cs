@@ -114,5 +114,22 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tnum actual = t.SlidingElapsedIntervals(TheYear, 2);
             Assert.AreEqual(2, actual.Out);      
         }
+
+        [Test]
+        public void SlidingElapsedIntervals9 () 
+        {
+            Tbool tb = new Tbool(Hstate.Unstated);
+            Tnum r = tb.SlidingElapsedIntervals(TheDay, 2);
+            Assert.AreEqual("Unstated", r.Out);    
+        }
+
+        [Test]
+        public void SlidingElapsedIntervals10 () 
+        {
+            // Window size is unstated
+            Tbool tb = new Tbool(true);
+            Tnum r = tb.SlidingElapsedIntervals(TheDay, new Tnum(Hstate.Unstated));
+            Assert.AreEqual("Unstated", r.Out);    
+        }
     }
 }

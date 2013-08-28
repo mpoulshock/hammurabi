@@ -1,4 +1,4 @@
-// Copyright (c) 2012 Hammura.bi LLC
+// Copyright (c) 2012-2013 Hammura.bi LLC
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -179,6 +179,38 @@ namespace Hammurabi
             return this.PeriodEndVal<Tnum>(temporalPeriod).Lean;
         }
 
+        /// <summary>
+        /// Converts a Tnum value in days to the equivalent (fractional) years.
+        /// </summary>
+        public Tnum DaysToYears
+        {
+            get
+            {
+                return this / Time.DaysPerYear;
+            }
+        }
+
+        /// <summary>
+        /// Converts a Tnum value in days to the equivalent (fractional) months.
+        /// </summary>
+        public Tnum DaysToMonths
+        {
+            get
+            {
+                return this / Time.DaysPerMonth;
+            }
+        }
+
+        /// <summary>
+        /// Converts a Tnum value in days to the equivalent (fractional) weeks.
+        /// </summary>
+        public Tnum DaysToWeeks
+        {
+            get
+            {
+                return this / 7;
+            }
+        }
 
         // *************************************************************
         // All-time min / max

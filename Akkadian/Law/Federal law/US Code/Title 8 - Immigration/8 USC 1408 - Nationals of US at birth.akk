@@ -70,7 +70,7 @@ Tbool Para4ParentTest(Thing parent, Tdate date) =
     
     # (4)(B)
     Tbool fiveYearTestMet =
-        present.RunningElapsedYears >= 5 &                        # Extremely poor performance
+        present.RunningElapsedIntervals(TheDay).DaysToYears >= 5 & 
         Age(parent) >= 14
     
     # "Physically present"
@@ -80,7 +80,7 @@ Tbool Para4ParentTest(Thing parent, Tdate date) =
     ##
     # (4)(A) - A one year absence starts the clock over...
     Tbool notOutsideOneYear =
-        outside.RunningElapsedYears <= 1
+        outside.RunningElapsedIntervals(TheDay).DaysToYears <= 1
         
     Tbool outside = 
         ! Sec1401.PresentUnderSubsecG(parent)

@@ -39,9 +39,6 @@ namespace Hammurabi
         /// </remarks>
         public Tnum SlidingElapsedIntervals(Tnum interval, Tnum windowSize)
         {
-            // HANDLE UNKNOWNS
-
-
             // If a Tbool is eternally true, return windowSize
             if (this.IsTrue)
             {

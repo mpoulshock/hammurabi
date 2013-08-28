@@ -194,17 +194,6 @@ Test: Depreciation1
 Test: Depreciation2
 - Hammurabi.Tests.DepreciationRate(1999-01-01).AsOf(2010-03-03).Out =?= "Stub"
 
-
-# ELAPSED TIME - PERFORMANCE ISSUES
-
-# Extremely poor performance
-Tbool TimeError1(Thing t) =
-    (new Tbool(true)).RunningElapsedYears >= 5
-
-# Poor performance    
-Tbool TimeError2(Thing t) =
-    (new Tbool(true)).SlidingElapsedIntervals(TheYear, 10) >= 7
-
 	
 # PERIOD END VALUE
 

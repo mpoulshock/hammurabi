@@ -106,7 +106,7 @@ Tbool SubsecGParentTest(Thing parent, Tdate childDoB) =
     
     # How many years they must be present...
     Tbool presentYears =
-        present.RunningElapsedYears >= yearThreshold
+        present.RunningElapsedIntervals(TheDay).DaysToYears >= yearThreshold
     
     # See statutory notes; ILRC chart
     Tnum yearThreshold =
@@ -116,7 +116,7 @@ Tbool SubsecGParentTest(Thing parent, Tdate childDoB) =
     
     # How many years they must be present before age 14...
     Tbool presentYearsBeforeAge14 =
-        present.RunningElapsedYears >= yearThreshold14 &
+        present.RunningElapsedIntervals(TheDay).DaysToYears >= yearThreshold14 &
         Age(parent) >= 14
     
     # See statutory notes; ILRC chart
@@ -191,7 +191,7 @@ Tbool IsCitizenPresentInUSorOPNYearsBefore(Thing p, Tnum years, Tdate date) =
     present.IsEverTrue(Time.DawnOf, date)
     
     Tbool present =
-        PresentInUSorOP(p).ContinuousElapsedIntervals(TheYear) >= years    # Terrible performance
+        PresentInUSorOP(p).ContinuousElapsedIntervals(TheYear) >= years
 
 # >>Was {1} physically present in the U.S. or one of its outlying possessions?
 Tbool PresentInUSorOP(Thing p) =

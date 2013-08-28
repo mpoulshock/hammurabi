@@ -71,10 +71,6 @@
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Core\Fundamental types\Hval.cs" />
     <Compile Include="Core\Engine\Engine.cs" />
-    <Compile Include="Core\Core functions\Tbool - continuously true.cs" />
-    <Compile Include="Core\Core functions\Tbool - elapsed time - total.cs" />
-    <Compile Include="Core\Core functions\Tbool - elapsed time - running.cs" />
-    <Compile Include="Core\Core functions\Tbool - elapsed time - sliding window.cs" />
     <Compile Include="Core\Engine\Question class.cs" />
     <Compile Include="Core\Fundamental types\Thing.cs" />
     <Compile Include="Core\Facts\Assumptions.cs" />
@@ -174,6 +170,11 @@
     <Compile Include="Core\Core functions\Util.cs" />
     <Compile Include="Core\Engine\Proof tree.cs" />
     <Compile Include="Core\Facts\Facts.cs" />
+    <Compile Include="Core\Core functions\Elapsed time - continuous.cs" />
+    <Compile Include="Core\Core functions\Elapsed time - running.cs" />
+    <Compile Include="Core\Core functions\Elapsed time - sliding.cs" />
+    <Compile Include="Core\Core functions\Elapsed time - total.cs" />
+    <Compile Include="Core\Core functions\Elapsed time - per interval.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

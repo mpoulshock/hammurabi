@@ -72,6 +72,8 @@
     <Compile Include="Unit tests\Test - elapsed time - sliding.cs" />
     <Compile Include="Unit tests\Test - performance.cs" />
     <Compile Include="Unit tests\Test - utility.cs" />
+    <Compile Include="Unit tests\Test - elapsed time - total.cs" />
+    <Compile Include="Unit tests\Test - elapsed time - per interval.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

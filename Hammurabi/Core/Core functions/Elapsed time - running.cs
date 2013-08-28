@@ -25,62 +25,6 @@ namespace Hammurabi
     public partial class Tbool
     {
         /// <summary>
-        /// Provides a running count of how many years a Tbool has been true.  
-        /// The count carries over from one true interval to the next.
-        /// </summary>
-        public Tnum RunningElapsedYears
-        {
-            get
-            {
-                Tnum unrounded = this.RunningElapsedDays / Time.DaysPerYear; 
-                return unrounded.RoundDown(1);
-            }
-        }
-
-        /// <summary>
-        /// Provides a running count of how many months a Tbool has been true.  
-        /// The count carries over from one true interval to the next.
-        /// </summary>
-        public Tnum RunningElapsedMonths
-        {
-            get
-            {
-                Tnum unrounded = this.RunningElapsedDays / Time.DaysPerMonth;
-                return unrounded.RoundDown(1);
-            }
-        }
-
-        /// <summary>
-        /// Provides a running count of how many weeks a Tbool has been true.  
-        /// The count carries over from one true interval to the next.
-        /// </summary>
-        public Tnum RunningElapsedWeeks
-        {
-            get
-            {
-                Tnum unrounded = this.RunningElapsedDays / 7;
-                return unrounded.RoundDown(1);
-            }
-        }
-
-        /// <summary>
-        /// Provides a running count of how many days a Tbool has been true.  
-        /// The count carries over from one true interval to the next.
-        /// </summary>
-        /// <remarks>
-        /// An interval is not counted until after it has elapsed, so at any
-        /// given moment, the count reflects how many true intervals there 
-        /// have been at the end of the prior interval.
-        /// </remarks>
-        public Tnum RunningElapsedDays
-        {
-            get
-            {
-                return RunningElapsedIntervals(TheDay).Shift(-1, TheDay) ;
-            }
-        }
-
-        /// <summary>
         /// Provides a running count of the number of whole intervals 
         /// that a Tbool has been true.
         /// </summary>

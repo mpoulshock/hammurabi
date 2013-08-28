@@ -167,7 +167,6 @@ Tbool ExemptStudent(Thing p) =
         Imm.CompliedWithTermsOfVisa(p)
     
     # "exempt...for any part of more than five calendar years" (p. 5)
-    # Need to use Shift() b/c RunningElapsedInterval counts intervals when they're true?
     Tbool fiveYearTest = onStudentVisa.EverPer(TheYear).RunningElapsedIntervals(TheYear) >= 5
     
     Tbool onStudentVisa =
@@ -321,11 +320,13 @@ Test: Teacher1
 - Imm.NonimmigrantVisaType(marge) = {Dawn: "None"; 2012-05-02: "J-1"}
 - IRS.Pub519.ForeignEmployerPaidAllIncome(marge) = false
 - IRS.Pub519.ExemptTeacherOrTrainee(marge).AsOf(2012-12-31).Out =?= true
-    
+
+##
 Test: Teacher2
 - Thing marge
 - Imm.NonimmigrantVisaType(marge) = {Dawn: "None"; 2008-01-01: "J-1"}
 - IRS.Pub519.ExemptTeacherOrTrainee(marge).AsOf(2012-12-31).Out =?= false
+##
 
 Test: Teacher3
 - Thing marge
@@ -372,4 +373,5 @@ Test: 397888975
 - Imm.USImmigrationStatus(sherry) = "U.S. citizen"
 - IRS.Pub519.ChoosesToBeTreatedAsResidentAlien(jim) = true
 - IRS.Pub519.NonresidentSpousalElection(jim).Out =?= true
+
 
