@@ -169,6 +169,7 @@ Tbool PreviouslyReceivedLIHEAPInAnotherHousehold(Thing person)
 
 # UNIT TESTS
 
+# This is slow b/c it calls AccumulatedOver numerous times above and in the monthly/annual income rules
 Test: 403207628
 - Thing Joneses
 - Things sam

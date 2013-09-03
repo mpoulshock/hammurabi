@@ -45,6 +45,16 @@ namespace Hammurabi.UnitTests.CoreFcns
             return tb;
         }
 
+        private static Tnum Tn1()
+        {
+            Tnum tn = new Tnum(0);
+            tn.AddState(Date(2010, 01, 01), 7000);
+            tn.AddState(Date(2013, 01, 01), 6000);
+            tn.AddState(Date(2015, 01, 01), 5090);
+            tn.AddState(Date(2017, 01, 01), 4470);
+            return tn;
+        }
+
         [Test]
         public void Performance_And ()
         {
@@ -106,6 +116,46 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tbool t = Tb1().Shift(10, TheDay);
             int ResponseTimeInMs = Convert.ToInt32((DateTime.Now - startTime).TotalMilliseconds);
             Assert.AreEqual(true, ResponseTimeInMs < 60);    
+        }
+
+        [Test]
+        public void Performance_Accumulate_1 ()
+        {
+            // ~300ms - eternal
+            DateTime startTime = DateTime.Now;
+            Tnum t = new Tnum(9.99).Accumulated(TheDay);
+            int ResponseTimeInMs = Convert.ToInt32((DateTime.Now - startTime).TotalMilliseconds);
+            Assert.AreEqual(0, ResponseTimeInMs);    
+        }
+
+        [Test]
+        public void Performance_Accumulate_2 ()
+        {
+            // ~300ms - temporal
+            DateTime startTime = DateTime.Now;
+            Tnum t = Tn1().Accumulated(TheDay);
+            int ResponseTimeInMs = Convert.ToInt32((DateTime.Now - startTime).TotalMilliseconds);
+            Assert.AreEqual(0, ResponseTimeInMs);    
+        }
+
+        [Test]
+        public void Performance_AccumulateOver_1 ()
+        {
+            // ~75ms - eternal
+            DateTime startTime = DateTime.Now;
+            Tnum t = new Tnum(9.99).AccumulatedOver(90,TheDay);
+            int ResponseTimeInMs = Convert.ToInt32((DateTime.Now - startTime).TotalMilliseconds);
+            Assert.AreEqual(0, ResponseTimeInMs);    
+        }
+
+        [Test]
+        public void Performance_AccumulateOver_2 ()
+        {
+            // ~230ms - temporal
+            DateTime startTime = DateTime.Now;
+            Tnum t = Tn1().AccumulatedOver(90,TheDay);
+            int ResponseTimeInMs = Convert.ToInt32((DateTime.Now - startTime).TotalMilliseconds);
+            Assert.AreEqual(0, ResponseTimeInMs);    
         }
     }
 }
