@@ -42,6 +42,12 @@ namespace Hammurabi
             Hstate baseState = PrecedenceForMissingTimePeriods(this);
             if (baseState != Hstate.Known) return new Tnum(baseState);
 
+            // An idea to speed things up...
+//            if (this.IsEternal)
+//            {
+//                return this * Switch<Tbool>(() => this > 0, ()=> true, ()=> false).RunningElapsedIntervals(interval);
+//            }
+
             // Start accumulating...
             Tnum result = new Tnum(0);
             decimal total = 0;
@@ -69,7 +75,6 @@ namespace Hammurabi
         /// 
         /// The time units cancel: [$/mo.] * [mo.] yields [$].
         /// </example>
-        //  TODO: Work on performance.  AO(90, days) takes ~ 2 sec.
         public Tnum AccumulatedOver(Tnum numberOfIntervals, Tnum interval)  
         {
             // Handle eternal values

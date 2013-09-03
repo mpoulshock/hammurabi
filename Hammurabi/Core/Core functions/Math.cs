@@ -1,4 +1,4 @@
-// Copyright (c) 2012 Hammura.bi LLC
+// Copyright (c) 2012-2013 Hammura.bi LLC
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -32,6 +32,7 @@ namespace Hammurabi
         /// </summary>
         public static Tnum operator + (Tnum tn1, Tnum tn2)    
         {
+            // return tn1 - (0 - tn2);
             return ApplyFcnToTimeline(x => Sum(x), tn1, tn2);
         }
 
@@ -188,21 +189,7 @@ namespace Hammurabi
         {
             get
             {
-                Tnum result = new Tnum();
-                
-                foreach (KeyValuePair<DateTime,Hval> slice in this.IntervalValues)
-                {
-                    if (!slice.Value.IsKnown)
-                    {
-                        result.AddState(slice.Key, slice.Value);
-                    }
-                    else
-                    {
-                        result.AddState(slice.Key, System.Math.Abs(Convert.ToDecimal(slice.Value.Val)));
-                    }
-                }
-                
-                return result;
+                return Switch<Tnum>(() => this >= 0, () => this, () => 0 - this);
             }
         }
 
@@ -215,134 +202,36 @@ namespace Hammurabi
         /// Rounds a value to the nearest multiple of a given number.  By default, 
         /// it rounds up in case of a tie.
         /// </summary>
-        public Tnum RoundToNearest(double multiple)
+        public Tnum RoundToNearest(Tnum multiple)
         {
             return RoundToNearest(multiple,false);
         }
-        
-        public Tnum RoundToNearest(double multiple, bool breakTieByRoundingDown)
-        {
-            Tnum result = new Tnum();
-            
-            foreach(KeyValuePair<DateTime,Hval> de in this.TimeLine)
-            {
-                if (!de.Value.IsKnown)
-                {
-                    result.AddState(de.Key, de.Value);
-                }
-                else
-                {
-                    decimal val = RoundToNearest(Convert.ToString(de.Value.Val), multiple, breakTieByRoundingDown);
-                    result.AddState(de.Key, new Hval(val));
-                }
-            }
 
-            return result.Lean;
-        }
-        
-        /// <summary>
-        /// Non-temporal round-to-nearest function
-        /// </summary>
-        private static decimal RoundToNearest(string theNum, double multiple, bool breakTieByRoundingDown)
+        public Tnum RoundToNearest(Tnum multiple, Tbool breakTieByRoundingDown)
         {
-            decimal num = Convert.ToDecimal(theNum);
-            decimal mult = Convert.ToDecimal(multiple);
-            decimal diff = num % mult;
-            
-            if (diff > mult / 2)
-            {
-                return num - diff + mult;
-            }           
-            else if (diff < mult / 2 || breakTieByRoundingDown)
-            {
-                return num - diff;
-            }
-            
-            return num - diff + mult;
+            Tnum diff = this % multiple;
+            return Switch<Tnum>(() => diff > multiple / 2, () => this - diff + multiple,
+                                ()=> diff < multiple / 2 || breakTieByRoundingDown, ()=> this - diff,
+                                () => true, () => this - diff + multiple);
         }
-        
+
         /// <summary>
         /// Rounds a value up to the next multiple of a given number.
         /// </summary>
-        public Tnum RoundUp(double multiple)
+        public Tnum RoundUp(Tnum multiple)
         {
-            Tnum result = new Tnum();
-            
-            foreach(KeyValuePair<DateTime,Hval> de in this.TimeLine)
-            {
-                if (!de.Value.IsKnown)
-                {
-                    result.AddState(de.Key, de.Value);
-                }
-                else
-                {
-                    decimal val = CoreRoundUp(Convert.ToString(de.Value.Val), multiple);
-                    result.AddState(de.Key, new Hval(val));
-                }
-            }
-
-            return result.Lean;
+            return Switch<Tnum>(() => this % multiple != 0, () => this - (this % multiple) + multiple,
+                                () => true, () => this);
         }        
-        
-        /// <summary>
-        /// Non-temporal round-up function.
-        /// </summary>
-        private static decimal CoreRoundUp(string theNum, double multiple2)
-        {
-            decimal num = Convert.ToDecimal(theNum);
-            decimal multiple = Convert.ToDecimal(multiple2);
-            decimal diff = num % multiple;
-            decimal result = num;
-            
-            if (diff != 0)
-            {
-                result = num - diff + multiple;
-            }
-
-            return result;
-        }
         
         /// <summary>
         /// Rounds a value down to the next multiple of a given number.
         /// </summary>
-        public Tnum RoundDown(double multiple)
+        public Tnum RoundDown(Tnum multiple)
         {
-            Tnum result = new Tnum();
-            
-            foreach(KeyValuePair<DateTime,Hval> de in this.TimeLine)
-            {
-                if (!de.Value.IsKnown)
-                {
-                    result.AddState(de.Key, de.Value);
-                }
-                else
-                {
-                    decimal val = CoreRoundDown(Convert.ToString(de.Value.Val), multiple);
-                    result.AddState(de.Key, new Hval(val));
-                }
-            }
-
-            return result.Lean;
+            return Switch<Tnum>(() => this % multiple != 0, () => this - (this % multiple),
+                                () => true, () => this);
         }
-        
-        /// <summary>
-        /// Non-temporal round-down function.
-        /// </summary>
-        private static decimal CoreRoundDown(string theNum, double multiple2)
-        {
-            decimal num = Convert.ToDecimal(theNum);
-            decimal multiple = Convert.ToDecimal(multiple2);
-            decimal diff = num % multiple;
-            decimal result = num;
-            
-            if (diff != 0)
-            {
-                result = num - diff;
-            }
-
-            return result;
-        }
-
     }
     
     #pragma warning restore 660, 661

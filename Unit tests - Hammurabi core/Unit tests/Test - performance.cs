@@ -157,5 +157,15 @@ namespace Hammurabi.UnitTests.CoreFcns
             int ResponseTimeInMs = Convert.ToInt32((DateTime.Now - startTime).TotalMilliseconds);
             Assert.AreEqual(0, ResponseTimeInMs);    
         }
+
+        [Test]
+        public void Performance_Subtraction ()
+        {
+            // ~30-45ms 
+            DateTime startTime = DateTime.Now;
+            Tnum t = new Tnum(10) + Tn1();
+            int ResponseTimeInMs = Convert.ToInt32((DateTime.Now - startTime).TotalMilliseconds);
+            Assert.AreEqual(-1, ResponseTimeInMs);    
+        }
     }
 }
