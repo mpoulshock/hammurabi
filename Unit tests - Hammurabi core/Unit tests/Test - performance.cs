@@ -61,7 +61,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             DateTime startTime = DateTime.Now;
             Tbool t = Tb1() && Tb1();
             int ResponseTimeInMs = Convert.ToInt32((DateTime.Now - startTime).TotalMilliseconds);
-            Assert.AreEqual(true, ResponseTimeInMs < 30);    
+            Assert.IsTrue(ResponseTimeInMs < 30);    
         }
 
         [Test]
@@ -70,7 +70,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             DateTime startTime = DateTime.Now;
             Tnum t = Tb1().RunningElapsedIntervals(TheDay);
             int ResponseTimeInMs = Convert.ToInt32((DateTime.Now - startTime).TotalMilliseconds);
-            Assert.AreEqual(true, ResponseTimeInMs < 60);    
+            Assert.IsTrue(ResponseTimeInMs < 60);    
         }
 
         [Test]
@@ -79,7 +79,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             DateTime startTime = DateTime.Now;
             Tnum t = Tb1().ContinuousElapsedIntervals(TheDay);
             int ResponseTimeInMs = Convert.ToInt32((DateTime.Now - startTime).TotalMilliseconds);
-            Assert.AreEqual(true, ResponseTimeInMs < 70);    
+            Assert.IsTrue(ResponseTimeInMs < 70);    
         }
 
         [Test]
@@ -88,7 +88,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             DateTime startTime = DateTime.Now;
             Tnum t = Tb1().SlidingElapsedIntervals(TheDay, 10);
             int ResponseTimeInMs = Convert.ToInt32((DateTime.Now - startTime).TotalMilliseconds);
-            Assert.AreEqual(true, ResponseTimeInMs < 115);    
+            Assert.IsTrue(ResponseTimeInMs < 115);    
         }
 
         [Test]
@@ -97,7 +97,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             DateTime startTime = DateTime.Now;
             Tnum t = (new Tbool(true)).SlidingElapsedIntervals(TheDay, 10);
             int ResponseTimeInMs = Convert.ToInt32((DateTime.Now - startTime).TotalMilliseconds);
-            Assert.AreEqual(true, ResponseTimeInMs < 105);    
+            Assert.IsTrue(ResponseTimeInMs < 105);    
         }
 
         [Test]
@@ -106,7 +106,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             DateTime startTime = DateTime.Now;
             Tnum t = Tb1().TotalElapsedIntervals(TheDay, Time.DawnOf, Time.EndOf);
             int ResponseTimeInMs = Convert.ToInt32((DateTime.Now - startTime).TotalMilliseconds);
-            Assert.AreEqual(true, ResponseTimeInMs < 70);    
+            Assert.IsTrue(ResponseTimeInMs < 70);    
         }
 
         [Test]
@@ -115,57 +115,62 @@ namespace Hammurabi.UnitTests.CoreFcns
             DateTime startTime = DateTime.Now;
             Tbool t = Tb1().Shift(10, TheDay);
             int ResponseTimeInMs = Convert.ToInt32((DateTime.Now - startTime).TotalMilliseconds);
-            Assert.AreEqual(true, ResponseTimeInMs < 60);    
+            Assert.IsTrue(ResponseTimeInMs < 60);    
         }
 
         [Test]
-        public void Performance_Accumulate_1 ()
+        public void Performance_RunningSummedIntervals_1 ()
         {
-            // ~300ms - eternal
             DateTime startTime = DateTime.Now;
-            Tnum t = new Tnum(9.99).Accumulated(TheDay);
+            Tnum t = new Tnum(9.99).RunningSummedIntervals(TheDay);
             int ResponseTimeInMs = Convert.ToInt32((DateTime.Now - startTime).TotalMilliseconds);
-            Assert.AreEqual(0, ResponseTimeInMs);    
+            Assert.IsTrue(ResponseTimeInMs < 85);    
         }
 
         [Test]
-        public void Performance_Accumulate_2 ()
+        public void Performance_RunningSummedIntervals_2 ()
         {
-            // ~300ms - temporal
             DateTime startTime = DateTime.Now;
-            Tnum t = Tn1().Accumulated(TheDay);
+            Tnum t = Tn1().RunningSummedIntervals(TheDay);
             int ResponseTimeInMs = Convert.ToInt32((DateTime.Now - startTime).TotalMilliseconds);
-            Assert.AreEqual(0, ResponseTimeInMs);    
+            Assert.IsTrue(ResponseTimeInMs < 85);    
         }
 
         [Test]
-        public void Performance_AccumulateOver_1 ()
+        public void Performance_SlidingSummedIntervals_1 ()
         {
-            // ~75ms - eternal
             DateTime startTime = DateTime.Now;
-            Tnum t = new Tnum(9.99).AccumulatedOver(90,TheDay);
+            Tnum t = new Tnum(9.99).SlidingSummedIntervals(TheDay, 90);
             int ResponseTimeInMs = Convert.ToInt32((DateTime.Now - startTime).TotalMilliseconds);
-            Assert.AreEqual(0, ResponseTimeInMs);    
+            Assert.IsTrue(ResponseTimeInMs < 70);     
         }
 
         [Test]
-        public void Performance_AccumulateOver_2 ()
+        public void Performance_SlidingSummedIntervals_2 ()
         {
-            // ~230ms - temporal
             DateTime startTime = DateTime.Now;
-            Tnum t = Tn1().AccumulatedOver(90,TheDay);
+            Tnum t = Tn1().SlidingSummedIntervals(TheDay, 90);
             int ResponseTimeInMs = Convert.ToInt32((DateTime.Now - startTime).TotalMilliseconds);
-            Assert.AreEqual(0, ResponseTimeInMs);    
+            Assert.IsTrue(ResponseTimeInMs < 70); 
+        }
+
+        [Test]
+        public void Performance_TotalSummedIntervals_2 ()
+        {
+            DateTime startTime = DateTime.Now;
+            Tnum t = Tn1().TotalSummedIntervals(TheDay, Date(2012,1,1), Date(2016,1,1));
+            int ResponseTimeInMs = Convert.ToInt32((DateTime.Now - startTime).TotalMilliseconds);
+            Assert.IsTrue(ResponseTimeInMs < 80);   
         }
 
         [Test]
         public void Performance_Subtraction ()
         {
-            // ~30-45ms 
+            // ~10ms 
             DateTime startTime = DateTime.Now;
             Tnum t = new Tnum(10) + Tn1();
             int ResponseTimeInMs = Convert.ToInt32((DateTime.Now - startTime).TotalMilliseconds);
-            Assert.AreEqual(-1, ResponseTimeInMs);    
+            Assert.IsTrue(ResponseTimeInMs < 10);    
         }
     }
 }

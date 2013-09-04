@@ -26,35 +26,35 @@ Tnum? AnnualUnearnedIncome(Thing p) =
     
 # Gross wages
 Tnum AnnualWages(Thing p) =
-    MonthlyWages(p).AccumulatedOver(12, TheMonth)
+    MonthlyWages(p).SlidingSummedIntervals(TheMonth, 12)
 
 # Self-employment income
 Tnum AnnualSelfEmploymentIncome(Thing p) =
-    MonthlySelfEmploymentIncome(p).AccumulatedOver(12, TheMonth)
+    MonthlySelfEmploymentIncome(p).SlidingSummedIntervals(TheMonth, 12)
     
 # Commissions
 Tnum AnnualCommissions(Thing p) =
-    MonthlyCommissions(p).AccumulatedOver(12, TheMonth)
+    MonthlyCommissions(p).SlidingSummedIntervals(TheMonth, 12)
 
 # Social Security benefits
 Tnum AnnualSocialSecurityBenefits(Thing p) =
-    MonthlySocialSecurityBenefits(p).AccumulatedOver(12, TheMonth)
+    MonthlySocialSecurityBenefits(p).SlidingSummedIntervals(TheMonth, 12)
 
 # Supplemental Security Income (SSI)
 Tnum AnnualSupplementalSecurityIncome(Thing p) =
-    MonthlySupplementalSecurityIncome(p).AccumulatedOver(12, TheMonth)
+    MonthlySupplementalSecurityIncome(p).SlidingSummedIntervals(TheMonth, 12)
 
 # Veterans benefits
 Tnum AnnualVeteransBenefits(Thing p) =
-    MonthlyVeteransBenefits(p).AccumulatedOver(12, TheMonth)
+    MonthlyVeteransBenefits(p).SlidingSummedIntervals(TheMonth, 12)
 
 # Child support income
 Tnum AnnualChildSupportIncome(Thing p) =
-    MonthlyChildSupportIncome(p).AccumulatedOver(12, TheMonth)
+    MonthlyChildSupportIncome(p).SlidingSummedIntervals(TheMonth, 12)
 
 # Unemployment compensation
 Tnum AnnualUnemploymentCompensation(Thing p) =
-    MonthlyUnemploymentCompensation(p).AccumulatedOver(12, TheMonth)
+    MonthlyUnemploymentCompensation(p).SlidingSummedIntervals(TheMonth, 12)
 
 
 # MONTHLY INCOME

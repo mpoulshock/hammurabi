@@ -77,7 +77,6 @@
     <Compile Include="Core\Engine\Interview - things.cs" />
     <Compile Include="Core\Facts\ThingBase.cs" />
     <Compile Include="Core\Facts\CacheBase.cs" />
-    <Compile Include="Core\Core functions\Tnum - accumulate.cs" />
     <Compile Include="Core\Core functions\Set - optimal subsets.cs" />
     <Compile Include="Generated source\5 USC 6103 - Legal holidays.cs" />
     <Compile Include="Generated source\5 USC 6301 - Fed employees - leave.cs" />
@@ -175,6 +174,7 @@
     <Compile Include="Core\Core functions\Elapsed time - sliding.cs" />
     <Compile Include="Core\Core functions\Elapsed time - total.cs" />
     <Compile Include="Core\Core functions\Elapsed time - per interval.cs" />
+    <Compile Include="Core\Core functions\Summed intervals.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

@@ -25,78 +25,87 @@ using NUnit.Framework;
 namespace Hammurabi.UnitTests.CoreFcns
 {
     [TestFixture]
-    public class Accumulate : H
+    public class SummedIntervals : H
     {   
-        // ACCUMULATED
+        // RUNNING SUMMED INTERVALS
 
         [Test]
-        public void Accumulate1()
+        public void RunningSummedIntervals_1()
         {
             Tnum t = new Tnum(0);
             t.AddState(Date(2010, 1, 1), 1000);
             t.AddState(Date(2010, 3, 1), 0);
-            Tnum r = t.Accumulated(TheMonth).AsOf(Date(2012,1,1));           
+            Tnum r = t.RunningSummedIntervals(TheMonth).AsOf(Date(2012,1,1));           
             Assert.AreEqual(2000, r.Out);    
         }
 
         [Test]
-        public void Accumulate2()       // Fail: not sure what's happening here.  Decimal comparison issues?
+        public void RunningSummedIntervals_2()       // Fail: not sure what's happening here.  Decimal comparison issues?
         {
             Tnum t = new Tnum(0);
-            Tnum r = t.Accumulated(TheMonth);           
+            Tnum r = t.RunningSummedIntervals(TheMonth);           
             Assert.AreEqual(0, r.Out);    
         }
         
         [Test]
-        public void Accumulate3()
+        public void RunningSummedIntervals_3()
         {
             Tnum t = new Tnum(new Hval());
-            Tnum r = t.Accumulated(TheMonth);           
+            Tnum r = t.RunningSummedIntervals(TheMonth);           
             Assert.AreEqual("Unstated", r.Out);    
         }
         
         [Test]
-        public void Accumulate4()
+        public void RunningSummedIntervals_4()
         {
             Tnum t = new Tnum(Hstate.Stub);
-            Tnum r = t.Accumulated(TheMonth);           
+            Tnum r = t.RunningSummedIntervals(TheMonth);           
             Assert.AreEqual("Stub", r.Out);    
         }
 
-        // ACCUMULATED OVER
+        // SLIDING SUMMED INTERVALS
 
         [Test]
-        public void AccumulateOver1()
+        public void SlidingSummedIntervals_1()
         {
             Tnum t = new Tnum(1000);
-            Tnum r = t.AccumulatedOver(2, TheMonth);           
+            Tnum r = t.SlidingSummedIntervals(TheMonth, 2);           
             Assert.AreEqual(2000, r.Out);    
         }
 
         [Test]
-        public void AccumulateOver2()
+        public void SlidingSummedIntervals_2()
         {
             Tnum t = new Tnum(new Hval());
-            Tnum r = t.AccumulatedOver(2, TheMonth);           
+            Tnum r = t.SlidingSummedIntervals(TheMonth, 2);            
             Assert.AreEqual("Unstated", r.Out);    
         }
 
         [Test]
-        public void AccumulateOver3()
+        public void SlidingSummedIntervals_3()
         {
             Tnum t = new Tnum(Hstate.Stub);
-            Tnum r = t.AccumulatedOver(2, TheMonth);           
+            Tnum r = t.SlidingSummedIntervals(TheMonth, 2);            
             Assert.AreEqual("Stub", r.Out);    
         }
 
         [Test]
-        public void AccumulateOver4()
+        public void SlidingSummedIntervals_4()
         {
             Tnum t = new Tnum(1000);
             t.AddState(Date(2013, 1, 1), 2000);
-
-            Tnum r = t.AccumulatedOver(2, TheYear);           
+            Tnum r = t.SlidingSummedIntervals(TheYear, 2);           
             Assert.AreEqual("{Dawn: 2000; 1/1/2012: 3000; 1/1/2013: 4000}", r.Out);    
+        }
+
+        // TOTAL SUMMED INTERVALS
+
+        [Test]
+        public void TotalSummedIntervals_1()
+        {
+            Tnum t = new Tnum(1000);
+            Tnum r = t.TotalSummedIntervals(TheMonth, Date(2015,1,1), Date(2015,12,31));           
+            Assert.AreEqual(12000, r.Out);    
         }
     }
 }

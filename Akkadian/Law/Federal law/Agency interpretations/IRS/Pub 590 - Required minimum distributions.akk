@@ -11,7 +11,7 @@ Tnum IRAProjected(Thing person, Thing ira)
 
 ##
     Tnum cumulativeRMD =
-        RMDAmount(person,ira).NormalizedTo(0).Accumulated(TheYear)
+        RMDAmount(person,ira).NormalizedTo(0).RunningSummedIntervals(TheYear)
     ##    
 
 # How much must be withdrawn (what is the required minimum distribution) from {1}?

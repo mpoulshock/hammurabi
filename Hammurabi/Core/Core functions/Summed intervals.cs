@@ -25,42 +25,59 @@ namespace Hammurabi
     public partial class Tnum
     {
         /// <summary>
-        /// Takes a Tnum representing some value per unit time, and accumulates it
-        /// over a given type of time interval to obtain a running total.
+        /// Finds the total of a Tnum, summed over the given intervals between two 
+        /// dates (start and end).
+        /// </summary>
+        /// <example>
+        ///   AnnualIncome2014 = MonthlyIncome.TotalSummedIntervals(TheMonth, 2014-01-01, 2014-12-31)
+        /// </example>
+        public Tnum TotalSummedIntervals(Tnum interval, Tdate start, Tdate end)  
+        {
+            Tnum rsi = RunningSummedIntervals(interval);
+
+            return rsi.AsOf(end) - rsi.AsOf(start);
+        }
+
+        /// <summary>
+        /// Takes a Tnum representing some value per unit time, and sums or 
+        /// accumulates it over a given type of time interval to obtain a 
+        /// running total.
         /// </summary>
         /// <example>
         /// Calculate lifetime accrued income, given a person's annual income:
         /// 
-        ///   AccruedIncome = AnnualIncome.Accumulated(TheYear)
+        ///   AccruedIncome = AnnualIncome.RunningSummedIntervals(TheYear)
         /// 
         /// The time units cancel: [$/year] * [year] yields [$].
         /// </example>
-        public Tnum Accumulated(Tnum interval)  
+        public Tnum RunningSummedIntervals(Tnum interval)  
         {
             // If base Tnum is ever unknown during the time period, return 
             // the state with the proper precedence
             Hstate baseState = PrecedenceForMissingTimePeriods(this);
             if (baseState != Hstate.Known) return new Tnum(baseState);
 
-            // An idea to speed things up...
-//            if (this.IsEternal)
-//            {
-//                return this * Switch<Tbool>(() => this > 0, ()=> true, ()=> false).RunningElapsedIntervals(interval);
-//            }
-
             // Start accumulating...
             Tnum result = new Tnum(0);
             decimal total = 0;
+            decimal previousVal = 0;
 
             // Iterate through the intervals, totaling
             for (int i=1; i < interval.TimeLine.Count-1; i++)
             {
-                // TODO: end v. beginning of interval?
-                total += this.AsOf(interval.TimeLine.Keys[i]).ToHardDecimal;
-                result.AddState(interval.TimeLine.Keys[i], total);
+                total += Convert.ToDecimal(this.ObjectAsOf(interval.TimeLine.Keys[i]).Val);
+
+                // Only add changepoint if value actually changes
+                if (total != previousVal)
+                {
+                    result.AddState(interval.TimeLine.Keys[i], total);
+                }
+
+                // Set for next iteration
+                previousVal = total;
             }
-            
-            return result.Lean;
+
+            return result;
         }
 
         /// <summary>
@@ -71,11 +88,11 @@ namespace Hammurabi
         /// Calculate income accumulated over a three month period, where the
         /// person earned $3,000/month:
         /// 
-        ///   Income = MonthlyIncome.AccumulatedOver(3, TheMonth)
+        ///   Income = MonthlyIncome.SlidingSummedIntervals(TheMonth, 3)
         /// 
         /// The time units cancel: [$/mo.] * [mo.] yields [$].
         /// </example>
-        public Tnum AccumulatedOver(Tnum numberOfIntervals, Tnum interval)  
+        public Tnum SlidingSummedIntervals(Tnum interval, Tnum windowSize)  
         {
             // Handle eternal values
             if (this.IsEternal)
@@ -84,13 +101,13 @@ namespace Hammurabi
                 // the state with the proper precedence
                 Hstate baseState = PrecedenceForMissingTimePeriods(this);
                 if (baseState != Hstate.Known) return new Tnum(baseState);
-                
-                return this * numberOfIntervals;
+
+                return this * windowSize;
             }
-            
+
             // Start accumulating...
-            int num = numberOfIntervals.ToHardInt;  // TODO: Handle unknowns
-            
+            int num = windowSize.ToHardInt;  // TODO: Handle unknowns
+
             // Get first accumulated value
             decimal firstVal = 0;
             for (int j=0; j<num; j++)
@@ -102,17 +119,15 @@ namespace Hammurabi
                 }
             }
             Tnum result = new Tnum(firstVal);
-            
+
             // Iterate through the subsequent intervals
             decimal previousVal = firstVal;
             for (int i=1; i < interval.TimeLine.Count-num; i++)
             {
                 // Take the value from the last iteration, and slide it the time window to the right, 
                 // subtracting the left interval and adding the new right one.
-//                decimal lastOldInterval = Convert.ToDecimal(this.ObjectAsOf(interval.TimeLine.Keys[i-1]).Val);
-//                decimal nextNewInterval = Convert.ToDecimal(this.ObjectAsOf(interval.TimeLine.Keys[i+num-1]).Val);
-                decimal lastOldInterval = this.AsOf(interval.TimeLine.Keys[i-1]).ToHardDecimal;
-                decimal nextNewInterval = this.AsOf(interval.TimeLine.Keys[i+num-1]).ToHardDecimal;
+                decimal lastOldInterval = Convert.ToDecimal(this.ObjectAsOf(interval.TimeLine.Keys[i-1]).Val);
+                decimal nextNewInterval = Convert.ToDecimal(this.ObjectAsOf(interval.TimeLine.Keys[i+num-1]).Val);
                 decimal newVal = previousVal - lastOldInterval + nextNewInterval;
 
                 // Only add changepoint if value actually changes
@@ -124,7 +139,7 @@ namespace Hammurabi
                 // Set for next iteration
                 previousVal = newVal;
             }
-            
+
             return result;
         }
     }

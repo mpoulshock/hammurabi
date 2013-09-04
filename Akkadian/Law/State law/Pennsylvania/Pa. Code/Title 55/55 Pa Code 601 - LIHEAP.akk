@@ -105,11 +105,11 @@ Tnum TreatedIncome(Thing p) =
 
 # Income accrued in the prior 12 months
 Tnum Month12Income(Thing p) =
-    CountableIncome(p).AccumulatedOver(12, TheMonth).Shift(-1, TheYear)
+    CountableIncome(p).SlidingSummedIntervals(TheMonth, 12).Shift(-1, TheYear)
 
 # Income accrued in the prior 90 days
 Tnum Day90Income(Thing p) =
-    DailyIncome(p).AccumulatedOver(90, TheDay).Shift(-90, TheDay)
+    DailyIncome(p).SlidingSummedIntervals(TheDay, 90).Shift(-90, TheDay)
 
 # Daily income
 Tnum DailyIncome(Thing p) =
@@ -169,7 +169,7 @@ Tbool PreviouslyReceivedLIHEAPInAnotherHousehold(Thing person)
 
 # UNIT TESTS
 
-# This is slow b/c it calls AccumulatedOver numerous times above and in the monthly/annual income rules
+# This is slow b/c it calls __SummedIntervals numerous times above and in the monthly/annual income rules
 Test: 403207628
 - Thing Joneses
 - Things sam
