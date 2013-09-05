@@ -115,7 +115,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             DateTime startTime = DateTime.Now;
             Tbool t = Tb1().Shift(10, TheDay);
             int ResponseTimeInMs = Convert.ToInt32((DateTime.Now - startTime).TotalMilliseconds);
-            Assert.IsTrue(ResponseTimeInMs < 60);    
+            Assert.IsTrue(ResponseTimeInMs < 70);    
         }
 
         [Test]
@@ -151,7 +151,7 @@ namespace Hammurabi.UnitTests.CoreFcns
             DateTime startTime = DateTime.Now;
             Tnum t = Tn1().SlidingSummedIntervals(TheDay, 90);
             int ResponseTimeInMs = Convert.ToInt32((DateTime.Now - startTime).TotalMilliseconds);
-            Assert.IsTrue(ResponseTimeInMs < 70); 
+            Assert.IsTrue(ResponseTimeInMs < 80); 
         }
 
         [Test]

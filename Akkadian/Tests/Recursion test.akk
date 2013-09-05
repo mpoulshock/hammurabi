@@ -7,7 +7,7 @@
 # Recursive function 1
 Tnum Fibonacci(Tnum n) =
     set:
-    if n <= 1 -> 1
+    if n <= 2 -> 1
     else Fibonacci(n-1) + Fibonacci(n-2)
 
 # Recursive function 2
@@ -23,7 +23,7 @@ Test: Fib1
 - Tests.Fibonacci(1).Out =?= 1
 
 Test: Fib2
-- Tests.Fibonacci(10).Out =?= 89
+- Tests.Fibonacci(10).Out =?= 55
 
 Test: Fac1
 - Tests.Factorial(1).Out =?= 1

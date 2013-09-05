@@ -1,9 +1,42 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="Unit tests - Hammurabi core\Unit tests\Test - summed intervals.cs">
+    <Files>
+      <File FileName="Hammurabi\Core\Core functions\Summed intervals.cs" Line="80" Column="26" />
+      <File FileName="Unit tests - Hammurabi core\Unit tests\Test - summed intervals.cs" Line="13" Column="78" />
+    </Files>
     <Pads>
       <Pad Id="ProjectPad">
-        <State expanded="True" />
+        <State expanded="True">
+          <Node name="Akkadian" expanded="True">
+            <Node name="Common" expanded="True">
+              <Node name="Econ" expanded="True" />
+            </Node>
+            <Node name="Law" expanded="True">
+              <Node name="Federal law" expanded="True">
+                <Node name="Agency interpretations" expanded="True">
+                  <Node name="IRS" expanded="True" />
+                </Node>
+              </Node>
+              <Node name="State law" expanded="True">
+                <Node name="Pennsylvania" expanded="True">
+                  <Node name="Pa. Code" expanded="True">
+                    <Node name="Title 55" expanded="True" />
+                  </Node>
+                </Node>
+              </Node>
+            </Node>
+          </Node>
+          <Node name="Hammurabi" expanded="True">
+            <Node name="Core" expanded="True">
+              <Node name="Core functions" expanded="True" />
+              <Node name="Fundamental types" expanded="True" />
+            </Node>
+          </Node>
+          <Node name="Unit tests - Hammurabi core" expanded="True">
+            <Node name="Unit tests" expanded="True" />
+          </Node>
+        </State>
       </Pad>
       <Pad Id="ClassPad">
         <State expanded="True" selected="True">

@@ -52,6 +52,12 @@ namespace Hammurabi
         /// </example>
         public Tnum RunningSummedIntervals(Tnum interval)  
         {
+            // TODO: Review how uncertainty is handled here:
+
+            // Handle unknowns
+            Hstate top = PrecedingState(this.FirstValue, interval.FirstValue);
+            if (top != Hstate.Known) return new Tnum(new Hval(null,top));
+
             // If base Tnum is ever unknown during the time period, return 
             // the state with the proper precedence
             Hstate baseState = PrecedenceForMissingTimePeriods(this);
@@ -70,7 +76,7 @@ namespace Hammurabi
                 // Only add changepoint if value actually changes
                 if (total != previousVal)
                 {
-                    result.AddState(interval.TimeLine.Keys[i], total);
+                    result.AddState(interval.TimeLine.Keys[i+1], total);
                 }
 
                 // Set for next iteration
@@ -94,19 +100,25 @@ namespace Hammurabi
         /// </example>
         public Tnum SlidingSummedIntervals(Tnum interval, Tnum windowSize)  
         {
+            // TODO: Review how uncertainty is handled here:
+
+            // Handle unknowns
+            Hstate top = PrecedingState(this.FirstValue, interval.FirstValue, windowSize.FirstValue);
+            if (top != Hstate.Known) return new Tnum(new Hval(null,top));
+
+            // If base Tnum is ever unknown during the time period, return 
+            // the state with the proper precedence
+            Hstate baseState = PrecedenceForMissingTimePeriods(this);
+            if (baseState != Hstate.Known) return new Tnum(baseState);
+
             // Handle eternal values
             if (this.IsEternal)
             {
-                // If base Tnum is ever unknown during the time period, return 
-                // the state with the proper precedence
-                Hstate baseState = PrecedenceForMissingTimePeriods(this);
-                if (baseState != Hstate.Known) return new Tnum(baseState);
-
                 return this * windowSize;
             }
 
             // Start accumulating...
-            int num = windowSize.ToHardInt;  // TODO: Handle unknowns
+            int num = windowSize.ToHardInt;
 
             // Get first accumulated value
             decimal firstVal = 0;
@@ -133,7 +145,8 @@ namespace Hammurabi
                 // Only add changepoint if value actually changes
                 if (newVal != previousVal)
                 {
-                    result.AddState(interval.TimeLine.Keys[i], newVal);
+                    // The value of an interval is counted after it has elapsed
+                    result.AddState(interval.TimeLine.Keys[i+num], newVal);
                 }
 
                 // Set for next iteration
