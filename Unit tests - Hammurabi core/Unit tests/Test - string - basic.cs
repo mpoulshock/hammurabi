@@ -1,4 +1,4 @@
-// Copyright (c) 2012 Hammura.bi LLC
+// Copyright (c) 2012-2013 Hammura.bi LLC
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,7 @@ namespace Hammurabi.UnitTests.CoreFcns
     public class BasicString : H
     {
         [Test]
-        public void Test1 ()
+        public void Concat_1 ()
         {
             Tstr ts1 = new Tstr("hello,");
             Tstr ts2 = new Tstr("world");
@@ -36,7 +36,7 @@ namespace Hammurabi.UnitTests.CoreFcns
         }
         
         [Test]
-        public void Test2 ()
+        public void Concat_2 ()
         {
             Tstr ts1 = new Tstr("hello,");
             Tstr ts2 = new Tstr("world");
@@ -45,10 +45,24 @@ namespace Hammurabi.UnitTests.CoreFcns
         }
         
         [Test]
-        public void Test3 ()
+        public void Concat_3 ()
         {
             Tstr ts1 = new Tstr("hello,") + " world";
             Assert.AreEqual("hello, world", ts1.Out);            
         }   
+
+        [Test]
+        public void ToUSD_1 ()
+        {
+            Tstr ts1 = new Tnum(91.246).ToUSD;
+            Assert.AreEqual("$91.25", ts1.Out);            
+        } 
+
+        [Test]
+        public void ToUSD_2 ()
+        {
+            Tstr ts1 = new Tnum(1234567).ToUSD;
+            Assert.AreEqual("$1,234,567.00", ts1.Out);            
+        } 
     }
 }

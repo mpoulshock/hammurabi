@@ -30,9 +30,6 @@ namespace Hammurabi
         /// </summary>
         public static Hval Maximum(List<Hval> list)
         {
-            Hstate top = H.PrecedingState(list);
-            if (top != Hstate.Known) return new Hval(null,top);
-
             decimal max = Convert.ToDecimal(list[0].Val);
             foreach (Hval v in list) 
             {
@@ -50,9 +47,6 @@ namespace Hammurabi
         /// </summary>
         public static Hval Minimum(List<Hval> list)
         {
-            Hstate top = H.PrecedingState(list);
-            if (top != Hstate.Known) return new Hval(null,top);
-
             decimal min = Convert.ToDecimal(list[0].Val);
             foreach (Hval v in list) 
             {
@@ -64,30 +58,7 @@ namespace Hammurabi
             
             return new Hval(min);
         }
-        
-        /// <summary>
-        /// Determines whether a legal entity is a member of a Tset
-        /// </summary>
-        public static Tbool IsMemberOfSet(Thing entity, Tset theSet)
-        {
-            Tbool result = new Tbool();
-            
-            foreach (KeyValuePair<DateTime,Hval> slice in theSet.IntervalValues)
-            {
-                if (slice.Value.IsKnown)
-                {
-                    List<Thing> entities = (List<Thing>)slice.Value.Val;
-                    result.AddState(slice.Key, entities.Contains(entity));
-                }
-                else
-                {
-                    result.AddState(slice.Key, slice.Value);
-                }
-            }
-            
-            return result.Lean;
-        }
-        
+
         /// <summary>
         /// Returns a Tvar object of the appropriate type.
         /// </summary>

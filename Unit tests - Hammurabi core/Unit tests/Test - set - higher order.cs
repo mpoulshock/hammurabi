@@ -225,28 +225,6 @@ namespace Hammurabi.UnitTests.CoreFcns
             Assert.AreEqual("{Dawn: Stub; 1/1/2000: 1; 1/1/2001: Uncertain}", tsv.Count.Out);
         }
 
-        // EntitiesAsOf
-
-        [Test]
-        public void EntitiesAsOf1 ()
-        {
-            Thing P1 = new Thing("P1");
-            Tset tsv = new Tset(Hstate.Stub);
-            tsv.AddState(Date(2000,01,01),P1);
-            tsv.AddState(Date(2001,01,01),Hstate.Uncertain);
-            Assert.AreEqual(Hstate.Stub, tsv.EntitiesAsOf(Date(1999,01,01)).Val);
-        }
-
-        [Test]
-        public void EntitiesAsOf2 ()
-        {
-            Thing P1 = new Thing("P1");
-            Tset tsv = new Tset(Hstate.Stub);
-            tsv.AddState(Date(2000,01,01),P1);
-            tsv.AddState(Date(2001,01,01),Hstate.Uncertain);
-            Assert.AreEqual(Hstate.Uncertain, tsv.EntitiesAsOf(Date(2002,02,01)).Val);
-        }
-
         // AllKnownPeople
         
         [Test]

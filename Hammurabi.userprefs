@@ -1,9 +1,15 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Unit tests - Hammurabi core\Unit tests\Test - summed intervals.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Hammurabi\Core\Core functions\Time - analysis.cs">
     <Files>
-      <File FileName="Hammurabi\Core\Core functions\Summed intervals.cs" Line="80" Column="26" />
-      <File FileName="Unit tests - Hammurabi core\Unit tests\Test - summed intervals.cs" Line="13" Column="78" />
+      <File FileName="Hammurabi\Core\Core functions\Time - analysis.cs" Line="102" Column="9" />
+      <File FileName="Hammurabi\Core\Core functions\Math.cs" Line="1" Column="1" />
+      <File FileName="Hammurabi\Core\Core functions\Comparison - dates.cs" Line="1" Column="1" />
+      <File FileName="Hammurabi\Core\Core functions\Comparison - numeric.cs" Line="1" Column="1" />
+      <File FileName="Hammurabi\Core\Core functions\Misc.cs" Line="1" Column="1" />
+      <File FileName="Hammurabi\Core\Core functions\Set - higher-order.cs" Line="1" Column="1" />
+      <File FileName="Hammurabi\Core\Core functions\Util.cs" Line="1" Column="1" />
+      <File FileName="Hammurabi\Core\Core functions\Unknown.cs" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -26,10 +32,13 @@
                 </Node>
               </Node>
             </Node>
+            <Node name="Tests" expanded="True" />
           </Node>
           <Node name="Hammurabi" expanded="True">
             <Node name="Core" expanded="True">
-              <Node name="Core functions" expanded="True" />
+              <Node name="Core functions" expanded="True">
+                <Node name="Time - analysis.cs" selected="True" />
+              </Node>
               <Node name="Fundamental types" expanded="True" />
             </Node>
           </Node>
@@ -49,17 +58,7 @@
         <State />
       </Pad>
       <Pad Id="MonoDevelop.NUnit.TestPad">
-        <State expanded="True">
-          <Node name="Unit tests - Hammurabi core" expanded="True">
-            <Node name="Hammurabi" expanded="True">
-              <Node name="UnitTests" expanded="True">
-                <Node name="CoreFcns" expanded="True">
-                  <Node name="Performance" expanded="True" selected="True" />
-                </Node>
-              </Node>
-            </Node>
-          </Node>
-        </State>
+        <State expanded="True" selected="True" />
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>

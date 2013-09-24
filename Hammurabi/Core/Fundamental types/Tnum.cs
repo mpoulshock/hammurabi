@@ -225,17 +225,12 @@ namespace Hammurabi
         {
             // Deal with unknowns
             Hstate state = PrecedenceForMissingTimePeriods(this);
-            if (state != Hstate.Known) 
-            {
-                return new Tnum(state);
-            }
+            if (state != Hstate.Known) { return new Tnum(state); }
 
             // Determine the maximum value
             decimal max = Convert.ToDecimal(this.FirstValue.Val);
             foreach(Hval s in TimeLine.Values)
             {
-                // TODO: Handle unknowns
-
                 if (Convert.ToDecimal(s.Val) > max)
                 {
                     max = Convert.ToDecimal(s.Val);
@@ -252,17 +247,12 @@ namespace Hammurabi
         {     
             // Deal with unknowns
             Hstate state = PrecedenceForMissingTimePeriods(this);
-            if (state != Hstate.Known) 
-            {
-                return new Tnum(state);
-            }
+            if (state != Hstate.Known) { return new Tnum(state); }
 
             // Determine the maximum value
             decimal min = Convert.ToDecimal(this.FirstValue.Val);
             foreach(Hval s in TimeLine.Values)
             {
-                // TODO: Handle unknowns
-
                 if (Convert.ToDecimal(s.Val) < min)
                 {
                     min = Convert.ToDecimal(s.Val);
@@ -278,34 +268,12 @@ namespace Hammurabi
         {
             get
             {
-                // Deal with unknowns
-                if (this.IsEternallyUnknown)
-                {
-                    Hstate state = PrecedenceForMissingTimePeriods(this);
-                    return new Tstr(state);
-                }
-
-                Tstr result = new Tstr();
-                string r = "";
-
-                foreach (KeyValuePair<DateTime,Hval> slice in this.IntervalValues)
-                {
-                    Hval theVal = slice.Value;
-
-                    if (!theVal.IsKnown)
-                    {
-                        r = theVal.ToString;
-                    }
-                    else
-                    {
-                        r = String.Format("{0:C}" ,Convert.ToDecimal(theVal.Val));
-                    }
-
-                    result.AddState(slice.Key, r);
-                }
-                
-                return result;
+                return ApplyFcnToTimeline<Tstr>(x => CoreToUSD(x), this);
             }
+        }
+        private static Hval CoreToUSD(List<Hval> list)
+        {
+            return String.Format("{0:C}" ,Convert.ToDecimal(list[0].Val));
         }
 
         /// <summary>

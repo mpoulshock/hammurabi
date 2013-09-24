@@ -166,20 +166,25 @@ namespace Hammurabi
         /// </summary>       
         public static Hstate PrecedingStateForLogic(List<Hval> inputs) 
         {
-            Hval[] list = Util.ListToArray<Hval>(inputs);
-
+            // This returns the maximum value of the listed Hstates, exploiting the fact that C# 
+            // enums are actually integers.
             // If one fact is unstated, we want to continue trying to prove (OR) or 
             // falsify (AND) the conclusion of the rule.
-            if (AnyHvalsAre(Hstate.Unstated, list)) return Hstate.Unstated;
-
             // Uncertain trumps Stub because if the user were able to answer the question,
             // Hammurabi could possibly provide a determination.
-            if (AnyHvalsAre(Hstate.Uncertain, list)) return Hstate.Uncertain;
-
             // Else, stub...
-            if (AnyHvalsAre(Hstate.Stub, list)) return Hstate.Stub;
+            int max = 0;
 
-            return Hstate.Known;
+            foreach (Hval v in inputs) 
+            {
+                int s = (int)v.State;
+                if (s > max && s != 4)
+                {
+                    max = s; 
+                }
+            }
+
+            return max == 0 ? Hstate.Known : (Hstate)max;
         }
 
         /// <summary>
@@ -191,30 +196,24 @@ namespace Hammurabi
         }
         protected static Hstate PrecedingState(params Hval[] list) 
         {
-            // Where there is a stub, there's no need to consider uncertain or unstated facts
-            if (AnyHvalsAre(Hstate.Stub, list)) return Hstate.Stub;
-
-            // Where a fact is uncertain, there's no need to query for more information
-            if (AnyHvalsAre(Hstate.Uncertain, list)) return Hstate.Uncertain;
-
-            // If one fact is known and the other unstated, the conclusion can't be reached 
+            // This returns the minimum value of the listed Hstates, exploiting the fact that C# 
+            // enums are actually integers.
+            // Where there's a stub (1), there's no need to consider uncertain or unstated facts
+            // Where a fact is uncertain (2), there's no need to query for more information
+            // If one fact is known (4) and the other unstated (3), the conclusion can't be reached 
             // and is unstated
-            if (AnyHvalsAre(Hstate.Unstated, list)) return Hstate.Unstated;
-            
-            return Hstate.Known;
-        }
+            int min = 4;
 
-        /// <summary>
-        /// Returns true if any of the input Hvals are unstated.
-        /// </summary>       
-        protected static bool AnyHvalsAre(Hstate state, params Hval[] list) 
-        {
-            foreach (Hval h in list)
+            foreach (Hval v in list) 
             {
-                if (h.State == state) return true;
+                int s = (int)v.State;
+                if (s < min)
+                {
+                    min = s; 
+                }
             }
-            
-            return false;
+
+            return (Hstate)min;
         }
     }
 }

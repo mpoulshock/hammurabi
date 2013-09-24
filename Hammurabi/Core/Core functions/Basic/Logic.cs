@@ -156,24 +156,13 @@ namespace Hammurabi
         /// </summary>
         public static Tbool operator ! (Tbool tb)
         {
-            Tbool result = new Tbool();
-            
-            foreach (KeyValuePair<DateTime,Hval> slice in tb.IntervalValues)
-            {
-                if (slice.Value.IsKnown)
-                {
-                    bool bval = !Convert.ToBoolean(slice.Value.Val);
-                    result.AddState(slice.Key, bval);
-                }
-                else
-                {
-                    result.AddState(slice.Key, slice.Value);
-                }
-            }
-            
-            return result.Lean;
+            return ApplyFcnToTimeline<Tbool>(x => Not(x), tb);
         }
-        
+        private static Hval Not(List<Hval> list)
+        {
+            return !Convert.ToBoolean(list[0].Val);
+        }
+
         // ********************************************************************
         //   Either
         // ********************************************************************

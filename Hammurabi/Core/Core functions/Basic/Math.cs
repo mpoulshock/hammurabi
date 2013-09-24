@@ -32,27 +32,11 @@ namespace Hammurabi
         /// </summary>
         public static Tnum operator + (Tnum tn1, Tnum tn2)    
         {
-            // return tn1 - (0 - tn2);
-            return ApplyFcnToTimeline(x => Sum(x), tn1, tn2);
+            return ApplyFcnToTimeline<Tnum>(x => CoreSum(x), tn1, tn2);
         }
-
-        /// <summary>
-        /// Non-temporal sum function.
-        /// </summary>
-        public static Hval Sum(List<Hval> list)
+        private static Hval CoreSum(List<Hval> list)
         {
-            Hstate top = PrecedingState(list);
-            if (top != Hstate.Known)
-            {
-                return new Hval(null,top);
-            }
-
-            decimal sum = 0;
-            foreach (Hval v in list) 
-            {
-                sum += Convert.ToDecimal(v.Val); 
-            }
-            return new Hval(sum);
+            return Convert.ToDecimal(list[0].Val) + Convert.ToDecimal(list[1].Val);
         }
 
         /// <summary>
@@ -60,27 +44,11 @@ namespace Hammurabi
         /// </summary>
         public static Tnum operator - (Tnum tn1, Tnum tn2)    
         {
-            Tnum result = new Tnum();
-            
-            foreach(KeyValuePair<DateTime,List<Hval>> slice in TimePointValues(tn1,tn2))
-            {    
-                Hstate top = PrecedingState(slice.Value);
-                if (top != Hstate.Known)
-                {
-                    result.AddState(slice.Key, new Hval(null,top));
-                }
-                else
-                {
-                    decimal sum = Convert.ToDecimal(slice.Value[0].Val) * 2;
-                    foreach (Hval v in slice.Value) 
-                    {
-                        sum -= Convert.ToDecimal(v.Val); 
-                    }
-                    result.AddState(slice.Key, new Hval(sum));
-                }
-            }
-            
-            return result.Lean;
+            return ApplyFcnToTimeline<Tnum>(x => Minus(x), tn1, tn2);
+        }
+        private static Hval Minus(List<Hval> list)
+        {
+            return Convert.ToDecimal(list[0].Val) - Convert.ToDecimal(list[1].Val);
         }
 
         /// <summary>
@@ -93,8 +61,11 @@ namespace Hammurabi
             foreach(KeyValuePair<DateTime,List<Hval>> slice in TimePointValues(tn1,tn2))
             {    
                 Hstate top = PrecedingState(slice.Value);
+                decimal val1 = Convert.ToDecimal(slice.Value [0].Val);
+                decimal val2 = Convert.ToDecimal(slice.Value [1].Val);
 
-                if (AnyHvalIsAZero(slice.Value))   // Short circuit 1
+                // Short circuit 1
+                if (val1 == 0 || val2 == 0)
                 {
                     result.AddState(slice.Key, new Hval(0));
                 }
@@ -104,28 +75,12 @@ namespace Hammurabi
                 }
                 else                               // Do the math
                 {
-                    decimal prod = 1;
-                    foreach (Hval v in slice.Value) 
-                    {
-                        prod *= Convert.ToDecimal(v.Val); 
-                    }
+                    decimal prod = val1 * val2;
                     result.AddState(slice.Key, new Hval(prod));
                 }
             }
             
             return result.Lean;
-        }
-
-        /// <summary>
-        /// Determines whether any input value is a 0.
-        /// </summary>
-        private static bool AnyHvalIsAZero(List<Hval> list)
-        {
-            foreach (Hval h in list)
-            {
-                if (Convert.ToDecimal(h.Val) == 0) return true;
-            }
-            return false;
         }
 
         /// <summary>
@@ -150,7 +105,7 @@ namespace Hammurabi
                 }
                 else                                              // Do the math
                 {
-                    decimal r = Convert.ToDecimal(slice.Value[0].Val) / Convert.ToDecimal(slice.Value[1].Val);
+                    decimal r = Convert.ToDecimal(slice.Value[0].Val) / denominator;
                     result.AddState(slice.Key, new Hval(r));
                 }
             }
@@ -163,23 +118,11 @@ namespace Hammurabi
         /// </summary>
         public static Tnum operator % (Tnum tn1, Tnum tn2)    
         {
-            Tnum result = new Tnum();
-            
-            foreach(KeyValuePair<DateTime,List<Hval>> slice in TimePointValues(tn1,tn2))
-            {    
-                Hstate top = PrecedingState(slice.Value);
-                if (top != Hstate.Known)
-                {
-                    result.AddState(slice.Key, new Hval(null,top));
-                }
-                else
-                {
-                    decimal r = Convert.ToDecimal(slice.Value[0].Val) % Convert.ToDecimal(slice.Value[1].Val);
-                    result.AddState(slice.Key, new Hval(r));
-                }
-            }
-            
-            return result.Lean;
+            return ApplyFcnToTimeline<Tnum>(x => Mod(x), tn1, tn2);
+        }
+        private static Hval Mod(List<Hval> list)
+        {
+            return Convert.ToDecimal(list[0].Val) % Convert.ToDecimal(list[1].Val);
         }
 
         /// <summary>

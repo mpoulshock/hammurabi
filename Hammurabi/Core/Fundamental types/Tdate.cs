@@ -161,74 +161,40 @@ namespace Hammurabi
         /// <summary>
         /// Adds a specified number of days to each DateTime in a Tdate.
         /// Negative values are subtracted.
-        /// </summary>        
-        public Tdate AddDays(int days)
-        {        
-            // Handle unknowns
-            if (!this.FirstValue.IsKnown)
-            {
-                return this;
-            }
-
-            Tdate result = new Tdate();
-
-            foreach(KeyValuePair<DateTime,Hval> slice in this.IntervalValues)
-            {    
-                DateTime val = Convert.ToDateTime(slice.Value.Val);
-                DateTime newDt = val.AddDays(days);
-                result.AddState(slice.Key, newDt);
-            }
-            
-            return result.Lean;    
+        /// </summary>    
+        public Tdate AddDays(Tnum days)
+        {
+            return ApplyFcnToTimeline<Tdate>(x => CoreAddDays(x), this, days);
+        }    
+        private static Hval CoreAddDays(List<Hval> list)
+        {
+            return Convert.ToDateTime(list[0].Val).AddDays(Convert.ToInt32(list[1].Val));
         }
-        
+
         /// <summary>
         /// Adds a specified number of months to each DateTime in a Tdate.
         /// Negative values are subtracted.
         /// </summary>
-        public Tdate AddMonths(int months)
-        {        
-            // Handle unknowns
-            if (!this.FirstValue.IsKnown)
-            {
-                return this;
-            }
-
-            Tdate result = new Tdate();
-
-            foreach(KeyValuePair<DateTime,Hval> slice in this.IntervalValues)
-            {    
-                DateTime val = Convert.ToDateTime(slice.Value.Val);
-                DateTime newDt = val.AddMonths(months);
-                result.AddState(slice.Key, newDt);
-            }
-            
-            return result.Lean;    
+        public Tdate AddMonths(Tnum days)
+        {
+            return ApplyFcnToTimeline<Tdate>(x => CoreAddMonths(x), this, days);
+        }    
+        private static Hval CoreAddMonths(List<Hval> list)
+        {
+            return Convert.ToDateTime(list[0].Val).AddMonths(Convert.ToInt32(list[1].Val));
         }
-        
+
         /// <summary>
         /// Adds a specified number of years to each DateTime in a Tdate.
         /// Negative values are subtracted.
         /// </summary>
-        public Tdate AddYears(Tnum years)
-        {     
-            // Handle unknowns
-            Hstate top = PrecedingState(this.FirstValue, Year.FirstValue);
-            if (top != Hstate.Known) 
-            {
-                return new Tdate(new Hval(null,top));
-            }
-
-            Tdate result = new Tdate();
-            foreach(KeyValuePair<DateTime,Hval> slice in this.IntervalValues)
-            {    
-                DateTime val = Convert.ToDateTime(slice.Value.Val);
-                int yearsInt = Convert.ToInt32(years.FirstValue.Val);
-                DateTime newDt = val.AddYears(yearsInt);
-                result.AddState(slice.Key, newDt);
-            }
-            
-            return result.Lean;    
+        public Tdate AddYears(Tnum days)
+        {
+            return ApplyFcnToTimeline<Tdate>(x => CoreAddYears(x), this, days);
+        }    
+        private static Hval CoreAddYears(List<Hval> list)
+        {
+            return Convert.ToDateTime(list[0].Val).AddYears(Convert.ToInt32(list[1].Val));
         }
 
         /// <summary>
@@ -238,23 +204,12 @@ namespace Hammurabi
         {       
             get
             {
-                Tnum result = new Tnum();
-    
-                foreach(KeyValuePair<DateTime,Hval> slice in this.IntervalValues)
-                {    
-                    if (!slice.Value.IsKnown)
-                    {
-                        result.AddState(slice.Key,slice.Value);
-                    }
-                    else
-                    {
-                        DateTime val = Convert.ToDateTime(slice.Value.Val);
-                        result.AddState(slice.Key, val.Year);
-                    }
-                }
-                
-                return result.Lean;  
+                return ApplyFcnToTimeline<Tnum>(x => GetYear(x), this);
             }
+        }
+        private static Hval GetYear(List<Hval> list)
+        {
+            return Convert.ToDateTime(list[0].Val).Year;
         }
 
         /// <summary>
@@ -279,23 +234,12 @@ namespace Hammurabi
         {       
             get
             {
-                Tnum result = new Tnum();
-    
-                foreach(KeyValuePair<DateTime,Hval> slice in this.IntervalValues)
-                {    
-                    if (!slice.Value.IsKnown)
-                    {
-                        result.AddState(slice.Key,slice.Value);
-                    }
-                    else
-                    {
-                        DateTime val = Convert.ToDateTime(slice.Value.Val);
-                        result.AddState(slice.Key, val.Month);
-                    }
-                }
-                
-                return result.Lean;  
+                return ApplyFcnToTimeline<Tnum>(x => GetMonth(x), this);
             }
+        }
+        private static Hval GetMonth(List<Hval> list)
+        {
+            return Convert.ToDateTime(list[0].Val).Month;
         }
 
         /// <summary>
@@ -305,23 +249,12 @@ namespace Hammurabi
         {       
             get
             {
-                Tnum result = new Tnum();
-    
-                foreach(KeyValuePair<DateTime,Hval> slice in this.IntervalValues)
-                {    
-                    if (!slice.Value.IsKnown)
-                    {
-                        result.AddState(slice.Key,slice.Value);
-                    }
-                    else
-                    {
-                        DateTime val = Convert.ToDateTime(slice.Value.Val);
-                        result.AddState(slice.Key, val.Day);
-                    }
-                }
-                
-                return result.Lean;  
+                return ApplyFcnToTimeline<Tnum>(x => GetDay(x), this);
             }
+        }
+        private static Hval GetDay(List<Hval> list)
+        {
+            return Convert.ToDateTime(list[0].Val).Day;
         }
 
         // ********************************************************************
@@ -333,7 +266,14 @@ namespace Hammurabi
         /// </summary>
         public static Tnum DayDifference(Tdate td1, Tdate td2)
         {
-            return ApplyDtFcnToTimeline((x,y) => TimeDiff(x,y), Time.IntervalType.Day, td1, td2);
+            return ApplyFcnToTimeline<Tnum>(x => CoreDayDiff(x), td1, td2);
+        }    
+        private static Hval CoreDayDiff(List<Hval> list)
+        {
+            DateTime earlierDate = Convert.ToDateTime(list[0].Val);
+            DateTime laterDate = Convert.ToDateTime(list[1].Val);
+            TimeSpan s = laterDate - earlierDate;
+            return s.TotalDays;
         }
 
         /// <summary>
@@ -341,9 +281,9 @@ namespace Hammurabi
         /// </summary>
         public static Tnum WeekDifference(Tdate td1, Tdate td2)
         {
-            return ApplyDtFcnToTimeline((x,y) => TimeDiff(x,y), Time.IntervalType.Week, td1, td2);
+            return (DayDifference(td1, td2) / 7).RoundToNearest(0.001);
         }
-        
+
         // TODO: Add MonthDiff and QuarterDiff functions
         
         /// <summary>
@@ -351,84 +291,35 @@ namespace Hammurabi
         /// </summary>
         public static Tnum YearDifference(Tdate td1, Tdate td2)
         {
-            return ApplyDtFcnToTimeline((x,y) => TimeDiff(x,y), Time.IntervalType.Year, td1, td2);
-        }
-
-        /// <summary>
-        /// Times the diff.
-        /// </summary>
-        private static decimal TimeDiff(Time.IntervalType t, List<Hval> list)
-        {
-            DateTime earlierDate = Convert.ToDateTime(list[0].Val);
-            DateTime laterDate = Convert.ToDateTime(list[1].Val);
-            TimeSpan s = laterDate - earlierDate;
-            double result = -1;
-            
-            if (t == Time.IntervalType.Day)
-            {
-                result = s.TotalDays;
-            }
-            else if (t == Time.IntervalType.Week)
-            {
-                result = Math.Round(s.TotalDays / 7, 3);
-            }
-            else if (t == Time.IntervalType.Year)
-            {
-                result = YearDiffRec(earlierDate, laterDate);
-            }
-            
-            return Convert.ToDecimal(result);
+            return ApplyFcnToTimeline<Tnum>(x => YearDiffRec(x), td1, td2);;
         }
 
         /// <summary>
         /// Recursively determines the difference in years between two dates, to three decimal places.
         /// </summary>
-        private static double YearDiffRec(DateTime date1, DateTime date2)
+        private static Hval YearDiffRec(List<Hval> list)
         {
+            DateTime date1 = Convert.ToDateTime(list[0].Val);
+            DateTime date2 = Convert.ToDateTime(list[1].Val);
+
             DateTime plus1 = date1.AddYears(1);
             DateTime plus4 = date1.AddYears(4);
 
             // Count off 4-year periods (in case date1 is on a leap day)
             if (date2 >= plus4)
             {
-                return 4 + YearDiffRec(plus4, date2);
+                return 4 + Convert.ToDecimal(YearDiffRec(new List<Hval>(){plus4, date2}).Val);
             }
             // Full year
             else if (date2 >= plus1)
             {
-                return 1 + YearDiffRec(plus1, date2);
+                return 1 + Convert.ToDecimal(YearDiffRec(new List<Hval>(){plus1, date2}).Val);
             }
             // Partial year
             else
             {
                 return Math.Round((date2 - date1).TotalDays / Time.DaysPerYear, 3);
             }
-        }
-
-        
-        // ********************************************************************
-        // Apply a function to the values in a Tdate
-        // ********************************************************************
-
-        private static Tnum ApplyDtFcnToTimeline(Func<Time.IntervalType,List<Hval>,Hval> fcn, Time.IntervalType t, params Tdate[] list)
-        {
-            Tnum result = new Tnum();
-            
-            foreach(KeyValuePair<DateTime,List<Hval>> slice in TimePointValues(list))
-            {    
-                // Any higher-precedence states go next
-                Hstate top = PrecedingState(slice.Value);
-                if (top != Hstate.Known) 
-                {
-                    result.AddState(slice.Key, new Hval(null,top));
-                }
-                else
-                {
-                    result.AddState(slice.Key, fcn(t, slice.Value));
-                }
-            }
-            
-            return result.Lean;
         }
     }
     

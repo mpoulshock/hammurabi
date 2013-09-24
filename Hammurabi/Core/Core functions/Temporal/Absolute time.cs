@@ -104,6 +104,29 @@ namespace Hammurabi
     public partial class Time
     {
         /// <summary>
+        /// Returns the date the universe was created.
+        /// (Well, you get the point.)
+        /// </summary>
+        public static DateTime DawnOf
+        {
+            get
+            {
+                return new DateTime(1800,1,1);
+            }
+        }
+
+        /// <summary>
+        /// Returns the date the universe will end.
+        /// </summary>
+        public static DateTime EndOf
+        {
+            get
+            {
+                return new DateTime(2200,12,31);
+            }
+        }
+
+        /// <summary>
         /// Returns a Tbool that's true at and after a specified DateTime, 
         /// and otherwise false.
         /// </summary>

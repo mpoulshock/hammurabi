@@ -99,7 +99,7 @@ namespace Interactive
                 string v = n.TheFact.GetCachedFcnValue();
 
                 // Display the fact, indented one space per depth level on the function tree
-                result += H.NSpaces(n.Depth) + n.TheFact.FormatFactAsString() + " = " + v + "\n";
+                result += H.PadNSpaces(n.Depth) + n.TheFact.FormatFactAsString() + " = " + v + "\n";
             }
 
             return result;

@@ -28,11 +28,11 @@ namespace Hammurabi
     /// </summary>
     public enum Hstate
     {
-        Known,      // Value is a valid bool, decimal, string, DateTime, etc.
-        Stub,       // Value depends upon rule logic that has not yet been completed.
-        Uncertain,  // Value depends upon a fact not known by the user.
-        Unstated,   // Value depends upon a fact not yet queried or asked of the user.
-        Null        // Indicates no value whatsoever (used in Switch statement to idenfity undefined intervals)
+        Stub = 1,       // Value depends upon rule logic that has not yet been completed.
+        Uncertain = 2,  // Value depends upon a fact not known by the user.
+        Unstated = 3,   // Value depends upon a fact not yet queried or asked of the user.
+        Known = 4,      // Value is a valid bool, decimal, string, DateTime, etc.
+        Null = 5        // Indicates no value whatsoever (used in Switch statement to idenfity undefined intervals)
     }
 
 

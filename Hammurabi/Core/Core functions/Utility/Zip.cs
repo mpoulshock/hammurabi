@@ -1,4 +1,4 @@
-// Copyright (c) 2012 Hammura.bi LLC
+// Copyright (c) 2012-2013 Hammura.bi LLC
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -49,7 +49,6 @@ namespace Hammurabi
             return result;
         }
 
-
         /// <summary>
         /// Gets all time points in a set of Tvar objects.
         /// </summary>
@@ -81,16 +80,24 @@ namespace Hammurabi
         /// <summary>
         /// Apply a function to all values in a Tnum object.
         /// </summary>
-        public static Tnum ApplyFcnToTimeline(Func<List<Hval>,Hval> fcn, params Tnum[] list)
+        public static T ApplyFcnToTimeline<T>(Func<List<Hval>,Hval> fcn, params Tvar[] list) where T : Tvar
         {
-            Tnum result = new Tnum();
-            
+            T result = (T)Util.ReturnProperTvar<T>();
+
             foreach(KeyValuePair<DateTime,List<Hval>> slice in TimePointValues(list))
-            {    
-                result.AddState(slice.Key, fcn(slice.Value));
+            {  
+                Hstate top = PrecedingState(slice.Value);
+                if (top != Hstate.Known)
+                {
+                    result.AddState(slice.Key, new Hval(null, top));
+                }
+                else
+                {
+                    result.AddState(slice.Key, fcn(slice.Value));
+                }
             }
-            
-            return result.Lean;
+
+            return result.LeanTvar<T>();
         }
     }    
 }

@@ -1,4 +1,4 @@
-// Copyright (c) 2012 Hammura.bi LLC
+// Copyright (c) 2012-2013 Hammura.bi LLC
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -126,7 +126,7 @@ namespace Hammurabi
         /// </summary>
         public static Tbool operator != (Tstr ts1, Tstr ts2)
         {
-            return !EqualTo(ts1,ts2);
+            return NotEqualTo(ts1,ts2);
         }
 
         /// <summary>
@@ -134,30 +134,13 @@ namespace Hammurabi
         /// </summary>
         public static Tstr operator + (Tstr ts1, Tstr ts2)    
         {
-            Tstr result = new Tstr();
-            
-            foreach(KeyValuePair<DateTime,List<Hval>> slice in TimePointValues(ts1, ts2))
-            {    
-                // Check for unknowns
-                Hstate top = PrecedingState(slice.Value);
-                if (top != Hstate.Known) 
-                {
-                    result.AddState(slice.Key, new Hval(null,top));
-                }
-                else
-                {
-                    // Concatenate
-                    string str = "";
-                    foreach (Hval v in slice.Value) 
-                    {
-                        str += Convert.ToString(v.Val); 
-                    }
-                    result.AddState(slice.Key, new Hval(str));
-                }
-            }
-            
-            return result.Lean; 
+            return ApplyFcnToTimeline<Tstr>(x => Concat(x), ts1, ts2);
         }
+        private static Hval Concat(List<Hval> list)
+        {
+            return Convert.ToString(list[0].Val) + Convert.ToString(list[1].Val);
+        }
+
     }
     
     #pragma warning restore 660, 661

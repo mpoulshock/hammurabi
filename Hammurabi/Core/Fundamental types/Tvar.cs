@@ -318,25 +318,25 @@ namespace Hammurabi
         /// <summary>
         /// Returns true when two Tvar values are equal. 
         /// </summary>
-        public static Tbool EqualTo(Tvar tb1, Tvar tb2)
+        public static Tbool EqualTo(Tvar tv1, Tvar tv2)
         {
-            Tbool result = new Tbool();
-            
-            foreach(KeyValuePair<DateTime,List<Hval>> slice in TimePointValues(tb1,tb2))
-            {    
-                // Deal with unknowns
-                Hstate top = PrecedingState(slice.Value);
-                if (top != Hstate.Known) 
-                {
-                    result.AddState(slice.Key, new Hval(null,top));
-                }
-                else
-                {
-                    result.AddState(slice.Key, object.Equals(slice.Value[0].Val, slice.Value[1].Val));
-                }
-            }
-            
-            return result.Lean;
+            return ApplyFcnToTimeline<Tbool>(x => Eq(x), tv1, tv2);
+        }
+        private static Hval Eq(List<Hval> list)
+        {
+            return object.Equals(list[0].Val, list[1].Val);
+        }
+
+        /// <summary>
+        /// Returns true when two Tvar values are not equal. 
+        /// </summary>
+        public static Tbool NotEqualTo(Tvar tv1, Tvar tv2)
+        {
+            return ApplyFcnToTimeline<Tbool>(x => NotEq(x), tv1, tv2);
+        }
+        private static Hval NotEq(List<Hval> list)
+        {
+            return !object.Equals(list[0].Val, list[1].Val);
         }
 
         /// <summary>

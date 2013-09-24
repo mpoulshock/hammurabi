@@ -382,7 +382,7 @@ namespace Hammurabi
         /// </summary>
         public static Tbool operator != (Tbool tb1, Tbool tb2)
         {
-            return !EqualTo(tb1,tb2);
+            return NotEqualTo(tb1,tb2);
         }
 
         /// <summary>

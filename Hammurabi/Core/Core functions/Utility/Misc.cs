@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Hammurabi
 {
@@ -38,37 +39,11 @@ namespace Hammurabi
         /// </summary>
         public static Tnum BoolCount(params Tbool[] list)
         {
-            Tnum result = new Tnum();
-
-            foreach(KeyValuePair<DateTime,List<Hval>> slice in TimePointValues(list))
-            {    
-                result.AddState(slice.Key, BoolCountK(true, slice.Value));
-            }
-
-            return result.Lean;
+            return ApplyFcnToTimeline<Tnum>(x => CoreBoolCount(x), list);
         }
-
-        /// <summary>
-        /// Private non-temporal BOOL COUNT function.
-        /// </summary>
-        private static Hval BoolCountK(bool test, List<Hval> list)
+        private static Hval CoreBoolCount(List<Hval> list)
         {
-            Hstate top = PrecedingState(list);
-            if (top != Hstate.Known) 
-            {
-                return new Hval(null,top);
-            }
-
-            int count = 0;
-            foreach (Hval v in list)
-            {
-                if (Convert.ToBoolean(v.Val) == test)
-                {
-                    count++;
-                }
-            }
-            
-            return new Hval(count);
+            return list.Sum(item => Convert.ToInt16(item.Val));
         }
 
         /// <summary>
@@ -77,7 +52,7 @@ namespace Hammurabi
         /// </summary>
         public static Tnum Min(params Tnum[] list)
         {
-            return ApplyFcnToTimeline(x => Util.Minimum(x), list);
+            return ApplyFcnToTimeline<Tnum>(x => Util.Minimum(x), list);
         }
         
         /// <summary>
@@ -86,7 +61,7 @@ namespace Hammurabi
         /// </summary>
         public static Tnum Max(params Tnum[] list)
         {
-            return ApplyFcnToTimeline(x => Util.Maximum(x), list);
+            return ApplyFcnToTimeline<Tnum>(x => Util.Maximum(x), list);
         }
         
         /// <summary>
@@ -124,7 +99,7 @@ namespace Hammurabi
         /// <summary>
         /// Creates a string of N blank spaces.
         /// </summary>
-        public static string NSpaces(int count)
+        public static string PadNSpaces(int count)
         {
             string result = "";
             for (int i=0; i<count; i++)

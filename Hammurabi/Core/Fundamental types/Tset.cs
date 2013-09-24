@@ -1,4 +1,4 @@
-// Copyright (c) 2012 Hammura.bi LLC
+// Copyright (c) 2012-2013 Hammura.bi LLC
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -208,23 +208,12 @@ namespace Hammurabi
         {
             get
             {
-                Tnum result = new Tnum();
-                
-                foreach(KeyValuePair<DateTime,Hval> de in TimeLine )
-                {
-                    if (!de.Value.IsKnown)
-                    {
-                        result.AddState(de.Key,de.Value);
-                    }
-                    else
-                    {
-                        List<Thing> entities = (List<Thing>)de.Value.Val;
-                        result.AddState(de.Key, new Hval(Convert.ToDecimal(entities.Count)));
-                    }
-                }
-                
-                return result;
+                return ApplyFcnToTimeline<Tnum>(x => CoreTsetCount(x), this);
             }
+        }
+        private static Hval CoreTsetCount(List<Hval> list)
+        {
+            return ((List<Thing>)list[0].Val).Count;
         }
 
         /// <summary>
@@ -243,52 +232,31 @@ namespace Hammurabi
         /// </summary>
         public Tbool IsSubsetOf(Tset super)
         {
-            Tset sub = this;
-            Tbool result = new Tbool();
-            
-            List<Thing> entitiesInSub = new List<Thing>();
-            List<Thing> entitiesInSuper = new List<Thing>();
-                        
-            foreach (DateTime d in TimePoints(sub, super))
+            return ApplyFcnToTimeline<Tbool>(x => CoreSubset(x), this, super);
+        }
+        private static Hval CoreSubset(List<Hval> list)
+        {
+            bool isSubset = true;
+            List<Thing> entitiesInSub   = (List<Thing>)list[0].Val;
+            List<Thing> entitiesInSuper = (List<Thing>)list[1].Val;
+
+            foreach (Thing le in entitiesInSub)
             {
-                Hval subHval = sub.EntitiesAsOf(d);
-                Hval superHval = super.EntitiesAsOf(d);
-
-                // Handle unknowns
-                Hstate top = PrecedingState(subHval.State, superHval.State);
-                if (top != Hstate.Known) 
+                if (!entitiesInSuper.Contains(le))
                 {
-                    result.AddState(d, new Hval(null,top));
-                }
-
-                // Determine subset
-                else
-                {
-                    bool isSubset = true;
-                    entitiesInSub   = (List<Thing>)subHval.Val;
-                    entitiesInSuper = (List<Thing>)superHval.Val;
-                        
-                    foreach (Thing le in entitiesInSub)
-                    {
-                        if (!entitiesInSuper.Contains(le))
-                        {
-                            isSubset = false;    
-                        }
-                    }
-                    
-                    result.AddState(d,isSubset);
+                    isSubset = false;    
                 }
             }
 
-            return result.Lean;
+            return isSubset;
         }
-        
+
         /// <summary>
         /// Returns true when the Tset contains a given legal entity. 
         /// </summary>
         public Tbool Contains(Thing e)
         {
-            return Util.IsMemberOfSet(e,this);
+            return ApplyFcnToTimeline<Tbool>(x => CoreSubset(x), new Tset(e), this);
         }
 
         /// <summary>
@@ -311,81 +279,48 @@ namespace Hammurabi
         /// Returns the temporal union of two Tsets.
         /// This is equivalent to a logical OR of two sets.
         /// </summary>
-        public static Tset operator | (Tset set1, Tset set2)    
+        public static Tset operator | (Tset set1, Tset set2)
         {
-            Tset result = new Tset();
+            return ApplyFcnToTimeline<Tset>(x => CoreTsetUnion(x), set1, set2);
+        }
+        private static Hval CoreTsetUnion(List<Hval> list)
+        {
+            List<Thing> union = (List<Thing>)list[0].Val;
 
-            // For each time period
-            foreach(KeyValuePair<DateTime,List<Hval>> slice in TimePointValues(set1, set2))
-            {   
-                Hstate top = PrecedingState(slice.Value);
-                if (top != Hstate.Known) 
+            foreach (Thing le in (List<Thing>)list[1].Val)
+            {
+                if (!union.Contains(le))
                 {
-                     result.AddState(slice.Key, new Hval(null,top));
-                }
-                else
-                {
-                    List<Thing> intervalUnion = new List<Thing>();
-    
-                    // For each list of entities
-                    for (int i=0; i<slice.Value.Count; i++)
-                    {
-                        List<Thing> entities = (List<Thing>)slice.Value[i].Val;
-    
-                        foreach (Thing le in entities)
-                        {
-                            if (!intervalUnion.Contains(le))
-                            {
-                                intervalUnion.Add(le);
-                            }
-                        }
-                    }
-                    
-                    result.AddState(slice.Key, new Hval(intervalUnion));
+                    union.Add(le);
                 }
             }
-            
-            return result.Lean;
-        }
 
+            return new Hval(union);
+        }
 
         /// <summary>
         /// Returns the temporal intersection of two Tsets.
         /// This is equivalent to a logical AND of two sets.
         /// </summary>
-        public static Tset operator & (Tset set1, Tset set2)    
+        public static Tset operator & (Tset set1, Tset set2)
         {
-            Tset result = new Tset();
-                        
-            foreach (DateTime d in TimePoints(set1, set2))
-            {
-                Hval set1Val = set1.EntitiesAsOf(d);
-                Hval set2Val = set2.EntitiesAsOf(d); 
+            return ApplyFcnToTimeline<Tset>(x => CoreTsetIntersection(x), set1, set2);
+        }
+        private static Hval CoreTsetIntersection(List<Hval> list)
+        {
+            List<Thing> entitiesInSet2 = (List<Thing>)list[0].Val;            
+            List<Thing> intersect = new List<Thing>();
 
-                Hstate top = PrecedingState(set1Val, set2Val);
-                if (top != Hstate.Known) 
+            // Members of set 1 in set 2
+            foreach (Thing le in (List<Thing>)list[1].Val)
+            {
+                if (entitiesInSet2.Contains(le))
                 {
-                     result.AddState(d, new Hval(null,top));
-                }
-                else
-                {
-                    List<Thing> entitiesInSet2 = (List<Thing>)set2Val.Val;            
-                    List<Thing> intersect = new List<Thing>();
-                    
-                    // Members of set 1 in set 2
-                    foreach (Thing le in (List<Thing>)set1Val.Val)
-                    {
-                        if (entitiesInSet2.Contains(le))
-                        {
-                            intersect.Add(le);
-                        }
-                    }
-                    
-                    result.AddState(d,new Hval(intersect));
+                    intersect.Add(le);
                 }
             }
 
-            return result.Lean;
+            return new Hval(intersect);
         }
         
         /// <summary>
@@ -394,41 +329,27 @@ namespace Hammurabi
         /// Tset from those of the first (Tset1 - Tset2).
         /// Example: theAdults = thePeople - theKids.
         /// </summary>
-        public static Tset operator - (Tset set1, Tset set2)    
+        public static Tset operator - (Tset set1, Tset set2)
         {
-            Tset result = new Tset();
-                        
-            foreach (DateTime d in TimePoints(set1, set2))
-            {
-                Hval set1Val = set1.EntitiesAsOf(d);
-                Hval set2Val = set2.EntitiesAsOf(d); 
+            return ApplyFcnToTimeline<Tset>(x => CoreTsetRC(x), set1, set2);
+        }
+        private static Hval CoreTsetRC(List<Hval> list)
+        {
+            List<Thing> entitiesInSet2 = (List<Thing>)list[1].Val;            
+            List<Thing> complement = new List<Thing>();
 
-                Hstate top = PrecedingState(set1Val, set2Val);
-                if (top != Hstate.Known) 
+            // Members of set 1 not in set 2
+            foreach (Thing le in (List<Thing>)list[0].Val)
+            {
+                if (!entitiesInSet2.Contains(le))
                 {
-                     result.AddState(d, new Hval(null,top));
-                }
-                else
-                {
-                    List<Thing> entitiesInSet2 = (List<Thing>)set2Val.Val;            
-                    List<Thing> complement = new List<Thing>();
-                    
-                    // Members of set 1 not in set 2
-                    foreach (Thing le in (List<Thing>)set1Val.Val)
-                    {
-                        if (!entitiesInSet2.Contains(le))
-                        {
-                            complement.Add(le);
-                        }
-                    }
-                    
-                    result.AddState(d,new Hval(complement));
+                    complement.Add(le);
                 }
             }
 
-            return result.Lean;
+            return new Hval(complement);
         }
-        
+
         /// <summary>
         /// Returns true when two sets are equal (have the same members). 
         /// </summary>
@@ -443,39 +364,13 @@ namespace Hammurabi
         /// </summary>
         public static Tbool operator != (Tset set1, Tset set2)    
         {
-            return !set1.IsSubsetOf(set2) || !set2.IsSubsetOf(set1);
+            return !(set1 == set2);
         }
 
         
         // ********************************************************************
         // Should not be used in legal functions
         // ********************************************************************
-        
-        /// <summary>
-        /// Returns a list of the members of the set at a given point in time. 
-        /// </summary>
-        public Hval EntitiesAsOf(DateTime dt)
-        {            
-            for (int i = 0; i < TimeLine.Count-1; i++ ) 
-            {
-                // If value is between two adjacent points on the timeline...
-                if (dt >= TimeLine.Keys[i])
-                {
-                    if (dt < TimeLine.Keys[i+1])
-                    {
-                        return TimeLine.Values[i];
-                    }
-                }
-            }
-            
-            // If value is on or after last point on timeline...
-            if (dt >= TimeLine.Keys[TimeLine.Count-1])
-            {
-                return TimeLine.Values[TimeLine.Count-1];
-            }
-            
-            return new Hval(new List<Thing>());
-        }
 
         /// <summary>
         /// Returns a list of all legal entities that were ever members of the 

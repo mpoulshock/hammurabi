@@ -1,4 +1,4 @@
-// Copyright (c) 2012 Hammura.bi LLC
+// Copyright (c) 2012-2013 Hammura.bi LLC
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Hammurabi
 {
@@ -119,7 +120,7 @@ namespace Hammurabi
             Tset result = new Tset();
             foreach(DateTime dt in AggregatedTimePoints(theSet, listOfTvars))
             {
-                Hval membersOfOldSet = theSet.EntitiesAsOf(dt);
+                Hval membersOfOldSet = theSet.ObjectAsOf(dt);
 
                 // If theSet is unknown...
                 if (!membersOfOldSet.IsKnown)
@@ -169,9 +170,12 @@ namespace Hammurabi
         /// </summary>
         public Tnum Sum(Func<Thing,Tnum> func)
         {
-            return ApplyFcnToTset(this, x => func((Thing)x), y => Tnum.Sum(y));
+            return ApplyFcnToTset(this, x => func((Thing)x), y => Sum(y));
         }
-  
+        private static Hval Sum(List<Hval> list)
+        {
+            return list.Sum(item => Convert.ToDecimal(item.Val));
+        }
         /// <summary>
         /// Returns the minimum value of a given numeric property of the 
         /// members of a set.
@@ -213,7 +217,7 @@ namespace Hammurabi
             Tnum result = new Tnum();
             foreach(DateTime dt in AggregatedTimePoints(theSet, listOfTvars))
             {
-                Hval membersOfSet = theSet.EntitiesAsOf(dt);
+                Hval membersOfSet = theSet.ObjectAsOf(dt);
 
                 // If theSet is unknown...
                 if (!membersOfSet.IsKnown)
@@ -230,10 +234,16 @@ namespace Hammurabi
                         Hval funcValAt = funcVal.ObjectAsOf(dt);
                         values.Add(funcValAt);
                     }
-                    
-                    Hval val = aggregationFcn(values);
-                    
-                    result.AddState(dt, val);   
+
+                    Hstate top = PrecedingState(values);
+                    if (top != Hstate.Known)
+                    {
+                        result.AddState(dt, new Hval(null, top));
+                    }
+                    else
+                    {
+                        result.AddState(dt, aggregationFcn(values));
+                    } 
                 }
             }
 
@@ -246,19 +256,8 @@ namespace Hammurabi
         /// </summary>
         private static List<DateTime> AggregatedTimePoints(Tset theSet, List<Tvar> listOfTvars)
         {
-            // Find all breakpoints in the Tvars
-            List<DateTime> allTimePoints = TimePoints(listOfTvars);
-            
-            // Add breakpoints from theSet
-            foreach(DateTime dt in theSet.TimePoints())
-            {
-                if (!allTimePoints.Contains(dt))
-                {
-                    allTimePoints.Add(dt);
-                }
-            }
-            
-            return allTimePoints;
+            listOfTvars.Add(theSet);
+            return TimePoints(listOfTvars);
         }
     }
 }

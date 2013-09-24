@@ -40,32 +40,19 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Core\Core functions\Math.cs" />
-    <Compile Include="Core\Core functions\Logic.cs" />
     <Compile Include="Core\Facts\FactBase.cs" />
     <Compile Include="Core\Facts\Set-assert.cs" />
-    <Compile Include="Core\Core functions\Set - higher-order.cs" />
     <Compile Include="Core\Fundamental types\Tvar.cs" />
     <Compile Include="Core\Fundamental types\Tbool.cs" />
     <Compile Include="Core\Fundamental types\Tnum.cs" />
     <Compile Include="Core\Fundamental types\Tstr.cs" />
     <Compile Include="Core\Fundamental types\Tset.cs" />
-    <Compile Include="Core\Core functions\Comparison - numeric.cs" />
-    <Compile Include="Core\Core functions\Unknown.cs" />
-    <Compile Include="Core\Core functions\Time - analysis.cs" />
-    <Compile Include="Core\Core functions\Time - dates.cs" />
-    <Compile Include="Core\Core functions\Time - temporal.cs" />
-    <Compile Include="Core\Core functions\Time - TheTime.cs" />
-    <Compile Include="Core\Core functions\Switch.cs" />
     <Compile Include="Core\Fundamental types\Tdate.cs" />
-    <Compile Include="Core\Core functions\Comparison - dates.cs" />
     <Compile Include="Core\Facts\Inputs - entities.cs" />
     <Compile Include="Core\Facts\Inputs.cs" />
-    <Compile Include="Core\Core functions\Misc.cs" />
     <Compile Include="Core\Facts\Validate.cs" />
     <Compile Include="Core\Facts\Unknown facts.cs" />
     <Compile Include="Core\Facts\Window of concern.cs" />
-    <Compile Include="Core\Core functions\Tbool - temporal.cs" />
     <Compile Include="Core\Facts\Inputs - lists.cs" />
     <Compile Include="Core\Fundamental types\Tline.cs" />
     <Compile Include="AssemblyInfo.cs" />
@@ -77,7 +64,6 @@
     <Compile Include="Core\Engine\Interview - things.cs" />
     <Compile Include="Core\Facts\ThingBase.cs" />
     <Compile Include="Core\Facts\CacheBase.cs" />
-    <Compile Include="Core\Core functions\Set - optimal subsets.cs" />
     <Compile Include="Generated source\5 USC 6103 - Legal holidays.cs" />
     <Compile Include="Generated source\5 USC 6301 - Fed employees - leave.cs" />
     <Compile Include="Generated source\8 USC 1101 - Definitions.cs" />
@@ -166,15 +152,26 @@
     <Compile Include="Generated source\Test for Hammurabi Interactive.cs" />
     <Compile Include="Generated source\Time limits to collect court judgments.cs" />
     <Compile Include="Generated source\VT Stat 12-7151 - Emancipated minors.cs" />
-    <Compile Include="Core\Core functions\Util.cs" />
     <Compile Include="Core\Engine\Proof tree.cs" />
     <Compile Include="Core\Facts\Facts.cs" />
-    <Compile Include="Core\Core functions\Elapsed time - continuous.cs" />
-    <Compile Include="Core\Core functions\Elapsed time - running.cs" />
-    <Compile Include="Core\Core functions\Elapsed time - sliding.cs" />
-    <Compile Include="Core\Core functions\Elapsed time - total.cs" />
-    <Compile Include="Core\Core functions\Elapsed time - per interval.cs" />
-    <Compile Include="Core\Core functions\Summed intervals.cs" />
+    <Compile Include="Core\Core functions\Basic\Comparison - dates.cs" />
+    <Compile Include="Core\Core functions\Basic\Comparison - numeric.cs" />
+    <Compile Include="Core\Core functions\Temporal\Elapsed time - per interval.cs" />
+    <Compile Include="Core\Core functions\Temporal\Elapsed time.cs" />
+    <Compile Include="Core\Core functions\Basic\Logic.cs" />
+    <Compile Include="Core\Core functions\Basic\Math.cs" />
+    <Compile Include="Core\Core functions\Basic\Set - higher-order.cs" />
+    <Compile Include="Core\Core functions\Basic\Set - optimal subsets.cs" />
+    <Compile Include="Core\Core functions\Basic\Switch.cs" />
+    <Compile Include="Core\Core functions\Temporal\Summed intervals.cs" />
+    <Compile Include="Core\Core functions\Temporal\Tbool - temporal.cs" />
+    <Compile Include="Core\Core functions\Temporal\Absolute time.cs" />
+    <Compile Include="Core\Core functions\Temporal\Temporal sequences.cs" />
+    <Compile Include="Core\Core functions\Utility\DateTime extension methods.cs" />
+    <Compile Include="Core\Core functions\Utility\Misc.cs" />
+    <Compile Include="Core\Core functions\Utility\Unknown.cs" />
+    <Compile Include="Core\Core functions\Utility\Util.cs" />
+    <Compile Include="Core\Core functions\Utility\Zip.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -184,6 +181,9 @@
     <Folder Include="Core\Fundamental types\" />
     <Folder Include="Generated source\" />
     <Folder Include="Core\Engine\" />
+    <Folder Include="Core\Core functions\Basic\" />
+    <Folder Include="Core\Core functions\Temporal\" />
+    <Folder Include="Core\Core functions\Utility\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

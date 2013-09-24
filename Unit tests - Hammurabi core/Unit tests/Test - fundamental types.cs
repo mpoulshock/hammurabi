@@ -172,6 +172,44 @@ namespace Hammurabi.UnitTests.CoreFcns
             Assert.AreEqual(true, t.AsOf(time).Out);        
         }
 
+        // ObjectAsOf
+
+        [Test]
+        public void ObjectAsOf1 ()
+        {
+            Thing P1 = new Thing("P1");
+            Tset tsv = new Tset(Hstate.Stub);
+            tsv.AddState(Date(2000,01,01),P1);
+            tsv.AddState(Date(2001,01,01),Hstate.Uncertain);
+            Assert.AreEqual(Hstate.Stub, tsv.ObjectAsOf(Date(1999,01,01)).Val);
+        }
+
+        [Test]
+        public void ObjectAsOf2 ()
+        {
+            Thing P1 = new Thing("P1");
+            Tset tsv = new Tset(Hstate.Stub);
+            tsv.AddState(Date(2000,01,01),P1);
+            tsv.AddState(Date(2001,01,01),Hstate.Uncertain);
+            Assert.AreEqual(Hstate.Uncertain, tsv.ObjectAsOf(Date(2002,02,01)).Val);
+        }
+
+        [Test]
+        public void ObjectAsOf3 ()
+        {
+            Tnum item = new Tnum(3);
+            Hval h = item.ObjectAsOf(DateTime.Now);
+            Assert.AreEqual(3, h.Val);        
+        }
+
+        [Test]
+        public void ObjectAsOf4 ()
+        {
+            Tnum item = new Tnum(Hstate.Stub);
+            Hval h = item.ObjectAsOf(DateTime.Now);
+            Assert.AreEqual("Stub", h.ToString);        
+        }
+
         // .IsAlways
         
         [Test]
@@ -773,24 +811,6 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tnum item = new Tnum(3);
             bool istype = Util.IsType<Tbool>(item);
             Assert.AreEqual(false, istype);        
-        }
-
-        // ObjectAsOf
-
-        [Test]
-        public void ObjectAsOf1 ()
-        {
-            Tnum item = new Tnum(3);
-            Hval h = item.ObjectAsOf(DateTime.Now);
-            Assert.AreEqual(3, h.Val);        
-        }
-
-        [Test]
-        public void ObjectAsOf2 ()
-        {
-            Tnum item = new Tnum(Hstate.Stub);
-            Hval h = item.ObjectAsOf(DateTime.Now);
-            Assert.AreEqual("Stub", h.ToString);        
         }
 
         // Value re-assignment
