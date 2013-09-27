@@ -1,4 +1,4 @@
-// Copyright (c) 2012 Hammura.bi LLC
+// Copyright (c) 2012-2013 Hammura.bi LLC
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -158,9 +158,9 @@ namespace Hammurabi
         {
             return ApplyFcnToTimeline<Tbool>(x => Not(x), tb);
         }
-        private static Hval Not(List<Hval> list)
+        private static Hval Not(Hval h)
         {
-            return !Convert.ToBoolean(list[0].Val);
+            return !Convert.ToBoolean(h.Val);
         }
 
         // ********************************************************************

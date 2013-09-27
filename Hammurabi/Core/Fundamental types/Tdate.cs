@@ -207,9 +207,9 @@ namespace Hammurabi
                 return ApplyFcnToTimeline<Tnum>(x => GetYear(x), this);
             }
         }
-        private static Hval GetYear(List<Hval> list)
+        private static Hval GetYear(Hval h)
         {
-            return Convert.ToDateTime(list[0].Val).Year;
+            return Convert.ToDateTime(h.Val).Year;
         }
 
         /// <summary>
@@ -237,9 +237,9 @@ namespace Hammurabi
                 return ApplyFcnToTimeline<Tnum>(x => GetMonth(x), this);
             }
         }
-        private static Hval GetMonth(List<Hval> list)
+        private static Hval GetMonth(Hval h)
         {
-            return Convert.ToDateTime(list[0].Val).Month;
+            return Convert.ToDateTime(h.Val).Month;
         }
 
         /// <summary>
@@ -252,9 +252,9 @@ namespace Hammurabi
                 return ApplyFcnToTimeline<Tnum>(x => GetDay(x), this);
             }
         }
-        private static Hval GetDay(List<Hval> list)
+        private static Hval GetDay(Hval h)
         {
-            return Convert.ToDateTime(list[0].Val).Day;
+            return Convert.ToDateTime(h.Val).Day;
         }
 
         // ********************************************************************

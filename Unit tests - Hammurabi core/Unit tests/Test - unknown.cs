@@ -151,14 +151,14 @@ namespace Hammurabi.UnitTests.CoreFcns
         [Test]
         public void Unknown_Abs_1 ()
         {
-            Tnum result = n.Abs;
+            Tnum result = Abs(n);
             Assert.AreEqual(eternallyUnstated, result.Out);        
         }
 
         [Test]
         public void Unknown_Abs_2 ()
         {
-            Tnum result = tnv().Abs;
+            Tnum result = Abs(tnv());
             Assert.AreEqual("{Dawn: Stub; 1/1/2001: Uncertain; 1/1/2002: Unstated}", result.Out);        
         }
 

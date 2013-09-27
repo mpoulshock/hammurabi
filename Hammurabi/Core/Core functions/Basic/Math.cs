@@ -125,17 +125,6 @@ namespace Hammurabi
             return Convert.ToDecimal(list[0].Val) % Convert.ToDecimal(list[1].Val);
         }
 
-        /// <summary>
-        /// Temporal absolute value function
-        /// </summary>
-        public Tnum Abs
-        {
-            get
-            {
-                return Switch<Tnum>(() => this >= 0, () => this, () => 0 - this);
-            }
-        }
-
         
         // ********************************************************************
         // ROUNDING FUNCTIONS
@@ -175,6 +164,151 @@ namespace Hammurabi
             return Switch<Tnum>(() => this % multiple != 0, () => this - (this % multiple),
                                 () => true, () => this);
         }
+    }
+
+    public partial class H
+    {   
+        /// <summary>
+        /// Temporal absolute value function
+        /// </summary>
+        public static Tnum Abs(Tnum tn)
+        {
+            return ApplyFcnToTimeline<Tnum>(x => CoreAbs(x), tn);
+        }
+        private static Hval CoreAbs(Hval h)
+        {
+            return Math.Abs(Convert.ToDouble(h.Val));
+        }
+
+        /// <summary>
+        /// A raised to the B power
+        /// </summary>
+        public static Tnum Pow(Tnum tnA, Tnum tnB)    
+        {
+            return ApplyFcnToTimeline<Tnum>(x => CorePow(x), tnA, tnB);
+        }
+        private static Hval CorePow(List<Hval> list)
+        {
+            return Math.Pow(Convert.ToDouble(list[0].Val), Convert.ToDouble(list[1].Val));
+        }
+
+        /// <summary>
+        /// Square root
+        /// </summary>
+        public static Tnum Sqrt(Tnum tn)    
+        {
+            return ApplyFcnToTimeline<Tnum>(x => CoreSqrt(x), tn);
+        }
+        private static Hval CoreSqrt(Hval h)
+        {
+            return Math.Sqrt(Convert.ToDouble(h.Val));
+        }
+
+        /// <summary>
+        /// Natural logarithm
+        /// </summary>
+        public static Tnum Log(Tnum tn)    
+        {
+            return ApplyFcnToTimeline<Tnum>(x => CoreNatLog(x), tn);
+        }
+        private static Hval CoreNatLog(Hval h)
+        {
+            return Math.Log(Convert.ToDouble(h.Val));
+        }
+
+        /// <summary>
+        /// Logarithm of n to base b
+        /// </summary>
+        public static Tnum Log(Tnum b, Tnum n)    
+        {
+            return ApplyFcnToTimeline<Tnum>(x => CoreLog(x), b, n);
+        }
+        private static Hval CoreLog(List<Hval> list)
+        {
+            return Math.Log(Convert.ToDouble(list[1].Val), Convert.ToDouble(list[0].Val));
+        }
+
+        /// <summary>
+        /// Sine
+        /// </summary>
+        public static Tnum Sin(Tnum tn)    
+        {
+            return ApplyFcnToTimeline<Tnum>(x => CoreSin(x), tn);
+        }
+        private static Hval CoreSin(Hval h)
+        {
+            return Math.Sin(Convert.ToDouble(h.Val));
+        }
+
+        /// <summary>
+        /// Cosine
+        /// </summary>
+        public static Tnum Cos(Tnum tn)    
+        {
+            return ApplyFcnToTimeline<Tnum>(x => CoreCos(x), tn);
+        }
+        private static Hval CoreCos(Hval h)
+        {
+            return Math.Cos(Convert.ToDouble(h.Val));
+        }
+
+        /// <summary>
+        /// Tangent
+        /// </summary>
+        public static Tnum Tan(Tnum tn)    
+        {
+            return ApplyFcnToTimeline<Tnum>(x => CoreTan(x), tn);
+        }
+        private static Hval CoreTan(Hval h)
+        {
+            return Math.Tan(Convert.ToDouble(h.Val));
+        }
+
+        /// <summary>
+        /// ArcSin
+        /// </summary>
+        public static Tnum ArcSin(Tnum tn)    
+        {
+            return ApplyFcnToTimeline<Tnum>(x => CoreArcSin(x), tn);
+        }
+        private static Hval CoreArcSin(Hval h)
+        {
+            return Math.Asin(Convert.ToDouble(h.Val));
+        }
+
+        /// <summary>
+        /// ArcCos
+        /// </summary>
+        public static Tnum ArcCos(Tnum tn)    
+        {
+            return ApplyFcnToTimeline<Tnum>(x => CoreArcCos(x), tn);
+        }
+        private static Hval CoreArcCos(Hval h)
+        {
+            return Math.Acos(Convert.ToDouble(h.Val));
+        }
+
+        /// <summary>
+        /// ArcTan
+        /// </summary>
+        public static Tnum ArcTan(Tnum tn)    
+        {
+            return ApplyFcnToTimeline<Tnum>(x => CoreArcTan(x), tn);
+        }
+        private static Hval CoreArcTan(Hval h)
+        {
+            return Math.Atan(Convert.ToDouble(h.Val));
+        }
+
+        /// <summary>
+        /// Constant Pi
+        /// </summary>
+        public static Tnum ConstPi = new Tnum(Math.PI);
+
+        /// <summary>
+        /// Constant e
+        /// </summary>
+        public static Tnum ConstE = new Tnum(Math.E);
     }
     
     #pragma warning restore 660, 661

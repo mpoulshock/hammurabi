@@ -172,5 +172,14 @@ namespace Hammurabi.UnitTests.CoreFcns
             int ResponseTimeInMs = Convert.ToInt32((DateTime.Now - startTime).TotalMilliseconds);
             Assert.IsTrue(ResponseTimeInMs < 10);    
         }
+
+        [Test]
+        public void Performance_Zip_3 ()
+        {
+            DateTime startTime = DateTime.Now;
+            Tbool t = Time.TheDay > 12;
+            int ResponseTimeInMs = Convert.ToInt32((DateTime.Now - startTime).TotalMilliseconds);
+            Assert.IsTrue(ResponseTimeInMs < 150); 
+        }
     }
 }

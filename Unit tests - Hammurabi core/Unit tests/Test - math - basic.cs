@@ -343,13 +343,13 @@ namespace Hammurabi.UnitTests.CoreFcns
         [Test]
         public void Test81 ()
         {
-            Assert.AreEqual(88, new Tnum(88).Abs.Out);        
+            Assert.AreEqual(88, Abs(new Tnum(88)).Out);        
         }
         
         [Test]
         public void Test82 ()
         {
-            Assert.AreEqual(88, new Tnum(-88).Abs.Out);        
+            Assert.AreEqual(88, Abs(new Tnum(-88)).Out);        
         }
 
         // Temporal
@@ -368,6 +368,56 @@ namespace Hammurabi.UnitTests.CoreFcns
             Tnum x = new Tnum(10);
             x.AddState(new DateTime(2000,1,1), 1);
             Assert.AreEqual("{Dawn: 9; 1/1/2000: 0}", (x-1).Out );    
+        }
+
+        // Pow(a,b)
+
+        [Test]
+        public void Pow_1 ()
+        {
+            Assert.AreEqual(27, Pow(3,3).Out);        
+        }
+
+        [Test]
+        public void Pow_2 ()
+        {
+            Assert.AreEqual(46.765, Pow(3,3.5).RoundToNearest(0.001).Out);        
+        }
+
+        // Square root
+
+        [Test]
+        public void Sqrt_1 ()
+        {
+            Assert.AreEqual(5, Sqrt(25).Out);        
+        }
+
+        // Logarithms
+
+        [Test]
+        public void Log_1 ()
+        {
+            Assert.AreEqual(3.219, Log(25).RoundToNearest(0.001).Out);        
+        }
+
+        [Test]
+        public void Log_2 ()
+        {
+            Assert.AreEqual(1.398, Log(10,25).RoundToNearest(0.001).Out);        
+        }
+
+        // Constants
+
+        [Test]
+        public void Pi_1 ()
+        {
+            Assert.AreEqual(3.1415927, ConstPi.RoundToNearest(0.0000001).Out);        
+        }
+
+        [Test]
+        public void E_1 ()
+        {
+            Assert.AreEqual(2.718, ConstE.RoundToNearest(0.001).Out);        
         }
     }
 }

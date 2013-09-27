@@ -1,51 +1,12 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Hammurabi\Core\Core functions\Time - analysis.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Hammurabi\Core\Core functions\Basic\Set - higher-order.cs">
     <Files>
-      <File FileName="Hammurabi\Core\Core functions\Time - analysis.cs" Line="102" Column="9" />
-      <File FileName="Hammurabi\Core\Core functions\Math.cs" Line="1" Column="1" />
-      <File FileName="Hammurabi\Core\Core functions\Comparison - dates.cs" Line="1" Column="1" />
-      <File FileName="Hammurabi\Core\Core functions\Comparison - numeric.cs" Line="1" Column="1" />
-      <File FileName="Hammurabi\Core\Core functions\Misc.cs" Line="1" Column="1" />
-      <File FileName="Hammurabi\Core\Core functions\Set - higher-order.cs" Line="1" Column="1" />
-      <File FileName="Hammurabi\Core\Core functions\Util.cs" Line="1" Column="1" />
-      <File FileName="Hammurabi\Core\Core functions\Unknown.cs" Line="1" Column="1" />
+      <File FileName="Hammurabi\Core\Core functions\Basic\Set - higher-order.cs" Line="7" Column="45" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
-        <State expanded="True">
-          <Node name="Akkadian" expanded="True">
-            <Node name="Common" expanded="True">
-              <Node name="Econ" expanded="True" />
-            </Node>
-            <Node name="Law" expanded="True">
-              <Node name="Federal law" expanded="True">
-                <Node name="Agency interpretations" expanded="True">
-                  <Node name="IRS" expanded="True" />
-                </Node>
-              </Node>
-              <Node name="State law" expanded="True">
-                <Node name="Pennsylvania" expanded="True">
-                  <Node name="Pa. Code" expanded="True">
-                    <Node name="Title 55" expanded="True" />
-                  </Node>
-                </Node>
-              </Node>
-            </Node>
-            <Node name="Tests" expanded="True" />
-          </Node>
-          <Node name="Hammurabi" expanded="True">
-            <Node name="Core" expanded="True">
-              <Node name="Core functions" expanded="True">
-                <Node name="Time - analysis.cs" selected="True" />
-              </Node>
-              <Node name="Fundamental types" expanded="True" />
-            </Node>
-          </Node>
-          <Node name="Unit tests - Hammurabi core" expanded="True">
-            <Node name="Unit tests" expanded="True" />
-          </Node>
-        </State>
+        <State expanded="True" />
       </Pad>
       <Pad Id="ClassPad">
         <State expanded="True" selected="True">

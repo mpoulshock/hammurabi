@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Hammurabi
 {
@@ -211,9 +212,9 @@ namespace Hammurabi
                 return ApplyFcnToTimeline<Tnum>(x => CoreTsetCount(x), this);
             }
         }
-        private static Hval CoreTsetCount(List<Hval> list)
+        private static Hval CoreTsetCount(Hval h)
         {
-            return ((List<Thing>)list[0].Val).Count;
+            return ((List<Thing>)h.Val).Count;
         }
 
         /// <summary>
@@ -236,19 +237,9 @@ namespace Hammurabi
         }
         private static Hval CoreSubset(List<Hval> list)
         {
-            bool isSubset = true;
-            List<Thing> entitiesInSub   = (List<Thing>)list[0].Val;
-            List<Thing> entitiesInSuper = (List<Thing>)list[1].Val;
-
-            foreach (Thing le in entitiesInSub)
-            {
-                if (!entitiesInSuper.Contains(le))
-                {
-                    isSubset = false;    
-                }
-            }
-
-            return isSubset;
+            List<Thing> s1 = (List<Thing>)list[0].Val;
+            List<Thing> s2 = (List<Thing>)list[1].Val;
+            return new Hval(!s1.Except(s2).Any());
         }
 
         /// <summary>
@@ -285,17 +276,9 @@ namespace Hammurabi
         }
         private static Hval CoreTsetUnion(List<Hval> list)
         {
-            List<Thing> union = (List<Thing>)list[0].Val;
-
-            foreach (Thing le in (List<Thing>)list[1].Val)
-            {
-                if (!union.Contains(le))
-                {
-                    union.Add(le);
-                }
-            }
-
-            return new Hval(union);
+            List<Thing> s1 = (List<Thing>)list[0].Val;
+            List<Thing> s2 = (List<Thing>)list[1].Val;
+            return new Hval(s1.Union(s2).ToList());
         }
 
         /// <summary>
@@ -308,23 +291,13 @@ namespace Hammurabi
         }
         private static Hval CoreTsetIntersection(List<Hval> list)
         {
-            List<Thing> entitiesInSet2 = (List<Thing>)list[0].Val;            
-            List<Thing> intersect = new List<Thing>();
-
-            // Members of set 1 in set 2
-            foreach (Thing le in (List<Thing>)list[1].Val)
-            {
-                if (entitiesInSet2.Contains(le))
-                {
-                    intersect.Add(le);
-                }
-            }
-
-            return new Hval(intersect);
+            List<Thing> s1 = (List<Thing>)list[0].Val;
+            List<Thing> s2 = (List<Thing>)list[1].Val;
+            return new Hval(s1.Intersect(s2).ToList());
         }
         
         /// <summary>
-        /// Returns the relative complement of two Tsets.
+        /// Returns the relative complement (set difference) of two Tsets.
         /// This is equivalent to subtracting the members of the second
         /// Tset from those of the first (Tset1 - Tset2).
         /// Example: theAdults = thePeople - theKids.
@@ -335,19 +308,9 @@ namespace Hammurabi
         }
         private static Hval CoreTsetRC(List<Hval> list)
         {
-            List<Thing> entitiesInSet2 = (List<Thing>)list[1].Val;            
-            List<Thing> complement = new List<Thing>();
-
-            // Members of set 1 not in set 2
-            foreach (Thing le in (List<Thing>)list[0].Val)
-            {
-                if (!entitiesInSet2.Contains(le))
-                {
-                    complement.Add(le);
-                }
-            }
-
-            return new Hval(complement);
+            List<Thing> s1 = (List<Thing>)list[0].Val;
+            List<Thing> s2 = (List<Thing>)list[1].Val;
+            return new Hval(s1.Except(s2).ToList());
         }
 
         /// <summary>

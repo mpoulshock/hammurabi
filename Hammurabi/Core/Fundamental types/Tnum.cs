@@ -271,9 +271,9 @@ namespace Hammurabi
                 return ApplyFcnToTimeline<Tstr>(x => CoreToUSD(x), this);
             }
         }
-        private static Hval CoreToUSD(List<Hval> list)
+        private static Hval CoreToUSD(Hval h)
         {
-            return String.Format("{0:C}" ,Convert.ToDecimal(list[0].Val));
+            return String.Format("{0:C}" ,Convert.ToDecimal(h.Val));
         }
 
         /// <summary>

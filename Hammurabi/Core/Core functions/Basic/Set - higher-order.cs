@@ -96,6 +96,13 @@ namespace Hammurabi
         {
             return FilterCore(this, x => argumentFcn((Thing)x));
         }
+
+//        private static Hval CoreFilter(Hval list, Func<Thing,Tbool> argumentFcn)
+//        {
+//            List<Thing> input = (List<Thing>)list.Val;
+//            List<Thing> result = (List<Thing>)input.Where(x => argumentFcn(x).IsTrue);
+//            return new Hval(result);
+//        }
         
         /// <summary>
         /// Returns a subset of a set, filtered by a given function with one input

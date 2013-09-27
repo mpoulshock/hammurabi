@@ -1,4 +1,4 @@
-// Copyright (c) 2012 Hammura.bi LLC
+// Copyright (c) 2012-2013 Hammura.bi LLC
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -101,16 +101,15 @@ namespace Hammurabi
         {
             T result = (T)Util.ReturnProperTvar<T>();
 
-            foreach (DateTime d in H.TimePoints(tb,val))
+            foreach (KeyValuePair<DateTime,List<Hval>> pair in H.TimePointValues(tb,val))
             {
-                if (tb.ObjectAsOf(d).IsTrue)
+                if (pair.Value[0].IsTrue)
                 {
-                    Hval valAsOf = val.ObjectAsOf(d);
-                    result.AddState(d, valAsOf);
+                    result.AddState(pair.Key, pair.Value[1]);
                 }
                 else
                 {
-                    result.AddState(d, new Hval(null,Hstate.Null));
+                    result.AddState(pair.Key, new Hval(null,Hstate.Null));
                 }
             }
 
@@ -130,22 +129,19 @@ namespace Hammurabi
         {
             T result = (T)Util.ReturnProperTvar<T>();
 
-            foreach (DateTime d in H.TimePoints(tv1,tv2))
+            foreach (KeyValuePair<DateTime,List<Hval>> pair in H.TimePointValues(tv1,tv2))
             {
-                Hval hv1 = tv1.ObjectAsOf(d);
-                Hval hv2 = tv2.ObjectAsOf(d);
-
-                if (hv1.State != Hstate.Null)
+                if (pair.Value[0].State != Hstate.Null)
                 {
-                    result.AddState(d, hv1);
+                    result.AddState(pair.Key, pair.Value[0]);
                 }
-                else if (hv2.State != Hstate.Null)
+                else if (pair.Value[1].State != Hstate.Null)
                 {
-                    result.AddState(d,hv2);
+                    result.AddState(pair.Key, pair.Value[1]);
                 }
                 else
                 {
-                    result.AddState(d, new Hval(null,Hstate.Null));
+                    result.AddState(pair.Key, new Hval(null,Hstate.Null));
                 }
             }
 
@@ -161,14 +157,7 @@ namespace Hammurabi
             
             foreach (KeyValuePair<DateTime,Hval> slice in tvar.IntervalValues)
             {
-                if (slice.Value.IsStub || slice.Value.IsUncertain || slice.Value.IsUnstated)
-                {
-                    result.AddState(slice.Key, true);
-                }
-                else
-                {
-                    result.AddState(slice.Key, false);
-                }
+                result.AddState(slice.Key, slice.Value.IsStub || slice.Value.IsUncertain || slice.Value.IsUnstated);
             }
             
             return result.Lean;
