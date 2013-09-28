@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using Hammurabi;
 
-namespace HammurabiWebService
+namespace Akkadian.Service
 {
-    // Hammurabi web service request object
+    // Akkadian web service request object
 
     [DataContract]
     public class Packet

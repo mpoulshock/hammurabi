@@ -1,7 +1,7 @@
 ﻿using System.ServiceModel;
 using System.ServiceModel.Web;
 
-namespace HammurabiWebService
+namespace Akkadian.Service
 {
     [ServiceContract]
     public interface IWebService

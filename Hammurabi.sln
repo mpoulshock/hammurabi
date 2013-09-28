@@ -3,17 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hammurabi", "Hammurabi\Hammurabi.csproj", "{4397E5BA-44D6-4937-B66A-ED7CE580CE69}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unit tests - Hammurabi core", "Unit tests - Hammurabi core\Unit tests - Hammurabi core.csproj", "{83557818-8363-4DD4-A504-0EB567BCBA0D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AkkadianUnitTests", "Unit tests - Hammurabi core\AkkadianUnitTests.csproj", "{83557818-8363-4DD4-A504-0EB567BCBA0D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AkkadianCompiler", "AkkadianCompiler\AkkadianCompiler.csproj", "{EF025235-40B5-44DC-ADA6-8363E55EA5A4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HammurabiInteractive", "HammurabiInteractive\HammurabiInteractive.csproj", "{844658C3-F7A2-4449-B616-F2AF4D205299}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HammurabiWebService", "HammurabiWebService\HammurabiWebService\HammurabiWebService.csproj", "{8651E5E6-B6F2-4B7B-8C36-4BF923EC740F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AkkadianWebService", "HammurabiWebService\HammurabiWebService\AkkadianWebService.csproj", "{8651E5E6-B6F2-4B7B-8C36-4BF923EC740F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HammurabiWebServiceHost", "HammurabiWebServiceHost\HammurabiWebServiceHost.csproj", "{2CDFC242-E702-4FCE-B20C-BB688A97AB24}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AkkadianWebServiceHost", "HammurabiWebServiceHost\AkkadianWebServiceHost.csproj", "{2CDFC242-E702-4FCE-B20C-BB688A97AB24}"
 EndProject
-Project("{9344bdbb-3e7f-41fc-a0dd-8665d75ee146}") = "Akkadian", "Akkadian\Akkadian.mdproj", "{44425A97-5000-4D67-9344-B8A2FA6F6664}"
+Project("{9344BDBB-3E7F-41FC-A0DD-8665D75EE146}") = "Akkadian", "Akkadian\Akkadian.mdproj", "{44425A97-5000-4D67-9344-B8A2FA6F6664}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

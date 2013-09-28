@@ -1,12 +1,12 @@
 ﻿using System;
-using HammurabiWebService;
+using Akkadian.Service;
 using System.ServiceModel;
 using System.ServiceModel.Web;
 
-namespace HammurabiWebServiceHost
+namespace Akkadian.ServiceHost
 {
     /// <summary>
-    /// This class provides self-hosting for the HammurabiWebService.
+    /// This class provides self-hosting for the AkkadianWebService.
     /// </summary>
     class SelfHost
     {

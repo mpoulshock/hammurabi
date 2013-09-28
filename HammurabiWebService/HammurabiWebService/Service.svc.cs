@@ -5,7 +5,7 @@ using System.ServiceModel.Web;
 using Hammurabi;
 using Interactive;
 
-namespace HammurabiWebService
+namespace Akkadian.Service
 {
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single, IncludeExceptionDetailInFaults = true)]
     public class WebService : IWebService

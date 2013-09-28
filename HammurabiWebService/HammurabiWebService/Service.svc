@@ -1,1 +1,1 @@
-﻿<%@ ServiceHost Language="C#" Debug="true" Service="HammurabiWebService.WebService" CodeBehind="Service.svc.cs" %>
+﻿<%@ ServiceHost Language="C#" Debug="true" Service="Akkadian.Service.WebService" CodeBehind="Service.svc.cs" %>

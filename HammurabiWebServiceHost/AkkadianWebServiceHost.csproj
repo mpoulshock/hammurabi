@@ -38,8 +38,11 @@
     <Reference Include="System.ServiceModel" />
     <Reference Include="System" />
     <Reference Include="System.ServiceModel.Web" />
-    <Reference Include="HammurabiWebService">
-      <HintPath>..\HammurabiWebService\HammurabiWebService\bin\Debug\HammurabiWebService.dll</HintPath>
-    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HammurabiWebService\HammurabiWebService\AkkadianWebService.csproj">
+      <Project>{8651E5E6-B6F2-4B7B-8C36-4BF923EC740F}</Project>
+      <Name>AkkadianWebService</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>
