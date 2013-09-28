@@ -21,7 +21,7 @@
 using System;
 using System.IO;
 
-namespace Akkadian
+namespace AkkadianCompiler
 {
     public class Boilerplate
     {

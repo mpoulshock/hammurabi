@@ -26,7 +26,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using Microsoft.Build.Evaluation;
 
-namespace Akkadian
+namespace AkkadianCompiler
 {
     class MainClass
     {

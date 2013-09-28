@@ -21,7 +21,7 @@
 using System;
 using System.Text.RegularExpressions;
 
-namespace Akkadian
+namespace AkkadianCompiler
 {
     /// <summary>
     /// Generates the unit test code from .akk.

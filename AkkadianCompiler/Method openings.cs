@@ -20,7 +20,7 @@
 
 using System.Text.RegularExpressions;
 
-namespace Akkadian
+namespace AkkadianCompiler
 {
     public class TransformMethod
     {
