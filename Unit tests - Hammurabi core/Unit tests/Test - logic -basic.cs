@@ -21,7 +21,7 @@
 using Hammurabi;
 using NUnit.Framework;
 
-namespace Hammurabi.UnitTests.CoreFcns
+namespace Akkadian.UnitTests
 {
     [TestFixture]
     public class BasicLogic : H

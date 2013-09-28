@@ -22,7 +22,7 @@ using Hammurabi;
 using NUnit.Framework;
 using System;
 
-namespace Hammurabi.UnitTests.CoreFcns
+namespace Akkadian.UnitTests
 {
 	[TestFixture]
 	public class TestTheTime : H

@@ -1,4 +1,4 @@
-// Copyright (c) 2012 Hammura.bi LLC
+// Copyright (c) 2012-2013 Hammura.bi LLC
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,7 @@
 using Hammurabi;
 using NUnit.Framework;
 
-namespace Hammurabi.UnitTests.CoreFcns
+namespace Akkadian.UnitTests
 {
     [TestFixture]
     public class TemporalDate : H

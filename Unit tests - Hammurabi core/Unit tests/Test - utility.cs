@@ -22,7 +22,7 @@ using System;
 using Hammurabi;
 using NUnit.Framework;
 
-namespace Hammurabi.UnitTests.CoreFcns
+namespace Akkadian.UnitTests
 {
     [TestFixture]
     public class Utility : H
