@@ -492,6 +492,22 @@ namespace Hammurabi.UnitTests.CoreFcns
             Assert.AreEqual(false, res.Out);        
         }
 
+        // Reverse
+
+        [Test]
+        public void Reverse1 ()
+        {
+            Tset s1 = new Tset(P1,P2,P3);
+            Assert.AreEqual("P3, P2, P1", s1.Reverse.Out);        
+        }
+
+        [Test]
+        public void Reverse2 ()
+        {
+            Tset s1 = new Tset(Hstate.Unstated);
+            Assert.AreEqual("Unstated", s1.Reverse.Out);        
+        }
+
         // Tset.Out
 
         [Test]

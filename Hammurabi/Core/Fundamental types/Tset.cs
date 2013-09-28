@@ -330,36 +330,23 @@ namespace Hammurabi
             return !(set1 == set2);
         }
 
-        
-        // ********************************************************************
-        // Should not be used in legal functions
-        // ********************************************************************
-
         /// <summary>
-        /// Returns a list of all legal entities that were ever members of the 
-        /// set. 
+        /// Reverses the order of the members of a Tset. 
         /// </summary>
-        public List<Thing> DistinctEntities()
+        public Tset Reverse
         {
-            List<Thing> result = new List<Thing>();
-            
-            foreach(KeyValuePair<DateTime,Hval> de in TimeLine )
+            get
             {
-                if (de.Value.IsKnown)
-                {
-                    foreach(Thing le in (List<Thing>)de.Value.Val)
-                    {
-                        if (!result.Contains(le))
-                        {
-                            result.Add(le);    
-                        }
-                    }
-                }
+                return ApplyFcnToTimeline<Tset>(x => CoreReverse(x), this);
             }
-            
-            return result;
+        }
+        private static Hval CoreReverse(Hval h)
+        {
+            List<Thing> list = (List<Thing>)h.Val;
+            list.Reverse();
+            return new Hval(list);
         }
     }
-    
+
     #pragma warning restore 660, 661
 }

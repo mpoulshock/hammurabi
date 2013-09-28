@@ -1,9 +1,6 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Hammurabi\Core\Core functions\Basic\Set - higher-order.cs">
-    <Files>
-      <File FileName="Hammurabi\Core\Core functions\Basic\Set - higher-order.cs" Line="7" Column="45" />
-    </Files>
+  <MonoDevelop.Ide.Workbench>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True" />
@@ -19,7 +16,17 @@
         <State />
       </Pad>
       <Pad Id="MonoDevelop.NUnit.TestPad">
-        <State expanded="True" selected="True" />
+        <State expanded="True">
+          <Node name="Unit tests - Hammurabi core" expanded="True">
+            <Node name="Hammurabi" expanded="True">
+              <Node name="UnitTests" expanded="True">
+                <Node name="CoreFcns" expanded="True">
+                  <Node name="Set" expanded="True" selected="True" />
+                </Node>
+              </Node>
+            </Node>
+          </Node>
+        </State>
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>

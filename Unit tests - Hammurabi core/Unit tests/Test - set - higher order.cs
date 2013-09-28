@@ -357,6 +357,17 @@ namespace Hammurabi.UnitTests.CoreFcns
             Assert.AreEqual("{Dawn: true; 1/14/2011: false}", allAssetsAreCheap.Out);        
         }
   
+        // OrderBy
+
+        [Test]
+        public void OrderBy1 ()
+        {
+            NewTest();
+            Tset theAssets = TheThings().Filter( _ => Owns (M,_));
+            Tset orderedAssets = theAssets.OrderBy(x => AssetValue((Thing)x) * -1);            
+            Assert.AreEqual("{Dawn: B, A; 1/1/2005: C, B, A; 1/1/2008: C, A}", orderedAssets.Out);        
+        }
+
         // Functions compiled from Akkadian to C#
         
         [Test]

@@ -173,7 +173,6 @@ namespace Hammurabi
         /// <summary>
         /// Apply a function to the values in a single Tvar.
         /// </summary>
-        /// <returns>The fcn to timeline.</returns>
         /// <remarks>
         /// This is used for unary functions (those that only operate on a single Tvar).
         /// </remarks>

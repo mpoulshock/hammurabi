@@ -30,63 +30,29 @@ namespace Hammurabi
     public partial class Tset
     {
         /// <summary>
-        /// Exists function - for various types of legal entities
-        /// </summary>
-        public Tbool Exists(Func<Thing,Tbool> argumentFcn)
-        {
-            return ExistsCore(this, x => argumentFcn((Thing)x));
-        }
-
-        /// <summary>
         /// Returns true when a condition holds for at least one member of
         /// a given set.
         /// </summary>
-        private static Tbool ExistsCore(Tset theSet, Func<object,Tbool> argumentFcn)
+        public Tbool Exists(Func<Thing,Tbool> argumentFcn)
         {
-            // Short-circuit to true if one set member is eternally true
-            foreach (Thing le in theSet.DistinctEntities())
-            {
-                if (argumentFcn(le).IsTrue)
-                {
-                    return new Tbool(true);
-                }
-            }
-
             // Analyze set for existence of the condition
-            Tset subset = Tset.FilterCore(theSet, x => argumentFcn(x));
+            Tset subset = this.Filter(x => argumentFcn(x));
             return subset.Count > 0;
-        }
-        
-        /// <summary>
-        /// ForAll function - for various types of legal entities
-        /// </summary>
-        public Tbool ForAll(Func<Thing,Tbool> argumentFcn)
-        {
-            return ForAllCore(this, x => argumentFcn((Thing)x));
         }
         
         /// <summary>
         /// Returns true when a condition holds for all members of
         /// a given set.
         /// </summary>
-        private static Tbool ForAllCore(Tset theSet, Func<object,Tbool> argumentFcn)
+        public Tbool ForAll(Func<Thing,Tbool> argumentFcn)
         {
             // By convention, the universal quantification of an empty set is always true
             // http://en.wikipedia.org/wiki/Universal_quantification#The_empty_set
-            if (theSet.Count == 0) return new Tbool(true);
+            if (this.Count == 0) return new Tbool(true);
 
-            // Short-circuit to false if one set member is eternally false
-            foreach (Thing le in theSet.DistinctEntities())
-            {
-                if (argumentFcn(le).IsFalse)
-                {
-                    return new Tbool(false);
-                }
-            }
-            
             // Analyze set for universality of the condition
-            Tset subset = Tset.FilterCore(theSet, x => argumentFcn(x));
-            return theSet.Count == subset.Count;
+            Tset subset = this.Filter(x => argumentFcn(x));
+            return this.Count == subset.Count;
         }
         
         /// <summary>
@@ -94,81 +60,19 @@ namespace Hammurabi
         /// </summary>
         public Tset Filter(Func<Thing,Tbool> argumentFcn)
         {
-            return FilterCore(this, x => argumentFcn((Thing)x));
+            return ApplyFcnToTset<Tset>(this, x => argumentFcn((Thing)x), y => CoreFilter(y));
         }
-
-//        private static Hval CoreFilter(Hval list, Func<Thing,Tbool> argumentFcn)
-//        {
-//            List<Thing> input = (List<Thing>)list.Val;
-//            List<Thing> result = (List<Thing>)input.Where(x => argumentFcn(x).IsTrue);
-//            return new Hval(result);
-//        }
-        
-        /// <summary>
-        /// Returns a subset of a set, filtered by a given function with one input
-        /// argument.  Set members that satisfy the given function are included in
-        /// the subset.
-        /// </summary>
-        private static Tset FilterCore(Tset theSet, Func<object,Tbool> argumentFcn)
+        private static Hval CoreFilter(List<Tuple<Thing,Hval>> list)
         {
-            Dictionary<object,Tvar> fcnValues = new Dictionary<object,Tvar>();
-            List<Tvar> listOfTvars = new List<Tvar>();
-            
-            // Get the temporal value of each distinct entity in the set
-            foreach(Thing le in theSet.DistinctEntities())
+            List<Thing> result = new List<Thing>();
+            foreach (Tuple<Thing,Hval> tu in list)
             {
-                Tbool val = argumentFcn(le);
-                fcnValues.Add(le, val);
-                listOfTvars.Add(val);
-            }
-
-            // At each breakpoint, for each member of the set,
-            // aggregate and analyze the values of the functions
-            Tset result = new Tset();
-            foreach(DateTime dt in AggregatedTimePoints(theSet, listOfTvars))
-            {
-                Hval membersOfOldSet = theSet.ObjectAsOf(dt);
-
-                // If theSet is unknown...
-                if (!membersOfOldSet.IsKnown)
+                if (tu.Item2.IsTrue)
                 {
-                    result.AddState(dt, membersOfOldSet);
+                    result.Add(tu.Item1);
                 }
-                else
-                {
-                    List<Thing> membersOfNewSet = new List<Thing>();
-                    List<Hval> unknownValues = new List<Hval>();
-                    
-                    foreach(Thing le in (List<Thing>)membersOfOldSet.Val)
-                    {
-                        Tbool funcVal = (Tbool)fcnValues[le];
-                        Hval funcHval = funcVal.ObjectAsOf(dt);
-
-                        // If any of the entity functions are unknown...
-                        if (!funcHval.IsKnown)
-                        {
-                            unknownValues.Add(funcHval);
-                        }
-                        else if (Convert.ToBoolean(funcHval.Val))
-                        {
-                            membersOfNewSet.Add(le);
-                        }
-                    }
-
-                    // Aggregate the results for this point in time
-                    Hstate top = PrecedingState(unknownValues);
-                    if (unknownValues.Count > 0 && top != Hstate.Known) 
-                    {
-                        result.AddState(dt, top);
-                    }
-                    else
-                    {
-                        result.AddState(dt, new Hval(membersOfNewSet));   
-                    }
-                }  
             }
-            
-            return result.LeanTvar<Tset>();
+            return new Hval(result);
         }
 
         /// <summary>
@@ -177,42 +81,73 @@ namespace Hammurabi
         /// </summary>
         public Tnum Sum(Func<Thing,Tnum> func)
         {
-            return ApplyFcnToTset(this, x => func((Thing)x), y => Sum(y));
+            return ApplyFcnToTset<Tnum>(this, x => func((Thing)x), y => CoreSum(y));
         }
-        private static Hval Sum(List<Hval> list)
+        private static Hval CoreSum(List<Tuple<Thing,Hval>> list)
         {
-            return list.Sum(item => Convert.ToDecimal(item.Val));
+            return SliceHvalsFromCube(list).Sum(item => Convert.ToDecimal(item.Val));
         }
+
         /// <summary>
         /// Returns the minimum value of a given numeric property of the 
         /// members of a set.
         /// </summary>
         public Tnum Min(Func<Thing,Tnum> func)
         {
-            return ApplyFcnToTset(this, x => func(x), y => Util.Minimum(y));
+            return ApplyFcnToTset<Tnum>(this, x => func((Thing)x), y => CoreMin(y));
         }
-        
+        private static Hval CoreMin(List<Tuple<Thing,Hval>> list)
+        {
+            return Util.Minimum(SliceHvalsFromCube(list));
+        }
+
         /// <summary>
         /// Returns the maximum value of a given numeric property of the 
         /// members of a set.
         /// </summary>
         public Tnum Max(Func<Thing,Tnum> func)
         {
-            return ApplyFcnToTset(this, x => func(x), y => Util.Maximum(y));
+            return ApplyFcnToTset<Tnum>(this, x => func((Thing)x), y => CoreMax(y));
         }
-        
+        private static Hval CoreMax(List<Tuple<Thing,Hval>> list)
+        {
+            return Util.Maximum(SliceHvalsFromCube(list));
+        }
+
         /// <summary>
-        /// A private method that applies a higher-order function to a set.
+        /// Sorts the members of a Tset based on a Tnum function.  Members with lower function values
+        /// come first in the sorted list.
         /// </summary>
-        private static Tnum ApplyFcnToTset(Tset theSet, 
-                                           Func<Thing,Tnum> argumentFcn, 
-                                           Func<List<Hval>,Hval> aggregationFcn)
+        public Tset OrderBy(Func<Thing,Tnum> func)
+        {
+            return ApplyFcnToTset<Tset>(this, x => func((Thing)x), y => CoreOrder(y)).Lean;
+        }
+        private static Hval CoreOrder(List<Tuple<Thing,Hval>> list)
+        {
+            List<Thing> result = new List<Thing>();
+
+            IEnumerable<Tuple<Thing,Hval>> query = list.OrderBy(pair => pair.Item2.Val);
+
+            foreach (Tuple<Thing,Hval> pair in query)
+            {
+                result.Add(pair.Item1);
+            }
+
+            return new Hval(result);
+        }
+
+        /// <summary>
+        /// Applies an aggregation function to a Tset and an argument function.
+        /// </summary>
+        private static T ApplyFcnToTset<T>(Tset theSet, 
+                                           Func<Thing,Tvar> argumentFcn, 
+                                           Func<List<Tuple<Thing,Hval>>,Hval> aggregationFcn) where T : Tvar
         {
             Dictionary<Thing,Tvar> fcnValues = new Dictionary<Thing,Tvar>();
             List<Tvar> listOfTvars = new List<Tvar>();
-            
+
             // Get the temporal value of each distinct entity in the set
-            foreach(Thing le in theSet.DistinctEntities())
+            foreach(Thing le in DistinctEntities(theSet))
             {
                 Tvar val = argumentFcn(le);
                 fcnValues.Add(le, val);
@@ -221,7 +156,7 @@ namespace Hammurabi
 
             // At each breakpoint, for each member of the set,
             // aggregate and analyze the values of the functions
-            Tnum result = new Tnum();
+            T result = (T)Util.ReturnProperTvar<T>();
             foreach(DateTime dt in AggregatedTimePoints(theSet, listOfTvars))
             {
                 Hval membersOfSet = theSet.ObjectAsOf(dt);
@@ -233,13 +168,18 @@ namespace Hammurabi
                 }
                 else
                 {
+                    // Cube that gets sent to the aggregation function
+                    List<Tuple<Thing,Hval>> thingValPairs = new List<Tuple<Thing,Hval>>();
+
+                    // Values to check for uncertainty
                     List<Hval> values = new List<Hval>();
-                    
+
                     foreach(Thing le in (List<Thing>)membersOfSet.Val)
                     {
                         Tvar funcVal = (Tvar)fcnValues[le];    
                         Hval funcValAt = funcVal.ObjectAsOf(dt);
                         values.Add(funcValAt);
+                        thingValPairs.Add(new Tuple<Thing,Hval>(le,funcValAt));
                     }
 
                     Hstate top = PrecedingState(values);
@@ -249,12 +189,12 @@ namespace Hammurabi
                     }
                     else
                     {
-                        result.AddState(dt, aggregationFcn(values));
+                        result.AddState(dt, aggregationFcn(thingValPairs));
                     } 
                 }
             }
 
-            return result.Lean;
+            return result.LeanTvar<T>();
         }
 
         /// <summary>
@@ -265,6 +205,44 @@ namespace Hammurabi
         {
             listOfTvars.Add(theSet);
             return TimePoints(listOfTvars);
+        }
+
+        /// <summary>
+        /// Returns the column of Hvals from the cube of Thing-Hval pairs.
+        /// </summary>
+        private static List<Hval> SliceHvalsFromCube(List<Tuple<Thing,Hval>> list)
+        {
+            List<Hval> slice = new List<Hval>();
+            foreach (Tuple<Thing,Hval> t in list)
+            {
+                slice.Add(t.Item2);
+            }
+            return slice;
+        }
+
+        /// <summary>
+        /// Returns a list of all legal entities that were ever members of the 
+        /// set. 
+        /// </summary>
+        private static List<Thing> DistinctEntities(Tset theSet)
+        {
+            List<Thing> result = new List<Thing>();
+
+            foreach(KeyValuePair<DateTime,Hval> de in theSet.TimeLine)
+            {
+                if (de.Value.IsKnown)
+                {
+                    foreach(Thing le in (List<Thing>)de.Value.Val)
+                    {
+                        if (!result.Contains(le))
+                        {
+                            result.Add(le);    
+                        }
+                    }
+                }
+            }
+
+            return result;
         }
     }
 }
