@@ -19,8 +19,9 @@
 // THE SOFTWARE.
 
 using System;
+using Interactive;
 
-namespace Interactive
+namespace Akkadian.DosInteractive
 {
     /// <summary>
     /// Class that runs a DOS-based interview of pre-set Hammurabi goals.  

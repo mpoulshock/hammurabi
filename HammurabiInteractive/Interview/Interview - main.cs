@@ -21,8 +21,9 @@
 using System;
 using System.Collections.Generic;
 using Hammurabi;
-    
-namespace Interactive
+using Interactive;
+
+namespace Akkadian.DosInteractive
 {
     /// <summary>
     /// Generates a DOS-based, utterly primitive interview designed

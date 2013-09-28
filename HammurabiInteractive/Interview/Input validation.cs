@@ -19,8 +19,9 @@
 // THE SOFTWARE.
 
 using System;
+using Interactive;
 
-namespace Interactive
+namespace Akkadian.DosInteractive
 {
 	/*
 	 * The code below validates user input data.

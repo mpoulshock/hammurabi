@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AkkadianUnitTests", "Unit t
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AkkadianCompiler", "AkkadianCompiler\AkkadianCompiler.csproj", "{EF025235-40B5-44DC-ADA6-8363E55EA5A4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HammurabiInteractive", "HammurabiInteractive\HammurabiInteractive.csproj", "{844658C3-F7A2-4449-B616-F2AF4D205299}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AkkadianInteractive", "HammurabiInteractive\AkkadianInteractive.csproj", "{844658C3-F7A2-4449-B616-F2AF4D205299}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AkkadianWebService", "HammurabiWebService\HammurabiWebService\AkkadianWebService.csproj", "{8651E5E6-B6F2-4B7B-8C36-4BF923EC740F}"
 EndProject

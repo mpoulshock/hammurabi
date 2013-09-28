@@ -21,8 +21,9 @@
 using System;
 using System.IO;
 using Hammurabi;
-    
-namespace Interactive
+using Interactive;
+
+namespace Akkadian.DosInteractive
 {
     /// <summary>
     /// Converts an interview session to an Akkadian test case that is

@@ -19,8 +19,9 @@
 // THE SOFTWARE.
 
 using System.Collections.Generic;
+using Interactive;
 
-namespace Interactive
+namespace Akkadian.DosInteractive
 {
     /// <summary>
     /// Values for input (drop down list) variables.
