@@ -1,5 +1,5 @@
 # Citation:     K.S.A. 23-2502 (2012)
-# Namespace:    KSA.Tit23.Sec2502
+# Namespace:    Hammurabi.KSA.Tit23.Sec2502
 # Summary:      Common law marriage.
 # Updated:      2012-06-02
 # Author:       Michael Poulshock
@@ -8,12 +8,12 @@
 # Common law marriage
 # TODO: Tie this into AreMarried(p1,p2) somehow
 TboolSym InCommonLawMarriage(Thing p1, Thing p2) =
-    IsResidentOf(p1, "Kansas") &        # Jurisdiction...
-    IsResidentOf(p2, "Kansas") &
+    Peo.IsResidentOf(p1, "Kansas") &        # Jurisdiction...
+    Peo.IsResidentOf(p2, "Kansas") &
     Fam.OneManOneWoman(p1, p2) &        # Assumed
     Econ.LivesWith(p1, p2) &                # Tentatively assumed
-    Age(p1) >= 18 &                     # KSA 23-2502...
-    Age(p2) >= 18 &
+    Peo.Age(p1) >= 18 &                     # KSA 23-2502...
+    Peo.Age(p2) >= 18 &
     Fam.HasMentalCapacityToMarry(p1) &    # Case law (need cite)...
     Fam.HasMentalCapacityToMarry(p2) &
     Fam.HaveMarriageAgreement(p1, p2) &
@@ -26,8 +26,8 @@ TboolSym InCommonLawMarriage(Thing p1, Thing p2) =
 Test: KansasCLM1
 - Thing p1
 - Thing p2
-- Gender(p1) = "Female"
-- Gender(p2) = "Female"
+- Peo.Gender(p1) = "Female"
+- Peo.Gender(p2) = "Female"
 - KSA.Tit23.Sec2502.InCommonLawMarriage(p1,p2).Out =?= false
 
 

@@ -22,7 +22,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Hammurabi
+namespace Akkadian
 {
     public partial class Tset
     {

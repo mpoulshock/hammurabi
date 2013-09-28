@@ -1,4 +1,4 @@
-# Namespace:    Ala.SNAP
+# Namespace:    Hammurabi.Ala.SNAP
 # Summary:      Eligibility for Alabama's Food Assistance Program (SNAP)
 # Source:       http://dhr.alabama.gov/services/Food_Assistance/Documents/Summarized_Eligiblity_2012.pdf
 # See also:     http://www.law.cornell.edu/cfr/text/7/273
@@ -23,7 +23,7 @@ Tbool IsMemberOfHouseholdOf(Thing p1, Thing p2) =
     ...
         Econ.PurchaseAndPrepareMealsTogether(p1,p2) |
         Fam.AreMarried(p1,p2) |
-        Age(p1) < 22
+        Peo.Age(p1) < 22
     
 # Household qualifies
 Tbool HouseholdQualifies(Thing person, Tset household) =
@@ -39,14 +39,14 @@ Tbool MeetsTechnicalReqs(Thing p, Tset householdMembers) =
     
     Tbool reqs =
         ...
-            IsUSCitizen(p) |
+            Peo.IsUSCitizen(p) |
             Imm.IsLPR(p)
         &
         ...
-            HasSSN(p) |
-            AppliedForSSN(p)
+            Peo.HasSSN(p) |
+            Peo.AppliedForSSN(p)
         &
-        IsResidentOf(p, "Alabama") &
+        Peo.IsResidentOf(p, "Alabama") &
         MeetsWorkReqs(p, householdMembers)
     
 # Person meets work requirements
@@ -62,9 +62,9 @@ Tbool MeetsWorkReqs(Thing p, Tset householdMembers) =
         # ComplyingWithJOBSOrUCB(p) |
         Fam.CaresForIncapacitatedPerson(p) |
         Edu.IsStudent(p) |
-        InDrugOrAlcoholTreatmentProg(p) |
-        Age(p) < 18 |
-        Age(p) > 50
+        Peo.InDrugOrAlcoholTreatmentProg(p) |
+        Peo.Age(p) < 18 |
+        Peo.Age(p) > 50
     
     Tbool meetsReqs =
         # RegisteredForWorkInAlabama(p) &
@@ -81,8 +81,8 @@ Tbool MeetsWorkReqs(Thing p, Tset householdMembers) =
 Tbool CaresForAsDependent(Thing care, Thing dep) =
     Fam.HasDayToDayResponsibilityFor(care, dep) &
     ...
-        Age(dep) < 18 |
-        IsDisabled(dep)
+        Peo.Age(dep) < 18 |
+        Peo.IsDisabled(dep)
 
 # Household meets the monthly financial requirements
 Tbool MeetsFinancialReqs(Thing p, Tset household) =
@@ -195,8 +195,8 @@ Tnum StandardDeduction(Tnum size) =
     
 # Elderly
 Tbool IsElderlyOrDisabled(Thing p) =
-    Age(p) > 60 |
-    IsDisabled(p)
+    Peo.Age(p) > 60 |
+    Peo.IsDisabled(p)
 
 # Resource test
 Tbool MeetsResourceTest(Tset household) =

@@ -20,7 +20,7 @@
 
 using System;
 
-namespace Hammurabi
+namespace Akkadian
 {
     public partial class Facts
     {

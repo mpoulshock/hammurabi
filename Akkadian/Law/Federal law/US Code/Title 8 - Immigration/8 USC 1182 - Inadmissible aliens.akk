@@ -1,4 +1,4 @@
-# Namespace:    USC.Tit8.Sec1182
+# Namespace:    Hammurabi.USC.Tit8.Sec1182
 # Citation:     8 USC 1182 (2012)
 # Summary:      Aliens who are inadmissible to the U.S.
 # Supp source:  Nolo Press, "U.S. Immigration Made Easy" (15th ed.)
@@ -26,7 +26,7 @@ Tbool SponsorMeetsPovThreshold(Thing imm, Thing sponsor) =
         Econ.TotalAssets(sponsor)        
         
     Tnum threshold =
-        Tit42.Sec9902.FPG125(size, StateOfResidence(sponsor))
+        Tit42.Sec9902.FPG125(size, Peo.StateOfResidence(sponsor))
 
     Tnum size =
         Econ.HouseholdSize(sponsor) + Econ.HouseholdSize(imm)

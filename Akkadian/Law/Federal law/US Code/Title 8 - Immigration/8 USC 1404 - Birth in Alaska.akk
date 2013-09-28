@@ -1,5 +1,5 @@
 # Citation:     8 U.S.C. 1404 (2012)
-# Namespace:    USC.Tit8.Sec1404
+# Namespace:    Hammurabi.USC.Tit8.Sec1404
 # Summary:      Persons born in Alaska on or after 1867-03-30
 # Updated:      2012-07-12
 # Author:       Michael Poulshock
@@ -12,62 +12,62 @@ Tbool IsUSCitizenPerAlaska(Thing p) =
         TestB(p) |
         TestC(p)
     & 
-    Time.IsAtOrAfter(DoB(p))    # Makes conclusion true from DoB onward
+    Time.IsAtOrAfter(Peo.DoB(p))    # Makes conclusion true from DoB onward
 
 # First test
 Tbool TestA(Thing p) =
-    BirthState(p) == "Alaska" &
-    DoB(p) >= 1867-03-30 &
+    Peo.BirthState(p) == "Alaska" &
+    Peo.DoB(p) >= 1867-03-30 &
     ! IsNoncitizenIndian(p)
 
 # Second test    
 Tbool TestB(Thing p) =
     IsNoncitizenIndian(p) & 
-    BirthState(p) == "Alaska" &
-    DoB(p) >= 1867-03-30 &
-    DoB(p) < 1924-06-02 &
+    Peo.BirthState(p) == "Alaska" &
+    Peo.DoB(p) >= 1867-03-30 &
+    Peo.DoB(p) < 1924-06-02 &
     Time.IsAtOrAfter(1924-06-02)    # Makes conclusion true from DoB onward
 
 # Third test
 Tbool TestC(Thing p) =
-    IsNativeAmerican(p) &
-    BirthState(p) == "Alaska" &
-    DoB(p) >= 1924-06-02 
+    Peo.IsNativeAmerican(p) &
+    Peo.BirthState(p) == "Alaska" &
+    Peo.DoB(p) >= 1924-06-02 
 
 # Not entirely sure what this is intended to mean...
 # >>Is {1} a 'noncitizen Indian' (as that term is used in 8 U.S.C. 1404)?
 Tbool IsNoncitizenIndian(Thing p) =
-    IsNativeAmerican(p)
+    Peo.IsNativeAmerican(p)
 
 
 # UNIT TESTS
 
 Test: 960269281
 - Thing mervin
-- BirthState(mervin) = "Alaska"
-- DoB(mervin) = 1988-02-03
-- IsNativeAmerican(mervin) = false
+- Peo.BirthState(mervin) = "Alaska"
+- Peo.DoB(mervin) = 1988-02-03
+- Peo.IsNativeAmerican(mervin) = false
 - USC.Tit8.Sec1404.IsUSCitizenPerAlaska(mervin).Out =?= "{Dawn: false; 2/3/1988: true}"
 
 Test: 540489836
 - Thing mervin
-- BirthState(mervin) = "Alaska"
-- DoB(mervin) = 1920-02-01
-- IsNativeAmerican(mervin) = true
+- Peo.BirthState(mervin) = "Alaska"
+- Peo.DoB(mervin) = 1920-02-01
+- Peo.IsNativeAmerican(mervin) = true
 - USC.Tit8.Sec1404.IsUSCitizenPerAlaska(mervin).Out =?= "{Dawn: false; 6/2/1924: true}"
 
 Test: 917373403
 - Thing p
-- BirthState(p) = Tstr(?)
-- DoB(p) = Tdate(?)
-- IsNativeAmerican(p) = Tbool(?)
+- Peo.BirthState(p) = Tstr(?)
+- Peo.DoB(p) = Tdate(?)
+- Peo.IsNativeAmerican(p) = Tbool(?)
 - USC.Tit8.Sec1404.IsUSCitizenPerAlaska(p).Out =?= "Uncertain"
 
 Test: 93000163
 - Thing p
-- BirthState(p) = "Alaska"
-- DoB(p) = 2011-01-01
-- IsNativeAmerican(p) = Tbool(?)
+- Peo.BirthState(p) = "Alaska"
+- Peo.DoB(p) = 2011-01-01
+- Peo.IsNativeAmerican(p) = Tbool(?)
 - USC.Tit8.Sec1404.IsUSCitizenPerAlaska(p).Out =?= "{Dawn: false; 1/1/2011: Uncertain}"
 
 Test: TemporalFact1

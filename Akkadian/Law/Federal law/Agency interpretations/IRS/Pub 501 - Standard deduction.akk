@@ -1,4 +1,4 @@
-# Namespace:    IRS.Pub501
+# Namespace:    Hammurabi.IRS.Pub501
 # Summary:      IRS Publication 501 - Standard deduction
 # Updated:      2012-10-09
 # Author:       Michael Poulshock
@@ -45,11 +45,11 @@ Tnum Table6Amount(Thing p) =
     else Stub()
 
     Tbool agedOrBlind =
-        DoB(p) < 1947-01-02 |
-        IsBlind(p) |
+        Peo.DoB(p) < 1947-01-02 |
+        Peo.IsBlind(p) |
         ...
             status == "Married filing jointly" &
-            Fam.SpousesOf(p).Exists(DoB(_) < 1947-01-02 | IsBlind(_))
+            Fam.SpousesOf(p).Exists(Peo.DoB(_) < 1947-01-02 | Peo.IsBlind(_))
         
     Tbool claimableAsDep =
         USC.Tit26.Sec152.CanBeClaimedAsDependentBySomeone(p) |
@@ -115,8 +115,8 @@ Tnum Table8Amount(Thing p) =
     
 # Boxes checked on Table 7 or 8
 Tnum BoxesChecked(Thing p) = 
-    theSpouses.Filter(DoB(_) < 1947-01-02).Count +
-    theSpouses.Filter(IsBlind(_)).Count
+    theSpouses.Filter(Peo.DoB(_) < 1947-01-02).Count +
+    theSpouses.Filter(Peo.IsBlind(_)).Count
     
     Tset theSpouses = Fam.SelfAndSpouseIfMarried(p)
 
@@ -136,8 +136,8 @@ Test: Page22_Ex4_Column3
 - Thing Ed
 - USC.Tit26.Sec2.FedTaxFilingStatus(Ed) = "Single"
 - USC.Tit26.Sec152.CanBeClaimedAsDependentBySomeone(Ed) = true
-- DoB(Ed) = 1990-01-01
-- IsBlind(Ed) = false
+- Peo.DoB(Ed) = 1990-01-01
+- Peo.IsBlind(Ed) = false
 - IRS.Pub501.EarnedIncomeForFS(Ed) = $3,726
 - Fam.MaritalStatus(Ed) = "Single"    # Redundant question?
 - IRS.Pub501.Table6Amount(Ed).Out =?= $4,026
@@ -146,8 +146,8 @@ Test: Page22_Ex3_Column3
 - Thing Amy
 - USC.Tit26.Sec2.FedTaxFilingStatus(Amy) = "Single"
 - USC.Tit26.Sec152.CanBeClaimedAsDependentBySomeone(Amy) = true
-- DoB(Amy) = 1994-01-01
-- IsBlind(Amy) = true
+- Peo.DoB(Amy) = 1994-01-01
+- Peo.IsBlind(Amy) = true
 - IRS.Pub501.EarnedIncomeForFS(Amy) = $2,900
 - Fam.MaritalStatus(Amy) = "Single"
 - IRS.Pub501.Table6Amount(Amy).Out =?= $4,650
@@ -156,20 +156,20 @@ Test: Page22_Ex2_Column3
 - Things Joe, Mary
 - USC.Tit26.Sec2.FedTaxFilingStatus(Joe) = "Married filing separately"
 - USC.Tit26.Sec152.CanBeClaimedAsDependentBySomeone(Joe) = true
-- DoB(Joe) = 1990-01-01
-- IsBlind(Joe) = false
+- Peo.DoB(Joe) = 1990-01-01
+- Peo.IsBlind(Joe) = false
 - IRS.Pub501.EarnedIncomeForFS(Joe) = $3,800
 - Fam.SpousesOf(Joe) = [[Mary]]
-- DoB(Mary) = 1990-01-01
-- IsBlind(Mary) = false
+- Peo.DoB(Mary) = 1990-01-01
+- Peo.IsBlind(Mary) = false
 - IRS.Pub501.Table6Amount(Joe).Out =?= $4,100
 
 Test: Page22_Ex1_Column3
 - Thing michael
 - USC.Tit26.Sec2.FedTaxFilingStatus(michael) = "Single"
 - USC.Tit26.Sec152.CanBeClaimedAsDependentBySomeone(michael) = true
-- DoB(michael) = 1995-01-01
-- IsBlind(michael) = false
+- Peo.DoB(michael) = 1995-01-01
+- Peo.IsBlind(michael) = false
 - IRS.Pub501.EarnedIncomeForFS(michael) = $150
 - Fam.MaritalStatus(michael) = "Single"
 - IRS.Pub501.Table6Amount(michael).Out =?= $950
@@ -180,11 +180,11 @@ Test: Page22_Ex3_Column2
 - USC.Tit26.Sec152.CanBeClaimedAsDependentBySomeone(bill) = false
 - Fam.SpousesOf(bill) = [[lisa]]
 - USC.Tit26.Sec152.CanBeClaimedAsDependentBySomeone(lisa) = false
-- DoB(bill) = 1930-01-01
+- Peo.DoB(bill) = 1930-01-01
 - Fam.MaritalStatus(bill) = "Married"
-- DoB(lisa) = 1930-01-01
-- IsBlind(lisa) = false
-- IsBlind(bill) = false
+- Peo.DoB(lisa) = 1930-01-01
+- Peo.IsBlind(lisa) = false
+- Peo.IsBlind(bill) = false
 - IRS.Pub501.Table6Amount(bill).Out =?= $13,900
 
 Test: Page22_Ex2_Column2
@@ -193,11 +193,11 @@ Test: Page22_Ex2_Column2
 - USC.Tit26.Sec152.CanBeClaimedAsDependentBySomeone(larry) = false
 - Fam.SpousesOf(larry) = [[donna]]
 - USC.Tit26.Sec152.CanBeClaimedAsDependentBySomeone(donna) = false
-- DoB(larry) = 1966-01-01
-- IsBlind(larry) = true
+- Peo.DoB(larry) = 1966-01-01
+- Peo.IsBlind(larry) = true
 - Fam.MaritalStatus(larry) = "Married"
-- DoB(donna) = 1979-01-01
-- IsBlind(donna) = false
+- Peo.DoB(donna) = 1979-01-01
+- Peo.IsBlind(donna) = false
 - IRS.Pub501.Table6Amount(larry).Out =?= $12,750
 
 Test: Page22_Ex1_Column2
@@ -206,10 +206,10 @@ Test: Page22_Ex1_Column2
 - USC.Tit26.Sec152.CanBeClaimedAsDependentBySomeone(larry) = false
 - Fam.SpousesOf(larry) = [[donna]]
 - USC.Tit26.Sec152.CanBeClaimedAsDependentBySomeone(donna) = false
-- DoB(larry) = 1966-01-01
-- IsBlind(larry) = false
-- DoB(donna) = 1979-01-01
-- IsBlind(donna) = false
+- Peo.DoB(larry) = 1966-01-01
+- Peo.IsBlind(larry) = false
+- Peo.DoB(donna) = 1979-01-01
+- Peo.IsBlind(donna) = false
 - IRS.Pub501.Table6Amount(larry).Out =?= $11,600
 
 Test: 200595112
@@ -217,29 +217,29 @@ Test: 200595112
 - IRS.Pub501.EarnedIncomeForFS(jim) = $100
 - USC.Tit26.Sec2.FedTaxFilingStatus(jim) = "Single"
 - Fam.MaritalStatus(jim) = "Single"
-- DoB(jim) = 1990-01-01
-- IsBlind(jim) = false
+- Peo.DoB(jim) = 1990-01-01
+- Peo.IsBlind(jim) = false
 - IRS.Pub501.Table8Amount(jim).Out =?= $950
 
 Test: 784536694
 - Things jon, sally
 - USC.Tit26.Sec2.FedTaxFilingStatus(jon) = "Married filing jointly"
-- DoB(jon) = 1960-01-01
-- IsBlind(jon) = false
+- Peo.DoB(jon) = 1960-01-01
+- Peo.IsBlind(jon) = false
 - USC.Tit26.Sec152.CanBeClaimedAsDependentBySomeone(jon) = false
 - Fam.SpousesOf(jon) = [[sally]]
 - USC.Tit26.Sec152.CanBeClaimedAsDependentBySomeone(sally) = false
-- DoB(sally) = 1960-01-01
-- IsBlind(sally) = false
+- Peo.DoB(sally) = 1960-01-01
+- Peo.IsBlind(sally) = false
 - IRS.Pub501.Table6Amount(jon).Out =?= $11,600
 
 Test: 25881624
 - Things jim, jane
 - Fam.SpousesOf(jim) = [[jane]]
-- DoB(jane) = 1900-01-01
-- IsBlind(jane) = true
-- DoB(jim) = 1980-01-01
-- IsBlind(jim) = true
+- Peo.DoB(jane) = 1900-01-01
+- Peo.IsBlind(jane) = true
+- Peo.DoB(jim) = 1980-01-01
+- Peo.IsBlind(jim) = true
 - USC.Tit26.Sec2.FedTaxFilingStatus(jim) = "Married filing jointly"
 - IRS.Pub501.Table7Amount(jim).Out =?= $15,050
 

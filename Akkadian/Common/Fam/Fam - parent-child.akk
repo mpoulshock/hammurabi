@@ -37,7 +37,7 @@ Tbool ParentsMarriedAsOf(Thing p, Tdate date) =
 
 # Birth mother
 Thing BirthMother(Thing p) =
-    Fam.MotherAsOf(p, DoB(p))
+    Fam.MotherAsOf(p, Peo.DoB(p))
     
 # Mother on a particular date
 # Warning: returns null if more than one mother
@@ -46,12 +46,12 @@ Thing MotherAsOf(Thing p, Tdate date) =
     
 # Is mother of
 Tbool IsMotherOf(Thing p1, Thing p2) =
-    IsFemale(p1) &
+    Peo.IsFemale(p1) &
     IsParentOf(p1,p2)
 
 # Birth father
 Thing BirthFather(Thing p) =
-    Fam.FatherAsOf(p, DoB(p))
+    Fam.FatherAsOf(p, Peo.DoB(p))
     
 # Father on a particular date
 # Warning: returns null if more than one father
@@ -60,7 +60,7 @@ Thing FatherAsOf(Thing p, Tdate date) =
     
 # Is father of
 Tbool IsFatherOf(Thing p1, Thing p2) =
-    IsMale(p1) &
+    Peo.IsMale(p1) &
     IsParentOf(p1,p2)
     
 # Experimental
@@ -112,8 +112,8 @@ Tbool IsOfUnknownParentage(Thing p)
 
 # Paternity established
 Tbool PaternityEstablishedFor(Thing parent, Thing child) =
-    IsMale(parent) &
-    Age(parent) - Age(child) >= 12 &
+    Peo.IsMale(parent) &
+    Peo.Age(parent) - Peo.Age(child) >= 12 &
     PaternityEstablishedForQ(parent,child) &
     Time.IsAtOrAfter(DatePaternityEstablishedFor(parent,child))
 
@@ -129,7 +129,7 @@ Tbool BornOutOfWedlock(Thing p) =
         
 # >>Was {1} an illegitimate child?
 Tbool IsIllegitimate(Thing p) =
-    !ParentsMarriedAsOf(p, DoB(p))
+    !ParentsMarriedAsOf(p, Peo.DoB(p))
     # unless child is born shortly after the parents' divorce
     # ...married as of date of conception?
 

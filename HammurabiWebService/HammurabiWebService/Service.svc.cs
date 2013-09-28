@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.ServiceModel;
 using System.ServiceModel.Web;
-using Hammurabi;
+using Akkadian;
 using Interactive;
 
-namespace Akkadian.Service
+namespace Akkadian.Service 
 {
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single, IncludeExceptionDetailInFaults = true)]
     public class WebService : IWebService
@@ -104,7 +104,7 @@ namespace Akkadian.Service
         /// <summary>
         /// Converts Tvar object to Timeline object.
         /// </summary>
-        private static List<TemporalValue> TvarToTimeline(Hammurabi.Tvar tv)
+        private static List<TemporalValue> TvarToTimeline(Akkadian.Tvar tv)
         {
             List<TemporalValue> result = new List<TemporalValue>();
             

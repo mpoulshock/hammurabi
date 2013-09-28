@@ -21,7 +21,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Hammurabi
+namespace Akkadian
 {
 	// TODO: Review accessibility level of these methods
 	

@@ -39,19 +39,19 @@ namespace Akkadian.UnitTests
         [Test]
         public void CurrentOrNextBusinessDay2 ()
         {
-            Assert.AreEqual(Date(2011,2,22), Date(2011,2,19).CurrentOrNextBusinessDay());    
+            Assert.AreEqual(Date(2011,2,21), Date(2011,2,19).CurrentOrNextBusinessDay());    
         }
         
         [Test]
         public void CurrentOrNextBusinessDay3 ()
         {
-            Assert.AreEqual(Date(2011,2,22), Date(2011,2,20).CurrentOrNextBusinessDay());    
+            Assert.AreEqual(Date(2011,2,21), Date(2011,2,20).CurrentOrNextBusinessDay());    
         }
         
         [Test]
         public void CurrentOrNextBusinessDay4 ()
         {
-            Assert.AreEqual(Date(2011,2,22), Date(2011,2,21).CurrentOrNextBusinessDay());    
+            Assert.AreEqual(Date(2011,2,21), Date(2011,2,21).CurrentOrNextBusinessDay());    
         }
         
         // CurrentOrNextWeekday

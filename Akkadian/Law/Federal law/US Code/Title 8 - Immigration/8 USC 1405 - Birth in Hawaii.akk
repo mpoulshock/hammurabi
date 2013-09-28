@@ -1,5 +1,5 @@
 # Citation:     8 U.S.C. 1405 (2012)
-# Namespace:    USC.Tit8.Sec1405
+# Namespace:    Hammurabi.USC.Tit8.Sec1405
 # Summary:      Citizenship of people born in Hawaii
 # Updated:      2012-09-15
 # Author:       Michael Poulshock
@@ -13,15 +13,15 @@ Tbool IsUSCitizenPerHawaii(Thing p) =
     ProngC(p)
     
 Tbool ProngA(Thing p) =
-    DoB(p) >= 1898-08-12 &
-    DoB(p) < 1900-04-30 &
-    BirthState(p) == "Hawaii" &        # At the time was called Republic of Hawaii
+    Peo.DoB(p) >= 1898-08-12 &
+    Peo.DoB(p) < 1900-04-30 &
+    Peo.BirthState(p) == "Hawaii" &        # At the time was called Republic of Hawaii
     Time.IsAtOrAfter(1900-04-30)
     
 Tbool ProngB(Thing p) =
-    DoB(p) >= 1900-04-30 &
-    BirthState(p) == "Hawaii" &
-    Time.IsAtOrAfter(DoB(p))    # Makes conclusion true from DoB onward
+    Peo.DoB(p) >= 1900-04-30 &
+    Peo.BirthState(p) == "Hawaii" &
+    Time.IsAtOrAfter(Peo.DoB(p))    # Makes conclusion true from DoB onward
     
 Tbool ProngC(Thing p) =
     HawCitOn18980812(p)
@@ -34,21 +34,21 @@ Tbool HawCitOn18980812(Thing p)
 
 Test: 781940999
 - Thing mel
-- DoB(mel) = 1901-01-01
-- BirthState(mel) = "Guam"
+- Peo.DoB(mel) = 1901-01-01
+- Peo.BirthState(mel) = "Guam"
 - USC.Tit8.Sec1405.HawCitOn18980812(mel) = true
 - USC.Tit8.Sec1405.IsUSCitizenPerHawaii(mel).Out =?= true
 
 Test: 379711445
 - Thing mel
-- DoB(mel) = 1899-01-01
-- BirthState(mel) = "Hawaii"
+- Peo.DoB(mel) = 1899-01-01
+- Peo.BirthState(mel) = "Hawaii"
 - USC.Tit8.Sec1405.HawCitOn18980812(mel) = false
 - USC.Tit8.Sec1405.IsUSCitizenPerHawaii(mel).Out =?= "{Dawn: false; 4/30/1900: true}"
 
 Test: 363859658
 - Thing mel
-- DoB(mel) = 1888-02-01
+- Peo.DoB(mel) = 1888-02-01
 - USC.Tit8.Sec1405.HawCitOn18980812(mel) = false
 - USC.Tit8.Sec1405.IsUSCitizenPerHawaii(mel).Out =?= false
 

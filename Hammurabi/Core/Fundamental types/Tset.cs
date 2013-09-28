@@ -22,7 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Hammurabi
+namespace Akkadian
 {
     #pragma warning disable 660, 661
     

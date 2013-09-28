@@ -8,7 +8,7 @@
 # (3) The term “alien” means any person not a citizen or national of the United States.
 
 Tbool IsAlien(Thing person) =
-    IsUSCitizen(person) |
+    Peo.IsUSCitizen(person) |
     Imm.IsUSNational(person)
 
 
@@ -52,9 +52,9 @@ Tnum ModifiedAMTIncome(Thing corp)
 # A rule built on top of the existing rules
 # >>Is {1} eligible for the benefit program?
 Tbool IsEligible(Thing person) =
-    StateOfResidence(person) == "New Jersey" &
-    Age(person) >= 18 &
+    Peo.StateOfResidence(person) == "New Jersey" &
+    Peo.Age(person) >= 18 &
     Econ.AnnualIncome(person) < $14,000 & 
     ! Econ.IsEmployed(person) &
-    IsUSCitizen(person)
+    Peo.IsUSCitizen(person)
     

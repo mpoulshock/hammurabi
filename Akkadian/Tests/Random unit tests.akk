@@ -33,7 +33,7 @@ Legitimated(1,2) assumes IsPretendEligible(1)
 # DO ASSUMPTION RULES SHORT-CIRCUIT INTERVIEWS?
 
 # It seems like they do.  When the following rule is run in the interview,
-# which is pre-seeded with the fact that Gender(person) = "Male",
+# which is pre-seeded with the fact that Peo.Gender(person) = "Male",
 # IsPregnant(person) becomes false.
 
 Tbool IsPretendEligible(Thing p) =
@@ -209,8 +209,8 @@ Test: PeriodEndVal2
 
 Test: PeriodEndVal3
 - Thing p
-- IsDeceased(p) = Tbool(?)
-- IsDeceased(p).PeriodEndVal(TheYear).Out =?= "Uncertain"
+- Peo.IsDeceased(p) = Tbool(?)
+- Peo.IsDeceased(p).PeriodEndVal(TheYear).Out =?= "Uncertain"
 
 Test: PeriodEndVal4
 - Thing p
@@ -228,18 +228,18 @@ Test: PeriodEndVal5
 # Turns out you can use a logical expression (and not just a function)
 # as an argument in a higher-order rule such as Filter, Sum, Exists.    
 Tnum LogicalExpressionInHigherOrderRule(Thing p) =
-    Fam.SpousesOf(p).Filter(Age(_) < 65).Count
+    Fam.SpousesOf(p).Filter(Peo.Age(_) < 65).Count
 
 Test: 965821874
 - Things jim, a
 - Fam.SpousesOf(jim) = [[a]]
-- DoB(a) = 1900-01-01
+- Peo.DoB(a) = 1900-01-01
 - Tests.LogicalExpressionInHigherOrderRule(jim).AsOf(2000-01-01).Out =?= 0
 
 Test: 825234342
 - Things jim, a
 - Fam.SpousesOf(jim) = [[a]]
-- DoB(a) = 1979-01-01
+- Peo.DoB(a) = 1979-01-01
 - Tests.LogicalExpressionInHigherOrderRule(jim).AsOf(2000-01-01).Out =?= 1    
     
     
@@ -324,101 +324,101 @@ Test: DayDiff5
 # DATE EQUALITY
 
 Tbool DateEquality1(Thing c) =
-    DoB(c) == 2000-01-01
+    Peo.DoB(c) == 2000-01-01
     
 Test: DateEquality1a
 - Thing b
-- DoB(b) = 2000-01-01
+- Peo.DoB(b) = 2000-01-01
 - Tests.DateEquality1(b).Out =?= true
 
 Test: DateEquality1b
 - Thing b
-- DoB(b) = 2002-01-01
+- Peo.DoB(b) = 2002-01-01
 - Tests.DateEquality1(b).Out =?= false
 
 Tbool DateEquality2(Thing c) =
-    DoB(c) <> 2000-01-01
+    Peo.DoB(c) <> 2000-01-01
     
 Test: DateEquality2a
 - Thing b
-- DoB(b) = 2000-01-01
+- Peo.DoB(b) = 2000-01-01
 - Tests.DateEquality2(b).Out =?= false
 
 Test: DateEquality2b
 - Thing b
-- DoB(b) = 2000-02-01
+- Peo.DoB(b) = 2000-02-01
 - Tests.DateEquality2(b).Out =?= true
 
 Tbool DateEquality3(Thing c) =
-    DoB(c) < 2000-01-01
+    Peo.DoB(c) < 2000-01-01
 
 Test: DateEquality3a
 - Thing b
-- DoB(b) = 2000-01-01
+- Peo.DoB(b) = 2000-01-01
 - Tests.DateEquality3(b).Out =?= false
 
 Test: DateEquality3b
 - Thing b
-- DoB(b) = 2001-01-01
+- Peo.DoB(b) = 2001-01-01
 - Tests.DateEquality3(b).Out =?= false
 
 Test: DateEquality3c
 - Thing b
-- DoB(b) = 1999-01-01
+- Peo.DoB(b) = 1999-01-01
 - Tests.DateEquality3(b).Out =?= true
 
 Tbool DateEquality4(Thing c) =
-    DoB(c) <= 2000-01-01
+    Peo.DoB(c) <= 2000-01-01
     
 Test: DateEquality4a
 - Thing b
-- DoB(b) = 2000-01-01
+- Peo.DoB(b) = 2000-01-01
 - Tests.DateEquality4(b).Out =?= true
 
 Test: DateEquality4b
 - Thing b
-- DoB(b) = 2001-01-01
+- Peo.DoB(b) = 2001-01-01
 - Tests.DateEquality4(b).Out =?= false
 
 Test: DateEquality4c
 - Thing b
-- DoB(b) = 1999-01-01
+- Peo.DoB(b) = 1999-01-01
 - Tests.DateEquality4(b).Out =?= true
 
 Tbool DateEquality5(Thing c) =
-    DoB(c) > 2000-01-01
+    Peo.DoB(c) > 2000-01-01
 
 Test: DateEquality5a
 - Thing b
-- DoB(b) = 2000-01-01
+- Peo.DoB(b) = 2000-01-01
 - Tests.DateEquality5(b).Out =?= false
 
 Test: DateEquality5b
 - Thing b
-- DoB(b) = 2001-01-01
+- Peo.DoB(b) = 2001-01-01
 - Tests.DateEquality5(b).Out =?= true
 
 Test: DateEquality5c
 - Thing b
-- DoB(b) = 1999-01-01
+- Peo.DoB(b) = 1999-01-01
 - Tests.DateEquality5(b).Out =?= false
 
 Tbool DateEquality6(Thing c) =
-    DoB(c) >= 2000-01-01
+    Peo.DoB(c) >= 2000-01-01
 
 Test: DateEquality6a
 - Thing b
-- DoB(b) = 2000-01-01
+- Peo.DoB(b) = 2000-01-01
 - Tests.DateEquality6(b).Out =?= true
 
 Test: DateEquality6b
 - Thing b
-- DoB(b) = 2001-01-01
+- Peo.DoB(b) = 2001-01-01
 - Tests.DateEquality6(b).Out =?= true
 
 Test: DateEquality6c
 - Thing b
-- DoB(b) = 1999-01-01
+- Peo.DoB(b) = 1999-01-01
 - Tests.DateEquality6(b).Out =?= false
 
 
@@ -436,7 +436,7 @@ Test: 85594484
 # ASK INTERMEDIATE QUESTION BEFORE DESCENDING TREE
 
 Tbool Test9(Thing p) =
-    set.Exists(IsUSCitizen(_))
+    set.Exists(Peo.IsUSCitizen(_))
     
     Tset set =
         SomeRandomPeople(p)

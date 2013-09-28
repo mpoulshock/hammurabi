@@ -1,4 +1,4 @@
-# Namespace:    Pa.Code.Tit55.Ch601
+# Namespace:    Hammurabi.Pa.Code.Tit55.Ch601
 # Summary:      Low Income Home Energy Assistance Program (LIHEAP)
 # Updated:      2013-03-18
 # Author:       Michael Poulshock
@@ -30,7 +30,7 @@ Tbool ResponsibleForHeatingCosts(Thing hh)
     
 # At least one household member is a PA resident (assumption)
 Tbool PaResidents(Thing hh) =
-    Mems(hh).Exists(StateOfResidence(_) == "Pennsylvania")
+    Mems(hh).Exists(Peo.StateOfResidence(_) == "Pennsylvania")
     
 # At least one household member is lawfully present in the U.S. (assumption)
 Tbool LawfullyPresent(Thing hh) =
@@ -38,7 +38,7 @@ Tbool LawfullyPresent(Thing hh) =
    
 # Lawful presence
 Tbool IsLawfullyPresent(Thing p) =
-    Imm.IsUSCitizen(p) |
+    Peo.IsUSCitizen(p) |
     IsQLAN(p)
     
 # Qualified lawfully admitted noncitizen
@@ -62,8 +62,8 @@ Tbool IsCountable(Thing p) =
     Econ.LivingArrangement(p) <> "Temporary living arrangement" &
     Econ.LivingArrangement(p) <> "Reside in institution" &
     ! IsQLAN(p) &
-    ! IsInPrison(p) &
-    ! IsFleeingFelon(p)     # TODO: Left out people fleeing NJ high misdemeanors
+    ! Peo.IsInPrison(p) &
+    ! Peo.IsFleeingFelon(p)     # TODO: Left out people fleeing NJ high misdemeanors
      
 # Household members
 Tset Mems(Thing household) =
@@ -182,7 +182,7 @@ Test: 403207628
 - Econ.MonthlyUnemploymentCompensation(sam) = 0
 - Pa.Code.Tit55.Ch601.ExcludedIncome(sam) = 0
 - Pa.Code.Tit55.Ch601.ResponsibleForHeatingCosts(Joneses) = true
-- StateOfResidence(sam) = "Pennsylvania"
+- Peo.StateOfResidence(sam) = "Pennsylvania"
 - Imm.USImmigrationStatus(sam) = "U.S. citizen"
 - Pa.Code.Tit55.Ch601.IsEligible(Joneses).Out =?= "{Dawn: Stub; 1/20/2011: true; 12/31/2012: Stub}"
 

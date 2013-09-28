@@ -23,7 +23,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using Interactive;
 
-namespace Hammurabi
+namespace Akkadian
 {
     // EXPERIMENTAL - C# custom attributes
     //    public class FunctionMetadata : Attribute

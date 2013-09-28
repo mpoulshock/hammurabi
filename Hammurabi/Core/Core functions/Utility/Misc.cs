@@ -22,7 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Hammurabi
+namespace Akkadian
 {
     public partial class H
     {        

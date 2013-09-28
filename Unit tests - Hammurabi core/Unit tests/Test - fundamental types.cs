@@ -786,14 +786,14 @@ namespace Akkadian.UnitTests
         [Test]
         public void TnumTypeTest1 ()
         {
-            bool isTnum = new Tnum().GetType().ToString() == "Hammurabi.Tnum";
+            bool isTnum = new Tnum().GetType().ToString() == "Akkadian.Tnum";
             Assert.AreEqual(true, isTnum);        
         }
         
         [Test]
         public void TnumTypeTest2 ()
         {
-            bool isTnum = new Tbool().GetType().ToString() == "Hammurabi.Tnum";
+            bool isTnum = new Tbool().GetType().ToString() == "Akkadian.Tnum";
             Assert.AreEqual(false, isTnum);        
         }
         

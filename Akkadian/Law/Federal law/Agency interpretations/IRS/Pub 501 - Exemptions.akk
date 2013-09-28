@@ -1,8 +1,8 @@
-# Namespace:    IRS.Pub501
+# Namespace:    Hammurabi.IRS.Pub501
 # Summary:      IRS Publication 501 - Exemptions for individuals
 # Updated:      2012-10-15
 # Author:       Michael Poulshock
-# References:   USC.Tit26
+# References:   Hammurabi.USC.Tit26
 
 
 # Total amount that a person can deduct for exemptions
@@ -16,21 +16,21 @@ Tnum ExemptionAmountBeforePhaseout(Thing p) =
 # Total exemptions the person can claim on Form 1040, line 6d
 Tnum TotalClaimableExemptions(Thing p) =
        set:
-    if IsDeceased(p)                    -> Stub()       # See "Death of spouse", p. 10
+    if Peo.IsDeceased(p)                    -> Stub()       # See "Death of spouse", p. 10
     if certainResidentsIndiaKorea       -> Stub()        # See Pub. 519; sec 873(b)(3)
     if IRS.Pub519.IsDualStatusAlien(p)  -> Stub()        #    " "
     if CertainNonresidentAliens(p)      -> OwnExemption(p)
     else NumberOfExemptions(p)
     
     Tbool certainResidentsIndiaKorea =
-        CountryOfResidence(p) == "India" |
-        CountryOfResidence(p) == "Korea" 
+        Peo.CountryOfResidence(p) == "India" |
+        Peo.CountryOfResidence(p) == "Korea" 
         
 # Is a NRA, unless from Canada or Mexico
 Tbool CertainNonresidentAliens(Thing p) =
     IRS.Pub519.IsNonresidentAlien(p) &
-    CountryOfResidence(p) <> "Canada" &
-    CountryOfResidence(p) <> "Mexico"
+    Peo.CountryOfResidence(p) <> "Canada" &
+    Peo.CountryOfResidence(p) <> "Mexico"
 
 # Exemption amount per person (varies by tax year)
 # Source: http://taxes.about.com/od/preparingyourtaxes/a/personal_exempt.htm
@@ -92,8 +92,8 @@ Tbool SpouseDiedDuringTaxYear(Thing p) =
  
 # True during the tax year in which a person died
 Tbool DiedDuringTaxYear(Thing p) =
-    IsDeceased(p).IsEverTrue() &
-    DateOfDeath(p).IsInPeriod(Sec441.TaxYear(p))
+    Peo.IsDeceased(p).IsEverTrue() &
+    Peo.DateOfDeath(p).IsInPeriod(Sec441.TaxYear(p))
     
 # Married on last day of tax year 
 Tbool MarriedAtEndOfTaxYear(Thing p) =
@@ -134,23 +134,23 @@ Tnum GrossIncome(Thing p)
 
 Test: USCitizenMFJ
 - Thing jed
-- IsDeceased(jed) = false
-- CountryOfResidence(jed) = "United States"
+- Peo.IsDeceased(jed) = false
+- Peo.CountryOfResidence(jed) = "United States"
 - Imm.USImmigrationStatus(jed) = "U.S. citizen"
 - USC.Tit26.Sec152.CanBeClaimedAsDependentBySomeone(jed) = false
 - Fam.MaritalStatus(jed) = "Married"
 - USC.Tit26.Sec2.FedTaxFilingStatus(jed) = "Married filing jointly"
 - Things tammy
 - Fam.SpousesOf(jed) = [[tammy]]
-- IsDeceased(tammy) = false
+- Peo.IsDeceased(tammy) = false
 - USC.Tit26.Sec152.CanBeClaimedAsDependentBySomeone(tammy) = false
 - IRS.Pub501.DependencyExemptions(jed) = 0
 - IRS.Pub501.ExemptionAmountBeforePhaseout(jed).AsOf(2011-12-31).Out =?= $7,400
 
 Test: USCitizenSingle
 - Thing jimbo
-- IsDeceased(jimbo) = false
-- CountryOfResidence(jimbo) = "United States"
+- Peo.IsDeceased(jimbo) = false
+- Peo.CountryOfResidence(jimbo) = "United States"
 - Imm.USImmigrationStatus(jimbo) = "U.S. citizen"
 - USC.Tit26.Sec152.CanBeClaimedAsDependentBySomeone(jimbo) = false
 - Fam.MaritalStatus(jimbo) = "Single"
@@ -160,16 +160,16 @@ Test: USCitizenSingle
 
 Test: 631329891
 - Thing larry
-- IsDeceased(larry) = false
-- CountryOfResidence(larry) = "Russia"
+- Peo.IsDeceased(larry) = false
+- Peo.CountryOfResidence(larry) = "Russia"
 - Imm.USImmigrationStatus(larry) = "Alien"
 - IRS.Pub519.AlienTaxStatus(larry) = "Dual-status alien"
 - IRS.Pub501.ExemptionAmountBeforePhaseout(larry).Out =?= "Stub"
 
 Test: 243734645
 - Thing larry
-- IsDeceased(larry) = false
-- CountryOfResidence(larry) = "Japan"
+- Peo.IsDeceased(larry) = false
+- Peo.CountryOfResidence(larry) = "Japan"
 - Imm.USImmigrationStatus(larry) = "Alien"
 - IRS.Pub519.AlienTaxStatus(larry) = "Nonresident alien"
 - USC.Tit26.Sec152.CanBeClaimedAsDependentBySomeone(larry) = false
@@ -177,18 +177,18 @@ Test: 243734645
 
 Test: 385282068
 - Thing larry
-- IsDeceased(larry) = false
-- CountryOfResidence(larry) = "India"
+- Peo.IsDeceased(larry) = false
+- Peo.CountryOfResidence(larry) = "India"
 - IRS.Pub501.ExemptionAmountBeforePhaseout(larry).Out =?= "Stub"
 
 Test: DiedDuringTaxYear1
 - Thing jim
-- IsDeceased(jim) = true
-- DateOfDeath(jim) = 2010-04-04
+- Peo.IsDeceased(jim) = true
+- Peo.DateOfDeath(jim) = 2010-04-04
 - IRS.Pub501.DiedDuringTaxYear(jim).Out =?= "{Dawn: false; 1/1/2010: true; 1/1/2011: false}"
 
 Test: DiedDuringTaxYear2
 - Thing jim
-- IsDeceased(jim) = false
+- Peo.IsDeceased(jim) = false
 - IRS.Pub501.DiedDuringTaxYear(jim).Out =?= false
 

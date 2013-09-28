@@ -20,7 +20,7 @@
 
 using System;
 
-namespace Hammurabi
+namespace Akkadian
 {
 
     public abstract partial class Time : H

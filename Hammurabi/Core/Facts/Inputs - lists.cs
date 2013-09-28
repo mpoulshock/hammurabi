@@ -1,4 +1,4 @@
-// Copyright (c) 2012 Hammura.bi LLC
+// Copyright (c) 2012-2013 Hammura.bi LLC
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -20,7 +20,7 @@
 
 using System.Collections.Generic;
 
-namespace Hammurabi
+namespace Akkadian
 {
     /// <summary>
     /// Values for input (drop down list) variables.

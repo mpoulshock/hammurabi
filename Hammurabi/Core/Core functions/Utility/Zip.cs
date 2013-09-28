@@ -21,7 +21,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Hammurabi
+namespace Akkadian
 {
     public abstract partial class H
     {

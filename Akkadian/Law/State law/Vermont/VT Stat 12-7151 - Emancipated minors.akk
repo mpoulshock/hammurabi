@@ -1,5 +1,5 @@
 # Citation:     Vt. Stat. Ann. 12-7151 (2012)
-# Namespace:    Vt.Stat.Tit12.Sec7151
+# Namespace:    Hammurabi.Vt.Stat.Tit12.Sec7151
 # Summary:      Emancipated minors under Vermont law.
 # Updated:      2012-06-01
 # Author:       Michael Poulshock
@@ -20,7 +20,7 @@ Tbool OrderedEmancipatedQ(Thing p)
 
 # Eligible to become emancipated
 Tbool IsEligibleForEmancipation(Thing p) =
-    Age(p) >= 16 &
+    Peo.Age(p) >= 16 &
     !Fam.ReachedAgeOfMajority(p) &        # Later, reference VT age of majority law
     LivedUnsupervisedFor3Months(p) &
     Econ.ManagesOwnAffairs(p) &
@@ -31,8 +31,8 @@ Tbool IsEligibleForEmancipation(Thing p) =
         Edu.GraduatedHighSchool(p) |
         Edu.IsEnrolledInHighSchool(p)
     &
-    !IsInPrison(p) &
-    !InJuvenileFacility(p)
+    !Peo.IsInPrison(p) &
+    !Peo.InJuvenileFacility(p)
     
 # Lived apart from parents, custodian, or guardian
 Tbool LivedUnsupervisedFor3Months(Thing p) =

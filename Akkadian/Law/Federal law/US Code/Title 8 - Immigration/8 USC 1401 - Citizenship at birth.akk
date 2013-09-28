@@ -1,5 +1,5 @@
 # Citation:     8 U.S.C. 1401 (2012)
-# Namespace:    USC.Tit8.Sec1401
+# Namespace:    Hammurabi.USC.Tit8.Sec1401
 # Summary:      When is a child a citizen at birth?
 # Supp source:  http://www.ilrc.org/files/nats_chart_a_10.pdf
 # Updated:      2012-09-20
@@ -57,19 +57,19 @@ Tbool SubsecD(Thing c) =
         Sec1409.SubsecAApplies(c)
     &
     OneCitizenOneNationalParent(c) &
-    BirthParents(c).Exists(IsCitizenPresentInUSorOP1YearBefore(_, DoB(c)))
+    BirthParents(c).Exists(IsCitizenPresentInUSorOP1YearBefore(_, Peo.DoB(c)))
     
 # (e) - Born in outlying possession; one parent citizen, one parent 
 # alien; citizen parent physically present for a continuous period 
 # of one year prior to child's birth
 Tbool SubsecE(Thing c) =
-    Sec1101.IsUSOutlyingPossession(BirthCountry(c)) &
+    Sec1101.IsUSOutlyingPossession(Peo.BirthCountry(c)) &
     ...
         ParentsMarried(c) |
         Sec1409.SubsecAApplies(c)
     &
     OneCitizenOneAlienParent(c) &
-    BirthParents(c).Exists(IsCitizenPresentInUSorOP1YearBefore(_, DoB(c)))
+    BirthParents(c).Exists(IsCitizenPresentInUSorOP1YearBefore(_, Peo.DoB(c)))
     
 # (f) - Person of unknown parentage found in U.S. while under age 5;
 # not proved, before age 21, to have been born outside U.S. 
@@ -81,7 +81,7 @@ Tbool SubsecF(Thing c) =
 # citizen parent physically present for certain threshold. 
 Tbool SubsecG(Thing c) =
     set:
-    if DoB(c) < 1952-12-24 -> Stub()
+    if Peo.DoB(c) < 1952-12-24 -> Stub()
     else SubsecGTest(c)
         
 Tbool SubsecGTest(Thing c) =
@@ -94,13 +94,13 @@ Tbool SubsecGTest(Thing c) =
             Sec1409.SubsecBApplies(c)
         &
         OneCitizenOneAlienParent(c) &
-        BirthParents(c).Exists(SubsecGParentTest(_, DoB(c)))
+        BirthParents(c).Exists(SubsecGParentTest(_, Peo.DoB(c)))
 
 # Citizen parent, prior to child's birth, physically present for a
 # total of 5 years, 2 of which were after 14 years of age.  
 # Certain governmental service counts towards physical presence.
 Tbool SubsecGParentTest(Thing parent, Tdate childDoB) =
-    IsUSCitizen(parent) &
+    Peo.IsUSCitizen(parent) &
     presentYears.IsEverTrue(Time.DawnOf, childDoB) &
     presentYearsBeforeAge14.IsEverTrue()
     
@@ -117,7 +117,7 @@ Tbool SubsecGParentTest(Thing parent, Tdate childDoB) =
     # How many years they must be present before age 14...
     Tbool presentYearsBeforeAge14 =
         present.RunningElapsedIntervals(TheDay).DaysToYears >= yearThreshold14 &
-        Age(parent) >= 14
+        Peo.Age(parent) >= 14
     
     # See statutory notes; ILRC chart
     Tnum yearThreshold14 =
@@ -141,39 +141,39 @@ Tbool PresentUnderSubsecG(Thing p) =
 # Are the gender assumptions here correct?
 Tbool SubsecH(Thing c) =
     set: 
-    if DoB(c) < 1934-05-24 -> false
-    if DoB(c) == 1934-05-24 -> Stub()
+    if Peo.DoB(c) < 1934-05-24 -> false
+    if Peo.DoB(c) == 1934-05-24 -> Stub()
     else theTest
     
     Tbool theTest =
         ParentsMarried(c) &
         Imm.IsAlien(FatherOf(c)) &
-        IsUSCitizen(MotherOf(c)) &
-        ResidedInUSorOP(MotherOf(c)).IsEverTrue(Time.DawnOf, DoB(c))
+        Peo.IsUSCitizen(MotherOf(c)) &
+        ResidedInUSorOP(MotherOf(c)).IsEverTrue(Time.DawnOf, Peo.DoB(c))
 
 
 # PLACE OF BIRTH
 
 # Born in U.S. or outlying possession
 Tbool BornInUSorOP(Thing c) =
-    BornInTheUSA(c) |
-    Sec1101.IsUSOutlyingPossession(BirthCountry(c))
+    Peo.BornInTheUSA(c) |
+    Sec1101.IsUSOutlyingPossession(Peo.BirthCountry(c))
     
     
 # RESIDENCE IN U.S.
 
 # A parent resided in U.S. at or before child's birth
 Tbool ParentResidedInUSorOPBeforeBirthOf(Thing c) =
-    ResidedInUSorOP(FatherOf(c)).IsEverTrue(Time.DawnOf, DoB(c)) |
-    ResidedInUSorOP(MotherOf(c)).IsEverTrue(Time.DawnOf, DoB(c))
+    ResidedInUSorOP(FatherOf(c)).IsEverTrue(Time.DawnOf, Peo.DoB(c)) |
+    ResidedInUSorOP(MotherOf(c)).IsEverTrue(Time.DawnOf, Peo.DoB(c))
 
 # Resided in U.S. or outlying possession
 Tbool ResidedInUSorOP(Thing p) =
-    IsUSResident(p) |
+    Peo.IsUSResident(p) |
     Sec1101.IsUSOutlyingPossession(loc)
     
     Tstr loc = 
-        CountryOfResidence(p)
+        Peo.CountryOfResidence(p)
         
 
 # CONTINUOUS PHYSICAL PRESENCE IN U.S.
@@ -187,7 +187,7 @@ Tbool IsCitizenPresentInUSorOP1YearBefore(Thing p, Tdate date) =
 # for continuous period of N years before a given date
 # (This rule allows logic reuse.)
 Tbool IsCitizenPresentInUSorOPNYearsBefore(Thing p, Tnum years, Tdate date) =
-    IsUSCitizen(p) &
+    Peo.IsUSCitizen(p) &
     present.IsEverTrue(Time.DawnOf, date)
     
     Tbool present =
@@ -195,39 +195,39 @@ Tbool IsCitizenPresentInUSorOPNYearsBefore(Thing p, Tnum years, Tdate date) =
 
 # >>Was {1} physically present in the U.S. or one of its outlying possessions?
 Tbool PresentInUSorOP(Thing p) =
-    PresentInUS(p) |
+    Peo.PresentInUS(p) |
     Sec1101.IsUSOutlyingPossession(loc)
     
     Tstr loc = 
-        CountryLocation(p)
+        Peo.CountryLocation(p)
 
         
 # PARENTS' STATUSES    AT TIME OF CHILD'S BIRTH
         
 # Both parents are U.S. citizens
 Tbool BothParentsCitizens(Thing c) =
-    IsUSCitizen(FatherOf(c)).AsOf(DoB(c)) &
-    IsUSCitizen(MotherOf(c)).AsOf(DoB(c))
+    Peo.IsUSCitizen(FatherOf(c)).AsOf(Peo.DoB(c)) &
+    Peo.IsUSCitizen(MotherOf(c)).AsOf(Peo.DoB(c))
 
 # Both parents are U.S. nationals
 Tbool BothParentsNationals(Thing c) =
-    Imm.IsUSNational(FatherOf(c)).AsOf(DoB(c)) &
-    Imm.IsUSNational(MotherOf(c)).AsOf(DoB(c))
+    Imm.IsUSNational(FatherOf(c)).AsOf(Peo.DoB(c)) &
+    Imm.IsUSNational(MotherOf(c)).AsOf(Peo.DoB(c))
     
 # One parent is a U.S. citizen, one is a U.S. national
 Tbool OneCitizenOneNationalParent(Thing c) =
-    BirthParents(c).Exists(IsUSCitizen(_)).AsOf(DoB(c)) &
-    BirthParents(c).Exists(Imm.IsUSNational(_)).AsOf(DoB(c))
+    BirthParents(c).Exists(Peo.IsUSCitizen(_)).AsOf(Peo.DoB(c)) &
+    BirthParents(c).Exists(Imm.IsUSNational(_)).AsOf(Peo.DoB(c))
 
 # One parent is a U.S. citizen, one is an alien
 Tbool OneCitizenOneAlienParent(Thing c) =
-    BirthParents(c).Exists(IsUSCitizen(_)).AsOf(DoB(c)) &
-    BirthParents(c).Exists(Imm.IsAlien(_)).AsOf(DoB(c))
+    BirthParents(c).Exists(Peo.IsUSCitizen(_)).AsOf(Peo.DoB(c)) &
+    BirthParents(c).Exists(Imm.IsAlien(_)).AsOf(Peo.DoB(c))
 
 # One parent is a U.S. national, one is an alien
 Tbool OneNationalOneAlienParent(Thing c) =
-    BirthParents(c).Exists(Imm.IsUSNational(_)).AsOf(DoB(c)) &
-    BirthParents(c).Exists(Imm.IsAlien(_)).AsOf(DoB(c))
+    BirthParents(c).Exists(Imm.IsUSNational(_)).AsOf(Peo.DoB(c)) &
+    BirthParents(c).Exists(Imm.IsAlien(_)).AsOf(Peo.DoB(c))
     
     
 # PARENTS
@@ -235,7 +235,7 @@ Tbool OneNationalOneAlienParent(Thing c) =
 # Parents married as of child's date of birth
 # TODO: Connect to 8 U.S.C. 1409
 Tbool ParentsMarried(Thing c) =
-    Fam.AreMarried(FatherOf(c), MotherOf(c)).AsOf(DoB(c))
+    Fam.AreMarried(FatherOf(c), MotherOf(c)).AsOf(Peo.DoB(c))
     # ! Fam.IsAdopted(c)
     
 # The person's parents at time of birth
@@ -255,43 +255,43 @@ Thing MotherOf(Thing c) =
 
 Test: 574277777
 - Thing a
-- DoB(a) = 1950-02-02
+- Peo.DoB(a) = 1950-02-02
 - Things jini,barka
 - Fam.ParentsOf(a) = [[jini, barka]]
-- Gender(jini) = "Male"
-- Gender(barka) = "Female"
+- Peo.Gender(jini) = "Male"
+- Peo.Gender(barka) = "Female"
 - Fam.FamilyRelationship(jini,barka) = "Spouse"
 - Imm.USImmigrationStatus(jini) = "Legal permanent resident"
 - Imm.USImmigrationStatus(barka) = "U.S. citizen"
-- CountryOfResidence(barka) = "United States"
+- Peo.CountryOfResidence(barka) = "United States"
 - USC.Tit8.Sec1401.SubsecH(a).Out =?= true
 
 Test: 856160232
 - Thing a
-- DoB(a) = 1934-05-24
+- Peo.DoB(a) = 1934-05-24
 - USC.Tit8.Sec1401.SubsecH(a).Out =?= "Stub"
 
 Test: 506836087
 - Thing a
-- DoB(a) = 1920-01-01
+- Peo.DoB(a) = 1920-01-01
 - USC.Tit8.Sec1401.SubsecH(a).Out =?= false
 
 Test: 717543211
 - Thing a
-- BirthCountry(a) = "New Zealand"
-- DoB(a) = 1980-02-03
+- Peo.BirthCountry(a) = "New Zealand"
+- Peo.DoB(a) = 1980-02-03
 - Things jim,pam
 - Fam.ParentsOf(a) = [[jim, pam]]
-- Gender(jim) = "Male"
-- Gender(pam) = "Female"
+- Peo.Gender(jim) = "Male"
+- Peo.Gender(pam) = "Female"
 - Fam.FamilyRelationship(jim,pam) = "Spouse"
-- IsUSCitizen(jim) = true
-- IsUSCitizen(pam) = true
-- CountryOfResidence(jim) = "United States"
+- Peo.IsUSCitizen(jim) = true
+- Peo.IsUSCitizen(pam) = true
+- Peo.CountryOfResidence(jim) = "United States"
 - USC.Tit8.Sec1401.AcquiredCitizenshipAtBirth(a).Out =?= true
 
 Test: 350267835
 - Thing a
-- BirthCountry(a) = "United States"
+- Peo.BirthCountry(a) = "United States"
 - USC.Tit8.Sec1401.AcquiredCitizenshipAtBirth(a).Out =?= true
 

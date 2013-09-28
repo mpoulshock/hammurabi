@@ -21,7 +21,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Hammurabi
+namespace Akkadian
 {    
     /// <summary>
     /// The (abstract) base class of all temporal variables (Tvars).

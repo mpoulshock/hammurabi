@@ -21,7 +21,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Hammurabi
+namespace Akkadian
 {    
     public partial class Tdate
     {

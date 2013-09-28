@@ -84,17 +84,17 @@ IsMarried(1) assumes MaritalStatus(1) = "Married"
 # One person is a man, the other a woman
 Tbool OneManOneWoman(Thing p1, Thing p2) =
     ...
-        IsFemale(p1) &
-        IsMale(p2)
+        Peo.IsFemale(p1) &
+        Peo.IsMale(p2)
     |
     ...
-        IsFemale(p2) &
-        IsMale(p1)
+        Peo.IsFemale(p2) &
+        Peo.IsMale(p1)
         
 # Gay marriage
 Tbool InSameSexMarriage(Thing p1, Thing p2) =
     AreMarried(p1,p2) &
-    Gender(p1) == Gender(p2)
+    Peo.Gender(p1) == Peo.Gender(p2)
 
     
 # OTHER

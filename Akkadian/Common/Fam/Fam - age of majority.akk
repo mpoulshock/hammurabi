@@ -15,7 +15,7 @@ Tbool? IsMinor(Thing p) =
 # State rules should be amalgamated here following the Alabama example
 Tbool ReachedAgeOfMajority(Thing p) =
     set:
-    if !IsUSResident(p) -> Stub()
+    if !Peo.IsUSResident(p) -> Stub()
     if state == "Alabama" -> Ala.Code.Tit26.Sec1_1.ReachedAgeOfMajority(p)
     if state == "Arkansas" & age >= 18 & HS -> true        # What about people who don't graduate HS?
     if state == "Mississippi" & age >= 21 -> true
@@ -30,10 +30,10 @@ Tbool ReachedAgeOfMajority(Thing p) =
     else age >= 18
     
     Tstr state = 
-        StateOfResidence(p)
+        Peo.StateOfResidence(p)
         
     Tnum age = 
-        Age(p)
+        Peo.Age(p)
 
     Tbool HS = 
         Edu.GraduatedHighSchool(p)
@@ -43,33 +43,33 @@ Tbool ReachedAgeOfMajority(Thing p) =
 # >>Is/was {1} an emancipated minor?
 Tbool IsEmancipatedMinor(Thing p) =
     set:
-    if Age(p) <= 15 -> false        # Assumed
+    if Peo.Age(p) <= 15 -> false        # Assumed
     if state == "Vermont" -> Vt.Stat.Tit12.Sec7151.IsEmancipatedMinor(p)
     else Stub()
         
     Tstr state = 
-        StateOfResidence(p)
+        Peo.StateOfResidence(p)
 
         
 # UNIT TESTS
 
 Test: Minor1
 - Thing p
-- DoB(p) = 2000-10-10
-- StateOfResidence(p) = "Hawaii"
+- Peo.DoB(p) = 2000-10-10
+- Peo.StateOfResidence(p) = "Hawaii"
 - Fam.IsMinor(p).AsOf(2012-10-10).Out =?= true
 
 Test: Minor2
 - Thing p
-- CountryOfResidence(p) = "Poland"
-- StateOfResidence(p) = "N/A"
-- DoB(p) = 2010-10-10
+- Peo.CountryOfResidence(p) = "Poland"
+- Peo.StateOfResidence(p) = "N/A"
+- Peo.DoB(p) = 2010-10-10
 - Fam.IsMinor(p).AsOf(2012-10-10).Out =?= "Stub"
 
 Test: Minor3
 - Thing p
-- DoB(p) = 2000-10-10
-- StateOfResidence(p) = "Nebraska"
+- Peo.DoB(p) = 2000-10-10
+- Peo.StateOfResidence(p) = "Nebraska"
 - Fam.IsMinor(p).AsOf(2032-10-10).Out =?= false
 
 

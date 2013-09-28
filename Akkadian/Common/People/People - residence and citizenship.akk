@@ -1,4 +1,4 @@
-# Namespace:    Hammurabi.H
+# Namespace:    Hammurabi.Peo
 # Summary:      Facts about individual people relating to residence, location, and U.S. citizenship.
 # Updated:      2012-09-22
 # Author:       Michael Poulshock
@@ -15,12 +15,12 @@ ResidesInUSState(1) assumes CountryOfResidence(1) == "United States"
 
 # Resides in U.S. state
 Tbool ResidesInUSState(Thing p) =
-    Geo.IsUSState(StateOfResidence(p))
+    Geo.IsUSState(Peo.StateOfResidence(p))
     
 # Resident of a given state or country
 Tbool IsResidentOf(Thing p, string jur) =
     CountryOfResidence(p) == jur |
-    StateOfResidence(p) == jur
+    Peo.StateOfResidence(p) == jur
 
 # >>In which country or territory does/did {1} reside?
 Tstr CountryOfResidence(Thing p)
@@ -68,18 +68,18 @@ Tstr CountryLocation(Thing p)
 
 Test: 909943367
 - Thing jane
-- StateOfResidence(jane) = "Louisiana"
-- Hammurabi.H.IsUSResident(jane).Out =?= true
+- Peo.StateOfResidence(jane) = "Louisiana"
+- Peo.IsUSResident(jane).Out =?= true
 
 Test: 280315571
 - Thing jane
-- CountryOfResidence(jane) = "Japan"
-- Hammurabi.H.IsUSResident(jane).Out =?= false
+- Peo.CountryOfResidence(jane) = "Japan"
+- Peo.IsUSResident(jane).Out =?= false
 
 Test: 909943867
 - Thing jane
-- CountryOfResidence(jane) = "United States"
-- Hammurabi.H.IsUSResident(jane).Out =?= true
+- Peo.CountryOfResidence(jane) = "United States"
+- Peo.IsUSResident(jane).Out =?= true
 
 
 

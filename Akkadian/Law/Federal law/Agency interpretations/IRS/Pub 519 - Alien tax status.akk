@@ -1,4 +1,4 @@
-# Namespace:    IRS.Pub519
+# Namespace:    Hammurabi.IRS.Pub519
 # Summary:      IRS Publication 519 - Alien Tax Status
 # Updated:      2012-10-11
 # Author:       Michael Poulshock
@@ -95,7 +95,7 @@ Tnum DaysPresentPerYear(Thing p) =
 
 # Physical presence
 Tbool PhysicallyPresent(Thing p) =
-    PresentInUS(p) &
+    Peo.PresentInUS(p) &
     ! PresenceExempt(p) &
     ! ExemptIndividual(p)
     
@@ -229,7 +229,7 @@ Tbool NonresidentSpousalElection(Thing p) =
 
 # Citizen or resident alien
 Tbool IsCitizenOrRA(Thing p) =
-    IsUSCitizen(p) |
+    Peo.IsUSCitizen(p) |
     MeetsCoreResidentAlienTest(p)
 
     
@@ -239,11 +239,11 @@ Tbool IsBonaFideResidentOfPuertoRicoOrAmerSamoa(Thing p) =
     Imm.IsAlien(p) &
     ...
         ...
-            CountryOfResidence(p) == "Puerto Rico" &
+            Peo.CountryOfResidence(p) == "Puerto Rico" &
             IsBonaFideResidentOfPuertoRico(p)
         |
         ...
-            CountryOfResidence(p) == "American Samoa" &
+            Peo.CountryOfResidence(p) == "American Samoa" &
             IsBonaFideResidentOfAmericanSamoa(p)
     
     
@@ -293,14 +293,14 @@ Test: 655270615
 - IRS.Pub519.TaxHomeCountries(marty) = [[Japan, Russia]]
 - IRS.Pub519.CloserConnectionThanWithUS(marty,Japan) = false
 - IRS.Pub519.CloserConnectionThanWithUS(marty,Russia) = true
-- CountryLocation(marty) = "Russia"
+- Peo.CountryLocation(marty) = "Russia"
 - IRS.Pub519.HasCloserConnectionToForeignCountry(marty).Out =?= true
 
 Test: 47588400
 - Things marty, Japan
 - IRS.Pub519.TaxHomeCountries(marty) = [[Japan]]
 - IRS.Pub519.CloserConnectionThanWithUS(marty,Japan) = true
-- CountryLocation(marty) = "Japan"
+- Peo.CountryLocation(marty) = "Japan"
 - IRS.Pub519.HasCloserConnectionToForeignCountry(marty).Out =?= true
 
 Test: Student1

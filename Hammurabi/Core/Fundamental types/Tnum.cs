@@ -21,7 +21,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Hammurabi
+namespace Akkadian
 {
     /// <summary>
     /// An object that represents DateTime values along a timeline.

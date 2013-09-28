@@ -21,7 +21,7 @@
 using System;
 using Interactive;
 
-namespace Hammurabi
+namespace Akkadian
 {
     public partial class Facts
     {

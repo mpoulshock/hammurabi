@@ -414,7 +414,7 @@ namespace Akkadian.UnitTests
         
         private static Tbool AllAreMale(Tset theSet)
         {
-            return theSet.ForAll( _ => IsMale(_));
+            return theSet.ForAll( _ => Facts.QueryTvar<Tstr>("Gender", _) == "Male");
         }
         
         // ForAll using a filter method with two parameters

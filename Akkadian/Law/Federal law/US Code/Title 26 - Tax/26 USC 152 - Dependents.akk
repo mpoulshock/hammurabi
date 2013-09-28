@@ -1,5 +1,5 @@
 # Citation:     26 U.S.C. 152 (2011)
-# Namespace:    USC.Tit26.Sec152
+# Namespace:    Hammurabi.USC.Tit26.Sec152
 # Summary:      Determines whether one person is the "dependent" of another under IRC, Section 152.
 # Remarks:      Subsections c4, d3-5, e, and f have not been modeled.  
 # Updated:      2012-06-01
@@ -48,12 +48,12 @@ Tbool QCRelationTest(Thing d, Thing tp) =
 # Qualifying child - c3 - age test
 Tbool QCAgeTest(Thing d, Thing tp, Tnum taxYear) =
     ...
-        Age(d) < Age(tp) &
+        Peo.Age(d) < Peo.Age(tp) &
         ...
-            (Age(d) < 19).AlwaysPer(taxYear) | 
+            (Peo.Age(d) < 19).AlwaysPer(taxYear) | 
             ...
                 Edu.IsStudent(d) &
-                (Age(d) < 24).AlwaysPer(taxYear)
+                (Peo.Age(d) < 24).AlwaysPer(taxYear)
     |
     Sec22.IsPermanentlyAndTotallyDisabled(d)
 
@@ -126,10 +126,10 @@ Tbool CannotBeADependentOf(Thing d, Thing tp) =
             
     # b3A - citizenship status
     Tbool citizenshipTest = 
-        IsUSCitizen(d) |
-        IsUSResident(d) |
-        IsResidentOf(d, "Canada") |
-        IsResidentOf(d, "Mexico") | 
+        Peo.IsUSCitizen(d) |
+        Peo.IsUSResident(d) |
+        Peo.IsResidentOf(d, "Canada") |
+        Peo.IsResidentOf(d, "Mexico") | 
         adoptionTest
 
     # b3B - potential dependent must meet the citizenship test
@@ -138,7 +138,7 @@ Tbool CannotBeADependentOf(Thing d, Thing tp) =
         Econ.SharePrincipalAbode(d,tp) &
         Econ.ShareHousehold(d,tp) &
         ...
-            IsUSCitizen(tp) | 
+            Peo.IsUSCitizen(tp) | 
             Imm.IsUSNational(tp)
 
 
@@ -173,9 +173,9 @@ Test: Pub501_Simple1
 - Thing t        # the taxpayer
 - Fam.IsParentOf(t,c) = true
 - Econ.LivesWith(c,t) = true
-- DoB(c) = 2001-01-01
-- IsDeceased(c) = false     #
-- IsUSCitizen(c) = true
+- Peo.DoB(c) = 2001-01-01
+- Peo.IsDeceased(c) = false     #
+- Peo.IsUSCitizen(c) = true
 - USC.Tit26.Sec152.CanBeClaimedAsQCByTwoTaxpayers(c) = false
 - Econ.PercentSelfSupport(c) = 0
 - USC.Tit26.Sec152.CanClaimSomeoneAsDependent(c) = false
@@ -189,10 +189,10 @@ Test: Pub501_Simple2
 - Things c, t    
 - Fam.IsParentOf(t,c) = true
 - Econ.LivesWith(c,t) = true
-- DoB(c) = 2001-01-01
-- DoB(t) = 1970-01-01
-- IsDeceased(c) = false     #
-- IsUSCitizen(c) = true
+- Peo.DoB(c) = 2001-01-01
+- Peo.DoB(t) = 1970-01-01
+- Peo.IsDeceased(c) = false     #
+- Peo.IsUSCitizen(c) = true
 - USC.Tit26.Sec152.CanBeClaimedAsQCByTwoTaxpayers(c) = false
 - Econ.PercentSelfSupport(c) = 0
 - USC.Tit26.Sec152.CanClaimSomeoneAsDependent(c) = false
@@ -213,9 +213,9 @@ Test: Pub501_1
 - FilesMFJOnlyToClaimRefund(d) = false
 - Fam.IsParentOf(t,d) = true
 - Econ.LivesWith(t,d) = true
-- DoB(d) = 1992-01-01
+- Peo.DoB(d) = 1992-01-01
 - Mil.InArmedForces(s) = true
-- IsUSCitizen(d) = true
+- Peo.IsUSCitizen(d) = true
 - Sec152.IsDependentOf(d,t).AsOf(2010-12-31).Out =?= false
 
 # IRS Pub. 501 (2010), Page 10, Example 2 (son).
@@ -227,9 +227,9 @@ Test: Pub501_2a
 - FilesJointFedTaxReturnWith(d,s) = true
 - FilesMFJOnlyToClaimRefund(d) = true
 - IsParentOf(t,d) = true
-- DoB(s) = 1992-01-01
-- DoB(d) = 1992-01-01
-- IsUSCitizen(s) = true
+- Peo.DoB(s) = 1992-01-01
+- Peo.DoB(d) = 1992-01-01
+- Peo.IsUSCitizen(s) = true
 - CanClaimSomeoneAsDependent(s) = false
 - CanBeClaimedAsDependentBySomeone(t) = false
 - Sec152.CannotBeADependentOf(d,t).AsOf(2010-12-31).Out =?= false
@@ -243,9 +243,9 @@ Test: Pub501_2b
 - FilesJointFedTaxReturnWith(d,s) = true
 - FilesMFJOnlyToClaimRefund(d) = true
 - IsParentOf(t,d) = true
-- DoB(s) = 1992-01-01
-- DoB(d) = 1992-01-01
-- IsUSCitizen(d) = true
+- Peo.DoB(s) = 1992-01-01
+- Peo.DoB(d) = 1992-01-01
+- Peo.IsUSCitizen(d) = true
 - CanClaimSomeoneAsDependent(s) = false
 - CanBeClaimedAsDependentBySomeone(t) = false
 - Sec152.CannotBeADependentOf(d,t).AsOf(2010-12-31).Out =?= false
@@ -255,10 +255,10 @@ Test: Pub501_3
 - Thing t        # Taxpayer
 - Thing s         # Son
 - Thing d        # Daughter-in-law
-- DoB(s) = 1992-01-01
-- DoB(d) = 1991-01-01
+- Peo.DoB(s) = 1992-01-01
+- Peo.DoB(d) = 1991-01-01
 - FamilyRelationship(d,s) = "Spouse"
-- IsUSCitizen(s) = true
+- Peo.IsUSCitizen(s) = true
 - FilesJointFedTaxReturnWith(d,s) = true
 - FileMFJOnlyToClaimRefund(s) = false
 - CanClaimSomeoneAsDependent(s) = false
@@ -269,9 +269,9 @@ Test: Pub501_3
 Test: Pub501_4
 - Thing t         # Taxpayer
 - Thing s        # Son
-- DoB(s) = 1991-12-10
+- Peo.DoB(s) = 1991-12-10
 - IsFullTimeStudent(s) = false
-- IsUSCitizen(s) = true
+- Peo.IsUSCitizen(s) = true
 - IsPermanentlyAndTotallyDisabled(s) = false
 - Sec152.IsDependentOf(s,t).AsOf(2010-12-31).Out =?= false
 
@@ -279,9 +279,9 @@ Test: Pub501_4
 Test: Pub501_5
 - Thing t         # Taxpayer
 - Thing s        # Son
-- DoB(s) = 1991-12-10
+- Peo.DoB(s) = 1991-12-10
 - IsFullTimeStudent(s) = true
-- IsUSCitizen(s) = true
+- Peo.IsUSCitizen(s) = true
 - IsPermanentlyAndTotallyDisabled(s) = false
 - Sec152.IsDependentOf(s,t).AsOf(2010-12-31).Out =?= true
 
@@ -289,9 +289,9 @@ Test: Pub501_5
 Test: Pub501_6
 - Thing t         # Taxpayer
 - Thing s        # Son
-- DoB(s) = 1991-12-10
+- Peo.DoB(s) = 1991-12-10
 - IsFullTimeStudent(s) = false
-- IsUSCitizen(s) = true
+- Peo.IsUSCitizen(s) = true
 - IsPermanentlyAndTotallyDisabled(s) = true
 - Sec152.IsDependentOf(s,t).AsOf(2010-12-31).Out =?= true
 
@@ -300,15 +300,15 @@ Test: Pub501_7
 - Thing t        # Taxpayer
 - Thing s        # T's spouse
 - Thing b        # T's brother
-- DoB(t) = 1989-01-01
-- DoB(s) = 1989-01-01
+- Peo.DoB(t) = 1989-01-01
+- Peo.DoB(s) = 1989-01-01
 - FamilyRelationship(t,s) = "Spouse"
 - FamilyRelationship(b,t) = "Sibling"
-- DoB(b) = 1987-01-01
+- Peo.DoB(b) = 1987-01-01
 - IsMarried(b) = false
 - LivesWith(t,s) = true
 - LivesWith(t,b) = true
-- IsDisabled(b) = false
+- Peo.IsDisabled(b) = false
 - AreFilingMFJ(t,s) = true
 - Sec152.IsDependentOf(b,t).AsOf(2010-12-31).Out =?= false
 
@@ -317,16 +317,16 @@ Test: Pub501_8
 - Thing t        # Taxpayer
 - Thing s        # T's spouse
 - Thing b        # T's brother
-- DoB(t) = 1989-01-01
-- DoB(s) = 1985-01-01
+- Peo.DoB(t) = 1989-01-01
+- Peo.DoB(s) = 1985-01-01
 - FamilyRelationship(t,s) = "Spouse"
 - FamilyRelationship(b,t) = "Sibling"
-- DoB(b) = 1987-01-01
+- Peo.DoB(b) = 1987-01-01
 - IsFullTimeStudent(b) = true
 - IsMarried(b) = false
 - LivesWith(t,s) = true
 - LivesWith(t,b) = true
-- IsDisabled(b) = false
+- Peo.IsDisabled(b) = false
 - AreFilingMFJ(t,s) = true
 - Sec152.IsDependentOf(b,t).AsOf(2010-12-31).Out =?= true
 ##
@@ -392,16 +392,16 @@ Test: QCRelationship_1
 
 Test: QCAge_1
 - Things tp, d
-- DoB(tp) = 1975-01-01
-- DoB(d) = 2005-01-01
+- Peo.DoB(tp) = 1975-01-01
+- Peo.DoB(d) = 2005-01-01
 - IsStudent(d) = false
 - USC.Tit26.Sec22.IsPermanentlyAndTotallyDisabled(d) = false
 - Sec152.QCAgeTest(d,tp,Sec441.TaxYear(tp)).AsOf(2012-03-03).Out =?= true
 
 Test: QCAge_2
 - Things tp, d
-- DoB(tp) = 1975-01-01
-- DoB(d) = 1940-01-01
+- Peo.DoB(tp) = 1975-01-01
+- Peo.DoB(d) = 1940-01-01
 - IsStudent(d) = false
 - USC.Tit26.Sec22.IsPermanentlyAndTotallyDisabled(d) = true
 - Sec152.QCAgeTest(d,tp,Sec441.TaxYear(tp)).AsOf(2012-03-03).Out =?= true

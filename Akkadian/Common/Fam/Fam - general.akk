@@ -155,12 +155,12 @@ Tbool? HasDayToDayResponsibilityFor(Thing p1, Thing p2) =
 
 # Person can be the guardian of another
 Tbool CanBeAGuardianOf(Thing guard, Thing ward) =
-    Age(guard) >= 16 &                        
+    Peo.Age(guard) >= 16 &                        
     ...
-        IsDisabled(ward) |                    # Disablity (need to clarify)
+        Peo.IsDisabled(ward) |                    # Disablity (need to clarify)
         ...
-            Age(ward) < 18 &                # Infancy...
-            Age(guard) > Age(ward) &
+            Peo.Age(ward) < 18 &                # Infancy...
+            Peo.Age(guard) > Peo.Age(ward) &
             !IsParentOf(ward, guard) &        
             !InCivilUnion(guard, ward) &
             !IsDomesticPartnerOf(guard, ward) &

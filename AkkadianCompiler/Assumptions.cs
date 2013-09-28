@@ -100,7 +100,7 @@ namespace AkkadianCompiler
             // Open the question template class
             string result = 
                 "using System.Collections.Generic; \r\n" +
-                "namespace Hammurabi \r\n{ \r\n" +
+                "namespace Akkadian \r\n{ \r\n" +
                 "    public partial class Assumptions { \r\n" +
                 "        public static List<Pair> Pairs = new List<Pair> {\r\n" +
                 "            new Pair(new Point(\"\", 0, 0, 0, null), new Point(\"\", 0, 0, 0, null))\r\n";

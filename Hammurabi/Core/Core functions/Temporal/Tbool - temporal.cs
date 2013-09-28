@@ -21,7 +21,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Hammurabi
+namespace Akkadian
 {
     /*
      * The functions below analyze Tbools to assess the intervals (days, weeks, 

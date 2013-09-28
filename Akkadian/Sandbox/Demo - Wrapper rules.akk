@@ -72,7 +72,7 @@ Tnum Quarter() =
     
 # >>Does {1} pass the documentation test?
 Tbool HasDocumentation(Thing p) =
-    HasSSN(p)
+    Peo.HasSSN(p)
     
 # >>Does {1} pass the income test?
 Tbool IncomeUnderLimit(Thing p) =
@@ -80,7 +80,7 @@ Tbool IncomeUnderLimit(Thing p) =
 
 # >>Is {1} a resident of Kentucky?
 Tbool IsKentuckyResident(Thing p) =
-    StateOfResidence(p) == "Kentucky"
+    Peo.StateOfResidence(p) == "Kentucky"
     
 # >>Does {1} pass the composite test?
 Tbool PassesTest(Thing p) =
@@ -108,7 +108,7 @@ Tdate Retirement(Thing person) =
 # >>What is {1}'s age?
 Tnum Age(Thing person) =
     set:
-    if IsAlive(person) -> H.Age(person)
+    if Peo.IsAlive(person) -> Peo.Age(person)
     else 0
 
 # Demo.StandardDeduction Sunita
@@ -155,6 +155,6 @@ Tbool IsDependentOf(Thing p1, Thing p2) =
 # Demo.IsUSCitizen Ronald
 # >>Is {1} a U.S. citizen?
 Tbool IsUSCitizen(Thing person) =
-    H.IsUSCitizen(person)
+    Peo.IsUSCitizen(person)
 
 
