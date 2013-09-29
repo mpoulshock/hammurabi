@@ -90,7 +90,6 @@
     <None Include="Law\Federal law\US Code\Title 8 - Immigration\8 USC 1641 - Aliens eligible for public benefits.akk" />
     <None Include="Law\State law\Pennsylvania\Pa. Code\Title 55\55 Pa Code 183.65 - Profit.akk" />
     <None Include="Sandbox\Allocation experiments.akk" />
-    <None Include="Tests\Min and max tests.akk" />
     <None Include="Tests\Random unit tests.akk" />
     <None Include="Tests\Recursion test.akk" />
     <None Include="Tests\Test for Hammurabi Interactive.akk" />
@@ -101,6 +100,5 @@
   <ItemGroup>
     <Folder Include="Law\State law\Pennsylvania\" />
     <Folder Include="Tests\" />
-    <Folder Include="Akkadian extensions\" />
   </ItemGroup>
 </Project>

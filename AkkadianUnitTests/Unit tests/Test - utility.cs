@@ -134,5 +134,135 @@ namespace Akkadian.UnitTests
             DateTime d = tb.DateNextTrue(Date(2015,2,15));
             Assert.AreEqual(new DateTime(2015,3,1), d);    
         }
+
+        // Minimum
+
+        [Test]
+        public void Minimum_1()
+        {
+            Facts.Clear();
+            Assert.AreEqual(99, Min(100, 99).Out);
+        }
+
+        [Test]
+        public void Minimum_2()
+        {
+            Facts.Clear();
+            Assert.AreEqual(0, Min(100, 0).Out);
+        }
+
+        [Test]
+        public void Minimum_3()
+        {
+            Facts.Clear();
+            Assert.AreEqual(-100, Min(100, -100).Out);
+        }
+
+        [Test]
+        public void Minimum_4()
+        {
+            Facts.Clear();
+            Assert.AreEqual("Unstated", Min(100, new Tnum(Hstate.Unstated)).Out);
+        }
+
+        [Test]
+        public void Minimum_5()
+        {
+            Facts.Clear();
+            Assert.AreEqual("Uncertain", Min(100, new Tnum(Hstate.Uncertain)).Out);
+        }
+
+        [Test]
+        public void Minimum_6()
+        {
+            Facts.Clear();
+            Assert.AreEqual("Uncertain", Min(new Tnum(Hstate.Unstated), new Tnum(Hstate.Uncertain)).Out);
+        }
+
+        [Test]
+        public void Minimum_7()
+        {
+            Facts.Clear();
+            Assert.AreEqual("Stub", Min(0, new Tnum(Hstate.Stub)).Out);
+        }
+
+        [Test]
+        public void Minimum_8()
+        {
+            Facts.Clear();
+            Assert.AreEqual("Stub", Min(new Tnum(Hstate.Unstated), new Tnum(Hstate.Uncertain), new Tnum(Hstate.Stub)).Out);
+        }
+
+        [Test]
+        public void Minimum_9()
+        {
+            Facts.Clear();
+            Assert.AreEqual(1, Min(1, 2).Out);
+        }
+
+        // Maximum
+
+        [Test]
+        public void Maximum_1()
+        {
+            Facts.Clear();
+            Assert.AreEqual(100, Max(100, 99).Out);
+        }
+
+        [Test]
+        public void Maximum_2()
+        {
+            Facts.Clear();
+            Assert.AreEqual(100, Max(100, 0).Out);
+        }
+
+        [Test]
+        public void Maximum_3()
+        {
+            Facts.Clear();
+            Assert.AreEqual(100, Max(100, -100).Out);
+        }
+
+        [Test]
+        public void Maximum_4()
+        {
+            Facts.Clear();
+            Assert.AreEqual("Unstated", Max(100, new Tnum(Hstate.Unstated)).Out);
+        }
+
+        [Test]
+        public void Maximum_5()
+        {
+            Facts.Clear();
+            Assert.AreEqual("Uncertain", Max(100, new Tnum(Hstate.Uncertain)).Out);
+        }
+
+        [Test]
+        public void Maximum_6()
+        {
+            Facts.Clear();
+            Assert.AreEqual("Uncertain", Max(new Tnum(Hstate.Unstated), new Tnum(Hstate.Uncertain)).Out);
+        }
+
+        [Test]
+        public void Maximum_7()
+        {
+            Facts.Clear();
+            Assert.AreEqual("Stub", Max(0, new Tnum(Hstate.Stub)).Out);
+        }
+
+        [Test]
+        public void Maximum_8()
+        {
+            Facts.Clear();
+            Assert.AreEqual("Stub", Max(new Tnum(Hstate.Unstated), new Tnum(Hstate.Uncertain), new Tnum(Hstate.Stub)).Out);
+        }
+
+        [Test]
+        public void Maximum_9()
+        {
+            Facts.Clear();
+            Assert.AreEqual(2, Max(1, 2).Out);
+        }
     }
 }

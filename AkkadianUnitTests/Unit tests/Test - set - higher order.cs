@@ -490,6 +490,143 @@ namespace Akkadian.UnitTests
         {
             return theSet.Exists( _ => Econ.IsEmployedBy(_,c));
         }
-        
+
+        // Minimum and maximum
+
+        [Test]
+        public void Test_TsetMin1()
+        {
+            Facts.Clear();
+            Thing a = new Thing("a");
+            Thing b = new Thing("b");
+            Facts.Assert(a, "Tests.TestSet", new Tset(new List<Thing>(){a,b}));
+            Facts.Assert(a, "Tests.Quant", 100);
+            Facts.Assert(b, "Tests.Quant", 99);
+            Assert.AreEqual(99, MinVal(a).Out);
+        }
+
+        [Test]
+        public void Test_TsetMin2()
+        {
+            Facts.Clear();
+            Thing a = new Thing("a");
+            Thing b = new Thing("b");
+            Facts.Assert(a, "Tests.TestSet", new Tset(new List<Thing>(){a,b}));
+            Facts.Assert(a, "Tests.Quant", 100);
+            Facts.Assert(b, "Tests.Quant", -100);
+            Assert.AreEqual(-100, MinVal(a).Out);
+        }
+
+        [Test]
+        public void Test_TsetMin3()
+        {
+            Facts.Clear();
+            Thing a = new Thing("a");
+            Thing b = new Thing("b");
+            Facts.Assert(a, "Tests.TestSet", new Tset(new List<Thing>(){a,b}));
+            Facts.Assert(a, "Tests.Quant", new Tnum(Hstate.Uncertain));
+            Facts.Assert(b, "Tests.Quant", 99);
+            Assert.AreEqual("Uncertain", MinVal(a).Out);
+        }
+
+        [Test]
+        public void Test_TsetMin4()
+        {
+            Facts.Clear();
+            Thing a = new Thing("a");
+            Thing b = new Thing("b");
+            Facts.Assert(a, "Tests.TestSet", new Tset(new List<Thing>(){a,b}));
+            Facts.Assert(b, "Tests.Quant", 99);
+            Assert.AreEqual("Unstated", MinVal(a).Out);
+        }
+
+        [Test]
+        public void Test_TsetMin5()
+        {
+            Facts.Clear();
+            Thing a = new Thing("a");
+            Thing b = new Thing("b");
+            Facts.Assert(a, "Tests.TestSet", new Tset(new List<Thing>(){a,b}));
+            Facts.Assert(b, "Tests.Quant", new Tnum(Hstate.Uncertain));
+            Assert.AreEqual("Uncertain", MinVal(a).Out);
+        }
+
+        [Test]
+        public void Test_TsetMax1()
+        {
+            Facts.Clear();
+            Thing a = new Thing("a");
+            Thing b = new Thing("b");
+            Facts.Assert(a, "Tests.TestSet", new Tset(new List<Thing>(){a,b}));
+            Facts.Assert(a, "Tests.Quant", 100);
+            Facts.Assert(b, "Tests.Quant", 99);
+            Assert.AreEqual(100, MaxVal(a).Out);
+        }
+
+        [Test]
+        public void Test_TsetMax2()
+        {
+            Facts.Clear();
+            Thing a = new Thing("a");
+            Thing b = new Thing("b");
+            Facts.Assert(a, "Tests.TestSet", new Tset(new List<Thing>(){a,b}));
+            Facts.Assert(a, "Tests.Quant", 100);
+            Facts.Assert(b, "Tests.Quant", -100);
+            Assert.AreEqual(100, MaxVal(a).Out);
+        }
+
+        [Test]
+        public void Test_TsetMax3()
+        {
+            Facts.Clear();
+            Thing a = new Thing("a");
+            Thing b = new Thing("b");
+            Facts.Assert(a, "Tests.TestSet", new Tset(new List<Thing>(){a,b}));
+            Facts.Assert(a, "Tests.Quant", new Tnum(Hstate.Uncertain));
+            Facts.Assert(b, "Tests.Quant", 99);
+            Assert.AreEqual("Uncertain", MaxVal(a).Out);
+        }
+
+        [Test]
+        public void Test_TsetMax4()
+        {
+            Facts.Clear();
+            Thing a = new Thing("a");
+            Thing b = new Thing("b");
+            Facts.Assert(a, "Tests.TestSet", new Tset(new List<Thing>(){a,b}));
+            Facts.Assert(b, "Tests.Quant", 99);
+            Assert.AreEqual("Unstated", MaxVal(a).Out);
+        }
+
+        [Test]
+        public void Test_TsetMax5()
+        {
+            Facts.Clear();
+            Thing a = new Thing("a");
+            Thing b = new Thing("b");
+            Facts.Assert(a, "Tests.TestSet", new Tset(new List<Thing>(){a,b}));
+            Facts.Assert(b, "Tests.Quant", new Tnum(Hstate.Uncertain));
+            Assert.AreEqual("Uncertain", MaxVal(a).Out);
+        }
+
+        private static Tnum MinVal(Thing t)
+        {
+            return TestSet(t).Min( _ => Quant(_));
+        }
+
+        private static Tnum MaxVal(Thing t)
+        {
+            return TestSet(t).Max( _ => Quant(_));
+        }
+
+        private static Tnum Quant(Thing t)
+        {
+            return Facts.QueryTvar<Tnum>("Tests.Quant", t);        
+        }
+
+        private static Tset TestSet(Thing t)
+        {
+            return Facts.QueryTvar<Tset>("Tests.TestSet", t);        
+        }
     }
 }

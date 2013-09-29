@@ -7,16 +7,15 @@
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
-          <Node name="Akkadian" expanded="True" />
-          <Node name="AkkadianCompiler" expanded="True" selected="True" />
           <Node name="Hammurabi" expanded="True">
-            <Node name="Akkadian extensions" expanded="True" />
-            <Node name="Common" expanded="True" />
+            <Node name="Akkadian extensions" selected="True" />
           </Node>
         </State>
       </Pad>
       <Pad Id="ClassPad">
-        <State expanded="True" selected="True" />
+        <State expanded="True" selected="True">
+          <Node name="Akkadian" expanded="True" />
+        </State>
       </Pad>
       <Pad Id="MonoDevelop.Debugger.WatchPad">
         <State />
