@@ -173,7 +173,7 @@ Tbool FcnWithTwoTstrArgs(Tstr s1, Tstr s2) =
 
 # Applicable depreciation rate, given the date the property was acquired
 Tnum DepreciationRate(Tdate acquisitionDate) =
-    TemporalMap(n => DepreciationPercentage(n), acquisitionDate, 10, Time.IntervalType.Year)
+    Time.TemporalMap(n => DepreciationPercentage(n), acquisitionDate, 10, Time.IntervalType.Year)
     
 # Example is from the MARCS depreciation rate for 5-year property
 # using the half-year convention.    

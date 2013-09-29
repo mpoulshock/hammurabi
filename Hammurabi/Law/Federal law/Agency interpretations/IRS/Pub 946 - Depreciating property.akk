@@ -83,7 +83,7 @@ Tstr DepreciationMethod(Thing person, Thing property)
 # Applicable depreciate rate, given the date the property was acquired
 # Returns a timeline expressing the amount of the depreciation deduction over time
 Tnum DepreciationDeduction(Thing person, Thing prop) =
-    TemporalMap(n => Deduction(person, prop,n), serviceDate, 10, Time.IntervalType.Year)
+    Time.TemporalMap(n => Deduction(person, prop,n), serviceDate, 10, Time.IntervalType.Year)
     
     Tdate serviceDate = DatePlacedInService(person, prop)
    

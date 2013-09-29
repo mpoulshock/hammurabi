@@ -170,7 +170,15 @@ namespace Akkadian
             
             result.AddState(end, 0);
             return result;
-        }       
-        
+        }      
+
+        /// <summary>
+        /// Maps a function to a timeline, starting on a given date.
+        /// </summary>
+        //  TODO: Get rid of Time.IntervalType
+        public static Tnum TemporalMap(Func<Tnum,Tnum> fcn, Tdate startDate, Tnum intervalCount, Time.IntervalType intervalType)
+        {
+            return fcn(Time.IntervalsSince(startDate, startDate.AddYears(intervalCount), intervalType));
+        }
     }
 }

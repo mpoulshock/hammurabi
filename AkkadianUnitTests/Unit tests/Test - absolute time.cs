@@ -269,5 +269,90 @@ namespace Akkadian.UnitTests
 		{
 			Assert.AreEqual(0, TheMonth.Min().Out);		
 		}
+
+		// DaysInQuarter
+
+		[Test]
+		public void Test_DaysInQtr1()
+		{
+			Facts.Clear();
+			Assert.AreEqual(90, DaysInQuarter().AsOf(Date(2014,02,03)).Out);
+		}
+
+		[Test]
+		public void Test_DaysInQtr2()
+		{
+			Facts.Clear();
+			Assert.AreEqual(91, DaysInQuarter().AsOf(Date(2016,02,03)).Out);
+		}
+
+		// DaysInMonth
+
+		[Test]
+		public void Test_DaysInMonth1()
+		{
+			Facts.Clear();
+			Assert.AreEqual(28, DaysInMonth().AsOf(Date(2014,02,03)).Out);
+		}
+
+		[Test]
+		public void Test_DaysInMonth2()
+		{
+			Facts.Clear();
+			Assert.AreEqual(29, DaysInMonth().AsOf(Date(2016,02,03)).Out);
+		}
+
+		[Test]
+		public void Test_DaysInMonth3()
+		{
+			Facts.Clear();
+			Assert.AreEqual(31, DaysInMonth().AsOf(Date(2014,12,03)).Out);
+		}
+
+		[Test]
+		public void Test_DaysInMonth4()
+		{
+			Facts.Clear();
+			Assert.AreEqual(30, DaysInMonth().AsOf(Date(2014,04,03)).Out);
+		}
+
+		[Test]
+		public void Test_DaysInMonth5()
+		{
+			Facts.Clear();
+			Assert.AreEqual("Stub", DaysInMonth().AsOf(Date(1803,04,03)).Out);
+		}
+
+		// DaysInYear
+
+		[Test]
+		public void Test_DaysInYear1()
+		{
+			Facts.Clear();
+			Assert.AreEqual(366, DaysInYear().AsOf(Date(2016,04,05)).Out);
+		}
+
+		[Test]
+		public void Test_DaysInYear2()
+		{
+			Facts.Clear();
+			Assert.AreEqual(365, DaysInYear().AsOf(Date(2019,04,05)).Out);
+		}
+
+		// IsLeapYear
+
+		[Test]
+		public void Test_LeapYear1()
+		{
+			Facts.Clear();
+			Assert.AreEqual(true, IsLeapYear().AsOf(Date(2016,04,05)).Out);
+		}
+
+		[Test]
+		public void Test_LeapYear2()
+		{
+			Facts.Clear();
+			Assert.AreEqual(false, IsLeapYear().AsOf(Date(2019,04,05)).Out);
+		}
 	}
 }

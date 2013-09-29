@@ -912,5 +912,28 @@ namespace Akkadian.UnitTests
             Tdate d = new Tdate(2015, 1, 2);
             Assert.AreEqual(false, d.IsInPeriod(TheYear).AsOf(Date(2016, 12, 31)).Out);      
         }
+
+        // Tdate.Quarter
+
+        [Test]
+        public void Test_GetQtr1()
+        {
+            Facts.Clear();
+            Assert.AreEqual(1, (new Tdate(2010,3,2)).Quarter.Out);
+        }
+
+        [Test]
+        public void Test_GetQtr2()
+        {
+            Facts.Clear();
+            Assert.AreEqual(4, (new Tdate(2010,12,2)).Quarter.Out);
+        }
+
+        [Test]
+        public void Test_GetQtr3()
+        {
+            Facts.Clear();
+            Assert.AreEqual("Unstated", (new Tdate(Hstate.Unstated)).Quarter.Out);
+        }
     }    
 }

@@ -94,6 +94,64 @@ namespace Akkadian
                 return Time.IntervalsSince(Date(1900,1,1), Date(2100,1,1), Time.IntervalType.Day, 1);
             }
         }
+
+
+        /// <summary>
+        /// Number of days in the calendar quarter (fiscal year assumed to start on Jan. 1) (temporal).
+        /// </summary>
+        public static Tnum DaysInQuarter()
+        {
+            return Switch<Tnum>(
+                    ()=> TheQuarter == 1 && IsLeapYear(), ()=> 91,
+                    ()=> TheQuarter == 1, ()=> 90,
+                    ()=> TheQuarter == 2, ()=> 91,
+                    ()=> TheQuarter == 3, ()=> 92,
+                    ()=> TheQuarter == 4, ()=> 92,
+                    ()=> new Tnum(Hstate.Stub));
+        }
+
+        /// <summary>
+        /// Number of days in the calendar month (temporal).
+        /// </summary>
+        public static Tnum DaysInMonth()
+        {
+            return Switch<Tnum>(
+                    ()=> TheMonth ==  1, ()=> 31,
+                    ()=> TheMonth ==  2 && IsLeapYear(), ()=> 29,
+                    ()=> TheMonth ==  2, ()=> 28,
+                    ()=> TheMonth ==  3, ()=> 31,
+                    ()=> TheMonth ==  4, ()=> 30,
+                    ()=> TheMonth ==  5, ()=> 31,
+                    ()=> TheMonth ==  6, ()=> 30,
+                    ()=> TheMonth ==  7, ()=> 31,
+                    ()=> TheMonth ==  8, ()=> 31,
+                    ()=> TheMonth ==  9, ()=> 30,
+                    ()=> TheMonth == 10, ()=> 31,
+                    ()=> TheMonth == 11, ()=> 30,
+                    ()=> TheMonth == 12, ()=> 31,
+                    ()=> new Tnum(Hstate.Stub));
+        }
+
+        /// <summary>
+        /// Number of days in the calendar year (temporal).
+        /// </summary>
+        public static Tnum DaysInYear()
+        {
+            return Switch<Tnum>(
+                    ()=> IsLeapYear(), ()=> 366,
+                    ()=> 365);
+        }
+
+        /// <summary>
+        /// True when the year is a leap year (temporal)
+        /// </summary>
+        public static Tbool IsLeapYear()
+        {
+            return Switch<Tbool>(
+                    ()=> TheYear == 2100 , ()=> false,
+                    ()=> TheYear % 4 == 0, ()=> true,
+                    ()=> false);
+        }
     }
         
 

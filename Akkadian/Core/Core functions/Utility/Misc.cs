@@ -106,5 +106,37 @@ namespace Akkadian
                 result += " ";
             return result;
         }
+
+        /// <summary>
+        /// Adds a Thing to the session.
+        /// </summary>
+        public static Thing AddThing(string thingID)
+        {
+            return Facts.AddThing(thingID);
+        }
+
+        /// <summary>
+        /// Returns the set of all Things in the session.
+        /// </summary>
+        public static Tset people()
+        {
+            return Facts.AllKnownPeople();
+        }
+
+        /// <summary>
+        /// Returns the set of all Things in the session, except a specific Thing.
+        /// </summary>
+        public static Tset peopleBut(Thing p1)
+        {
+            return Facts.AllKnownPeople() - p1;
+        }
+
+        /// <summary>
+        /// Returns the set of all Things in the session, except two specific Things.
+        /// </summary>
+        public static Tset peopleBut(Thing p1, Thing p2)
+        {
+            return Facts.AllKnownPeople() - p1 - p2;
+        }
     }
 }

@@ -46,7 +46,6 @@
     <Compile Include="Unit tests\Test - set - basic.cs" />
     <Compile Include="Unit tests\Test - set - higher order.cs" />
     <Compile Include="Unit tests\Test - unknown.cs" />
-    <Compile Include="Unit tests\Test - time - TheTime.cs" />
     <Compile Include="Unit tests\Test - time - dates.cs" />
     <Compile Include="Unit tests\Test - switch.cs" />
     <Compile Include="Unit tests\Test - temporal dates.cs" />
@@ -71,6 +70,7 @@
     <Compile Include="Unit tests\Test - elapsed time - total.cs" />
     <Compile Include="Unit tests\Test - elapsed time - per interval.cs" />
     <Compile Include="Unit tests\Test - summed intervals.cs" />
+    <Compile Include="Unit tests\Test - absolute time.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

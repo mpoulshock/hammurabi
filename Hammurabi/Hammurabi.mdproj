@@ -91,7 +91,6 @@
     <None Include="Law\State law\Pennsylvania\Pa. Code\Title 55\55 Pa Code 183.65 - Profit.akk" />
     <None Include="Sandbox\Allocation experiments.akk" />
     <None Include="Tests\Min and max tests.akk" />
-    <None Include="Akkadian extensions\Hammurabi - general-purpose functions.akk" />
     <None Include="Tests\Random unit tests.akk" />
     <None Include="Tests\Recursion test.akk" />
     <None Include="Tests\Test for Hammurabi Interactive.akk" />
