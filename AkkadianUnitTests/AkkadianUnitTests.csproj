@@ -7,8 +7,8 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{83557818-8363-4DD4-A504-0EB567BCBA0D}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>UnittestsHammurabicore</RootNamespace>
-    <AssemblyName>Unit tests - Hammurabi core</AssemblyName>
+    <RootNamespace>AkkadianUnitTests</RootNamespace>
+    <AssemblyName>AkkadianUnitTests</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>True</DebugSymbols>
@@ -32,9 +32,6 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="Hammurabi">
-      <HintPath>..\Hammurabi\bin\Debug\Hammurabi.dll</HintPath>
-    </Reference>
     <Reference Include="nunit.core, Version=2.6.0.12051, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77">
       <Private>False</Private>
     </Reference>
@@ -76,4 +73,10 @@
     <Compile Include="Unit tests\Test - summed intervals.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\Akkadian\Akkadian.csproj">
+      <Project>{4397E5BA-44D6-4937-B66A-ED7CE580CE69}</Project>
+      <Name>Akkadian</Name>
+    </ProjectReference>
+  </ItemGroup>
 </Project>

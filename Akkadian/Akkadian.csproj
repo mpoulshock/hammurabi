@@ -8,7 +8,7 @@
     <ProjectGuid>{4397E5BA-44D6-4937-B66A-ED7CE580CE69}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>Hammurabi</RootNamespace>
-    <AssemblyName>Hammurabi</AssemblyName>
+    <AssemblyName>Akkadian</AssemblyName>
     <OutputPath>bin\Debug</OutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">

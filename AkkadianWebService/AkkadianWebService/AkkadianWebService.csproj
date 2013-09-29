@@ -7,47 +7,54 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{8651E5E6-B6F2-4B7B-8C36-4BF923EC740F}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>HammurabiWebService</RootNamespace>
-    <AssemblyName>HammurabiWebService</AssemblyName>
+    <RootNamespace>AkkadianWebService</RootNamespace>
+    <AssemblyName>AkkadianWebService</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
-    <DebugSymbols>True</DebugSymbols>
+    <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>False</Optimize>
+    <Optimize>false</Optimize>
     <OutputPath>bin\Debug</OutputPath>
     <DefineConstants>DEBUG;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <ConsolePause>False</ConsolePause>
     <PlatformTarget>x86</PlatformTarget>
+    <ConsolePause>false</ConsolePause>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <DebugType>none</DebugType>
-    <Optimize>True</Optimize>
+    <Optimize>true</Optimize>
     <OutputPath>bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <ConsolePause>False</ConsolePause>
     <PlatformTarget>x86</PlatformTarget>
+    <ConsolePause>false</ConsolePause>
   </PropertyGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <ItemGroup>
-    <Compile Include="Service.svc.cs" />
-    <Compile Include="IService.cs" />
-    <Compile Include="Packet.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Web.config" />
-    <None Include="Service.svc" />
-  </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Web.Services" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System" />
     <Reference Include="System.ServiceModel.Web" />
-    <Reference Include="Hammurabi">
-      <HintPath>..\..\Hammurabi\bin\Debug\Hammurabi.dll</HintPath>
-    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Akkadian\Akkadian.csproj">
+      <Project>{4397E5BA-44D6-4937-B66A-ED7CE580CE69}</Project>
+      <Name>Akkadian</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Folder Include="AkkadianWebService\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="AkkadianWebService\AkkadianWebService.csproj" />
+    <None Include="AkkadianWebService\Service.svc" />
+    <None Include="AkkadianWebService\Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AkkadianWebService\IService.cs" />
+    <Compile Include="AkkadianWebService\Packet.cs" />
+    <Compile Include="AkkadianWebService\Service.svc.cs" />
   </ItemGroup>
 </Project>

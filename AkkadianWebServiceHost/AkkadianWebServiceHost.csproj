@@ -7,8 +7,8 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{2CDFC242-E702-4FCE-B20C-BB688A97AB24}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>HammurabiWebServiceHost</RootNamespace>
-    <AssemblyName>HammurabiWebServiceHost</AssemblyName>
+    <RootNamespace>AkkadianWebServiceHost</RootNamespace>
+    <AssemblyName>AkkadianWebServiceHost</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>True</DebugSymbols>
@@ -40,7 +40,7 @@
     <Reference Include="System.ServiceModel.Web" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\HammurabiWebService\HammurabiWebService\AkkadianWebService.csproj">
+    <ProjectReference Include="..\AkkadianWebService\AkkadianWebService\AkkadianWebService.csproj">
       <Project>{8651E5E6-B6F2-4B7B-8C36-4BF923EC740F}</Project>
       <Name>AkkadianWebService</Name>
     </ProjectReference>

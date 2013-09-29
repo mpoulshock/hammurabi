@@ -8,7 +8,7 @@
     <ProjectGuid>{844658C3-F7A2-4449-B616-F2AF4D205299}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>HammurabiInteractive</RootNamespace>
-    <AssemblyName>HammurabiInteractive</AssemblyName>
+    <AssemblyName>AkkadianInteractive</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>True</DebugSymbols>
@@ -32,9 +32,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="Hammurabi">
-      <HintPath>..\Hammurabi\bin\Debug\Hammurabi.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />
@@ -49,5 +46,11 @@
   <ItemGroup>
     <Folder Include="Interview\" />
     <Folder Include="Questions\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Akkadian\Akkadian.csproj">
+      <Project>{4397E5BA-44D6-4937-B66A-ED7CE580CE69}</Project>
+      <Name>Akkadian</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>

@@ -45,19 +45,19 @@ namespace AkkadianCompiler
             string projectPath = currentDir.Replace(@"AkkadianCompiler\bin\Debug", "");
 
             // Top-level folder where the .akk files live
-            string sourcePath = projectPath + @"Akkadian";
+            string sourcePath = projectPath + @"Hammurabi";
 
             // Create the older where the generated C# files should be put
-            string targetPath = projectPath + @"Hammurabi\Generated source\";
+            string targetPath = projectPath + @"Akkadian\Generated source\";
             System.IO.Directory.CreateDirectory(targetPath);
 
             // Go
             CompileAll(sourcePath, targetPath);
 
             // Build Hammurabi.dll
-            Console.WriteLine("\nRebuilding Hammurabi.dll...");
+            Console.WriteLine("\nRebuilding Something.dll...");
             var projectCollection = ProjectCollection.GlobalProjectCollection;
-            var project = projectCollection.LoadProject(projectPath + @"\Hammurabi\Hammurabi.csproj");
+            var project = projectCollection.LoadProject(projectPath + @"\Akkadian\Akkadian.csproj");
             if (project.Build())
             {
                 Console.WriteLine("Build succeeded.\n");
