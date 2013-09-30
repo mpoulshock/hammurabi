@@ -119,7 +119,7 @@ namespace AkkadianCompiler
         {
             // Open the question template class
             string result = 
-                "using System; \r\nusing System.Collections.Generic; \r\nusing Hammurabi; \r\nnamespace Interactive { \r\npublic class Templates {" +
+                "using System; \r\nusing System.Collections.Generic; \r\nnamespace Interactive { \r\npublic class Templates {" +
                 "\r\npublic static Question GetQ(string rel) { \r\nswitch(rel) { \r\n";
 
             // Keep track of what has already been added to the file

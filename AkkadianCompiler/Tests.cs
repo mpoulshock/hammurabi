@@ -31,20 +31,16 @@ namespace AkkadianCompiler
         private const string word = @"[-!\+\*/A-Za-z0-9\.;:\(\),""'_<>=&|\[\]\?{} ]+";
 
         // Opens the testing namespace/class
-        public const string unitSpaceOpen =
-            "\r\nnamespace Hammurabi.UnitTests\r\n" +
-            "{\r\n" +
-            "    [TestFixture]\r\n" +
-            "    public partial class Experimental : H\r\n" +
-            "    {\r\n";
-        
-        public static string unitSpaceOpen2(string spce)
+        public static string unitSpaceOpen(string spce)
         {
+            string testNameSpace = Boilerplate.GetNamespace(spce);
+            string parentClass = Boilerplate.GetClass(spce);
+
             return 
-            "\r\nnamespace Hammurabi.UnitTests\r\n" +
+            "\r\nnamespace " + testNameSpace + "\r\n" +
             "{\r\n" +
             "    [TestFixture]\r\n" +
-            "    public partial class Test_" + spce + " : H\r\n" +
+            "    public partial class Test_" + spce.Replace(".","") + " : " + parentClass + "\r\n" +
             "    {\r\n";
         }
 
@@ -140,7 +136,7 @@ namespace AkkadianCompiler
             string type = DetectType(firstPair[1].Trim());
 
             // Generate MakeTvar() expression
-            string result = "Switch<" + type + ">(";
+            string result = type + "." + "Switch<" + type + ">(";
             foreach (string s in timepts)
             {
                 string[] pair = s.Split(':');
@@ -197,7 +193,7 @@ namespace AkkadianCompiler
         {
             if (unitTests.Trim() != "")
             {
-                return unitSpaceOpen2(nameSpace) +
+                return unitSpaceOpen(nameSpace) +
                           unitTests +
                           unitSpaceClose;
             }

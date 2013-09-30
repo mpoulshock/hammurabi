@@ -153,7 +153,6 @@ namespace AkkadianCompiler
 
             // First pass: get the document namespace
             string docNameSpace = Boilerplate.GetDocNameSpace(file);
-            string unitTestNameSpace = docNameSpace.Replace(".","");
 
             // Second pass: get the file metadata
             string result = Boilerplate.InitialBoilerplate(file, docNameSpace);
@@ -267,6 +266,7 @@ namespace AkkadianCompiler
 
             // Close the class/namespace, and add the unit tests
             result += Boilerplate.ClassAndNamespaceClose;
+            string unitTestNameSpace = docNameSpace;
             result += Tests.WriteUnitTests(unitTests, unitTestNameSpace);
 
             return result;
@@ -335,13 +335,13 @@ namespace AkkadianCompiler
         private static string ConvertRuleTables(string line, string ruleType, string matchLine, string word)
         {
             // Switch(condition, value, ..., default) - must come before "rule tables" (b/c rule tables look for "->"
-            line = Regex.Replace(line, @"set:", "Switch<" + ruleType + ">(");    
+            line = Regex.Replace(line, @"set:", ruleType + "." + "Switch<" + ruleType + ">(");    
             line = Regex.Replace(line, @"if (?<condition>"+word+") -> (?<value>"+word+")", "()=> ${condition}, ()=> ${value},");    
             line = Regex.Replace(line, @"from (?<condition>"+word+") -> (?<value>"+word+")", "()=> Time.IsAtOrAfter(${condition}), ()=> ${value},");  
             line = Regex.Replace(line, @"else (?<default>"+word+")", "()=> ${default})");  
 
             // Rule tables - must come before "dates"
-            line = Regex.Replace(line, @"match "+word, "Switch<" + ruleType + ">(");    
+            line = Regex.Replace(line, @"match "+word, ruleType + "." + "Switch<" + ruleType + ">(");    
             if (line.Contains("->")) line = Util.RuleTableMatch(matchLine, line);
 
             // yyyy-mm-dd -> Date(yyyy,mm,dd)

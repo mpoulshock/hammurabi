@@ -165,7 +165,7 @@ namespace AkkadianCompiler
         /// </summary>
         public static string ConvertDate(string line)
         {
-            return Regex.Replace(line, @"(?<year>[0-9]{4})-(?<mo>[0-9]{2})-(?<day>[0-9]{2})", "Date(${year},${mo},${day})");           
+            return Regex.Replace(line, @"(?<year>[0-9]{4})-(?<mo>[0-9]{2})-(?<day>[0-9]{2})", "H.Date(${year},${mo},${day})");           
         }
 
         /// <summary>
@@ -279,7 +279,7 @@ namespace AkkadianCompiler
         /// </summary>
         public static string NamespaceConvert(string space)
         {
-            if (space == "Hammurabi.H") return "";
+            // ?????????????????
             return space.Replace("Hammurabi.","") + ".";
         }
      

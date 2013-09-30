@@ -77,10 +77,7 @@ namespace AkkadianCompiler
         /// </summary>
         private static string ClassDecl(string className)
         {
-            if (className == "H")
-                return "    public partial class H \r\n" + "    { \r\n";
-            else
-                return "    public partial class " + className + " : H \r\n" + "    { \r\n";
+            return "    public partial class " + className + " : H \r\n" + "    { \r\n";
         }
          
         /// <summary>
@@ -99,12 +96,7 @@ namespace AkkadianCompiler
                 "using Akkadian;\r\n" +
                 "using System.Collections.Generic;\r\n" +
                 "using NUnit.Framework;\r\n"; 
-            
-             // Add the namespace itself in order to accomodate 
-             // unit test class.
-             if (nspace != "Hammurabi")
-                 result += "using " + nspace + ";\r\n";
-             
+
              string[] refs = references.Split(',');
              foreach (string s in refs)
              {
@@ -117,7 +109,7 @@ namespace AkkadianCompiler
         /// <summary>
         /// Extracts the namespace from a string.
         /// </summary>
-        private static string GetNamespace(string s)
+        public static string GetNamespace(string s)
         {
              int i = s.LastIndexOf(".");
              if (i >= 0) return s.Substring(0,i);
@@ -127,7 +119,7 @@ namespace AkkadianCompiler
         /// <summary>
         /// Extracts the class name from a string.
         /// </summary>
-        private static string GetClass(string s)
+        public static string GetClass(string s)
         {
              int i = s.LastIndexOf(".") + 1;
              if (i >= 0) return s.Substring(i,s.Length-i);
